@@ -13,19 +13,6 @@ CS Core — общее ядро для всех поставщиков.
 from __future__ import annotations
 
 
-def _dedup_keep_order(items: list[str]) -> list[str]:
-    """CS: дедупликация со стабильным порядком (без сортировки)."""
-    seen: set[str] = set()
-    out: list[str] = []
-    for x in items:
-        if not x:
-            continue
-        k = x.casefold()
-        if k in seen:
-            continue
-        seen.add(k)
-        out.append(x)
-    return out
 
 
 def _cs_norm_url(u: str) -> str:
@@ -307,120 +294,7 @@ _COMPAT_NUM_ONLY_RE = re.compile(r"^\s*\d+(?:[.,]\d+)?\s*$")
 _COMPAT_NO_CODE_RE = re.compile(r"^\s*(?:№|#)\s*\d{2,}\s*$")
 
 
-def _clean_compat_fragment(f: str) -> str:
-    # CS: чистим один фрагмент совместимости (безопасно)
-    f = norm_ws(f)
-    if not f:
-        return ""
 
-    # нормализуем слэши + модельные дефисы (KM-1620 -> KM 1620)
-    f = _COMPAT_SLASH_SPACES_RE.sub("/", f)
-    f = _COMPAT_MULTI_SLASH_RE.sub("/", f)
-    f = _COMPAT_HYPHEN_MODEL_RE.sub(" ", f)
-
-    # выкидываем цвет/объём/служебные слова
-    f = _COMPAT_PARENS_UNIT_RE.sub("", f)
-    f = _COMPAT_UNIT_ANY_RE.sub("", f)
-    f = _COMPAT_SKIP_ANY_RE.sub("", f)
-
-    # дополнительно: ресурс/комплект в совместимости — мусор
-    if CS_COMPAT_CLEAN_YIELD_PACK:
-        f = _COMPAT_PARENS_YIELD_PACK_RE.sub("", f)
-        f = _COMPAT_YIELD_ANY_RE.sub("", f)
-        f = _COMPAT_PACK_ANY_RE.sub("", f)
-
-    # CS: форматы бумаги / ОС / размеры — не должны жить в "Совместимость"
-    if CS_COMPAT_CLEAN_PAPER_OS_DIM:
-        f = _COMPAT_PAPER_OS_WORD_RE.sub("", f)
-        f = _COMPAT_DIM_TOKEN_RE.sub("", f)
-
-    # CS: шумовые слова (цвета/маркетинг/описания) — тоже режем
-    if CS_COMPAT_CLEAN_NOISE_WORDS:
-        f = _COMPAT_NOISE_IN_COMPAT_RE.sub("", f)
-
-    # если скобки сломаны (обрезан хвост) — режем с последней '('
-    if f.count("(") != f.count(")"):
-        last = f.rfind("(")
-        if last != -1:
-            f = f[:last]
-        f = f.replace(")", "")
-
-    f = norm_ws(f).strip(" ,;/:-")
-
-    # в совместимости скобки не нужны — убираем остатки, чтобы не было "битых" хвостов
-    if "(" in f or ")" in f:
-        f = f.replace("(", " ").replace(")", " ")
-        f = norm_ws(f).strip(" ,;/:-")
-
-    # CS: иногда поставщик повторяет целый список дважды — режем повтор (часто у NVPrint)
-    if CS_COMPAT_CLEAN_REPEAT_BLOCKS and len(f) >= 80:
-        f_low = f.casefold()
-        pfx = norm_ws(f[:60]).casefold()
-        if len(pfx) >= 24:
-            pos = f_low.find(pfx, len(pfx))
-            if pos != -1:
-                f = f[:pos]
-                f = norm_ws(f).strip(" ,;/:-")
-
-    # убираем дубли внутри "A/B/C" (частая грязь у поставщиков)
-    if "/" in f:
-        parts = [norm_ws(x) for x in f.split("/") if norm_ws(x)]
-        out: list[str] = []
-        seen: set[str] = set()
-        for x in parts:
-            if CS_COMPAT_CLEAN_PAPER_OS_DIM:
-                x = _COMPAT_PAPER_OS_WORD_RE.sub("", x)
-                x = _COMPAT_DIM_TOKEN_RE.sub("", x)
-            if CS_COMPAT_CLEAN_NOISE_WORDS:
-                x = _COMPAT_NOISE_IN_COMPAT_RE.sub("", x)
-            x = norm_ws(x).strip(" ,;/:-")
-            if not x:
-                continue
-            k = x.casefold()
-            if k in seen:
-                continue
-            seen.add(k)
-            out.append(x)
-        f = "/".join(out)
-
-    return f
-
-def _is_valid_compat_fragment(f: str) -> bool:
-    """CS: проверка, что фрагмент похож на совместимость (модель/список моделей), а не мусор."""
-    f = norm_ws(f)
-    if not f:
-        return False
-
-    # чисто цвет/служебные слова —
-    if _COMPAT_COLOR_ONLY_RE.match(f) or _COMPAT_SKIP_WORD_RE.match(f):
-        return False
-
-    # чисто единицы/объём —
-    if _COMPAT_UNIT_RE.match(f):
-        return False
-
-    # голые числа/номера —
-    if _COMPAT_NUM_ONLY_RE.match(f) or _COMPAT_NO_CODE_RE.match(f):
-        return False
-
-    # форматы бумаги / ОС / размеры — не совместимость принтеров
-    if CS_COMPAT_CLEAN_PAPER_OS_DIM:
-        if _COMPAT_PAPER_OS_WORD_RE.search(f) or _COMPAT_DIM_TOKEN_RE.search(f):
-            return False
-
-    # должна быть цифра (модели почти всегда с цифрами)
-    if not re.search(r"\d", f):
-        return False
-
-    # и буква (чтобы не ловить голые числа)
-    if not re.search(r"[A-Za-zА-Яа-я]", f):
-        return False
-
-    # слишком коротко — почти наверняка мусор
-    if len(f) < 4:
-        return False
-
-    return True
 
 _COMPAT_MODEL_TOKEN_RE = re.compile(r"(?i)\b[A-ZА-Я]{1,6}\s*\d{2,5}[A-ZА-Я]?\b")
 _COMPAT_TEXT_SPLIT_RE = re.compile(r"[\n\r\.\!\?]+")
