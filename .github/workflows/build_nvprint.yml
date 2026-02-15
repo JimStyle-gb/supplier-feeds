@@ -14,9 +14,9 @@ jobs:
     concurrency:
       group: build_nvprint
       cancel-in-progress: true
-
-    # URL задаём прямо тут (как было раньше). Просто вставь свой URL вместо PASTE_NVPRINT_XML_URL_HERE
     env:
+      NVPRINT_LOGIN: ${{ secrets.NVPRINT_LOGIN }}
+      NVPRINT_PASSWORD: ${{ secrets.NVPRINT_PASSWORD }}
       NVPRINT_XML_URL: "PASTE_NVPRINT_XML_URL_HERE"
 
     steps:
@@ -45,14 +45,6 @@ jobs:
       - name: Smoke test (py_compile)
         run: |
           python -m py_compile scripts/cs/core.py scripts/build_*.py
-
-      - name: Check NVPRINT_XML_URL is set
-        run: |
-          if [ -z "${NVPRINT_XML_URL}" ] || [ "${NVPRINT_XML_URL}" = "PASTE_NVPRINT_XML_URL_HERE" ]; then
-            echo "NVPRINT_XML_URL is empty. Set it in workflow env (NVPRINT_XML_URL)."
-            exit 1
-          fi
-          echo "NVPRINT_XML_URL is set."
 
       - name: "Gate by day-of-month (Asia/Almaty: 1/10/20)"
         id: gate
