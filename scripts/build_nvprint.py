@@ -14,7 +14,6 @@ import time
 import random
 import re
 from dataclasses import dataclass
-from datetime import datetime, timedelta
 from xml.etree import ElementTree as ET
 
 import requests
