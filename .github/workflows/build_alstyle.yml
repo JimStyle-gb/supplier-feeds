@@ -2,126 +2,59 @@ name: Build_AlStyle
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main", "master" ]
-    paths:
-      - ".github/workflows/build_alstyle.yml"
-      - "scripts/build_alstyle.py"
-      - "scripts/cs/**"
-      - "requirements.txt"
-      - "pyproject.toml"
-      - "poetry.lock"
   schedule:
-    # 01:00 Asia/Almaty (UTC+5) -> 20:00 UTC
-    - cron: "0 20 * * *"
+    - cron: '0 19 * * *'
 
 permissions:
   contents: write
 
-concurrency:
-  group: feeds_${{ github.ref_name }}
-  cancel-in-progress: false
-
 jobs:
-  build:
+  build_alstyle:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-    env:
-      TZ: "Asia/Almaty"
-      OUTPUT_ENCODING: "utf-8"
-      PYTHONUTF8: "1"
-      CS_PICTURE_PLACEHOLDER_URL: "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
-      PIP_PACKAGES: "requests"
-      SCHEDULE_DOM: "*"
-      SCHEDULE_HOUR_ALMATY: "1"
+    concurrency:
+      group: build_alstyle
+      cancel-in-progress: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Gate + set build time (Almaty)
-        id: gate
-        shell: bash
-        run: |
-          python - <<'PY'
-          import os
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-
-          event = (os.getenv('GITHUB_EVENT_NAME','') or '').strip()
-          dom = (os.getenv('SCHEDULE_DOM','') or '').strip()
-          hour = (os.getenv('SCHEDULE_HOUR_ALMATY','') or '').strip()
-
-          now_alm = datetime.now(ZoneInfo('Asia/Almaty'))
-          almaty_now = now_alm.strftime('%Y-%m-%d %H:%M:%S')
-
-          run = 'yes'
-          day_ok = True
-          allowed = dom or '*'
-          if event == 'schedule' and dom and dom != '*':
-              allowed_set = {int(x.strip()) for x in dom.split(',') if x.strip().isdigit()}
-              allowed = ','.join(str(x) for x in sorted(allowed_set)) if allowed_set else '(empty)'
-              day_ok = (now_alm.day in allowed_set) if allowed_set else False
-              run = 'yes' if day_ok else 'no'
-
-          print(f'::notice::Event={event}; Almaty now: {almaty_now}; allowed_dom={allowed}; hour={hour or "-"}; day_ok={day_ok}; should_run={run}')
-
-          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as f:
-              f.write(f'run={run}\n')
-          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as f:
-              f.write(f'CS_FORCE_BUILD_TIME_ALMATY={almaty_now}\n')
-          PY
-
-      - name: Setup Python
-        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install dependencies
-        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
-        shell: bash
         run: |
-          set -euo pipefail
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
-          fi
-          if [ -n "${PIP_PACKAGES:-}" ]; then
-            pip install $PIP_PACKAGES
+          else
+            pip install requests beautifulsoup4 lxml pyyaml python-dateutil openpyxl
           fi
 
-      - name: Pull + build
-        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
-        shell: bash
-        env:
-          ALSTYLE_LOGIN: ${{ secrets.ALSTYLE_LOGIN }}
-          ALSTYLE_PASSWORD: ${{ secrets.ALSTYLE_PASSWORD }}
+      - name: Configure git identity (GitHub Actions bot)
         run: |
-          set -euo pipefail
-          git pull --rebase
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Smoke test (py_compile)
+        run: |
+          python -m py_compile scripts/cs/core.py scripts/build_*.py
+
+      - name: Build feed (alstyle)
+        run: |
           python scripts/build_alstyle.py
 
-      - name: Commit + push docs/alstyle.yml (retry)
-        if: ${{ github.event_name != 'pull_request' && (github.event_name != 'schedule' || steps.gate.outputs.run == 'yes') }}
-        shell: bash
+      - name: Commit & push docs (if changed)
         run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/alstyle.yml || true
-          git commit --allow-empty -m "build: alstyle ($CS_FORCE_BUILD_TIME_ALMATY) [skip ci]"
-          BRANCH="${{ github.ref_name }}"
-          for i in 1 2 3; do
-            echo "Push attempt $i/3"
-            git fetch origin "$BRANCH"
-            git rebase "origin/$BRANCH" || { git rebase --abort || true; exit 1; }
-            if git push origin "HEAD:$BRANCH"; then
-              exit 0
-            fi
-            echo "Push rejected, retry..."
-            sleep 2
-          done
-          echo "Push failed after retries"
-          exit 1
+          if git diff --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git add docs/*.yml || true
+          if git diff --cached --quiet; then
+            echo "Nothing staged."
+            exit 0
+          fi
+          git commit -m "build: alstyle feed"
+          git push
