@@ -111,7 +111,49 @@ _RE_COMPAT_DEVICE_HINT = re.compile(
 _RE_MODEL_TOKEN = re.compile(r"(?i)\b[0-9]*[A-ZА-Я]{0,4}\d{2,5}[A-ZА-Я0-9-]{0,6}\b")
 
 # Коды расходника (CF283A / TK-1150 / 106R02773 / C13T00R140) — НЕ модели устройств
-_RE_CONSUMABLE_CODE = re.compile(r"(?i)^(?:[A-Z]{1,4}\d{3,6}[A-Z]{0,3}|\d{6,9}|[A-Z]{1,3}-\d{3,6}|C\d{2}T\d{4,6})$")
+_RE_CONSUMABLE_CODE = re.compile(r"(?i)^(?:[A-Z]{1,4}\d{3,6}[A-Z]{0,3}|\d{6,9}|[A-Z]{1,3}-\d{3,6}|C\d{2}T[0-9A-Z]{5,8}|\d{3}R\d{5})$")
+
+
+# CS: если "Совместимость" содержит коды расходников (а не модели устройств) — переносим в отдельный параметр
+_CONSUMABLE_CODES_PARAM_NAME = "Коды расходников"
+
+# CS: токен похож на код расходника (а не модель принтера)
+def _cs_is_consumable_code_token(tok: str) -> bool:
+    t = (tok or "").strip().strip(" ,;./()[]{}").upper()
+    if not t:
+        return False
+    # чистые числа 6–9 знаков
+    if re.fullmatch(r"\d{6,9}", t):
+        return True
+    # Xerox: 106R02773 / 113R00780 / 008R13041
+    if re.fullmatch(r"\d{3}R\d{5}", t):
+        return True
+    # Epson: C13T00R140 / C13T66414A и т.п.
+    if re.fullmatch(r"C\d{2}T[0-9A-Z]{5,8}", t):
+        return True
+    # HP: CF283A / CE285A / W1106A и т.п.
+    if re.fullmatch(r"(?:CF|CE|CB|Q|W)\d{3,5}[A-Z]{0,3}", t):
+        return True
+    # Kyocera: TK-1150 / TK1150
+    if re.fullmatch(r"TK-?\d{3,5}[A-Z]{0,3}", t):
+        return True
+    # Brother: TN-2375 / TN2375 / DR-2335 / DR2335
+    if re.fullmatch(r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}", t):
+        return True
+    # Samsung: MLT-D111S / CLT-K404S
+    if re.fullmatch(r"(?:MLT|CLT)-[A-Z]?\d{3,5}[A-Z]{0,3}", t):
+        return True
+    return False
+
+
+def _cs_looks_like_consumable_code_list(s: str) -> bool:
+    s = norm_ws(s)
+    if not s:
+        return False
+    toks = [t for t in re.split(r"[\s,/;]+", s) if t]
+    codes = [t for t in toks if _cs_is_consumable_code_token(t)]
+    # "в основном коды" (не модели устройств)
+    return len(codes) >= 2 and len(codes) >= max(2, int(len(toks) * 0.6))
 
 
 def _cs_get_param_val(params: list[tuple[str, str]], key: str) -> str:
@@ -133,9 +175,40 @@ def _cs_clean_compat_value(s: str) -> str:
     s = (s or "").strip()
     if not s:
         return ""
-    # Убираем "и др." / "и другие модели" — это шум для keywords и параметров
+
+    # CS: убираем "для принтеров/МФУ" если прилетело в параметре
+    s = re.sub(r"(?i)^\s*(?:для\s+(?:принтеров|принтера|мфу|копиров|копира)\s*)", "", s).strip()
+    s = re.sub(r"(?i)^\s*(?:подходит\s+для\s+)", "", s).strip()
+
+    # CS: убираем "Ресурс: 1600 страниц (A4)" в начале (это не совместимость)
+    s = re.sub(r"(?i)^\s*ресурс\s*:\s*\d+(?:[.,]\d+)?\s*(?:страниц|стр\.|стр|pages?)\b\s*(?:\([^)]*\))?\s*", "", s).strip()
+
+    s = re.sub(r"(?i)^\s*(?:для\s+(?:принтеров|принтера|мфу|копиров|копира)\s*)", "", s).strip()
+
+    # CS: убираем "и др." / "и другие модели" — шум
     s = re.sub(r"(?i)\bи\s+др\.?\b", "", s)
     s = re.sub(r"(?i)\bи\s+друг(?:ие|их)\s+модел[ьяи]\b", "", s)
+
+    s = re.sub(r"\s{2,}", " ", s).strip(" ,;.-")
+
+    # CS: отдельные токены цвета (C/M/Y/K/BK) — не совместимость
+    if re.fullmatch(r"(?i)(?:[CMYK]|BK)\.?", s):
+        return ""
+
+    # CS: отдельные токены ресурса/кол-ва (7,3K / 30K / 3000 стр) — не совместимость
+    if re.fullmatch(r"(?i)\d+(?:[.,]\d+)?\s*[kк]\b\.?", s):
+        return ""
+    if re.fullmatch(r"(?i)\d+\s*(?:стр|стр\.|страниц|pages?)\b\.?", s):
+        return ""
+    if re.fullmatch(r"(?i)\d+(?:[.,]\d+)?", s):
+        return ""
+
+    # CS: срезаем хвосты цвета/ресурса, если они прицепились к концу
+    s = re.sub(r"(?i)(?:[,\s]+)(?:[CMYK]|BK)\s*$", "", s).strip(" ,;.-")
+    s = re.sub(r"(?i)[,\s]*\d+(?:[.,]\d+)?\s*[kк]\b\s*$", "", s).strip(" ,;.-")
+    s = re.sub(r"(?i)(?:[,\s]+)(?:[CMYK]|BK)\s*$", "", s).strip(" ,;.-")
+    s = re.sub(r"(?i)[,\s]*\d+\s*(?:стр|стр\.|страниц|pages?)\b\s*$", "", s).strip(" ,;.-")
+
     s = re.sub(r"\s{2,}", " ", s).strip(" ,;.-")
     return s
 
@@ -144,15 +217,21 @@ def _cs_looks_like_device_models(s: str) -> bool:
     s0 = _cs_clean_compat_value(s)
     if not s0:
         return False
-    # если строка выглядит как один код расходника — не годится
-    if " " not in s0 and _RE_CONSUMABLE_CODE.match(s0):
+
+    # CS: если строка в основном состоит из кодов расходников — это НЕ модели устройств
+    toks = [t for t in re.split(r"[\s,/;]+", s0) if t]
+    code_cnt = sum(1 for t in toks if _cs_is_consumable_code_token(t))
+    if code_cnt >= 2 and code_cnt >= max(2, int(len(toks) * 0.6)):
         return False
-    # нужны подсказки бренда/линейки
+
+    # Нужны подсказки бренда/линейки (иначе часто ловим "ресурс/цвет/формат")
     if not _RE_COMPAT_DEVICE_HINT.search(s0):
         return False
-    # и хотя бы 1–2 токена с цифрами (модели)
+
+    # И хотя бы 1 токен, похожий на модель устройства (не код расходника)
     tokens = _RE_MODEL_TOKEN.findall(s0)
-    return len(tokens) >= 1
+    device_tokens = [t for t in tokens if not _cs_is_consumable_code_token(t)]
+    return len(device_tokens) >= 1
 
 
 def _cs_extract_compat_candidate(text: str) -> str:
@@ -207,8 +286,11 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
             if _cs_looks_like_device_models(vv):
                 found.append(vv)
                 continue  # перенесём ниже единым параметром
-            # если поставщик дал странное — оставим как есть (не ломаем)
-            new_params.append((kk, vv))
+            # если поставщик дал не модели устройств:
+            # - список кодов расходников переносим в отдельный параметр
+            # - остальное выбрасываем, чтобы "Совместимость" не захламлялась
+            if _cs_looks_like_consumable_code_list(vv):
+                new_params.append((_CONSUMABLE_CODES_PARAM_NAME, norm_ws(vv)))
             continue
         if kcf in _COMPAT_ALIAS_NAMES:
             if _cs_looks_like_device_models(vv):
@@ -233,7 +315,9 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
     if not cand:
         cand = _cs_extract_compat_candidate(native_desc)
     if cand and _cs_looks_like_device_models(cand):
-        new_params.append((_COMPAT_PARAM_NAME, cand))
+        merged_cand = _cs_merge_compat_values([cand])
+        if merged_cand:
+            new_params.append((_COMPAT_PARAM_NAME, merged_cand))
     params[:] = new_params
 
 
