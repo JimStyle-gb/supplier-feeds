@@ -2806,6 +2806,10 @@ def normalize_vendor(v: str) -> str:
     # унификация Konica Minolta
     if "konica" in v_cf and "minolta" in v_cf:
         v = "Konica Minolta"
+    # унификация Kyocera-Mita
+    if "kyocera" in v_cf and "mita" in v_cf:
+        v = "Kyocera"
+        v_cf = "kyocera"
     # нормализуем слэш-списки (HP/Canon)
     parts = [p.strip() for p in re.split(r"\s*/\s*", v) if p.strip()]
     norm_parts: list[str] = []
