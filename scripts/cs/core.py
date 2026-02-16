@@ -65,6 +65,178 @@ OUTPUT_ENCODING_DEFAULT = "utf-8"
 CURRENCY_ID_DEFAULT = "KZT"
 ALMATY_TZ = "Asia/Almaty"
 
+# --- CS: Совместимость (только безопасно и только где нужно) ---
+_COMPAT_PARAM_NAME = "Совместимость"
+_COMPAT_ALIAS_NAMES = {
+    "совместимость с моделями",
+    "совместимость с принтерами",
+    "совместимые модели",
+    "для принтеров",
+    "для принтера",
+    "принтер",
+    "принтеры",
+    "применение",
+    "подходит для",
+    "совместимость",
+}
+
+# Типы, где совместимость реально уместна (расходники)
+_COMPAT_TYPE_HINTS = (
+    "картридж",
+    "тонер",
+    "тонер-картридж",
+    "драм",
+    "драм-юнит",
+    "драм-картридж",
+    "фотобарабан",
+    "чернила",
+    "пг",  # печатающая головка (редко)
+    "печатающая головка",
+    "девелопер",
+    "термопленка",
+    "термоблок",
+    "чип",
+)
+
+# Подсказки, что в строке есть именно модели устройств (а не коды расходника)
+_RE_COMPAT_DEVICE_HINT = re.compile(
+    r"(xerox|hp|hewlett|canon|kyocera|ricoh|konica|minolta|bizhub|epson|brother|samsung|pantum|oki|lexmark|"
+    r"laserjet|deskjet|designjet|workcentre|phaser|versalink|altalink|"
+    r"taskalfa|ecosys|aficio|\bmp\b|\bhl\b|\bdcp\b|\bmfc\b|\bscx\b|\bml\b|\bclp\b|\bclx\b|"
+    r"wf[-\s]?\d|l\d{3,4})",
+    flags=re.IGNORECASE,
+)
+
+# Токен, похожий на модель (должна быть цифра; длина >= 3)
+_RE_MODEL_TOKEN = re.compile(r"(?i)\b[0-9]*[A-ZА-Я]{0,4}\d{2,5}[A-ZА-Я0-9-]{0,6}\b")
+
+# Коды расходника (CF283A / TK-1150 / 106R02773 / C13T00R140) — НЕ модели устройств
+_RE_CONSUMABLE_CODE = re.compile(r"(?i)^(?:[A-Z]{1,4}\d{3,6}[A-Z]{0,3}|\d{6,9}|[A-Z]{1,3}-\d{3,6}|C\d{2}T\d{4,6})$")
+
+
+def _cs_get_param_val(params: list[tuple[str, str]], key: str) -> str:
+    kcf = (key or "").strip().casefold()
+    for k, v in params:
+        if (k or "").strip().casefold() == kcf:
+            return (v or "").strip()
+    return ""
+
+
+def _cs_is_consumable(name_full: str, params: list[tuple[str, str]]) -> bool:
+    # Смотрим прежде всего "Тип" из параметров, иначе — по названию
+    t = _cs_get_param_val(params, "Тип").casefold()
+    hay = (t + " " + (name_full or "")).casefold()
+    return any(h in hay for h in _COMPAT_TYPE_HINTS)
+
+
+def _cs_clean_compat_value(s: str) -> str:
+    s = (s or "").strip()
+    if not s:
+        return ""
+    # Убираем "и др." / "и другие модели" — это шум для keywords и параметров
+    s = re.sub(r"(?i)\bи\s+др\.?\b", "", s)
+    s = re.sub(r"(?i)\bи\s+друг(?:ие|их)\s+модел[ьяи]\b", "", s)
+    s = re.sub(r"\s{2,}", " ", s).strip(" ,;.-")
+    return s
+
+
+def _cs_looks_like_device_models(s: str) -> bool:
+    s0 = _cs_clean_compat_value(s)
+    if not s0:
+        return False
+    # если строка выглядит как один код расходника — не годится
+    if " " not in s0 and _RE_CONSUMABLE_CODE.match(s0):
+        return False
+    # нужны подсказки бренда/линейки
+    if not _RE_COMPAT_DEVICE_HINT.search(s0):
+        return False
+    # и хотя бы 1–2 токена с цифрами (модели)
+    tokens = _RE_MODEL_TOKEN.findall(s0)
+    return len(tokens) >= 1
+
+
+def _cs_extract_compat_candidate(text: str) -> str:
+    t = (text or "").strip()
+    if not t:
+        return ""
+    # Берём кусок после "для ..." (самый частый и самый безопасный)
+    m = re.search(r"(?i)\bдля\s+([^\n\r]{3,180})", t)
+    if m:
+        cand = m.group(1)
+        # отрезаем хвост после скобок/тире/точки (чтобы не тащить маркетинг)
+        cand = re.split(r"(?:(?:\s*[\(\[\{])|(?:\s*[—-]\s*)|(?:\s*\.|\s*\!|\s*\?))", cand, maxsplit=1)[0]
+        return _cs_clean_compat_value(cand)
+    # Английский "for ..."
+    m = re.search(r"(?i)\bfor\s+([^\n\r]{3,180})", t)
+    if m:
+        cand = re.split(r"(?:(?:\s*[\(\[\{])|(?:\s*[—-]\s*)|(?:\s*\.|\s*\!|\s*\?))", m.group(1), maxsplit=1)[0]
+        return _cs_clean_compat_value(cand)
+    return ""
+
+
+def _cs_merge_compat_values(vals: list[str]) -> str:
+    parts: list[str] = []
+    for v in vals:
+        v = _cs_clean_compat_value(v)
+        if not v:
+            continue
+        # дробим по запятым/точкам с запятой/переводам строк
+        for p in re.split(r"[\n;]+|\s*,\s*", v):
+            p = _cs_clean_compat_value(p)
+            if not p:
+                continue
+            parts.append(p)
+    parts = _dedup_keep_order(parts)
+    out = ", ".join(parts).strip()
+    if len(out) > 600:
+        return ""
+    return out
+
+
+def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, native_desc: str) -> None:
+    # 1) Сохраняем то, что дал поставщик; алиасы переносим в "Совместимость" только если это реально модели устройств
+    found: list[str] = []
+    new_params: list[tuple[str, str]] = []
+    for k, v in list(params):
+        kk = (k or "").strip()
+        vv = (v or "").strip()
+        if not kk:
+            continue
+        kcf = kk.casefold()
+        if kcf == _COMPAT_PARAM_NAME.casefold():
+            if _cs_looks_like_device_models(vv):
+                found.append(vv)
+                continue  # перенесём ниже единым параметром
+            # если поставщик дал странное — оставим как есть (не ломаем)
+            new_params.append((kk, vv))
+            continue
+        if kcf in _COMPAT_ALIAS_NAMES:
+            if _cs_looks_like_device_models(vv):
+                found.append(vv)
+                continue  # алиас убираем, заменим на единый
+            new_params.append((kk, vv))
+            continue
+        new_params.append((kk, vv))
+
+    merged = _cs_merge_compat_values(found) if found else ""
+    if merged:
+        new_params.append((_COMPAT_PARAM_NAME, merged))
+        params[:] = new_params
+        return
+
+    # 2) Если поставщик не дал — генерируем только для расходников и только при высокой уверенности
+    if not _cs_is_consumable(name_full, new_params):
+        params[:] = new_params
+        return
+
+    cand = _cs_extract_compat_candidate(name_full)
+    if not cand:
+        cand = _cs_extract_compat_candidate(native_desc)
+    if cand and _cs_looks_like_device_models(cand):
+        new_params.append((_COMPAT_PARAM_NAME, cand))
+    params[:] = new_params
+
+
 # Лимиты (по умолчанию):
 # - <name> держим коротким и читаемым (150 по решению пользователя)
 # - <keywords> по правилам YML обычно <= 1024
@@ -2921,7 +3093,8 @@ class OfferOut:
             params.extend(_spec_pairs)
         enrich_params_from_desc(params, native_desc)
         enrich_params_from_name_and_desc(params, name_full, native_desc)
-        # CS: Совместимость не обогащаем и не создаём автоматически (по просьбе пользователя).
+        # CS: Совместимость — добавляем только безопасно и только где нужно.
+        ensure_compatibility_param(params, name_full, native_desc)
 
         # чистим и сортируем (ВАЖНО: чистить всегда)
         params = clean_params(params)
