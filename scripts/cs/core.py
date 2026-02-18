@@ -156,6 +156,62 @@ def _cs_looks_like_consumable_code_list(s: str) -> bool:
     return len(codes) >= 2 and len(codes) >= max(2, int(len(toks) * 0.6))
 
 
+
+# CS: извлечение кодов расходников из любого текста (name/compat/desc)
+_RE_CODE_NUM_SIGN = re.compile(r"(?i)№\s*\d{2,6}[A-Z]?\b")
+_RE_CODE_ANY = re.compile(
+    r"(?i)\b(?:"
+    r"\d{6,9}|"                  # 6–9 цифр
+    r"\d{3}R\d{5}|"               # Xerox 106R02773
+    r"C\d{2}T[0-9A-Z]{5,8}|"      # Epson C13T...
+    r"(?:CF|CE|CB|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
+    r"TK-?\d{3,5}[A-Z]{0,3}|"     # Kyocera
+    r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}|"       # Brother
+    r"(?:MLT|CLT)-[A-Z]?\d{3,5}[A-Z]{0,3}" # Samsung
+    r")\b"
+)
+_RE_CODE_SHORT_3DIG = re.compile(r"\b[6-7]\d{2}\b")  # Canon 716/725/727/728/737 и т.п.
+
+
+def _cs_extract_consumable_codes_ordered(s: str, *, allow_short_3dig: bool) -> list[str]:
+    s0 = norm_ws(s)
+    if not s0:
+        return []
+    out: list[str] = []
+
+    # "№727" (с пробелами/без)
+    for m in _RE_CODE_NUM_SIGN.finditer(s0):
+        t = norm_ws(m.group(0)).replace(" ", "")
+        if not t:
+            continue
+        if not t.startswith("№"):
+            t = "№" + t
+        out.append("№" + re.sub(r"[^0-9A-Z]", "", t[1:].upper()))
+
+    # Коды по строгим шаблонам
+    for m in _RE_CODE_ANY.finditer(s0):
+        out.append(m.group(0).upper())
+
+    # Короткие 3-значные (только если разрешено)
+    if allow_short_3dig and "canon" in s0.lower():
+        for m in _RE_CODE_SHORT_3DIG.finditer(s0):
+            out.append(m.group(0))
+
+    return _dedup_keep_order(out)
+
+
+def _cs_strip_consumable_codes_from_text(s: str, *, allow_short_3dig: bool) -> str:
+    if not s:
+        return ""
+    x = s
+    x = _RE_CODE_NUM_SIGN.sub(" ", x)
+    x = _RE_CODE_ANY.sub(" ", x)
+    if allow_short_3dig and "canon" in x.lower():
+        x = _RE_CODE_SHORT_3DIG.sub(" ", x)
+    x = re.sub(r"\s{2,}", " ", x).strip(" ,;.-")
+    return x
+
+
 def _cs_get_param_val(params: list[tuple[str, str]], key: str) -> str:
     kcf = (key or "").strip().casefold()
     for k, v in params:
@@ -188,6 +244,14 @@ def _cs_clean_compat_value(s: str) -> str:
     # CS: убираем "и др." / "и другие модели" — шум
     s = re.sub(r"(?i)\bи\s+др\.?\b", "", s)
     s = re.sub(r"(?i)\bи\s+друг(?:ие|их)\s+модел[ьяи]\b", "", s)
+
+    # CS: маркетинг/служебные слова — не совместимость
+    s = re.sub(r"(?i)\b(?:новинк\w*|распродаж\w*|акци\w*|sale|promo|хит\w*)\b", "", s)
+    s = re.sub(r"(?i)\b(?:без\s+чип\w*|б/ч|chipless|no\s*chip)\b", "", s)
+    s = re.sub(r"(?i)\b(?:совместим\w*|compatible|original|оригинал)\b", "", s)
+    # CS: объём (мл) и типовые цвета — не совместимость
+    s = re.sub(r"(?i)\b\d+(?:[.,]\d+)?\s*(?:мл|ml)\b", "", s)
+    s = re.sub(r"(?i)\b(?:black|cyan|magenta|yellow|ч[её]рн\w*|голуб\w*|пурпур\w*|желт\w*|син\w*)\b", "", s)
 
     s = re.sub(r"\s{2,}", " ", s).strip(" ,;.-")
 
@@ -230,8 +294,15 @@ def _cs_looks_like_device_models(s: str) -> bool:
 
     # И хотя бы 1 токен, похожий на модель устройства (не код расходника)
     tokens = _RE_MODEL_TOKEN.findall(s0)
-    device_tokens = [t for t in tokens if not _cs_is_consumable_code_token(t)]
-    return len(device_tokens) >= 1
+    device_tokens = [t for t in tokens if (not _cs_is_consumable_code_token(t)) and (not re.fullmatch(r"\d{3}", t))]
+    if len(device_tokens) >= 1:
+        return True
+
+    # CS: серии с пробелом (например: Epson L 700 / WF 2810, Ricoh MP 2014 и т.п.)
+    if re.search(r"(?i)\b(?:l|wf|mp|sp|mx|mf|lbp|i[-\s]?r|hl|dcp|mfc|scx|ml|clp|clx)\s*\d{2,5}[A-ZА-Я]{0,3}\b", s0):
+        return True
+
+    return False
 
 
 def _cs_extract_compat_candidate(text: str) -> str:
@@ -260,7 +331,7 @@ def _cs_merge_compat_values(vals: list[str]) -> str:
         if not v:
             continue
         # дробим по запятым/точкам с запятой/переводам строк
-        for p in re.split(r"[\n;]+|\s*,\s*", v):
+        for p in re.split(r"[\n;]+|\s*(?:(?<!\d),|,(?!\d))\s*", v):  # запятая-разделитель, но НЕ десятичная 2,4K
             p = _cs_clean_compat_value(p)
             if not p:
                 continue
@@ -273,8 +344,12 @@ def _cs_merge_compat_values(vals: list[str]) -> str:
 
 
 def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, native_desc: str) -> None:
-    # 1) Сохраняем то, что дал поставщик; алиасы переносим в "Совместимость" только если это реально модели устройств
-    found: list[str] = []
+    # 1) Сохраняем то, что дал поставщик; алиасы переносим в "Совместимость" только если это реально модели устройств.
+    #    Дополнительно: аккуратно извлекаем коды расходников и выносим в отдельный параметр.
+    found_raw: list[str] = []
+    codes_sources: list[str] = []
+    existing_codes_sources: list[str] = []
+
     new_params: list[tuple[str, str]] = []
     for k, v in list(params):
         kk = (k or "").strip()
@@ -282,42 +357,71 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
         if not kk:
             continue
         kcf = kk.casefold()
-        if kcf == _COMPAT_PARAM_NAME.casefold():
-            if _cs_looks_like_device_models(vv):
-                found.append(vv)
-                continue  # перенесём ниже единым параметром
-            # если поставщик дал не модели устройств:
-            # - список кодов расходников переносим в отдельный параметр
-            # - остальное выбрасываем, чтобы "Совместимость" не захламлялась
-            if _cs_looks_like_consumable_code_list(vv):
-                new_params.append((_CONSUMABLE_CODES_PARAM_NAME, norm_ws(vv)))
+
+        # Поставщик мог уже дать "Коды расходников" — заберём, потом пересоберём (чисто, без мусора)
+        if kcf == _CONSUMABLE_CODES_PARAM_NAME.casefold():
+            if vv:
+                existing_codes_sources.append(vv)
             continue
-        if kcf in _COMPAT_ALIAS_NAMES:
+
+        # Основной ключ "Совместимость"
+        if kcf == _COMPAT_PARAM_NAME.casefold():
+            if vv:
+                codes_sources.append(vv)
             if _cs_looks_like_device_models(vv):
-                found.append(vv)
+                found_raw.append(vv)
+            # если поставщик дал не модели устройств — значение "Совместимость" выбрасываем, чтобы не захламлять
+            continue
+
+        # Алиасы совместимости
+        if kcf in _COMPAT_ALIAS_NAMES:
+            if vv:
+                codes_sources.append(vv)
+            if _cs_looks_like_device_models(vv):
+                found_raw.append(vv)
                 continue  # алиас убираем, заменим на единый
             new_params.append((kk, vv))
             continue
+
         new_params.append((kk, vv))
 
-    merged = _cs_merge_compat_values(found) if found else ""
+    is_consumable = _cs_is_consumable(name_full, new_params)
+
+    # 2) Коды расходников: только для расходников, только строгие шаблоны + "№..." + (Canon 7xx/6xx при наличии Canon)
+    codes: list[str] = []
+    if is_consumable:
+        for src in (existing_codes_sources + codes_sources + [name_full]):
+            codes.extend(_cs_extract_consumable_codes_ordered(src, allow_short_3dig=True))
+        codes = _dedup_keep_order(codes)
+
+    # 3) Совместимость: чистим от кодов/служебки и собираем только модели устройств
+    found_clean: list[str] = []
+    for vv in found_raw:
+        vv2 = _cs_strip_consumable_codes_from_text(vv, allow_short_3dig=is_consumable)
+        if vv2:
+            found_clean.append(vv2)
+
+    merged = _cs_merge_compat_values(found_clean) if found_clean else ""
     if merged:
         new_params.append((_COMPAT_PARAM_NAME, merged))
-        params[:] = new_params
-        return
+    else:
+        # 4) Если поставщик не дал — генерируем только для расходников и только при высокой уверенности
+        if is_consumable:
+            cand = _cs_extract_compat_candidate(name_full)
+            if not cand:
+                cand = _cs_extract_compat_candidate(native_desc)
+            if cand:
+                cand2 = _cs_strip_consumable_codes_from_text(cand, allow_short_3dig=True)
+                if cand2 and _cs_looks_like_device_models(cand2):
+                    merged_cand = _cs_merge_compat_values([cand2])
+                    if merged_cand:
+                        new_params.append((_COMPAT_PARAM_NAME, merged_cand))
 
-    # 2) Если поставщик не дал — генерируем только для расходников и только при высокой уверенности
-    if not _cs_is_consumable(name_full, new_params):
-        params[:] = new_params
-        return
+    if is_consumable and codes:
+        joined = ", ".join(codes).strip()
+        if joined and len(joined) <= 600:
+            new_params.append((_CONSUMABLE_CODES_PARAM_NAME, joined))
 
-    cand = _cs_extract_compat_candidate(name_full)
-    if not cand:
-        cand = _cs_extract_compat_candidate(native_desc)
-    if cand and _cs_looks_like_device_models(cand):
-        merged_cand = _cs_merge_compat_values([cand])
-        if merged_cand:
-            new_params.append((_COMPAT_PARAM_NAME, merged_cand))
     params[:] = new_params
 
 
@@ -2047,7 +2151,7 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
 
 
         # dash-separated пары внутри буллета: "Ключ — Значение" / "Ключ - Значение"
-        md = re.match(r"^([^:]{1,80}?)\s*[–—-]\s*(.{1,250})$", ln)
+        md = re.match(r"^([^:]{1,80}?)\s+[–—-]\s+(.{1,250})$", ln)
         if md:
             k2 = md.group(1).strip().rstrip(':')
             v2 = md.group(2).strip()
@@ -2371,6 +2475,9 @@ def normalize_pictures(pictures: Sequence[str]) -> list[str]:
     seen: set[str] = set()
     for p in pictures or []:
         u = norm_ws(p)
+        # CS: NVPrint отдаёт заглушку nophoto.jpg — приводим к общему placeholder
+        if u.lower() in {"https://nvprint.ru/promo/photo/nophoto.jpg", "http://nvprint.ru/promo/photo/nophoto.jpg"}:
+            u = CS_PICTURE_PLACEHOLDER_URL
         if not u:
             continue
         # если это просто домен без пути — это не картинка
