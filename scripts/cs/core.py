@@ -140,6 +140,9 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
     # Samsung: MLT-D111S / CLT-K404S
     if re.fullmatch(r"(?:MLT|CLT)-[A-Z]?\d{3,5}[A-Z]{0,3}", t):
         return True
+    # Canon/HP short codes: 710H / 051H / 056H / 126A / 435A
+    if re.fullmatch(r"\d{3,4}[AHX]", t):
+        return True
     return False
 
 
@@ -164,7 +167,8 @@ _RE_CODE_ANY = re.compile(
     r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
     r"TK-?\d{3,5}[A-Z]{0,3}|"     # Kyocera
     r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}|"       # Brother
-    r"(?:MLT|CLT)-[A-Z]?\d{3,5}[A-Z]{0,3}" # Samsung
+    r"(?:MLT|CLT)-[A-Z]?\d{3,5}[A-Z]{0,3}|" # Samsung
+    r"\d{3,4}[AHX]"            # Short codes 710H/126A
     r")\b"
 )
 _RE_CODE_SHORT_3DIG = re.compile(r"\b[6-7]\d{2}\b")  # Canon 716/725/727/728/737 и т.п.
@@ -205,7 +209,13 @@ def _cs_extract_consumable_codes_ordered(s: str, *, allow_short_3dig: bool) -> l
 
     # Коды по строгим шаблонам
     for m in _RE_CODE_ANY.finditer(s0):
-        out.append(m.group(0).upper())
+        t = m.group(0).upper()
+        # CS: не тащим числа ресурса (110000 страниц) в коды расходников
+        if re.fullmatch(r"\d{6,9}", t):
+            ctx = s0[max(0, m.start() - 24): min(len(s0), m.end() + 24)].casefold()
+            if ("ресурс" in ctx) or ("страниц" in ctx) or ("pages" in ctx) or re.search(r"\bстр\.?\b", ctx):
+                continue
+        out.append(t)
 
     # Короткие 3-значные (только если разрешено)
     if allow_short_3dig and "canon" in s0.lower():
@@ -255,6 +265,9 @@ def _cs_clean_compat_value(s: str) -> str:
     s = re.sub(r"(?iu)^\s*ресурс\s*[:\-]?\s*(?:\d[\d\s\.,]*)?\s*(?:страниц[а-я]*|стр\.?|pages?)\b(?:\s*\([^)]*\))?\s*[,;./-]*\s*", "", s).strip(" ,;./-")
     # если ресурс встречается в середине — тоже вырежем
     s = re.sub(r"(?iu)\bресурс\s*[:\-]?\s*(?:\d[\d\s\.,]*)?\s*(?:страниц[а-я]*|стр\.?|pages?)\b", " ", s)
+    # CS: иногда после выноса/чистки цифр остаётся "Ресурс: страниц" — вычищаем
+    s = re.sub(r"(?iu)\bресурс\s*[:\-]?\s*(?:страниц[а-я]*|стр\.?|pages?)\b", " ", s)
+
 
     s = re.sub(r"(?i)^\s*(?:для\s+(?:принтеров|принтера|мфу|копиров|копира)\s*)", "", s).strip()
 
@@ -305,6 +318,7 @@ def _cs_clean_compat_value(s: str) -> str:
     s = re.sub(r"(?i)[,\s]*\d+(?:[.,]\d+)?\s*[kк]\b\s*$", "", s).strip(" ,;./-")
     s = re.sub(r"(?i)[,\s]*\d+\s*(?:стр\.?|страниц|pages?)\b\s*$", "", s).strip(" ,;./-")
     s = re.sub(r"(?i)[,\s]*(?:п/у|б/у)\s*$", "", s).strip(" ,;./-")
+    s = re.sub(r"(?i)(?:[,\s]+)(?:color|colour)\s*$", "", s).strip(" ,;./-")
 
     s = re.sub(r"\s{2,}", " ", s).strip(" ,;./-")
     return s
