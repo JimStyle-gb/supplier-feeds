@@ -90,12 +90,9 @@ _COMPAT_TYPE_HINTS = (
     "драм-картридж",
     "фотобарабан",
     "чернила",
-    "пг",  # печатающая головка (редко)
     "печатающая головка",
     "девелопер",
     "термопленка",
-    "термоблок",
-    "чип",
 )
 
 # Подсказки, что в строке есть именно модели устройств (а не коды расходника)
@@ -132,7 +129,7 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
     if re.fullmatch(r"C\d{2}T[0-9A-Z]{5,8}", t):
         return True
     # HP: CF283A / CE285A / W1106A и т.п.
-    if re.fullmatch(r"(?:CF|CE|CB|Q|W)\d{3,5}[A-Z]{0,3}", t):
+    if re.fullmatch(r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}", t):
         return True
     # Kyocera: TK-1150 / TK1150
     if re.fullmatch(r"TK-?\d{3,5}[A-Z]{0,3}", t):
@@ -158,13 +155,13 @@ def _cs_looks_like_consumable_code_list(s: str) -> bool:
 
 
 # CS: извлечение кодов расходников из любого текста (name/compat/desc)
-_RE_CODE_NUM_SIGN = re.compile(r"(?i)№\s*\d{2,6}[A-Z]?\b")
+_RE_CODE_NUM_SIGN = re.compile(r"(?i)№\s*\d{2,6}[A-Z]{0,4}\b")
 _RE_CODE_ANY = re.compile(
     r"(?i)\b(?:"
     r"\d{6,9}|"                  # 6–9 цифр
     r"\d{3}R\d{5}|"               # Xerox 106R02773
     r"C\d{2}T[0-9A-Z]{5,8}|"      # Epson C13T...
-    r"(?:CF|CE|CB|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
+    r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
     r"TK-?\d{3,5}[A-Z]{0,3}|"     # Kyocera
     r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}|"       # Brother
     r"(?:MLT|CLT)-[A-Z]?\d{3,5}[A-Z]{0,3}" # Samsung
@@ -173,8 +170,26 @@ _RE_CODE_ANY = re.compile(
 _RE_CODE_SHORT_3DIG = re.compile(r"\b[6-7]\d{2}\b")  # Canon 716/725/727/728/737 и т.п.
 
 
+_RE_CODE_GROUPED_PREFIX = re.compile(
+    r"(?i)\b(?P<pfx>(?:CF|CE|CB|CC|Q|W))(?P<body>\d{3,5}(?:/\d{3,5}){1,8})(?P<suf>[A-Z]{0,3})\b"
+)
+
+
+def _cs_expand_grouped_consumable_codes(s: str) -> str:
+    if not s:
+        return ""
+    def _repl(m: re.Match) -> str:
+        pfx = (m.group("pfx") or "").upper()
+        body = m.group("body") or ""
+        suf = (m.group("suf") or "").upper()
+        nums = [x for x in body.split("/") if x]
+        out = [f"{pfx}{n}{suf}" for n in nums]
+        return " " + " ".join(out) + " "
+    return _RE_CODE_GROUPED_PREFIX.sub(_repl, s)
+
+
 def _cs_extract_consumable_codes_ordered(s: str, *, allow_short_3dig: bool) -> list[str]:
-    s0 = norm_ws(s)
+    s0 = norm_ws(_cs_expand_grouped_consumable_codes(s))
     if not s0:
         return []
     out: list[str] = []
@@ -203,12 +218,12 @@ def _cs_extract_consumable_codes_ordered(s: str, *, allow_short_3dig: bool) -> l
 def _cs_strip_consumable_codes_from_text(s: str, *, allow_short_3dig: bool) -> str:
     if not s:
         return ""
-    x = s
+    x = _cs_expand_grouped_consumable_codes(s)
     x = _RE_CODE_NUM_SIGN.sub(" ", x)
     x = _RE_CODE_ANY.sub(" ", x)
     if allow_short_3dig and "canon" in x.lower():
         x = _RE_CODE_SHORT_3DIG.sub(" ", x)
-    x = re.sub(r"\s{2,}", " ", x).strip(" ,;.-")
+    x = re.sub(r"\s{2,}", " ", x).strip(" ,;./-")
     return x
 
 
@@ -237,7 +252,7 @@ def _cs_clean_compat_value(s: str) -> str:
     s = re.sub(r"(?i)^\s*(?:подходит\s+для\s+)", "", s).strip()
 
     # CS: убираем "Ресурс: 1600 страниц (A4)" в начале (это не совместимость)
-    s = re.sub(r"(?i)^\s*ресурс\s*:\s*\d+(?:[.,]\d+)?\s*(?:страниц|стр\.|стр|pages?)\b\s*(?:\([^)]*\))?\s*", "", s).strip()
+    s = re.sub(r"(?i)^\s*ресурс\s*:\s*\d+(?:[.,]\d+)?\s*(?:страниц|стр\.?|pages?)\b\s*(?:\([^)]*\))?\s*", "", s).strip()
 
     s = re.sub(r"(?i)^\s*(?:для\s+(?:принтеров|принтера|мфу|копиров|копира)\s*)", "", s).strip()
 
@@ -248,33 +263,51 @@ def _cs_clean_compat_value(s: str) -> str:
     # CS: маркетинг/служебные слова — не совместимость
     s = re.sub(r"(?i)\b(?:новинк\w*|распродаж\w*|акци\w*|sale|promo|хит\w*)\b", "", s)
     s = re.sub(r"(?i)\b(?:без\s+чип\w*|б/ч|chipless|no\s*chip)\b", "", s)
+    s = re.sub(r"(?i)\b(?:п/у|б/у)\b", "", s)
     s = re.sub(r"(?i)\b(?:совместим\w*|compatible|original|оригинал)\b", "", s)
-    # CS: объём (мл) и типовые цвета — не совместимость
+
+    # CS: объём / ресурс / цвета — не совместимость
     s = re.sub(r"(?i)\b\d+(?:[.,]\d+)?\s*(?:мл|ml)\b", "", s)
-    s = re.sub(r"(?i)\b(?:black|cyan|magenta|yellow|ч[её]рн\w*|голуб\w*|пурпур\w*|желт\w*|син\w*)\b", "", s)
+    s = re.sub(r"(?i)\b\d+(?:[.,]\d+)?\s*[kк]\b/?", "", s)
+    s = re.sub(r"(?i)\b\d+\s*(?:стр\.?|страниц|pages?)\b", "", s)
 
-    s = re.sub(r"\s{2,}", " ", s).strip(" ,;.-")
+    s = re.sub(
+        r"(?i)\b(?:black|cyan|magenta|yellow|grey|gray|photoblack|photo\s*black|matte\s*black|matt\s*black|matblack|"
+        r"lc|lm|lk|llk|mbk|pbk|gy|c|m|y|k|bk|"
+        r"ч[её]рн\w*|голуб\w*|пурпур\w*|ж[её]лт\w*|сер\w*)\b",
+        "",
+        s,
+    )
 
-    # CS: отдельные токены цвета (C/M/Y/K/BK) — не совместимость
-    if re.fullmatch(r"(?i)(?:[CMYK]|BK)\.?", s):
+    # Подчистка хвостов-разделителей
+    s = re.sub(r"[\\|]+", " ", s)
+    s = re.sub(r"\s*/\s*", "/", s)
+    s = re.sub(r"/{2,}", "/", s)
+    s = re.sub(r"\s{2,}", " ", s).strip(" ,;./-")
+
+    # CS: отдельные токены цвета/ресурса/мусора — не совместимость
+    if re.fullmatch(r"(?i)(?:[CMYK]|BK|LC|LM|LK|MBK|PBK|GY|GREY|GRAY)\.?", s):
         return ""
-
-    # CS: отдельные токены ресурса/кол-ва (7,3K / 30K / 3000 стр) — не совместимость
     if re.fullmatch(r"(?i)\d+(?:[.,]\d+)?\s*[kк]\b\.?", s):
         return ""
-    if re.fullmatch(r"(?i)\d+\s*(?:стр|стр\.|страниц|pages?)\b\.?", s):
+    if re.fullmatch(r"(?i)\d+\s*(?:стр\.?|страниц|pages?)\b\.?", s):
+        return ""
+    if re.fullmatch(r"(?i)№\s*\d{2,6}[A-Z]{0,4}\b", s):
         return ""
     if re.fullmatch(r"(?i)\d+(?:[.,]\d+)?", s):
         return ""
 
-    # CS: срезаем хвосты цвета/ресурса, если они прицепились к концу
-    s = re.sub(r"(?i)(?:[,\s]+)(?:[CMYK]|BK)\s*$", "", s).strip(" ,;.-")
-    s = re.sub(r"(?i)[,\s]*\d+(?:[.,]\d+)?\s*[kк]\b\s*$", "", s).strip(" ,;.-")
-    s = re.sub(r"(?i)(?:[,\s]+)(?:[CMYK]|BK)\s*$", "", s).strip(" ,;.-")
-    s = re.sub(r"(?i)[,\s]*\d+\s*(?:стр|стр\.|страниц|pages?)\b\s*$", "", s).strip(" ,;.-")
+    # CS: срезаем хвосты цвета/ресурса/кодов, если они прицепились к концу
+    s = re.sub(r"(?i)(?:[,\s]+)(?:[CMYK]|BK|LC|LM|LK|MBK|PBK|GY|GREY|GRAY)\s*$", "", s).strip(" ,;./-")
+    s = re.sub(r"(?i)[,\s]*№\s*\d{2,6}[A-Z]{0,4}\b\s*$", "", s).strip(" ,;./-")
+    s = re.sub(r"(?i)[,\s]*\d+(?:[.,]\d+)?\s*[kк]\b\s*$", "", s).strip(" ,;./-")
+    s = re.sub(r"(?i)[,\s]*\d+\s*(?:стр\.?|страниц|pages?)\b\s*$", "", s).strip(" ,;./-")
+    s = re.sub(r"(?i)[,\s]*(?:п/у|б/у)\s*$", "", s).strip(" ,;./-")
 
-    s = re.sub(r"\s{2,}", " ", s).strip(" ,;.-")
+    s = re.sub(r"\s{2,}", " ", s).strip(" ,;./-")
     return s
+
+
 
 
 def _cs_looks_like_device_models(s: str) -> bool:
@@ -344,8 +377,7 @@ def _cs_merge_compat_values(vals: list[str]) -> str:
 
 
 def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, native_desc: str) -> None:
-    # 1) Сохраняем то, что дал поставщик; алиасы переносим в "Совместимость" только если это реально модели устройств.
-    #    Дополнительно: аккуратно извлекаем коды расходников и выносим в отдельный параметр.
+    # Совместимость и коды расходников: только для расходников.
     found_raw: list[str] = []
     codes_sources: list[str] = []
     existing_codes_sources: list[str] = []
@@ -358,66 +390,57 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
             continue
         kcf = kk.casefold()
 
-        # Поставщик мог уже дать "Коды расходников" — заберём, потом пересоберём (чисто, без мусора)
+        # Уже существующие "Коды расходников" пересобираем заново (очищенно)
         if kcf == _CONSUMABLE_CODES_PARAM_NAME.casefold():
             if vv:
                 existing_codes_sources.append(vv)
             continue
 
-        # Основной ключ "Совместимость"
-        if kcf == _COMPAT_PARAM_NAME.casefold():
+        # Любые ключи совместимости/алиасы собираем как источники, но в исходном виде не оставляем
+        if kcf == _COMPAT_PARAM_NAME.casefold() or kcf in _COMPAT_ALIAS_NAMES:
             if vv:
                 codes_sources.append(vv)
-            if _cs_looks_like_device_models(vv):
                 found_raw.append(vv)
-            # если поставщик дал не модели устройств — значение "Совместимость" выбрасываем, чтобы не захламлять
-            continue
-
-        # Алиасы совместимости
-        if kcf in _COMPAT_ALIAS_NAMES:
-            if vv:
-                codes_sources.append(vv)
-            if _cs_looks_like_device_models(vv):
-                found_raw.append(vv)
-                continue  # алиас убираем, заменим на единый
-            new_params.append((kk, vv))
             continue
 
         new_params.append((kk, vv))
 
     is_consumable = _cs_is_consumable(name_full, new_params)
 
-    # 2) Коды расходников: только для расходников, только строгие шаблоны + "№..." + (Canon 7xx/6xx при наличии Canon)
-    codes: list[str] = []
-    if is_consumable:
-        for src in (existing_codes_sources + codes_sources + [name_full]):
-            codes.extend(_cs_extract_consumable_codes_ordered(src, allow_short_3dig=True))
-        codes = _dedup_keep_order(codes)
+    # Для НЕрасходников совместимость/коды не добавляем вообще
+    if not is_consumable:
+        params[:] = new_params
+        return
 
-    # 3) Совместимость: чистим от кодов/служебки и собираем только модели устройств
+    # 1) Коды расходников: из существующих кодов, из совместимости и из названия
+    codes: list[str] = []
+    for src in (existing_codes_sources + codes_sources + [name_full]):
+        codes.extend(_cs_extract_consumable_codes_ordered(src, allow_short_3dig=True))
+    codes = _dedup_keep_order(codes)
+
+    # 2) Совместимость: чистим от кодов/служебки, оставляем только модели устройств
     found_clean: list[str] = []
     for vv in found_raw:
-        vv2 = _cs_strip_consumable_codes_from_text(vv, allow_short_3dig=is_consumable)
-        if vv2:
+        vv2 = _cs_strip_consumable_codes_from_text(vv, allow_short_3dig=True)
+        vv2 = _cs_clean_compat_value(vv2)
+        if vv2 and _cs_looks_like_device_models(vv2):
             found_clean.append(vv2)
 
     merged = _cs_merge_compat_values(found_clean) if found_clean else ""
     if merged:
         new_params.append((_COMPAT_PARAM_NAME, merged))
     else:
-        # 4) Если поставщик не дал — генерируем только для расходников и только при высокой уверенности
-        if is_consumable:
-            cand = _cs_extract_compat_candidate(name_full)
-            if not cand:
-                cand = _cs_extract_compat_candidate(native_desc)
-            if cand:
-                cand2 = _cs_strip_consumable_codes_from_text(cand, allow_short_3dig=True)
-                if cand2 and _cs_looks_like_device_models(cand2):
-                    merged_cand = _cs_merge_compat_values([cand2])
-                    if merged_cand:
-                        new_params.append((_COMPAT_PARAM_NAME, merged_cand))
+        # 3) Если поставщик не дал пригодную совместимость — пробуем извлечь из name/desc
+        cand = _cs_extract_compat_candidate(name_full) or _cs_extract_compat_candidate(native_desc)
+        if cand:
+            cand2 = _cs_strip_consumable_codes_from_text(cand, allow_short_3dig=True)
+            cand2 = _cs_clean_compat_value(cand2)
+            if cand2 and _cs_looks_like_device_models(cand2):
+                merged_cand = _cs_merge_compat_values([cand2])
+                if merged_cand:
+                    new_params.append((_COMPAT_PARAM_NAME, merged_cand))
 
-    if is_consumable and codes:
+    if codes:
         joined = ", ".join(codes).strip()
         if joined and len(joined) <= 600:
             new_params.append((_CONSUMABLE_CODES_PARAM_NAME, joined))
