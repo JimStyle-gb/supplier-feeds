@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-19 12:22">
+<yml_catalog date="2026-02-19 19:17">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-19 12:22:42
+Время сборки (Алматы)                      | 2026-02-19 19:17:51
 Ближайшая сборка (Алматы)                  | 2026-02-20 02:00:00
-Сколько товаров у поставщика до фильтра    | 1751
-Сколько товаров у поставщика после фильтра | 150
-Сколько товаров есть в наличии (true)      | 150
+Сколько товаров у поставщика до фильтра    | 1788
+Сколько товаров у поставщика после фильтра | 152
+Сколько товаров есть в наличии (true)      | 152
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -3319,6 +3319,38 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный, Чернила, C13T67364A, L800, 1800, 810, 850, светло-пурпурный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
+<offer id="ACC13T694100" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T694100</vendorCode>
+<name>Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный</name>
+<price>235900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Фото черный картридж 700 ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T694100 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T694100</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Epson</param>
+<param name="Модель">Epson C13T694100 для T3000/5000/7000, Т3200/5200/7200</param>
+<param name="Тип">Картридж EPSON</param>
+<param name="Цвет">Черный</param>
+<param name="Для бренда">Epson</param>
+<param name="Коды расходников">C13T694100</param>
+<param name="Ресурс">700 мл</param>
+<param name="Страна происхождения">Индонезия</param>
+<param name="Тип печати">струйная</param>
+<keywords>Epson, Картридж Epson C13T694100 T3000/5000/7000 Т3200/5200/7200 фото черный, Картридж, C13T694100, T3000, 5000, 7000, Т3200, 5200, 7200, фото, черный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
 <offer id="ACC13T69420N" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T69420N</vendorCode>
@@ -3844,7 +3876,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Описание -->
 <p>Тип: Проектор короткофокусный; Производитель: ViewSonic; Модель: ViewSonic Europe Ltd.</p>
 <p><strong>Примечание:</strong> Питание возможно от Power Delivery (USB-C 45W и выше): Портативный проектор ViewSonic M2 — кинотеатр в вашей сумке!<br>Погрузитесь в мир яркого Full HD изображения с проектором ViewSonic M2: стильным, компактным и мощным устройством для дома, офиса или путешествий. Благодаря короткофокусной оптике…</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> ViewSonic</li><li><strong>Модель:</strong> ViewSonic Europe Ltd.</li><li><strong>Тип:</strong> Проектор короткофокусный</li><li><strong>Разрешение:</strong> FullHD (1920x1080)</li><li><strong>LED-источник света на 30 000 часов:</strong> экономия на лампах</li><li><strong>USB:</strong> Mini usb</li><li><strong>Wi-Fi:</strong> Да</li><li><strong>Автофокус и автоматическая коррекция трапеции:</strong> удобно в любых условиях</li><li><strong>Автофокус и коррекция трапеции:</strong> изображение всегда ровное</li><li><strong>Акустика Harman/Kardon:</strong> насыщенный и объёмный звук без внешних колонок</li><li><strong>Беспроводное подключение:</strong> стриминг с телефона, ноутбука или планшета</li><li><strong>Вес:</strong> ~1 кг</li><li><strong>Вес проектора:</strong> всего 1 кг. Он легко помещается в сумку или рюкзак и не требует сложной настройки. Просто включите — и наслаждайтесь!</li><li><strong>Видео вход HDMI:</strong> Есть</li><li><strong>Встроенный звук:</strong> Harman Kardon (2×3 Вт)</li><li><strong>Источник света:</strong> LED (RGBB), срок службы до 30 000 часов</li><li><strong>Контрастность:</strong> 3 000 000:1 (динамическая)</li><li><strong>Коррекция трапецеидальных искажений:</strong> Автоматическая (вертикальная и горизонтальная)</li><li><strong>Операционная система:</strong> Aptoide TV (аналог Android TV, без Google Play)</li><li><strong>Память:</strong> 16 ГБ (встроенная)</li><li><strong>Параметр:</strong> Значение</li><li><strong>Подключения:</strong> HDMI 2.0, USB-C, USB-A, microSD, Bluetooth, Wi-Fi, аудиовыход</li><li><strong>Проекционное расстояние:</strong> 0.7–3.2 м</li><li><strong>Работает от внешнего аккумулятора (PD 45W):</strong> идеально для путешествий</li><li><strong>Размер изображения:</strong> 24"–100"+ (оптимально 60"–100")</li><li><strong>Разрешение Full HD (1920×1080):</strong> чёткое и яркое изображение</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Технология:</strong> DLP</li><li><strong>Уровень шума (норм./эконом.) Дб:</strong> 26</li><li><strong>Фокусировка:</strong> Автофокус</li><li><strong>Яркость:</strong> ~1200 LED люмен</li><li><strong>Яркость (ANSI) лмн:</strong> 1 200</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> ViewSonic</li><li><strong>Модель:</strong> ViewSonic Europe Ltd.</li><li><strong>Тип:</strong> Проектор короткофокусный</li><li><strong>Разрешение:</strong> FullHD (1920x1080)</li><li><strong>LED-источник света на 30 000 часов:</strong> экономия на лампах</li><li><strong>USB:</strong> Mini usb</li><li><strong>Wi-Fi:</strong> Да</li><li><strong>Автофокус и автоматическая коррекция трапеции:</strong> удобно в любых условиях</li><li><strong>Автофокус и коррекция трапеции:</strong> изображение всегда ровное</li><li><strong>Акустика Harman/Kardon:</strong> насыщенный и объёмный звук без внешних колонок</li><li><strong>Беспроводное подключение:</strong> стриминг с телефона, ноутбука или планшета</li><li><strong>Вес:</strong> ~1 кг</li><li><strong>Вес проектора:</strong> всего 1 кг. Он легко помещается в сумку или рюкзак и не требует сложной настройки. Просто включите — и наслаждайтесь!</li><li><strong>Видео вход HDMI:</strong> Есть</li><li><strong>Встроенный звук:</strong> Harman Kardon (2×3 Вт)</li><li><strong>Источник света:</strong> LED (RGBB), срок службы до 30 000 часов</li><li><strong>Контрастность:</strong> 3 000 000:1 (динамическая)</li><li><strong>Коррекция трапецеидальных искажений:</strong> Автоматическая (вертикальная и горизонтальная)</li><li><strong>Операционная система:</strong> Aptoide TV (аналог Android TV, без Google Play)</li><li><strong>Память:</strong> 16 ГБ (встроенная)</li><li><strong>Подключения:</strong> HDMI 2.0, USB-C, USB-A, microSD, Bluetooth, Wi-Fi, аудиовыход</li><li><strong>Проекционное расстояние:</strong> 0.7–3.2 м</li><li><strong>Работает от внешнего аккумулятора (PD 45W):</strong> идеально для путешествий</li><li><strong>Размер изображения:</strong> 24"–100"+ (оптимально 60"–100")</li><li><strong>Разрешение Full HD (1920×1080):</strong> чёткое и яркое изображение</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Технология:</strong> DLP</li><li><strong>Уровень шума (норм./эконом.) Дб:</strong> 26</li><li><strong>Фокусировка:</strong> Автофокус</li><li><strong>Яркость:</strong> ~1200 LED люмен</li><li><strong>Яркость (ANSI) лмн:</strong> 1 200</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">ViewSonic</param>
@@ -3867,7 +3899,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Коррекция трапецеидальных искажений">Автоматическая (вертикальная и горизонтальная)</param>
 <param name="Операционная система">Aptoide TV (аналог Android TV, без Google Play)</param>
 <param name="Память">16 ГБ (встроенная)</param>
-<param name="Параметр">Значение</param>
 <param name="Подключения">HDMI 2.0, USB-C, USB-A, microSD, Bluetooth, Wi-Fi, аудиовыход</param>
 <param name="Проекционное расстояние">0.7–3.2 м</param>
 <param name="Работает от внешнего аккумулятора (PD 45W)">идеально для путешествий</param>
@@ -4309,35 +4340,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Mr.Pixel, Экран настенный Mr.Pixel 60" X 80" (1 52 X 2 03), Экран, настенный, Mr, Pixel, 60, 80, 52, 03, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACMSPSBC120V2" available="true">
-<categoryId></categoryId>
-<vendorCode>ACMSPSBC120V2</vendorCode>
-<name>Экран настенный Mr.Pixel 72" X 96" (1.83 X 2,44)</name>
-<price>38900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/4bd/flilm1tnyshbhewxdf053tbe4l3s3bty.jpg</picture>
-<vendor>Mr.Pixel</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Экран настенный Mr.Pixel 72" X 96" (1.83 X 2,44)</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке.<br>Чёрные границы по краям экрана для лучшего отображения изображения<br>Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана.<br>Синхронизированный мотор плавный и тихий в работе.<br>Высота: 1.83 м<br>Ширина: 2.44 м<br>Соотношение сторон: 4:3</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Экран настенный</li><li><strong>Цвет:</strong> Белый</li><li><strong>Размер дм.(м.):</strong> 72" X 96" (1,83 X 2,44)</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Формат:</strong> 1X1</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Mr.Pixel</param>
-<param name="Тип">Экран настенный</param>
-<param name="Цвет">Белый</param>
-<param name="Размер дм.(м.)">72" X 96" (1,83 X 2,44)</param>
-<param name="Страна происхождения">Китай</param>
-<param name="Формат">1X1</param>
-<keywords>Mr.Pixel, Экран настенный Mr.Pixel 72" X 96" (1.83 X 2 44), Экран, настенный, Mr, Pixel, 72, 96, 83, 44, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACMSPSBC150V2" available="true">
 <categoryId></categoryId>
 <vendorCode>ACMSPSBC150V2</vendorCode>
@@ -4680,6 +4682,52 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>SMART, Интерактивная панель SBID-QX275-P, Интерактивная, панель, SBID-QX275-P, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
+<offer id="ACV11H973040" available="true">
+<categoryId></categoryId>
+<vendorCode>ACV11H973040</vendorCode>
+<name>Проектор универсальный Epson EB-W06</name>
+<price>384900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Проектор универсальный Epson EB-W06</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Проектор Epson EB-W06 создавался с расчетом, чтобы установка и настройка были как можно более быстрыми. Набор функциональных возможностей проектора включает быструю коррекцию трапецеидальных искажений, долгий ресурс лампы и опциональную поддержку Wi-Fi, которая позволяет отображать контент с мобильных устройств с помощью приложения iProjection.<br>Технология: LCD: 3 × 0.59" P-Si TFT<br>Разрешение: WXGA (1280×800)<br>Яркость: 3700 ANSI lm<br>Цветовая яркость: 3700 ANSI lm<br>Контрастность: 16000:1<br>Зум 1,2× (оптический)<br>Передача изображения по беспроводной сети Wi-fi (опционально)<br>Автоматическая коррекция вертикальных трапецеидальных искажений<br>Быстрая коррекция горизонтальных трапецеидальных искажений ручкой-слайдером<br>Функция Quick Corner<br>Возможность просмотра изображений напрямую с USB носителей<br>USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю<br>Функция Split Screen<br>Встроенный динамик 2 Вт<br>Фронтальный вывод тепла<br>Моментальное выключение<br>Вес: 2,5 кг</p>
+<p><strong>Примечание:</strong> Оригинальное разрешение<br>Срок службы лампы (норм./ эконом.) ч.: 6000/12000</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Модель:</strong> Epson EB-W06</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Разрешение:</strong> 1280х800</li><li><strong>Ethernet (RJ-45):</strong> Нет</li><li><strong>USB:</strong> Тип A и B</li><li><strong>Wi-Fi:</strong> Опция</li><li><strong>Видео вход DisplayPort:</strong> Нет</li><li><strong>Видео вход DVI-D:</strong> Нет</li><li><strong>Видео вход HDMI:</strong> Есть</li><li><strong>Видео вход S-video:</strong> Нет</li><li><strong>Видео вход VGA:</strong> 1</li><li><strong>Интерактивный:</strong> Нет</li><li><strong>Интерфейс HDBaseT/DIGITAL LINK:</strong> Нет</li><li><strong>Комплектация:</strong> Проектор, Кабель питания 1,8 м, Кабель для подключения к ПК с 15-контактным разъемом D-Sub (n/n) 1,8м, Пульт ДУ, Руководство пользователя, Основные свойства, Категория, Для офиса и мобильных презентаций, Для образования, Варианты проекции, к</li><li><strong>Контрастность:</strong> 16 000 : 1</li><li><strong>Проекционный коэффицент (Throw ratio):</strong> 1 - 1.2</li><li><strong>Страна происхождения:</strong> Китай, Филиппины</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Тип источника света:</strong> Ламповый источник света</li><li><strong>Уровень шума (норм./эконом.) Дб:</strong> 28</li><li><strong>Яркость (ANSI) лмн:</strong> 3700</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Epson Proj</param>
+<param name="Модель">Epson EB-W06</param>
+<param name="Тип">Проектор универсальный</param>
+<param name="Разрешение">1280х800</param>
+<param name="Ethernet (RJ-45)">Нет</param>
+<param name="USB">Тип A и B</param>
+<param name="Wi-Fi">Опция</param>
+<param name="Видео вход DisplayPort">Нет</param>
+<param name="Видео вход DVI-D">Нет</param>
+<param name="Видео вход HDMI">Есть</param>
+<param name="Видео вход S-video">Нет</param>
+<param name="Видео вход VGA">1</param>
+<param name="Интерактивный">Нет</param>
+<param name="Интерфейс HDBaseT/DIGITAL LINK">Нет</param>
+<param name="Комплектация">Проектор, Кабель питания 1,8 м, Кабель для подключения к ПК с 15-контактным разъемом D-Sub (n/n) 1,8м, Пульт ДУ, Руководство пользователя, Основные свойства, Категория, Для офиса и мобильных презентаций, Для образования, Варианты проекции, к</param>
+<param name="Контрастность">16 000 : 1</param>
+<param name="Проекционный коэффицент (Throw ratio)">1 - 1.2</param>
+<param name="Страна происхождения">Китай, Филиппины</param>
+<param name="Технология">3LCD</param>
+<param name="Тип источника света">Ламповый источник света</param>
+<param name="Уровень шума (норм./эконом.) Дб">28</param>
+<param name="Яркость (ANSI) лмн">3700</param>
+<keywords>Epson, Проектор универсальный Epson EB-W06, Проектор, универсальный, EB-W06, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
 <offer id="ACV11H977040" available="true">
 <categoryId></categoryId>
 <vendorCode>ACV11H977040</vendorCode>
@@ -4852,6 +4900,32 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Проектор универсальный Epson CO-WX02, Проектор, универсальный, CO-WX02, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
+<offer id="ACV11HB35240" available="true">
+<categoryId></categoryId>
+<vendorCode>ACV11HB35240</vendorCode>
+<name>Проектор универсальный Epson EF-21R розовый кварц</name>
+<price>460900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Проектор универсальный Epson EF-21R розовый кварц</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>EF-21R стильный и компактный с размером экрана до 150 дюймов<br>Мини умный лазерный проекционный телевизор Увеличьте изображение любимых фильмов, игр и спортивных событий у себя дома с диагональю экрана до 150 дюймов<br>Развлечения для умного дома Смотрите 400 000+* фильмов и эпизодов телепередач в одном месте. Google TV собирает ваш любимый контент из всех ваших приложений и подписок и упорядочивает его специально для вас<br>Долговечное решение Благодаря долговечному лазерному источнику света этой модели вы сможете наслаждаться развлечениями до 10 лет*<br>Превосходное качество изображения Благодаря технологии 3LCD от Epson изображения выглядят более яркими и яркими, цвета в три раза ярче по сравнению с аналогичными 1-чиповыми DLP-проекторами*<br>Освежающе прост в использовании Подключайтесь, включайте, подключайтесь и играйте. Получите доступ к мгновенным развлечениям дома или в дороге.<br>Технологии<br>Проекционная система<br>Технология 3LCD, жидкокристаллический затвор RGB<br>ЖК-панель<br>0,62 дюйма<br>Образ<br>Цветной световой поток<br>1.000 люмен - 500 люмен (эконом) В соответствии с IDMS15.4<br>Выход белого света<br>Повышение разрешения<br>Full HD</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Цвет:</strong> Белый</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Epson Proj</param>
+<param name="Тип">Проектор универсальный</param>
+<param name="Цвет">Белый</param>
+<keywords>Epson, Проектор универсальный Epson EF-21R розовый кварц, Проектор, универсальный, EF-21R, розовый, кварц, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
 <offer id="ACV11HB51042" available="true">
 <categoryId></categoryId>
 <vendorCode>ACV11HB51042</vendorCode>
@@ -4869,7 +4943,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Epson EB-E24 — это компактный и надёжный 3LCD-проектор, созданный для проведения ярких презентаций, обучающих сессий и семинаров. Благодаря сочетанию высокой яркости и контрастности, устройство обеспечивает чёткое изображение даже при дневном освещении.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Разрешение:</strong> XGA (1024×768)</li><li><strong>Вес:</strong> ~2,4 кг</li><li><strong>Встроенный динамик:</strong> 5 Вт</li><li><strong>Высокая яркость:</strong> работает даже при свете</li><li><strong>Интерфейсы:</strong> HDMI, USB-A, USB-B, VGA, аудио</li><li><strong>Контрастность:</strong> 16 000:1</li><li><strong>Коррекция трапеции:</strong> Вертикальная и горизонтальная</li><li><strong>Лёгкий и портативный:</strong> удобно носить с собой</li><li><strong>Параметр:</strong> Значение</li><li><strong>Преимущества:</strong> Отлично подходит для офисных задач и учебных аудиторий</li><li><strong>Проекционное расстояние 1,77:</strong> 2,4 м (на 80")</li><li><strong>Простое подключение через HDMI и USB:</strong> Встроенный динамик позволяет обойтись без внешней акустики</li><li><strong>Ресурс лампы:</strong> до 12 000 ч (в экономичном режиме)</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Яркость:</strong> 3600 люмен</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Разрешение:</strong> XGA (1024×768)</li><li><strong>Вес:</strong> ~2,4 кг</li><li><strong>Встроенный динамик:</strong> 5 Вт</li><li><strong>Высокая яркость:</strong> работает даже при свете</li><li><strong>Интерфейсы:</strong> HDMI, USB-A, USB-B, VGA, аудио</li><li><strong>Контрастность:</strong> 16 000:1</li><li><strong>Коррекция трапеции:</strong> Вертикальная и горизонтальная</li><li><strong>Лёгкий и портативный:</strong> удобно носить с собой</li><li><strong>Преимущества:</strong> Отлично подходит для офисных задач и учебных аудиторий</li><li><strong>Проекционное расстояние 1,77:</strong> 2,4 м (на 80")</li><li><strong>Простое подключение через HDMI и USB:</strong> Встроенный динамик позволяет обойтись без внешней акустики</li><li><strong>Ресурс лампы:</strong> до 12 000 ч (в экономичном режиме)</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Яркость:</strong> 3600 люмен</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson Proj</param>
@@ -4882,7 +4956,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Контрастность">16 000:1</param>
 <param name="Коррекция трапеции">Вертикальная и горизонтальная</param>
 <param name="Лёгкий и портативный">удобно носить с собой</param>
-<param name="Параметр">Значение</param>
 <param name="Преимущества">Отлично подходит для офисных задач и учебных аудиторий</param>
 <param name="Проекционное расстояние 1,77">2,4 м (на 80")</param>
 <param name="Простое подключение через HDMI и USB">Встроенный динамик позволяет обойтись без внешней акустики</param>
