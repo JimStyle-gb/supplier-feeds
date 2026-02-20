@@ -2383,17 +2383,18 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
             # не мешаемся, если следующая строка — заголовок или табличная
             if ("\t" not in ln) and ("\t" not in nxt) and (not _RE_SPECS_HDR_LINE.search(nxt)) and (not re.search(r"(?i)состав\s+поставки|комплектац", nxt)):
                 k_cf = ln.strip().casefold()
+                known_key = k_cf in {"тип", "вид", "цвет", "бренд", "марка", "модель", "артикул", "штрихкод", "совместимость", "технология", "сертификация", "разрешение", "интерфейс", "частота", "частоты", "скорость", "формат", "размер", "габариты", "вес", "объем", "объём", "емкость", "ёмкость", "ресурс", "гарантия", "питание", "напряжение", "мощность"}
                 keyish = (
                     bool(re.search(r"\s", ln))
                     or bool(re.search(r"\d", ln))
                     or bool(re.search(r"[()/%×x]", ln))
-                    or k_cf in {"тип", "вид", "цвет", "бренд", "марка", "модель", "разрешение", "интерфейс", "скорость", "формат", "размер", "вес", "объем", "объём", "емкость", "ёмкость", "ресурс", "гарантия", "питание"}
+                    or known_key
                     or len(ln) >= 15
                 )
                 if keyish and _is_kv_val(nxt):
                     # избегаем склейки простых списков в пары: пропускаем только если ключ = 1 слово
                     wcount = len(re.findall(r"[A-Za-zА-Яа-яЁё]+", ln))
-                    if len(ln) <= 12 and len(nxt) <= 12 and (not re.search(r"\d", ln + nxt)) and wcount <= 1:
+                    if len(ln) <= 12 and len(nxt) <= 12 and (not re.search(r"\d", ln + nxt)) and wcount <= 1 and (not known_key):
                         pass
                     else:
                         flush_pending()
