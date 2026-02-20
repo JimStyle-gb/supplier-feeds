@@ -128,6 +128,10 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
     # Epson: C13T00R140 / C13T66414A и т.п.
     if re.fullmatch(r"C\d{2}T[0-9A-Z]{5,8}", t):
         return True
+
+    # HP ink: 3ED77A / 1VK08A
+    if re.fullmatch(r"\\d[A-Z]{2}\\d{2}[A-Z]", t):
+        return True
     # HP: CF283A / CE285A / W1106A и т.п.
     if re.fullmatch(r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}", t):
         return True
@@ -178,10 +182,21 @@ _RE_CODE_GROUPED_PREFIX = re.compile(
     r"(?i)\b(?P<pfx>(?:CF|CE|CB|CC|Q|W))(?P<body>\d{3,5}(?:/\d{3,5}){1,8})(?P<suf>[A-Z]{0,3})\b"
 )
 
+_RE_CODE_GROUPED_GENERIC = re.compile(
+    r"(?i)\\b(?P<pfx>(?:TK-?|TN-?|DR-?))(?P<body>\\d{2,5}(?:/\\d{2,5}){1,8})(?P<suf>[A-Z]{0,3})\\b"
+)
+
+
 
 def _cs_expand_grouped_consumable_codes(s: str) -> str:
     if not s:
         return ""
+    # CS: некоторые поставщики префиксуют коды (NV-/NVP-/EP- и т.п.) — убираем префикс только перед кодами
+    s = re.sub(
+        r"(?i)\\b(?:NV|NVP|EP|EPR|EPC)-(?=(?:\\d{3}R\\d{5}|C\\d{2}T|(?:CF|CE|CB|CC|Q|W)\\d{3,5}|TK-?\\d{2,5}|(?:TN|DR)-?\\d{2,5}|(?:MLT|CLT)-[A-Z]?\\d{3,5}))",
+        "",
+        s,
+    )
     def _repl(m: re.Match) -> str:
         pfx = (m.group("pfx") or "").upper()
         body = m.group("body") or ""
@@ -189,138 +204,8 @@ def _cs_expand_grouped_consumable_codes(s: str) -> str:
         nums = [x for x in body.split("/") if x]
         out = [f"{pfx}{n}{suf}" for n in nums]
         return " " + " ".join(out) + " "
-    return _RE_CODE_GROUPED_PREFIX.sub(_repl, s)
-
-
-def _cs_extract_consumable_codes_ordered(s: str, *, allow_short_3dig: bool) -> list[str]:
-    s0 = norm_ws(_cs_expand_grouped_consumable_codes(s))
-    if not s0:
-        return []
-    out: list[str] = []
-
-    # "№727" (с пробелами/без)
-    for m in _RE_CODE_NUM_SIGN.finditer(s0):
-        t = norm_ws(m.group(0)).replace(" ", "")
-        if not t:
-            continue
-        if not t.startswith("№"):
-            t = "№" + t
-        out.append("№" + re.sub(r"[^0-9A-Z]", "", t[1:].upper()))
-
-    # Коды по строгим шаблонам
-    for m in _RE_CODE_ANY.finditer(s0):
-        t = m.group(0).upper()
-        # CS: не тащим числа ресурса (110000 страниц) в коды расходников
-        if re.fullmatch(r"\d{6,9}", t):
-            ctx = s0[max(0, m.start() - 24): min(len(s0), m.end() + 24)].casefold()
-            if ("ресурс" in ctx) or ("страниц" in ctx) or ("pages" in ctx) or re.search(r"\bстр\.?\b", ctx):
-                continue
-        out.append(t)
-
-    # Короткие 3-значные (только если разрешено)
-    if allow_short_3dig and "canon" in s0.lower():
-        for m in _RE_CODE_SHORT_3DIG.finditer(s0):
-            out.append(m.group(0))
-
-    return _dedup_keep_order(out)
-
-
-def _cs_strip_consumable_codes_from_text(s: str, *, allow_short_3dig: bool) -> str:
-    if not s:
-        return ""
-    x = _cs_expand_grouped_consumable_codes(s)
-    x = _RE_CODE_NUM_SIGN.sub(" ", x)
-    x = _RE_CODE_ANY.sub(" ", x)
-    if allow_short_3dig and "canon" in x.lower():
-        x = _RE_CODE_SHORT_3DIG.sub(" ", x)
-    x = re.sub(r"\s{2,}", " ", x).strip(" ,;./-")
-    return x
-
-
-def _cs_get_param_val(params: list[tuple[str, str]], key: str) -> str:
-    kcf = (key or "").strip().casefold()
-    for k, v in params:
-        if (k or "").strip().casefold() == kcf:
-            return (v or "").strip()
-    return ""
-
-
-def _cs_is_consumable(name_full: str, params: list[tuple[str, str]]) -> bool:
-    # Смотрим прежде всего "Тип" из параметров, иначе — по названию
-    t = _cs_get_param_val(params, "Тип").casefold()
-    hay = (t + " " + (name_full or "")).casefold()
-    return any(h in hay for h in _COMPAT_TYPE_HINTS)
-
-
-def _cs_clean_compat_value(s: str) -> str:
-    s = (s or "").strip()
-    if not s:
-        return ""
-
-    # CS: убираем "для принтеров/МФУ" если прилетело в параметре
-    s = re.sub(r"(?i)^\s*(?:для\s+(?:принтеров|принтера|мфу|копиров|копира)\s*)", "", s).strip()
-    s = re.sub(r"(?i)^\s*(?:подходит\s+для\s+)", "", s).strip()
-
-    # CS: убираем "Ресурс: 1600 страниц (A4)" и вариации (это не совместимость)
-    s = re.sub(r"(?iu)^\s*ресурс\s*[:\-]?\s*(?:\d[\d\s\.,]*)?\s*(?:страниц[а-я]*|стр\.?|pages?)\b(?:\s*\([^)]*\))?\s*[,;./-]*\s*", "", s).strip(" ,;./-")
-    # если ресурс встречается в середине — тоже вырежем
-    s = re.sub(r"(?iu)\bресурс\s*[:\-]?\s*(?:\d[\d\s\.,]*)?\s*(?:страниц[а-я]*|стр\.?|pages?)\b", " ", s)
-    # CS: иногда после выноса/чистки цифр остаётся "Ресурс: страниц" — вычищаем
-    s = re.sub(r"(?iu)\bресурс\s*[:\-]?\s*(?:страниц[а-я]*|стр\.?|pages?)\b", " ", s)
-
-
-    s = re.sub(r"(?i)^\s*(?:для\s+(?:принтеров|принтера|мфу|копиров|копира)\s*)", "", s).strip()
-
-    # CS: убираем "и др." / "и другие модели" — шум
-    s = re.sub(r"(?i)\bи\s+др\.?\b", "", s)
-    s = re.sub(r"(?i)\bи\s+друг(?:ие|их)\s+модел[ьяи]\b", "", s)
-
-    # CS: маркетинг/служебные слова — не совместимость
-    s = re.sub(r"(?i)\b(?:новинк\w*|распродаж\w*|акци\w*|sale|promo|хит\w*)\b", "", s)
-    s = re.sub(r"(?i)\b(?:без\s+чип\w*|б/ч|chipless|no\s*chip)\b", "", s)
-    s = re.sub(r"(?i)\b(?:п/у|б/у)\b", "", s)
-    s = re.sub(r"(?i)\b(?:совместим\w*|compatible|original|оригинал)\b", "", s)
-
-    # CS: объём / ресурс / цвета — не совместимость
-    s = re.sub(r"(?i)\b\d+(?:[.,]\d+)?\s*(?:мл|ml)\b", "", s)
-    s = re.sub(r"(?i)\b\d+(?:[.,]\d+)?\s*[kк]\b/?", "", s)
-    s = re.sub(r"(?i)\b\d+\s*(?:стр\.?|страниц|pages?)\b", "", s)
-
-    s = re.sub(
-        r"(?i)\b(?:black|cyan|magenta|yellow|grey|gray|photoblack|photo\s*black|matte\s*black|matt\s*black|matblack|"
-        r"lc|lm|lk|llk|mbk|pbk|gy|c|m|y|k|bk|"
-        r"ч[её]рн\w*|голуб\w*|пурпур\w*|ж[её]лт\w*|сер\w*)\b",
-        "",
-        s,
-    )
-
-    # Подчистка хвостов-разделителей
-    s = re.sub(r"[\\|]+", " ", s)
-    s = re.sub(r"\s*/\s*", "/", s)
-    s = re.sub(r"/{2,}", "/", s)
-    s = re.sub(r"\s{2,}", " ", s).strip(" ,;./-")
-
-    # CS: отдельные токены цвета/ресурса/мусора — не совместимость
-    if re.fullmatch(r"(?i)(?:[CMYK]|BK|LC|LM|LK|MBK|PBK|GY|GREY|GRAY)\.?", s):
-        return ""
-    if re.fullmatch(r"(?i)\d+(?:[.,]\d+)?\s*[kк]\b\.?", s):
-        return ""
-    if re.fullmatch(r"(?i)\d+\s*(?:стр\.?|страниц|pages?)\b\.?", s):
-        return ""
-    if re.fullmatch(r"(?i)№\s*\d{2,6}[A-Z]{0,4}\b", s):
-        return ""
-    if re.fullmatch(r"(?i)\d+(?:[.,]\d+)?", s):
-        return ""
-
-    # CS: срезаем хвосты цвета/ресурса/кодов, если они прицепились к концу
-    s = re.sub(r"(?i)(?:[,\s]+)(?:[CMYK]|BK|LC|LM|LK|MBK|PBK|GY|GREY|GRAY)\s*$", "", s).strip(" ,;./-")
-    s = re.sub(r"(?i)[,\s]*№\s*\d{2,6}[A-Z]{0,4}\b\s*$", "", s).strip(" ,;./-")
-    s = re.sub(r"(?i)[,\s]*\d+(?:[.,]\d+)?\s*[kк]\b\s*$", "", s).strip(" ,;./-")
-    s = re.sub(r"(?i)[,\s]*\d+\s*(?:стр\.?|страниц|pages?)\b\s*$", "", s).strip(" ,;./-")
-    s = re.sub(r"(?i)[,\s]*(?:п/у|б/у)\s*$", "", s).strip(" ,;./-")
-    s = re.sub(r"(?i)(?:[,\s]+)(?:color|colour)\s*$", "", s).strip(" ,;./-")
-
-    s = re.sub(r"\s{2,}", " ", s).strip(" ,;./-")
+    s = _RE_CODE_GROUPED_PREFIX.sub(_repl, s)
+    s = _RE_CODE_GROUPED_GENERIC.sub(_repl, s)
     return s
 
 
@@ -1540,6 +1425,8 @@ def clean_params(
         if not vv:
             return ""
         vv = fix_mixed_cyr_lat(vv)
+        # иногда после парсинга остаётся хвостовая пунктуация
+        vv = vv.rstrip(" ,;")
         if key.casefold() == "цвет":
             vv = _normalize_color(vv)
         return vv
@@ -1553,6 +1440,9 @@ def clean_params(
         # colon-in-key: иногда поставщик пишет так: "Совместимость: HP ..." (значение попало в имя)
         raw_k = norm_ws(k)
         raw_v = norm_ws(v)
+        # Артефакт тех.спеков: номера разделов/строк вида "2.09 ..." — это мусор, не превращаем в param
+        if re.match(r"^\d+\.\d+\s", raw_k) or re.match(r"^\d+\.\s", raw_k):
+            continue
         if ":" in raw_k:
             base, tail = raw_k.split(":", 1)
             base_cf = base.strip().casefold()
