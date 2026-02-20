@@ -142,7 +142,7 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
         return True
 
     # HP ink: 3ED77A / 1VK08A
-    if re.fullmatch(r"\\d[A-Z]{2}\\d{2}[A-Z]", t):
+    if re.fullmatch(r"\d[A-Z]{2}\d{2}[A-Z]", t):
         return True
     # HP: CF283A / CE285A / W1106A и т.п.
     if re.fullmatch(r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}", t):
@@ -195,7 +195,7 @@ _RE_CODE_GROUPED_PREFIX = re.compile(
 )
 
 _RE_CODE_GROUPED_GENERIC = re.compile(
-    r"(?i)\\b(?P<pfx>(?:TK-?|TN-?|DR-?))(?P<body>\\d{2,5}(?:/\\d{2,5}){1,8})(?P<suf>[A-Z]{0,3})\\b"
+    r"(?i)\b(?P<pfx>(?:TK-?|TN-?|DR-?))(?P<body>\d{2,5}(?:/\d{2,5}){1,8})(?P<suf>[A-Z]{0,3})\b"
 )
 
 
@@ -205,8 +205,21 @@ def _cs_expand_grouped_consumable_codes(s: str) -> str:
         return ""
     # CS: некоторые поставщики префиксуют коды (NV-/NVP-/EP- и т.п.) — убираем префикс только перед кодами
     s = re.sub(
-        r"(?i)\\b(?:NV|NVP|EP|EPR|EPC)-(?=(?:\\d{3}R\\d{5}|C\\d{2}T|(?:CF|CE|CB|CC|Q|W)\\d{3,5}|TK-?\\d{2,5}|(?:TN|DR)-?\\d{2,5}|(?:MLT|CLT)-[A-Z]?\\d{3,5}))",
+        r"(?i)\b(?:NV|NVP|EP|EPR|EPC)-(?=(?:\d{3}R\d{5}|C\d{2}T|(?:CF|CE|CB|CC|Q|W)\d{3,5}|TK-?\d{2,5}|(?:TN|DR)-?\d{2,5}|(?:MLT|CLT)-[A-Z]?\d{3,5}))",
         "",
+        s,
+    )
+    # CS: вариант вида "CF283A/285A" → "CF283A CF285A"
+    def _repl2(m: re.Match) -> str:
+        pfx = (m.group("pfx") or "").upper()
+        n1 = m.group("n1") or ""
+        s1 = (m.group("suf1") or "").upper()
+        n2 = m.group("n2") or ""
+        s2 = (m.group("suf2") or "").upper()
+        return " " + f"{pfx}{n1}{s1} {pfx}{n2}{s2}" + " "
+    s = re.sub(
+        r"(?i)\b(?P<pfx>(?:CF|CE|CB|CC|Q|W))(?P<n1>\d{3,5})(?P<suf1>[A-Z]{1,3})/(?P<n2>\d{3,5})(?P<suf2>[A-Z]{1,3})\b",
+        _repl2,
         s,
     )
     def _repl(m: re.Match) -> str:
@@ -219,6 +232,112 @@ def _cs_expand_grouped_consumable_codes(s: str) -> str:
     s = _RE_CODE_GROUPED_PREFIX.sub(_repl, s)
     s = _RE_CODE_GROUPED_GENERIC.sub(_repl, s)
     return s
+# CS: извлекаем коды расходников (в исходном порядке) из текста. Никаких моделей техники сюда не пускаем.
+def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = True) -> list[str]:
+    s = norm_ws(text)
+    if not s:
+        return []
+    s = _cs_expand_grouped_consumable_codes(s)
+
+    out: list[str] = []
+    seen: set[str] = set()
+
+    # №727 / № 727A
+    for m in _RE_CODE_NUM_SIGN.finditer(s):
+        tok = norm_ws(m.group(0)).replace(" ", "")
+        tok = tok.replace("#", "№")
+        if tok and tok.casefold() not in seen:
+            seen.add(tok.casefold())
+            out.append(tok)
+
+    # Основные коды (CF283A, TK-1150, 106R02773, C13T..., MLT-D111S, 710H и т.п.)
+    for m in _RE_CODE_ANY.finditer(s):
+        tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
+        if not tok:
+            continue
+        # нормализация без-дефисных TK/TN/DR
+        tok = re.sub(r"^(TK)(\d{2,5})([A-Z]{0,3})$", r"TK-\2\3", tok)
+        tok = re.sub(r"^(TN)(\d{3,5})([A-Z]{0,3})$", r"TN-\2\3", tok)
+        tok = re.sub(r"^(DR)(\d{3,5})([A-Z]{0,3})$", r"DR-\2\3", tok)
+        if tok.casefold() not in seen:
+            seen.add(tok.casefold())
+            out.append(tok)
+
+    # HP ink: 3ED77A / 1VK08A (не всегда ловится _RE_CODE_ANY)
+    for m in re.finditer(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]\b", s):
+        tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
+        if tok and tok.casefold() not in seen:
+            seen.add(tok.casefold())
+            out.append(tok)
+
+    # Короткие 3-значные (Canon 716/725/727/728/737) — только если разрешено
+    if allow_short_3dig:
+        for m in _RE_CODE_SHORT_3DIG.finditer(s):
+            tok = (m.group(0) or "").strip()
+            if not tok:
+                continue
+            # если уже есть вариант с № — не дублируем голым числом
+            if ("№" + tok).casefold() in seen:
+                continue
+            if tok.casefold() not in seen:
+                seen.add(tok.casefold())
+                out.append(tok)
+
+    return out
+
+
+# CS: удаляет из текста коды расходников (оставляя только возможные модели техники)
+def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = True) -> str:
+    s = norm_ws(text)
+    if not s:
+        return ""
+    s = _cs_expand_grouped_consumable_codes(s)
+    s = _RE_CODE_NUM_SIGN.sub(" ", s)
+    s = _RE_CODE_ANY.sub(" ", s)
+    s = re.sub(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]\b", " ", s)
+    if allow_short_3dig:
+        s = _RE_CODE_SHORT_3DIG.sub(" ", s)
+    return norm_ws(s)
+
+
+# CS: финальная чистка строки совместимости (ресурс/цвет/мл/маркетинг/мусор)
+def _cs_clean_compat_value(v: str) -> str:
+    s = (v or "").strip()
+    if not s:
+        return ""
+    # HTML → текст
+    s = _COMPAT_HTML_TAG_RE.sub(" ", s)
+    s = norm_ws(s)
+
+    # режем типовые "Ресурс: 1600 стр" / "yield 7.3K" и т.п.
+    s = re.sub(r"(?i)\bресурс\b\s*[:\-]?\s*\d+(?:[.,]\d+)?\s*(?:k|к|стр\.?|страниц\w*|pages?)\b", " ", s)
+    s = re.sub(r"(?i)\byield\b\s*[:\-]?\s*\d+(?:[.,]\d+)?\s*k\b", " ", s)
+
+    # отдельный кейс вида 29млХ3шт (убираем полностью)
+    s = re.sub(r"(?i)\b\d+\s*(?:мл|ml)\s*[xхXХ]\s*\d+\s*(?:шт|pcs|pieces)\b", " ", s)
+
+    # чистим по фрагментам (важно: запятая-разделитель, но НЕ десятичная 2,4K)
+    parts = re.split(r"[\n;]+|\s*(?:(?<!\d),|,(?!\d))\s*", s)
+    cleaned: list[str] = []
+    for p in parts:
+        p = _clean_compat_fragment(p)
+        p = norm_ws(p).strip(" ,;/:-")
+        if not p:
+            continue
+        if not _is_valid_compat_fragment(p):
+            continue
+        cleaned.append(p)
+
+    cleaned = _dedup_keep_order(cleaned)
+    out = ", ".join(cleaned).strip()
+    out = norm_ws(out)
+    if not out:
+        return ""
+    # безопасность по длине (дальше всё равно тримится до 260 в clean_params)
+    if len(out) > 600:
+        return ""
+    return out
+
 
 
 
