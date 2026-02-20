@@ -95,6 +95,18 @@ _COMPAT_TYPE_HINTS = (
     "термопленка",
 )
 
+def _cs_is_consumable(name_full: str, params: list[tuple[str, str]]) -> bool:
+    # Совместимость генерируем/чистим только для расходников.
+    # Смотрим прежде всего 'Тип' из параметров, иначе — по названию.
+    t = ""
+    for k, v in (params or []):
+        if (k or "").strip().casefold() == "тип":
+            t = (v or "").strip()
+            break
+    hay = (t + " " + (name_full or "")).casefold()
+    return any(h in hay for h in _COMPAT_TYPE_HINTS)
+
+
 # Подсказки, что в строке есть именно модели устройств (а не коды расходника)
 _RE_COMPAT_DEVICE_HINT = re.compile(
     r"(xerox|hp|hewlett|canon|kyocera|ricoh|konica|minolta|bizhub|epson|brother|samsung|pantum|oki|lexmark|"
