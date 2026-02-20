@@ -326,6 +326,39 @@ def _cs_clean_compat_value(s: str) -> str:
 
 
 
+def _cs_trim_compat_to_max(v: str, max_len: int = 260) -> str:
+    """Обрезает совместимость безопасно, не разрезая модель на середине.
+    Стараемся обрезать по последней запятой/точке с запятой/пробелу в пределах max_len,
+    затем удаляем возможные обрывки вида '/P1' на конце.
+    """
+    s = (v or "").strip()
+    if not s:
+        return ""
+    if len(s) <= max_len:
+        return s
+
+    cut = s[:max_len]
+    # Предпочитаем резать по разделителю списка моделей
+    pos = cut.rfind(", ")
+    if pos >= 40:
+        cut = cut[:pos]
+    else:
+        pos = cut.rfind("; ")
+        if pos >= 40:
+            cut = cut[:pos]
+        else:
+            pos = cut.rfind(" ")
+            if pos >= 40:
+                cut = cut[:pos]
+
+    cut = cut.rstrip(" ,;/.-")
+    # Удаляем короткий обрывок после '/', если он начинается с буквы и слишком короткий (например '/P1')
+    cut = re.sub(r"/(?=[A-Za-zА-Яа-я])[A-Za-zА-Яа-я0-9]{1,2}$", "", cut).rstrip(" ,;/.-")
+    # И короткий обрывок после запятой/пробела (например ', M1')
+    cut = re.sub(r"(?:,|\s)+(?=[A-Za-zА-Яа-я])[A-Za-zА-Яа-я0-9]{1,2}$", "", cut).rstrip(" ,;/.-")
+    return cut
+
+
 def _cs_looks_like_device_models(s: str) -> bool:
     s0 = _cs_clean_compat_value(s)
     if not s0:
@@ -1575,6 +1608,12 @@ def clean_params(
         if kk_cf in {"параметр", "параметры"} and vv_cf in {"значение", "значения"}:
             continue
 
+        # Маркетинговые дисклеймеры (обычно дублируются в <description>) — в params не нужны
+        if ("соответствуют всем стандартам качества" in vv_cf) and (
+            "картридж" in kk_cf or "драм" in kk_cf or "фотобарабан" in kk_cf
+        ):
+            continue
+
         # Мусорные имена параметров: цифры/числа/Normal (включается env, чтобы не ломать AlStyle)
         if CS_DROP_TRASH_PARAM_NAMES:
             if _RE_TRASH_PARAM_NAME_NUM.match(kk) or kk.casefold() == "normal":
@@ -1617,8 +1656,12 @@ def clean_params(
             display[key_cf] = kk
             order.append(key_cf)
 
-        # Совместимость — объединяем, но пропускаем мусор (маркетинг/предложения)
+        # Совместимость — объединяем, но предварительно чистим (ресурс/цвет/коды расходников)
         if key_cf == "совместимость":
+            vv = _cs_strip_consumable_codes_from_text(vv, allow_short_3dig=True)
+            vv = _cs_clean_compat_value(vv)
+            if not vv:
+                continue
             if not _looks_like_model_compat(vv):
                 continue
             # уникализация по lower
@@ -1657,9 +1700,13 @@ def clean_params(
             continue
         name = display.get(kcf, kcf)
         if kcf == "совместимость":
-            v = ", ".join(vals)
+            v = _cs_merge_compat_values(vals)
+            if not v:
+                continue
             if len(v) > 260:
-                v = v[:260].rstrip(" ,")
+                v = _cs_trim_compat_to_max(v, 260)
+            if not v:
+                continue
             out.append((name, v))
         else:
             out.append((name, vals[0]))
