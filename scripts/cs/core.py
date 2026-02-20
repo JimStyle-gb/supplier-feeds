@@ -264,7 +264,7 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
             out.append(tok)
 
     # HP ink: 3ED77A / 1VK08A (не всегда ловится _RE_CODE_ANY)
-    for m in re.finditer(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]\b", s):
+    for m in re.finditer(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", s):
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
         if tok and tok.casefold() not in seen:
             seen.add(tok.casefold())
@@ -294,7 +294,7 @@ def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = Tru
     s = _cs_expand_grouped_consumable_codes(s)
     s = _RE_CODE_NUM_SIGN.sub(" ", s)
     s = _RE_CODE_ANY.sub(" ", s)
-    s = re.sub(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]\b", " ", s)
+    s = re.sub(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", " ", s)
     if allow_short_3dig:
         s = _RE_CODE_SHORT_3DIG.sub(" ", s)
     return norm_ws(s)
@@ -307,6 +307,23 @@ def _cs_clean_compat_value(v: str) -> str:
         return ""
     # HTML → текст
     s = _COMPAT_HTML_TAG_RE.sub(" ", s)
+    s = norm_ws(s)
+
+    # убираем префиксы/служебные слова, которые часто прилетают от поставщиков
+    s = re.sub(r"(?i)\bприменени[ея]\s*[:\-]\s*", " ", s)
+    s = re.sub(r"(?i)\bдля\s+принтер[а-я]*\b\s*[:\-]?\s*", " ", s)
+
+    # если в строке есть явный хинт бренда/линейки — оставляем хвост с первой модели (режем "Применение: ...")
+    m = _RE_COMPAT_DEVICE_HINT.search(s)
+    if m and m.start() > 0:
+        s = s[m.start():]
+
+    # из совместимости вырезаем цвет/страницы/единицы — это НЕ модели устройств
+    s = re.sub(r"(?i)\b(?:черн\w*|голуб\w*|ж[её]лт\w*|желт\w*|магент\w*|пурпур\w*|сер\w*|цветн\w*|пигмент\w*)\b", " ", s)
+    s = re.sub(r"(?i)\b(?:black|cyan|magenta|yellow|grey|gray)\b", " ", s)
+    s = re.sub(r"(?i)\b(?:LC|LM|LK|MBK|PBK|Bk|C|M|Y|K)\b", " ", s)
+    s = re.sub(r"(?i)\b\d+\s*(?:стр\.?|страниц\w*|pages?)\b", " ", s)
+
     s = norm_ws(s)
 
     # режем типовые "Ресурс: 1600 стр" / "yield 7.3K" и т.п.
