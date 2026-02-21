@@ -181,6 +181,8 @@ _RE_CODE_ANY = re.compile(
     r"\d{3}R\d{5}|"               # Xerox 106R02773
     r"C\d{2}T[0-9A-Z]{5,8}|"      # Epson C13T...
     r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
+    r"(?:CZ|CN)\d{3}[A-Z]{1,2}|"  # HP ink CZ*** / CN***AE
+    r"T\d{4,5}|"                  # Epson T0481...
     r"TK-?\d{3,5}[A-Z]{0,3}|"     # Kyocera
     r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}|"       # Brother
     r"(?:MLT|CLT)-[A-Z]?\d{3,5}[A-Z]{0,3}|" # Samsung
@@ -200,15 +202,52 @@ _RE_CODE_GROUPED_GENERIC = re.compile(
 
 
 
+
+def _cs_expand_consumable_code_ranges(s: str) -> str:
+    """Раскрывает диапазоны кодов вида T0481–T0486 → T0481 T0482 ... T0486.
+    Делает это только для безопасных коротких диапазонов (<=20).
+    """
+    if not s:
+        return ""
+    # унифицируем тире
+    t = s.replace("–", "-").replace("—", "-")
+    # Пример: T0481- T0486
+    def _repl(m: re.Match) -> str:
+        a = (m.group("a") or "").upper()
+        b = (m.group("b") or "").upper()
+        # отделяем буквенную и цифровую часть
+        ma = re.match(r"^([A-Z]{1,3})(\d{3,6})$", a)
+        mb = re.match(r"^([A-Z]{1,3})(\d{3,6})$", b)
+        if not ma or not mb:
+            return m.group(0)
+        p1, n1 = ma.group(1), ma.group(2)
+        p2, n2 = mb.group(1), mb.group(2)
+        if p1 != p2:
+            return m.group(0)
+        if len(n1) != len(n2):
+            return m.group(0)
+        i1 = int(n1)
+        i2 = int(n2)
+        if i2 < i1:
+            return m.group(0)
+        if (i2 - i1) > 20:
+            return m.group(0)
+        width = len(n1)
+        out = [f"{p1}{str(i).zfill(width)}" for i in range(i1, i2 + 1)]
+        return " " + " ".join(out) + " "
+    t = re.sub(r"(?i)\b(?P<a>[A-Z]{1,3}\d{3,6})\s*-\s*(?P<b>[A-Z]{1,3}\d{3,6})\b", _repl, t)
+    return t
+
 def _cs_expand_grouped_consumable_codes(s: str) -> str:
     if not s:
         return ""
     # CS: некоторые поставщики префиксуют коды (NV-/NVP-/EP- и т.п.) — убираем префикс только перед кодами
     s = re.sub(
-        r"(?i)\b(?:NV|NVP|EP|EPR|EPC)-(?=(?:\d{3}R\d{5}|C\d{2}T|(?:CF|CE|CB|CC|Q|W)\d{3,5}|TK-?\d{2,5}|(?:TN|DR)-?\d{2,5}|(?:MLT|CLT)-[A-Z]?\d{3,5}))",
+        r"(?i)\b(?:NV|NVP|EP|EPR|EPC)-(?=(?:\d{3}R\d{5}|C\d{2}T|(?:CF|CE|CB|CC|Q|W)\d{3,5}|(?:CZ|CN)\d{3}|T\d{4,5}|TK-?\d{2,5}|(?:TN|DR)-?\d{2,5}|(?:MLT|CLT)-[A-Z]?\d{3,5}))",
         "",
         s,
     )
+    s = _cs_expand_consumable_code_ranges(s)
     # CS: вариант вида "CF283A/285A" → "CF283A CF285A"
     def _repl2(m: re.Match) -> str:
         pfx = (m.group("pfx") or "").upper()
@@ -240,15 +279,36 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
     s = _cs_expand_grouped_consumable_codes(s)
 
     out: list[str] = []
-    seen: set[str] = set()
+    idx_map: dict[str, int] = {}
+
+    def _add(tok: str) -> None:
+        nonlocal out, idx_map
+        t = (tok or '').strip()
+        if not t:
+            return
+        # нормализуем для дедупа: убираем ведущий №, пробелы, приводим к UPPER
+        raw = t.replace(' ', '').upper()
+        base = raw.lstrip('№')
+        key = base.casefold()
+        if key in idx_map:
+            j = idx_map[key]
+            # если уже есть вариант с №, а пришёл без № — заменим (кроме чистых цифр)
+            if out[j].startswith('№') and (not raw.startswith('№')) and (not re.fullmatch(r'\d+', base)):
+                out[j] = base
+            return
+        idx_map[key] = len(out)
+        # храним без № для алфанумерических кодов, но чистые цифры оставляем как есть/с № если пришло
+        if raw.startswith('№') and (not re.fullmatch(r'\d+', base)):
+            out.append(base)
+        else:
+            out.append(raw if (raw.startswith('№') and re.fullmatch(r'\d+', base)) else base)
+
 
     # №727 / № 727A
     for m in _RE_CODE_NUM_SIGN.finditer(s):
         tok = norm_ws(m.group(0)).replace(" ", "")
         tok = tok.replace("#", "№")
-        if tok and tok.casefold() not in seen:
-            seen.add(tok.casefold())
-            out.append(tok)
+        _add(tok)
 
     # Основные коды (CF283A, TK-1150, 106R02773, C13T..., MLT-D111S, 710H и т.п.)
     for m in _RE_CODE_ANY.finditer(s):
@@ -259,16 +319,12 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         tok = re.sub(r"^(TK)(\d{2,5})([A-Z]{0,3})$", r"TK-\2\3", tok)
         tok = re.sub(r"^(TN)(\d{3,5})([A-Z]{0,3})$", r"TN-\2\3", tok)
         tok = re.sub(r"^(DR)(\d{3,5})([A-Z]{0,3})$", r"DR-\2\3", tok)
-        if tok.casefold() not in seen:
-            seen.add(tok.casefold())
-            out.append(tok)
+        _add(tok)
 
     # HP ink: 3ED77A / 1VK08A (не всегда ловится _RE_CODE_ANY)
     for m in re.finditer(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", s):
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
-        if tok and tok.casefold() not in seen:
-            seen.add(tok.casefold())
-            out.append(tok)
+        _add(tok)
 
     # Короткие 3-значные (Canon 716/725/727/728/737) — только если разрешено
     if allow_short_3dig:
@@ -277,11 +333,9 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
             if not tok:
                 continue
             # если уже есть вариант с № — не дублируем голым числом
-            if ("№" + tok).casefold() in seen:
+            if tok and (tok.casefold() in idx_map):
                 continue
-            if tok.casefold() not in seen:
-                seen.add(tok.casefold())
-                out.append(tok)
+            _add(tok)
 
     return out
 
@@ -309,6 +363,9 @@ def _cs_clean_compat_value(v: str) -> str:
     s = _COMPAT_HTML_TAG_RE.sub(" ", s)
     s = norm_ws(s)
 
+    # убираем маркетинг/служебку
+    s = re.sub(r"(?i)\b(?:новинка|распродажа|акция|хит|sale|new)\b", " ", s)
+
     # убираем префиксы/служебные слова, которые часто прилетают от поставщиков
     s = re.sub(r"(?i)\bприменени[ея]\s*[:\-]\s*", " ", s)
     s = re.sub(r"(?i)\bдля\s+принтер[а-я]*\b\s*[:\-]?\s*", " ", s)
@@ -319,7 +376,7 @@ def _cs_clean_compat_value(v: str) -> str:
         s = s[m.start():]
 
     # из совместимости вырезаем цвет/страницы/единицы — это НЕ модели устройств
-    s = re.sub(r"(?i)\b(?:черн\w*|голуб\w*|ж[её]лт\w*|желт\w*|магент\w*|пурпур\w*|сер\w*|цветн\w*|пигмент\w*)\b", " ", s)
+    s = re.sub(r"(?i)\b(?:ч[её]рн\w*|голуб\w*|ж[её]лт\w*|желт\w*|магент\w*|пурпур\w*|сер\w*|цветн\w*|пигмент\w*)\b", " ", s)
     s = re.sub(r"(?i)\b(?:black|cyan|magenta|yellow|grey|gray)\b", " ", s)
     s = re.sub(r"(?i)\b(?:LC|LM|LK|MBK|PBK|Bk|C|M|Y|K)\b", " ", s)
     s = re.sub(r"(?i)\b\d+\s*(?:стр\.?|страниц\w*|pages?)\b", " ", s)
@@ -598,6 +655,14 @@ CS_PAY_BLOCK = (
 # Параметры, которые нужно выкидывать из <param> и из "Характеристик"
 PARAM_DROP_DEFAULT = {
     "Штрихкод",
+    "Штрих-код",
+    "Штрих код",
+    "EAN",
+    "EAN-13",
+    "EAN13",
+    "Barcode",
+    "GTIN",
+    "UPC",
     "Артикул",
     "Новинка",
     "Снижена цена",
@@ -1625,6 +1690,30 @@ def clean_params(
                     k = "Кол-во"
                     v = tail
 
+        
+        # CS: эвристика против перевёрнутых пар (когда name выглядит как значение, а value как ключ)
+        _KEYLIKE = {
+            "совместимость","интерфейс","технология","сертификация","частоты","частота","разрешение",
+            "габариты","размер","вес","материал","материал корпуса","питание","напряжение","мощность",
+            "модель","бренд","марка","тип","формат","объем","объём","ресурс"
+        }
+        k_cf = norm_ws(k).casefold().replace("ё","е")
+        v_cf = norm_ws(v).casefold().replace("ё","е")
+        def _looks_like_value_name(x: str) -> bool:
+            xx = (x or "").strip()
+            if not xx:
+                return False
+            if len(xx) > 40:
+                return False
+            # числовые значения с единицами
+            if re.match(r"^\d", xx) and re.search(r"(?i)\b(?:см|мм|м|кг|г|gb|гб|mhz|гц|мгц|вт|w|v|а|mah|мaч|мл|ml)\b", xx):
+                return True
+            # коды/артикулы (497K22640, CC364A и т.п.)
+            if re.fullmatch(r"[A-Z0-9\-]{4,}", xx.upper()) and re.search(r"\d", xx):
+                return True
+            return False
+        if _looks_like_value_name(k) and (v_cf in _KEYLIKE) and (k_cf not in _KEYLIKE):
+            k, v = v, k
         kk = _norm_key(k)
         vv = _norm_val(kk, v)
         # перехват заголовков вида 'Технические характеристики ...' — в параметры не кладём,
@@ -3007,6 +3096,10 @@ def build_description(
     parts.append(pay_block)
 
     inner = "\n".join([p for p in parts if p is not None and str(p).strip() != ""])
+        # CS: запрещено выводить название поставщика в тексте (кроме ссылок на фото)
+    inner = re.sub(r"(?i)\bal[-\s]?style\b", "нашем магазине", inner)
+    inner = re.sub(r"(?i)\bal[-\s]?style\.kz\b", "", inner)
+    inner = re.sub(r"\s{2,}", " ", inner)
     return normalize_cdata_inner(inner)
 
 def make_feed_meta(
