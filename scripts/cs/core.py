@@ -3252,6 +3252,8 @@ def build_cs_feed_xml(
     xml = make_header(build_time, encoding=encoding) + "\n" + meta + "\n\n" + offers_xml + "\n\n" + make_footer()
     return ensure_footer_spacing(xml)
 
+
+# Строит СЫРОЙ XML-фид (без validate и без логики to_xml)
 def build_cs_feed_xml_raw(
     offers: Sequence["OfferOut"],
     *,
@@ -3263,11 +3265,9 @@ def build_cs_feed_xml_raw(
     encoding: str = OUTPUT_ENCODING_DEFAULT,
     currency_id: str = CURRENCY_ID_DEFAULT,
 ) -> str:
-    """Сырой снимок ДО обработок core: то, что адаптер передал в OfferOut."""
     after = len(offers)
     in_true = sum(1 for o in offers if getattr(o, "available", False))
     in_false = after - in_true
-
     meta = make_feed_meta(
         supplier=supplier,
         supplier_url=supplier_url,
@@ -3287,6 +3287,7 @@ def build_cs_feed_xml_raw(
     return ensure_footer_spacing(xml)
 
 
+# CS: пишет сырой фид в файл (без validate)
 def write_cs_feed_raw(
     offers: Sequence["OfferOut"],
     *,
@@ -3299,7 +3300,6 @@ def write_cs_feed_raw(
     encoding: str = OUTPUT_ENCODING_DEFAULT,
     currency_id: str = CURRENCY_ID_DEFAULT,
 ) -> bool:
-    """Пишет сырой снимок (без CS-валидации, чтобы не ломать сборки)."""
     full = build_cs_feed_xml_raw(
         offers,
         supplier=supplier,
@@ -3311,9 +3311,6 @@ def write_cs_feed_raw(
         currency_id=currency_id,
     )
     return write_if_changed(out_file, full, encoding=encoding)
-
-
-
 
 # CS: пишет фид в файл (validate + write_if_changed)
 def write_cs_feed(
@@ -3549,51 +3546,7 @@ class OfferOut:
     native_desc: str
 
     # Собирает XML offer (фиксированный порядок)
-    
-# Снимок "как пришло из адаптера" — ДО всех обработок core (enrich/clean/compat/seo)
-def to_xml_raw(
-    self,
-    *,
-    currency_id: str = CURRENCY_ID_DEFAULT,
-) -> str:
-    oid = xml_escape_attr(self.oid)
-    name_raw = xml_escape_text(self.name or "")
-    vendor_raw = xml_escape_text(self.vendor or "")
-    desc_raw = self.native_desc or ""
-    # CDATA не должна содержать ']]>'
-    desc_raw = desc_raw.replace("]]>", "]]]]><![CDATA[>")
-
-    pics_xml = ""
-    for pp in (self.pictures or []):
-        u = norm_ws(pp)
-        if not u:
-            continue
-        pics_xml += f"\n<picture>{xml_escape_text(_cs_norm_url(u))}</picture>"
-
-    params_xml = ""
-    for k, v in (self.params or []):
-        kk = xml_escape_attr(norm_ws(k))
-        vv = xml_escape_text(norm_ws(v))
-        if not kk or not vv:
-            continue
-        params_xml += f"\n<param name=\"{kk}\">{vv}</param>"
-
-    out = (
-        f"<offer id=\"{oid}\" available=\"{bool_to_xml(bool(self.available))}\">\n"
-        f"<categoryId></categoryId>\n"
-        f"<vendorCode>{xml_escape_text(self.oid)}</vendorCode>\n"
-        f"<name>{name_raw}</name>\n"
-        f"<price>{int(self.price)}</price>"
-        f"{pics_xml}\n"
-        f"<vendor>{vendor_raw}</vendor>\n"
-        f"<currencyId>{xml_escape_text(currency_id)}</currencyId>\n"
-        f"<description><![CDATA[\n{desc_raw}]]></description>"
-        f"{params_xml}\n"
-        f"</offer>"
-    )
-    return out
-
-def to_xml(
+    def to_xml(
         self,
         *,
         currency_id: str = CURRENCY_ID_DEFAULT,
@@ -3675,6 +3628,53 @@ def to_xml(
             f"</offer>"
         )
         return out
+
+# Собирает XML offer (СЫРОЙ: без enrich/clean/compat/keywords/описания-шаблона)
+# Нужен только для диагностики: "что адаптер отдал в core".
+def to_xml_raw(
+    self,
+    *,
+    currency_id: str = CURRENCY_ID_DEFAULT,
+) -> str:
+    oid = xml_escape_attr(self.oid)
+    avail = bool_to_xml(bool(self.available))
+    name = xml_escape_text(norm_ws(self.name))
+    vendor = xml_escape_text(norm_ws(self.vendor))
+    price = int(self.price) if safe_int(self.price, 0) is not None else 0
+
+    pics_xml = ""
+    for pp in (self.pictures or []):
+        pp2 = (pp or "").strip()
+        if not pp2:
+            continue
+        pics_xml += f"\n<picture>{xml_escape_text(pp2)}</picture>"
+
+    # В raw не трогаем/не сортируем params — сохраняем порядок как у адаптера
+    params_xml = ""
+    for k, v in (self.params or []):
+        kk = xml_escape_attr(norm_ws(k))
+        vv = xml_escape_text(norm_ws(v))
+        if not kk or not vv:
+            continue
+        params_xml += f"\n<param name=\"{kk}\">{vv}</param>"
+
+    # В raw description оставляем как есть (только базовая нормализация текста внутри CDATA)
+    native_desc = normalize_cdata_inner(fix_text(self.native_desc))
+
+    out = (
+        f"<offer id=\"{oid}\" available=\"{avail}\">\n"
+        f"<categoryId></categoryId>\n"
+        f"<vendorCode>{xml_escape_text(self.oid)}</vendorCode>\n"
+        f"<name>{name}</name>\n"
+        f"<price>{price}</price>"
+        f"{pics_xml}\n"
+        f"<vendor>{vendor}</vendor>\n"
+        f"<currencyId>{xml_escape_text(currency_id)}</currencyId>\n"
+        f"<description><![CDATA[\n{native_desc}]]></description>"
+        f"{params_xml}\n"
+        f"</offer>"
+    )
+    return out
 
 # Валидирует готовый CS-фид (страховка: если что-то сломалось — падаем сборкой)
 def validate_cs_yml(xml: str) -> None:
