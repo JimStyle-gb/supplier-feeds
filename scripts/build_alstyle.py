@@ -200,7 +200,7 @@ def main() -> int:
     # Стабильный порядок офферов
     out_offers.sort(key=lambda o: o.oid)
 
-    write_cs_feed_raw(offers, supplier=SUPPLIER_NAME, supplier_url=SUPPLIER_URL, out_file="docs/raw/alstyle.yml", build_time=build_time, next_run=next_run, before=before, encoding=OUTPUT_ENCODING, currency_id="KZT")
+    write_cs_feed_raw(out_offers, supplier=ALSTYLE_SUPPLIER, supplier_url=url, out_file="docs/raw/alstyle.yml", build_time=build_time, next_run=next_run, before=before, encoding=encoding, currency_id="KZT")
 
     changed = write_cs_feed(
         out_offers,
