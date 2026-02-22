@@ -80,6 +80,15 @@ _COMPAT_ALIAS_NAMES = {
     "совместимость",
 }
 
+_PARTNUMBER_PARAM_NAMES = {
+    "партномер",
+    "partnumber",
+    "part number",
+    "part no",
+    "pn",
+    "код производителя",
+}
+
 # Типы, где совместимость реально уместна (расходники)
 _COMPAT_TYPE_HINTS = (
     "картридж",
@@ -141,11 +150,20 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
     if re.fullmatch(r"C\d{2}T[0-9A-Z]{5,8}", t):
         return True
 
+    # Canon: C-EXV34 / NPG-59 / GPR-53
+    if re.fullmatch(r"C-?EXV\d{1,3}", t.replace(" ", "").replace("-", "")):
+        return True
+    if re.fullmatch(r"(?:NPG|GPR)-?\d{1,3}", t.replace(" ", "")):
+        return True
+
     # HP ink: 3ED77A / 1VK08A
-    if re.fullmatch(r"\d[A-Z]{2}\d{2}[A-Z]", t):
+    if re.fullmatch(r"\d[A-Z]{2}\d{2}[A-Z]{1,2}", t):
         return True
     # HP: CF283A / CE285A / W1106A и т.п.
     if re.fullmatch(r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}", t):
+        return True
+    # HP/Canon: C7115A / C9730A / C8543X (но не C11... — это SKU техники)
+    if re.fullmatch(r"C\d{4}[A-Z]{0,3}", t) and (not t.startswith("C11")):
         return True
     # Kyocera: TK-1150 / TK1150
     if re.fullmatch(r"TK-?\d{3,5}[A-Z]{0,3}", t):
@@ -160,7 +178,6 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
     if re.fullmatch(r"\d{3,4}[AHX]", t):
         return True
     return False
-
 
 def _cs_looks_like_consumable_code_list(s: str) -> bool:
     s = norm_ws(s)
@@ -278,6 +295,11 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         return []
     s = _cs_expand_grouped_consumable_codes(s)
 
+    ctx = s.casefold()
+    ctx_hp_dj = ("designjet" in ctx) or (" hp " in f" {ctx} " and re.search(r"\bdj\b", ctx))
+    ctx_eps_sc = ("surecolor" in ctx) or ("sc-" in ctx) or bool(re.search(r"(?i)\bsc-?t\d{3,5}\b", s))
+    ctx_eps = ("epson" in ctx)
+
     out: list[str] = []
     idx_map: dict[str, int] = {}
 
@@ -319,6 +341,32 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         tok = re.sub(r"^(TK)(\d{2,5})([A-Z]{0,3})$", r"TK-\2\3", tok)
         tok = re.sub(r"^(TN)(\d{3,5})([A-Z]{0,3})$", r"TN-\2\3", tok)
         tok = re.sub(r"^(DR)(\d{3,5})([A-Z]{0,3})$", r"DR-\2\3", tok)
+        # T-коды: в ряде контекстов это модели принтеров (DesignJet/SureColor), не коды расходников
+        if re.fullmatch(r"(?i)T\d{4,5}", tok):
+            dig = tok[1:]
+            if ctx_hp_dj:
+                continue
+            if (ctx_eps_sc or ctx_eps) and dig and dig[0] in "12357":
+                continue
+        _add(tok)
+
+    # Canon: C-EXV34 / NPG-59 / GPR-53
+    for m in re.finditer(r"(?i)\bC-?EXV\s*\d{1,3}\b", s):
+        tok = norm_ws(m.group(0)).upper().replace(' ', '')
+        tok = tok.replace('CEXV', 'C-EXV')
+        if tok.startswith('C-EXV'):
+            _add(tok)
+
+    for m in re.finditer(r"(?i)\b(?:NPG|GPR)\s*-\s*\d{1,3}\b", s):
+        tok = norm_ws(m.group(0)).upper().replace(' ', '')
+        tok = tok.replace('--', '-')
+        _add(tok)
+
+    # HP/Canon коды вида C7115A / C9730A / C8543X
+    for m in re.finditer(r"(?i)\bC\d{4}[A-Z]{0,3}\b", s):
+        tok = (m.group(0) or '').upper()
+        if tok.startswith('C11'):
+            continue
         _add(tok)
 
     # HP ink: 3ED77A / 1VK08A (не всегда ловится _RE_CODE_ANY)
@@ -348,6 +396,9 @@ def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = Tru
     s = _cs_expand_grouped_consumable_codes(s)
     s = _RE_CODE_NUM_SIGN.sub(" ", s)
     s = _RE_CODE_ANY.sub(" ", s)
+    s = re.sub(r"(?i)\bC-?EXV\s*\d{1,3}\b", " ", s)
+    s = re.sub(r"(?i)\b(?:NPG|GPR)\s*-\s*\d{1,3}\b", " ", s)
+    s = re.sub(r"(?i)\bC\d{4}[A-Z]{0,3}\b", " ", s)
     s = re.sub(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", " ", s)
     if allow_short_3dig:
         s = _RE_CODE_SHORT_3DIG.sub(" ", s)
@@ -478,23 +529,69 @@ def _cs_looks_like_device_models(s: str) -> bool:
 
 
 def _cs_extract_compat_candidate(text: str) -> str:
-    t = (text or "").strip()
+    t = norm_ws(text).replace("\xa0", " ").strip()
     if not t:
         return ""
-    # Берём кусок после "для ..." (самый частый и самый безопасный)
-    m = re.search(r"(?i)\bдля\s+([^\n\r]{3,180})", t)
-    if m:
-        cand = m.group(1)
-        # отрезаем хвост после скобок/тире/точки (чтобы не тащить маркетинг)
-        cand = re.split(r"(?:(?:\s*[\(\[\{])|(?:\s*[—-]\s*)|(?:\s*\.|\s*\!|\s*\?))", cand, maxsplit=1)[0]
-        return _cs_clean_compat_value(cand)
-    # Английский "for ..."
-    m = re.search(r"(?i)\bfor\s+([^\n\r]{3,180})", t)
-    if m:
-        cand = re.split(r"(?:(?:\s*[\(\[\{])|(?:\s*[—-]\s*)|(?:\s*\.|\s*\!|\s*\?))", m.group(1), maxsplit=1)[0]
-        return _cs_clean_compat_value(cand)
-    return ""
 
+    brands = [
+        "Xerox",
+        "Canon",
+        "HP",
+        "Kyocera",
+        "Ricoh",
+        "Konica",
+        "Minolta",
+        "Epson",
+        "Brother",
+        "Samsung",
+        "Pantum",
+        "Oki",
+        "Lexmark",
+        "Sharp",
+        "Toshiba",
+    ]
+
+    def _hint(prefix: str) -> str:
+        p = (prefix or "")
+        for b in brands:
+            if re.search(rf"(?i)\b{re.escape(b)}\b", p):
+                return b
+        m = re.search(
+            r"(?i)\b(laserjet|deskjet|designjet|workcentre|phaser|versalink|altalink|taskalfa|ecosys|bizhub)\b",
+            p,
+        )
+        return (m.group(1) if m else "")
+
+    patterns = [
+        r"(?i)\bдля\s+([^\n\r]{3,240})",
+        r"(?i)\bподходит\s+для\s+([^\n\r]{3,240})",
+        r"(?i)\bиспользуется\s+в\s+(?:принтерах|мфу|устройствах)(?:\s+серий)?\s+([^\n\r]{3,240})",
+        r"(?i)\bприменяется\s+в\s+(?:принтерах|мфу|устройствах)(?:\s+серий)?\s+([^\n\r]{3,240})",
+        r"(?i)\bсовместим\w*\s+с\s+([^\n\r]{3,240})",
+        r"(?i)\bfor\s+([^\n\r]{3,240})",
+    ]
+
+    for pat in patterns:
+        m = re.search(pat, t)
+        if not m:
+            continue
+        cand = m.group(1)
+        cand = re.split(
+            r"(?:(?:\s*[\(\[\{])|(?:\s*[—-]\s*)|(?:\s*\.|\s*!|\s*\?))",
+            cand,
+            maxsplit=1,
+        )[0]
+        cand = _cs_clean_compat_value(cand)
+        if not cand:
+            continue
+
+        hint = _hint(t[: m.start()])
+        if hint and (not re.search(rf"(?i)\b{re.escape(hint)}\b", cand)):
+            cand = _cs_clean_compat_value(f"{hint} {cand}")
+
+        return cand
+
+    return ""
 
 def _cs_merge_compat_values(vals: list[str]) -> str:
     parts: list[str] = []
@@ -529,6 +626,22 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
             continue
         kcf = kk.casefold()
 
+        # Убираем заголовки таблиц/мусор
+        if vv and vv.casefold() == "совместимые продукты":
+            continue
+
+        # Партномер/PN используем как источник кодов, но сам param сохраняем
+        if kcf in _PARTNUMBER_PARAM_NAMES:
+            if vv:
+                existing_codes_sources.append(vv)
+            new_params.append((kk, vv))
+            continue
+
+        # AkCent/таблицы: "модель устройства" -> "C11..." (SKU техники). Модель переносим в Совместимость, C11 выкидываем.
+        if vv and re.fullmatch(r"(?i)C11[A-Z0-9]{6,}", vv) and re.search(r"\d", kk) and re.search(r"[A-Za-zА-Яа-я]", kk):
+            found_raw.append(kk)
+            continue
+
         # Уже существующие "Коды расходников" пересобираем заново (очищенно)
         if kcf == _CONSUMABLE_CODES_PARAM_NAME.casefold():
             if vv:
@@ -553,7 +666,7 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
 
     # 1) Коды расходников: из существующих кодов, из совместимости и из названия
     codes: list[str] = []
-    for src in (existing_codes_sources + codes_sources + [name_full]):
+    for src in (existing_codes_sources + codes_sources + [name_full, native_desc]):
         codes.extend(_cs_extract_consumable_codes_ordered(src, allow_short_3dig=True))
     codes = _dedup_keep_order(codes)
 
@@ -3558,6 +3671,10 @@ class OfferOut:
         native_desc = fix_text(self.native_desc)
         # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
         native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
+        # AlStyle: инлайновые "Основные характеристики" часто ломают пары key/value.
+        # Чтобы не плодить мусорные params (80->Совместимость и т.п.), пары из desc НЕ переносим в params.
+        if (self.oid or '').upper().startswith('AS'):
+            _spec_pairs = []
         native_desc = strip_service_kv_lines(native_desc)
         vendor = pick_vendor(self.vendor, name_full, self.params, native_desc, public_vendor=public_vendor)
 
@@ -3660,6 +3777,9 @@ class OfferOut:
         params_xml = ""
         for k, v in (self.params or []):
             kk = xml_escape_attr(norm_ws(k))
+            # сырое: не выводим служебные/отладочные параметры
+            if re.fullmatch(r"(?i)товаров:\s*\d{1,7}", kk or ""):
+                continue
             vv = xml_escape_text(fix_text(norm_ws(v)))
             if not kk or not vv:
                 continue
