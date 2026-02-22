@@ -3,7 +3,7 @@ name: Build_CopyLine
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 21 * * *'
+    - cron: '0 22 * * *'
 
 permissions:
   contents: write
@@ -60,7 +60,7 @@ jobs:
       - name: Commit & push docs/copyline.yml (if changed)
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         run: |
-          git add docs/copyline.yml
+          git add docs/copyline.yml docs/raw/copyline.yml
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
