@@ -46,6 +46,7 @@ from cs.core import (
     norm_ws,
     safe_int,
     write_cs_feed,
+    write_cs_feed_raw,
 )
 
 SUPPLIER = "VTT"
@@ -777,6 +778,23 @@ def main() -> int:
     next_run = next_run_dom_at_hour(now, 5, (1, 10, 20))
 
     public_vendor = get_public_vendor(SUPPLIER)
+
+# RAW: снимок ДО обработок core (как пришло из адаптера)
+raw_dir = os.path.join(os.path.dirname(OUT_FILE), "raw")
+os.makedirs(raw_dir, exist_ok=True)
+raw_file = os.path.join(raw_dir, os.path.basename(OUT_FILE))
+write_cs_feed_raw(
+    offers,
+    supplier=SUPPLIER,
+    supplier_url=cfg.start_url,
+    out_file=raw_file,
+    build_time=now,
+    next_run=next_run,
+    before=len(offers),
+    encoding="utf-8",
+    currency_id="KZT",
+)
+
 
     changed = write_cs_feed(
         offers,
