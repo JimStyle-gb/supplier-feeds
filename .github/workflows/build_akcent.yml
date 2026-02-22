@@ -3,7 +3,7 @@ name: Build_AkCent
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 20 * * *'
+    - cron: '0 21 * * *'
 
 permissions:
   contents: write
@@ -45,7 +45,7 @@ jobs:
 
       - name: Commit & push docs/akcent.yml (if changed)
         run: |
-          git add docs/akcent.yml
+          git add docs/akcent.yml docs/raw/akcent.yml
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
