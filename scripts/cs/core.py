@@ -141,16 +141,6 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
     if re.fullmatch(r"C\d{2}T[0-9A-Z]{5,8}", t):
         return True
 
-    # HP ink: C9730A / C9370A / C8543X (буква C + 4 цифры + 1–2 буквы)
-    if re.fullmatch(r"C\d{4}[A-Z]{1,2}", t):
-        return True
-    # HP ink: CZ192A / CN045AE
-    if re.fullmatch(r"(?:CZ|CN)\d{3}[A-Z]{1,2}", t):
-        return True
-    # HP DesignJet/ink: B3P19A и т.п.
-    if re.fullmatch(r"[A-Z]\d[A-Z]\d{2,3}[A-Z]", t):
-        return True
-
     # HP ink: 3ED77A / 1VK08A
     if re.fullmatch(r"\d[A-Z]{2}\d{2}[A-Z]", t):
         return True
@@ -192,7 +182,6 @@ _RE_CODE_ANY = re.compile(
     r"C\d{2}T[0-9A-Z]{5,8}|"      # Epson C13T...
     r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
     r"(?:CZ|CN)\d{3}[A-Z]{1,2}|"  # HP ink CZ*** / CN***AE
-    r"C\d{4}[A-Z]{1,2}|"          # HP ink C9730A / C9370A / C8543X
     r"T\d{4,5}|"                  # Epson T0481...
     r"TK-?\d{3,5}[A-Z]{0,3}|"     # Kyocera
     r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}|"       # Brother
@@ -288,8 +277,6 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
     if not s:
         return []
     s = _cs_expand_grouped_consumable_codes(s)
-    hp_ctx = bool(re.search(r"(?i)\bHP\b|DESIGNJET|\bDJ\b", s))
-
 
     out: list[str] = []
     idx_map: dict[str, int] = {}
@@ -328,24 +315,21 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
         if not tok:
             continue
+        # CS: не считаем модели HP DesignJet/DJ вида T1100/T1500 кодом расходника
+        # (это модели техники, а не коды картриджей/чернил)
+        if re.fullmatch(r"T\d{3,5}", tok) and ("HP" in s.upper()) and re.search(r"(?i)\b(?:DESIGNJET|DJ)\b", s):
+            continue
+
         # нормализация без-дефисных TK/TN/DR
         tok = re.sub(r"^(TK)(\d{2,5})([A-Z]{0,3})$", r"TK-\2\3", tok)
         tok = re.sub(r"^(TN)(\d{3,5})([A-Z]{0,3})$", r"TN-\2\3", tok)
         tok = re.sub(r"^(DR)(\d{3,5})([A-Z]{0,3})$", r"DR-\2\3", tok)
-        # CS: HP DesignJet/DJ модели вида T1100/T1500 — это модели техники, а не коды расходников
-        if hp_ctx and re.fullmatch(r"T\d{4,5}", tok):
-            continue
         _add(tok)
 
     # HP ink: 3ED77A / 1VK08A (не всегда ловится _RE_CODE_ANY)
     for m in re.finditer(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", s):
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
         _add(tok)
-    # HP DesignJet/ink: B3P19A / F9J80A и т.п. (буква-цифра-буква-цифры-буква)
-    for m in re.finditer(r"(?i)\b[A-Z]\d[A-Z]\d{2,3}[A-Z]\b", s):
-        tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
-        _add(tok)
-
 
     # Короткие 3-значные (Canon 716/725/727/728/737) — только если разрешено
     if allow_short_3dig:
@@ -367,25 +351,11 @@ def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = Tru
     if not s:
         return ""
     s = _cs_expand_grouped_consumable_codes(s)
-    # CS: в контексте HP DesignJet/DJ токены T1100/T1500 — это модели техники; защищаем от удаления как "коды"
-    hp_ctx = bool(re.search(r"(?i)\bHP\b|DESIGNJET|\bDJ\b", s))
-    _prot: dict[str, str] = {}
-    if hp_ctx:
-        def _prot_repl(m: re.Match) -> str:
-            key = f"@@TKEEP{len(_prot)}@@"
-            _prot[key] = m.group(0)
-            return key
-        s = re.sub(r"(?i)\bT\d{4,5}\b", _prot_repl, s)
-
     s = _RE_CODE_NUM_SIGN.sub(" ", s)
     s = _RE_CODE_ANY.sub(" ", s)
     s = re.sub(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", " ", s)
-    s = re.sub(r"(?i)\b[A-Z]\d[A-Z]\d{2,3}[A-Z]\b", " ", s)
     if allow_short_3dig:
         s = _RE_CODE_SHORT_3DIG.sub(" ", s)
-    if _prot:
-        for k, v in _prot.items():
-            s = s.replace(k, v)
     return norm_ws(s)
 
 
@@ -1728,9 +1698,97 @@ def clean_params(
         
         # CS: эвристика против перевёрнутых пар (когда name выглядит как значение, а value как ключ)
         _KEYLIKE = {
-            "совместимость","интерфейс","технология","сертификация","частоты","частота","разрешение",
-            "габариты","размер","вес","материал","материал корпуса","питание","напряжение","мощность",
-            "модель","бренд","марка","тип","формат","объем","объём","ресурс"
+
+            "совместимость",
+
+            "интерфейс",
+
+            "технология",
+
+            "сертификация",
+
+            "частоты",
+
+            "частота",
+
+            "разрешение",
+
+            "габариты",
+
+            "размер",
+
+            "вес",
+
+            "материал",
+
+            "материал корпуса",
+
+            "питание",
+
+            "напряжение",
+
+            "мощность",
+
+            "модель",
+
+            "бренд",
+
+            "марка",
+
+            "тип",
+
+            "формат",
+
+            "объем",
+
+            "объём",
+
+            "ресурс",
+
+            "цвет",
+
+            "производитель",
+
+            "устройство",
+
+            "секция аппарата",
+
+            "ресурс, стр",
+
+            "ресурс, стр.",
+
+            "wi-fi",
+
+            "wifi",
+
+            "bluetooth",
+
+            "фокус",
+
+            "стандартные аксессуары",
+
+            "озу",
+
+            "пзу",
+
+            "операционная система",
+
+            "процессор",
+
+            "графический процессор",
+
+            "тип чернил",
+
+            "технология печати",
+
+            "цвет печати",
+
+            "объем картриджа, мл",
+
+            "объем картриджа мл",
+
+            "объем картриджа",
+
         }
         k_cf = norm_ws(k).casefold().replace("ё","е")
         v_cf = norm_ws(v).casefold().replace("ё","е")
@@ -1740,6 +1798,10 @@ def clean_params(
                 return False
             if len(xx) > 40:
                 return False
+            # чистые числа (80, 120 000) — это почти всегда значение, а не имя параметра
+            if re.fullmatch(r"[0-9][0-9\s\.,]*", xx):
+                return True
+
             # числовые значения с единицами
             if re.match(r"^\d", xx) and re.search(r"(?i)\b(?:см|мм|м|кг|г|gb|гб|mhz|гц|мгц|вт|w|v|а|mah|мaч|мл|ml)\b", xx):
                 return True
@@ -1767,12 +1829,20 @@ def clean_params(
         # Мусор из таблиц: заголовок "Параметр=Значение"
         kk_cf = kk.casefold().replace("ё", "е")
         vv_cf = vv.casefold().replace("ё", "е")
-        # CS: выкидываем "советы/описание" попавшие в params (типичный мусор из описаний)
-        if (len(kk) > 30 and len(vv) > 30) and (not re.search(r"\d", kk)):
-            if re.match(r"(?i)^(?:используйте|проверяйте|устанавливайте|давайте|созда[её]т|не требует|подходит|компактн|настольный протяжной сканер)\b", kk):
-                continue
-            if re.search(r"(?i)\b(?:использ|провер|установ|давай|не требует|подход|компакт|созда[её]т)\b", kk) and re.search(r"(?i)\b(?:использ|провер|установ|давай|не требует|подход|компакт|созда[её]т)\b", vv):
-                continue
+        # если значение похоже на название ключа ("Тип чернил", "Цвет печати" и т.п.), а ключ — нет, меняем местами
+        if (vv_cf in _KEYLIKE) and (kk_cf not in _KEYLIKE):
+            k, v = v, k
+            kk = _norm_key(k)
+            vv = _norm_val(kk, v)
+            kk_cf = kk.casefold().replace("ё", "е")
+            vv_cf = vv.casefold().replace("ё", "е")
+
+        # мусор из таблиц AkCent: заголовок "Совместимые продукты"
+        if vv_cf == "совместимые продукты":
+            continue
+        # если имя параметра стало числом, а значение — "ключ" (Совместимость/Wi‑Fi/...), это артефакт сдвига — выкидываем
+        if _RE_TRASH_PARAM_NAME_NUM.match(kk) and (vv_cf in _KEYLIKE):
+            continue
 
         if kk_cf in {"параметр", "параметры"} and vv_cf in {"значение", "значения"}:
             continue
@@ -1899,6 +1969,16 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
         if not kk or not vv:
             continue
         k_cf = kk.casefold().replace("ё", "е")
+        # NVPrint: нормализация "Модель" когда там 2 кодовых токена через пробел (W1335A 335A -> W1335A (335A))
+        if oid_u.startswith("NP") and k_cf == "модель":
+            parts = vv.split()
+            if len(parts) == 2 and all(re.fullmatch(r"[A-Za-z0-9\-]+", p) for p in parts) and any(ch.isdigit() for ch in parts[0]) and any(ch.isdigit() for ch in parts[1]):
+                vv = f"{parts[0]} ({parts[1]})"
+
+        # AkCent: заголовок таблицы не должен попадать в params
+        if oid_u.startswith("AC") and vv.casefold().strip() == "совместимые продукты":
+            continue
+
         # глобально: не выводим служебный 'Артикул' как характеристику
         if k_cf == "артикул":
             continue
