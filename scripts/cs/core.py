@@ -141,6 +141,11 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
     if re.fullmatch(r"C\d{2}T[0-9A-Z]{5,8}", t):
         return True
 
+    # Canon/HP: C7115A / C9730A / C8543X и т.п. (4 цифры + A/X)
+    if re.fullmatch(r"C\d{4}[AX](?:E)?", t):
+        return True
+
+
     # HP ink: 3ED77A / 1VK08A
     if re.fullmatch(r"\d[A-Z]{2}\d{2}[A-Z]", t):
         return True
@@ -181,8 +186,8 @@ _RE_CODE_ANY = re.compile(
     r"\d{3}R\d{5}|"               # Xerox 106R02773
     r"C\d{2}T[0-9A-Z]{5,8}|"      # Epson C13T...
     r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
-    r"(?:CZ|CN)\d{3}[A-Z]{1,2}|"  # HP ink CZ*** / CN***AE
-    r"T\d{4,5}|"                  # Epson T0481...
+    r"(?:CZ|CN)\d{3}[A-Z]{1,2}|C\d{4}[AX]E?|"  # HP ink CZ*** / CN***AE
+    r"T(?!\d{2}00\b)\d{4,5}|"                  # Epson T0481...
     r"TK-?\d{3,5}[A-Z]{0,3}|"     # Kyocera
     r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}|"       # Brother
     r"(?:MLT|CLT)-[A-Z]?\d{3,5}[A-Z]{0,3}|" # Samsung
@@ -243,7 +248,7 @@ def _cs_expand_grouped_consumable_codes(s: str) -> str:
         return ""
     # CS: некоторые поставщики префиксуют коды (NV-/NVP-/EP- и т.п.) — убираем префикс только перед кодами
     s = re.sub(
-        r"(?i)\b(?:NV|NVP|EP|EPR|EPC)-(?=(?:\d{3}R\d{5}|C\d{2}T|(?:CF|CE|CB|CC|Q|W)\d{3,5}|(?:CZ|CN)\d{3}|T\d{4,5}|TK-?\d{2,5}|(?:TN|DR)-?\d{2,5}|(?:MLT|CLT)-[A-Z]?\d{3,5}))",
+        r"(?i)\b(?:NV|NVP|EP|EPR|EPC)-(?=(?:\d{3}R\d{5}|C\d{2}T|(?:CF|CE|CB|CC|Q|W)\d{3,5}|(?:CZ|CN)\d{3}|T(?!\d{2}00\b)\d{4,5}|TK-?\d{2,5}|(?:TN|DR)-?\d{2,5}|(?:MLT|CLT)-[A-Z]?\d{3,5}))",
         "",
         s,
     )
@@ -315,11 +320,6 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
         if not tok:
             continue
-        # CS: не считаем модели HP DesignJet/DJ вида T1100/T1500 кодом расходника
-        # (это модели техники, а не коды картриджей/чернил)
-        if re.fullmatch(r"T\d{3,5}", tok) and ("HP" in s.upper()) and re.search(r"(?i)\b(?:DESIGNJET|DJ)\b", s):
-            continue
-
         # нормализация без-дефисных TK/TN/DR
         tok = re.sub(r"^(TK)(\d{2,5})([A-Z]{0,3})$", r"TK-\2\3", tok)
         tok = re.sub(r"^(TN)(\d{3,5})([A-Z]{0,3})$", r"TN-\2\3", tok)
@@ -385,6 +385,7 @@ def _cs_clean_compat_value(v: str) -> str:
     s = re.sub(r"(?i)\b(?:black|cyan|magenta|yellow|grey|gray)\b", " ", s)
     s = re.sub(r"(?i)\b(?:LC|LM|LK|MBK|PBK|Bk|C|M|Y|K)\b", " ", s)
     s = re.sub(r"(?i)\b\d+\s*(?:стр\.?|страниц\w*|pages?)\b", " ", s)
+    s = re.sub(r"(?i)\b\d+(?:[.,]\d+)?\s*(?:г|гр|kg|кг)\b", " ", s)
 
     s = norm_ws(s)
 
@@ -498,6 +499,14 @@ def _cs_extract_compat_candidate(text: str) -> str:
     if m:
         cand = re.split(r"(?:(?:\s*[\(\[\{])|(?:\s*[—-]\s*)|(?:\s*\.|\s*\!|\s*\?))", m.group(1), maxsplit=1)[0]
         return _cs_clean_compat_value(cand)
+    
+    # Фолбэк: иногда модели идут без 'для/for' (например: Epson ... T3000/5000/7000 ...)
+    m = _RE_COMPAT_DEVICE_HINT.search(t)
+    if m:
+        cand = t[m.start():m.start() + 180]
+        cand = re.split(r"(?:(?:\s*[\(\[\{])|(?:\s*[—-]\s*)|(?:\s*\.|\s*\!|\s*\?))", cand, maxsplit=1)[0]
+        return _cs_clean_compat_value(cand)
+
     return ""
 
 
@@ -1698,97 +1707,9 @@ def clean_params(
         
         # CS: эвристика против перевёрнутых пар (когда name выглядит как значение, а value как ключ)
         _KEYLIKE = {
-
-            "совместимость",
-
-            "интерфейс",
-
-            "технология",
-
-            "сертификация",
-
-            "частоты",
-
-            "частота",
-
-            "разрешение",
-
-            "габариты",
-
-            "размер",
-
-            "вес",
-
-            "материал",
-
-            "материал корпуса",
-
-            "питание",
-
-            "напряжение",
-
-            "мощность",
-
-            "модель",
-
-            "бренд",
-
-            "марка",
-
-            "тип",
-
-            "формат",
-
-            "объем",
-
-            "объём",
-
-            "ресурс",
-
-            "цвет",
-
-            "производитель",
-
-            "устройство",
-
-            "секция аппарата",
-
-            "ресурс, стр",
-
-            "ресурс, стр.",
-
-            "wi-fi",
-
-            "wifi",
-
-            "bluetooth",
-
-            "фокус",
-
-            "стандартные аксессуары",
-
-            "озу",
-
-            "пзу",
-
-            "операционная система",
-
-            "процессор",
-
-            "графический процессор",
-
-            "тип чернил",
-
-            "технология печати",
-
-            "цвет печати",
-
-            "объем картриджа, мл",
-
-            "объем картриджа мл",
-
-            "объем картриджа",
-
+            "совместимость","интерфейс","технология","сертификация","частоты","частота","разрешение",
+            "габариты","размер","вес","материал","материал корпуса","питание","напряжение","мощность",
+            "модель","бренд","марка","тип","формат","объем","объём","ресурс"
         }
         k_cf = norm_ws(k).casefold().replace("ё","е")
         v_cf = norm_ws(v).casefold().replace("ё","е")
@@ -1798,10 +1719,6 @@ def clean_params(
                 return False
             if len(xx) > 40:
                 return False
-            # чистые числа (80, 120 000) — это почти всегда значение, а не имя параметра
-            if re.fullmatch(r"[0-9][0-9\s\.,]*", xx):
-                return True
-
             # числовые значения с единицами
             if re.match(r"^\d", xx) and re.search(r"(?i)\b(?:см|мм|м|кг|г|gb|гб|mhz|гц|мгц|вт|w|v|а|mah|мaч|мл|ml)\b", xx):
                 return True
@@ -1829,21 +1746,6 @@ def clean_params(
         # Мусор из таблиц: заголовок "Параметр=Значение"
         kk_cf = kk.casefold().replace("ё", "е")
         vv_cf = vv.casefold().replace("ё", "е")
-        # если значение похоже на название ключа ("Тип чернил", "Цвет печати" и т.п.), а ключ — нет, меняем местами
-        if (vv_cf in _KEYLIKE) and (kk_cf not in _KEYLIKE):
-            k, v = v, k
-            kk = _norm_key(k)
-            vv = _norm_val(kk, v)
-            kk_cf = kk.casefold().replace("ё", "е")
-            vv_cf = vv.casefold().replace("ё", "е")
-
-        # мусор из таблиц AkCent: заголовок "Совместимые продукты"
-        if vv_cf == "совместимые продукты":
-            continue
-        # если имя параметра стало числом, а значение — "ключ" (Совместимость/Wi‑Fi/...), это артефакт сдвига — выкидываем
-        if _RE_TRASH_PARAM_NAME_NUM.match(kk) and (vv_cf in _KEYLIKE):
-            continue
-
         if kk_cf in {"параметр", "параметры"} and vv_cf in {"значение", "значения"}:
             continue
 
@@ -1969,16 +1871,6 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
         if not kk or not vv:
             continue
         k_cf = kk.casefold().replace("ё", "е")
-        # NVPrint: нормализация "Модель" когда там 2 кодовых токена через пробел (W1335A 335A -> W1335A (335A))
-        if oid_u.startswith("NP") and k_cf == "модель":
-            parts = vv.split()
-            if len(parts) == 2 and all(re.fullmatch(r"[A-Za-z0-9\-]+", p) for p in parts) and any(ch.isdigit() for ch in parts[0]) and any(ch.isdigit() for ch in parts[1]):
-                vv = f"{parts[0]} ({parts[1]})"
-
-        # AkCent: заголовок таблицы не должен попадать в params
-        if oid_u.startswith("AC") and vv.casefold().strip() == "совместимые продукты":
-            continue
-
         # глобально: не выводим служебный 'Артикул' как характеристику
         if k_cf == "артикул":
             continue
