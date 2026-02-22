@@ -3,7 +3,7 @@ name: Build_NVPrint
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 22 * * *'
+    - cron: '0 23 * * *'
 
 permissions:
   contents: write
@@ -71,7 +71,7 @@ jobs:
       - name: Commit & push docs/nvprint.yml (if changed)
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         run: |
-          git add docs/nvprint.yml
+          git add docs/nvprint.yml docs/raw/nvprint.yml
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
