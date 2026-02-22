@@ -3644,7 +3644,8 @@ class OfferOut:
 
         name = xml_escape_text(fix_text(norm_ws(self.name)))
         vendor = xml_escape_text(fix_text(norm_ws(self.vendor)))
-        price = int(self.price) if safe_int(self.price, 0) is not None else 0
+        pi = safe_int(self.price)
+        price = int(pi) if pi is not None else 0
 
         # native_desc сохраняем максимально как есть (только делаем безопасным для XML)
         native_desc = fix_text(self.native_desc or "").replace("]]>", "]]&gt;")
