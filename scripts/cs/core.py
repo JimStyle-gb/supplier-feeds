@@ -319,12 +319,6 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         tok = re.sub(r"^(TK)(\d{2,5})([A-Z]{0,3})$", r"TK-\2\3", tok)
         tok = re.sub(r"^(TN)(\d{3,5})([A-Z]{0,3})$", r"TN-\2\3", tok)
         tok = re.sub(r"^(DR)(\d{3,5})([A-Z]{0,3})$", r"DR-\2\3", tok)
-        # CS: не считаем Txxxx кодом расходника, если это модель принтера в контексте HP DesignJet/DJ
-        if re.fullmatch(r"T\d{4,5}", tok) and re.search(r"(?i)\b(?:DESIGNJET|HP\s*DJ|DJ)\b", s):
-            continue
-        # CS: Epson SureColor/Stylus Pro модели часто вида T3200/T5200/T7200 — не коды расходников
-        if re.fullmatch(r"T[3457]\d00", tok) and re.search(r"(?i)\b(?:SURECOLOR|STYLUS\s*PRO)\b", s):
-            continue
         _add(tok)
 
     # HP ink: 3ED77A / 1VK08A (не всегда ловится _RE_CODE_ANY)
@@ -1646,9 +1640,6 @@ def clean_params(
         vv = fix_mixed_cyr_lat(vv)
         # иногда после парсинга остаётся хвостовая пунктуация
         vv = vv.rstrip(" ,;")
-        if key.casefold() == "совместимость":
-            vv = re.sub(r"(?i)\s*Подробнее\s*$", "", vv).strip()
-            vv = re.sub(r"(?i)\s+(?:MULTI\s*PACK|MULTIPACK|2PACK\S*).*$", "", vv).strip()
         if key.casefold() == "цвет":
             vv = _normalize_color(vv)
         return vv
@@ -1704,11 +1695,7 @@ def clean_params(
         _KEYLIKE = {
             "совместимость","интерфейс","технология","сертификация","частоты","частота","разрешение",
             "габариты","размер","вес","материал","материал корпуса","питание","напряжение","мощность",
-            "модель","бренд","марка","тип","формат","объем","объём","ресурс",
-            "тип чернил","технология печати","цвет печати","тип печати","цвет",
-            "wi-fi","bluetooth","фокус","секция аппарата","подача бумаги",
-            "исходный размер/тип","стандартные аксессуары","дистанционный зум","соотношение сторон","скорость сканирования",
-            "коррекция трапецеидального искажения"
+            "модель","бренд","марка","тип","формат","объем","объём","ресурс"
         }
         k_cf = norm_ws(k).casefold().replace("ё","е")
         v_cf = norm_ws(v).casefold().replace("ё","е")
@@ -1863,7 +1850,6 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
     name_cf = (name or "").strip().casefold()
     is_vtt = oid_u.startswith("VT")
     is_copyline = oid_u.startswith("CL")
-    is_nvprint = oid_u.startswith("NP")
     out: list[tuple[str, str]] = []
     for k, v in params or []:
         kk = norm_ws(k)
@@ -1883,14 +1869,6 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
                 kk = "Партномер"
         if is_copyline and name_cf.startswith("кабель сетевой") and (k_cf == "совместимость"):
             continue
-
-        # NVPrint: нормализация 'Модель' когда ровно два кодовых токена через пробел (оба содержат цифры)
-        if is_nvprint and (kk == "Модель"):
-            toks = [t for t in vv.split() if t]
-            if len(toks) == 2 and all(re.search(r"\d", t) for t in toks):
-                if ("(" not in vv) and ("/" not in vv):
-                    vv = f"{toks[0]} ({toks[1]})"
-
         out.append((kk, vv))
     return out
 
@@ -3274,6 +3252,68 @@ def build_cs_feed_xml(
     xml = make_header(build_time, encoding=encoding) + "\n" + meta + "\n\n" + offers_xml + "\n\n" + make_footer()
     return ensure_footer_spacing(xml)
 
+def build_cs_feed_xml_raw(
+    offers: Sequence["OfferOut"],
+    *,
+    supplier: str,
+    supplier_url: str,
+    build_time: datetime,
+    next_run: datetime,
+    before: int,
+    encoding: str = OUTPUT_ENCODING_DEFAULT,
+    currency_id: str = CURRENCY_ID_DEFAULT,
+) -> str:
+    """Сырой снимок ДО обработок core: то, что адаптер передал в OfferOut."""
+    after = len(offers)
+    in_true = sum(1 for o in offers if getattr(o, "available", False))
+    in_false = after - in_true
+
+    meta = make_feed_meta(
+        supplier=supplier,
+        supplier_url=supplier_url,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        after=after,
+        in_true=in_true,
+        in_false=in_false,
+    )
+
+    offers_xml = ""
+    if offers:
+        offers_xml = "\n\n".join([o.to_xml_raw(currency_id=currency_id) for o in offers])
+
+    xml = make_header(build_time, encoding=encoding) + "\n" + meta + "\n\n" + offers_xml + "\n\n" + make_footer()
+    return ensure_footer_spacing(xml)
+
+
+def write_cs_feed_raw(
+    offers: Sequence["OfferOut"],
+    *,
+    supplier: str,
+    supplier_url: str,
+    out_file: str,
+    build_time: datetime,
+    next_run: datetime,
+    before: int,
+    encoding: str = OUTPUT_ENCODING_DEFAULT,
+    currency_id: str = CURRENCY_ID_DEFAULT,
+) -> bool:
+    """Пишет сырой снимок (без CS-валидации, чтобы не ломать сборки)."""
+    full = build_cs_feed_xml_raw(
+        offers,
+        supplier=supplier,
+        supplier_url=supplier_url,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        encoding=encoding,
+        currency_id=currency_id,
+    )
+    return write_if_changed(out_file, full, encoding=encoding)
+
+
+
 
 # CS: пишет фид в файл (validate + write_if_changed)
 def write_cs_feed(
@@ -3509,7 +3549,51 @@ class OfferOut:
     native_desc: str
 
     # Собирает XML offer (фиксированный порядок)
-    def to_xml(
+    
+# Снимок "как пришло из адаптера" — ДО всех обработок core (enrich/clean/compat/seo)
+def to_xml_raw(
+    self,
+    *,
+    currency_id: str = CURRENCY_ID_DEFAULT,
+) -> str:
+    oid = xml_escape_attr(self.oid)
+    name_raw = xml_escape_text(self.name or "")
+    vendor_raw = xml_escape_text(self.vendor or "")
+    desc_raw = self.native_desc or ""
+    # CDATA не должна содержать ']]>'
+    desc_raw = desc_raw.replace("]]>", "]]]]><![CDATA[>")
+
+    pics_xml = ""
+    for pp in (self.pictures or []):
+        u = norm_ws(pp)
+        if not u:
+            continue
+        pics_xml += f"\n<picture>{xml_escape_text(_cs_norm_url(u))}</picture>"
+
+    params_xml = ""
+    for k, v in (self.params or []):
+        kk = xml_escape_attr(norm_ws(k))
+        vv = xml_escape_text(norm_ws(v))
+        if not kk or not vv:
+            continue
+        params_xml += f"\n<param name=\"{kk}\">{vv}</param>"
+
+    out = (
+        f"<offer id=\"{oid}\" available=\"{bool_to_xml(bool(self.available))}\">\n"
+        f"<categoryId></categoryId>\n"
+        f"<vendorCode>{xml_escape_text(self.oid)}</vendorCode>\n"
+        f"<name>{name_raw}</name>\n"
+        f"<price>{int(self.price)}</price>"
+        f"{pics_xml}\n"
+        f"<vendor>{vendor_raw}</vendor>\n"
+        f"<currencyId>{xml_escape_text(currency_id)}</currencyId>\n"
+        f"<description><![CDATA[\n{desc_raw}]]></description>"
+        f"{params_xml}\n"
+        f"</offer>"
+    )
+    return out
+
+def to_xml(
         self,
         *,
         currency_id: str = CURRENCY_ID_DEFAULT,
