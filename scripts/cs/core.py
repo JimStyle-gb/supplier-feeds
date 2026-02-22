@@ -141,6 +141,16 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
     if re.fullmatch(r"C\d{2}T[0-9A-Z]{5,8}", t):
         return True
 
+    # HP ink: C9730A / C9370A / C8543X (буква C + 4 цифры + 1–2 буквы)
+    if re.fullmatch(r"C\d{4}[A-Z]{1,2}", t):
+        return True
+    # HP ink: CZ192A / CN045AE
+    if re.fullmatch(r"(?:CZ|CN)\d{3}[A-Z]{1,2}", t):
+        return True
+    # HP DesignJet/ink: B3P19A и т.п.
+    if re.fullmatch(r"[A-Z]\d[A-Z]\d{2,3}[A-Z]", t):
+        return True
+
     # HP ink: 3ED77A / 1VK08A
     if re.fullmatch(r"\d[A-Z]{2}\d{2}[A-Z]", t):
         return True
@@ -182,6 +192,7 @@ _RE_CODE_ANY = re.compile(
     r"C\d{2}T[0-9A-Z]{5,8}|"      # Epson C13T...
     r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
     r"(?:CZ|CN)\d{3}[A-Z]{1,2}|"  # HP ink CZ*** / CN***AE
+    r"C\d{4}[A-Z]{1,2}|"          # HP ink C9730A / C9370A / C8543X
     r"T\d{4,5}|"                  # Epson T0481...
     r"TK-?\d{3,5}[A-Z]{0,3}|"     # Kyocera
     r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}|"       # Brother
@@ -277,6 +288,8 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
     if not s:
         return []
     s = _cs_expand_grouped_consumable_codes(s)
+    hp_ctx = bool(re.search(r"(?i)\bHP\b|DESIGNJET|\bDJ\b", s))
+
 
     out: list[str] = []
     idx_map: dict[str, int] = {}
@@ -319,12 +332,20 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         tok = re.sub(r"^(TK)(\d{2,5})([A-Z]{0,3})$", r"TK-\2\3", tok)
         tok = re.sub(r"^(TN)(\d{3,5})([A-Z]{0,3})$", r"TN-\2\3", tok)
         tok = re.sub(r"^(DR)(\d{3,5})([A-Z]{0,3})$", r"DR-\2\3", tok)
+        # CS: HP DesignJet/DJ модели вида T1100/T1500 — это модели техники, а не коды расходников
+        if hp_ctx and re.fullmatch(r"T\d{4,5}", tok):
+            continue
         _add(tok)
 
     # HP ink: 3ED77A / 1VK08A (не всегда ловится _RE_CODE_ANY)
     for m in re.finditer(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", s):
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
         _add(tok)
+    # HP DesignJet/ink: B3P19A / F9J80A и т.п. (буква-цифра-буква-цифры-буква)
+    for m in re.finditer(r"(?i)\b[A-Z]\d[A-Z]\d{2,3}[A-Z]\b", s):
+        tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
+        _add(tok)
+
 
     # Короткие 3-значные (Canon 716/725/727/728/737) — только если разрешено
     if allow_short_3dig:
@@ -346,11 +367,25 @@ def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = Tru
     if not s:
         return ""
     s = _cs_expand_grouped_consumable_codes(s)
+    # CS: в контексте HP DesignJet/DJ токены T1100/T1500 — это модели техники; защищаем от удаления как "коды"
+    hp_ctx = bool(re.search(r"(?i)\bHP\b|DESIGNJET|\bDJ\b", s))
+    _prot: dict[str, str] = {}
+    if hp_ctx:
+        def _prot_repl(m: re.Match) -> str:
+            key = f"@@TKEEP{len(_prot)}@@"
+            _prot[key] = m.group(0)
+            return key
+        s = re.sub(r"(?i)\bT\d{4,5}\b", _prot_repl, s)
+
     s = _RE_CODE_NUM_SIGN.sub(" ", s)
     s = _RE_CODE_ANY.sub(" ", s)
     s = re.sub(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", " ", s)
+    s = re.sub(r"(?i)\b[A-Z]\d[A-Z]\d{2,3}[A-Z]\b", " ", s)
     if allow_short_3dig:
         s = _RE_CODE_SHORT_3DIG.sub(" ", s)
+    if _prot:
+        for k, v in _prot.items():
+            s = s.replace(k, v)
     return norm_ws(s)
 
 
@@ -1732,6 +1767,13 @@ def clean_params(
         # Мусор из таблиц: заголовок "Параметр=Значение"
         kk_cf = kk.casefold().replace("ё", "е")
         vv_cf = vv.casefold().replace("ё", "е")
+        # CS: выкидываем "советы/описание" попавшие в params (типичный мусор из описаний)
+        if (len(kk) > 30 and len(vv) > 30) and (not re.search(r"\d", kk)):
+            if re.match(r"(?i)^(?:используйте|проверяйте|устанавливайте|давайте|созда[её]т|не требует|подходит|компактн|настольный протяжной сканер)\b", kk):
+                continue
+            if re.search(r"(?i)\b(?:использ|провер|установ|давай|не требует|подход|компакт|созда[её]т)\b", kk) and re.search(r"(?i)\b(?:использ|провер|установ|давай|не требует|подход|компакт|созда[её]т)\b", vv):
+                continue
+
         if kk_cf in {"параметр", "параметры"} and vv_cf in {"значение", "значения"}:
             continue
 
@@ -2232,146 +2274,6 @@ def _split_inline_specs_bullets(rest: str) -> str:
 
 
 
-
-def _split_inline_specs_kv_stream(rest: str) -> str:
-    """Пробует помочь случаям, где характеристики идут одной строкой:
-    'Производитель Canon Устройство ... Ресурс, стр. 120 000 Совместимость ...'
-
-    Идея: аккуратно вставить переносы строк вокруг типичных ключей, чтобы дальше
-    сработал общий парсер _parse_specs_pairs_from_text (чередование ключ/значение).
-
-    Если не уверены — ничего не делаем (лучше не распарсить, чем распарсить криво).
-    """
-    s = rest or ""
-    if not s:
-        return ""
-
-    # если уже похоже на структуру — не трогаем
-    if "\t" in s:
-        return s
-    if s.count("\n") >= 8:
-        return s
-    if ":" in s and s.count("\n") >= 2:
-        return s
-    if len(s) < 120:
-        return s
-
-    # заголовок на отдельной строке даже без двоеточия
-    s = re.sub(
-        r"(?i)\b(Технические характеристики|Основные характеристики|Характеристики)\b\s+(?=\S)",
-        r"\1\n",
-        s,
-        count=1,
-    )
-
-    # применяем только если видим несколько типичных ключей
-    if len(re.findall(r"(?i)\b(Производитель|Устройство|Секция\s+аппарата|Ресурс|Совместимость)\b", s)) < 2:
-        return s
-
-    key_pats = [
-        r"Производитель",
-        r"Устройство",
-        r"Секция\s+аппарата",
-        r"Ресурс[, ]*стр\.?|Ресурс",
-        r"Совместимость",
-        r"Тип",
-        r"Вид",
-        r"Модель",
-        r"Интерфейс",
-        r"Разрешение",
-        r"Частота|Частоты",
-        r"Скорость",
-        r"Фокус",
-        r"Контрастность",
-        r"Яркость",
-        r"Bluetooth",
-        r"Wi-?Fi",
-        r"Технология\s+печати",
-        r"Формат",
-        r"Размер",
-        r"Габариты",
-        r"Вес",
-        r"Объём|Объем",
-        r"Ёмкость|Емкость",
-        r"Гарантия",
-        r"Питание",
-        r"Напряжение",
-        r"Мощность",
-    ]
-
-    # сначала длинные, потом короткие — чтобы не резать "Секция аппарата" на "Секция"
-    key_pats = sorted(key_pats, key=lambda x: -len(x))
-
-    for kp in key_pats:
-        s = re.sub(
-            rf"(?i)(?<![A-Za-zА-Яа-яЁё0-9])({kp})(?![A-Za-zА-Яа-яЁё0-9])\s+",
-            r"\n\1\n",
-            s,
-        )
-
-    s = re.sub(r"\n{3,}", "\n\n", s)
-    s = s.lstrip("\n")
-    return s
-
-
-def _specs_pairs_quality_ok(pairs: list[tuple[str, str]]) -> bool:
-    """Страховка от 'сдвинутых' пар, когда:
-    key становится значением, а значение — ключом (часто из-за инлайновых характеристик без разделителей).
-
-    Правило: если видим явные признаки сдвига — лучше вообще не брать пары.
-    """
-    if not pairs:
-        return False
-
-    keylike_vals = {
-        "совместимость",
-        "ресурс",
-        "ресурс, стр.",
-        "ресурс стр.",
-        "секция аппарата",
-        "устройство",
-        "производитель",
-        "тип",
-        "модель",
-        "интерфейс",
-        "разрешение",
-        "частота",
-        "частоты",
-        "скорость",
-        "вес",
-        "объем",
-        "объём",
-        "емкость",
-        "ёмкость",
-        "гарантия",
-        "питание",
-        "напряжение",
-        "мощность",
-        "wi-fi",
-        "wifi",
-        "bluetooth",
-        "фокус",
-        "яркость",
-        "контрастность",
-    }
-
-    bad = 0
-    for k, v in pairs:
-        kk = norm_ws(k).strip()
-        vv = norm_ws(v).strip()
-        if not kk or not vv:
-            continue
-
-        # ключ выглядит как значение (число/число+единица)
-        if re.fullmatch(r"[0-9][0-9\s.,/+×x-]{0,18}[A-Za-zА-Яа-яЁё%]{0,4}", kk):
-            bad += 1
-
-        # значение выглядит как ключ-ярлык
-        if vv.casefold() in keylike_vals:
-            bad += 1
-
-    return bad < 2
-
 def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str]]]:
     """Единый CS-подход:
     - вырезаем блоки тех/осн характеристик из нативного описания
@@ -2413,16 +2315,11 @@ def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str
     pre = "\n".join(lines_raw[:idx]).strip()
     rest = "\n".join(lines_raw[idx:]).strip()
     rest = _split_inline_specs_bullets(rest)
-    rest = _split_inline_specs_kv_stream(rest)
 
     pairs = _parse_specs_pairs_from_text(rest)
 
     # страховка: если вообще ничего не распарсили — не трогаем описание
     if not pairs:
-        return raw, []
-
-    # страховка: если распарсили криво (сдвиг key/value) — лучше не брать
-    if not _specs_pairs_quality_ok(pairs):
         return raw, []
 
     return pre, pairs
@@ -2617,7 +2514,7 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
             # не мешаемся, если следующая строка — заголовок или табличная
             if ("\t" not in ln) and ("\t" not in nxt) and (not _RE_SPECS_HDR_LINE.search(nxt)) and (not re.search(r"(?i)состав\s+поставки|комплектац", nxt)):
                 k_cf = ln.strip().casefold()
-                known_key = k_cf in {"тип", "вид", "цвет", "бренд", "марка", "производитель", "устройство", "секция аппарата", "модель", "артикул", "штрихкод", "совместимость", "технология", "технология печати", "сертификация", "разрешение", "интерфейс", "wi-fi", "wifi", "bluetooth", "озу", "ram", "частота", "частоты", "скорость", "формат", "размер", "габариты", "вес", "объем", "объём", "емкость", "ёмкость", "ресурс", "ресурс, стр.", "ресурс стр.", "гарантия", "питание", "напряжение", "мощность", "фокус", "яркость", "контрастность"}
+                known_key = k_cf in {"тип", "вид", "цвет", "бренд", "марка", "модель", "артикул", "штрихкод", "совместимость", "технология", "сертификация", "разрешение", "интерфейс", "частота", "частоты", "скорость", "формат", "размер", "габариты", "вес", "объем", "объём", "емкость", "ёмкость", "ресурс", "гарантия", "питание", "напряжение", "мощность"}
                 keyish = (
                     bool(re.search(r"\s", ln))
                     or bool(re.search(r"\d", ln))
