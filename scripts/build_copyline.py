@@ -86,6 +86,7 @@ from cs.core import (
     next_run_dom_at_hour,
     now_almaty,
     write_cs_feed,
+    write_cs_feed_raw,
 )
 
 # -----------------------------
@@ -943,10 +944,29 @@ def main() -> int:
 
     public_vendor = get_public_vendor(SUPPLIER_NAME)
 
+supplier_url = os.getenv("SUPPLIER_URL", SUPPLIER_URL_DEFAULT)
+
+# RAW: снимок ДО обработок core (как пришло из адаптера)
+raw_dir = os.path.join(os.path.dirname(OUT_FILE), "raw")
+os.makedirs(raw_dir, exist_ok=True)
+raw_file = os.path.join(raw_dir, os.path.basename(OUT_FILE))
+write_cs_feed_raw(
+    out_offers,
+    supplier=SUPPLIER_NAME,
+    supplier_url=supplier_url,
+    out_file=raw_file,
+    build_time=build_time,
+    next_run=next_run,
+    before=before,
+    encoding=OUTPUT_ENCODING,
+    currency_id="KZT",
+)
+
+
     changed = write_cs_feed(
         out_offers,
         supplier=SUPPLIER_NAME,
-        supplier_url=os.getenv("SUPPLIER_URL", SUPPLIER_URL_DEFAULT),
+        supplier_url = os.getenv("SUPPLIER_URL", SUPPLIER_URL_DEFAULT),
         out_file=OUT_FILE,
         build_time=build_time,
         next_run=next_run,
