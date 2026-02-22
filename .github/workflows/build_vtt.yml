@@ -3,7 +3,7 @@ name: Build_VTT
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 23 * * *'
+    - cron: '0 0 * * *'
 
 permissions:
   contents: write
@@ -71,7 +71,7 @@ jobs:
       - name: Commit & push docs/vtt.yml (if changed)
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         run: |
-          git add docs/vtt.yml
+          git add docs/vtt.yml docs/raw/vtt.yml
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
