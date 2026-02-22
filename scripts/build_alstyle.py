@@ -200,22 +200,7 @@ def main() -> int:
     # Стабильный порядок офферов
     out_offers.sort(key=lambda o: o.oid)
 
-# RAW: снимок ДО обработок core (как пришло из адаптера)
-raw_dir = os.path.join(os.path.dirname(out_file), "raw")
-os.makedirs(raw_dir, exist_ok=True)
-raw_file = os.path.join(raw_dir, os.path.basename(out_file))
-write_cs_feed_raw(
-    out_offers,
-    supplier=ALSTYLE_SUPPLIER,
-    supplier_url=url,
-    out_file=raw_file,
-    build_time=build_time,
-    next_run=next_run,
-    before=before,
-    encoding=encoding,
-    currency_id="KZT",
-)
-
+    write_cs_feed_raw(offers, supplier=SUPPLIER_NAME, supplier_url=SUPPLIER_URL, out_file="docs/raw/alstyle.yml", build_time=build_time, next_run=next_run, before=before, encoding=OUTPUT_ENCODING, currency_id="KZT")
 
     changed = write_cs_feed(
         out_offers,
