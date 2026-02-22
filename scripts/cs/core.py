@@ -141,11 +141,6 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
     if re.fullmatch(r"C\d{2}T[0-9A-Z]{5,8}", t):
         return True
 
-    # Canon/HP: C7115A / C9730A / C8543X и т.п. (4 цифры + A/X)
-    if re.fullmatch(r"C\d{4}[AX](?:E)?", t):
-        return True
-
-
     # HP ink: 3ED77A / 1VK08A
     if re.fullmatch(r"\d[A-Z]{2}\d{2}[A-Z]", t):
         return True
@@ -186,8 +181,8 @@ _RE_CODE_ANY = re.compile(
     r"\d{3}R\d{5}|"               # Xerox 106R02773
     r"C\d{2}T[0-9A-Z]{5,8}|"      # Epson C13T...
     r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
-    r"(?:CZ|CN)\d{3}[A-Z]{1,2}|C\d{4}[AX]E?|"  # HP ink CZ*** / CN***AE
-    r"T(?!\d{2}00\b)\d{4,5}|"                  # Epson T0481...
+    r"(?:CZ|CN)\d{3}[A-Z]{1,2}|"  # HP ink CZ*** / CN***AE
+    r"T\d{4,5}|"                  # Epson T0481...
     r"TK-?\d{3,5}[A-Z]{0,3}|"     # Kyocera
     r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}|"       # Brother
     r"(?:MLT|CLT)-[A-Z]?\d{3,5}[A-Z]{0,3}|" # Samsung
@@ -248,7 +243,7 @@ def _cs_expand_grouped_consumable_codes(s: str) -> str:
         return ""
     # CS: некоторые поставщики префиксуют коды (NV-/NVP-/EP- и т.п.) — убираем префикс только перед кодами
     s = re.sub(
-        r"(?i)\b(?:NV|NVP|EP|EPR|EPC)-(?=(?:\d{3}R\d{5}|C\d{2}T|(?:CF|CE|CB|CC|Q|W)\d{3,5}|(?:CZ|CN)\d{3}|T(?!\d{2}00\b)\d{4,5}|TK-?\d{2,5}|(?:TN|DR)-?\d{2,5}|(?:MLT|CLT)-[A-Z]?\d{3,5}))",
+        r"(?i)\b(?:NV|NVP|EP|EPR|EPC)-(?=(?:\d{3}R\d{5}|C\d{2}T|(?:CF|CE|CB|CC|Q|W)\d{3,5}|(?:CZ|CN)\d{3}|T\d{4,5}|TK-?\d{2,5}|(?:TN|DR)-?\d{2,5}|(?:MLT|CLT)-[A-Z]?\d{3,5}))",
         "",
         s,
     )
@@ -324,6 +319,12 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         tok = re.sub(r"^(TK)(\d{2,5})([A-Z]{0,3})$", r"TK-\2\3", tok)
         tok = re.sub(r"^(TN)(\d{3,5})([A-Z]{0,3})$", r"TN-\2\3", tok)
         tok = re.sub(r"^(DR)(\d{3,5})([A-Z]{0,3})$", r"DR-\2\3", tok)
+        # CS: не считаем Txxxx кодом расходника, если это модель принтера в контексте HP DesignJet/DJ
+        if re.fullmatch(r"T\d{4,5}", tok) and re.search(r"(?i)\b(?:DESIGNJET|HP\s*DJ|DJ)\b", s):
+            continue
+        # CS: Epson SureColor/Stylus Pro модели часто вида T3200/T5200/T7200 — не коды расходников
+        if re.fullmatch(r"T[3457]\d00", tok) and re.search(r"(?i)\b(?:SURECOLOR|STYLUS\s*PRO)\b", s):
+            continue
         _add(tok)
 
     # HP ink: 3ED77A / 1VK08A (не всегда ловится _RE_CODE_ANY)
@@ -385,7 +386,6 @@ def _cs_clean_compat_value(v: str) -> str:
     s = re.sub(r"(?i)\b(?:black|cyan|magenta|yellow|grey|gray)\b", " ", s)
     s = re.sub(r"(?i)\b(?:LC|LM|LK|MBK|PBK|Bk|C|M|Y|K)\b", " ", s)
     s = re.sub(r"(?i)\b\d+\s*(?:стр\.?|страниц\w*|pages?)\b", " ", s)
-    s = re.sub(r"(?i)\b\d+(?:[.,]\d+)?\s*(?:г|гр|kg|кг)\b", " ", s)
 
     s = norm_ws(s)
 
@@ -499,14 +499,6 @@ def _cs_extract_compat_candidate(text: str) -> str:
     if m:
         cand = re.split(r"(?:(?:\s*[\(\[\{])|(?:\s*[—-]\s*)|(?:\s*\.|\s*\!|\s*\?))", m.group(1), maxsplit=1)[0]
         return _cs_clean_compat_value(cand)
-    
-    # Фолбэк: иногда модели идут без 'для/for' (например: Epson ... T3000/5000/7000 ...)
-    m = _RE_COMPAT_DEVICE_HINT.search(t)
-    if m:
-        cand = t[m.start():m.start() + 180]
-        cand = re.split(r"(?:(?:\s*[\(\[\{])|(?:\s*[—-]\s*)|(?:\s*\.|\s*\!|\s*\?))", cand, maxsplit=1)[0]
-        return _cs_clean_compat_value(cand)
-
     return ""
 
 
@@ -1654,6 +1646,9 @@ def clean_params(
         vv = fix_mixed_cyr_lat(vv)
         # иногда после парсинга остаётся хвостовая пунктуация
         vv = vv.rstrip(" ,;")
+        if key.casefold() == "совместимость":
+            vv = re.sub(r"(?i)\s*Подробнее\s*$", "", vv).strip()
+            vv = re.sub(r"(?i)\s+(?:MULTI\s*PACK|MULTIPACK|2PACK\S*).*$", "", vv).strip()
         if key.casefold() == "цвет":
             vv = _normalize_color(vv)
         return vv
@@ -1709,7 +1704,11 @@ def clean_params(
         _KEYLIKE = {
             "совместимость","интерфейс","технология","сертификация","частоты","частота","разрешение",
             "габариты","размер","вес","материал","материал корпуса","питание","напряжение","мощность",
-            "модель","бренд","марка","тип","формат","объем","объём","ресурс"
+            "модель","бренд","марка","тип","формат","объем","объём","ресурс",
+            "тип чернил","технология печати","цвет печати","тип печати","цвет",
+            "wi-fi","bluetooth","фокус","секция аппарата","подача бумаги",
+            "исходный размер/тип","стандартные аксессуары","дистанционный зум","соотношение сторон","скорость сканирования",
+            "коррекция трапецеидального искажения"
         }
         k_cf = norm_ws(k).casefold().replace("ё","е")
         v_cf = norm_ws(v).casefold().replace("ё","е")
@@ -1864,6 +1863,7 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
     name_cf = (name or "").strip().casefold()
     is_vtt = oid_u.startswith("VT")
     is_copyline = oid_u.startswith("CL")
+    is_nvprint = oid_u.startswith("NP")
     out: list[tuple[str, str]] = []
     for k, v in params or []:
         kk = norm_ws(k)
@@ -1883,6 +1883,14 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
                 kk = "Партномер"
         if is_copyline and name_cf.startswith("кабель сетевой") and (k_cf == "совместимость"):
             continue
+
+        # NVPrint: нормализация 'Модель' когда ровно два кодовых токена через пробел (оба содержат цифры)
+        if is_nvprint and (kk == "Модель"):
+            toks = [t for t in vv.split() if t]
+            if len(toks) == 2 and all(re.search(r"\d", t) for t in toks):
+                if ("(" not in vv) and ("/" not in vv):
+                    vv = f"{toks[0]} ({toks[1]})"
+
         out.append((kk, vv))
     return out
 
