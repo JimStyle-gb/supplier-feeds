@@ -3631,50 +3631,54 @@ class OfferOut:
 
 # Собирает XML offer (СЫРОЙ: без enrich/clean/compat/keywords/описания-шаблона)
 # Нужен только для диагностики: "что адаптер отдал в core".
-def to_xml_raw(
-    self,
-    *,
-    currency_id: str = CURRENCY_ID_DEFAULT,
-) -> str:
-    oid = xml_escape_attr(self.oid)
-    avail = bool_to_xml(bool(self.available))
-    name = xml_escape_text(norm_ws(self.name))
-    vendor = xml_escape_text(norm_ws(self.vendor))
-    price = int(self.price) if safe_int(self.price, 0) is not None else 0
 
-    pics_xml = ""
-    for pp in (self.pictures or []):
-        pp2 = (pp or "").strip()
-        if not pp2:
-            continue
-        pics_xml += f"\n<picture>{xml_escape_text(pp2)}</picture>"
+    # Собирает XML offer в "сыром" виде (до core: без enrich/clean/compat/keywords/шаблона description).
+    # Нужно только для диагностики: сравнить docs/raw/*.yml (вход core) и docs/*.yml (выход core).
+    def to_xml_raw(
+        self,
+        *,
+        currency_id: str = CURRENCY_ID_DEFAULT,
+    ) -> str:
+        oid = xml_escape_attr(self.oid)
+        avail = bool_to_xml(bool(self.available))
 
-    # В raw не трогаем/не сортируем params — сохраняем порядок как у адаптера
-    params_xml = ""
-    for k, v in (self.params or []):
-        kk = xml_escape_attr(norm_ws(k))
-        vv = xml_escape_text(norm_ws(v))
-        if not kk or not vv:
-            continue
-        params_xml += f"\n<param name=\"{kk}\">{vv}</param>"
+        name = xml_escape_text(fix_text(norm_ws(self.name)))
+        vendor = xml_escape_text(fix_text(norm_ws(self.vendor)))
+        price = int(self.price) if safe_int(self.price, 0) is not None else 0
 
-    # В raw description оставляем как есть (только базовая нормализация текста внутри CDATA)
-    native_desc = normalize_cdata_inner(fix_text(self.native_desc))
+        # native_desc сохраняем максимально как есть (только делаем безопасным для XML)
+        native_desc = fix_text(self.native_desc or "").replace("]]>", "]]&gt;")
 
-    out = (
-        f"<offer id=\"{oid}\" available=\"{avail}\">\n"
-        f"<categoryId></categoryId>\n"
-        f"<vendorCode>{xml_escape_text(self.oid)}</vendorCode>\n"
-        f"<name>{name}</name>\n"
-        f"<price>{price}</price>"
-        f"{pics_xml}\n"
-        f"<vendor>{vendor}</vendor>\n"
-        f"<currencyId>{xml_escape_text(currency_id)}</currencyId>\n"
-        f"<description><![CDATA[\n{native_desc}]]></description>"
-        f"{params_xml}\n"
-        f"</offer>"
-    )
-    return out
+        pics_xml = ""
+        for pp in (self.pictures or []):
+            pp2 = (pp or "").strip()
+            if not pp2:
+                continue
+            pics_xml += f"\n<picture>{xml_escape_text(_cs_norm_url(pp2))}</picture>"
+
+        params_xml = ""
+        for k, v in (self.params or []):
+            kk = xml_escape_attr(norm_ws(k))
+            vv = xml_escape_text(fix_text(norm_ws(v)))
+            if not kk or not vv:
+                continue
+            params_xml += f"\n<param name=\"{kk}\">{vv}</param>"
+
+        out = (
+            f"<offer id=\"{oid}\" available=\"{avail}\">\n"
+            f"<categoryId></categoryId>\n"
+            f"<vendorCode>{xml_escape_text(self.oid)}</vendorCode>\n"
+            f"<name>{name}</name>\n"
+            f"<price>{price}</price>"
+            f"{pics_xml}\n"
+            f"<vendor>{vendor}</vendor>\n"
+            f"<currencyId>{xml_escape_text(currency_id)}</currencyId>\n"
+            f"<description><![CDATA[\n{native_desc}]]></description>"
+            f"{params_xml}\n"
+            f"</offer>"
+        )
+        return out
+
 
 # Валидирует готовый CS-фид (страховка: если что-то сломалось — падаем сборкой)
 def validate_cs_yml(xml: str) -> None:
