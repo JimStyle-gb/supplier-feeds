@@ -10,10 +10,20 @@ CS Core — общее ядро для всех поставщиков.
 - стабилизация форматирования (переводы строк, футер)
 """
 
-# core v032_try: text/SEO fixes (fix_mixed_cyr_lat для name/params, пробел после запятой, Maintance->Maintenance, укорочение без '…')
+# core v033_refactor_policy: text/SEO fixes (fix_mixed_cyr_lat для name/params, пробел после запятой, Maintance->Maintenance, укорочение без '…')
 
 from __future__ import annotations
 
+
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Iterable, Sequence
+from zoneinfo import ZoneInfo
+import os
+import hashlib
+import re
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
 def _dedup_keep_order(items: list[str]) -> list[str]:
     """CS: дедупликация со стабильным порядком (без сортировки)."""
@@ -33,18 +43,6 @@ def _dedup_keep_order(items: list[str]) -> list[str]:
 def _cs_norm_url(u: str) -> str:
     # CS: нормализуем URL картинок (пробелы ломают загрузку)
     return (u or "").replace(" ", "%20").replace("\t", "%20")
-
-from dataclasses import dataclass
-from datetime import datetime, timedelta
-from pathlib import Path
-from typing import Iterable, Sequence
-from zoneinfo import ZoneInfo
-import os
-import hashlib
-import re
-from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
-
-
 
 # Регексы для fix_text (компилируем один раз)
 _RE_SHUKO = re.compile(r"\bShuko\b", flags=re.IGNORECASE)
@@ -66,6 +64,33 @@ CS_DESC_BRIEF_MIN_FIELDS = 0  # CS: не используется
 OUTPUT_ENCODING_DEFAULT = "utf-8"
 CURRENCY_ID_DEFAULT = "KZT"
 ALMATY_TZ = "Asia/Almaty"
+
+# --- CS: политики поставщиков (чтобы точечные правки не ломали других) ---
+@dataclass(frozen=True)
+class SupplierPolicy:
+    code: str
+    always_true_available: bool = False
+    drop_desc_specs_pairs: bool = False  # AS: не переносим пары specs из native_desc в params
+
+
+def _supplier_code_from_oid(oid: str) -> str:
+    oid_u = (oid or "").upper()
+    return oid_u[:2] if len(oid_u) >= 2 else oid_u
+
+
+_POLICIES: dict[str, SupplierPolicy] = {
+    "AS": SupplierPolicy("AS", always_true_available=False, drop_desc_specs_pairs=True),
+    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=False),
+    "CL": SupplierPolicy("CL", always_true_available=True, drop_desc_specs_pairs=False),
+    "NP": SupplierPolicy("NP", always_true_available=True, drop_desc_specs_pairs=False),
+    "VT": SupplierPolicy("VT", always_true_available=True, drop_desc_specs_pairs=False),
+    "*": SupplierPolicy("*", always_true_available=False, drop_desc_specs_pairs=False),
+}
+
+
+def get_supplier_policy(oid: str) -> SupplierPolicy:
+    return _POLICIES.get(_supplier_code_from_oid(oid), _POLICIES["*"])
+
 
 # --- CS: Совместимость (только безопасно и только где нужно) ---
 _COMPAT_PARAM_NAME = "Совместимость"
@@ -3796,9 +3821,10 @@ class OfferOut:
         native_desc = fix_text(self.native_desc)
         # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
         native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
+        policy = get_supplier_policy(self.oid)
         # AlStyle: инлайновые "Основные характеристики" часто ломают пары key/value.
         # Чтобы не плодить мусорные params (80->Совместимость и т.п.), пары из desc НЕ переносим в params.
-        if (self.oid or '').upper().startswith('AS'):
+        if policy.drop_desc_specs_pairs:
             _spec_pairs = []
         native_desc = strip_service_kv_lines(native_desc)
         vendor = pick_vendor(self.vendor, name_full, self.params, native_desc, public_vendor=public_vendor)
@@ -3850,9 +3876,8 @@ class OfferOut:
         # Политика availability по поставщику:
         # - AlStyle (AS) и AkCent (AC): как у поставщика
         # - CopyLine (CL), NVPrint (NP), VTT (VT): всегда true
-        oid_u = (self.oid or "").upper()
         avail_effective = bool(self.available)
-        if oid_u.startswith(("CL", "NP", "VT")):
+        if policy.always_true_available:
             avail_effective = True
 
         out = (
