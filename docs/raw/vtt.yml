@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-23 18:42">
+<yml_catalog date="2026-02-23 19:37">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-02-23 18:42:50
+Время сборки (Алматы)                      | 2026-02-23 19:37:24
 Ближайшая сборка (Алматы)                  | 2026-03-01 05:00:00
 Сколько товаров у поставщика до фильтра    | 2983
 Сколько товаров у поставщика после фильтра | 2983
@@ -4701,13 +4701,13 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1502092052" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1502092052</vendorCode>
-<name>Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK</name>
-<price>100</price>
-<picture>https://b2b.vtt.ru/images/1502092052.jpg</picture>
+<name>Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK (уцен.срок годности)</name>
+<price>20900</price>
+<picture>https://b2b.vtt.ru/images/1502092052уц.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK]]></description>
+Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK (уцен.срок годности)]]></description>
 <param name="Каталожный номер">C2P19AE</param>
 <param name="OEM-номер">C2P19AE</param>
 </offer>
@@ -33076,13 +33076,13 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <offer id="VTCE017A" available="true">
 <categoryId></categoryId>
 <vendorCode>VTCE017A</vendorCode>
-<name>Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хроматический красный</name>
-<price>100</price>
-<picture>https://b2b.vtt.ru/images/CE017A.jpg</picture>
+<name>Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хром.красный (уцен.срок годн.)</name>
+<price>181900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хроматический красный]]></description>
+Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хром.красный (уцен.срок годн.)]]></description>
 <param name="Каталожный номер">CE017A</param>
 <param name="OEM-номер">CE017A</param>
 </offer>
@@ -33090,13 +33090,13 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <offer id="VTCE018A" available="true">
 <categoryId></categoryId>
 <vendorCode>VTCE018A</vendorCode>
-<name>Печатающая головка HP 771 для HP DJ Z6200 (О)CE018A пурпурный/желтый (уцен.срок годности)</name>
+<name>Печатающая головка HP 771 для HP DJ Z6200 (O)CE018A пурпурный/желтый</name>
 <price>100</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.vtt.ru/images/CE018A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Печатающая головка HP 771 для HP DJ Z6200 (О)CE018A пурпурный/желтый (уцен.срок годности)]]></description>
+Печатающая головка HP 771 для HP DJ Z6200 (O)CE018A пурпурный/желтый]]></description>
 <param name="Каталожный номер">CE018A</param>
 <param name="OEM-номер">CE018A</param>
 </offer>
