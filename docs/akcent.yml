@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-23 22:32">
+<yml_catalog date="2026-02-24 02:34">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-23 22:32:30
-Ближайшая сборка (Алматы)                  | 2026-02-24 02:00:00
+Время сборки (Алматы)                      | 2026-02-24 02:34:19
+Ближайшая сборка (Алматы)                  | 2026-02-25 02:00:00
 Сколько товаров у поставщика до фильтра    | 1861
 Сколько товаров у поставщика после фильтра | 149
 Сколько товаров есть в наличии (true)      | 149
@@ -2794,11 +2794,11 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Пурпурный картридж для:<br>Epson Stylus Pro 4400<br>Epson Stylus Pro 4450</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson КартриджС13Т614300 SP-4450 пурпурный</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T614300</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson KaptpиджC13T614300 SP-4450 пурпурный</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T614300</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
-<param name="Модель">Epson КартриджС13Т614300 SP-4450 пурпурный</param>
+<param name="Модель">Epson KaptpиджC13T614300 SP-4450 пурпурный</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Для бренда">Epson</param>
