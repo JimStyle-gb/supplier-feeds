@@ -87,6 +87,13 @@ _PARTNUMBER_PARAM_NAMES = {
     "part no",
     "pn",
     "код производителя",
+    # VTT/другие: часто приходят так
+    "oem-номер",
+    "oem номер",
+    "каталожный номер",
+    "кат. номер",
+    "каталожный №",
+    "кат. №",
 }
 
 # Типы, где совместимость реально уместна (расходники)
@@ -119,7 +126,7 @@ def _cs_is_consumable(name_full: str, params: list[tuple[str, str]]) -> bool:
 
 # Подсказки, что в строке есть именно модели устройств (а не коды расходника)
 _RE_COMPAT_DEVICE_HINT = re.compile(
-    r"(xerox|hp|hewlett|canon|kyocera|ricoh|konica|minolta|bizhub|epson|brother|samsung|pantum|oki|lexmark|"
+    r"(xerox|hp|hewlett|canon|kyocera|ricoh|konica|minolta|bizhub|epson|brother|samsung|pantum|oki|lexmark|sharp|panasonic|toshiba|sindoh|katyusha|катюша|fplus|f\+|avision|"
     r"laserjet|deskjet|designjet|workcentre|phaser|versalink|altalink|"
     r"taskalfa|ecosys|aficio|\bmp\b|\bhl\b|\bdcp\b|\bmfc\b|\bscx\b|\bml\b|\bclp\b|\bclx\b|"
     r"wf[-\s]?\d|l\d{3,4})",
@@ -159,6 +166,9 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
 
     # HP ink: 3ED77A / 1VK08A
     if re.fullmatch(r"\d[A-Z]{2}\d{2}[A-Z]{1,2}", t):
+        return True
+    # Canon OEM: 0287C001 / 0491C001AA и т.п.
+    if re.fullmatch(r"\d{4}[A-Z]\d{3}[A-Z]{0,2}", t):
         return True
     # HP: CF283A / CE285A / W1106A и т.п.
     if re.fullmatch(r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}", t):
@@ -214,6 +224,7 @@ _RE_CODE_ANY = re.compile(
     r"C\d{2}T[0-9A-Z]{5,8}|"      # Epson C13T...
     r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
     r"(?:CZ|CN)\d{3}[A-Z]{1,2}|"  # HP ink CZ*** / CN***AE
+    r"\d{4}[A-Z]\d{3}[A-Z]{0,2}|"      # Canon OEM 0287C001
     r"T\d{4,5}|"                  # Epson T0481...
     r"TK-?\d{3,5}[A-Z]{0,3}|"     # Kyocera
     r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}|"       # Brother
@@ -431,7 +442,7 @@ def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = Tru
     s = _RE_CODE_ANY.sub(" ", s)
     s = re.sub(r"(?i)\bC-?EXV\s*\d{1,3}\b", " ", s)
     s = re.sub(r"(?i)\b(?:NPG|GPR)\s*-\s*\d{1,3}\b", " ", s)
-    s = re.sub(r"(?i)\bC\d{4}[A-Z]{0,3}\b", " ", s)
+    s = re.sub(r"(?i)\bC\d{4}[A-Z]{1,3}\b", " ", s)  # CS: не трогаем модели техники типа C7020
     s = re.sub(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", " ", s)
     if allow_short_3dig:
         s = _RE_CODE_SHORT_3DIG.sub(" ", s)
@@ -559,6 +570,11 @@ def _cs_looks_like_device_models(s: str) -> bool:
     # CS: серии с пробелом (например: Epson L 700 / WF 2810, Ricoh MP 2014 и т.п.)
     if re.search(r"(?i)\b(?:l|wf|mp|sp|mx|mf|lbp|i[-\s]?r|hl|dcp|mfc|scx|ml|clp|clx)\s*\d{2,5}[A-ZА-Я]{0,3}\b", s0):
         return True
+
+    # CS: 3-значные модели устройств (WorkCentre 315/320 и т.п.) — допускаем только если есть серия/линейка
+    if re.search(r"(?i)\b(?:workcentre|phaser|versalink|altalink|taskalfa|ecosys|bizhub|laserjet|deskjet|designjet|officejet|pagewide|imagerunner|imageclass|aficio|\bmp\b|\bsp\b)\b", s0):
+        if re.search(r"\b\d{3}\b", s0):
+            return True
 
     return False
 
