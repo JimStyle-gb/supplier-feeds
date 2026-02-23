@@ -98,6 +98,7 @@ _COMPAT_TYPE_HINTS = (
     "драм-юнит",
     "драм-картридж",
     "фотобарабан",
+    "барабан",
     "чернила",
     "печатающая головка",
     "девелопер",
@@ -162,8 +163,22 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
     # HP: CF283A / CE285A / W1106A и т.п.
     if re.fullmatch(r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}", t):
         return True
+    # Canon T-коды (T06/T07/...) — код расходника (важно: не путать с T3000/T5200 и т.п.)
+    if re.fullmatch(r"T0\d", t):
+        return True
+
+    # ML-коды: ML-1710D3 / ML-1210D3 / ML-D1630A
+    if re.fullmatch(r"ML-?\d{3,5}D\d{1,2}", t):
+        return True
+    if re.fullmatch(r"ML-?D\d{3,5}[A-Z]{0,2}", t):
+        return True
+
     # HP/Canon: C7115A / C9730A / C8543X (но не C11... — это SKU техники)
     if re.fullmatch(r"C\d{4}[A-Z]{0,3}", t) and (not t.startswith("C11")):
+        if re.fullmatch(r"C\d{4}", t):
+            return False
+        if re.fullmatch(r"C\d{4}(?:DN|DW|DWF|FDN|FDW|MFP)$", t):
+            return False
         return True
     # Kyocera: TK-1150 / TK1150
     if re.fullmatch(r"TK-?\d{3,5}[A-Z]{0,3}", t):
@@ -299,6 +314,7 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
     ctx_hp_dj = ("designjet" in ctx) or (" hp " in f" {ctx} " and re.search(r"\bdj\b", ctx))
     ctx_eps_sc = ("surecolor" in ctx) or ("sc-" in ctx) or bool(re.search(r"(?i)\bsc-?t\d{3,5}\b", s))
     ctx_eps = ("epson" in ctx)
+    ctx_canon = bool(re.search(r"(?i)\bcanon\b|\bimagerunner\b|\bimage\s*runner\b", s))
 
     out: list[str] = []
     idx_map: dict[str, int] = {}
@@ -350,6 +366,19 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
                 continue
         _add(tok)
 
+    # ML-коды (часто приходят как HB-ML-1210D3 / ML-1710D3 / ML-D1630A)
+    for m in re.finditer(r"(?i)\b(?:HB-)?ML-?\d{3,5}D\d{1,2}\b", s):
+        tok = (m.group(0) or "").upper().replace("HB-", "")
+        _add(tok)
+    for m in re.finditer(r"(?i)\b(?:HB-)?ML-?D\d{3,5}[A-Z]{0,2}\b", s):
+        tok = (m.group(0) or "").upper().replace("HB-", "")
+        _add(tok)
+
+    # Canon T-коды (T06/T07/...) — только в канон-контексте, чтобы не путать с моделями принтеров
+    if ctx_canon:
+        for m in re.finditer(r"(?i)\bT0\d\b", s):
+            _add((m.group(0) or "").upper())
+
     # Canon: C-EXV34 / NPG-59 / GPR-53
     for m in re.finditer(r"(?i)\bC-?EXV\s*\d{1,3}\b", s):
         tok = norm_ws(m.group(0)).upper().replace(' ', '')
@@ -363,13 +392,17 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         _add(tok)
 
     # HP/Canon коды вида C7115A / C9730A / C8543X
+    # Важно: модели техники типа C2020 / C8030 / C2026MFP / C7000DN — это НЕ коды расходников.
     for m in re.finditer(r"(?i)\bC\d{4}[A-Z]{0,3}\b", s):
         tok = (m.group(0) or '').upper()
         if tok.startswith('C11'):
             continue
+        if re.fullmatch(r"C\d{4}", tok):
+            continue
+        if re.fullmatch(r"C\d{4}(?:DN|DW|DWF|FDN|FDW|MFP)$", tok):
+            continue
         _add(tok)
-
-    # HP ink: 3ED77A / 1VK08A (не всегда ловится _RE_CODE_ANY)
+# HP ink: 3ED77A / 1VK08A (не всегда ловится _RE_CODE_ANY)
     for m in re.finditer(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", s):
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
         _add(tok)
@@ -415,6 +448,8 @@ def _cs_clean_compat_value(v: str) -> str:
     s = norm_ws(s)
 
     # убираем маркетинг/служебку
+    s = re.sub(r"(?i)\bбез\s+чипа\b", " ", s)
+
     s = re.sub(r"(?i)\b(?:новинка|распродажа|акция|хит|sale|new)\b", " ", s)
 
     # убираем префиксы/служебные слова, которые часто прилетают от поставщиков
@@ -568,6 +603,8 @@ def _cs_extract_compat_candidate(text: str) -> str:
         r"(?i)\bиспользуется\s+в\s+(?:принтерах|мфу|устройствах)(?:\s+серий)?\s+([^\n\r]{3,240})",
         r"(?i)\bприменяется\s+в\s+(?:принтерах|мфу|устройствах)(?:\s+серий)?\s+([^\n\r]{3,240})",
         r"(?i)\bсовместим\w*\s+с\s+([^\n\r]{3,240})",
+        r"(?i)\bсовместимость\b\s*(?:устройства?|модели)\s+([^\n\r]{3,240})",
+        r"(?i)\bсовместимость\b\s*[:\-–—]?\s+([^\n\r]{3,240})",
         r"(?i)\bfor\s+([^\n\r]{3,240})",
     ]
 
@@ -577,7 +614,7 @@ def _cs_extract_compat_candidate(text: str) -> str:
             continue
         cand = m.group(1)
         cand = re.split(
-            r"(?:(?:\s*[\(\[\{])|(?:\s*[—-]\s*)|(?:\s*\.|\s*!|\s*\?))",
+            r"(?:(?:\s*[\(\[\{])|(?:\s+[—-]\s+)|(?:\s*\.|\s*!|\s*\?))",
             cand,
             maxsplit=1,
         )[0]
@@ -683,14 +720,22 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
         new_params.append((_COMPAT_PARAM_NAME, merged))
     else:
         # 3) Если поставщик не дал пригодную совместимость — пробуем извлечь из name/desc
-        cand = _cs_extract_compat_candidate(name_full) or _cs_extract_compat_candidate(native_desc)
-        if cand:
+        cand_list: list[str] = []
+        c1 = _cs_extract_compat_candidate(name_full)
+        if c1:
+            cand_list.append(c1)
+        c2 = _cs_extract_compat_candidate(native_desc)
+        if c2 and c2 != c1:
+            cand_list.append(c2)
+
+        for cand in cand_list:
             cand2 = _cs_strip_consumable_codes_from_text(cand, allow_short_3dig=True)
             cand2 = _cs_clean_compat_value(cand2)
             if cand2 and _cs_looks_like_device_models(cand2):
                 merged_cand = _cs_merge_compat_values([cand2])
                 if merged_cand:
                     new_params.append((_COMPAT_PARAM_NAME, merged_cand))
+                break
 
     if codes:
         joined = ", ".join(codes).strip()
