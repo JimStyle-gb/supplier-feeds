@@ -442,7 +442,14 @@ def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = Tru
     s = _RE_CODE_ANY.sub(" ", s)
     s = re.sub(r"(?i)\bC-?EXV\s*\d{1,3}\b", " ", s)
     s = re.sub(r"(?i)\b(?:NPG|GPR)\s*-\s*\d{1,3}\b", " ", s)
-    s = re.sub(r"(?i)\bC\d{4}[A-Z]{1,3}\b", " ", s)  # CS: не трогаем модели техники типа C7020
+    def _repl_c(m: re.Match) -> str:
+        tok = (m.group(0) or "")
+        t = tok.upper()
+        # Модели техники: C7020, C8020MFP, C7000DN и т.п. — оставляем
+        if re.fullmatch(r"C\d{4}(?:DN|DW|DWF|FDN|FDW|MFP)$", t):
+            return tok
+        return " "
+    s = re.sub(r"(?i)\bC\d{4}[A-Z]{1,3}\b", _repl_c, s)  # CS: не трогаем модели техники типа C7020/C8020MFP
     s = re.sub(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", " ", s)
     if allow_short_3dig:
         s = _RE_CODE_SHORT_3DIG.sub(" ", s)
@@ -726,7 +733,8 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
     # 2) Совместимость: чистим от кодов/служебки, оставляем только модели устройств
     found_clean: list[str] = []
     for vv in found_raw:
-        vv2 = _cs_strip_consumable_codes_from_text(vv, allow_short_3dig=True)
+        allow_short = _cs_looks_like_consumable_code_list(vv)
+        vv2 = _cs_strip_consumable_codes_from_text(vv, allow_short_3dig=allow_short)
         vv2 = _cs_clean_compat_value(vv2)
         if vv2 and _cs_looks_like_device_models(vv2):
             found_clean.append(vv2)
@@ -745,7 +753,8 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
             cand_list.append(c2)
 
         for cand in cand_list:
-            cand2 = _cs_strip_consumable_codes_from_text(cand, allow_short_3dig=True)
+            allow_short = _cs_looks_like_consumable_code_list(cand)
+            cand2 = _cs_strip_consumable_codes_from_text(cand, allow_short_3dig=allow_short)
             cand2 = _cs_clean_compat_value(cand2)
             if cand2 and _cs_looks_like_device_models(cand2):
                 merged_cand = _cs_merge_compat_values([cand2])
@@ -1959,7 +1968,7 @@ def clean_params(
 
         # Совместимость — объединяем, но предварительно чистим (ресурс/цвет/коды расходников)
         if key_cf == "совместимость":
-            vv = _cs_strip_consumable_codes_from_text(vv, allow_short_3dig=True)
+            vv = _cs_strip_consumable_codes_from_text(vv, allow_short_3dig=_cs_looks_like_consumable_code_list(vv))
             vv = _cs_clean_compat_value(vv)
             if not vv:
                 continue
@@ -2017,13 +2026,29 @@ def clean_params(
 def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name: str) -> list[tuple[str, str]]:
     """Точечные правила по поставщикам/категориям для <param> и блока характеристик.
     - Удаляем служебные params (Артикул добавляется/может приходить извне)
-    - VTT: удаляем Каталожный номер/Штрих-код/Аналоги, OEM-номер -> Партномер
+    - VTT: штрих-код/аналоги удаляем; OEM-номер -> Партномер; если OEM нет — Каталожный номер -> Партномер
     - CopyLine: для 'Кабель сетевой' удаляем 'Совместимость'
     """
     oid_u = (oid or "").upper()
     name_cf = (name or "").strip().casefold()
     is_vtt = oid_u.startswith("VT")
     is_copyline = oid_u.startswith("CL")
+
+    # VTT: если OEM не дали — не теряем Каталожный номер (переносим в Партномер)
+    vtt_has_oem = False
+    vtt_has_part = False
+    if is_vtt:
+        for k0, v0 in params or []:
+            kk0 = norm_ws(k0)
+            vv0 = norm_ws(v0)
+            if not kk0 or not vv0:
+                continue
+            k0_cf = kk0.casefold().replace("ё", "е")
+            if k0_cf in {"oem-номер", "oem номер", "oem", "oem номер детали", "oem номер/part number"}:
+                vtt_has_oem = True
+            if k0_cf in {"партномер", "partnumber", "part number", "pn", "part no"}:
+                vtt_has_part = True
+
     out: list[tuple[str, str]] = []
     for k, v in params or []:
         kk = norm_ws(k)
@@ -2034,15 +2059,23 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
         # глобально: не выводим служебный 'Артикул' как характеристику
         if k_cf == "артикул":
             continue
+
         if is_vtt:
             # VTT: чистим служебные параметры
-            if k_cf in {"каталожный номер", "аналоги", "аналог", "штрихкод", "штрих-код", "штрих код"}:
+            if k_cf in {"аналоги", "аналог", "штрихкод", "штрих-код", "штрих код"}:
                 continue
             # VTT: OEM-номер -> Партномер
             if k_cf in {"oem-номер", "oem номер", "oem", "oem номер детали", "oem номер/part number"}:
                 kk = "Партномер"
+            # VTT: Каталожный номер оставляем ТОЛЬКО если OEM/Партномер не дали
+            elif k_cf in {"каталожный номер", "кат. номер", "каталожный №", "кат. №"}:
+                if vtt_has_oem or vtt_has_part:
+                    continue
+                kk = "Партномер"
+
         if is_copyline and name_cf.startswith("кабель сетевой") and (k_cf == "совместимость"):
             continue
+
         out.append((kk, vv))
     return out
 
