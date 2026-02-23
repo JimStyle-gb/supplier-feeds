@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-22 21:07">
+<yml_catalog date="2026-02-23 12:02">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-02-22 21:07:21
+Время сборки (Алматы)                      | 2026-02-23 12:02:14
 Ближайшая сборка (Алматы)                  | 2026-03-01 03:00:00
 Сколько товаров у поставщика до фильтра    | 1217
 Сколько товаров у поставщика после фильтра | 1196
@@ -17860,7 +17860,7 @@ i-SENSYS LBP162dw, MF269dw, MF267dw, MF264dw.
 <offer id="CL104815" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104815</vendorCode>
-<name>Картридж для HP CE410A (305A) Black оригинал</name>
+<name>Картридж HP CE410A (305A) Black оригинал</name>
 <price>62900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE410A1.jpg</picture>
 <vendor></vendor>
@@ -17880,7 +17880,7 @@ i-SENSYS LBP162dw, MF269dw, MF267dw, MF264dw.
 <offer id="CL104817" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104817</vendorCode>
-<name>Картридж для HP CE411A (305A) Cyan оригинал</name>
+<name>Картридж HP CE411A (305A) Cyan оригинал</name>
 <price>91900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE411A1.jpg</picture>
 <vendor></vendor>
@@ -17900,7 +17900,7 @@ i-SENSYS LBP162dw, MF269dw, MF267dw, MF264dw.
 <offer id="CL104818" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104818</vendorCode>
-<name>Картридж для HP CE412A (305A) Yellow оригинал</name>
+<name>Картридж HP CE412A (305A) Yellow оригинал</name>
 <price>91900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE412A1.jpg</picture>
 <vendor></vendor>
@@ -17920,7 +17920,7 @@ i-SENSYS LBP162dw, MF269dw, MF267dw, MF264dw.
 <offer id="CL104819" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104819</vendorCode>
-<name>Картридж для HP CE413A Magenta оригинал</name>
+<name>Картридж HP CE413A Magenta оригинал</name>
 <price>91900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE413A1.jpg</picture>
 <vendor></vendor>
