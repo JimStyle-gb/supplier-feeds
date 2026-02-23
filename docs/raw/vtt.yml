@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-23 20:55">
+<yml_catalog date="2026-02-23 22:12">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-02-23 20:55:05
+Время сборки (Алматы)                      | 2026-02-23 22:12:09
 Ближайшая сборка (Алматы)                  | 2026-03-01 05:00:00
 Сколько товаров у поставщика до фильтра    | 2983
 Сколько товаров у поставщика после фильтра | 2983
@@ -19887,13 +19887,13 @@ LE Принт-картридж SP200HE Ricoh серий SP20x/21x, 2,6К (O) 407
 <offer id="VT9890072" available="true">
 <categoryId></categoryId>
 <vendorCode>VT9890072</vendorCode>
-<name>Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A (уц. срок годности)</name>
-<price>80900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<name>Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/9890072.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A (уц. срок годности)]]></description>
+Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A]]></description>
 <param name="Каталожный номер">C9372A</param>
 <param name="OEM-номер">C9372A</param>
 </offer>
