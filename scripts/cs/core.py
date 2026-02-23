@@ -1496,6 +1496,8 @@ _LAT_TO_CYR = str.maketrans(
         "t": "т",
         "x": "х",
         "y": "у",
+        "I": "И",
+        "i": "и",
     }
 )
 
@@ -1508,12 +1510,14 @@ def fix_mixed_cyr_lat(s: str) -> str:
     if not t:
         return t
 
-    def _fix_letters(seq: str) -> str:
+    def _fix_letters(seq: str, *, prefer_lat: bool = False) -> str:
         if not seq:
             return seq
         if re.search(r"[A-Za-z]", seq) and re.search(r"[А-Яа-яЁё]", seq):
             cyr = len(re.findall(r"[А-Яа-яЁё]", seq))
             lat = len(re.findall(r"[A-Za-z]", seq))
+            if prefer_lat:
+                return seq.translate(_CYR_TO_LAT)
             if cyr >= lat:
                 return seq.translate(_LAT_TO_CYR)
             return seq.translate(_CYR_TO_LAT)
@@ -1525,13 +1529,18 @@ def fix_mixed_cyr_lat(s: str) -> str:
         if re.search(r"\d", w) and re.search(r"[A-Za-z]", w) and re.search(r"[А-Яа-яЁё]", w):
             cyr = len(re.findall(r"[А-Яа-яЁё]", w))
             lat = len(re.findall(r"[A-Za-z]", w))
-            if lat >= 2 and cyr <= 2:
+            # если это похоже на единый код (без '/' и '-') — исправляем 1-2 кириллических двойника (CB540А -> CB540A)
+            if lat >= 2 and cyr <= 2 and ("/" not in w) and ("-" not in w):
                 return w.translate(_CYR_TO_LAT)
-            if cyr >= 2 and lat <= 2:
-                return w.translate(_LAT_TO_CYR)
-            return w
         # Иначе — аккуратно чиним смешанные последовательности букв
-        return _RE_LETTER_SEQ.sub(lambda mm: _fix_letters(mm.group(0)), w)
+        def _fix_seq(mm: re.Match[str]) -> str:
+            seq = mm.group(0)
+            # Предпочитаем латиницу ТОЛЬКО если смешанная последовательность прилегает к цифрам (iВ4040 / 12Кi)
+            prev = w[mm.start() - 1] if mm.start() > 0 else ""
+            nxt = w[mm.end()] if mm.end() < len(w) else ""
+            prefer_lat = (prev.isdigit() or nxt.isdigit())
+            return _fix_letters(seq, prefer_lat=prefer_lat)
+        return _RE_LETTER_SEQ.sub(_fix_seq, w)
 
     return _RE_WORDLIKE.sub(_sub, t)
 
