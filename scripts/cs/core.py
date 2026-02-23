@@ -10,7 +10,7 @@ CS Core — общее ядро для всех поставщиков.
 - стабилизация форматирования (переводы строк, футер)
 """
 
-# core v031_try: compat fixes (xx/x модели), Xerox 3-digit серии, защита LBP-312x от вырезания
+# core v032_try: text/SEO fixes (fix_mixed_cyr_lat для name/params, пробел после запятой, Maintance->Maintenance, укорочение без '…')
 
 from __future__ import annotations
 
@@ -910,6 +910,8 @@ def norm_ws(s: str) -> str:
 def normalize_offer_name(name: str) -> str:
     # CS: лёгкая типографика имени (без изменения смысла)
     s = norm_ws(name)
+    # CS: орфография (частая опечатка)
+    s = re.sub(r"(?i)\bmaintance\b", "Maintenance", s)
     if not s:
         return ""
     # "дляPantum" -> "для Pantum"
@@ -922,12 +924,17 @@ def normalize_offer_name(name: str) -> str:
     s = re.sub(r"(?i),\s*color\b", ", Color", s)
     # убрать пробелы перед знаками
     s = re.sub(r"\s+([,.;:!?])", r"\1", s)
+    # CS: добавить пробел после запятой/точки с запятой (если дальше буква)
+    s = re.sub(r",(?=[A-Za-zА-Яа-яЁё])", ", ", s)
+    s = re.sub(r";(?=[A-Za-zА-Яа-яЁё])", "; ", s)
     # убрать лишние пробелы внутри скобок
     s = re.sub(r"\(\s+", "(", s)
     s = re.sub(r"\s+\)", ")", s)
     # хвостовая запятая
     s = re.sub(r",\s*$", "", s)
     s = re.sub(r"\s{2,}", " ", s).strip()
+    # CS: чинить смешение кириллицы/латиницы в имени
+    s = fix_mixed_cyr_lat(s)
     return s
 
 
@@ -1216,7 +1223,7 @@ def _shorten_smart_name(name: str, params: list[tuple[str, str]], max_len: int) 
         max_items -= 1
 
     # Фоллбэк: просто режем по границе и добавляем "…"
-    return _truncate_text(name, max_len, suffix="…")
+    return _truncate_text(name, max_len, suffix=" и др.")
 
 
 def enforce_name_policy(oid: str, name: str, params: list[tuple[str, str]]) -> str:
@@ -1858,6 +1865,8 @@ def clean_params(
         # colon-in-key: иногда поставщик пишет так: "Совместимость: HP ..." (значение попало в имя)
         raw_k = norm_ws(k)
         raw_v = norm_ws(v)
+        raw_k = fix_mixed_cyr_lat(raw_k)
+        raw_v = fix_mixed_cyr_lat(raw_v)
         # Артефакт тех.спеков: номера разделов/строк вида "2.09 ..." — это мусор, не превращаем в param
         if re.match(r"^\d+\.\d+\s", raw_k) or re.match(r"^\d+\.\s", raw_k):
             continue
@@ -3795,7 +3804,7 @@ class OfferOut:
         vendor = pick_vendor(self.vendor, name_full, self.params, native_desc, public_vendor=public_vendor)
 
         # тройное обогащение: params + из описания
-        params = list(self.params)
+        params = [(fix_mixed_cyr_lat(k), fix_mixed_cyr_lat(v)) for (k, v) in (self.params or [])]
         if _spec_pairs:
             params.extend(_spec_pairs)
         enrich_params_from_desc(params, native_desc)
