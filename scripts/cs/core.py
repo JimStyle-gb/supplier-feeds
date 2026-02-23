@@ -10,6 +10,8 @@ CS Core — общее ядро для всех поставщиков.
 - стабилизация форматирования (переводы строк, футер)
 """
 
+# core v031_try: compat fixes (xx/x модели), Xerox 3-digit серии, защита LBP-312x от вырезания
+
 from __future__ import annotations
 
 
@@ -438,6 +440,16 @@ def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = Tru
     if not s:
         return ""
     s = _cs_expand_grouped_consumable_codes(s)
+    # CS v031: защищаем модели устройств с суффиксом x/xx (LBP-312x, FC-2xx/PC-7xx и т.п.)
+    # чтобы их не вырезало как "короткие коды" (пример: 312X может выглядеть как 051H/126A).
+    keep: dict[str, str] = {}
+    def _keep(m: re.Match) -> str:
+        key = f"__CS_KEEP_{len(keep)}__"
+        keep[key] = (m.group(0) or "")
+        return key
+    s = re.sub(r"(?i)\b(?:LBP|MF)\s*[-\s]*\d{2,4}x\b", _keep, s)
+    s = re.sub(r"(?i)\b(?:LBP|MF)\s*[-\s]*\d{1,4}xx\b", _keep, s)
+    s = re.sub(r"(?i)\b(?:FC|PC)\s*[-\s]*\d{1,3}xx\b", _keep, s)
     s = _RE_CODE_NUM_SIGN.sub(" ", s)
     s = _RE_CODE_ANY.sub(" ", s)
     s = re.sub(r"(?i)\bC-?EXV\s*\d{1,3}\b", " ", s)
@@ -453,6 +465,9 @@ def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = Tru
     s = re.sub(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", " ", s)
     if allow_short_3dig:
         s = _RE_CODE_SHORT_3DIG.sub(" ", s)
+    if keep:
+        for k, v in keep.items():
+            s = s.replace(k, v)
     return norm_ws(s)
 
 
@@ -574,16 +589,23 @@ def _cs_looks_like_device_models(s: str) -> bool:
     if len(device_tokens) >= 1:
         return True
 
-    # CS: серии с пробелом (например: Epson L 700 / WF 2810, Ricoh MP 2014 и т.п.)
-    if re.search(r"(?i)\b(?:l|wf|mp|sp|mx|mf|lbp|i[-\s]?r|hl|dcp|mfc|scx|ml|clp|clx)\s*\d{2,5}[A-ZА-Я]{0,3}\b", s0):
+    # CS: серии с пробелом/дефисом (например: Epson L 700 / WF 2810, Ricoh MP 2014, Canon LBP-312x, FC-2xx и т.п.)
+    if re.search(r"(?i)\b(?:l|wf|mp|sp|mx|mf|lbp|fc|pc|i[-\s]?r|hl|dcp|mfc|scx|ml|clp|clx)\s*[-\s]*\d{1,5}(?:x{1,2})?[A-ZА-Я]{0,3}\b", s0):
         return True
 
     # CS: 3-значные модели устройств (WorkCentre 315/320 и т.п.) — допускаем только если есть серия/линейка
-    if re.search(r"(?i)\b(?:workcentre|phaser|versalink|altalink|taskalfa|ecosys|bizhub|laserjet|deskjet|designjet|officejet|pagewide|imagerunner|imageclass|aficio|\bmp\b|\bsp\b)\b", s0):
+    if re.search(r"(?i)\b(?:workcentre|phaser|versalink|altalink|docucolor|color|taskalfa|ecosys|bizhub|laserjet|deskjet|designjet|officejet|pagewide|imagerunner|imageclass|aficio|\bmp\b|\bsp\b)\b", s0):
         if re.search(r"\b\d{3}\b", s0):
             return True
 
+    # CS v031: Xerox серии, где указаны только 3-значные номера (205/210/215; 550/560/570 и т.п.)
+    if re.search(r"(?i)\bxerox\b", s0):
+        nums = re.findall(r"\b\d{3}\b", s0)
+        if len(nums) >= 2:
+            return True
+
     return False
+
 
 
 def _cs_extract_compat_candidate(text: str) -> str:
