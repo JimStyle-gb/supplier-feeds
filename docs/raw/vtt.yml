@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-22 20:54">
+<yml_catalog date="2026-02-23 11:46">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-02-22 20:54:51
+Время сборки (Алматы)                      | 2026-02-23 11:46:38
 Ближайшая сборка (Алматы)                  | 2026-03-01 05:00:00
 Сколько товаров у поставщика до фильтра    | 2983
 Сколько товаров у поставщика после фильтра | 2983
@@ -4701,13 +4701,13 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1502092052" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1502092052</vendorCode>
-<name>Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK (уцен.срок годности)</name>
-<price>20900</price>
-<picture>https://b2b.vtt.ru/images/1502092052уц.jpg</picture>
+<name>Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/1502092052.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK (уцен.срок годности)]]></description>
+Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK]]></description>
 <param name="Каталожный номер">C2P19AE</param>
 <param name="OEM-номер">C2P19AE</param>
 </offer>
@@ -8828,6 +8828,13 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <name>Картридж NetProduct (N-CF283X) для HP LJ Pro M225MFP/M201/Canon №737, 2,2K</name>
 <price>5900</price>
 <picture>https://b2b.vtt.ru/images/22013620.jpg</picture>
+<picture>https://b2b.vtt.ru/images/22013620_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/22013620_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/22013620_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/22013620_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/22013620_6.jpg</picture>
+<picture>https://b2b.vtt.ru/images/22013620_7.jpg</picture>
+<picture>https://b2b.vtt.ru/images/22013620_8.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -19880,13 +19887,13 @@ LE Принт-картридж SP200HE Ricoh серий SP20x/21x, 2,6К (O) 407
 <offer id="VT9890072" available="true">
 <categoryId></categoryId>
 <vendorCode>VT9890072</vendorCode>
-<name>Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A (уц. срок годности)</name>
-<price>80900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<name>Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/9890072.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A (уц. срок годности)]]></description>
+Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A]]></description>
 <param name="Каталожный номер">C9372A</param>
 <param name="OEM-номер">C9372A</param>
 </offer>
@@ -43030,7 +43037,11 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <vendorCode>VTHB-069H-BK</vendorCode>
 <name>Картридж Hi-Black (HB-069H BK) Canon i-Sensys LBP-673Cdw/MF752Cdw/MF754Cdw, Bk, 7,6K</name>
 <price>12900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-BK.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-BK_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-BK_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-BK_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-BK_5.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -43046,7 +43057,11 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <vendorCode>VTHB-069H-C</vendorCode>
 <name>Картридж Hi-Black (HB-069H C) Canon i-Sensys LBP-673Cdw/MF752Cdw/MF754Cdw, C, 5,5K</name>
 <price>11900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-C.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-C_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-C_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-C_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-C_5.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -43062,7 +43077,11 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <vendorCode>VTHB-069H-M</vendorCode>
 <name>Картридж Hi-Black (HB-069H M) Canon i-Sensys LBP-673Cdw/MF752Cdw/MF754Cdw, M, 5,5K</name>
 <price>11900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-M.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-M_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-M_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-M_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-M_5.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -43078,7 +43097,11 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <vendorCode>VTHB-069H-Y</vendorCode>
 <name>Картридж Hi-Black (HB-069H Y) Canon i-Sensys LBP-673Cdw/MF752Cdw/MF754Cdw, Y, 5,5K</name>
 <price>11900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-Y.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-Y_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-Y_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-Y_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-069H-Y_5.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -46167,7 +46190,14 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <vendorCode>VTN-W1360A</vendorCode>
 <name>Картридж NetProduct (N-W1360A) для HP LaserJet M211/MFP M236, 1,15K</name>
 <price>6900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360A.jpg</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360A_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360A_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360A_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360A_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360A_6.jpg</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360A_7.jpg</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360A_8.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -46183,7 +46213,12 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <vendorCode>VTN-W1360X</vendorCode>
 <name>Картридж NetProduct (N-W1360X) для HP LaserJet M211/MFP M236, 2,6K</name>
 <price>6900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360X.jpg</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360X_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360X_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360X_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360X_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/N-W1360X_6.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
