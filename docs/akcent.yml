@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-24 09:47">
+<yml_catalog date="2026-02-24 10:42">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-24 09:47:51
+Время сборки (Алматы)                      | 2026-02-24 10:42:36
 Ближайшая сборка (Алматы)                  | 2026-02-25 02:00:00
-Сколько товаров у поставщика до фильтра    | 1868
+Сколько товаров у поставщика до фильтра    | 1869
 Сколько товаров у поставщика после фильтра | 149
 Сколько товаров есть в наличии (true)      | 149
 Сколько товаров нет в наличии (false)      | 0
@@ -1773,38 +1773,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Чернила Epson C13T01L14A EcoTank MX1XX Series Black Bottle L 40 ml, Чернила, C13T01L14A, EcoTank, MX1XX, Series, Black, Bottle, 40, ml, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC13T03P14A" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T03P14A</vendorCode>
-<name>Чернила Epson C13T03P14A EcoTank MX1XX Series Black Bottle XL</name>
-<price>13900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/a54/x2lxblrbufmcvalac6ro2yp0b8w5p06x.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Чернила Epson C13T03P14A EcoTank MX1XX Series Black Bottle XL</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Тип: Фабрика печати (чернила EPSON); Производитель: Epson; Модель: Epson Чернила EcoTank MX1XX Series Black Bottle XL</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила EcoTank MX1XX Series Black Bottle XL</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson M1100, Epson M1120</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T03P14A</li><li><strong>Страна происхождения:</strong> Индонезия. Филиппин/Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson Чернила EcoTank MX1XX Series Black Bottle XL</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Совместимость">Epson M1100, Epson M1120</param>
-<param name="Цвет">Черный</param>
-<param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T03P14A</param>
-<param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Чернила Epson C13T03P14A EcoTank MX1XX Series Black Bottle XL, Чернила, C13T03P14A, EcoTank, MX1XX, Series, Black, Bottle, XL, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC13T03V14A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03V14A</vendorCode>
@@ -2794,11 +2762,11 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Пурпурный картридж для:<br>Epson Stylus Pro 4400<br>Epson Stylus Pro 4450</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson KaptpиджC13T614300 SP-4450 пурпурный</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T614300</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson КартриджС13Т614300 SP-4450 пурпурный</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T614300</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
-<param name="Модель">Epson KaptpиджC13T614300 SP-4450 пурпурный</param>
+<param name="Модель">Epson КартриджС13Т614300 SP-4450 пурпурный</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Для бренда">Epson</param>
@@ -4790,6 +4758,32 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Проектор универсальный Epson EF-21R розовый кварц, Проектор, универсальный, EF-21R, розовый, кварц, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
+<offer id="ACV11HB38140" available="true">
+<categoryId></categoryId>
+<vendorCode>ACV11HB38140</vendorCode>
+<name>Проектор универсальный Epson EF-22B</name>
+<price>677900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Проектор универсальный Epson EF-22B</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Технологии<br>Проекционная система<br>Технология 3LCD, жидкокристаллический затвор RGB<br>ЖК-панель<br>0,62 дюйма<br>Образ<br>Цветной световой поток<br>1.000 люмен - 500 люмен (эконом) В соответствии с IDMS15.4<br>Выход белого света<br>Повышение разрешения<br>Full HD<br>Aspect Ratio<br>16:9<br>Contrast Ratio<br>Light source<br>Laser<br>Laser Light source<br>20.000 hours Durability High, 20.000 hours Durability Medium, 20.000 hours Durability Eco<br>Keystone Correction<br>Auto<br>Colour Video Processing<br>8 Bits<br>2D Vertical Refresh Rate<br>200 Hz - 240 Hz<br>Colour Reproduction<br>16.77 million colours<br>HDR support<br>HDR10<br>Optical<br>Throw Ratio<br>1,00 - 1,82:1<br>Lens<br>Optical<br>Screen Size<br>30 inches - 150 inches<br>Projection Distance Wide/Tele<br>1,33 m ( 60 inch screen<br>Projection Lens F Number<br>2<br>Projection Lens Focal Length<br>13,9 mm<br>Projection Lens Focus<br>Motorized<br>Offset<br>10 : 1<br>Connectivity<br>Interfaces<br>USB 2.0-A, USB 2.0 Mini-B, Jack plug out, HDMI ARC, HDMI (HDCP 2.3)<br>Google TV<br>Yes<br>Advanced Features<br>2D Colour Modes<br>Dynamic, Natural, Cinema, Vivid<br>Other features<br>Automatic keystone correction, Built-in speaker, Chromecast, Google Search, Horizontal and vertical keystone correction, Instant on/off, Quick Corner<br>Video Color Modes<br>Cinema, Dynamic, Natural, Vivid<br>General…</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Цвет:</strong> Белый</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Epson Proj</param>
+<param name="Тип">Проектор универсальный</param>
+<param name="Цвет">Белый</param>
+<keywords>Epson, Проектор универсальный Epson EF-22B, Проектор, универсальный, EF-22B, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
 <offer id="ACV11HB51042" available="true">
 <categoryId></categoryId>
 <vendorCode>ACV11HB51042</vendorCode>
@@ -4806,7 +4800,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Epson EB-E24 — это компактный и надёжный 3LCD-проектор, созданный для проведения ярких презентаций, обучающих сессий и семинаров. Благодаря сочетанию высокой яркости и контрастности, устройство обеспечивает чёткое изображение даже при дневном освещении.</p>
+<p>Epson EB-E24 — это компактный и надёжный 3LСD-проектор, созданный для проведения ярких презентаций, обучающих сессий и семинаров. Благодаря сочетанию высокой яркости и контрастности, устройство обеспечивает чёткое изображение даже при дневном освещении.</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Разрешение:</strong> XGA (1024×768)</li><li><strong>Вес:</strong> ~2,4 кг</li><li><strong>Встроенный динамик:</strong> 5 Вт</li><li><strong>Высокая яркость:</strong> работает даже при свете</li><li><strong>Интерфейсы:</strong> HDMI, USB-A, USB-B, VGA, аудио</li><li><strong>Контрастность:</strong> 16 000:1</li><li><strong>Коррекция трапеции:</strong> Вертикальная и горизонтальная</li><li><strong>Лёгкий и портативный:</strong> удобно носить с собой</li><li><strong>Преимущества:</strong> Отлично подходит для офисных задач и учебных аудиторий</li><li><strong>Проекционное расстояние 1,77:</strong> 2,4 м (на 80")</li><li><strong>Простое подключение через HDMI и USB:</strong> Встроенный динамик позволяет обойтись без внешней акустики</li><li><strong>Ресурс лампы:</strong> до 12 000 ч (в экономичном режиме)</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Яркость:</strong> 3600 люмен</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>

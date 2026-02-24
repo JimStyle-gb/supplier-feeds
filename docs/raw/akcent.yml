@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-24 09:47">
+<yml_catalog date="2026-02-24 10:42">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-24 09:47:51
+Время сборки (Алматы)                      | 2026-02-24 10:42:36
 Ближайшая сборка (Алматы)                  | 2026-02-25 02:00:00
-Сколько товаров у поставщика до фильтра    | 1868
+Сколько товаров у поставщика до фильтра    | 1869
 Сколько товаров у поставщика после фильтра | 149
 Сколько товаров есть в наличии (true)      | 149
 Сколько товаров нет в наличии (false)      | 0
@@ -2714,28 +2714,6 @@ Epson L3100	C11CG88401
 <param name="Для бренда">Epson</param>
 </offer>
 
-<offer id="ACC13T03P14A" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T03P14A</vendorCode>
-<name>Чернила Epson C13T03P14A EcoTank MX1XX Series Black Bottle XL</name>
-<price>13900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/a54/x2lxblrbufmcvalac6ro2yp0b8w5p06x.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Epson M1100	C11CG95405		
- 	Epson M1120	C11CG96405	
- 	Epson M2140-C11CG27405]]></description>
-<param name="Производитель">Epson</param>
-<param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
-<param name="Цвет">черный</param>
-<param name="Модель">Epson Чернила EcoTank MX1XX Series Black Bottle XL</param>
-<param name="Гарантия">3</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Тип печати">струйная</param>
-<param name="Для бренда">Epson</param>
-</offer>
-
 <offer id="ACC13T03V14A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03V14A</vendorCode>
@@ -3424,7 +3402,7 @@ Epson Stylus Pro 4450]]></description>
 <param name="Страна происхождения">Китай</param>
 <param name="Производитель">Epson</param>
 <param name="Цвет">пурпурный</param>
-<param name="Модель">Epson KaptpиджC13T614300 SP-4450 пурпурный</param>
+<param name="Модель">Epson КартриджС13Т614300 SP-4450 пурпурный</param>
 <param name="Гарантия">3</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
@@ -5485,6 +5463,102 @@ Full HD]]></description>
 <param name="Гарантия">24 мес</param>
 </offer>
 
+<offer id="ACV11HB38140" available="true">
+<categoryId></categoryId>
+<vendorCode>ACV11HB38140</vendorCode>
+<name>Проектор универсальный Epson EF-22B</name>
+<price>677900</price>
+<vendor>Epson Proj</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Технологии
+Проекционная система
+Технология 3LCD, жидкокристаллический затвор RGB
+ЖК-панель
+0,62 дюйма
+Образ
+Цветной световой поток
+1.000 люмен - 500 люмен (эконом) В соответствии с IDMS15.4
+Выход белого света
+Повышение разрешения
+Full HD
+Aspect Ratio
+16:9
+Contrast Ratio
+Light source
+Laser
+Laser Light source
+20.000 hours Durability High, 20.000 hours Durability Medium, 20.000 hours Durability Eco
+Keystone Correction
+Auto
+Colour Video Processing
+8 Bits
+2D Vertical Refresh Rate
+200 Hz - 240 Hz
+Colour Reproduction
+16.77 million colours
+HDR support
+HDR10
+Optical
+Throw Ratio
+1,00 - 1,82:1
+Lens
+Optical
+Screen Size
+30 inches - 150 inches
+Projection Distance Wide/Tele
+1,33 m ( 60 inch screen
+Projection Lens F Number
+2
+Projection Lens Focal Length
+13,9 mm
+Projection Lens Focus
+Motorized
+Offset
+10 : 1
+Connectivity
+Interfaces
+USB 2.0-A, USB 2.0 Mini-B, Jack plug out, HDMI ARC, HDMI (HDCP 2.3)
+Google TV
+Yes
+Advanced Features
+2D Colour Modes
+Dynamic, Natural, Cinema, Vivid
+Other features
+Automatic keystone correction, Built-in speaker, Chromecast, Google Search, Horizontal and vertical keystone correction, Instant on/off, Quick Corner
+Video Color Modes
+Cinema, Dynamic, Natural, Vivid
+General
+Power consumption
+108 Watt (Normal Peak-mode), 78 Watt (Eco Peak-Mode), 
+Supply Voltage
+AC 100 V - 240 V, 50 Hz - 60 Hz
+Product dimensions
+236 x 191 x 193 mm (Width x Depth x Height)
+Product weight
+3 kg
+Noise Level
+Normal: 22 dB (A) - Economy: 18 dB (A)
+Supported Temperature
+Operation 5° C - 35° C, Storage -10° C - 60° C
+Supported Humidity
+Operation 20% - 80%, Storage -10% - 60%
+Loudspeaker
+5 Watt, Stereo: Stereo
+Room Type / Application
+Gaming, Home Cinema, Home Office, Home Photo, Sports, Streaming, TV & Box sets
+Positioning
+Desktop, Floor, TV Cabinet
+Colour
+Black
+Other
+Warranty
+60 months Carry in or 12.000 h]]></description>
+<param name="Производитель">Epson Proj</param>
+<param name="Тип">Проектор универсальный</param>
+<param name="Гарантия">24</param>
+</offer>
+
 <offer id="ACV11HB51042" available="true">
 <categoryId></categoryId>
 <vendorCode>ACV11HB51042</vendorCode>
@@ -5494,7 +5568,7 @@ Full HD]]></description>
 <vendor>Epson Proj</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Epson EB-E24 — это компактный и надёжный 3LCD-проектор, созданный для проведения ярких презентаций, обучающих сессий и семинаров. Благодаря сочетанию высокой яркости и контрастности, устройство обеспечивает чёткое изображение даже при дневном освещении.
+Epson EB-E24 — это компактный и надёжный 3LСD-проектор, созданный для проведения ярких презентаций, обучающих сессий и семинаров. Благодаря сочетанию высокой яркости и контрастности, устройство обеспечивает чёткое изображение даже при дневном освещении.
 
  Основные характеристики:
 Параметр	Значение
