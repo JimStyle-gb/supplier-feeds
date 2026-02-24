@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-24 17:26">
+<yml_catalog date="2026-02-24 19:54">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-02-24 17:26:09
+Время сборки (Алматы)                      | 2026-02-24 19:54:12
 Ближайшая сборка (Алматы)                  | 2026-03-01 05:00:00
 Сколько товаров у поставщика до фильтра    | 2983
 Сколько товаров у поставщика после фильтра | 2983
@@ -4701,13 +4701,13 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1502092052" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1502092052</vendorCode>
-<name>Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK (уцен.срок годности)</name>
-<price>20900</price>
-<picture>https://b2b.vtt.ru/images/1502092052уц.jpg</picture>
+<name>Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/1502092052.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK (уцен.срок годности)]]></description>
+Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK]]></description>
 <param name="Каталожный номер">C2P19AE</param>
 <param name="OEM-номер">C2P19AE</param>
 </offer>
@@ -6194,7 +6194,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT1T02ND0NL0</vendorCode>
 <name>Тонер-картридж TK-8515K Kyocera 5052ci/6052ci, 30К (O) чёрный 1T02ND0NL0</name>
-<price>100</price>
+<price>67900</price>
 <picture>https://b2b.vtt.ru/images/1T02ND0NL0.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -9379,7 +9379,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT2886C001</vendorCode>
 <name>Картридж PFI-120C Canon TM-200/205/300/305, 130 мл (O) cyan 2886C001</name>
-<price>100</price>
+<price>55900</price>
 <picture>https://b2b.vtt.ru/images/2886C001.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -10546,7 +10546,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT302V693020</vendorCode>
 <name>302V693020/DK-7125 Драм-юнит Kyocera TASKalfa 3212i/4012i (O)</name>
-<price>100</price>
+<price>221900</price>
 <picture>https://b2b.vtt.ru/images/302V693020.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -10624,7 +10624,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT30959</vendorCode>
 <name>Картридж HP LJ700MFP/M712 (O) CF214X, 17.5K</name>
-<price>251900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/30959.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -15836,7 +15836,7 @@ CFRM-0021RS71 Блок барабана (без барабана) Sharp AR-5516/
 <categoryId></categoryId>
 <vendorCode>VT88880124</vendorCode>
 <name>Картридж PFI-107M Canon iPF680/685/780/785, 130ml (O) пурпурный 6707B001</name>
-<price>48900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/88880124.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -38727,7 +38727,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET471013</vendorCode>
 <name>Драм-юнит (CET) Brother HL-L5000D/L5100DN/L5200DW/DCP-L5500DN/MFC-L5700DN/L6900DW CET471013/DR-3400</name>
-<price>16900</price>
+<price>15900</price>
 <picture>https://b2b.vtt.ru/images/CET471013.jpg</picture>
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
@@ -38849,7 +38849,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET471045P</vendorCode>
 <name>Драм-юнит DR-316K (c двухслойным ракелем) (CET) Konica Minolta BizHub C250i/C300i Black CET471045P</name>
-<price>84900</price>
+<price>76900</price>
 <picture>https://b2b.vtt.ru/images/CET471045P.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -38865,7 +38865,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET471046P</vendorCode>
 <name>Драм-юнит DR-316 (c двухслойным ракелем) (CET) KONICA MINOLTA Bizhub C250i/C300i/C360 CMY CET471046P</name>
-<price>116900</price>
+<price>111900</price>
 <picture>https://b2b.vtt.ru/images/CET471046P.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -39051,7 +39051,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET471064</vendorCode>
 <name>Драм-юнит DK-170/DK-150 (CET) KYOCERA ECOSYS M2035dn (универсальный) CET471064</name>
-<price>34900</price>
+<price>33900</price>
 <picture>https://b2b.vtt.ru/images/CET471064.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -39920,7 +39920,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET5674U</vendorCode>
 <name>Драм-юнит C-EXV50 (CET) Canon iR1435/1435i/1435iF/1435P (30000 стр.) CET5674U/9437B002</name>
-<price>31900</price>
+<price>29900</price>
 <picture>https://b2b.vtt.ru/images/CET5674U.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -41026,7 +41026,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET7367</vendorCode>
 <name>Драм-юнит DU-102C/DU-104 CET Konica Minolta BizHub Pro C5500/C5501/C6500/C6501 230К CET7367/A0400Y0</name>
-<price>84900</price>
+<price>82900</price>
 <picture>https://b2b.vtt.ru/images/CET7367.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -41070,7 +41070,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET7370P</vendorCode>
 <name>Драм-юнит (c двухслойным ракелем) для KONICA MINOLTA Bizhub 308 (CET) Black, CET7370P</name>
-<price>52900</price>
+<price>51900</price>
 <picture>https://b2b.vtt.ru/images/CET7370P.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -41086,7 +41086,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET7371P</vendorCode>
 <name>Драм-юнит (c двухслойным ракелем) DR-313 для KONICA MINOLTA Bizhub C258 (CET) CMY, CET7371P</name>
-<price>61900</price>
+<price>60900</price>
 <picture>https://b2b.vtt.ru/images/CET7371P.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -41117,7 +41117,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET7373U</vendorCode>
 <name>Драм-юнит (DR-214K/A85Y0RD) (CET) Konica Minolta Bizhub C227/287, Bk, 105К, CET7373U</name>
-<price>48900</price>
+<price>47900</price>
 <picture>https://b2b.vtt.ru/images/CET7373U.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -42107,7 +42107,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCF230X</vendorCode>
 <name>Картридж 30X для HP LaserJet Pro M203/MFP M227, 3,5К (O) CF230X</name>
-<price>100</price>
+<price>98900</price>
 <picture>https://b2b.vtt.ru/images/CF230X.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
