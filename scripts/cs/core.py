@@ -1544,6 +1544,9 @@ _RE_MIXED_HYPHEN_LAT_CYR = re.compile(r"\b([A-Za-z]{2,}[A-Za-z0-9]*)[\-–—]([
 _RE_MIXED_HYPHEN_CYR_LAT = re.compile(r"\b([А-Яа-яЁё]{2,})[\-–—]([A-Za-z]{2,}[A-Za-z0-9]*)\b")
 _RE_MIXED_HYPHEN_A1_CYR = re.compile(r"\b([A-Za-z]\d{1,3})[\-–—]([А-Яа-яЁё]{2,})\b")
 
+_RE_MIXED_SLASH_LAT_CYR = re.compile(r"\b([A-Za-z]{1,}[A-Za-z0-9]*)/([А-Яа-яЁё]{2,})\b")
+_RE_MIXED_SLASH_CYR_LAT = re.compile(r"\b([А-Яа-яЁё]{2,})/([A-Za-z]{1,}[A-Za-z0-9]*)\b")
+
 def normalize_mixed_hyphen(s: str) -> str:
     t = s or ""
     if not t:
@@ -2168,6 +2171,22 @@ def _ac_compact_barcode_support(params: list[tuple[str, str]]) -> list[tuple[str
         out.append((_AC_BARCODE_PARAM_OUT, value))
 
     return out
+def _ac_drop_barcode_params(params: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    # Удаляем "1D/2D" и похожие параметры ТОЛЬКО по имени (ключу). Значения не анализируем.
+    drop_names = {
+        "1d", "2d",
+        "распознование кода", "распознавание кода",
+        "поддерживаемые штрихкоды",
+    }
+    out: list[tuple[str, str]] = []
+    for k, v in params:
+        k_cf = (k or "").strip().casefold()
+        v_cf = (v or "").strip().casefold()
+        if k_cf in drop_names:
+            continue
+        out.append((k, v))
+    return out
+
 
 def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name: str) -> list[tuple[str, str]]:
     """Точечные правила по поставщикам/категориям для <param> и блока характеристик.
@@ -2180,9 +2199,21 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
     is_vtt = oid_u.startswith("VT")
     is_copyline = oid_u.startswith("CL")
 
-    # AkCent: объединяем длинные списки поддерживаемых кодов в один читаемый param
+
+    # AkCent: переименовываем техничные ключи 1D/2D/Распознавание кода в человекочитаемые названия.
+    # Значения (списки форматов) сохраняем как есть.
     if oid_u.startswith("AC"):
-        params = _ac_compact_barcode_support(list(params or []))
+        renamed: list[tuple[str, str]] = []
+        for k0, v0 in (params or []):
+            kk0 = norm_ws(k0)
+            vv0 = norm_ws(v0)
+            k_cf0 = kk0.casefold()
+            if k_cf0 == "1d":
+                kk0 = "Поддерживаемые 1D-коды"
+            elif k_cf0 == "2d" or k_cf0 in {"распознование кода", "распознавание кода"}:
+                kk0 = "Поддерживаемые 2D-коды"
+            renamed.append((kk0, vv0))
+        params = renamed
 
     # VTT: если OEM не дали — не теряем Каталожный номер (переносим в Партномер)
     vtt_has_oem = False
