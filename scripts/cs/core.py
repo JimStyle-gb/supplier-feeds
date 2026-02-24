@@ -2100,6 +2100,75 @@ def clean_params(
 
     return out
 
+# --- AkCent: компактная "поддержка штрихкодов" (читаемо и полезно для SEO) ---
+_AC_BARCODE_PARAM_1D_NAMES = {"1D", "1d"}
+_AC_BARCODE_PARAM_2D_NAMES = {"2D", "2d", "Распознование кода", "Распознавание кода"}
+_AC_BARCODE_PARAM_OUT = "Поддерживаемые штрихкоды"
+
+def _ac_compact_barcode_support(params: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    # Склеиваем "1D" + "Распознование/Распознавание кода" в один человекочитаемый параметр,
+    # чтобы не было простыней в характеристиках.
+    p1d = ""
+    p2d = ""
+    out = []
+    for k, v in params:
+        if k in _AC_BARCODE_PARAM_1D_NAMES and v and not p1d:
+            p1d = v.strip()
+            continue
+        if k in _AC_BARCODE_PARAM_2D_NAMES and v and not p2d:
+            p2d = v.strip()
+            continue
+        out.append((k, v))
+
+    if not (p1d or p2d):
+        return params
+
+    # Выдёргиваем самые "поисковые" и понятные токены, ограничиваем длину.
+    src = " ".join([p1d, p2d])
+    # Нормализуем разделители
+    src = re.sub(r"[;•]+", ",", src)
+    src = re.sub(r"\s+", " ", src).strip()
+
+    # Кандидаты (часто встречающиеся стандарты)
+    want = [
+        "EAN-13", "EAN-8", "UPC-A", "UPC-E", "UCC/EAN-128",
+        "Code128", "Code 128", "Code39", "Code 39", "Codabar",
+        "ITF", "Interleaved 2 из 5", "Matrix 2 из 5", "Standard 25",
+        "QR", "QR-код", "Data Matrix", "PDF417", "Maxicode", "HanXin",
+        "Aztec", "RSS-14", "RSS-Limited", "RSS-Expand", "RSS-Expanded",
+    ]
+
+    found = []
+    low = src.lower()
+    for t in want:
+        if t.lower() in low:
+            # Канонизируем написание
+            canon = t.replace("QR-код", "QR").replace("Code 128", "Code128").replace("Code 39", "Code39")
+            canon = canon.replace("RSS-Expand", "RSS-Expanded")
+            found.append(canon)
+
+    # Дедуп + ограничение
+    seen = set()
+    compact = []
+    for t in found:
+        if t not in seen:
+            seen.add(t)
+            compact.append(t)
+        if len(compact) >= 10:
+            break
+
+    # Если ничего не нашли (редко), оставим короткую фразу без простыни.
+    if not compact:
+        value = "1D/2D (основные форматы), QR, Data Matrix и др."
+    else:
+        value = "1D/2D: " + ", ".join(compact) + " и др."
+
+    # Не дублируем если уже есть подобный параметр
+    if not any(k == _AC_BARCODE_PARAM_OUT for k, _ in out):
+        out.append((_AC_BARCODE_PARAM_OUT, value))
+
+    return out
+
 def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name: str) -> list[tuple[str, str]]:
     """Точечные правила по поставщикам/категориям для <param> и блока характеристик.
     - Удаляем служебные params (Артикул добавляется/может приходить извне)
@@ -2151,6 +2220,10 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
                 kk = "Партномер"
 
         if is_copyline and name_cf.startswith("кабель сетевой") and (k_cf == "совместимость"):
+    # AkCent: склеиваем 1D/2D списки штрихкодов в один понятный параметр
+    if oid.startswith("AC"):
+        params = _ac_compact_barcode_support(list(params))
+
             continue
 
         out.append((kk, vv))
