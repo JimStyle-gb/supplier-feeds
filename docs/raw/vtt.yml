@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-24 11:28">
+<yml_catalog date="2026-02-24 13:00">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-02-24 11:28:11
+Время сборки (Алматы)                      | 2026-02-24 13:00:29
 Ближайшая сборка (Алматы)                  | 2026-03-01 05:00:00
 Сколько товаров у поставщика до фильтра    | 2983
 Сколько товаров у поставщика после фильтра | 2983
@@ -4701,13 +4701,13 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1502092052" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1502092052</vendorCode>
-<name>Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK (уцен.срок годности)</name>
-<price>20900</price>
-<picture>https://b2b.vtt.ru/images/1502092052уц.jpg</picture>
+<name>Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/1502092052.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK (уцен.срок годности)]]></description>
+Картридж 934 для HP OJ Pro 6230/6830, 0,4К (O) C2P19AE, BK]]></description>
 <param name="Каталожный номер">C2P19AE</param>
 <param name="OEM-номер">C2P19AE</param>
 </offer>
@@ -4715,13 +4715,13 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1502092056" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1502092056</vendorCode>
-<name>Картридж 651 для HP DJ 5645, 0,6К (O) C2P10AE, BK (уцен.срок годности)</name>
-<price>100</price>
-<picture>https://b2b.vtt.ru/images/1502092056уц.jpg</picture>
+<name>Картридж 651 для HP DJ 5645, 0,6К (O) C2P10AE, BK</name>
+<price>23900</price>
+<picture>https://b2b.vtt.ru/images/1502092056.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж 651 для HP DJ 5645, 0,6К (O) C2P10AE, BK (уцен.срок годности)]]></description>
+Картридж 651 для HP DJ 5645, 0,6К (O) C2P10AE, BK]]></description>
 <param name="Каталожный номер">C2P10AE</param>
 <param name="OEM-номер">C2P10AE</param>
 </offer>
@@ -10546,7 +10546,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT302V693020</vendorCode>
 <name>302V693020/DK-7125 Драм-юнит Kyocera TASKalfa 3212i/4012i (O)</name>
-<price>221900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/302V693020.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -19887,13 +19887,13 @@ LE Принт-картридж SP200HE Ricoh серий SP20x/21x, 2,6К (O) 407
 <offer id="VT9890072" available="true">
 <categoryId></categoryId>
 <vendorCode>VT9890072</vendorCode>
-<name>Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A</name>
-<price>100</price>
-<picture>https://b2b.vtt.ru/images/9890072.jpg</picture>
+<name>Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A (уц. срок годности)</name>
+<price>80900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A]]></description>
+Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A (уц. срок годности)]]></description>
 <param name="Каталожный номер">C9372A</param>
 <param name="OEM-номер">C9372A</param>
 </offer>
@@ -20120,7 +20120,7 @@ LE Принт-картридж SP200HE Ricoh серий SP20x/21x, 2,6К (O) 407
 <categoryId></categoryId>
 <vendorCode>VT989130613</vendorCode>
 <name>Картридж HP 307A для HP CLJ 5225, 7К (O) чёрный CE740A</name>
-<price>100</price>
+<price>167900</price>
 <picture>https://b2b.vtt.ru/images/989130613.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -33003,7 +33003,7 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <categoryId></categoryId>
 <vendorCode>VTC13T00S24A</vendorCode>
 <name>Контейнер с чернилами для Epson L3100/3101/3110/3150, голубой, (О), C13T00S24A</name>
-<price>9900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/C13T00S24A.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -33018,7 +33018,7 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <categoryId></categoryId>
 <vendorCode>VTC13T00S34A</vendorCode>
 <name>Контейнер с чернилами для Epson L3100/3101/3110/3150, пурпурный, (О), C13T00S34A</name>
-<price>9900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/C13T00S34A.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -33657,7 +33657,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET131141</vendorCode>
 <name>Тонер-картридж (CPP) C-EXV67 для CANON iR 2925/2930/2935/2945 (CET), 582г, 33000 стр., CET131141</name>
-<price>47900</price>
+<price>46900</price>
 <picture>https://b2b.vtt.ru/images/CET131141.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -47235,7 +47235,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTW2211A</vendorCode>
 <name>Картридж лазерный HP 207A для HP M255/MFP M282/M283, 1,25К (O) голубой W2211A</name>
-<price>56900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/W2211A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
