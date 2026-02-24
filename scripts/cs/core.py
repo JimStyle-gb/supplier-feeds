@@ -1539,6 +1539,24 @@ def fix_mixed_cyr_lat(s: str) -> str:
     return _RE_WORDLIKE.sub(_sub, t)
 
 # Безопасное int из любого значения
+# Нормализация смешанных LAT-CYR токенов с дефисом: "LED-индикаторы" -> "LED индикаторы"
+_RE_MIXED_HYPHEN_LAT_CYR = re.compile(r"\b([A-Za-z]{2,}[A-Za-z0-9]*)[\-–—]([А-Яа-яЁё]{2,})\b")
+_RE_MIXED_HYPHEN_CYR_LAT = re.compile(r"\b([А-Яа-яЁё]{2,})[\-–—]([A-Za-z]{2,}[A-Za-z0-9]*)\b")
+_RE_MIXED_HYPHEN_A1_CYR = re.compile(r"\b([A-Za-z]\d{1,3})[\-–—]([А-Яа-яЁё]{2,})\b")
+
+def normalize_mixed_hyphen(s: str) -> str:
+    t = s or ""
+    if not t:
+        return t
+    # LED-индикаторы, USB-кабель, OPS-слот, Eco-режим, A3-формат
+    t = _RE_MIXED_HYPHEN_LAT_CYR.sub(r"\1 \2", t)
+    t = _RE_MIXED_HYPHEN_A1_CYR.sub(r"\1 \2", t)
+    t = _RE_MIXED_HYPHEN_CYR_LAT.sub(r"\1 \2", t)
+    return t
+
+def sanitize_mixed_text(s: str) -> str:
+    return normalize_mixed_hyphen(fix_mixed_cyr_lat(s))
+
 def safe_int(v) -> int | None:
     if v is None:
         return None
@@ -3821,7 +3839,7 @@ class OfferOut:
         param_priority: Sequence[str] | None = None,
     ) -> str:
         name_full = normalize_offer_name(self.name)
-        name_full = fix_mixed_cyr_lat(name_full)
+        name_full = sanitize_mixed_text(name_full)
         native_desc = fix_text(self.native_desc)
         # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
         native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
@@ -3834,7 +3852,7 @@ class OfferOut:
         vendor = pick_vendor(self.vendor, name_full, self.params, native_desc, public_vendor=public_vendor)
 
         # тройное обогащение: params + из описания
-        params = [(fix_mixed_cyr_lat(k), fix_mixed_cyr_lat(v)) for (k, v) in (self.params or [])]
+        params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in (self.params or [])]
         if _spec_pairs:
             params.extend(_spec_pairs)
         enrich_params_from_desc(params, native_desc)
@@ -3843,7 +3861,7 @@ class OfferOut:
         ensure_compatibility_param(params, name_full, native_desc)
 
         # финальная починка смешения кир/лат в params после всех enrich/compat
-        params = [(fix_mixed_cyr_lat(k), fix_mixed_cyr_lat(v)) for (k, v) in params]
+        params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in params]
 
         # чистим и сортируем (ВАЖНО: чистить всегда)
         params = clean_params(params)
@@ -3856,18 +3874,18 @@ class OfferOut:
 
         # CS: лимитируем <name> (умно для NVPrint)
         name_short = enforce_name_policy(self.oid, name_full, params_sorted)
-        name_short = fix_mixed_cyr_lat(name_short)
+        name_short = sanitize_mixed_text(name_short)
 
         # CS: В описании сохраняем полное наименование (если оно было укорочено).
         # Если <name> был укорочен — в описании сохраняем полное наименование.
         name_for_desc = name_full if (name_short != name_full) else name_short
-        name_for_desc = fix_mixed_cyr_lat(name_for_desc)
+        name_for_desc = sanitize_mixed_text(name_for_desc)
 
         desc_cdata = build_description(name_for_desc, native_desc, params_sorted, notes=notes)
-        desc_cdata = fix_mixed_cyr_lat(desc_cdata)
+        desc_cdata = sanitize_mixed_text(desc_cdata)
         keywords = build_keywords(vendor, name_short, city_tail=city_tail)
         keywords = _truncate_text(keywords, CS_KEYWORDS_MAX_LEN)
-        keywords = fix_mixed_cyr_lat(keywords)
+        keywords = sanitize_mixed_text(keywords)
 
         pics_xml = ""
         pics = normalize_pictures(self.pictures or [])
