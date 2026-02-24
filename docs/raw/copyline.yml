@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-24 13:29">
+<yml_catalog date="2026-02-24 14:40">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-02-24 13:29:44
+Время сборки (Алматы)                      | 2026-02-24 14:40:48
 Ближайшая сборка (Алматы)                  | 2026-03-01 03:00:00
 Сколько товаров у поставщика до фильтра    | 1217
 Сколько товаров у поставщика после фильтра | 1196
@@ -7010,7 +7010,7 @@ PE
 <categoryId></categoryId>
 <vendorCode>CL102378</vendorCode>
 <name>Картридж для HP CF281A Euro Print</name>
-<price>13900</price>
+<price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF281A.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
@@ -12511,7 +12511,7 @@ CLP-320, CLP-325, CLX-3185, CLX-3185N, CLX-3185FN, CLX-3185FW
 <categoryId></categoryId>
 <vendorCode>CL103923</vendorCode>
 <name>Картридж для HP CF219A (с чипом) Euro Print</name>
-<price>6900</price>
+<price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF219A.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
@@ -19357,7 +19357,7 @@ SL-C430, SL-C430W, SL-C480, SL-C480W, SL-C480FW.
 <categoryId></categoryId>
 <vendorCode>CL105091</vendorCode>
 <name>Картридж для HP W1335X (№335X) (13.7K) Euro Print</name>
-<price>8900</price>
+<price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1335X-ep.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1335X-oem.jpg</picture>
 <vendor></vendor>
@@ -21217,7 +21217,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105481</vendorCode>
 <name>Картридж для HP CF259X (№59X) (с чипом) (10K) Euro Print</name>
-<price>10900</price>
+<price>9900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-cf259x.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF259X-oem.jpg</picture>
 <vendor></vendor>
@@ -21239,7 +21239,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105482</vendorCode>
 <name>Картридж для HP W1500A №150A с чипом (0.9K) Euro Print</name>
-<price>6900</price>
+<price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1500A-ep.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1500A-oem.jpg</picture>
 <vendor></vendor>
@@ -21283,7 +21283,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105484</vendorCode>
 <name>Картридж для HP W1510X №151X с чипом (9,7K) Euro Print</name>
-<price>11900</price>
+<price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-w1510x.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1510X-ep.jpg</picture>
 <vendor></vendor>
@@ -21391,7 +21391,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105489</vendorCode>
 <name>Картридж для HP W2030A (№415A) с чипом Black (2,4K) Euro Print</name>
-<price>9900</price>
+<price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W2030A.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Toner-Cartridge-415A-W2030A-W2031A.jpg</picture>
 <vendor></vendor>
@@ -21413,7 +21413,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105490</vendorCode>
 <name>Картридж для HP W2031A (№415A) с чипом Cyan (2,1K) Euro Print</name>
-<price>9900</price>
+<price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W2031A.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Toner-Cartridge-415A-W2030A-W2031A.jpg</picture>
 <vendor></vendor>
@@ -21435,7 +21435,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105491</vendorCode>
 <name>Картридж для HP W2032A (№415A) с чипом Yellow (2,1K) Euro Print</name>
-<price>9900</price>
+<price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W2032A.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Toner-Cartridge-415A-W2030A-W2031A.jpg</picture>
 <vendor></vendor>
@@ -21457,7 +21457,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105492</vendorCode>
 <name>Картридж для HP W2033A (№415A) с чипом Magenta (2,1K) Euro Print</name>
-<price>9900</price>
+<price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W2033A.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Toner-Cartridge-415A-W2030A-W2031A.jpg</picture>
 <vendor></vendor>
@@ -22085,7 +22085,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105643</vendorCode>
 <name>Картридж для HP W1450A №145A с чипом (1.7K) Euro Print</name>
-<price>7900</price>
+<price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1450A-ep.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
@@ -22106,7 +22106,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105644</vendorCode>
 <name>Картридж для HP W1450X №145X с чипом (3.8K) Euro Print</name>
-<price>8900</price>
+<price>9900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1450X-ep.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
@@ -22267,7 +22267,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105652</vendorCode>
 <name>Картридж для HP W2011A (№659A) с чипом Cyan (13K) Euro Print</name>
-<price>29900</price>
+<price>28900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W2011A-ep.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
@@ -22288,7 +22288,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105653</vendorCode>
 <name>Картридж для HP W2012A (№659A) с чипом Yellow (13K) Euro Print</name>
-<price>29900</price>
+<price>28900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W2012A-ep.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
@@ -22309,7 +22309,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105654</vendorCode>
 <name>Картридж для HP W2013A (№659A) с чипом Magenta (13K) Euro Print</name>
-<price>29900</price>
+<price>28900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W2013A-ep.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
@@ -22710,7 +22710,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105683</vendorCode>
 <name>Картридж для HP W2010A (№659A) с чипом Black (16K) Euro Print</name>
-<price>32900</price>
+<price>31900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W2010A-ep.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
@@ -23090,7 +23090,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105736</vendorCode>
 <name>Картридж для HP W2300X (№230X) Black (7.5K) Euro Print</name>
-<price>13900</price>
+<price>11900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W2300X-ep.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
@@ -23111,7 +23111,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105737</vendorCode>
 <name>Картридж для HP W2301X (№230X) Cyan (5.5K) Euro Print</name>
-<price>12900</price>
+<price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W2301X-ep.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
@@ -23132,7 +23132,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105738</vendorCode>
 <name>Картридж для HP W2302X (№230X) Yellow (5.5K) Euro Print</name>
-<price>12900</price>
+<price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W2302X-ep.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
@@ -23153,7 +23153,7 @@ Cyan
 <categoryId></categoryId>
 <vendorCode>CL105739</vendorCode>
 <name>Картридж для HP W2303X (№230X) Magenta (5.5K) Euro Print</name>
-<price>12900</price>
+<price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W2303X-ep.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
