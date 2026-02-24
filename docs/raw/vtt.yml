@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-24 09:27">
+<yml_catalog date="2026-02-24 10:15">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-02-24 09:27:35
+Время сборки (Алматы)                      | 2026-02-24 10:15:05
 Ближайшая сборка (Алматы)                  | 2026-03-01 05:00:00
 Сколько товаров у поставщика до фильтра    | 2983
 Сколько товаров у поставщика после фильтра | 2983
@@ -5543,14 +5543,14 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1530231116" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1530231116</vendorCode>
-<name>Картридж Hi-Black (EPT9451) для Epson WF-WF-C5290/С5790, Black</name>
+<name>Картридж Hi-Black (EPT9451) для Epson WF-WF-C5290/C5790, Black</name>
 <price>10900</price>
 <picture>https://b2b.vtt.ru/images/1530231116.jpg</picture>
 <picture>https://b2b.vtt.ru/images/1530231116_2.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж Hi-Black (EPT9451) для Epson WF-WF-C5290/С5790, Black]]></description>
+Картридж Hi-Black (EPT9451) для Epson WF-WF-C5290/C5790, Black]]></description>
 <param name="Каталожный номер">HB-EPS-EPT9451-Bk</param>
 <param name="OEM-номер">EPT9451</param>
 <param name="Ресурс">5К</param>
@@ -5560,14 +5560,14 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1530231117" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1530231117</vendorCode>
-<name>Картридж Hi-Black (EPT9452) для Epson WF-WF-C5290/С5790, Cyan</name>
+<name>Картридж Hi-Black (EPT9452) для Epson WF-WF-C5290/C5790, Cyan</name>
 <price>10900</price>
 <picture>https://b2b.vtt.ru/images/1530231117.jpg</picture>
 <picture>https://b2b.vtt.ru/images/1530231117_2.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж Hi-Black (EPT9452) для Epson WF-WF-C5290/С5790, Cyan]]></description>
+Картридж Hi-Black (EPT9452) для Epson WF-WF-C5290/C5790, Cyan]]></description>
 <param name="Каталожный номер">HB-EPS-EPT9452-C</param>
 <param name="OEM-номер">EPT9452</param>
 <param name="Ресурс">5К</param>
@@ -5577,14 +5577,14 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1530231118" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1530231118</vendorCode>
-<name>Картридж Hi-Black (EPT9453) для Epson WF-WF-C5290/С5790, Magenta</name>
+<name>Картридж Hi-Black (EPT9453) для Epson WF-WF-C5290/C5790, Magenta</name>
 <price>10900</price>
 <picture>https://b2b.vtt.ru/images/1530231118.jpg</picture>
 <picture>https://b2b.vtt.ru/images/1530231118_2.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж Hi-Black (EPT9453) для Epson WF-WF-C5290/С5790, Magenta]]></description>
+Картридж Hi-Black (EPT9453) для Epson WF-WF-C5290/C5790, Magenta]]></description>
 <param name="Каталожный номер">HB-EPS-EPT9453-M</param>
 <param name="OEM-номер">EPT9453</param>
 <param name="Ресурс">5К</param>
@@ -5594,14 +5594,14 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1530231119" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1530231119</vendorCode>
-<name>Картридж Hi-Black (EPT9454) для Epson WF-WF-C5290/С5790, Yellow</name>
+<name>Картридж Hi-Black (EPT9454) для Epson WF-WF-C5290/C5790, Yellow</name>
 <price>10900</price>
 <picture>https://b2b.vtt.ru/images/1530231119.jpg</picture>
 <picture>https://b2b.vtt.ru/images/1530231119_2.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж Hi-Black (EPT9454) для Epson WF-WF-C5290/С5790, Yellow]]></description>
+Картридж Hi-Black (EPT9454) для Epson WF-WF-C5290/C5790, Yellow]]></description>
 <param name="Каталожный номер">HB-EPS-EPT9454-Y</param>
 <param name="OEM-номер">EPT9454</param>
 <param name="Ресурс">5К</param>
@@ -6888,8 +6888,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж Hi-Black (HB-C7115A/Q2613A/Q2624A) для HP LJ 1200/1300/1150, Универсальный, 2,5K]]></description>
-<param name="Каталожный номер">HB-C7115A/Q2613А/Q2624A</param>
-<param name="OEM-номер">C7115A/Q2613А/Q2624A</param>
+<param name="Каталожный номер">HB-C7115A/Q2613A/Q2624A</param>
+<param name="OEM-номер">C7115A/Q2613A/Q2624A</param>
 <param name="Ресурс">2,5K</param>
 <param name="Цвет">черный</param>
 <param name="Аналоги">5194230000</param>
@@ -10922,13 +10922,13 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT3JA23AE" available="true">
 <categoryId></categoryId>
 <vendorCode>VT3JA23AE</vendorCode>
-<name>Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К (O) голубой 3JA23AE (уцен.срок годности)</name>
-<price>17900</price>
-<picture>https://b2b.vtt.ru/images/3JA23AEуц.jpg</picture>
+<name>Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К (O) голубой 3JA23AE</name>
+<price>21900</price>
+<picture>https://b2b.vtt.ru/images/3JA23AE.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К (O) голубой 3JA23AE (уцен.срок годности)]]></description>
+Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К (O) голубой 3JA23AE]]></description>
 <param name="Каталожный номер">3JA23AE</param>
 <param name="OEM-номер">3JA23AE</param>
 <param name="Цвет">голубой</param>
@@ -12125,13 +12125,13 @@ LE Принт-картридж SP201E Ricoh серии SP220 1К (O) 407999]]></
 <offer id="VT41006031015" available="true">
 <categoryId></categoryId>
 <vendorCode>VT41006031015</vendorCode>
-<name>Тонер-картридж Kyocera TASKalfa 406ci (O) TK-5215С, 15K, С</name>
+<name>Тонер-картридж Kyocera TASKalfa 406ci (O) TK-5215C, 15K, С</name>
 <price>105900</price>
 <picture>https://b2b.vtt.ru/images/41006031015.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тонер-картридж Kyocera TASKalfa 406ci (O) TK-5215С, 15K, С]]></description>
+Тонер-картридж Kyocera TASKalfa 406ci (O) TK-5215C, 15K, С]]></description>
 <param name="Каталожный номер">TK-5215C</param>
 <param name="OEM-номер">TK-5215C</param>
 </offer>
@@ -16103,7 +16103,7 @@ CFRM-0021RS71 Блок барабана (без барабана) Sharp AR-5516/
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж PFI-207C для Canon iPF680/685/780/785, 300ml (О) голубой 8790B001 (уцен.срок годности)]]></description>
-<param name="Каталожный номер">8790B001Уц</param>
+<param name="Каталожный номер">8790В001Уц</param>
 <param name="OEM-номер">8790B001</param>
 </offer>
 
@@ -16201,13 +16201,13 @@ CFRM-0021RS71 Блок барабана (без барабана) Sharp AR-5516/
 <offer id="VT9257B004" available="true">
 <categoryId></categoryId>
 <vendorCode>VT9257B004</vendorCode>
-<name>Набор картриджей PGI-2400XL BK/C/M/Y для Canon MAXIFY iB4040/МВ5040/МВ5340 (O) 9257B004</name>
+<name>Набор картриджей PGI-2400XL BK/C/M/Y для Canon MAXIFY иВ4040/МВ5040/МВ5340 (O) 9257B004</name>
 <price>100</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Набор картриджей PGI-2400XL BK/C/M/Y для Canon MAXIFY iB4040/МВ5040/МВ5340 (O) 9257B004]]></description>
+Набор картриджей PGI-2400XL BK/C/M/Y для Canon MAXIFY иВ4040/МВ5040/МВ5340 (O) 9257B004]]></description>
 <param name="Каталожный номер">9257B004</param>
 <param name="OEM-номер">9257B004</param>
 <param name="Цвет">CMY+Bk</param>
@@ -17664,13 +17664,13 @@ LE Принт-картридж SP200HE Ricoh серий SP20x/21x, 2,6К (O) 407
 <offer id="VT98010110" available="true">
 <categoryId></categoryId>
 <vendorCode>VT98010110</vendorCode>
-<name>Картридж Hi-Black (HB-LC1100BK/LC-980Bk) для Brother DCP-145C/DCP-165С/195C/MFC-250C, Bk</name>
+<name>Картридж Hi-Black (HB-LC1100BK/LC-980Bk) для Brother DCP-145C/DCP-165C/195C/MFC-250C, Bk</name>
 <price>3900</price>
 <picture>https://b2b.vtt.ru/images/98010110.jpg</picture>
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж Hi-Black (HB-LC1100BK/LC-980Bk) для Brother DCP-145C/DCP-165С/195C/MFC-250C, Bk]]></description>
+Картридж Hi-Black (HB-LC1100BK/LC-980Bk) для Brother DCP-145C/DCP-165C/195C/MFC-250C, Bk]]></description>
 <param name="Каталожный номер">HB-BR-LC1100BK/LC-980B-k</param>
 <param name="OEM-номер">LC980/LC1100BK</param>
 <param name="Ресурс">0,55K</param>
@@ -17876,13 +17876,13 @@ LE Принт-картридж SP200HE Ricoh серий SP20x/21x, 2,6К (O) 407
 <offer id="VT9801090080" available="true">
 <categoryId></categoryId>
 <vendorCode>VT9801090080</vendorCode>
-<name>Картридж Hi-Black (HB-LC1100M/LC980M) для Brother DCP-145C/DCP-165С/195C/MFC-165C/MFC-250C, M</name>
+<name>Картридж Hi-Black (HB-LC1100M/LC980M) для Brother DCP-145C/DCP-165C/195C/MFC-165C/MFC-250C, M</name>
 <price>3900</price>
 <picture>https://b2b.vtt.ru/images/9801090080.jpg</picture>
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж Hi-Black (HB-LC1100M/LC980M) для Brother DCP-145C/DCP-165С/195C/MFC-165C/MFC-250C, M]]></description>
+Картридж Hi-Black (HB-LC1100M/LC980M) для Brother DCP-145C/DCP-165C/195C/MFC-165C/MFC-250C, M]]></description>
 <param name="Каталожный номер">HB-BR-LC1100M/LC980-M</param>
 <param name="OEM-номер">LC980/LC1100M</param>
 <param name="Ресурс">0,8K</param>
@@ -20365,7 +20365,7 @@ C1Q10A Комплект для замены печатающей головки 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж Hi-Black 712 (3ED67A) HP DesignJet T650/T630/T250/T230/T210/Studio Plotter Printers, C]]></description>
-<param name="Каталожный номер">HB-HP№3ED67A-С</param>
+<param name="Каталожный номер">HB-HP№3ED67A-C</param>
 <param name="OEM-номер">3ED67A</param>
 </offer>
 
@@ -23072,13 +23072,13 @@ DK-1110 Драм-юнит Kyocera FS-1040/1060DN/1020MFP/1120MFP/1025MFP/1125MFP
 <offer id="VT9896070185" available="true">
 <categoryId></categoryId>
 <vendorCode>VT9896070185</vendorCode>
-<name>Тонер-картридж TK-8315С Kyocera TASKalfa 2550ci, 6К (O) голубой 1T02MVCNL0</name>
+<name>Тонер-картридж TK-8315C Kyocera TASKalfa 2550ci, 6К (O) голубой 1T02MVCNL0</name>
 <price>96900</price>
 <picture>https://b2b.vtt.ru/images/9896070185.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тонер-картридж TK-8315С Kyocera TASKalfa 2550ci, 6К (O) голубой 1T02MVCNL0]]></description>
+Тонер-картридж TK-8315C Kyocera TASKalfa 2550ci, 6К (O) голубой 1T02MVCNL0]]></description>
 <param name="Каталожный номер">TK-8315C</param>
 <param name="OEM-номер">TK-8315C</param>
 <param name="Цвет">голубой</param>
@@ -28761,13 +28761,13 @@ DK-475/302K393030/302K393031 Драм-юнит Kyocera FS-6025/6030/6525/6530MFP
 <offer id="VT995235679" available="true">
 <categoryId></categoryId>
 <vendorCode>VT995235679</vendorCode>
-<name>Картридж Panasonic KX-FL401/402/403/413/423/FLC411/412/413/418 (O) KX-FAT88А/A7, 2K</name>
+<name>Картридж Panasonic KX-FL401/402/403/413/423/FLC411/412/413/418 (O) KX-FAT88A/A7, 2K</name>
 <price>100</price>
 <picture>https://b2b.vtt.ru/images/995235679.jpg</picture>
 <vendor>Panasonic</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж Panasonic KX-FL401/402/403/413/423/FLC411/412/413/418 (O) KX-FAT88А/A7, 2K]]></description>
+Картридж Panasonic KX-FL401/402/403/413/423/FLC411/412/413/418 (O) KX-FAT88A/A7, 2K]]></description>
 <param name="Каталожный номер">KX-FAT88A</param>
 <param name="OEM-номер">KX-FAT88A</param>
 </offer>
@@ -29439,13 +29439,13 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <offer id="VT99621811" available="true">
 <categoryId></categoryId>
 <vendorCode>VT99621811</vendorCode>
-<name>Тонер TN-321K Minolta Bizhub C224/284/364/e-серия, 27К (O) чёрный A33K150</name>
+<name>Тонер TN-321K Minolta Bizhub С224/284/364/е-серия, 27К (O) чёрный A33K150</name>
 <price>100</price>
 <picture>https://b2b.vtt.ru/images/99621811.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тонер TN-321K Minolta Bizhub C224/284/364/e-серия, 27К (O) чёрный A33K150]]></description>
+Тонер TN-321K Minolta Bizhub С224/284/364/е-серия, 27К (O) чёрный A33K150]]></description>
 <param name="Каталожный номер">A33K150</param>
 <param name="OEM-номер">A33K150</param>
 <param name="Цвет">черный</param>
@@ -29454,13 +29454,13 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <offer id="VT996218111" available="true">
 <categoryId></categoryId>
 <vendorCode>VT996218111</vendorCode>
-<name>Тонер TN-321M Minolta Bizhub C224/284/364/e-серия (O) малиновый A33K350</name>
+<name>Тонер TN-321M Minolta Bizhub С224/284/364/е-серия (O) малиновый A33K350</name>
 <price>79900</price>
 <picture>https://b2b.vtt.ru/images/996218111.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тонер TN-321M Minolta Bizhub C224/284/364/e-серия (O) малиновый A33K350]]></description>
+Тонер TN-321M Minolta Bizhub С224/284/364/е-серия (O) малиновый A33K350]]></description>
 <param name="Каталожный номер">A33K350</param>
 <param name="OEM-номер">A33K350</param>
 <param name="Цвет">пурпурный</param>
@@ -29470,13 +29470,13 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <offer id="VT996218112" available="true">
 <categoryId></categoryId>
 <vendorCode>VT996218112</vendorCode>
-<name>Тонер TN-321С Minolta Bizhub C224/284/364/e-серия (O) голубой A33K450</name>
+<name>Тонер TN-321C Minolta Bizhub С224/284/364/е-серия (O) голубой A33K450</name>
 <price>92900</price>
 <picture>https://b2b.vtt.ru/images/996218112.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тонер TN-321С Minolta Bizhub C224/284/364/e-серия (O) голубой A33K450]]></description>
+Тонер TN-321C Minolta Bizhub С224/284/364/е-серия (O) голубой A33K450]]></description>
 <param name="Каталожный номер">A33K450</param>
 <param name="OEM-номер">A33K450</param>
 <param name="Цвет">голубой</param>
@@ -32547,13 +32547,13 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <offer id="VTA8DA350" available="true">
 <categoryId></categoryId>
 <vendorCode>VTA8DA350</vendorCode>
-<name>Тонер TN-324M Konica-Minolta bizhub C258/C308/C368-серия, 26К (O) малиновый A8DA350</name>
+<name>Тонер TN-324M Konica-Minolta bizhub С258/С308/С368-серия, 26К (O) малиновый A8DA350</name>
 <price>100</price>
 <picture>https://b2b.vtt.ru/images/A8DA350.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тонер TN-324M Konica-Minolta bizhub C258/C308/C368-серия, 26К (O) малиновый A8DA350]]></description>
+Тонер TN-324M Konica-Minolta bizhub С258/С308/С368-серия, 26К (O) малиновый A8DA350]]></description>
 <param name="Каталожный номер">A8DA350</param>
 <param name="OEM-номер">A8DA350</param>
 </offer>
@@ -32561,13 +32561,13 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <offer id="VTA8K3250" available="true">
 <categoryId></categoryId>
 <vendorCode>VTA8K3250</vendorCode>
-<name>Тонер TN-221Y Konica-Minolta bizhub C227/С287-серия, 21К (O) жёлтый A8K3250</name>
+<name>Тонер TN-221Y Konica-Minolta bizhub С227/С287-серия, 21К (O) жёлтый A8K3250</name>
 <price>91900</price>
 <picture>https://b2b.vtt.ru/images/A8K3250.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тонер TN-221Y Konica-Minolta bizhub C227/С287-серия, 21К (O) жёлтый A8K3250]]></description>
+Тонер TN-221Y Konica-Minolta bizhub С227/С287-серия, 21К (O) жёлтый A8K3250]]></description>
 <param name="Каталожный номер">A8K3250</param>
 <param name="OEM-номер">A8K3250</param>
 </offer>
@@ -32575,13 +32575,13 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <offer id="VTA8K3350" available="true">
 <categoryId></categoryId>
 <vendorCode>VTA8K3350</vendorCode>
-<name>Тонер TN-221M Konica-Minolta bizhub C227/С287-серия, 21К (O) малиновый A8K3350</name>
+<name>Тонер TN-221M Konica-Minolta bizhub С227/С287-серия, 21К (O) малиновый A8K3350</name>
 <price>100</price>
 <picture>https://b2b.vtt.ru/images/A8K3350.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тонер TN-221M Konica-Minolta bizhub C227/С287-серия, 21К (O) малиновый A8K3350]]></description>
+Тонер TN-221M Konica-Minolta bizhub С227/С287-серия, 21К (O) малиновый A8K3350]]></description>
 <param name="Каталожный номер">A8K3350</param>
 <param name="OEM-номер">A8K3350</param>
 </offer>
@@ -32589,13 +32589,13 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <offer id="VTA8K3450" available="true">
 <categoryId></categoryId>
 <vendorCode>VTA8K3450</vendorCode>
-<name>Тонер TN-221C Konica-Minolta bizhub C227/С287-серия, 21К (O) голубой A8K3450</name>
+<name>Тонер TN-221C Konica-Minolta bizhub С227/С287-серия, 21К (O) голубой A8K3450</name>
 <price>100</price>
 <picture>https://b2b.vtt.ru/images/A8K3450.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тонер TN-221C Konica-Minolta bizhub C227/С287-серия, 21К (O) голубой A8K3450]]></description>
+Тонер TN-221C Konica-Minolta bizhub С227/С287-серия, 21К (O) голубой A8K3450]]></description>
 <param name="Каталожный номер">A8K3450</param>
 <param name="OEM-номер">A8K3450</param>
 </offer>
@@ -33076,13 +33076,13 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <offer id="VTCE017A" available="true">
 <categoryId></categoryId>
 <vendorCode>VTCE017A</vendorCode>
-<name>Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хром.красный (уцен.срок годн.)</name>
-<price>181900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<name>Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хроматический красный</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/CE017A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хром.красный (уцен.срок годн.)]]></description>
+Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хроматический красный]]></description>
 <param name="Каталожный номер">CE017A</param>
 <param name="OEM-номер">CE017A</param>
 </offer>
@@ -33090,13 +33090,13 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <offer id="VTCE018A" available="true">
 <categoryId></categoryId>
 <vendorCode>VTCE018A</vendorCode>
-<name>Печатающая головка HP 771 для HP DJ Z6200 (О)CE018A пурпурный/желтый (уцен.срок годности)</name>
+<name>Печатающая головка HP 771 для HP DJ Z6200 (O)CE018A пурпурный/желтый</name>
 <price>100</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.vtt.ru/images/CE018A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Печатающая головка HP 771 для HP DJ Z6200 (О)CE018A пурпурный/желтый (уцен.срок годности)]]></description>
+Печатающая головка HP 771 для HP DJ Z6200 (O)CE018A пурпурный/желтый]]></description>
 <param name="Каталожный номер">CE018A</param>
 <param name="OEM-номер">CE018A</param>
 </offer>
