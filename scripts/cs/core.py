@@ -10,7 +10,7 @@ CS Core — общее ядро для всех поставщиков.
 - стабилизация форматирования (переводы строк, футер)
 """
 
-# core v033_refactor_policy: text/SEO fixes (fix_mixed_cyr_lat для name/params, пробел после запятой, Maintance->Maintenance, укорочение без '…')
+# core v035_refactor_policy: final sanitize mixed кир/лат + расширенные маппинги i/И (без изменения бизнес-логики) (fix_mixed_cyr_lat для name/params, пробел после запятой, Maintance->Maintenance, укорочение без '…')
 
 from __future__ import annotations
 
@@ -1467,7 +1467,9 @@ _CYR_TO_LAT = str.maketrans(
         "т": "t",
         "в": "b",
         "н": "h",
-    }
+        "И": "I",
+        "и": "i",
+}
 )
 
 _LAT_TO_CYR = str.maketrans(
@@ -1498,7 +1500,7 @@ _LAT_TO_CYR = str.maketrans(
         "y": "у",
         "I": "И",
         "i": "и",
-    }
+}
 )
 
 _RE_WORDLIKE = re.compile(r"[0-9A-Za-zА-Яа-яЁё][0-9A-Za-zА-Яа-яЁё._\-/+]*")
@@ -1510,14 +1512,12 @@ def fix_mixed_cyr_lat(s: str) -> str:
     if not t:
         return t
 
-    def _fix_letters(seq: str, *, prefer_lat: bool = False) -> str:
+    def _fix_letters(seq: str) -> str:
         if not seq:
             return seq
         if re.search(r"[A-Za-z]", seq) and re.search(r"[А-Яа-яЁё]", seq):
             cyr = len(re.findall(r"[А-Яа-яЁё]", seq))
             lat = len(re.findall(r"[A-Za-z]", seq))
-            if prefer_lat:
-                return seq.translate(_CYR_TO_LAT)
             if cyr >= lat:
                 return seq.translate(_LAT_TO_CYR)
             return seq.translate(_CYR_TO_LAT)
@@ -1529,18 +1529,12 @@ def fix_mixed_cyr_lat(s: str) -> str:
         if re.search(r"\d", w) and re.search(r"[A-Za-z]", w) and re.search(r"[А-Яа-яЁё]", w):
             cyr = len(re.findall(r"[А-Яа-яЁё]", w))
             lat = len(re.findall(r"[A-Za-z]", w))
-            # если это похоже на единый код (без '/' и '-') — исправляем 1-2 кириллических двойника (CB540А -> CB540A)
-            if lat >= 2 and cyr <= 2 and ("/" not in w) and ("-" not in w):
+            # В кодах/моделях почти всегда доминирует латиница; чинить нужно даже если латинская буква одна (iВ4040 -> iB4040)
+            if lat >= cyr:
                 return w.translate(_CYR_TO_LAT)
+            return w.translate(_LAT_TO_CYR)
         # Иначе — аккуратно чиним смешанные последовательности букв
-        def _fix_seq(mm: re.Match[str]) -> str:
-            seq = mm.group(0)
-            # Предпочитаем латиницу ТОЛЬКО если смешанная последовательность прилегает к цифрам (iВ4040 / 12Кi)
-            prev = w[mm.start() - 1] if mm.start() > 0 else ""
-            nxt = w[mm.end()] if mm.end() < len(w) else ""
-            prefer_lat = (prev.isdigit() or nxt.isdigit())
-            return _fix_letters(seq, prefer_lat=prefer_lat)
-        return _RE_LETTER_SEQ.sub(_fix_seq, w)
+        return _RE_LETTER_SEQ.sub(lambda mm: _fix_letters(mm.group(0)), w)
 
     return _RE_WORDLIKE.sub(_sub, t)
 
@@ -3827,6 +3821,7 @@ class OfferOut:
         param_priority: Sequence[str] | None = None,
     ) -> str:
         name_full = normalize_offer_name(self.name)
+        name_full = fix_mixed_cyr_lat(name_full)
         native_desc = fix_text(self.native_desc)
         # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
         native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
@@ -3847,6 +3842,9 @@ class OfferOut:
         # CS: Совместимость — добавляем только безопасно и только где нужно.
         ensure_compatibility_param(params, name_full, native_desc)
 
+        # финальная починка смешения кир/лат в params после всех enrich/compat
+        params = [(fix_mixed_cyr_lat(k), fix_mixed_cyr_lat(v)) for (k, v) in params]
+
         # чистим и сортируем (ВАЖНО: чистить всегда)
         params = clean_params(params)
         params = apply_supplier_param_rules(params, self.oid, name_full)
@@ -3858,14 +3856,18 @@ class OfferOut:
 
         # CS: лимитируем <name> (умно для NVPrint)
         name_short = enforce_name_policy(self.oid, name_full, params_sorted)
+        name_short = fix_mixed_cyr_lat(name_short)
 
         # CS: В описании сохраняем полное наименование (если оно было укорочено).
         # Если <name> был укорочен — в описании сохраняем полное наименование.
         name_for_desc = name_full if (name_short != name_full) else name_short
+        name_for_desc = fix_mixed_cyr_lat(name_for_desc)
 
         desc_cdata = build_description(name_for_desc, native_desc, params_sorted, notes=notes)
+        desc_cdata = fix_mixed_cyr_lat(desc_cdata)
         keywords = build_keywords(vendor, name_short, city_tail=city_tail)
         keywords = _truncate_text(keywords, CS_KEYWORDS_MAX_LEN)
+        keywords = fix_mixed_cyr_lat(keywords)
 
         pics_xml = ""
         pics = normalize_pictures(self.pictures or [])
