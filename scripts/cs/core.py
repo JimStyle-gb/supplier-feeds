@@ -1307,7 +1307,7 @@ def apply_color_from_name(params: Sequence[tuple[str, str]], name: str) -> list[
     found = False
     for k, v in base_params:
         kk = norm_ws(k)
-        vv = norm_ws(v)
+        vv = normalize_mixed_slash(norm_ws(v))
         if kk.casefold().replace("ё", "е") == "цвет":
             out.append(("Цвет", color))
             found = True
@@ -1557,8 +1557,26 @@ def normalize_mixed_hyphen(s: str) -> str:
     t = _RE_MIXED_HYPHEN_CYR_LAT.sub(r"\1 \2", t)
     return t
 
+
+_RE_MIXED_SLASH_LAT_CYR = re.compile(r"\b([A-Za-z]{1,}[A-Za-z0-9]*)/([А-Яа-яЁё]{2,})\b")
+_RE_MIXED_SLASH_CYR_LAT = re.compile(r"\b([А-Яа-яЁё]{2,})/([A-Za-z]{1,}[A-Za-z0-9]*)\b")
+
+def normalize_mixed_slash(s: str) -> str:
+    t = s or ""
+    if not t:
+        return t
+    # Только кир/лат переходы: колодка/IEC, CD/банк, ЖК/USB, контактілер/EPO.
+    # Лат/лат (RJ11/RJ45) и цифры/лат (4/IEC) не трогаем.
+    for _ in range(3):  # на случай нескольких вхождений
+        t2 = _RE_MIXED_SLASH_LAT_CYR.sub(r"\1 \2", t)
+        t2 = _RE_MIXED_SLASH_CYR_LAT.sub(r"\1 \2", t2)
+        if t2 == t:
+            break
+        t = t2
+    return t
+
 def sanitize_mixed_text(s: str) -> str:
-    return normalize_mixed_hyphen(fix_mixed_cyr_lat(s))
+    return normalize_mixed_slash(normalize_mixed_hyphen(fix_mixed_cyr_lat(s)))
 
 def safe_int(v) -> int | None:
     if v is None:
@@ -1895,7 +1913,7 @@ def clean_params(
         return kk
 
     def _norm_val(key: str, v: str) -> str:
-        vv = norm_ws(v)
+        vv = normalize_mixed_slash(norm_ws(v))
         if not vv:
             return ""
         vv = fix_mixed_cyr_lat(vv)
@@ -2233,7 +2251,7 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
     out: list[tuple[str, str]] = []
     for k, v in params or []:
         kk = norm_ws(k)
-        vv = norm_ws(v)
+        vv = normalize_mixed_slash(norm_ws(v))
         if not kk or not vv:
             continue
         k_cf = kk.casefold().replace("ё", "е")
@@ -3124,7 +3142,7 @@ def build_keywords(
 
     # CS: лёгкая канонизация vendor для SEO/фильтров (без изменения name)
     def _canon_vendor(v: str) -> str:
-        vv = norm_ws(v)
+        vv = normalize_mixed_slash(norm_ws(v))
         if not vv:
             return ""
         vv_cf = vv.casefold().replace("ё", "е")
@@ -3288,7 +3306,7 @@ def split_params_for_chars(
 
     for k, v in (params_sorted or []):
         kk = norm_ws(k)
-        vv = norm_ws(v)
+        vv = normalize_mixed_slash(norm_ws(v))
         if not kk or not vv:
             continue
 
@@ -3377,7 +3395,7 @@ def _build_param_summary(params_sorted: Sequence[tuple[str, str]]) -> str:
     buckets: dict[str, tuple[str, str]] = {}
     for k, v in params_sorted or []:
         kk = norm_ws(k).lower()
-        vv = norm_ws(v)
+        vv = normalize_mixed_slash(norm_ws(v))
         if not kk or not vv:
             continue
         if kk in blacklist:
