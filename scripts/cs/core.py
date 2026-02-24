@@ -2180,6 +2180,10 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
     is_vtt = oid_u.startswith("VT")
     is_copyline = oid_u.startswith("CL")
 
+    # AkCent: объединяем длинные списки поддерживаемых кодов в один читаемый param
+    if oid_u.startswith("AC"):
+        params = _ac_compact_barcode_support(list(params or []))
+
     # VTT: если OEM не дали — не теряем Каталожный номер (переносим в Партномер)
     vtt_has_oem = False
     vtt_has_part = False
@@ -2220,10 +2224,6 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
                 kk = "Партномер"
 
         if is_copyline and name_cf.startswith("кабель сетевой") and (k_cf == "совместимость"):
-    # AkCent: склеиваем 1D/2D списки штрихкодов в один понятный параметр
-    if oid.startswith("AC"):
-        params = _ac_compact_barcode_support(list(params))
-
             continue
 
         out.append((kk, vv))
