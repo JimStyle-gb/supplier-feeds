@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-24 13:00">
+<yml_catalog date="2026-02-24 14:25">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-02-24 13:00:29
+Время сборки (Алматы)                      | 2026-02-24 14:25:00
 Ближайшая сборка (Алматы)                  | 2026-03-01 05:00:00
 Сколько товаров у поставщика до фильтра    | 2983
 Сколько товаров у поставщика после фильтра | 2983
@@ -6194,7 +6194,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT1T02ND0NL0</vendorCode>
 <name>Тонер-картридж TK-8515K Kyocera 5052ci/6052ci, 30К (O) чёрный 1T02ND0NL0</name>
-<price>67900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/1T02ND0NL0.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -9379,7 +9379,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT2886C001</vendorCode>
 <name>Картридж PFI-120C Canon TM-200/205/300/305, 130 мл (O) cyan 2886C001</name>
-<price>55900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/2886C001.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -10922,13 +10922,13 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT3JA23AE" available="true">
 <categoryId></categoryId>
 <vendorCode>VT3JA23AE</vendorCode>
-<name>Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К (O) голубой 3JA23AE</name>
-<price>21900</price>
-<picture>https://b2b.vtt.ru/images/3JA23AE.jpg</picture>
+<name>Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К (O) голубой 3JA23AE (уцен.срок годности)</name>
+<price>17900</price>
+<picture>https://b2b.vtt.ru/images/3JA23AEуц.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К (O) голубой 3JA23AE]]></description>
+Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К (O) голубой 3JA23AE (уцен.срок годности)]]></description>
 <param name="Каталожный номер">3JA23AE</param>
 <param name="OEM-номер">3JA23AE</param>
 <param name="Цвет">голубой</param>
@@ -33090,13 +33090,13 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <offer id="VTCE018A" available="true">
 <categoryId></categoryId>
 <vendorCode>VTCE018A</vendorCode>
-<name>Печатающая головка HP 771 для HP DJ Z6200 (О)CE018A пурпурный/желтый (уцен.срок годности)</name>
+<name>Печатающая головка HP 771 для HP DJ Z6200 (O)CE018A пурпурный/желтый</name>
 <price>100</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.vtt.ru/images/CE018A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Печатающая головка HP 771 для HP DJ Z6200 (О)CE018A пурпурный/желтый (уцен.срок годности)]]></description>
+Печатающая головка HP 771 для HP DJ Z6200 (O)CE018A пурпурный/желтый]]></description>
 <param name="Каталожный номер">CE018A</param>
 <param name="OEM-номер">CE018A</param>
 </offer>
@@ -45590,7 +45590,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTMX60GTBA</vendorCode>
 <name>Тонер-картридж черный Sharp Sphinx/Phoenix/Griffin, 40К (O) MX60GTBA/MX61GTBA</name>
-<price>100</price>
+<price>122900</price>
 <picture>https://b2b.vtt.ru/images/MX60GTBA.jpg</picture>
 <vendor>Sharp</vendor>
 <currencyId>KZT</currencyId>
@@ -45650,7 +45650,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTMX60GTMA</vendorCode>
 <name>Тонер-картридж пурпурный Sharp Sphinx/Phoenix/Griffin, 24К (O) MX60GTMA/MX61GTMA</name>
-<price>100</price>
+<price>241900</price>
 <picture>https://b2b.vtt.ru/images/MX60GTMA.jpg</picture>
 <vendor>Sharp</vendor>
 <currencyId>KZT</currencyId>
