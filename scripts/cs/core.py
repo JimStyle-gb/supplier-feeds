@@ -1307,7 +1307,7 @@ def apply_color_from_name(params: Sequence[tuple[str, str]], name: str) -> list[
     found = False
     for k, v in base_params:
         kk = norm_ws(k)
-        vv = normalize_mixed_slash(norm_ws(v))
+        vv = sanitize_mixed_text(norm_ws(v))
         if kk.casefold().replace("ё", "е") == "цвет":
             out.append(("Цвет", color))
             found = True
@@ -1544,8 +1544,8 @@ _RE_MIXED_HYPHEN_LAT_CYR = re.compile(r"\b([A-Za-z]{2,}[A-Za-z0-9]*)[\-–—]([
 _RE_MIXED_HYPHEN_CYR_LAT = re.compile(r"\b([А-Яа-яЁё]{2,})[\-–—]([A-Za-z]{2,}[A-Za-z0-9]*)\b")
 _RE_MIXED_HYPHEN_A1_CYR = re.compile(r"\b([A-Za-z]\d{1,3})[\-–—]([А-Яа-яЁё]{2,})\b")
 
-_RE_MIXED_SLASH_LAT_CYR = re.compile(r"\b([A-Za-z]{1,}[A-Za-z0-9]*)/([А-Яа-яЁё]{2,})\b")
-_RE_MIXED_SLASH_CYR_LAT = re.compile(r"\b([А-Яа-яЁё]{2,})/([A-Za-z]{1,}[A-Za-z0-9]*)\b")
+_RE_MIXED_SLASH_LAT_CYR = re.compile(r"([A-Za-z]{1,}[A-Za-z0-9]*)/([Ѐ-ӿ]{2,})")
+_RE_MIXED_SLASH_CYR_LAT = re.compile(r"([Ѐ-ӿ]{2,})/([A-Za-z]{1,}[A-Za-z0-9]*)")
 
 def normalize_mixed_hyphen(s: str) -> str:
     t = s or ""
@@ -1558,8 +1558,8 @@ def normalize_mixed_hyphen(s: str) -> str:
     return t
 
 
-_RE_MIXED_SLASH_LAT_CYR = re.compile(r"\b([A-Za-z]{1,}[A-Za-z0-9]*)/([А-Яа-яЁё]{2,})\b")
-_RE_MIXED_SLASH_CYR_LAT = re.compile(r"\b([А-Яа-яЁё]{2,})/([A-Za-z]{1,}[A-Za-z0-9]*)\b")
+_RE_MIXED_SLASH_LAT_CYR = re.compile(r"([A-Za-z]{1,}[A-Za-z0-9]*)/([Ѐ-ӿ]{2,})")
+_RE_MIXED_SLASH_CYR_LAT = re.compile(r"([Ѐ-ӿ]{2,})/([A-Za-z]{1,}[A-Za-z0-9]*)")
 
 def normalize_mixed_slash(s: str) -> str:
     t = s or ""
@@ -1575,8 +1575,71 @@ def normalize_mixed_slash(s: str) -> str:
         t = t2
     return t
 
+# Нормализация слэша между разными алфавитами (LAT <-> CYR), включая казахские буквы.
+_CYR_CHAR_RE = re.compile(r"[\u0400-\u04FF]")
+_LAT_CHAR_RE = re.compile(r"[A-Za-z]")
+
+def _char_script(ch: str) -> str | None:
+    if not ch:
+        return None
+    if _LAT_CHAR_RE.match(ch):
+        return "LAT"
+    if _CYR_CHAR_RE.match(ch):
+        return "CYR"
+    return None
+
+def normalize_mixed_slash_scripts(s: str) -> str:
+    t = s or ""
+    if "/" not in t:
+        return t
+    chars = list(t)
+    n = len(chars)
+
+    def find_script_left(i: int) -> str | None:
+        j = i - 1
+        while j >= 0:
+            ch = chars[j]
+            sc = _char_script(ch)
+            if sc:
+                return sc
+            # пропускаем цифры/точки/дефисы/пробелы
+            j -= 1
+        return None
+
+    def find_script_right(i: int) -> str | None:
+        j = i + 1
+        while j < n:
+            ch = chars[j]
+            sc = _char_script(ch)
+            if sc:
+                return sc
+            j += 1
+        return None
+
+    changed = False
+    for i, ch in enumerate(chars):
+        if ch != "/":
+            continue
+        ls = find_script_left(i)
+        rs = find_script_right(i)
+        if ls and rs and ls != rs:
+            chars[i] = " "
+            changed = True
+    if not changed:
+        return t
+    out = "".join(chars)
+    out = re.sub(r"\s{2,}", " ", out).strip()
+    return out
+
+def fix_jk_token(s: str) -> str:
+    # "ЖK" -> "ЖК"
+    return re.sub(r"Ж[КKk]", "ЖК", s or "")
+
 def sanitize_mixed_text(s: str) -> str:
-    return normalize_mixed_slash(normalize_mixed_hyphen(fix_mixed_cyr_lat(s)))
+    t = fix_mixed_cyr_lat(s)
+    # Каз/рус тексты: исправляем короткие смешанные токены (ЖK -> ЖК)
+    t = t.replace("ЖK", "ЖК").replace("Жk", "ЖК")
+    return normalize_mixed_slash(normalize_mixed_hyphen(t))
 
 def safe_int(v) -> int | None:
     if v is None:
@@ -1913,7 +1976,7 @@ def clean_params(
         return kk
 
     def _norm_val(key: str, v: str) -> str:
-        vv = normalize_mixed_slash(norm_ws(v))
+        vv = sanitize_mixed_text(norm_ws(v))
         if not vv:
             return ""
         vv = fix_mixed_cyr_lat(vv)
@@ -2251,7 +2314,7 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
     out: list[tuple[str, str]] = []
     for k, v in params or []:
         kk = norm_ws(k)
-        vv = normalize_mixed_slash(norm_ws(v))
+        vv = sanitize_mixed_text(norm_ws(v))
         if not kk or not vv:
             continue
         k_cf = kk.casefold().replace("ё", "е")
@@ -3142,7 +3205,7 @@ def build_keywords(
 
     # CS: лёгкая канонизация vendor для SEO/фильтров (без изменения name)
     def _canon_vendor(v: str) -> str:
-        vv = normalize_mixed_slash(norm_ws(v))
+        vv = sanitize_mixed_text(norm_ws(v))
         if not vv:
             return ""
         vv_cf = vv.casefold().replace("ё", "е")
@@ -3306,7 +3369,7 @@ def split_params_for_chars(
 
     for k, v in (params_sorted or []):
         kk = norm_ws(k)
-        vv = normalize_mixed_slash(norm_ws(v))
+        vv = sanitize_mixed_text(norm_ws(v))
         if not kk or not vv:
             continue
 
@@ -3395,7 +3458,7 @@ def _build_param_summary(params_sorted: Sequence[tuple[str, str]]) -> str:
     buckets: dict[str, tuple[str, str]] = {}
     for k, v in params_sorted or []:
         kk = norm_ws(k).lower()
-        vv = normalize_mixed_slash(norm_ws(v))
+        vv = sanitize_mixed_text(norm_ws(v))
         if not kk or not vv:
             continue
         if kk in blacklist:
