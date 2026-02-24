@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-23 22:24">
+<yml_catalog date="2026-02-24 09:39">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-02-23 22:24:40
+Время сборки (Алматы)                      | 2026-02-24 09:39:32
 Ближайшая сборка (Алматы)                  | 2026-03-01 03:00:00
 Сколько товаров у поставщика до фильтра    | 1217
 Сколько товаров у поставщика после фильтра | 1196
@@ -79,7 +79,7 @@ URL поставщика                             | https://copyline.kz/goods
 <offer id="CL100017" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100017</vendorCode>
-<name>Drum Unit Canon C-EXV34 BLACK OEM</name>
+<name>Drum Unit для Canon C-EXV34 BLACK OEM</name>
 <price>109900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Canon-C-EXV34.jpg</picture>
 <vendor></vendor>
@@ -97,7 +97,7 @@ Canon iR C2020, C2025, C2030, C2220, C2225, C2230
 <offer id="CL100018" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100018</vendorCode>
-<name>Drum Unit Canon C-EXV34 CYAN OEM</name>
+<name>Drum Unit для Canon C-EXV34 CYAN OEM</name>
 <price>109900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Canon-C-EXV341.jpg</picture>
 <vendor></vendor>
@@ -159,7 +159,7 @@ Canon iR C2020, C2025, C2030, C2220, C2225, C2230
 <offer id="CL100024" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100024</vendorCode>
-<name>Драм-картридж Xerox (113R00670) Phaser 5500/5550</name>
+<name>Драм-картридж для Xerox (113R00670) Phaser 5500/5550</name>
 <price>39900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_113R00670.jpg</picture>
 <vendor></vendor>
@@ -464,7 +464,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100061" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100061</vendorCode>
-<name>Тонер-картридж Kyocera TK-100 (6K)</name>
+<name>Тонер-картридж для Kyocera TK-100 (6K)</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-100.jpg</picture>
 <vendor></vendor>
@@ -485,7 +485,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100062" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100062</vendorCode>
-<name>Тонер-картридж Kyocera TK-160 (2,5K)</name>
+<name>Тонер-картридж для Kyocera TK-160 (2,5K)</name>
 <price>4900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-160.jpg</picture>
 <vendor></vendor>
@@ -506,7 +506,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100063" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100063</vendorCode>
-<name>Тонер-картридж Kyocera TK-410 (15K)</name>
+<name>Тонер-картридж для Kyocera TK-410 (15K)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-410.jpg</picture>
 <vendor></vendor>
@@ -527,7 +527,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100065" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100065</vendorCode>
-<name>Тонер-картридж Kyocera TK-825K Black (15K)</name>
+<name>Тонер-картридж для Kyocera TK-825K Black (15K)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK825K.jpg</picture>
 <vendor></vendor>
@@ -548,7 +548,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100066" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100066</vendorCode>
-<name>Тонер-картридж Kyocera TK-825C Cyan (7K)</name>
+<name>Тонер-картридж для Kyocera TK-825C Cyan (7K)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK825C.jpg</picture>
 <vendor></vendor>
@@ -569,7 +569,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100067" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100067</vendorCode>
-<name>Тонер-картридж Kyocera TK-825M Magenta (7K)</name>
+<name>Тонер-картридж для Kyocera TK-825M Magenta (7K)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK825M.jpg</picture>
 <vendor></vendor>
@@ -590,7 +590,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100068" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100068</vendorCode>
-<name>Тонер-картридж Kyocera TK-825Y Yellow (7K)</name>
+<name>Тонер-картридж для Kyocera TK-825Y Yellow (7K)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK825Y.jpg</picture>
 <vendor></vendor>
@@ -611,7 +611,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100070" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100070</vendorCode>
-<name>Тонер-картридж Kyocera TK-440 (15K)</name>
+<name>Тонер-картридж для Kyocera TK-440 (15K)</name>
 <price>14900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-440.jpg</picture>
 <vendor></vendor>
@@ -632,7 +632,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100071" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100071</vendorCode>
-<name>Тонер-картридж Kyocera TK-500M Magenta (8K)</name>
+<name>Тонер-картридж для Kyocera TK-500M Magenta (8K)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-500M.jpg</picture>
 <vendor></vendor>
@@ -653,7 +653,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100072" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100072</vendorCode>
-<name>Тонер-картридж Kyocera TK-500Y Yellow (8K)</name>
+<name>Тонер-картридж для Kyocera TK-500Y Yellow (8K)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-500Y.jpg</picture>
 <vendor></vendor>
@@ -674,7 +674,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100073" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100073</vendorCode>
-<name>Тонер-картридж Kyocera TK-715 (34K)</name>
+<name>Тонер-картридж для Kyocera TK-715 (34K)</name>
 <price>36900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-715.jpg</picture>
 <vendor></vendor>
@@ -695,7 +695,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100074" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100074</vendorCode>
-<name>Тонер-картридж Kyocera TK-310 (12K)</name>
+<name>Тонер-картридж для Kyocera TK-310 (12K)</name>
 <price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Kyocera-TK-310_344.jpg</picture>
 <vendor></vendor>
@@ -716,7 +716,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100075" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100075</vendorCode>
-<name>Тонер-картридж Kyocera TK-330 (20K)</name>
+<name>Тонер-картридж для Kyocera TK-330 (20K)</name>
 <price>13900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-330-oem.jpg</picture>
 <vendor></vendor>
@@ -951,7 +951,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100124" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100124</vendorCode>
-<name>Драм-картридж Xerox (013R00624) WC 7228/7235/7245/7328/7345/7346 Black/Cyan/Magenta/Yellow (45k)</name>
+<name>Драм-картридж для Xerox (013R00624) WC 7228/7235/7245/7328/7345/7346 Black/Cyan/Magenta/Yellow (45k)</name>
 <price>35900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00624-oem.jpg</picture>
 <vendor></vendor>
@@ -1028,7 +1028,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL100171" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100171</vendorCode>
-<name>Драм-картридж Xerox (013R00657) WC 7120/7125/7220/7225 Black</name>
+<name>Драм-картридж для Xerox (013R00657) WC 7120/7125/7220/7225 Black</name>
 <price>38900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00657.jpg</picture>
 <vendor></vendor>
@@ -1046,7 +1046,7 @@ Black применяется в многофункциональных прин�
 <offer id="CL100172" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100172</vendorCode>
-<name>Драм-картридж Xerox (013R00660) WC 7120/7125/7220/7225 Cyan</name>
+<name>Драм-картридж для Xerox (013R00660) WC 7120/7125/7220/7225 Cyan</name>
 <price>38900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00660.jpg</picture>
 <vendor></vendor>
@@ -1062,7 +1062,7 @@ Cyan
 <offer id="CL100173" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100173</vendorCode>
-<name>Драм-картридж Xerox (013R00659) WC 7120/7125/7220/7225 Magenta</name>
+<name>Драм-картридж для Xerox (013R00659) WC 7120/7125/7220/7225 Magenta</name>
 <price>38900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00659.jpg</picture>
 <vendor></vendor>
@@ -1076,7 +1076,7 @@ Cyan
 <offer id="CL100174" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100174</vendorCode>
-<name>Драм-картридж Xerox (013R00658) WC 7120/7125/7220/7225 Yellow</name>
+<name>Драм-картридж для Xerox (013R00658) WC 7120/7125/7220/7225 Yellow</name>
 <price>38900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00658.jpg</picture>
 <vendor></vendor>
@@ -1751,7 +1751,7 @@ LSZH
 <offer id="CL100308" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100308</vendorCode>
-<name>Тонер-картридж Kyocera TK-510K Black (8K)</name>
+<name>Тонер-картридж для Kyocera TK-510K Black (8K)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK510K-500x500.jpg</picture>
 <vendor></vendor>
@@ -1772,7 +1772,7 @@ LSZH
 <offer id="CL100309" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100309</vendorCode>
-<name>Тонер-картридж Kyocera TK-510C Cyan (8K)</name>
+<name>Тонер-картридж для Kyocera TK-510C Cyan (8K)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK510C-500x500.jpg</picture>
 <vendor></vendor>
@@ -1793,7 +1793,7 @@ LSZH
 <offer id="CL100310" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100310</vendorCode>
-<name>Тонер-картридж Kyocera TK-510M Magenta (8K)</name>
+<name>Тонер-картридж для Kyocera TK-510M Magenta (8K)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK510M-500x500.jpg</picture>
 <vendor></vendor>
@@ -1814,7 +1814,7 @@ LSZH
 <offer id="CL100314" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100314</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-311</name>
+<name>Тонер-картридж для Konica-Minolta TN-311</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-311.jpg</picture>
 <vendor></vendor>
@@ -2962,7 +2962,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <offer id="CL100774" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100774</vendorCode>
-<name>Тонер-картридж Kyocera TK-3110 for FS4100 (15K) (12100116C) INTEGRAL</name>
+<name>Тонер-картридж для Kyocera TK-3110 for FS4100 (15K) (12100116C) INTEGRAL</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_12100116C-integral.jpg</picture>
 <vendor></vendor>
@@ -2983,7 +2983,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <offer id="CL100775" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100775</vendorCode>
-<name>Тонер-картридж Kyocera TK-350 for FS3920DN/FS-3540MFP/FS-3640MFP (15K) (12100038C) 465 гр INTEGRAL</name>
+<name>Тонер-картридж для Kyocera TK-350 for FS3920DN/FS-3540MFP/FS-3640MFP (15K) (12100038C) 465 гр INTEGRAL</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_12100038c.jpg</picture>
 <vendor></vendor>
@@ -3157,7 +3157,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <offer id="CL100851" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100851</vendorCode>
-<name>Драм-картридж Xerox (101R00474) Phaser 3052/3260 WC 3215/3225 (10k) Euro Print</name>
+<name>Драм-картридж для Xerox (101R00474) Phaser 3052/3260 WC 3215/3225 (10k) Euro Print</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00474-ep.jpg</picture>
 <vendor></vendor>
@@ -3194,7 +3194,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <offer id="CL100853" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100853</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-114 Euro Print</name>
+<name>Тонер-картридж для Konica-Minolta TN-114 Euro Print</name>
 <price>9900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_EP-TN114.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Konica-Minolta-TN1141.jpg</picture>
@@ -3216,7 +3216,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <offer id="CL100868" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100868</vendorCode>
-<name>Drum Unit Canon C-EXV33</name>
+<name>Drum Unit для Canon C-EXV33</name>
 <price>21900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum_Unit_Canon_C-EXV33.jpg</picture>
 <vendor></vendor>
@@ -3289,7 +3289,7 @@ Canon iR2520, iR2525, iR2530, iR2535, iR2545
 <offer id="CL100899" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100899</vendorCode>
-<name>Тонер-картридж Kyocera TK-1140/1142 for FS1035/1135 (7,2K) (12100089) INTEGRAL</name>
+<name>Тонер-картридж для Kyocera TK-1140/1142 for FS1035/1135 (7,2K) (12100089) INTEGRAL</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_12100089_WEB.jpg</picture>
 <vendor></vendor>
@@ -3739,7 +3739,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL100999" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100999</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-217</name>
+<name>Тонер-картридж для Konica-Minolta TN-217</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-217.jpg</picture>
 <vendor></vendor>
@@ -3760,7 +3760,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL101000" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101000</vendorCode>
-<name>Тонер-картридж Kyocera TK-110 for FS-720/FS-820/FS-920/FS-1016/FS-1016MFP/FS-1116/FS-1116MFP (6K) (12100023) INTEGRAL</name>
+<name>Тонер-картридж для Kyocera TK-110 for FS-720/FS-820/FS-920/FS-1016/FS-1016MFP/FS-1116/FS-1116MFP (6K) (12100023) INTEGRAL</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1492_WEB.jpg</picture>
 <vendor></vendor>
@@ -4231,7 +4231,7 @@ KX-FA412
 <offer id="CL101232" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101232</vendorCode>
-<name>Drum Unit Canon C-EXV18/GPR-22/NPG-32</name>
+<name>Drum Unit для Canon C-EXV18/GPR-22/NPG-32</name>
 <price>24900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon_ir_1018_1020_drum_unit_npg32.jpg</picture>
 <vendor></vendor>
@@ -4247,7 +4247,7 @@ Canon iR 1018, 1019, 1020, 1022, 1023, 1024, 1025
 <offer id="CL101233" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101233</vendorCode>
-<name>Drum Unit Canon C-EXV5/GPR-8</name>
+<name>Drum Unit для Canon C-EXV5/GPR-8</name>
 <price>35900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_npg-20-cexv5-drumIR1600.jpg</picture>
 <vendor></vendor>
@@ -4265,7 +4265,7 @@ Canon iR 1600, 1605, 1610, 2000, 2010
 <offer id="CL101235" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101235</vendorCode>
-<name>Drum Unit Canon C-EXV7/GPR-10</name>
+<name>Drum Unit для Canon C-EXV7/GPR-10</name>
 <price>42900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum_Unit_Canon_C-EXV7.jpg</picture>
 <vendor></vendor>
@@ -4284,7 +4284,7 @@ Canon iR 1200, 1210, 1230, 1270, 1310, 1330, 1370, 1510, 1530, 1570, 1630, 1670
 <offer id="CL101238" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101238</vendorCode>
-<name>Drum Unit Canon NPG-1</name>
+<name>Drum Unit для Canon NPG-1</name>
 <price>42900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_npg-1.jpg</picture>
 <vendor></vendor>
@@ -4303,7 +4303,7 @@ Canon NP-1015, NP-1215, NP-1218, NP-1318, NP-1510, NP-1520, NP-1530. NP-1550, NP
 <offer id="CL101242" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101242</vendorCode>
-<name>Drum Unit Canon C-EXV14/GPR-18/NPG-28</name>
+<name>Drum Unit для Canon C-EXV14/GPR-18/NPG-28</name>
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C_EXV14_GPR18_NPG_28_dlya_iR_2016_2020.jpg</picture>
 <vendor></vendor>
@@ -4409,7 +4409,7 @@ KX-MB228CN, KX-MB238CN, KX-MB258CN, KX-MB778CN, KX-MB788CN
 <offer id="CL101251" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101251</vendorCode>
-<name>Драм-картридж Xerox (013R00589) WC C118/123/128/M118</name>
+<name>Драм-картридж для Xerox (013R00589) WC C118/123/128/M118</name>
 <price>41900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00589.jpg</picture>
 <vendor></vendor>
@@ -4571,7 +4571,7 @@ WorkCentre M118, M118i, M123, M128, M133, CopyCentre C118, C123, C128, C133, WC 
 <offer id="CL101478" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101478</vendorCode>
-<name>Тонер-картридж Kyocera TK-1130 (3K)</name>
+<name>Тонер-картридж для Kyocera TK-1130 (3K)</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-1130-epb.jpg</picture>
 <vendor></vendor>
@@ -4613,7 +4613,7 @@ WorkCentre M118, M118i, M123, M128, M133, CopyCentre C118, C123, C128, C133, WC 
 <offer id="CL101522" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101522</vendorCode>
-<name>Тонер-картридж Toshiba T-2450E (24K)</name>
+<name>Тонер-картридж для Toshiba T-2450E (24K)</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2450E.jpg</picture>
 <vendor></vendor>
@@ -4877,7 +4877,7 @@ PVC
 <offer id="CL101624" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101624</vendorCode>
-<name>Тонер-картридж Kyocera TK-140 for FS1100/1100N (4K) (12100033C) INTEGRAL</name>
+<name>Тонер-картридж для Kyocera TK-140 for FS1100/1100N (4K) (12100033C) INTEGRAL</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1495_WEB.jpg</picture>
 <vendor></vendor>
@@ -4898,7 +4898,7 @@ PVC
 <offer id="CL101625" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101625</vendorCode>
-<name>Тонер-картридж Kyocera TK-310/312 for FS2000D/FS-3900DN/FS-4000DN (12k) (12100027C) INTEGRAL</name>
+<name>Тонер-картридж для Kyocera TK-310/312 for FS2000D/FS-3900DN/FS-4000DN (12k) (12100027C) INTEGRAL</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_12100027foruseTK310_WEB.jpg</picture>
 <vendor></vendor>
@@ -5104,7 +5104,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <offer id="CL101785" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101785</vendorCode>
-<name>Тонер-картридж Kyocera TK-130 for FS1028/1128/1300/1350 (7,2K) (12100034) 270 гр INTEGRAL</name>
+<name>Тонер-картридж для Kyocera TK-130 for FS1028/1128/1300/1350 (7,2K) (12100034) 270 гр INTEGRAL</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1494_WEB.jpg</picture>
 <vendor></vendor>
@@ -5125,7 +5125,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <offer id="CL101787" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101787</vendorCode>
-<name>Тонер-картридж Kyocera TK-1130 for FS1030/1130 (3K) (12100088) INTEGRAL</name>
+<name>Тонер-картридж для Kyocera TK-1130 for FS1030/1130 (3K) (12100088) INTEGRAL</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_12100088_WEB.jpg</picture>
 <vendor></vendor>
@@ -5146,7 +5146,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <offer id="CL101788" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101788</vendorCode>
-<name>Тонер-картридж Kyocera TK-330/332 for FS4000/LP3045 (20K) (12100028) 670 гр INTEGRAL</name>
+<name>Тонер-картридж для Kyocera TK-330/332 for FS4000/LP3045 (20K) (12100028) 670 гр INTEGRAL</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-330.jpg</picture>
 <vendor></vendor>
@@ -5273,7 +5273,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <offer id="CL101798" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101798</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-114 (13100060) 410гр INTEGRAL</name>
+<name>Тонер-картридж для Konica-Minolta TN-114 (13100060) 410гр INTEGRAL</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_13100060foruse_BizhubDi152_WEB.jpg</picture>
 <vendor></vendor>
@@ -5357,7 +5357,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <offer id="CL101806" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101806</vendorCode>
-<name>Тонер-картридж Toshiba T-3500E (12K) (15100016) 450 гр INTEGRAL</name>
+<name>Тонер-картридж для Toshiba T-3500E (12K) (15100016) 450 гр INTEGRAL</name>
 <price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_15100022foruse_e-Studio28_WEB.jpg</picture>
 <vendor></vendor>
@@ -5378,7 +5378,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <offer id="CL101807" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101807</vendorCode>
-<name>Тонер-картридж Toshiba T-1640E (24K) (15100022) 675 гр INTEGRAL</name>
+<name>Тонер-картридж для Toshiba T-1640E (24K) (15100022) 675 гр INTEGRAL</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_15100022foruse_e-Studio163__WEB.jpg</picture>
 <vendor></vendor>
@@ -5399,7 +5399,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <offer id="CL101808" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101808</vendorCode>
-<name>Тонер-картридж Toshiba T-1810E (24K) (15100026) 675 гр INTEGRAL</name>
+<name>Тонер-картридж для Toshiba T-1810E (24K) (15100026) 675 гр INTEGRAL</name>
 <price>13900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1527_WEB.jpg</picture>
 <vendor></vendor>
@@ -5420,7 +5420,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <offer id="CL101810" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101810</vendorCode>
-<name>Тонер-картридж Toshiba T-2500E (24K) (15100023) 675 гр INTEGRAL</name>
+<name>Тонер-картридж для Toshiba T-2500E (24K) (15100023) 675 гр INTEGRAL</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1529_WEB.jpg</picture>
 <vendor></vendor>
@@ -5546,7 +5546,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <offer id="CL101824" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101824</vendorCode>
-<name>Тонер-картридж Toshiba T-1800E (24K)</name>
+<name>Тонер-картридж для Toshiba T-1800E (24K)</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-1800E.jpg</picture>
 <vendor></vendor>
@@ -5567,7 +5567,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <offer id="CL101828" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101828</vendorCode>
-<name>Тонер-картридж Kyocera TK-1110 (2,5K) Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-1110 (2,5K) Euro Print</name>
 <price>4900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-1110-epb.jpg</picture>
 <vendor></vendor>
@@ -5868,7 +5868,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <offer id="CL101856" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101856</vendorCode>
-<name>Тонер-картридж Ricoh SP4500E</name>
+<name>Тонер-картридж для Ricoh SP4500E</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Ricoh_SP4500E.jpg</picture>
 <vendor></vendor>
@@ -5889,7 +5889,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <offer id="CL101872" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101872</vendorCode>
-<name>Драм-картридж Xerox (101R00432) WC 5020/5016</name>
+<name>Драм-картридж для Xerox (101R00432) WC 5020/5016</name>
 <price>37900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00432-oem.jpg</picture>
 <vendor></vendor>
@@ -6361,7 +6361,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL101969" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101969</vendorCode>
-<name>Тонер-картридж Toshiba T-1640E (24K)</name>
+<name>Тонер-картридж для Toshiba T-1640E (24K)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-1640E.jpg</picture>
 <vendor></vendor>
@@ -6503,7 +6503,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL102041" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102041</vendorCode>
-<name>Тонер-картридж Toshiba T-2450E (10K)</name>
+<name>Тонер-картридж для Toshiba T-2450E (10K)</name>
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2450E1.jpg</picture>
 <vendor></vendor>
@@ -6524,7 +6524,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL102059" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102059</vendorCode>
-<name>Тонер-картридж Kyocera TK-140 (4K)</name>
+<name>Тонер-картридж для Kyocera TK-140 (4K)</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-140.jpg</picture>
 <vendor></vendor>
@@ -6545,7 +6545,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL102060" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102060</vendorCode>
-<name>Тонер-картридж Kyocera TK-110 (6K)</name>
+<name>Тонер-картридж для Kyocera TK-110 (6K)</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-110-.jpg</picture>
 <vendor></vendor>
@@ -6592,7 +6592,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL102173" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102173</vendorCode>
-<name>Тонер-картридж Toshiba T-2340E (23K)</name>
+<name>Тонер-картридж для Toshiba T-2340E (23K)</name>
 <price>14900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2340E.jpg</picture>
 <vendor></vendor>
@@ -6841,7 +6841,7 @@ Enterprise 700 M712, M725
 <offer id="CL102331" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102331</vendorCode>
-<name>Тонер-картридж Kyocera TK-140 (4K) Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-140 (4K) Euro Print</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-140-ep.JPG</picture>
 <vendor></vendor>
@@ -7193,7 +7193,7 @@ PVC
 <offer id="CL102413" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102413</vendorCode>
-<name>Драм-картридж Xerox (101R00435) WC 5222/5220/5225/5230</name>
+<name>Драм-картридж для Xerox (101R00435) WC 5222/5220/5225/5230</name>
 <price>36900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00435.jpg</picture>
 <vendor></vendor>
@@ -7285,7 +7285,7 @@ PVC
 <offer id="CL102468" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102468</vendorCode>
-<name>Драм-картридж Xerox (013R00591) WC 5325/5330/5335</name>
+<name>Драм-картридж для Xerox (013R00591) WC 5325/5330/5335</name>
 <price>41900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00591.JPG</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00591-.JPG</picture>
@@ -7304,7 +7304,7 @@ WorkCentre 5325, 5330, 5335
 <offer id="CL102469" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102469</vendorCode>
-<name>Тонер-картридж Toshiba T-2507E (12k)</name>
+<name>Тонер-картридж для Toshiba T-2507E (12k)</name>
 <price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2507E.jpg</picture>
 <vendor></vendor>
@@ -7572,7 +7572,7 @@ PVC
 <offer id="CL102616" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102616</vendorCode>
-<name>Тонер-картридж Kyocera TK-120 (7,2K)</name>
+<name>Тонер-картридж для Kyocera TK-120 (7,2K)</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-120.JPG</picture>
 <vendor></vendor>
@@ -7593,7 +7593,7 @@ PVC
 <offer id="CL102617" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102617</vendorCode>
-<name>Тонер-картридж Kyocera TK-130 (7,2K)</name>
+<name>Тонер-картридж для Kyocera TK-130 (7,2K)</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-130.jpg</picture>
 <vendor></vendor>
@@ -8079,7 +8079,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <offer id="CL102700" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102700</vendorCode>
-<name>Драм-картридж Xerox (108R00861) Phaser 7500 Black/Cyan/Magenta/Yellow (80k)</name>
+<name>Драм-картридж для Xerox (108R00861) Phaser 7500 Black/Cyan/Magenta/Yellow (80k)</name>
 <price>34900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R00861.jpg</picture>
 <vendor></vendor>
@@ -8349,7 +8349,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <offer id="CL102714" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102714</vendorCode>
-<name>Тонер-картридж Kyocera TK-18/100 for FS1018/1020/KM1500/1815/1820 (12100018) 290гр INTEGRAL</name>
+<name>Тонер-картридж для Kyocera TK-18/100 for FS1018/1020/KM1500/1815/1820 (12100018) 290гр INTEGRAL</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_12100018-INTEGRAL.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-18-100-integral.jpg</picture>
@@ -8371,7 +8371,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <offer id="CL102715" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102715</vendorCode>
-<name>Драм-картридж Xerox (013R00647) WC 7425/7428/7435 Black/Cyan/Magenta/Yellow (75k)</name>
+<name>Драм-картридж для Xerox (013R00647) WC 7425/7428/7435 Black/Cyan/Magenta/Yellow (75k)</name>
 <price>45900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Xerox_013R00647.jpg</picture>
 <vendor></vendor>
@@ -8469,7 +8469,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <offer id="CL102720" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102720</vendorCode>
-<name>Драм-картридж Xerox (013R00662) WC 7525/7530/7535/7545/7556/ 7830/7835/7845/7855 Black/Cyan/Magenta/Yellow (125k)</name>
+<name>Драм-картридж для Xerox (013R00662) WC 7525/7530/7535/7545/7556/ 7830/7835/7845/7855 Black/Cyan/Magenta/Yellow (125k)</name>
 <price>29900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00662.jpg</picture>
 <vendor></vendor>
@@ -8485,7 +8485,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102721" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102721</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-214C Cyan (18.5k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-214C Cyan (18.5k)</name>
 <price>37900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica-minolta-tn-213-cyan.jpg</picture>
 <vendor></vendor>
@@ -8506,7 +8506,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102722" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102722</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-214M Magenta (18.5k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-214M Magenta (18.5k)</name>
 <price>37900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica-minolta-tn-213-magenta.jpg</picture>
 <vendor></vendor>
@@ -8548,7 +8548,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102728" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102728</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-214Y Yellow (18.5k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-214Y Yellow (18.5k)</name>
 <price>37900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica-minolta-tn-213-yellow.jpg</picture>
 <vendor></vendor>
@@ -8569,7 +8569,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102729" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102729</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-214K Black (24k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-214K Black (24k)</name>
 <price>33900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-213-214-314BK.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica-minolta-tn-213-black.jpg</picture>
@@ -8591,7 +8591,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102730" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102730</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-216K Black (29k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-216K Black (29k)</name>
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-216-319BK.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-216black.jpg</picture>
@@ -8613,7 +8613,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102731" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102731</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-216C Cyan (26k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-216C Cyan (26k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-216cyan.jpg</picture>
 <vendor></vendor>
@@ -8634,7 +8634,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102732" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102732</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-216M Magenta (26k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-216M Magenta (26k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-216magenta.jpg</picture>
 <vendor></vendor>
@@ -8655,7 +8655,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102733" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102733</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-216Y Yellow (26k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-216Y Yellow (26k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-216yellow.jpg</picture>
 <vendor></vendor>
@@ -8676,7 +8676,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102734" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102734</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-512Y Yellow (26k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-512Y Yellow (26k)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-512y.jpg</picture>
 <vendor></vendor>
@@ -8697,7 +8697,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102735" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102735</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-611K Black</name>
+<name>Тонер-картридж для Konica-Minolta TN-611K Black</name>
 <price>44900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-611BK.jpg</picture>
 <vendor></vendor>
@@ -8718,7 +8718,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102736" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102736</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-611M Magenta</name>
+<name>Тонер-картридж для Konica-Minolta TN-611M Magenta</name>
 <price>45900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica_minolta_c550_c650_toner_tn611k_c_m_y1.jpg</picture>
 <vendor></vendor>
@@ -8739,7 +8739,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102737" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102737</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-611C Cyan</name>
+<name>Тонер-картридж для Konica-Minolta TN-611C Cyan</name>
 <price>45900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica_minolta_c550_c650_toner_tn611k_c_m_y.jpg</picture>
 <vendor></vendor>
@@ -8760,7 +8760,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102738" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102738</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-611Y Yellow</name>
+<name>Тонер-картридж для Konica-Minolta TN-611Y Yellow</name>
 <price>45900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica_minolta_c550_c650_toner_tn611k_c_m_y2.jpg</picture>
 <vendor></vendor>
@@ -8781,7 +8781,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102744" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102744</vendorCode>
-<name>Тонер-картридж Kyocera TK-1120 Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-1120 Euro Print</name>
 <price>4900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-1120-ep.JPG</picture>
 <vendor></vendor>
@@ -8802,7 +8802,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102745" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102745</vendorCode>
-<name>Тонер-картридж Kyocera TK-1140 Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-1140 Euro Print</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-1140-epb.jpg</picture>
 <vendor></vendor>
@@ -8823,7 +8823,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102748" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102748</vendorCode>
-<name>Тонер-картридж Toshiba T-4590E (12K)</name>
+<name>Тонер-картридж для Toshiba T-4590E (12K)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-4590E.jpg</picture>
 <vendor></vendor>
@@ -8865,7 +8865,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102785" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102785</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-710</name>
+<name>Тонер-картридж для Konica-Minolta TN-710</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-710.jpg</picture>
 <vendor></vendor>
@@ -8907,7 +8907,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102794" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102794</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-310M Magenta (11,5k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-310M Magenta (11,5k)</name>
 <price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-310M.jpg</picture>
 <vendor></vendor>
@@ -8928,7 +8928,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102795" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102795</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-310Y Yellow (11,5k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-310Y Yellow (11,5k)</name>
 <price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-310Y.jpg</picture>
 <vendor></vendor>
@@ -8949,7 +8949,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102796" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102796</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-310K Black (11,5k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-310K Black (11,5k)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-310K.jpg</picture>
 <vendor></vendor>
@@ -8970,7 +8970,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102800" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102800</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-612K Black (37.4K)</name>
+<name>Тонер-картридж для Konica-Minolta TN-612K Black (37.4K)</name>
 <price>39900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-612k.jpg</picture>
 <vendor></vendor>
@@ -8991,7 +8991,7 @@ AltaLink C8030, C8035, C8045, C8055, C8070.
 <offer id="CL102801" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102801</vendorCode>
-<name>Drum Unit Konica Minolta DR-311 C/M/Y (55k)</name>
+<name>Drum Unit для Konica Minolta DR-311 C/M/Y (55k)</name>
 <price>34900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR311-drum-unit-for-Konica-Minolta-Bizhub-C220-C280-C360.jpg</picture>
 <vendor></vendor>
@@ -9008,7 +9008,7 @@ C220, C280, C360
 <offer id="CL102802" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102802</vendorCode>
-<name>Drum Unit Konica Minolta DR-311K Black (70k)</name>
+<name>Drum Unit для Konica Minolta DR-311K Black (70k)</name>
 <price>28900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dr-311k-.jpg</picture>
 <vendor></vendor>
@@ -9027,7 +9027,7 @@ C220, C280, C360
 <offer id="CL102803" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102803</vendorCode>
-<name>Drum Unit Konica Minolta DR-512 C/M/Y (55k)</name>
+<name>Drum Unit для Konica Minolta DR-512 C/M/Y (55k)</name>
 <price>25900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DRUM-UNIT-C224.jpg</picture>
 <vendor></vendor>
@@ -9044,7 +9044,7 @@ C224, C284, C364, C454
 <offer id="CL102804" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102804</vendorCode>
-<name>Drum Unit Konica Minolta DR-512K Black (70k)</name>
+<name>Drum Unit для Konica Minolta DR-512K Black (70k)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Konica-Minolta-Bizhub-C224-k.jpg</picture>
 <vendor></vendor>
@@ -9316,7 +9316,7 @@ C224, C284, C364, C454
 <offer id="CL102974" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102974</vendorCode>
-<name>Drum Unit Canon C-EXV34 MAGENTA OEM</name>
+<name>Drum Unit для Canon C-EXV34 MAGENTA OEM</name>
 <price>109900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Canon-C-EXV342.jpg</picture>
 <vendor></vendor>
@@ -9335,7 +9335,7 @@ Canon iR C2020, C2025, C2030, C2220, C2225, C2230
 <offer id="CL102975" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102975</vendorCode>
-<name>Drum Unit Canon C-EXV34 YELLOW OEM</name>
+<name>Drum Unit для Canon C-EXV34 YELLOW OEM</name>
 <price>109900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Canon-C-EXV343.jpg</picture>
 <vendor></vendor>
@@ -9606,7 +9606,7 @@ Canon iR C2020, C2025, C2030, C2220, C2225, C2230
 <offer id="CL103050" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103050</vendorCode>
-<name>Тонер-картридж Kyocera TK-820K Black (15K)</name>
+<name>Тонер-картридж для Kyocera TK-820K Black (15K)</name>
 <price>41900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Kyocera_TK820_Set.jpg</picture>
 <vendor></vendor>
@@ -9627,7 +9627,7 @@ Canon iR C2020, C2025, C2030, C2220, C2225, C2230
 <offer id="CL103051" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103051</vendorCode>
-<name>Тонер-картридж Kyocera TK-820C Cyan (7K)</name>
+<name>Тонер-картридж для Kyocera TK-820C Cyan (7K)</name>
 <price>31900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Kyocera_TK820_Set1.jpg</picture>
 <vendor></vendor>
@@ -9648,7 +9648,7 @@ Canon iR C2020, C2025, C2030, C2220, C2225, C2230
 <offer id="CL103052" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103052</vendorCode>
-<name>Тонер-картридж Kyocera TK-820M Magenta (7K)</name>
+<name>Тонер-картридж для Kyocera TK-820M Magenta (7K)</name>
 <price>31900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Kyocera_TK820_Set2.jpg</picture>
 <vendor></vendor>
@@ -9669,7 +9669,7 @@ Canon iR C2020, C2025, C2030, C2220, C2225, C2230
 <offer id="CL103053" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103053</vendorCode>
-<name>Тонер-картридж Kyocera TK-820Y Yellow (7K)</name>
+<name>Тонер-картридж для Kyocera TK-820Y Yellow (7K)</name>
 <price>31900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Kyocera_TK820_Set3.jpg</picture>
 <vendor></vendor>
@@ -9722,7 +9722,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103067" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103067</vendorCode>
-<name>Тонер-картридж Kyocera TK-170/172 for FS1320/1370 (7,2K) (12100054) 270 гр INTEGRAL</name>
+<name>Тонер-картридж для Kyocera TK-170/172 for FS1320/1370 (7,2K) (12100054) 270 гр INTEGRAL</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1497_WEB.jpg</picture>
 <vendor></vendor>
@@ -9819,7 +9819,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103084" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103084</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-210C Cyan (12k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-210C Cyan (12k)</name>
 <price>35900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-210-C.jpg</picture>
 <vendor></vendor>
@@ -9840,7 +9840,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103085" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103085</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-210M Magenta (12k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-210M Magenta (12k)</name>
 <price>35900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-210-M.jpg</picture>
 <vendor></vendor>
@@ -9861,7 +9861,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103086" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103086</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-210Y Yellow (12k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-210Y Yellow (12k)</name>
 <price>35900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-210-Y.jpg</picture>
 <vendor></vendor>
@@ -9882,7 +9882,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103087" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103087</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-210K Black (20k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-210K Black (20k)</name>
 <price>29900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-210-Bk.jpg</picture>
 <vendor></vendor>
@@ -9903,7 +9903,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103088" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103088</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-310C Cyan (11,5k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-310C Cyan (11,5k)</name>
 <price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-310C.jpg</picture>
 <vendor></vendor>
@@ -10000,7 +10000,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103097" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103097</vendorCode>
-<name>Тонер-картридж Kyocera TK-710 (40K) Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-710 (40K) Euro Print</name>
 <price>32900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk_710.jpg</picture>
 <vendor></vendor>
@@ -10021,7 +10021,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103098" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103098</vendorCode>
-<name>Тонер-картридж Kyocera TK-540K Black (5K)</name>
+<name>Тонер-картридж для Kyocera TK-540K Black (5K)</name>
 <price>14900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-540BK_.jpg</picture>
 <vendor></vendor>
@@ -10042,7 +10042,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103099" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103099</vendorCode>
-<name>Тонер-картридж Kyocera TK-540C Cyan (4K)</name>
+<name>Тонер-картридж для Kyocera TK-540C Cyan (4K)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-540C_.jpg</picture>
 <vendor></vendor>
@@ -10063,7 +10063,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103100" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103100</vendorCode>
-<name>Тонер-картридж Kyocera TK-540M Magenta (4K)</name>
+<name>Тонер-картридж для Kyocera TK-540M Magenta (4K)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-540M_.jpg</picture>
 <vendor></vendor>
@@ -10084,7 +10084,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103101" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103101</vendorCode>
-<name>Тонер-картридж Kyocera TK-540Y Yellow (4K)</name>
+<name>Тонер-картридж для Kyocera TK-540Y Yellow (4K)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-540Y_.jpg</picture>
 <vendor></vendor>
@@ -10105,7 +10105,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103102" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103102</vendorCode>
-<name>Тонер-картридж Kyocera TK-500K Black (8K)</name>
+<name>Тонер-картридж для Kyocera TK-500K Black (8K)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-500K.jpg</picture>
 <vendor></vendor>
@@ -10126,7 +10126,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103103" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103103</vendorCode>
-<name>Тонер-картридж Kyocera TK-500C Cyan (8K)</name>
+<name>Тонер-картридж для Kyocera TK-500C Cyan (8K)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-500C.jpg</picture>
 <vendor></vendor>
@@ -10189,7 +10189,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103122" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103122</vendorCode>
-<name>Тонер-картридж Kyocera TK-510Y Yellow (8K)</name>
+<name>Тонер-картридж для Kyocera TK-510Y Yellow (8K)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK510Y-500x500.jpg</picture>
 <vendor></vendor>
@@ -10210,7 +10210,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103123" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103123</vendorCode>
-<name>Тонер-картридж Toshiba T-3520E</name>
+<name>Тонер-картридж для Toshiba T-3520E</name>
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-3520E.jpg</picture>
 <vendor></vendor>
@@ -10231,7 +10231,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103124" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103124</vendorCode>
-<name>Тонер-картридж Toshiba T-2320E</name>
+<name>Тонер-картридж для Toshiba T-2320E</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2320E.jpg</picture>
 <vendor></vendor>
@@ -10252,7 +10252,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103125" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103125</vendorCode>
-<name>Тонер-картридж Toshiba T-4530E</name>
+<name>Тонер-картридж для Toshiba T-4530E</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-4530E.jpg</picture>
 <vendor></vendor>
@@ -10273,7 +10273,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <offer id="CL103126" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103126</vendorCode>
-<name>Тонер-картридж Kyocera TK-170 (7,2K)</name>
+<name>Тонер-картридж для Kyocera TK-170 (7,2K)</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-170.jpg</picture>
 <vendor></vendor>
@@ -10506,7 +10506,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL103373" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103373</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-321K Black (27k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-321K Black (27k)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-321BK.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-321-set.jpg</picture>
@@ -10528,7 +10528,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL103374" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103374</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-321C Cyan (25k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-321C Cyan (25k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-321-set1.jpg</picture>
 <vendor></vendor>
@@ -10549,7 +10549,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL103375" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103375</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-321M Magenta (25k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-321M Magenta (25k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-321-set2.jpg</picture>
 <vendor></vendor>
@@ -10570,7 +10570,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL103376" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103376</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-321Y Yellow (25k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-321Y Yellow (25k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-321-set3.jpg</picture>
 <vendor></vendor>
@@ -10591,7 +10591,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL103377" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103377</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-512K Black (27.5k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-512K Black (27.5k)</name>
 <price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-512BK.jpg</picture>
 <vendor></vendor>
@@ -10612,7 +10612,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL103378" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103378</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-512C Cyan(26k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-512C Cyan(26k)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-512c.jpg</picture>
 <vendor></vendor>
@@ -10633,7 +10633,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL103379" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103379</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-512M Magenta (26k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-512M Magenta (26k)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-512m.jpg</picture>
 <vendor></vendor>
@@ -10723,7 +10723,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460
 <offer id="CL103444" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103444</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-116/TN-118 Euro Print</name>
+<name>Тонер-картридж для Konica-Minolta TN-116/TN-118 Euro Print</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_EP-TN116.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-1161.jpg</picture>
@@ -11332,7 +11332,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL103595" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103595</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-611C Cyan MAGNETONE</name>
+<name>Тонер-картридж для Konica-Minolta TN-611C Cyan MAGNETONE</name>
 <price>47900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-611C.jpg</picture>
 <vendor></vendor>
@@ -11353,7 +11353,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL103597" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103597</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-611M Magenta MAGNETONE</name>
+<name>Тонер-картридж для Konica-Minolta TN-611M Magenta MAGNETONE</name>
 <price>47900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-611M.jpg</picture>
 <vendor></vendor>
@@ -11479,7 +11479,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL103706" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103706</vendorCode>
-<name>Тонер-картридж Ricoh type MP C6003 Black (33K)</name>
+<name>Тонер-картридж для Ricoh type MP C6003 Black (33K)</name>
 <price>33900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ricoh_mp_c6003_toner_bk.jpg</picture>
 <vendor></vendor>
@@ -11500,7 +11500,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL103707" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103707</vendorCode>
-<name>Тонер-картридж Ricoh type MP C6003 Cyan (22.5K)</name>
+<name>Тонер-картридж для Ricoh type MP C6003 Cyan (22.5K)</name>
 <price>36900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ricoh_mp_c6003_toner_c.jpg</picture>
 <vendor></vendor>
@@ -11521,7 +11521,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL103708" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103708</vendorCode>
-<name>Тонер-картридж Ricoh type MP C6003 Magenta (22.5K)</name>
+<name>Тонер-картридж для Ricoh type MP C6003 Magenta (22.5K)</name>
 <price>36900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ricoh_mp_c6003_toner_m.jpg</picture>
 <vendor></vendor>
@@ -11542,7 +11542,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL103709" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103709</vendorCode>
-<name>Тонер-картридж Ricoh type MP C6003 Yellow (22.5K)</name>
+<name>Тонер-картридж для Ricoh type MP C6003 Yellow (22.5K)</name>
 <price>36900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ricoh_mp_c6003_toner_y.jpg</picture>
 <vendor></vendor>
@@ -11584,7 +11584,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL103711" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103711</vendorCode>
-<name>Драм-картридж Xerox (013R00670) WC 5019\5021\ 5022\5024</name>
+<name>Драм-картридж для Xerox (013R00670) WC 5019\5021\ 5022\5024</name>
 <price>54900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00670-3.jpg</picture>
 <vendor></vendor>
@@ -11635,7 +11635,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL103730" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103730</vendorCode>
-<name>Drum Unit Canon C-EXV42</name>
+<name>Drum Unit для Canon C-EXV42</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv42_dr.jpg</picture>
 <vendor></vendor>
@@ -11674,7 +11674,7 @@ Canon iR 2202, 2204, 2206
 <offer id="CL103758" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103758</vendorCode>
-<name>Драм-картридж Xerox (101R00555) Phaser 3330/ WC 3335/3345 (30K)</name>
+<name>Драм-картридж для Xerox (101R00555) Phaser 3330/ WC 3335/3345 (30K)</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00555.jpg</picture>
 <vendor></vendor>
@@ -12053,7 +12053,7 @@ Canon iR 2202, 2204, 2206
 <offer id="CL103835" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103835</vendorCode>
-<name>Тонер-картридж Kyocera TK-3150 (14.5K)</name>
+<name>Тонер-картридж для Kyocera TK-3150 (14.5K)</name>
 <price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-3150.jpg</picture>
 <vendor></vendor>
@@ -12405,7 +12405,7 @@ Enterprise M806dn, M806x+, Flow M830z
 <offer id="CL103913" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103913</vendorCode>
-<name>Драм-картридж Xerox (113R00773) Phaser 3610/WC 3615 (85k)</name>
+<name>Драм-картридж для Xerox (113R00773) Phaser 3610/WC 3615 (85k)</name>
 <price>39900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_xerox-imaging-drum-cartridge-phaser-3610-workcentre-3615-113r00773.jpg</picture>
 <vendor></vendor>
@@ -12573,7 +12573,7 @@ CLP-320, CLP-325, CLX-3185, CLX-3185N, CLX-3185FN, CLX-3185FW
 <offer id="CL103928" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103928</vendorCode>
-<name>Драм-картридж Xerox (113R00773) Phaser 3610/WC 3615 (85k) Euro Print</name>
+<name>Драм-картридж для Xerox (113R00773) Phaser 3610/WC 3615 (85k) Euro Print</name>
 <price>45900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_113R00773.jpg</picture>
 <vendor></vendor>
@@ -12587,7 +12587,7 @@ CLP-320, CLP-325, CLX-3185, CLX-3185N, CLX-3185FN, CLX-3185FW
 <offer id="CL103929" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103929</vendorCode>
-<name>Тонер-картридж Kyocera TK-1170 (7,2K) Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-1170 (7,2K) Euro Print</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-1170-epb.jpg</picture>
 <vendor></vendor>
@@ -12740,7 +12740,7 @@ M230sdn
 <offer id="CL103973" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103973</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-221K Black (24k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-221K Black (24k)</name>
 <price>11900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221k.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221-set1.jpg</picture>
@@ -12762,7 +12762,7 @@ M230sdn
 <offer id="CL103974" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103974</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-221C Cyan (21k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-221C Cyan (21k)</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221c.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221-set.jpg</picture>
@@ -12784,7 +12784,7 @@ M230sdn
 <offer id="CL103975" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103975</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-221M Magenta (21k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-221M Magenta (21k)</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221m.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221-set2.jpg</picture>
@@ -12806,7 +12806,7 @@ M230sdn
 <offer id="CL103976" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103976</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-221Y Yellow (21k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-221Y Yellow (21k)</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221-y.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221-set3.jpg</picture>
@@ -13201,7 +13201,7 @@ M230sdn
 <offer id="CL104007" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104007</vendorCode>
-<name>Тонер-картридж Kyocera TK-1150 (3K) Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-1150 (3K) Euro Print</name>
 <price>4900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-1150-ep.jpg</picture>
 <vendor></vendor>
@@ -13988,7 +13988,7 @@ M181fw
 <offer id="CL104143" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104143</vendorCode>
-<name>Тонер-картридж Toshiba T-2309E (17.5K)</name>
+<name>Тонер-картридж для Toshiba T-2309E (17.5K)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2309e-.jpg</picture>
 <vendor></vendor>
@@ -14193,7 +14193,7 @@ M181fw
 <offer id="CL104215" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104215</vendorCode>
-<name>Drum Unit Canon C-EXV49 BLACK/COLOR</name>
+<name>Drum Unit для Canon C-EXV49 BLACK/COLOR</name>
 <price>25900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_drum-Canon-IR-3300.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_drum-Canon-IR-3300-2.jpg</picture>
@@ -14437,7 +14437,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104237" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104237</vendorCode>
-<name>Тонер-картридж Kyocera TK-560K Black (12K)</name>
+<name>Тонер-картридж для Kyocera TK-560K Black (12K)</name>
 <price>21900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_kyocera_tk560_black.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_kyocera_tk560_set1.jpg</picture>
@@ -14459,7 +14459,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104238" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104238</vendorCode>
-<name>Тонер-картридж Kyocera TK-560C Cyan (10K)</name>
+<name>Тонер-картридж для Kyocera TK-560C Cyan (10K)</name>
 <price>20900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_kyocera_tk560_cyan.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_kyocera_tk560_set.jpg</picture>
@@ -14481,7 +14481,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104239" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104239</vendorCode>
-<name>Тонер-картридж Kyocera TK-560M Magenta (10K)</name>
+<name>Тонер-картридж для Kyocera TK-560M Magenta (10K)</name>
 <price>20900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_kyocera_tk560_magenta.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_kyocera_tk560_set.jpg</picture>
@@ -14503,7 +14503,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104240" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104240</vendorCode>
-<name>Тонер-картридж Kyocera TK-560Y Yellow (10K)</name>
+<name>Тонер-картридж для Kyocera TK-560Y Yellow (10K)</name>
 <price>20900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_kyocera_tk560_yellow.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_kyocera_tk560_set.jpg</picture>
@@ -14525,7 +14525,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104241" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104241</vendorCode>
-<name>Тонер-картридж Kyocera TK-3160 (12.5K)</name>
+<name>Тонер-картридж для Kyocera TK-3160 (12.5K)</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-3160.jpg</picture>
 <vendor></vendor>
@@ -14546,7 +14546,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104242" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104242</vendorCode>
-<name>Тонер-картридж Ricoh SP3500XE/SP3510XE (6.4K) Euro Print</name>
+<name>Тонер-картридж для Ricoh SP3500XE/SP3510XE (6.4K) Euro Print</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_SP3500.jpg</picture>
 <vendor></vendor>
@@ -14582,7 +14582,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104283" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104283</vendorCode>
-<name>Тонер-картридж Kyocera TK-5240K Black (4K)</name>
+<name>Тонер-картридж для Kyocera TK-5240K Black (4K)</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk_5240k.jpg</picture>
 <vendor></vendor>
@@ -14603,7 +14603,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104284" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104284</vendorCode>
-<name>Тонер-картридж Kyocera TK-5240C Cyan (3K)</name>
+<name>Тонер-картридж для Kyocera TK-5240C Cyan (3K)</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk_5240c.jpg</picture>
 <vendor></vendor>
@@ -14624,7 +14624,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104285" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104285</vendorCode>
-<name>Тонер-картридж Kyocera TK-5240M Magenta (3K)</name>
+<name>Тонер-картридж для Kyocera TK-5240M Magenta (3K)</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk_5240m.jpg</picture>
 <vendor></vendor>
@@ -14645,7 +14645,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104286" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104286</vendorCode>
-<name>Тонер-картридж Kyocera TK-5240Y Yellow (3K)</name>
+<name>Тонер-картридж для Kyocera TK-5240Y Yellow (3K)</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk_5240y.jpg</picture>
 <vendor></vendor>
@@ -14666,7 +14666,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104287" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104287</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-324K Black (28k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-324K Black (28k)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-324k.jpg</picture>
 <vendor></vendor>
@@ -14687,7 +14687,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104288" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104288</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-324C Cyan (26k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-324C Cyan (26k)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-324c.jpg</picture>
 <vendor></vendor>
@@ -14708,7 +14708,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104289" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104289</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-324M Magenta (26k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-324M Magenta (26k)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-324m.jpg</picture>
 <vendor></vendor>
@@ -14729,7 +14729,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104290" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104290</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-324Y Yellow (26k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-324Y Yellow (26k)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-324y.jpg</picture>
 <vendor></vendor>
@@ -14750,7 +14750,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104292" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104292</vendorCode>
-<name>Тонер-картридж Ricoh SP3400HE (5K) Euro Print</name>
+<name>Тонер-картридж для Ricoh SP3400HE (5K) Euro Print</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sp3400-aficio.jpg</picture>
 <vendor></vendor>
@@ -14794,7 +14794,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104294" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104294</vendorCode>
-<name>Тонер-картридж Ricoh SP C310E Black (2.8K)</name>
+<name>Тонер-картридж для Ricoh SP C310E Black (2.8K)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_SP_C310E-k.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-spc310e-set.jpg</picture>
@@ -14816,7 +14816,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104295" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104295</vendorCode>
-<name>Тонер-картридж Ricoh SP C310E Cyan (2.5K)</name>
+<name>Тонер-картридж для Ricoh SP C310E Cyan (2.5K)</name>
 <price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_SP_C310E-c.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-spc310e-set.jpg</picture>
@@ -14838,7 +14838,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104296" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104296</vendorCode>
-<name>Тонер-картридж Ricoh SP C310E Magenta (2.5K)</name>
+<name>Тонер-картридж для Ricoh SP C310E Magenta (2.5K)</name>
 <price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_SP_C310E-m.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-spc310e-set.jpg</picture>
@@ -14860,7 +14860,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104297" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104297</vendorCode>
-<name>Тонер-картридж Ricoh SP C310E Yellow (2.5K)</name>
+<name>Тонер-картридж для Ricoh SP C310E Yellow (2.5K)</name>
 <price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-spc310e-y.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-spc310e-set.jpg</picture>
@@ -15035,7 +15035,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104329" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104329</vendorCode>
-<name>Тонер-картридж Ricoh SP5200HE (25K) Euro Print</name>
+<name>Тонер-картридж для Ricoh SP5200HE (25K) Euro Print</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_SP5200HE_.jpg</picture>
 <vendor></vendor>
@@ -15056,7 +15056,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL104330" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104330</vendorCode>
-<name>Drum Unit Canon C-EXV50</name>
+<name>Drum Unit для Canon C-EXV50</name>
 <price>44900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV50-drum.jpg</picture>
 <vendor></vendor>
@@ -15095,7 +15095,7 @@ Canon iR 1435, 1435i, 1435iF, 1435P
 <offer id="CL104340" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104340</vendorCode>
-<name>Тонер-картридж Kyocera TK-4105 (15K) Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-4105 (15K) Euro Print</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-4105-oem.jpg</picture>
 <vendor></vendor>
@@ -15401,13 +15401,13 @@ Canon iR 1435, 1435i, 1435iF, 1435P
 <offer id="CL104439" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104439</vendorCode>
-<name>Драм-картридж Xerox (013R00669) WC 5945/5955 (200K) Euro Print</name>
+<name>Драм-картридж для Xerox (013R00669) WC 5945/5955 (200K) Euro Print</name>
 <price>105900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00669-oem.jpg</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Драм-картридж Xerox (013R00669) WC 5945/5955 (200K) Euro Print]]></description>
+Драм-картридж для Xerox (013R00669) WC 5945/5955 (200K) Euro Print]]></description>
 <param name="Тип">Драм-картридж</param>
 </offer>
 
@@ -15988,7 +15988,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL104546" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104546</vendorCode>
-<name>Тонер-картридж Toshiba T-1640E (24K) Euro Print NEW</name>
+<name>Тонер-картридж для Toshiba T-1640E (24K) Euro Print NEW</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-1640E.jpg</picture>
 <vendor></vendor>
@@ -16293,7 +16293,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL104598" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104598</vendorCode>
-<name>Тонер-картридж Kyocera TK-1200 (3K) Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-1200 (3K) Euro Print</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-1200-ep.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-1200.jpg</picture>
@@ -16315,7 +16315,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL104599" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104599</vendorCode>
-<name>Драм-картридж Xerox (101R00664) B205/B210/B215 (10K) Euro Print</name>
+<name>Драм-картридж для Xerox (101R00664) B205/B210/B215 (10K) Euro Print</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101r00664-oem1.jpg</picture>
 <vendor></vendor>
@@ -16350,7 +16350,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL104601" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104601</vendorCode>
-<name>Тонер-картридж Kyocera TK-8115K Black (12K)</name>
+<name>Тонер-картридж для Kyocera TK-8115K Black (12K)</name>
 <price>9900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8115K.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8115.jpg</picture>
@@ -16372,7 +16372,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL104602" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104602</vendorCode>
-<name>Тонер-картридж Kyocera TK-8115C Cyan (6K)</name>
+<name>Тонер-картридж для Kyocera TK-8115C Cyan (6K)</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8115C.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8115.jpg</picture>
@@ -16394,7 +16394,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL104603" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104603</vendorCode>
-<name>Тонер-картридж Kyocera TK-8115M Magenta (6K)</name>
+<name>Тонер-картридж для Kyocera TK-8115M Magenta (6K)</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8115M.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8115.jpg</picture>
@@ -16416,7 +16416,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL104604" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104604</vendorCode>
-<name>Тонер-картридж Kyocera TK-8115Y Yellow (6K)</name>
+<name>Тонер-картридж для Kyocera TK-8115Y Yellow (6K)</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8115Y.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8115.jpg</picture>
@@ -16658,7 +16658,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL104653" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104653</vendorCode>
-<name>Тонер-картридж Ricoh MP C2000/C2500/C3000 Black (20K) Euro Print</name>
+<name>Тонер-картридж для Ricoh MP C2000/C2500/C3000 Black (20K) Euro Print</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_MPC2000-BK.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_MPC2000-BK-.jpg</picture>
@@ -16680,7 +16680,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL104654" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104654</vendorCode>
-<name>Тонер-картридж Ricoh MP C2000/C2500/C3000 Cyan (15K) Euro Print</name>
+<name>Тонер-картридж для Ricoh MP C2000/C2500/C3000 Cyan (15K) Euro Print</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_MPC2000-C.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_MPC2000-C-.jpg</picture>
@@ -16702,7 +16702,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL104655" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104655</vendorCode>
-<name>Тонер-картридж Ricoh MP C2000/C2500/C3000 Magenta (15K) Euro Print</name>
+<name>Тонер-картридж для Ricoh MP C2000/C2500/C3000 Magenta (15K) Euro Print</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_MPC2000-M.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_MPC2000-M-.jpg</picture>
@@ -16724,7 +16724,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL104656" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104656</vendorCode>
-<name>Тонер-картридж Ricoh MP C2000/C2500/C3000 Yellow (15K) Euro Print</name>
+<name>Тонер-картридж для Ricoh MP C2000/C2500/C3000 Yellow (15K) Euro Print</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_MPC2000-Y.jpg</picture>
 <vendor></vendor>
@@ -17236,7 +17236,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL104709" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104709</vendorCode>
-<name>Drum Unit Canon 049 для LBP-112/113W (12K) Euro Print</name>
+<name>Drum Unit для Canon 049 для LBP-112/113W (12K) Euro Print</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CRG-049-Drum-Unit-Cartridge-Compatible-for-Canon-imageCLASS-LBP113w-LBP112-ic-MF112.jpg</picture>
 <vendor></vendor>
@@ -17252,7 +17252,7 @@ LBP112, LBP113W.
 <offer id="CL104710" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104710</vendorCode>
-<name>Drum Unit Canon 051 для LBP-162/ MF-269/267/264 (23K) Euro Print</name>
+<name>Drum Unit для Canon 051 для LBP-162/ MF-269/267/264 (23K) Euro Print</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-051-ep.jpg</picture>
 <vendor></vendor>
@@ -17268,7 +17268,7 @@ i-SENSYS LBP162dw, MF269dw, MF267dw, MF264dw.
 <offer id="CL104711" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104711</vendorCode>
-<name>Драм-картридж Xerox (101R00554) VersaLink B400/B405 (65k)</name>
+<name>Драм-картридж для Xerox (101R00554) VersaLink B400/B405 (65k)</name>
 <price>45900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00554-oem.jpg</picture>
 <vendor></vendor>
@@ -18148,7 +18148,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104893" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104893</vendorCode>
-<name>Тонер-картридж Kyocera TK-3190 (25K)</name>
+<name>Тонер-картридж для Kyocera TK-3190 (25K)</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-3190.jpg</picture>
 <vendor></vendor>
@@ -18515,7 +18515,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104978" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104978</vendorCode>
-<name>Тонер-картридж Kyocera TK-8800K Black (30K)</name>
+<name>Тонер-картридж для Kyocera TK-8800K Black (30K)</name>
 <price>36900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8800K.jpg</picture>
 <vendor></vendor>
@@ -18536,7 +18536,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104979" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104979</vendorCode>
-<name>Тонер-картридж Kyocera TK-8800C Cyan (20K)</name>
+<name>Тонер-картридж для Kyocera TK-8800C Cyan (20K)</name>
 <price>27900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8800C.jpg</picture>
 <vendor></vendor>
@@ -18557,7 +18557,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104980" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104980</vendorCode>
-<name>Тонер-картридж Kyocera TK-8800M Magenta (20K)</name>
+<name>Тонер-картридж для Kyocera TK-8800M Magenta (20K)</name>
 <price>27900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8800M.jpg</picture>
 <vendor></vendor>
@@ -18578,7 +18578,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104981" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104981</vendorCode>
-<name>Тонер-картридж Kyocera TK-8800Y Yellow (20K)</name>
+<name>Тонер-картридж для Kyocera TK-8800Y Yellow (20K)</name>
 <price>27900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8800Y.jpg</picture>
 <vendor></vendor>
@@ -18599,7 +18599,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104982" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104982</vendorCode>
-<name>Тонер-картридж Kyocera TK-7225 (35K)</name>
+<name>Тонер-картридж для Kyocera TK-7225 (35K)</name>
 <price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-7225_oem.jpg</picture>
 <vendor></vendor>
@@ -18620,7 +18620,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104983" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104983</vendorCode>
-<name>Тонер-картридж Kyocera TK-3060 (14,5K)</name>
+<name>Тонер-картридж для Kyocera TK-3060 (14,5K)</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-3060-oem.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-3060-oem2.jpg</picture>
@@ -18663,7 +18663,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104985" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104985</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-328K Black (28k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-328K Black (28k)</name>
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328K.jpg</picture>
 <vendor></vendor>
@@ -18684,7 +18684,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104986" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104986</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-328C Cyan (28k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-328C Cyan (28k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328C.jpg</picture>
 <vendor></vendor>
@@ -18705,7 +18705,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104987" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104987</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-328M Magenta (28k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-328M Magenta (28k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328M.jpg</picture>
 <vendor></vendor>
@@ -18726,7 +18726,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104988" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104988</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-328Y Yellow (28k)</name>
+<name>Тонер-картридж для Konica-Minolta TN-328Y Yellow (28k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328Y.jpg</picture>
 <vendor></vendor>
@@ -18769,7 +18769,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104996" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104996</vendorCode>
-<name>Драм-картридж Xerox (113R00782) VersaLink C7000 Black/Cyan/Magenta/Yellow (82,2k) Euro Print</name>
+<name>Драм-картридж для Xerox (113R00782) VersaLink C7000 Black/Cyan/Magenta/Yellow (82,2k) Euro Print</name>
 <price>39900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_113R00782-Versalink-C7020-C7025-C7030-Drum-Cartridge.jpg</picture>
 <vendor></vendor>
@@ -18783,7 +18783,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104997" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104997</vendorCode>
-<name>Драм-картридж Xerox (113R00780) VersaLink C7020/C7025/C7030 Black/Cyan/Magenta/Yellow (109k/87k) Euro Print</name>
+<name>Драм-картридж для Xerox (113R00780) VersaLink C7020/C7025/C7030 Black/Cyan/Magenta/Yellow (109k/87k) Euro Print</name>
 <price>33900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_113R00780-Versalink-C7020-C7025-C7030-Drum-Cartridge.jpg</picture>
 <vendor></vendor>
@@ -18799,7 +18799,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL104999" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104999</vendorCode>
-<name>Тонер-картридж Ricoh IM C2000/C2500 (842311) (27.3k) Black Euro Print</name>
+<name>Тонер-картридж для Ricoh IM C2000/C2500 (842311) (27.3k) Black Euro Print</name>
 <price>9900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_842311.jpg</picture>
 <vendor></vendor>
@@ -18820,7 +18820,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL105000" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105000</vendorCode>
-<name>Тонер-картридж Ricoh IM C2000/C2500 (842314) (18.1k) Cyan Euro Print</name>
+<name>Тонер-картридж для Ricoh IM C2000/C2500 (842314) (18.1k) Cyan Euro Print</name>
 <price>9900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ricoh-842314-toner.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_842314.jpg</picture>
@@ -18842,7 +18842,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL105001" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105001</vendorCode>
-<name>Тонер-картридж Ricoh IM C2000/C2500 (842313) (18.1k) Magenta Euro Print</name>
+<name>Тонер-картридж для Ricoh IM C2000/C2500 (842313) (18.1k) Magenta Euro Print</name>
 <price>9900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ricoh-842313-toner.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_842313-1.jpg</picture>
@@ -18864,7 +18864,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL105002" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105002</vendorCode>
-<name>Тонер-картридж Ricoh IM C2000/C2500 (842312) (18.1k) Yellow Euro Print</name>
+<name>Тонер-картридж для Ricoh IM C2000/C2500 (842312) (18.1k) Yellow Euro Print</name>
 <price>9900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ricoh-842312-toner.jpg</picture>
 <vendor></vendor>
@@ -18885,7 +18885,7 @@ Canon i-Sensys LBP112, LBP113w, MF112, MF113w.
 <offer id="CL105003" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105003</vendorCode>
-<name>Драм-картридж Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Black (60k)</name>
+<name>Драм-картридж для Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Black (60k)</name>
 <price>36900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01121-Compatible-Imaging-Drum-BK.jpg</picture>
 <vendor></vendor>
@@ -18985,7 +18985,7 @@ Black применяется в многофункциональных прин�
 <offer id="CL105009" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105009</vendorCode>
-<name>Драм-картридж Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Cyan (60k)</name>
+<name>Драм-картридж для Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Cyan (60k)</name>
 <price>36900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01121-Compatible-Imaging-Drum-C.jpg</picture>
 <vendor></vendor>
@@ -19001,7 +19001,7 @@ Cyan применяется в многофункциональных принт
 <offer id="CL105010" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105010</vendorCode>
-<name>Драм-картридж Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Magenta (60k)</name>
+<name>Драм-картридж для Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Magenta (60k)</name>
 <price>36900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01121-Compatible-Imaging-Drum-M.jpg</picture>
 <vendor></vendor>
@@ -19065,7 +19065,7 @@ Magenta применяется в многофункциональных при�
 <offer id="CL105020" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105020</vendorCode>
-<name>Драм-картридж Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Yellow (60k)</name>
+<name>Драм-картридж для Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Yellow (60k)</name>
 <price>36900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01121-Compatible-Imaging-Drum-Y.jpg</picture>
 <vendor></vendor>
@@ -19116,7 +19116,7 @@ Yellow применяется в многофункциональных прин
 <offer id="CL105056" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105056</vendorCode>
-<name>Тонер-картридж Kyocera TK-6115 (15K) Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-6115 (15K) Euro Print</name>
 <price>9900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-6115.jpg</picture>
 <vendor></vendor>
@@ -19137,7 +19137,7 @@ Yellow применяется в многофункциональных прин
 <offer id="CL105057" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105057</vendorCode>
-<name>Drum Unit Canon C-EXV38/C-EXV39</name>
+<name>Drum Unit для Canon C-EXV38/C-EXV39</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum_Unit_Canon_C-EXV38.jpg</picture>
 <vendor></vendor>
@@ -19197,7 +19197,7 @@ Canon iR 4025, 4035, 4045, 4051 4225, 4235, 4245, 4251
 <offer id="CL105060" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105060</vendorCode>
-<name>Тонер-картридж Kyocera TK-1160 (7,2K) Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-1160 (7,2K) Euro Print</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-1160.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-1160-ep.jpg</picture>
@@ -19261,7 +19261,7 @@ Canon iR 4025, 4035, 4045, 4051 4225, 4235, 4245, 4251
 <offer id="CL105072" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105072</vendorCode>
-<name>Драм-картридж Xerox (108R01151) Phaser 7100 Black (24K)</name>
+<name>Драм-картридж для Xerox (108R01151) Phaser 7100 Black (24K)</name>
 <price>42900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-For-Xerox-108R01151.jpg</picture>
 <vendor></vendor>
@@ -19275,7 +19275,7 @@ Canon iR 4025, 4035, 4045, 4051 4225, 4235, 4245, 4251
 <offer id="CL105073" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105073</vendorCode>
-<name>Драм-картридж Xerox (108R01148) Phaser 7100 Color (24K)</name>
+<name>Драм-картридж для Xerox (108R01148) Phaser 7100 Color (24K)</name>
 <price>42900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-For-Xerox-108R01148.jpg</picture>
 <vendor></vendor>
@@ -19737,7 +19737,7 @@ SL-C430, SL-C430W, SL-C480, SL-C480W, SL-C480FW.
 <offer id="CL105147" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105147</vendorCode>
-<name>Драм-картридж Xerox (113R00779) VersaLink B7025/B7030/B7035 (80k) Euro Print</name>
+<name>Драм-картридж для Xerox (113R00779) VersaLink B7025/B7030/B7035 (80k) Euro Print</name>
 <price>77900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_113R00779-ep.jpg</picture>
 <vendor></vendor>
@@ -20207,7 +20207,7 @@ SL-C430, SL-C430W, SL-C480, SL-C480W, SL-C480FW.
 <offer id="CL105190" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105190</vendorCode>
-<name>Тонер-картридж Kyocera TK-1200 (3K) OEM</name>
+<name>Тонер-картридж для Kyocera TK-1200 (3K) OEM</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-1200.jpg</picture>
 <vendor></vendor>
@@ -20228,7 +20228,7 @@ SL-C430, SL-C430W, SL-C480, SL-C480W, SL-C480FW.
 <offer id="CL105203" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105203</vendorCode>
-<name>Тонер-картридж Ricoh MP601 (407824) 25K Euro Print</name>
+<name>Тонер-картридж для Ricoh MP601 (407824) 25K Euro Print</name>
 <price>9900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_407824.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_407824-oem.jpg</picture>
@@ -20559,7 +20559,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL105280" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105280</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-328K Black (28k) БУЛАТ s-Line</name>
+<name>Тонер-картридж для Konica-Minolta TN-328K Black (28k) БУЛАТ s-Line</name>
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328K-bulat.jpg</picture>
 <vendor></vendor>
@@ -20638,7 +20638,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <offer id="CL105307" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105307</vendorCode>
-<name>Драм-картридж Xerox 013R00660 WC 7120/7125/7220/7225 Cyan</name>
+<name>Драм-картридж для Xerox 013R00660 WC 7120/7125/7220/7225 Cyan</name>
 <price>327900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00660-o.jpg</picture>
 <vendor></vendor>
@@ -20675,7 +20675,7 @@ Cyan
 <offer id="CL105412" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105412</vendorCode>
-<name>Драм-картридж Xerox (108R01420) Phaser 6510/ WC 6515 (80k)</name>
+<name>Драм-картридж для Xerox (108R01420) Phaser 6510/ WC 6515 (80k)</name>
 <price>46900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01420.jpg</picture>
 <vendor></vendor>
@@ -20773,7 +20773,7 @@ Cyan
 <offer id="CL105417" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105417</vendorCode>
-<name>Драм-картридж Xerox (013R00688) Black/Cyan/Magenta/Yellow (82,2k) Euro Print</name>
+<name>Драм-картридж для Xerox (013R00688) Black/Cyan/Magenta/Yellow (82,2k) Euro Print</name>
 <price>33900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00688-ep.jpg</picture>
 <vendor></vendor>
@@ -20984,7 +20984,7 @@ Cyan
 <offer id="CL105427" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105427</vendorCode>
-<name>Тонер-картридж Konica-Minolta TN-323 (23K)</name>
+<name>Тонер-картридж для Konica-Minolta TN-323 (23K)</name>
 <price>14900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_A87M050.jpg</picture>
 <vendor></vendor>
@@ -21658,7 +21658,7 @@ Cyan
 <offer id="CL105518" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105518</vendorCode>
-<name>Драм-картридж Xerox (108R01420) Phaser 6510/ WC 6515 Black (60k) БУЛАТ s-Line</name>
+<name>Драм-картридж для Xerox (108R01420) Phaser 6510/ WC 6515 Black (60k) БУЛАТ s-Line</name>
 <price>43900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01420-bulat.jpg</picture>
 <vendor></vendor>
@@ -21672,7 +21672,7 @@ Cyan
 <offer id="CL105519" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105519</vendorCode>
-<name>Драм-картридж Xerox (108R01417) Phaser 6510/ WC 6515 Cyan (48k) БУЛАТ s-Line</name>
+<name>Драм-картридж для Xerox (108R01417) Phaser 6510/ WC 6515 Cyan (48k) БУЛАТ s-Line</name>
 <price>43900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01417-bulat.jpg</picture>
 <vendor></vendor>
@@ -21686,7 +21686,7 @@ Cyan
 <offer id="CL105520" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105520</vendorCode>
-<name>Драм-картридж Xerox (108R01418) Phaser 6510/ WC 6515 Magenta (48k) БУЛАТ s-Line</name>
+<name>Драм-картридж для Xerox (108R01418) Phaser 6510/ WC 6515 Magenta (48k) БУЛАТ s-Line</name>
 <price>43900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01418-bulat.jpg</picture>
 <vendor></vendor>
@@ -21700,7 +21700,7 @@ Cyan
 <offer id="CL105521" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105521</vendorCode>
-<name>Драм-картридж Xerox (108R01419) Phaser 6510/ WC 6515 Yellow (48k) БУЛАТ s-Line</name>
+<name>Драм-картридж для Xerox (108R01419) Phaser 6510/ WC 6515 Yellow (48k) БУЛАТ s-Line</name>
 <price>43900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01419-bulat.jpg</picture>
 <vendor></vendor>
@@ -21714,7 +21714,7 @@ Cyan
 <offer id="CL105526" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105526</vendorCode>
-<name>Драм-картридж Xerox (108R01419) Phaser 6510/ WC 6515 Yellow</name>
+<name>Драм-картридж для Xerox (108R01419) Phaser 6510/ WC 6515 Yellow</name>
 <price>46900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01419.jpg</picture>
 <vendor></vendor>
@@ -21728,7 +21728,7 @@ Cyan
 <offer id="CL105527" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105527</vendorCode>
-<name>Драм-картридж Xerox (108R01418) Phaser 6510/ WC 6515 Magenta</name>
+<name>Драм-картридж для Xerox (108R01418) Phaser 6510/ WC 6515 Magenta</name>
 <price>46900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01418.jpg</picture>
 <vendor></vendor>
@@ -21742,7 +21742,7 @@ Cyan
 <offer id="CL105528" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105528</vendorCode>
-<name>Драм-картридж Xerox (108R01417) Phaser 6510/ WC 6515 Cyan</name>
+<name>Драм-картридж для Xerox (108R01417) Phaser 6510/ WC 6515 Cyan</name>
 <price>46900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01417.jpg</picture>
 <vendor></vendor>
@@ -21756,7 +21756,7 @@ Cyan
 <offer id="CL105529" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105529</vendorCode>
-<name>Драм-картридж Xerox 013R00679 (80K) Euro Print</name>
+<name>Драм-картридж для Xerox 013R00679 (80K) Euro Print</name>
 <price>68900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00679-ep.jpg</picture>
 <vendor></vendor>
@@ -21875,7 +21875,7 @@ Cyan
 <offer id="CL105543" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105543</vendorCode>
-<name>Драм-картридж Xerox 013R00691 (12K) Euro Print</name>
+<name>Драм-картридж для Xerox 013R00691 (12K) Euro Print</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00691-ep.jpg</picture>
 <vendor></vendor>
@@ -21978,7 +21978,7 @@ Cyan
 <offer id="CL105602" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105602</vendorCode>
-<name>Драм-картридж Xerox (013R00677) SC2020 Bk/C/M/Y (76k) Euro Print</name>
+<name>Драм-картридж для Xerox (013R00677) SC2020 Bk/C/M/Y (76k) Euro Print</name>
 <price>35900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00677-ep.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00677-epp.jpg</picture>
@@ -22476,7 +22476,7 @@ Cyan
 <offer id="CL105664" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105664</vendorCode>
-<name>Драм-картридж Xerox (013R00686) AltaLink B8145/B8155/B8170 (200K) Euro Print</name>
+<name>Драм-картридж для Xerox (013R00686) AltaLink B8145/B8155/B8170 (200K) Euro Print</name>
 <price>40900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00686-ep.jpg</picture>
 <vendor></vendor>
@@ -22490,7 +22490,7 @@ Cyan
 <offer id="CL105665" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105665</vendorCode>
-<name>Драм-картридж Xerox (013R00681) AltaLink C8130/C8135/C8145/ C8155/C8170 (180K) Euro Print</name>
+<name>Драм-картридж для Xerox (013R00681) AltaLink C8130/C8135/C8145/ C8155/C8170 (180K) Euro Print</name>
 <price>33900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00681.jpg</picture>
 <vendor></vendor>
@@ -22505,7 +22505,7 @@ Cyan
 <offer id="CL105666" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105666</vendorCode>
-<name>Драм-картридж Xerox (013R00687) VersaLink B7125/B7130/B7135 (80K) Euro Print</name>
+<name>Драм-картридж для Xerox (013R00687) VersaLink B7125/B7130/B7135 (80K) Euro Print</name>
 <price>61900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00687-ep.jpg</picture>
 <vendor></vendor>
@@ -22730,7 +22730,7 @@ Cyan
 <offer id="CL105718" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105718</vendorCode>
-<name>Тонер-картридж Kyocera TK-3400 (12.5K)</name>
+<name>Тонер-картридж для Kyocera TK-3400 (12.5K)</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-3400-1.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-3400-2.jpg</picture>
@@ -22752,7 +22752,7 @@ Cyan
 <offer id="CL105719" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105719</vendorCode>
-<name>Тонер-картридж Kyocera TK-3170 (15.5K)</name>
+<name>Тонер-картридж для Kyocera TK-3170 (15.5K)</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-3170-1.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-3170-2.jpg</picture>
@@ -22774,7 +22774,7 @@ Cyan
 <offer id="CL105720" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105720</vendorCode>
-<name>Drum Unit Konica Minolta DR-316K Black (170k)</name>
+<name>Drum Unit для Konica Minolta DR-316K Black (170k)</name>
 <price>44900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-316k.jpg</picture>
 <vendor></vendor>
@@ -22788,7 +22788,7 @@ Cyan
 <offer id="CL105721" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105721</vendorCode>
-<name>Drum Unit Konica Minolta DR-316 C/M/Y (65k)</name>
+<name>Drum Unit для Konica Minolta DR-316 C/M/Y (65k)</name>
 <price>44900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-316-1.jpg</picture>
 <vendor></vendor>
@@ -23216,7 +23216,7 @@ Cyan
 <offer id="CL105743" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105743</vendorCode>
-<name>Тонер-картридж Kyocera TK-3430 (25K) БУЛАТ s-Line</name>
+<name>Тонер-картридж для Kyocera TK-3430 (25K) БУЛАТ s-Line</name>
 <price>9900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-3430-bulat.jpg</picture>
 <vendor></vendor>
@@ -23237,7 +23237,7 @@ Cyan
 <offer id="CL105754" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105754</vendorCode>
-<name>Тонер-картридж Kyocera TK-3430 (25K) Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-3430 (25K) Euro Print</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-3430.jpg</picture>
 <vendor></vendor>
@@ -23279,7 +23279,7 @@ Cyan
 <offer id="CL105756" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105756</vendorCode>
-<name>Тонер-картридж Kyocera TK-3440 (40K) Euro Print</name>
+<name>Тонер-картридж для Kyocera TK-3440 (40K) Euro Print</name>
 <price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-3440-ep.jpg</picture>
 <vendor></vendor>
@@ -23300,7 +23300,7 @@ Cyan
 <offer id="CL105757" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105757</vendorCode>
-<name>Драм-картридж Xerox 013R00690 (40K) Euro Print</name>
+<name>Драм-картридж для Xerox 013R00690 (40K) Euro Print</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00690-ep.jpg</picture>
 <vendor></vendor>
@@ -23398,7 +23398,7 @@ Cyan
 <offer id="CL105777" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105777</vendorCode>
-<name>Drum Unit Konica Minolta DR-313K Black (90k)</name>
+<name>Drum Unit для Konica Minolta DR-313K Black (90k)</name>
 <price>28900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-313k.jpg</picture>
 <vendor></vendor>
@@ -23417,7 +23417,7 @@ C258, C308
 <offer id="CL105778" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105778</vendorCode>
-<name>Drum Unit Konica Minolta DR-313 C/M/Y (55k)</name>
+<name>Drum Unit для Konica Minolta DR-313 C/M/Y (55k)</name>
 <price>28900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-313cmy.jpg</picture>
 <vendor></vendor>
@@ -23584,7 +23584,7 @@ C258, C308
 <offer id="CL105786" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105786</vendorCode>
-<name>Драм-картридж Xerox 108R01484 (40K) Black Euro Print</name>
+<name>Драм-картридж для Xerox 108R01484 (40K) Black Euro Print</name>
 <price>46900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01484.jpg</picture>
 <vendor></vendor>
@@ -23598,7 +23598,7 @@ C258, C308
 <offer id="CL105787" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105787</vendorCode>
-<name>Драм-картридж Xerox 108R01481 (40K) Cyan Euro Print</name>
+<name>Драм-картридж для Xerox 108R01481 (40K) Cyan Euro Print</name>
 <price>46900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01481.jpg</picture>
 <vendor></vendor>
@@ -23612,7 +23612,7 @@ C258, C308
 <offer id="CL105788" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105788</vendorCode>
-<name>Драм-картридж Xerox 108R01482 (40K) Magenta Euro Print</name>
+<name>Драм-картридж для Xerox 108R01482 (40K) Magenta Euro Print</name>
 <price>46900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01482.jpg</picture>
 <vendor></vendor>
@@ -23626,7 +23626,7 @@ C258, C308
 <offer id="CL105789" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105789</vendorCode>
-<name>Драм-картридж Xerox 108R01483 (40K) Yellow Euro Print</name>
+<name>Драм-картридж для Xerox 108R01483 (40K) Yellow Euro Print</name>
 <price>46900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01483.jpg</picture>
 <vendor></vendor>
@@ -23640,7 +23640,7 @@ C258, C308
 <offer id="CL105790" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105790</vendorCode>
-<name>Тонер-картридж Kyocera TK-5440K Black (2.6K)</name>
+<name>Тонер-картридж для Kyocera TK-5440K Black (2.6K)</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-5440K.jpg</picture>
 <vendor></vendor>
@@ -23661,7 +23661,7 @@ C258, C308
 <offer id="CL105791" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105791</vendorCode>
-<name>Тонер-картридж Kyocera TK-5440C Cyan (2.4K)</name>
+<name>Тонер-картридж для Kyocera TK-5440C Cyan (2.4K)</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-5440C.jpg</picture>
 <vendor></vendor>
@@ -23682,7 +23682,7 @@ C258, C308
 <offer id="CL105792" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105792</vendorCode>
-<name>Тонер-картридж Kyocera TK-5440M Magenta (2.4K)</name>
+<name>Тонер-картридж для Kyocera TK-5440M Magenta (2.4K)</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-5440M.jpg</picture>
 <vendor></vendor>
@@ -23703,7 +23703,7 @@ C258, C308
 <offer id="CL105793" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105793</vendorCode>
-<name>Тонер-картридж Kyocera TK-5440Y Yellow (2.4K)</name>
+<name>Тонер-картридж для Kyocera TK-5440Y Yellow (2.4K)</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-5440Y.jpg</picture>
 <vendor></vendor>
@@ -23830,7 +23830,7 @@ C258, C308
 <offer id="CL105799" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105799</vendorCode>
-<name>Тонер-картридж Kyocera TK-5220K Black (1.2K)</name>
+<name>Тонер-картридж для Kyocera TK-5220K Black (1.2K)</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-5220K.jpg</picture>
 <vendor></vendor>
@@ -23851,7 +23851,7 @@ C258, C308
 <offer id="CL105800" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105800</vendorCode>
-<name>Тонер-картридж Kyocera TK-5220C Cyan (1.2K)</name>
+<name>Тонер-картридж для Kyocera TK-5220C Cyan (1.2K)</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-5220C.jpg</picture>
 <vendor></vendor>
@@ -23872,7 +23872,7 @@ C258, C308
 <offer id="CL105801" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105801</vendorCode>
-<name>Тонер-картридж Kyocera TK-5220M Magenta (1.2K)</name>
+<name>Тонер-картридж для Kyocera TK-5220M Magenta (1.2K)</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-5220M.jpg</picture>
 <vendor></vendor>
@@ -23893,7 +23893,7 @@ C258, C308
 <offer id="CL105802" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105802</vendorCode>
-<name>Тонер-картридж Kyocera TK-5220Y Yellow (1.2K)</name>
+<name>Тонер-картридж для Kyocera TK-5220Y Yellow (1.2K)</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-5220Y.jpg</picture>
 <vendor></vendor>
@@ -24384,7 +24384,7 @@ LBP362DW
 <offer id="CL105942" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105942</vendorCode>
-<name>Тонер-картридж Kyocera TK-5270K Black (8K)</name>
+<name>Тонер-картридж для Kyocera TK-5270K Black (8K)</name>
 <price>100</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-5270K.jpg</picture>
 <vendor></vendor>
@@ -24405,7 +24405,7 @@ LBP362DW
 <offer id="CL105943" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105943</vendorCode>
-<name>Тонер-картридж Kyocera TK-5270Y Yellow (6K)</name>
+<name>Тонер-картридж для Kyocera TK-5270Y Yellow (6K)</name>
 <price>100</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-5270Y.jpg</picture>
 <vendor></vendor>
@@ -24426,7 +24426,7 @@ LBP362DW
 <offer id="CL105944" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105944</vendorCode>
-<name>Тонер-картридж Kyocera TK-5270C Cyan (6K)</name>
+<name>Тонер-картридж для Kyocera TK-5270C Cyan (6K)</name>
 <price>100</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-5270C.jpg</picture>
 <vendor></vendor>
@@ -24447,7 +24447,7 @@ LBP362DW
 <offer id="CL105945" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105945</vendorCode>
-<name>Тонер-картридж Kyocera TK-5270M Magenta (6K)</name>
+<name>Тонер-картридж для Kyocera TK-5270M Magenta (6K)</name>
 <price>100</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-5270M.jpg</picture>
 <vendor></vendor>
@@ -24468,7 +24468,7 @@ LBP362DW
 <offer id="CL105946" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105946</vendorCode>
-<name>Тонер-картридж Kyocera TK-3300 (14,5K)</name>
+<name>Тонер-картридж для Kyocera TK-3300 (14,5K)</name>
 <price>100</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-3300.jpg</picture>
 <vendor></vendor>
