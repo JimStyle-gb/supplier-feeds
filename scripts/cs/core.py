@@ -3244,6 +3244,11 @@ def build_keywords(offer_name: str, vendor: str | None, extra: list[str] | None 
     return kw
 
 
+_RE_PARAM_SENTENCEY = re.compile(
+    r"(?i)\b(внимание|обратите|пожалуйста|важно|маркир|подлинност|original|оригинал|упаковк|предупрежден|рекомендуем|гаранти)\b"
+)
+
+
 def _is_sentence_like_param_name(k: str) -> bool:
     kk = norm_ws(k)
     if not kk:
