@@ -3187,9 +3187,16 @@ def normalize_pictures(pictures: Sequence[str]) -> list[str]:
 
 # Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
 
-def build_keywords(offer_name: str, vendor: str | None, extra: list[str] | None = None) -> str:
+
+def build_keywords(
+    vendor: str | None,
+    offer_name: str,
+    city_tail: str | None = None,
+    extra: list[str] | None = None,
+    **_kwargs,
+) -> str:
     # Ключевые слова: упор на внутренний поиск Satu + регионы (без простыни городов).
-    # Google/Яндекс почти не используют meta keywords, поэтому держим keywords чистыми и короткими.
+    # Важно: совместимость с прежними вызовами (city_tail может прилетать из старой логики).
     max_len = safe_int(os.getenv("CS_KEYWORDS_MAX_LEN")) or 480
 
     parts: list[str] = []
@@ -3204,7 +3211,12 @@ def build_keywords(offer_name: str, vendor: str | None, extra: list[str] | None 
             if x:
                 parts.append(x)
 
-    # Доставка по Казахстану — как отдельные ключи
+    # Если старый пайплайн передал city_tail — игнорируем его (чтобы не раздувать keywords),
+    # но оставим возможность включить при явной настройке.
+    if city_tail and (os.getenv("CS_KEYWORDS_KEEP_CITY_TAIL") == "1"):
+        parts.append(norm_ws(city_tail))
+
+    # Доставка по Казахстану — отдельные ключи
     parts.extend(["доставка", "доставка по Казахстану", "отправка в регионы"])
 
     # Города: без дублей и альтернативных названий (чтобы не резалось)
@@ -3228,10 +3240,9 @@ def build_keywords(offer_name: str, vendor: str | None, extra: list[str] | None 
     # Дедуп с сохранением порядка
     parts = _dedup_keep_order([norm_ws(p) for p in parts if norm_ws(p)])
 
-    # Склейка
     kw = ", ".join(parts)
 
-    # Обрезаем аккуратно: по последней запятой, чтобы не резать город/слово посередине
+    # Обрезаем аккуратно по последней запятой (не режем слово/город посередине)
     if max_len and len(kw) > max_len:
         cut = kw[:max_len]
         idx = cut.rfind(", ")
@@ -3242,11 +3253,6 @@ def build_keywords(offer_name: str, vendor: str | None, extra: list[str] | None 
             kw = cut[:idx] if idx > 20 else cut
 
     return kw
-
-
-_RE_PARAM_SENTENCEY = re.compile(
-    r"(?i)\b(внимание|обратите|пожалуйста|важно|маркир|подлинност|original|оригинал|упаковк|предупрежден|рекомендуем|гаранти)\b"
-)
 
 
 def _is_sentence_like_param_name(k: str) -> bool:
