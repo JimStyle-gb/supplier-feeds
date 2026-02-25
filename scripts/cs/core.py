@@ -3186,118 +3186,63 @@ def normalize_pictures(pictures: Sequence[str]) -> list[str]:
 
 
 # Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
-def build_keywords(
-    vendor: str,
-    name: str,
-    *,
-    city_tail: str | None = None,
-    max_tokens: int = 18,
-    extra: list[str] | None = None,
-) -> str:
-    vendor = norm_ws(vendor)
-    name = norm_ws(name)
 
-    def _kw_safe(s: str) -> str:
-        # CS: чтобы <keywords> не "ломались" из-за запятых внутри имени
-        s = str(s or "")
-        s = s.replace(",", " ").replace(";", " ").replace("|", " ")
-        return norm_ws(s).strip(" ,")
-
-    # CS: лёгкая канонизация vendor для SEO/фильтров (без изменения name)
-    def _canon_vendor(v: str) -> str:
-        vv = sanitize_mixed_text(norm_ws(v))
-        if not vv:
-            return ""
-        vv_cf = vv.casefold().replace("ё", "е")
-        vv_cf2 = vv_cf.replace(" ", "").replace("-", "")
-        if vv_cf2 == "kyoceramita":
-            return "Kyocera"
-        return vv
-
-    # Стоп-слова (мусорные токены)
-    stop = {
-        "и", "в", "на", "для", "с", "по", "от", "до", "к", "из", "при", "без",
-        "шт", "pcs", "pc", "dr", "др",
-    }
-
-    # Маппинг одиночных букв (VTT/тонер/цвета)
-    one_map = {
-        "C": "голубой",
-        "M": "пурпурный",
-        "Y": "желтый",
-        "K": "черный",
-        "O": "оригинальный",
-    }
+def build_keywords(offer_name: str, vendor: str | None, extra: list[str] | None = None) -> str:
+    # Ключевые слова: упор на внутренний поиск Satu + регионы (без простыни городов).
+    # Google/Яндекс почти не используют meta keywords, поэтому держим keywords чистыми и короткими.
+    max_len = safe_int(os.getenv("CS_KEYWORDS_MAX_LEN")) or 480
 
     parts: list[str] = []
-    v2 = _canon_vendor(vendor)
-    if v2:
-        parts.append(_kw_safe(v2))
-    if name:
-        parts.append(_kw_safe(name))
-
-    # Разбор имени на слова (цифры/буквы, с дефисами)
-    raw_tokens = re.findall(r"[A-Za-zА-Яа-яЁё0-9]+(?:-[A-Za-zА-Яа-яЁё0-9]+)*", name)
-    used = 0
-    for t in raw_tokens:
-        if used >= max(0, int(max_tokens)):
-            break
-        tt = norm_ws(t)
-        if not tt:
-            continue
-
-        low = tt.casefold().replace("ё", "е")
-
-        # стоп-слова
-        if low in stop:
-            continue
-
-        # одиночные символы: либо маппим, либо выбрасываем
-        if len(tt) == 1:
-            key = tt.upper()
-            if key in one_map:
-                tt = one_map[key]
-                low = tt.casefold().replace("ё", "е")
-            else:
-                continue
-
-        # одиночные цифры — мусор (2, 3), но нормальные числа (например 3020) оставляем
-        if tt.isdigit() and len(tt) == 1:
-            continue
-
-        parts.append(tt)
-        used += 1
+    if vendor:
+        parts.append(vendor)
+    if offer_name:
+        parts.append(offer_name)
 
     if extra:
         for x in extra:
-            xx = norm_ws(str(x))
-            if xx:
-                parts.append(_kw_safe(xx))
+            x = norm_ws(x)
+            if x:
+                parts.append(x)
 
-    # Города добавляем единым хвостом (уже с запятыми). Если не передали — берём дефолт.
-    ct = norm_ws(city_tail or CS_CITY_TAIL)
-    if ct:
-        parts.append(ct)
+    # Доставка по Казахстану — как отдельные ключи
+    parts.extend(["доставка", "доставка по Казахстану", "отправка в регионы"])
 
-    # Уникализация (без учёта регистра)
-    out: list[str] = []
-    seen: set[str] = set()
-    for p in parts:
-        if CS_FIX_KEYWORDS_DECIMAL_COMMA:
-            p = _RE_DECIMAL_COMMA.sub(".", p)
-        if CS_FIX_KEYWORDS_MULTI_COMMA:
-            p = p.strip().strip(" ,")
-        key = p.lower()
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(p)
+    # Города: без дублей и альтернативных названий (чтобы не резалось)
+    cities = [
+        "Казахстан",
+        "Алматы",
+        "Астана",
+        "Шымкент",
+        "Караганда",
+        "Актобе",
+        "Павлодар",
+        "Костанай",
+        "Атырау",
+        "Актау",
+        "Усть-Каменогорск",
+        "Семей",
+        "Тараз",
+    ]
+    parts.extend(cities)
 
-    return ", ".join(out)
+    # Дедуп с сохранением порядка
+    parts = _dedup_keep_order([norm_ws(p) for p in parts if norm_ws(p)])
 
-_RE_PARAM_SENTENCEY = re.compile(
-    r"(?i)\b(внимание|обратите|пожалуйста|важно|маркир|подлинност|original|оригинал|упаковк|предупрежден|рекомендуем|гаранти)\b"
-)
+    # Склейка
+    kw = ", ".join(parts)
+
+    # Обрезаем аккуратно: по последней запятой, чтобы не резать город/слово посередине
+    if max_len and len(kw) > max_len:
+        cut = kw[:max_len]
+        idx = cut.rfind(", ")
+        if idx > 20:
+            kw = cut[:idx]
+        else:
+            idx = cut.rfind(" ")
+            kw = cut[:idx] if idx > 20 else cut
+
+    return kw
+
 
 def _is_sentence_like_param_name(k: str) -> bool:
     kk = norm_ws(k)
