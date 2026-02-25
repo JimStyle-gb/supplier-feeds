@@ -4072,6 +4072,16 @@ class OfferOut:
         keywords = _truncate_text(keywords, CS_KEYWORDS_MAX_LEN)
         keywords = sanitize_mixed_text(keywords)
 
+        # Финальный санитайзер для AC/VT: добиваем смешение кир/лат в name/keywords/params.
+        # Применяем ПОСЛЕ всех enrich/merge, чтобы не возвращалось.
+        if self.supplier in ("AC", "VT"):
+            self.name = sanitize_mixed_text(self.name)
+            keywords = sanitize_mixed_text(keywords)
+            fixed_params: list[tuple[str, str]] = []
+            for pk, pv in params:
+                fixed_params.append((pk, sanitize_mixed_text(pv)))
+            params = fixed_params
+
         pics_xml = ""
         pics = normalize_pictures(self.pictures or [])
         if not pics and CS_PICTURE_PLACEHOLDER_URL:
