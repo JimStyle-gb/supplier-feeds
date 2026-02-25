@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-25 02:24">
+<yml_catalog date="2026-02-25 11:47">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-25 02:24:33
+Время сборки (Алматы)                      | 2026-02-25 11:47:19
 Ближайшая сборка (Алматы)                  | 2026-02-26 02:00:00
-Сколько товаров у поставщика до фильтра    | 1858
-Сколько товаров у поставщика после фильтра | 148
-Сколько товаров есть в наличии (true)      | 148
+Сколько товаров у поставщика до фильтра    | 1853
+Сколько товаров у поставщика после фильтра | 147
+Сколько товаров есть в наличии (true)      | 147
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -1091,144 +1091,6 @@ CD с программным обеспечением и драйверами
 <param name="Тип расходных материалов">Картриджи</param>
 <param name="Область применения">CAD</param>
 <param name="Модель">Epson SureColor SC-T5200</param>
-</offer>
-
-<offer id="ACC11CH96404" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC11CH96404</vendorCode>
-<name>МФУ Epson L14150 фабрика печати</name>
-<price>485900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/e01/i7xpt3gv7ue9szoaw0zmrh90in3ra05i.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Печать без картриджей
-Компактный быстрый многофункциональный принтер EcoTank для печати формата A3+. Низкие затраты на печать страницы, лоток на 250 листов и автоподатчик на 35 листов.
-Высокая скорость печати и сканирования
-Низкие затраты на печать страницы
-Универсальный принтер с поддержкой A3+
-Ищите компактный экономичный цветной принтер формата A3? L14150 доказывает, что это возможно. Принтер EcoTank позволяет печатать, сканировать, копировать и отправлять факсом документы в формате A4, а также печатать в формате A3+ с заднего податчика при очень низкой стоимости печати страницы. Скорость сканирования и печати, фронтальный лоток на 250 листов и автоподатчик на 35 листов A4 обеспечивают быстрое выполнение задач.
-Компактная модель для печати A3
-Компактный принтер L14150 EcoTank позволяет печатать, сканировать, копировать и отправлять факсом документы в формате A4, а также печатать в формате A3+ с заднего податчика. Кроме того, ЖК-экран позволяет легко печатать без ПК.
-Рекордно низкая стоимость печати
-В среднем EcoTank позволит сэкономить до 80% за три года по сравнению с моделями 4-в-1 формата A3 с чернильными картриджами¹ и сократить затраты на чернила до 90%² благодаря инновационной конструкции.
-Делайте больше
-Поддержка факса, лоток на 250 листов, скорость печати 17 страниц в минуту³, двусторонняя печать и автоподатчик на 35 листов позволят легко выполнять самые разнообразные задачи. Печатающая головка PrecisionCore без необходимости нагрева отличается высокой скоростью работы, качеством, надежностью и производительностью и не потребует замены в течение всего срока службы принтера.
-Печатайте откуда угодно
-EcoTank позволяет легко печатать с мобильных устройств, планшетов и ноутбуков. Благодаря поддержке Wi-Fi и Wi-Fi Direct документы на печать можно отправлять с умных устройств при помощи приложения Epson iPrint⁴.
-Разработано для удобного использования
-EcoTank стал еще компактнее и удобнее. Конструкция фронтальных контейнеров позволяет легко доливать чернила, не боясь перепутать цвета: контейнеры подходят только к емкости соответствующего цвета. Индикатор уровня чернил на передней панели всегда подскажет, когда пора долить чернила.
-Техника
-Метод печати
-PrecisionCore™ Print Head
-Конфигурация сопла
-400 Сопла (черный), 128 Сопла (цвет)
-Минимальный размер капли
-3,3 капли(ей)
-Технология чернил
-Пигментный чёрный и цветные чернила на красителях
-Разрешение при печати
-4.800 x 1.200 DPI (точек на дюйм)
-Выработка
-Для домашнего офиса, Настольные устройства для офиса
-Многофункциональный
-Печать, сканирование, Копия, Факс
-Печать
-Скорость печати ISO/IEC 24734
-17 Стр./мин. Монохромная печать, 9 Стр./мин. Colour
-Максимальная скорость печати
-38 Стр./мин. Монохромная печать (plain paper 75 g/m²), 24 Стр./мин. Colour (plain paper 75 g/m²)
-Duplex Printing Speed ISO/IEC 24734
-7 A4 Pages/min Монохромная печать, 5 A4 Pages/min Colour
-Цвета
-Black, Cyan, Yellow, Magenta
-Для получения подробной информации о скоростях печати посетите http://www.epson.eu/testing.
-сканирование
-Разрешение сканирования
-1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный)
-Формат выводимых данных
-BMP, Сканирование для JPEG, PICT, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, PNG
-Тип сканера
-Контактный датчик изображения (CIS)
-Факс
-Type of fax
-Walk-up black and white and colour fax capability
-Fax Transmission Speed
-Up to 33.6kbps / Approx. 3 sec/page
-Fax speed dials (max)
-100 names and numbers
-Page memory
-Up to 100 pages (ITU-T No.1 chart)
-Функции факса
-Отправить факс по компьютеру, Auto Redial, Address Book, Broadcast Fax, Fax Preview
-Спецификации бумаги и датчики
-Количество бумажных ящиков
-1
-Формат бумаги
-A3+  , A3 (29,7x42,0 см)  , A4 (21,0x29,7 см) , A5 (14,8x21,0 см)  , A6 (10,5x14,8 см)  , B4  , B5  , B6, C4 (Конверт)  , C6 (Конверт)  , DL (Конверт), No. 10 (Конверт)  , Letter  , Legal, 10 x 15 см  , 13 x 18 см  , 20 x 25 см  
-Дуплекс
-Yes (A4, plain paper)
-Print Margin
-0 мм top, 0 мм right, 0 мм bottom, 0 мм left (Wherever margin is defined. Otherwise 3mm top, left, right, bottom.)
-Автоматический сбор документов
-35 Страницы
-Емкость отделения подачи бумаги
-30 Листы
-Paper Tray Capacity
-250 Листы Стандарт
-Rear paper path (special media)
-Да
-Обработка мультимедиа
-Automatic duplex (A4, plain paper)
-Общее
-Recommended number of users
-From: 1 To: 4
-Энергопотребление
-12 Ватт (standalone copying, ISO/IEC 24712 pattern), 1 Ватт (sleep mode), 5,4 Ватт Готов, 0,2 Ватт (выключать), TEC 0,3 kWh/week
-Напряжение питания
-AC 100 V - 240 V, 50 Hz - 60 Hz
-Габариты
-498 x 358 x 245 мм (Ширина x Глубина x Высота)
-Вес
-9,7 кг
-Совместимые операционные системы
-Mac OS X 10.6.8 or later, Windows 10 (32/64 bit), Windows 7 (32/64 bit), Windows 8 (32/64 bit), Windows 8.1 (32/64 bit), Windows Server 2003 R2 x64, Windows Server 2003 SP2, Windows Server 2012 R2, Windows Server 2016, Windows Vista (32/64 bit), Windows XP SP3 or later (32-bit), Windows Server 2003 R2, Windows Server 2003 SP2 or later, XP Professional x64 Edition SP2
-Интерфейсы
-USB, Ethernet, WiFi, Wi-Fi Direct
-Безопасность WLAN
-WEP 64 Bit, WEP 128 Bit, WPA PSK (TKIP), WPA2 PSK (AES)
-Услуги мобильной и облачной печати
-Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple AirPrint
-Комплект поставки
-1 full set of ink (Bk – 127ml, cmY – 70ml), Ведущее устройство, Токоподводящий кабель, Руководство по установке, Программное обеспечение (CD), Гарантийные документы
-Другие функции
-ЖК-дисплей
-Тип: Цветной режим, Сенсорный экран, Диагональ: 6,8 см
-Свойства
-Сенсорный экран
-Другие
-Гарантия
-12 месяца(ев) Мобильная (гарантия), 50.000 Страницы]]></description>
-<param name="Страна происхождения">Филиппины</param>
-<param name="Двусторонняя печать">да</param>
-<param name="ЖК дисплей">да</param>
-<param name="Автоподатчик">да</param>
-<param name="Минимальная плотность бумаги, г/м2">64</param>
-<param name="Разрешение печати,dpi">4800 x 1200</param>
-<param name="Максимальная скорость печати А4 стр/мин">17</param>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson L14150</param>
-<param name="Гарантия">12 мес</param>
-<param name="Тип">МФУ Офис</param>
-<param name="Тип печати">струйная</param>
-<param name="Формат">A4</param>
-<param name="Интерфейс">Wi-Fi*Ethernet*USB</param>
-<param name="Цветность">4 цвета</param>
-<param name="Разрешение сканера,dpi">1200x2400</param>
-<param name="Тип чернил">пигментные</param>
-<param name="Максимальная плотность бумаги, г/м2">256</param>
-<param name="Область применения">Для офиса</param>
-<param name="Тип расходных материалов">чернила</param>
 </offer>
 
 <offer id="ACC11CJ18404" available="true">
@@ -2648,6 +2510,7 @@ Epson L3100	C11CG88401
 <vendorCode>ACC13T00S34A</vendorCode>
 <name>Чернила Epson C13T00S34A 103 EcoTank для L3100/L3101/L3110/L3150 пурпурный</name>
 <price>7900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/525/ommic7rlfwlhpzomjeaco1doghaioso0.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4103,7 +3966,7 @@ USB-клавиатура
 <vendorCode>ACHN-3308SR</vendorCode>
 <name>Сканер штрих-кода IDPRT HN-3308SR черный</name>
 <price>17900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/382/1dwvvp9hnv8vd6rku0l8fjgbxuqeq198.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/12f/txacffp72k148ya2vz2n8sq2ah6s18a2.png</picture>
 <vendor></vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -5439,6 +5302,7 @@ Full HD]]></description>
 <vendorCode>ACV11HB38140</vendorCode>
 <name>Проектор универсальный Epson EF-22B</name>
 <price>677900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/0ff/62lhndbolzh56bpwoymnkz4ygqcf2y7u.jpg</picture>
 <vendor>Epson Proj</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
