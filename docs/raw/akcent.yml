@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-25 11:47">
+<yml_catalog date="2026-02-25 14:00">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-25 11:47:19
+Время сборки (Алматы)                      | 2026-02-25 14:00:52
 Ближайшая сборка (Алматы)                  | 2026-02-26 02:00:00
-Сколько товаров у поставщика до фильтра    | 1853
-Сколько товаров у поставщика после фильтра | 147
-Сколько товаров есть в наличии (true)      | 147
+Сколько товаров у поставщика до фильтра    | 1854
+Сколько товаров у поставщика после фильтра | 146
+Сколько товаров есть в наличии (true)      | 146
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -2499,31 +2499,6 @@ Epson L3100	C11CG88401
 <param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
 <param name="Цвет">голубой</param>
 <param name="Модель">Epson Чернила 103 EcoTank Cyan ink bottle</param>
-<param name="Гарантия">3</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Тип печати">струйная</param>
-<param name="Для бренда">Epson</param>
-</offer>
-
-<offer id="ACC13T00S34A" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T00S34A</vendorCode>
-<name>Чернила Epson C13T00S34A 103 EcoTank для L3100/L3101/L3110/L3150 пурпурный</name>
-<price>7900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/525/ommic7rlfwlhpzomjeaco1doghaioso0.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Совместимые продукты
-Epson L3100	C11CG88401	
- 	Epson L3101	C11CG88402	-	 
-	Epson L3110	C11CG87405		
- 	Epson L3150	C11CG86409		
- 	Epson L3151	C11CG86411]]></description>
-<param name="Производитель">Epson</param>
-<param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
-<param name="Цвет">пурпурный</param>
-<param name="Модель">Epson Чернила 103 EcoTank Magenta ink bottle</param>
 <param name="Гарантия">3</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
