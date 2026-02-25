@@ -3255,6 +3255,10 @@ def build_keywords(
     return kw
 
 
+# Похоже на "предложение" (инструкция/маркетинг) в имени параметра — переносим в notes, а не в характеристики.
+# Дублирует часть эвристик выше, но даёт дополнительную страховку.
+_RE_PARAM_SENTENCEY = re.compile(r"[.!?]|\b(?:вы|вам|вас|можете|пожалуйста|важно|внимание|доставка|оплата)\b", re.IGNORECASE)
+
 def _is_sentence_like_param_name(k: str) -> bool:
     kk = norm_ws(k)
     if not kk:
