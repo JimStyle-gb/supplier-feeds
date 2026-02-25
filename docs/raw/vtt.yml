@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-25 11:26">
+<yml_catalog date="2026-02-25 13:21">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-02-25 11:26:20
+Время сборки (Алматы)                      | 2026-02-25 13:21:20
 Ближайшая сборка (Алматы)                  | 2026-03-01 05:00:00
 Сколько товаров у поставщика до фильтра    | 2977
 Сколько товаров у поставщика после фильтра | 2977
@@ -9528,7 +9528,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT2LC93014</vendorCode>
 <name>2LC93014/DK-8505 Драм-юнит Kyocera TASKalfa 3050ci/3550ci/4550ci/5550ci (O)</name>
-<price>289900</price>
+<price>100</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -10922,13 +10922,13 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT3JA23AE" available="true">
 <categoryId></categoryId>
 <vendorCode>VT3JA23AE</vendorCode>
-<name>Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К (O) голубой 3JA23AE (уцен.срок годности)</name>
-<price>17900</price>
-<picture>https://b2b.vtt.ru/images/3JA23AEуц.jpg</picture>
+<name>Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К (O) голубой 3JA23AE</name>
+<price>21900</price>
+<picture>https://b2b.vtt.ru/images/3JA23AE.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К (O) голубой 3JA23AE (уцен.срок годности)]]></description>
+Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К (O) голубой 3JA23AE]]></description>
 <param name="Каталожный номер">3JA23AE</param>
 <param name="OEM-номер">3JA23AE</param>
 <param name="Цвет">голубой</param>
@@ -32861,7 +32861,7 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <categoryId></categoryId>
 <vendorCode>VTC13T00S34A</vendorCode>
 <name>Контейнер с чернилами для Epson L3100/3101/3110/3150, пурпурный, (О), C13T00S34A</name>
-<price>9900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/C13T00S34A.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -32919,13 +32919,13 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <offer id="VTCE017A" available="true">
 <categoryId></categoryId>
 <vendorCode>VTCE017A</vendorCode>
-<name>Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хроматический красный</name>
-<price>100</price>
-<picture>https://b2b.vtt.ru/images/CE017A.jpg</picture>
+<name>Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хром.красный (уцен.срок годн.)</name>
+<price>181900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хроматический красный]]></description>
+Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хром.красный (уцен.срок годн.)]]></description>
 <param name="Каталожный номер">CE017A</param>
 <param name="OEM-номер">CE017A</param>
 </offer>
@@ -32933,13 +32933,13 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <offer id="VTCE018A" available="true">
 <categoryId></categoryId>
 <vendorCode>VTCE018A</vendorCode>
-<name>Печатающая головка HP 771 для HP DJ Z6200 (О)CE018A пурпурный/желтый (уцен.срок годности)</name>
+<name>Печатающая головка HP 771 для HP DJ Z6200 (O)CE018A пурпурный/желтый</name>
 <price>100</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.vtt.ru/images/CE018A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Печатающая головка HP 771 для HP DJ Z6200 (О)CE018A пурпурный/желтый (уцен.срок годности)]]></description>
+Печатающая головка HP 771 для HP DJ Z6200 (O)CE018A пурпурный/желтый]]></description>
 <param name="Каталожный номер">CE018A</param>
 <param name="OEM-номер">CE018A</param>
 </offer>
