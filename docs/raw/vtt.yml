@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-25 13:21">
+<yml_catalog date="2026-02-25 21:51">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-02-25 13:21:20
+Время сборки (Алматы)                      | 2026-02-25 21:51:37
 Ближайшая сборка (Алматы)                  | 2026-03-01 05:00:00
 Сколько товаров у поставщика до фильтра    | 2977
 Сколько товаров у поставщика после фильтра | 2977
@@ -115,7 +115,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT006R01646</vendorCode>
 <name>Тонер-картридж Xerox Versant 80/180 (O) чёрный 006R01646</name>
-<price>119900</price>
+<price>118900</price>
 <picture>https://b2b.vtt.ru/images/006R01646.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -186,7 +186,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT006R01661</vendorCode>
 <name>Тонер-картридж Xerox Color C60/C70, 32K (O) малиновый 006R01661</name>
-<price>136900</price>
+<price>135900</price>
 <picture>https://b2b.vtt.ru/images/006R01661.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -1067,7 +1067,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT106R03943</vendorCode>
 <name>Тонер-картридж XEROX VL B600/B605/B610/B615, 25,9К (O) 106R03943</name>
-<price>265900</price>
+<price>264900</price>
 <picture>https://b2b.vtt.ru/images/106R03943.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -1081,7 +1081,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT106R03945</vendorCode>
 <name>Тонер-картридж XEROX VL B600/B605/B610/B615, 46,7К (O) 106R03945</name>
-<price>238900</price>
+<price>237900</price>
 <picture>https://b2b.vtt.ru/images/106R03945.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -1684,7 +1684,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT113R00782</vendorCode>
 <name>113R00782 Драм-юнит Xerox VersaLink C7000/C7020/C7025/C7030 82,2K (O)</name>
-<price>204900</price>
+<price>203900</price>
 <picture>https://b2b.vtt.ru/images/113R00782.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -2767,7 +2767,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT15011018</vendorCode>
 <name>Картридж Canon PIXMA iP7240/MG6340/MG5440 (O) CLI-451XLGY, GY</name>
-<price>14900</price>
+<price>13900</price>
 <picture>https://b2b.vtt.ru/images/15011018.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -3933,7 +3933,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT15011974345</vendorCode>
 <name>Картридж Hi-Black (HB-CL-441XL-Color) для Canon PIXMA MG2140/3140, Color</name>
-<price>14900</price>
+<price>13900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -4610,7 +4610,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT150209107</vendorCode>
 <name>Картридж 951XL для HP Officejet Pro 8100/8600,1,5К (O) CN047AE M</name>
-<price>36900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/150209107.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -5120,7 +5120,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT150215726</vendorCode>
 <name>Картридж 932 для HP OJ 6100/6600/6700, 400стр (O) black CN057AE</name>
-<price>34900</price>
+<price>33900</price>
 <picture>https://b2b.vtt.ru/images/150215726.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -5260,7 +5260,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT1504069</vendorCode>
 <name>Тонер-картридж Hi-Black (HB-56F5000) для Lexmark MS321/MX321/MS421/MS521/MX521/MS621/MS622, 6K</name>
-<price>56900</price>
+<price>55900</price>
 <picture>https://b2b.vtt.ru/images/1504069.jpg</picture>
 <vendor>Lexmark</vendor>
 <currencyId>KZT</currencyId>
@@ -6663,7 +6663,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT1T02YPCNL0</vendorCode>
 <name>Тонер-катридж Kyocera TK-8365C для TASKalfa 2554ci, 12К (О) голубой</name>
-<price>78900</price>
+<price>77900</price>
 <picture>https://b2b.vtt.ru/images/1T02YPCNL0.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -6694,7 +6694,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT2001301</vendorCode>
 <name>Картридж Canon LBP800/LBP810/LBP1120 (O) EP-22, 2,5K</name>
-<price>36900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/2001301.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -8433,7 +8433,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT2201215</vendorCode>
 <name>Картридж 711 для HP DJ T120/T520, 80мл (O) чёрный CZ133A</name>
-<price>76900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/2201215.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -9139,7 +9139,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT22013638</vendorCode>
 <name>Картридж Hi-Black (HB-W1470A) для HP LJ Enterprise M610dn/611dn/612dn/MFP M634/635, 10,5K, б/ч</name>
-<price>20900</price>
+<price>19900</price>
 <picture>https://b2b.vtt.ru/images/22013638.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -9335,7 +9335,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT2352C001</vendorCode>
 <name>Печатающая головка PF-06 Canon iPF TX-2000/3000/4000, TM-200/205/300/305 (O) 2352C001</name>
-<price>314900</price>
+<price>313900</price>
 <picture>https://b2b.vtt.ru/images/2352C001.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -9409,7 +9409,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT2888C001</vendorCode>
 <name>Картридж PFI-120Y Canon TM-200/205/300/305, 130 мл (O) yellow 2888C001</name>
-<price>56900</price>
+<price>55900</price>
 <picture>https://b2b.vtt.ru/images/2888C001.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -9588,7 +9588,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT2NX93010</vendorCode>
 <name>2NX93010/DK-3150 Драм-юнит Kyocera 3040idn/M3540idn (O)</name>
-<price>105900</price>
+<price>104900</price>
 <picture>https://b2b.vtt.ru/images/2NX93010.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -9616,7 +9616,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT3007C002</vendorCode>
 <name>Картридж 056 для Canon MF542x/MF543x/LBP325x, 10К (O) 3007C002</name>
-<price>221900</price>
+<price>220900</price>
 <picture>https://b2b.vtt.ru/images/3007C002.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -10403,7 +10403,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT302N993033</vendorCode>
 <name>302N993033/DK-6306 Драм-юнит Kyocera TASKalfa 3501i/4501i/5501i (O)</name>
-<price>234900</price>
+<price>233900</price>
 <picture>https://b2b.vtt.ru/images/302N993033.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -10789,7 +10789,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT3872B001</vendorCode>
 <name>Печатающая головка PF-05 для Canon iPF6400/6400s/6450/8400/8400s/9400/9400s (O) 3872B001 РАСПРОДАЖА</name>
-<price>346900</price>
+<price>345900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -10848,7 +10848,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT3ED70A</vendorCode>
 <name>Картридж 712 для HP DJ T230/630, 38мл (O) чёрный 3ED70A</name>
-<price>100</price>
+<price>46900</price>
 <picture>https://b2b.vtt.ru/images/3ED70A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -10863,7 +10863,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT3ED71A</vendorCode>
 <name>Картридж 712 для HP DJ T230/630, 80мл (O) чёрный 3ED71A</name>
-<price>66900</price>
+<price>65900</price>
 <picture>https://b2b.vtt.ru/images/3ED71A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -11582,7 +11582,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT401080122</vendorCode>
 <name>Картридж TK-3130 Kyocera FS-4200DN/4300DN, 25К (O) 1T02LV0NL0</name>
-<price>97900</price>
+<price>96900</price>
 <picture>https://b2b.vtt.ru/images/401080122.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -12168,7 +12168,7 @@ LE Принт-картридж SP201E Ricoh серии SP220 1К (O) 407999]]></
 <categoryId></categoryId>
 <vendorCode>VT4100603102</vendorCode>
 <name>Тонер-картридж TK-5150CKyocera P6035cdn/M6x35cidn, 10К (O) голубой 1T02NSCNL0</name>
-<price>229900</price>
+<price>228900</price>
 <picture>https://b2b.vtt.ru/images/4100603102.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -12238,7 +12238,7 @@ LE Принт-картридж SP201E Ricoh серии SP220 1К (O) 407999]]></
 <categoryId></categoryId>
 <vendorCode>VT4100603103</vendorCode>
 <name>Тонер-картридж TK-5150M Kyocera P6035cdn/M6x35cidn, 10К (O) малиновый 1T02NSBNL0</name>
-<price>321900</price>
+<price>320900</price>
 <picture>https://b2b.vtt.ru/images/4100603103.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -12500,7 +12500,7 @@ LE Принт-картридж SP201E Ricoh серии SP220 1К (O) 407999]]></
 <categoryId></categoryId>
 <vendorCode>VT410060316</vendorCode>
 <name>Тонер-картридж TK-5160M Kyocera P7040 cdn, 12К (O) малиновый 1T02NTBNL0</name>
-<price>100900</price>
+<price>99900</price>
 <picture>https://b2b.vtt.ru/images/410060316.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -13569,7 +13569,7 @@ LE Принт-картридж SP201E Ricoh серии SP220 1К (O) 407999]]></
 <categoryId></categoryId>
 <vendorCode>VT41006035</vendorCode>
 <name>DK-3100/302MS93020 Драм-юнит Kyocera FS-2100D/2100DN/ECOSYS M3040dn/M3540dn (O)</name>
-<price>103900</price>
+<price>102900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -14199,7 +14199,7 @@ CFRM-0021RS71 Блок барабана (без барабана) Sharp AR-5516/
 <categoryId></categoryId>
 <vendorCode>VT701010122</vendorCode>
 <name>Копи-картридж (22K) XEROX WC 5016/5020/B 101R00432</name>
-<price>198900</price>
+<price>197900</price>
 <picture>https://b2b.vtt.ru/images/701010122.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -14499,7 +14499,7 @@ CFRM-0021RS71 Блок барабана (без барабана) Sharp AR-5516/
 <categoryId></categoryId>
 <vendorCode>VT703051</vendorCode>
 <name>Тонер-картридж Hi-Black (HB-106R03748) для Xerox VersaLink C7020/C7025/C7030, C, 16,5K</name>
-<price>27900</price>
+<price>26900</price>
 <picture>https://b2b.vtt.ru/images/703051.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -14515,7 +14515,7 @@ CFRM-0021RS71 Блок барабана (без барабана) Sharp AR-5516/
 <categoryId></categoryId>
 <vendorCode>VT703052</vendorCode>
 <name>Тонер-картридж Hi-Black (HB-106R03747) для Xerox VersaLink C7020/C7025/C7030, M, 16,5K</name>
-<price>27900</price>
+<price>26900</price>
 <picture>https://b2b.vtt.ru/images/703052.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -14531,7 +14531,7 @@ CFRM-0021RS71 Блок барабана (без барабана) Sharp AR-5516/
 <categoryId></categoryId>
 <vendorCode>VT703053</vendorCode>
 <name>Тонер-картридж Hi-Black (HB-106R03746) для Xerox VersaLink C7020/C7025/C7030, Y, 16,5K</name>
-<price>27900</price>
+<price>26900</price>
 <picture>https://b2b.vtt.ru/images/703053.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -15589,7 +15589,7 @@ CFRM-0021RS71 Блок барабана (без барабана) Sharp AR-5516/
 <categoryId></categoryId>
 <vendorCode>VT8465471</vendorCode>
 <name>Картридж 652 для HP DJ1115/2135/3635/3636, 200стр. (O) F6V24AE, color</name>
-<price>100</price>
+<price>15900</price>
 <picture>https://b2b.vtt.ru/images/8465471.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -16188,7 +16188,7 @@ CFRM-0021RS71 Блок барабана (без барабана) Sharp AR-5516/
 <categoryId></categoryId>
 <vendorCode>VT920023</vendorCode>
 <name>Фотобарабан DR-512YMC Konica-Minolta bizhub C224/C (O) color A2XN0TD</name>
-<price>244900</price>
+<price>246900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -19895,7 +19895,7 @@ LE Принт-картридж SP200HE Ricoh серий SP20x/21x, 2,6К (O) 407
 <categoryId></categoryId>
 <vendorCode>VT9890306070</vendorCode>
 <name>Тонер-картридж NetProduct (N-MX235GT) для Sharp AR-5618/D/N/5620D/N/5623D/N, 16K</name>
-<price>11900</price>
+<price>10900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Sharp</vendor>
 <currencyId>KZT</currencyId>
@@ -22075,7 +22075,7 @@ DK-1110 Драм-юнит Kyocera FS-1040/1060DN/1020MFP/1120MFP/1025MFP/1125MFP
 <categoryId></categoryId>
 <vendorCode>VT989607001003</vendorCode>
 <name>Картридж TK-580Y Kyocera FS-C5150DN, 2,8К (O) жёлтый 1T02KTANL0</name>
-<price>109900</price>
+<price>108900</price>
 <picture>https://b2b.vtt.ru/images/989607001003.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -22976,7 +22976,7 @@ DK-1110 Драм-юнит Kyocera FS-1040/1060DN/1020MFP/1120MFP/1025MFP/1125MFP
 <categoryId></categoryId>
 <vendorCode>VT989610200</vendorCode>
 <name>DK-320/302J393032/302J393033 Драм-юнит Kyocera FS-2020D/3640MFP/3920DN/4020DN/3040 (O)</name>
-<price>143900</price>
+<price>100</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -22991,7 +22991,7 @@ DK-320/302J393032/302J393033 Драм-юнит Kyocera FS-2020D/3640MFP/3920DN/4
 <categoryId></categoryId>
 <vendorCode>VT989610205</vendorCode>
 <name>DK-475/302K393030/302K393031 Драм-юнит Kyocera FS-6025/6030/6525/6530MFP (O)</name>
-<price>287900</price>
+<price>286900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -23340,7 +23340,7 @@ DK-475/302K393030/302K393031 Драм-юнит Kyocera FS-6025/6030/6525/6530MFP
 <categoryId></categoryId>
 <vendorCode>VT9896868</vendorCode>
 <name>Картридж Hi-Black (HB-SP110E) для Ricoh Aficio SP 110Q/110SQ/SP111/111SU/111SF, 2K</name>
-<price>10900</price>
+<price>9900</price>
 <picture>https://b2b.vtt.ru/images/9896868.jpg</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -25434,7 +25434,7 @@ DK-475/302K393030/302K393031 Драм-юнит Kyocera FS-6025/6030/6525/6530MFP
 <categoryId></categoryId>
 <vendorCode>VT9897205</vendorCode>
 <name>Картридж Hi-Black (HB-M C240 C) для Ricoh MC240FW/PC200W, Восстановленный, C, 4,5K</name>
-<price>67900</price>
+<price>66900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -25450,7 +25450,7 @@ DK-475/302K393030/302K393031 Драм-юнит Kyocera FS-6025/6030/6525/6530MFP
 <categoryId></categoryId>
 <vendorCode>VT9897206</vendorCode>
 <name>Картридж Hi-Black (HB-M C240 M) для Ricoh MC240FW/PC200W, Восстановленный, M, 4,5K</name>
-<price>67900</price>
+<price>66900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -25466,7 +25466,7 @@ DK-475/302K393030/302K393031 Драм-юнит Kyocera FS-6025/6030/6525/6530MFP
 <categoryId></categoryId>
 <vendorCode>VT9897207</vendorCode>
 <name>Картридж Hi-Black (HB-M C240 Y) для Ricoh MC240FW/PC200W, Восстановленный, Y, 4,5K</name>
-<price>67900</price>
+<price>66900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -25658,7 +25658,7 @@ DK-475/302K393030/302K393031 Драм-юнит Kyocera FS-6025/6030/6525/6530MFP
 <categoryId></categoryId>
 <vendorCode>VT9897221</vendorCode>
 <name>Тонер-картридж Hi-Black (HB-W9221MC) для HP CLJ E78223/E78228, C, 20K</name>
-<price>39900</price>
+<price>38900</price>
 <picture>https://b2b.vtt.ru/images/9897221.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -25674,7 +25674,7 @@ DK-475/302K393030/302K393031 Драм-юнит Kyocera FS-6025/6030/6525/6530MFP
 <categoryId></categoryId>
 <vendorCode>VT9897222</vendorCode>
 <name>Тонер-картридж Hi-Black (HB-W9223MC) для HP CLJ E78223/E78228, M, 20K</name>
-<price>39900</price>
+<price>38900</price>
 <picture>https://b2b.vtt.ru/images/9897222.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -25690,7 +25690,7 @@ DK-475/302K393030/302K393031 Драм-юнит Kyocera FS-6025/6030/6525/6530MFP
 <categoryId></categoryId>
 <vendorCode>VT9897223</vendorCode>
 <name>Тонер-картридж Hi-Black (HB-W9222MC) для HP CLJ E78223/E78228, Y, 20K</name>
-<price>39900</price>
+<price>38900</price>
 <picture>https://b2b.vtt.ru/images/9897223.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -28362,7 +28362,7 @@ DK-475/302K393030/302K393031 Драм-юнит Kyocera FS-6025/6030/6525/6530MFP
 <categoryId></categoryId>
 <vendorCode>VT99153132082</vendorCode>
 <name>Картридж HP CLJ M651n/651dn/651xh (O) №654A, CF332A, Y, 15K</name>
-<price>207900</price>
+<price>206900</price>
 <picture>https://b2b.vtt.ru/images/99153132082.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -29324,7 +29324,7 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <categoryId></categoryId>
 <vendorCode>VT996218111</vendorCode>
 <name>Тонер TN-321M Minolta Bizhub С224/284/364/е-серия (O) малиновый A33K350</name>
-<price>79900</price>
+<price>89900</price>
 <picture>https://b2b.vtt.ru/images/996218111.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -29340,7 +29340,7 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <categoryId></categoryId>
 <vendorCode>VT996218112</vendorCode>
 <name>Тонер TN-321C Minolta Bizhub С224/284/364/е-серия (O) голубой A33K450</name>
-<price>92900</price>
+<price>93900</price>
 <picture>https://b2b.vtt.ru/images/996218112.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -30144,7 +30144,7 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <categoryId></categoryId>
 <vendorCode>VT99701593</vendorCode>
 <name>Картридж HP CLJ CP3525/CM3530 (O) CE252A, Y, 7K</name>
-<price>165900</price>
+<price>164900</price>
 <picture>https://b2b.vtt.ru/images/99701593.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -30694,7 +30694,7 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <categoryId></categoryId>
 <vendorCode>VT9990100029</vendorCode>
 <name>Картридж HP LJ Pro 400 M401/Pro 400 MFP M425 (O) BK CF280X</name>
-<price>210900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/9990100029.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -31222,7 +31222,7 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <categoryId></categoryId>
 <vendorCode>VT99901002451</vendorCode>
 <name>Картридж HP CLJ M452DW/DN/NW/M477FDW/477DN/477FNW (O) CF413X, M, 5K</name>
-<price>190900</price>
+<price>189900</price>
 <picture>https://b2b.vtt.ru/images/99901002451.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -31236,7 +31236,7 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <categoryId></categoryId>
 <vendorCode>VT99901002452</vendorCode>
 <name>Картридж HP CLJ M452DW/DN/NW/M477FDW/477DN/477FNW (O) CF412X, Y, 5K</name>
-<price>190900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/99901002452.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -31250,7 +31250,7 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <categoryId></categoryId>
 <vendorCode>VT99901002464</vendorCode>
 <name>Картридж HP CLJ Enterprise M680n/M680dn/M680xh (O) № 653A, CF323A, M, 16K</name>
-<price>164900</price>
+<price>163900</price>
 <picture>https://b2b.vtt.ru/images/99901002464.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -31346,7 +31346,7 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <categoryId></categoryId>
 <vendorCode>VT999010044</vendorCode>
 <name>Картридж Hi-Black (HB-CF330X) для HP CLJ M651n/651dn/651xh, №654X, Восстанов., Bk, 20,5K</name>
-<price>21900</price>
+<price>20900</price>
 <picture>https://b2b.vtt.ru/images/999010044.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -31362,7 +31362,7 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <categoryId></categoryId>
 <vendorCode>VT999010045</vendorCode>
 <name>Картридж Hi-Black (HB-CF331A) для HP CLJ M651n/651dn/651xh, №654A, Восстанов., C, 15K</name>
-<price>21900</price>
+<price>20900</price>
 <picture>https://b2b.vtt.ru/images/999010045.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -31378,7 +31378,7 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <categoryId></categoryId>
 <vendorCode>VT999010046</vendorCode>
 <name>Картридж Hi-Black (HB-CF333A) для HP CLJ M651n/651dn/651xh, №654A, Восстанов., M, 15K</name>
-<price>21900</price>
+<price>20900</price>
 <picture>https://b2b.vtt.ru/images/999010046.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -31394,7 +31394,7 @@ QY6-0052 Печатающая головка Canon i80/PIXUS 80I/Pixma iP90 (O)]
 <categoryId></categoryId>
 <vendorCode>VT999010047</vendorCode>
 <name>Картридж Hi-Black (HB-CF332A) для HP CLJ M651n/651dn/651xh, №654A, Восстанов., Y, 15K</name>
-<price>21900</price>
+<price>20900</price>
 <picture>https://b2b.vtt.ru/images/999010047.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -32831,7 +32831,7 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <categoryId></categoryId>
 <vendorCode>VTC13T00S14A</vendorCode>
 <name>Контейнер с чернилами для Epson L3100/3101/3110/3150, черный, (O), C13T00S14A</name>
-<price>100</price>
+<price>10900</price>
 <picture>https://b2b.vtt.ru/images/C13T00S14A.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -32846,7 +32846,7 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <categoryId></categoryId>
 <vendorCode>VTC13T00S24A</vendorCode>
 <name>Контейнер с чернилами для Epson L3100/3101/3110/3150, голубой, (О), C13T00S24A</name>
-<price>9900</price>
+<price>10900</price>
 <picture>https://b2b.vtt.ru/images/C13T00S24A.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -32861,7 +32861,7 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <categoryId></categoryId>
 <vendorCode>VTC13T00S34A</vendorCode>
 <name>Контейнер с чернилами для Epson L3100/3101/3110/3150, пурпурный, (О), C13T00S34A</name>
-<price>100</price>
+<price>10900</price>
 <picture>https://b2b.vtt.ru/images/C13T00S34A.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -32876,7 +32876,7 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <categoryId></categoryId>
 <vendorCode>VTC13T00S44A</vendorCode>
 <name>Контейнер с чернилами для Epson L3100/3101/3110/3150, желтый, (O), C13T00S44A</name>
-<price>11900</price>
+<price>10900</price>
 <picture>https://b2b.vtt.ru/images/C13T00S44A.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -32919,13 +32919,13 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <offer id="VTCE017A" available="true">
 <categoryId></categoryId>
 <vendorCode>VTCE017A</vendorCode>
-<name>Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хром.красный (уцен.срок годн.)</name>
-<price>181900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<name>Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хроматический красный</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/CE017A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хром.красный (уцен.срок годн.)]]></description>
+Печатающая головка HP 771 для HP DJ Z6200 (O) CE017A черный матовый/хроматический красный]]></description>
 <param name="Каталожный номер">CE017A</param>
 <param name="OEM-номер">CE017A</param>
 </offer>
@@ -33034,7 +33034,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET131009U</vendorCode>
 <name>Тонер-картридж для RICOH Pro 8100EX (CET), 1730г, CET131009U</name>
-<price>47900</price>
+<price>46900</price>
 <picture>https://b2b.vtt.ru/images/CET131009U.jpg</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -33500,7 +33500,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET131141</vendorCode>
 <name>Тонер-картридж (CPP) C-EXV67 для CANON iR 2925/2930/2935/2945 (CET), 582г, 33000 стр., CET131141</name>
-<price>47900</price>
+<price>49900</price>
 <picture>https://b2b.vtt.ru/images/CET131141.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -33751,7 +33751,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141242</vendorCode>
 <name>Тонер-картридж (TF9) для SHARP MX-2630N (CET) Black, 872г, CET141242</name>
-<price>40900</price>
+<price>39900</price>
 <picture>https://b2b.vtt.ru/images/CET141242.jpg</picture>
 <vendor>Sharp</vendor>
 <currencyId>KZT</currencyId>
@@ -34375,7 +34375,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141425R</vendorCode>
 <name>Тонер-картридж (PK216) для KYOCERA TASKalfa 3252ci (CET) Black, 530г, CET141425R</name>
-<price>33900</price>
+<price>32900</price>
 <picture>https://b2b.vtt.ru/images/CET141425R.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -34503,7 +34503,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141441</vendorCode>
 <name>Тонер-картридж (PK210) для KYOCERA TASKalfa 5052ci (CET) Black, (EUR), 640г, CET141441</name>
-<price>37900</price>
+<price>36900</price>
 <picture>https://b2b.vtt.ru/images/CET141441.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -34903,7 +34903,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141515</vendorCode>
 <name>Тонер-картридж C-EXV54 (CPP,TF8) для CANON iRC3025/iRC3025i (CET) Cyan, 207г, 8500 стр., CET141515</name>
-<price>21900</price>
+<price>20900</price>
 <picture>https://b2b.vtt.ru/images/CET141515.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -34919,7 +34919,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141516</vendorCode>
 <name>Тонер-картридж C-EXV54 (CPP, TF8) для CANON iR C3025 (CET) Magenta, 207г, CET141516/1396C002AA</name>
-<price>21900</price>
+<price>20900</price>
 <picture>https://b2b.vtt.ru/images/CET141516.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -34935,7 +34935,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141517</vendorCode>
 <name>Тонер-картридж C-EXV54 (CPP, TF8) для CANON iR C3025 (CET) Yellow, 207г, CET141517/1397C002AA</name>
-<price>21900</price>
+<price>20900</price>
 <picture>https://b2b.vtt.ru/images/CET141517.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -35587,7 +35587,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141606</vendorCode>
 <name>Тонер-картридж (CPT, CE08) для XEROX VersaLink C7020 (CET) Cyan, 210г, CET141606</name>
-<price>32900</price>
+<price>31900</price>
 <picture>https://b2b.vtt.ru/images/CET141606.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -35603,7 +35603,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141607</vendorCode>
 <name>Тонер-картридж (CPT, CE08) для XEROX VersaLink C7020 (CET) Magenta, 210г, CET141607</name>
-<price>32900</price>
+<price>31900</price>
 <picture>https://b2b.vtt.ru/images/CET141607.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -35619,7 +35619,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141608</vendorCode>
 <name>Тонер-картридж (CPT, CE08) для XEROX VersaLink C7020 (CET) Yellow, 300г, CET141608</name>
-<price>32900</price>
+<price>31900</price>
 <picture>https://b2b.vtt.ru/images/CET141608.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -36866,7 +36866,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141774</vendorCode>
 <name>Тонер-картридж (CPP) для RICOH MPC3003 (CET) Black, 500г, (унив.), CET141774</name>
-<price>23900</price>
+<price>22900</price>
 <picture>https://b2b.vtt.ru/images/CET141774.jpg</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -37202,7 +37202,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141864</vendorCode>
 <name>Тонер-картридж (CPT) для RICOH Pro C5200s (CET) Cyan, 1020г, CET141864</name>
-<price>69900</price>
+<price>68900</price>
 <picture>https://b2b.vtt.ru/images/CET141864.jpg</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -37218,7 +37218,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141865</vendorCode>
 <name>Тонер-картридж (CPT) для RICOH Pro C5200s (CET) Magenta, 1099г, CET141865</name>
-<price>69900</price>
+<price>68900</price>
 <picture>https://b2b.vtt.ru/images/CET141865.jpg</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -37234,7 +37234,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET141866</vendorCode>
 <name>Тонер-картридж (CPT) для RICOH Pro C5200s (CET) Yellow, 1020г, CET141866</name>
-<price>69900</price>
+<price>68900</price>
 <picture>https://b2b.vtt.ru/images/CET141866.jpg</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -37442,7 +37442,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET151005</vendorCode>
 <name>Носитель (девелопер) TF11D для CANON iR ADVANCE C5535 (CET), 20кг/мешок, CET151005</name>
-<price>880900</price>
+<price>879900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -37470,7 +37470,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET151009</vendorCode>
 <name>Носитель (девелопер) CE08-D для XEROX IVC2270 (Japan), 25кг/мешок, (унив.), CET151009</name>
-<price>1430900</price>
+<price>1428900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -37498,7 +37498,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET151012</vendorCode>
 <name>Носитель (девелопер) CE28-D для KONICA MINOLTA Bizhub C258/308/368 (Japan), 25кг/мешок, CET151012</name>
-<price>1252900</price>
+<price>1251900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -37525,7 +37525,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET151015R</vendorCode>
 <name>Носитель (девелопер) TF8D для CANON iR ADVANCE C3325i (CET), 20кг/мешок, CET151015R, CET151015</name>
-<price>751900</price>
+<price>750900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -37539,7 +37539,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET151016R</vendorCode>
 <name>Носитель (девелопер) TF2CR для CANON iR ADVANCE C5051 (CET), 20кг/мешок, CET151016R, CET151016</name>
-<price>778900</price>
+<price>777900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -37623,7 +37623,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET161013</vendorCode>
 <name>Девелопер для RICOH MP2554SP (CET), (WW), 315г, CET161013</name>
-<price>41900</price>
+<price>40900</price>
 <picture>https://b2b.vtt.ru/images/CET161013.jpg</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -38190,7 +38190,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET171046</vendorCode>
 <name>Девелопер для KONICA MINOLTA Bizhub C226i (CET) Cyan, 180г, CET171046</name>
-<price>33900</price>
+<price>32900</price>
 <picture>https://b2b.vtt.ru/images/CET171046.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -38206,7 +38206,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET171047</vendorCode>
 <name>Девелопер для KONICA MINOLTA Bizhub C226i (CET) Magenta, 180г, CET171047</name>
-<price>33900</price>
+<price>32900</price>
 <picture>https://b2b.vtt.ru/images/CET171047.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -38222,7 +38222,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET171048</vendorCode>
 <name>Девелопер для KONICA MINOLTA Bizhub C226i (CET) Yellow, 180г, CET171048</name>
-<price>33900</price>
+<price>32900</price>
 <picture>https://b2b.vtt.ru/images/CET171048.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -38847,7 +38847,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET471059</vendorCode>
 <name>Драм-юнит для CANON iR 2625 (CET), CET471059</name>
-<price>132900</price>
+<price>131900</price>
 <picture>https://b2b.vtt.ru/images/CET471059.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -38878,7 +38878,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET471061P</vendorCode>
 <name>Драм-юнит (c двухслойным ракелем) для KONICA MINOLTA Bizhub C450i (CET) CMY, CET471061P</name>
-<price>160900</price>
+<price>159900</price>
 <picture>https://b2b.vtt.ru/images/CET471061P.jpg</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -38925,7 +38925,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET471068</vendorCode>
 <name>Драм-юнит W9015MC для HP LaserJet Managed MFP E82540 (CET), CET471068</name>
-<price>204900</price>
+<price>203900</price>
 <picture>https://b2b.vtt.ru/images/CET471068.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -39108,7 +39108,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET471083</vendorCode>
 <name>Драм-юнит DK-5430 для KYOCERA PA2100CX/MA2100CX (CET) Black, 100000 стр., CET471083</name>
-<price>105900</price>
+<price>104900</price>
 <picture>https://b2b.vtt.ru/images/CET471083.jpg</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -39203,7 +39203,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET471093</vendorCode>
 <name>Драм-юнит 013R00677 для XEROX DocuCentre SC2020 (CET) CMYK, (WW), CET471093</name>
-<price>82900</price>
+<price>81900</price>
 <picture>https://b2b.vtt.ru/images/CET471093.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -39336,7 +39336,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET5228P</vendorCode>
 <name>Драм-юнит (c двухслойным ракелем) (CET) CANON iRC3025 CMYK 110K CET5228P/C-EXV49/GPR-53</name>
-<price>61900</price>
+<price>60900</price>
 <picture>https://b2b.vtt.ru/images/CET5228P.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -39380,7 +39380,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET5291</vendorCode>
 <name>Нагревательный элемент для CANON iR ADVANCE C5560/5550/5540/5535/5560i (CET), CET5291</name>
-<price>43900</price>
+<price>42900</price>
 <picture>https://b2b.vtt.ru/images/CET5291.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -39552,7 +39552,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET561025</vendorCode>
 <name>Блок барабана/девелопера D188-2224 для RICOH MPC2011SP (CET) Black, CET561025</name>
-<price>188900</price>
+<price>187900</price>
 <picture>https://b2b.vtt.ru/images/CET561025.jpg</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -39673,7 +39673,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET561055</vendorCode>
 <name>Блок барабана/девелопера D0BN2245 для RICOH IMC4500/IMC5500/IMC6000 (CET) Cyan, CET561055</name>
-<price>419900</price>
+<price>418900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -39688,7 +39688,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET561056</vendorCode>
 <name>Блок барабана/девелопера D0BN2242 для RICOH IMC4500/IMC5500/IMC6000 (CET) Magenta, CET561056</name>
-<price>419900</price>
+<price>418900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -39703,7 +39703,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET561057</vendorCode>
 <name>Блок барабана/девелопера D0BN2247 для RICOH IMC4500/IMC5500/IMC6000 (CET) Yellow, CET561057</name>
-<price>419900</price>
+<price>418900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -40974,7 +40974,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET7448</vendorCode>
 <name>Нагревательный элемент в сборе с термопленкой FM1-J036-000 для CANON iR ADVANCE 4551i (CET), CET7448</name>
-<price>163900</price>
+<price>162900</price>
 <picture>https://b2b.vtt.ru/images/CET7448.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -41111,7 +41111,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET8034</vendorCode>
 <name>Тонер-картридж (SD6) для RICOH Aficio 1060 (CET), 1220г, CET8034</name>
-<price>21900</price>
+<price>20900</price>
 <picture>https://b2b.vtt.ru/images/CET8034.jpg</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -41141,7 +41141,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET8106N</vendorCode>
 <name>Девелопер для RICOH Aficio 1060 (CET), 900г/пак, CET8106N</name>
-<price>48900</price>
+<price>47900</price>
 <picture>https://b2b.vtt.ru/images/CET8106N.jpg</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -41531,7 +41531,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCET8772</vendorCode>
 <name>Носитель (девелопер) 6/7/8 для KONICA MINOLTA Bizhub C220 (CET), 25кг/мешок, CET8772</name>
-<price>1022900</price>
+<price>1021900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -41993,7 +41993,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCF237A</vendorCode>
 <name>Картридж HP 37A LaserJet Enterprise M609x, 11К (O) CF237A</name>
-<price>154900</price>
+<price>153900</price>
 <picture>https://b2b.vtt.ru/images/CF237A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -42110,7 +42110,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <categoryId></categoryId>
 <vendorCode>VTCF259A</vendorCode>
 <name>Тонер-картридж 59A для HP LJ M304/M404/MFP M428, 3К (O) чёрный CF259A</name>
-<price>96900</price>
+<price>95900</price>
 <picture>https://b2b.vtt.ru/images/CF259A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -42281,7 +42281,7 @@ D1882235/D1882252 Узел фотобарабана в сборе Ricoh Aficio M
 <categoryId></categoryId>
 <vendorCode>VTDGP0591</vendorCode>
 <name>Драм-юнит (CET) Xerox B1022/B1025 DGP0591/013R00679</name>
-<price>69900</price>
+<price>65900</price>
 <picture>https://b2b.vtt.ru/images/DGP0591.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -42701,7 +42701,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTDL-420P</vendorCode>
 <name>Блок барабана Pantum DL-420P для P3010D/P3010DW/P3020D/P3300DN/P3300DW P3302DN/M6700D, 30К (O)</name>
-<price>72900</price>
+<price>71900</price>
 <picture>https://b2b.vtt.ru/images/DL-420P.jpg</picture>
 <vendor>Pantum</vendor>
 <currencyId>KZT</currencyId>
@@ -42984,7 +42984,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTHB-101R00582</vendorCode>
 <name>Драм-юнит Hi-Black (HB-101R00582) для Xerox VersaLink B600P/B605MP/B610P/B615MP, 60K</name>
-<price>63900</price>
+<price>62900</price>
 <picture>https://b2b.vtt.ru/images/HB-101R00582.jpg</picture>
 <picture>https://b2b.vtt.ru/images/HB-101R00582_2.jpg</picture>
 <picture>https://b2b.vtt.ru/images/HB-101R00582_3.jpg</picture>
@@ -43046,7 +43046,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTHB-440XL-441XL-set</vendorCode>
 <name>Комплект струйных картриджей Hi-Black №440XL-441XL для Canon PIXMA MG2140/3140 (Bk+ Color)</name>
-<price>25900</price>
+<price>24900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -45683,7 +45683,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTMXB35GT</vendorCode>
 <name>Тонер-картридж Sharp MXB355/MXB455,12К (O) MXB35GT</name>
-<price>90900</price>
+<price>89900</price>
 <picture>https://b2b.vtt.ru/images/MXB35GT.jpg</picture>
 <vendor>Sharp</vendor>
 <currencyId>KZT</currencyId>
@@ -45726,7 +45726,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTMXB45GT</vendorCode>
 <name>Тонер-картридж Sharp MXB355/MXB455, 30К (O) MXB45GT</name>
-<price>110900</price>
+<price>109900</price>
 <picture>https://b2b.vtt.ru/images/MXB45GT.jpg</picture>
 <vendor>Sharp</vendor>
 <currencyId>KZT</currencyId>
@@ -45768,7 +45768,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTMXB46T</vendorCode>
 <name>Тонер-картридж Sharp для MXB467PEU/ MXB467FEU, 25К (O)MXB46T</name>
-<price>296900</price>
+<price>295900</price>
 <picture>https://b2b.vtt.ru/images/MXB46T.jpg</picture>
 <vendor>Sharp</vendor>
 <currencyId>KZT</currencyId>
@@ -46342,7 +46342,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTOSP0416D</vendorCode>
 <name>Носитель (девелопер) Type 416 для KONICA MINOLTA Bizhub C4050i (Japan), 10кг/мешок, OSP0416D</name>
-<price>651900</price>
+<price>650900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -46356,7 +46356,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTOSP0523D</vendorCode>
 <name>Носитель Type 523 для RICOH Pro C5100/C7100/C9100 (Japan), 10кг/мешок, (унив.), OSP0523D, OSP0523-D</name>
-<price>462900</price>
+<price>461900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
@@ -46428,7 +46428,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTP2V64A</vendorCode>
 <name>Картридж 730 для HP DJ T1700, 130мл (O) жёлтый P2V64A</name>
-<price>79900</price>
+<price>78900</price>
 <picture>https://b2b.vtt.ru/images/P2V64A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -46592,7 +46592,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTQY6-1901</vendorCode>
 <name>Печатающая головка PF-06 Canon iPF TX-2000/3000/4000, TM-200/205/300/305 (O) QY6-1901-030000</name>
-<price>323900</price>
+<price>322900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -46791,7 +46791,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTTL5120P</vendorCode>
 <name>Картридж Pantum TL-5120P (аналог TL-5120) BP5100DN/BP5100DW (O) Bk, 3k</name>
-<price>53900</price>
+<price>52900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Pantum</vendor>
 <currencyId>KZT</currencyId>
@@ -47039,7 +47039,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTW2032A</vendorCode>
 <name>Тонер-картридж 415A для HP LJ M454/MFP M479, 2,1К (O) желтый W2032A</name>
-<price>96900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/W2032A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -47293,7 +47293,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTW2411A</vendorCode>
 <name>Картридж лазерный 216A для HP MFP M182/ M183, 0,85К (O) голубой W2411A</name>
-<price>49900</price>
+<price>48900</price>
 <picture>https://b2b.vtt.ru/images/W2411A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -47308,7 +47308,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTW2412A</vendorCode>
 <name>Картридж лазерный 216A для HP MFP M182/ M183, 0,85К (O) желтый W2412A</name>
-<price>49900</price>
+<price>48900</price>
 <picture>https://b2b.vtt.ru/images/W2412A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -47323,7 +47323,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTW2413A</vendorCode>
 <name>Картридж лазерный 216A для HP MFP M182/ M183, 0,85 (O) пурпурный W2413A</name>
-<price>49900</price>
+<price>48900</price>
 <picture>https://b2b.vtt.ru/images/W2413A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
