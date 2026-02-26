@@ -1997,6 +1997,8 @@ def clean_params(
         raw_v = norm_ws(v)
         raw_k = fix_mixed_cyr_lat(raw_k)
         raw_v = fix_mixed_cyr_lat(raw_v)
+        raw_k = _fix_common_interface_tokens(raw_k)
+        raw_v = _fix_common_interface_tokens(raw_v)
         # Артефакт тех.спеков: номера разделов/строк вида "2.09 ..." — это мусор, не превращаем в param
         if re.match(r"^\d+\.\d+\s", raw_k) or re.match(r"^\d+\.\s", raw_k):
             continue
@@ -2481,6 +2483,23 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
 
 
 # Делает текст описания "без странностей" (убираем лишние пробелы)
+
+# Регексы: интерфейсы/порты (RJ/45 -> RJ-45, RS232/RS/232 -> RS-232, Wi/Fi -> Wi-Fi)
+_RE_FIX_RJ45 = re.compile(r"\bRJ\s*/\s*45\b", flags=re.I)
+_RE_FIX_RS232 = re.compile(r"\bRS\s*(?:/|-)?\s*232\b", flags=re.I)
+_RE_FIX_WIFI = re.compile(r"\bWi\s*/\s*Fi\b", flags=re.I)
+
+
+def _fix_common_interface_tokens(t: str) -> str:
+    # Правит только понятные тех-токены; не трогает совместимости/артикулы и т.п.
+    if not t:
+        return t
+    t = _RE_FIX_RJ45.sub("RJ-45", t)
+    t = _RE_FIX_RS232.sub("RS-232", t)
+    t = _RE_FIX_WIFI.sub("Wi-Fi", t)
+    return t
+
+
 def fix_text(s: str) -> str:
     # Нормализует переносы строк и убирает мусорные пробелы/табуляции на пустых строках
     t = (s or "").replace("\r\n", "\n").replace("\r", "\n").strip()
