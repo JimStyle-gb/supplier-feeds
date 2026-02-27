@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-27 02:24">
+<yml_catalog date="2026-02-27 13:07">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-27 02:24:02
+Время сборки (Алматы)                      | 2026-02-27 13:07:26
 Ближайшая сборка (Алматы)                  | 2026-02-28 02:00:00
-Сколько товаров у поставщика до фильтра    | 1843
-Сколько товаров у поставщика после фильтра | 141
-Сколько товаров есть в наличии (true)      | 141
+Сколько товаров у поставщика до фильтра    | 1845
+Сколько товаров у поставщика после фильтра | 143
+Сколько товаров есть в наличии (true)      | 143
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -193,6 +193,48 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Уничтожение">бумага</param>
 <param name="Уровень секретности">P-1</param>
 <keywords>Fellowes, Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр., доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC5050101" available="true">
+<categoryId></categoryId>
+<vendorCode>AC5050101</vendorCode>
+<name>Шредер Fellowes Powershred LX201 белый</name>
+<price>204900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes Powershred LX201 белый</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Тип: шредеры офисные; Цвет: Белый</p>
+<p><strong>Примечание:</strong> P-5 уровень секретности, резка листа А4 на 2200+ фрагментов: Уничтожает до 12 листов одновременно<br>Вместительная корзина 22 литров ≈ 350 листов А4: Гарантия 2 года на устройство и 5 лет на ножи</p>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Цвет:</strong> Белый</li><li><strong>Возможности уничтожения:</strong> - скобы, карты, диски, скрепки</li><li><strong>Количество пользователей:</strong> 1-3 Пользователя</li><li><strong>Перекрестная резка:</strong> 2х12 мм</li><li><strong>Рабочий цикл, мин:</strong> 10 / 15</li><li><strong>Размер резки, мм:</strong> 2 x 12</li><li><strong>Рекомендуемое количество CD дисков в день:</strong> нет</li><li><strong>Рекомендуемое количество кредитных карт в день:</strong> 25</li><li><strong>Рекомендуемое количество листов в день:</strong> 1000</li><li><strong>Скорость резки, м/мин:</strong> 2</li><li><strong>Тип Резки:</strong> Перекрест.</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности для CD дисков, DIN 66399:</strong> нет</li><li><strong>Уровень секретности, DIN 66399:</strong> P-5</li><li><strong>Шредер Powershred® LX201 белый:</strong> Шредер нового поколения с непревзойденным удобством и эффективностью</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Тип">шредеры офисные</param>
+<param name="Цвет">Белый</param>
+<param name="Возможности уничтожения">- скобы, карты, диски, скрепки</param>
+<param name="Количество пользователей">1-3 Пользователя</param>
+<param name="Перекрестная резка">2х12 мм</param>
+<param name="Рабочий цикл, мин">10 / 15</param>
+<param name="Размер резки, мм">2 x 12</param>
+<param name="Рекомендуемое количество CD дисков в день">нет</param>
+<param name="Рекомендуемое количество кредитных карт в день">25</param>
+<param name="Рекомендуемое количество листов в день">1000</param>
+<param name="Скорость резки, м/мин">2</param>
+<param name="Тип Резки">Перекрест.</param>
+<param name="Уничтожение кредитных карт">да</param>
+<param name="Уничтожение скрепок">да</param>
+<param name="Уничтожение степлерных скоб">да</param>
+<param name="Уровень секретности для CD дисков, DIN 66399">нет</param>
+<param name="Уровень секретности, DIN 66399">P-5</param>
+<param name="Шредер Powershred® LX201 белый">Шредер нового поколения с непревзойденным удобством и эффективностью</param>
+<keywords>Fellowes, Шредер Fellowes Powershred LX201 белый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC5502201" available="true">
@@ -4686,6 +4728,33 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Цвет">Черный</param>
 <param name="Страна происхождения">Китай</param>
 <keywords>Zebra, Принтер этикеток Zebra ZD421-30EM чёрный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="ACZD4A042-D0EE00EZ" available="true">
+<categoryId></categoryId>
+<vendorCode>ACZD4A042-D0EE00EZ</vendorCode>
+<name>Принтер этикеток Zebra ZD421-D0EE чёрный</name>
+<price>280900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Zebra</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Принтер этикеток Zebra ZD421-D0EE чёрный</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Данный принтер этикеток с шириной печати 4 дюйма обладает расширенными возможностями и прост в управлении. Комплектация: инструкция, провод с вилкой два вида (евро/тип А)+адаптер, кабель USB, принтер, втулки.<br>ZD421 — единственный термальный принтер с ленточным картриджем, который можно практически мгновенно вставить всего за пару секунд, так как он загружается только одной стороной, поэтому исключены ошибки как в самый первый раз, так и в дальнейшем. Интеллектуальный чип в ленте сообщает о необходимости её замены.<br>Передвижной датчик материалов для печати принтера ZD421 позволяет использовать практически любые материалы, что обеспечивает гибкие возможности в различных сферах применения.<br>Модель ZD421 с успехом внедряется в уже имеющиеся парки принтеров.<br>Каждый принтер Zebra ZD421 поставляется с USB и USB хостом, а также дополнительно может оснащаться Ethernet, последовательными портами и двойным радиомодулем с быстрой связью Wi-Fi по стандарту 802.11ac и Bluetooth v.4.1.<br>Решение Printer Profile Manager Enterprise обеспечит возможность удалённого управления, защиты и поиска неисправностей сетевых принтеров из любого уголка мира, а функция PrintSecure обеспечит защиту от кибератак.</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Zebra</li><li><strong>Тип:</strong> Принтер</li><li><strong>Цвет:</strong> Черный</li><li><strong>Страна происхождения:</strong> Китай</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Zebra</param>
+<param name="Тип">Принтер</param>
+<param name="Цвет">Черный</param>
+<param name="Страна происхождения">Китай</param>
+<keywords>Zebra, Принтер этикеток Zebra ZD421-D0EE чёрный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 </offers>
