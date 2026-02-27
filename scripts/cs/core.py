@@ -65,6 +65,17 @@ OUTPUT_ENCODING_DEFAULT = "utf-8"
 CURRENCY_ID_DEFAULT = "KZT"
 ALMATY_TZ = "Asia/Almaty"
 
+# CS: версия core для логов CI (чтобы видеть, какой файл реально отработал)
+CS_CORE_VERSION = "cs-core-v036-compat-codes-safe-2026-02-27"
+_CS_CORE_VERSION_LOGGED = False
+
+def _cs_log_core_version_once() -> None:
+    global _CS_CORE_VERSION_LOGGED
+    if _CS_CORE_VERSION_LOGGED:
+        return
+    _CS_CORE_VERSION_LOGGED = True
+    print(f"CS_CORE_VERSION={CS_CORE_VERSION}")
+
 # --- CS: политики поставщиков (чтобы точечные правки не ломали других) ---
 @dataclass(frozen=True)
 class SupplierPolicy:
@@ -133,11 +144,28 @@ _COMPAT_TYPE_HINTS = (
     "драм-картридж",
     "фотобарабан",
     "барабан",
+    "фоторецептор",
+    "фотокондуктор",
     "чернила",
+    "пигментные чернила",
     "печатающая головка",
+    "чип",
+    "chip",
     "девелопер",
+    "контейнер отработанного тонера",
+    "бункер отработанного тонера",
+    "отработанного тонера",
+    "waste toner",
     "термопленка",
+    "термоблок",
+    "фьюзер",
+    "fuser",
+    "печка",
+    "узел закрепления",
+    "maintenance box",
+    "сервисный контейнер",
 )
+
 
 def _cs_is_consumable(name_full: str, params: list[tuple[str, str]]) -> bool:
     # Совместимость генерируем/чистим только для расходников.
@@ -164,7 +192,7 @@ _RE_COMPAT_DEVICE_HINT = re.compile(
 _RE_MODEL_TOKEN = re.compile(r"(?i)\b[0-9]*[A-ZА-Я]{0,4}\d{2,5}[A-ZА-Я0-9-]{0,6}\b")
 
 # Коды расходника (CF283A / TK-1150 / 106R02773 / C13T00R140) — НЕ модели устройств
-_RE_CONSUMABLE_CODE = re.compile(r"(?i)^(?:[A-Z]{1,4}\d{3,6}[A-Z]{0,3}|\d{6,9}|[A-Z]{1,3}-\d{3,6}|C\d{2}T[0-9A-Z]{5,8}|\d{3}R\d{5})$")
+_RE_CONSUMABLE_CODE = re.compile(r"(?i)^(?:(?:C-)?(?:PFI|PGI|CLI|GI)-?\d{2,4}[A-Z]{0,5}|[A-Z]{1,4}\d{3,6}[A-Z]{0,3}|\d{6,9}|[A-Z]{1,3}-\d{3,6}|C\d{2}T[0-9A-Z]{5,8}|\d{3}R\d{5})$")
 
 
 # CS: если "Совместимость" содержит коды расходников (а не модели устройств) — переносим в отдельный параметр
@@ -183,6 +211,10 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
         return True
     # Epson: C13T00R140 / C13T66414A и т.п.
     if re.fullmatch(r"C\d{2}T[0-9A-Z]{5,8}", t):
+        return True
+
+    # Canon ink: PFI/PGI/CLI/GI (PFI-120MBK, C-PFI300, PGI-450 и т.п.)
+    if re.fullmatch(r"(?:C-)?(?:PFI|PGI|CLI|GI)-?\d{2,4}[A-Z]{0,5}", t):
         return True
 
     # Canon: C-EXV34 / NPG-59 / GPR-53
@@ -249,6 +281,7 @@ _RE_CODE_ANY = re.compile(
     r"\d{6,9}|"                  # 6–9 цифр
     r"\d{3}R\d{5}|"               # Xerox 106R02773
     r"C\d{2}T[0-9A-Z]{5,8}|"      # Epson C13T...
+    r"(?:C-)?(?:PFI|PGI|CLI|GI)-?\d{2,4}[A-Z]{0,5}|"  # Canon ink PFI/PGI/CLI/GI
     r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
     r"(?:CZ|CN)\d{3}[A-Z]{1,2}|"  # HP ink CZ*** / CN***AE
     r"\d{4}[A-Z]\d{3}[A-Z]{0,2}|"      # Canon OEM 0287C001
@@ -259,7 +292,7 @@ _RE_CODE_ANY = re.compile(
     r"\d{3,4}[AHX]"            # Short codes 710H/126A
     r")\b"
 )
-_RE_CODE_SHORT_3DIG = re.compile(r"\b[6-7]\d{2}\b")  # Canon 716/725/727/728/737 и т.п.
+_RE_CODE_SHORT_3DIG = re.compile(r"\b(?:703|704|705|706|707|708|712|713|715|716|718|719|725|726|727|728|729|737)\b")  # Canon short codes (safe whitelist)
 
 
 _RE_CODE_GROUPED_PREFIX = re.compile(
@@ -352,7 +385,7 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
     ctx_hp_dj = ("designjet" in ctx) or (" hp " in f" {ctx} " and re.search(r"\bdj\b", ctx))
     ctx_eps_sc = ("surecolor" in ctx) or ("sc-" in ctx) or bool(re.search(r"(?i)\bsc-?t\d{3,5}\b", s))
     ctx_eps = ("epson" in ctx)
-    ctx_canon = bool(re.search(r"(?i)\bcanon\b|\bimagerunner\b|\bimage\s*runner\b", s))
+    ctx_canon = bool(re.search(r"(?i)\bcanon\b|\bimagerunner\b|\bimage\s*runner\b|\bimage\s*prograf\b|\bimageprograf\b|\bpixma\b|\bipf\b", s))
 
     out: list[str] = []
     idx_map: dict[str, int] = {}
@@ -389,6 +422,14 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
     # Основные коды (CF283A, TK-1150, 106R02773, C13T..., MLT-D111S, 710H и т.п.)
     for m in _RE_CODE_ANY.finditer(s):
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
+        # CS: пропускаем HTML-энтити/служебные числа вида "#128172" (например в "&#128172;")
+        if tok.isdigit():
+            if m.start() > 0 and s[m.start() - 1] == "#":
+                continue
+        # Canon ink: C-PFI300 -> PFI300; нормализуем PFI/PGI/CLI/GI
+        tok = re.sub(r"^(?:C-)?(PFI|PGI|CLI|GI)", r"\1", tok)
+        tok = re.sub(r"^(PFI)-?(\d{2,4})([A-Z]{0,5})$", r"PFI-\2\3", tok)
+        tok = re.sub(r"^((?:PGI|CLI|GI))-?(\d{2,4})([A-Z]{0,5})$", r"\1-\2\3", tok)
         if not tok:
             continue
         # нормализация без-дефисных TK/TN/DR
@@ -446,7 +487,7 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         _add(tok)
 
     # Короткие 3-значные (Canon 716/725/727/728/737) — только если разрешено
-    if allow_short_3dig:
+    if allow_short_3dig and ctx_canon:
         for m in _RE_CODE_SHORT_3DIG.finditer(s):
             tok = (m.group(0) or "").strip()
             if not tok:
@@ -628,6 +669,29 @@ def _cs_looks_like_device_models(s: str) -> bool:
         nums = re.findall(r"\b\d{3}\b", s0)
         if len(nums) >= 2:
             return True
+    # CS: пары вида "PRO 300", "TM 200", "IPF 510", "MF 3010" и т.п.
+    # (дефис уже мог стать пробелом в _cs_clean_compat_value)
+    toks2 = [t for t in re.split(r"[\s,/;]+", s0) if t]
+    bad = {
+        "LED", "LCD", "OLED", "USB", "HDMI", "WIFI", "WI-FI", "BT", "BLE", "NFC",
+        "IP", "DPI", "PPI", "PPM", "IPM", "RGB", "CMYK",
+        "MB", "GB", "TB", "MHZ", "GHZ", "HZ", "W", "V", "A", "MA", "ML",
+    }
+    for i in range(len(toks2) - 1):
+        a = toks2[i].strip().strip(".").upper()
+        b = toks2[i + 1].strip().strip(".").upper()
+        if not a or not b:
+            continue
+        if a in bad:
+            continue
+        if re.fullmatch(r"[A-ZА-Я]{2,5}", a) and re.fullmatch(r"\d{2,5}[A-ZА-Я]{0,2}", b):
+            # PRO/TM/TX часто встречаются в Canon imagePROGRAF
+            if a in {"PRO", "TM", "TX"}:
+                if re.search(r"(?i)\bcanon\b|image\s*prograf|imageprograf|pixma", s0):
+                    return True
+                continue
+            return True
+
 
     return False
 
@@ -3709,6 +3773,7 @@ def write_cs_feed_raw(
     encoding: str = OUTPUT_ENCODING_DEFAULT,
     currency_id: str = CURRENCY_ID_DEFAULT,
 ) -> bool:
+    _cs_log_core_version_once()
     full = build_cs_feed_xml_raw(
         offers,
         supplier=supplier,
@@ -3736,6 +3801,7 @@ def write_cs_feed(
     currency_id: str = CURRENCY_ID_DEFAULT,
     param_priority: Sequence[str] | None = None,
 ) -> bool:
+    _cs_log_core_version_once()
     full = build_cs_feed_xml(
         offers,
         supplier=supplier,
