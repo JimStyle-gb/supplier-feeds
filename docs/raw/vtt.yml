@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-27 12:38">
+<yml_catalog date="2026-02-27 14:25">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-02-27 12:38:09
+Время сборки (Алматы)                      | 2026-02-27 14:25:18
 Ближайшая сборка (Алматы)                  | 2026-03-01 05:00:00
 Сколько товаров у поставщика до фильтра    | 2915
 Сколько товаров у поставщика после фильтра | 2915
@@ -18976,7 +18976,7 @@ LE Принт-картридж SP200HE Ricoh серий SP20x/21x, 2,6К (O) 407
 <categoryId></categoryId>
 <vendorCode>VT9890070</vendorCode>
 <name>Картридж HP №72 DesignJet T1100/T610 Photo Black (130ml) (O) C9370A</name>
-<price>84900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/9890070.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -31932,7 +31932,7 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <categoryId></categoryId>
 <vendorCode>VTC13T00S44A</vendorCode>
 <name>Контейнер с чернилами для Epson L3100/3101/3110/3150, желтый, (O), C13T00S44A</name>
-<price>10900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/C13T00S44A.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -41785,7 +41785,7 @@ DK-8505 Драм-юнит (Тех.упак.) Kyocera TASKalfa 3050ci/3550ci/4550
 <categoryId></categoryId>
 <vendorCode>VTF9J81A</vendorCode>
 <name>Комплект для замены печатающей головки HP 729 (O) F9J81A</name>
-<price>437900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/F9J81A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
