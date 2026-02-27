@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-26 21:12">
+<yml_catalog date="2026-02-27 13:20">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | NVPrint
 URL поставщика                             | https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true
-Время сборки (Алматы)                      | 2026-02-26 21:12:23
+Время сборки (Алматы)                      | 2026-02-27 13:20:13
 Ближайшая сборка (Алматы)                  | 2026-03-01 04:00:00
 Сколько товаров у поставщика до фильтра    | 3637
 Сколько товаров у поставщика после фильтра | 1785
@@ -1493,7 +1493,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP18837</vendorCode>
 <name>Картридж NVP совместимый NV-C9733A Magenta для HP Color LaserJet 5500/ 5500DN/ 5500DTN/ 5500HDN/ 5500TDN/ 5500N/ 5550/ 5550DN/ 5550DTN/ 5550HDN/ 5550N (12000k)</name>
-<price>33900</price>
+<price>34900</price>
 <picture>https://nvprint.ru/promo/photo/NV-C9733AM.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -1511,7 +1511,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP18838</vendorCode>
 <name>Картридж NVP совместимый NV-C9730A Black для HP Color LaserJet 5500/ 5500DN/ 5500DTN/ 5500HDN/ 5500TDN/ 5500N/ 5550/ 5550DN/ 5550DTN/ 5550HDN/ 5550N (13000k)</name>
-<price>33900</price>
+<price>34900</price>
 <picture>https://nvprint.ru/promo/photo/NV-C9730ABk.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -1529,7 +1529,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP18839</vendorCode>
 <name>Картридж NVP совместимый NV-C9731A Cyan для HP Color LaserJet 5500/ 5500DN/ 5500DTN/ 5500HDN/ 5500TDN/ 5500N/ 5550/ 5550DN/ 5550DTN/ 5550HDN/ 5550N (12000k)</name>
-<price>33900</price>
+<price>34900</price>
 <picture>https://nvprint.ru/promo/photo/NV-C9731AC.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -1547,7 +1547,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP18840</vendorCode>
 <name>Картридж NVP совместимый NV-C9732A Yellow для HP Color LaserJet 5500/ 5500DN/ 5500DTN/ 5500HDN/ 5500TDN/ 5500N/ 5550/ 5550DN/ 5550DTN/ 5550HDN/ 5550N (12000k)</name>
-<price>33900</price>
+<price>34900</price>
 <picture>https://nvprint.ru/promo/photo/NV-C9732AY.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -2159,7 +2159,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP23533</vendorCode>
 <name>Картридж NVP совместимый NV-CE320A Black для HP Color LaserJet CM1415fn/ CM1415fnw/ CP1525n/ CP1525nw (2000k)</name>
-<price>6900</price>
+<price>7900</price>
 <picture>https://nvprint.ru/promo/photo/NV-CE320ABk.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -2177,7 +2177,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP23535</vendorCode>
 <name>Картридж NVP совместимый NV-CE321A Cyan для HP Color LaserJet CM1415fn/ CM1415fnw/ CP1525n/ CP1525nw (1300k)</name>
-<price>6900</price>
+<price>7900</price>
 <picture>https://nvprint.ru/promo/photo/NV-CE321AC.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -2195,7 +2195,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP23536</vendorCode>
 <name>Картридж NVP совместимый NV-CE322A Yellow для HP Color LaserJet CM1415fn/ CM1415fnw/ CP1525n/ CP1525nw (1300k)</name>
-<price>6900</price>
+<price>7900</price>
 <picture>https://nvprint.ru/promo/photo/NV-CE322AY.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -2213,7 +2213,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP23537</vendorCode>
 <name>Картридж NVP совместимый NV-CE323A Magenta для HP Color LaserJet CM1415fn/ CM1415fnw/ CP1525n/ CP1525nw (1300k)</name>
-<price>6900</price>
+<price>7900</price>
 <picture>https://nvprint.ru/promo/photo/NV-CE323AM.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -2987,7 +2987,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP29162</vendorCode>
 <name>Картридж NVP совместимый NV-CE390A для HP LaserJet M4555/ M4555f/ M4555fskm/ M4555h/ 600 M601dn/ 600 M601n/ 600 M602dn/ 600 M602n/ 600 M602x/ 600 M603dn. 600 M603n. 600 M603xh (10000k)</name>
-<price>8900</price>
+<price>9900</price>
 <picture>https://nvprint.ru/promo/photo/NV-CE390A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -4337,7 +4337,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP35456</vendorCode>
 <name>Картридж NVP совместимый NV-CF325X для HP LaserJet Flow M830z/ M806dn/ M806x+ (40000k)</name>
-<price>33900</price>
+<price>34900</price>
 <picture>https://nvprint.ru/promo/photo/NV-CF325X.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -10547,7 +10547,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP50046</vendorCode>
 <name>Картридж NVP совместимый NV-CF237A для HP LaserJet M607dn/ M607n/ M608dn/ M608n/ M608x/ M609dn/ M609x/ Flow M631h/ Flow M632z/ M631dn/ M631z/ M632fht (11000k)</name>
-<price>16900</price>
+<price>17900</price>
 <picture>https://nvprint.ru/promo/photo/NV-CF237A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -16907,7 +16907,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPB5111</vendorCode>
 <name>Тонер-картридж NVP совместимый NV-055 Cyan (БЕЗ ЧИПА) для Canon i-Sensys MF742Cdw/ MF744Cdw/ MF746Cx/ LBP663Cdw/ LBP664Cx (2100k)</name>
-<price>7900</price>
+<price>8900</price>
 <picture>https://nvprint.ru/promo/photo/NV-055NCC.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -16925,7 +16925,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPB5112</vendorCode>
 <name>Тонер-картридж NVP совместимый NV-055 Magenta (БЕЗ ЧИПА) для Canon i-Sensys MF742Cdw/ MF744Cdw/ MF746Cx/ LBP663Cdw/ LBP664Cx (2100k)</name>
-<price>7900</price>
+<price>8900</price>
 <picture>https://nvprint.ru/promo/photo/NV-055NCM.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -23623,7 +23623,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD5561</vendorCode>
 <name>Печатающая головка NVP 11 (NV-C4810A-RE) Black для HP Designjet 70/100/110/500/510/500 (совместимая)</name>
-<price>51900</price>
+<price>52900</price>
 <picture>https://nvprint.ru/promo/photo/NV-C4810A-RE.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -27948,7 +27948,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD9827</vendorCode>
 <name>Струйный картридж NVP PFI-710BK (NV-2354C001) Black для Canon ImagePrograf TX-2000/3000/4000 (700 мл) совместимый</name>
-<price>45900</price>
+<price>46900</price>
 <picture>https://nvprint.ru/promo/photo/NV-2354C001.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -27961,7 +27961,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD9828</vendorCode>
 <name>Струйный картридж NVP PFI-710C (NV-2355C001) Cyan для Canon ImagePrograf TX-2000/3000/4000/2100/3100/4100 (700 мл) совместимый</name>
-<price>47900</price>
+<price>48900</price>
 <picture>https://nvprint.ru/promo/photo/NV-2355C001.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -27974,7 +27974,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD9829</vendorCode>
 <name>Струйный картридж NVP PFI-710M (NV-2356C001) Magenta для Canon ImagePrograf TX-2000/3000/4000/2100/3100/4100 (700 мл) совместимый</name>
-<price>45900</price>
+<price>46900</price>
 <picture>https://nvprint.ru/promo/photo/NV-2356C001.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
