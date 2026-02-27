@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-27 17:33">
+<yml_catalog date="2026-02-27 19:34">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | NVPrint
 URL поставщика                             | https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true
-Время сборки (Алматы)                      | 2026-02-27 17:33:31
+Время сборки (Алматы)                      | 2026-02-27 19:34:58
 Ближайшая сборка (Алматы)                  | 2026-03-01 04:00:00
 Сколько товаров у поставщика до фильтра    | 3637
 Сколько товаров у поставщика после фильтра | 1785
@@ -197,7 +197,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP18597</vendorCode>
 <name>Картридж NVP совместимый NV-106R01374 для Xerox Phaser 3250 (5000k)</name>
-<price>7900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-106R01374.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -1583,7 +1583,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP18848</vendorCode>
 <name>Картридж NVP совместимый NV-FX-10 для Canon MF4018/ MF4120/ MF4140/ MF4150/ MF4320d/ MF4330d/ MF4340d/ MF4350d/ MF4370dn/ MF4380dn/ MF4270/ MF4660PL/ MF4690PL/ Canon FAX-L100/ L120/ I-SENSYS FAX-L140/ L160 (2000k)</name>
-<price>4900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-FX10.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -4463,7 +4463,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP35803</vendorCode>
 <name>Картридж NVP совместимый NV-MLT-D203E для Samsung ProXpress M3820/ M3820D/ M3820ND/ M4020/ M4020ND/ M4072FD/ SL-M3870/ SL-M3870FD/ SL-M3870FW/ SL-M4070/ SL-M4070FR (10000k)</name>
-<price>10900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-MLTD203E.jpg</picture>
 <vendor>Samsung</vendor>
 <currencyId>KZT</currencyId>
@@ -5921,7 +5921,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP40517</vendorCode>
 <name>Картридж NVP совместимый NV-MLT-D111L для Samsung Xpress M2020/ M2020W/ M2021/ M2021W/ M2022/ M2022W/ M2070/ M2070F/ M2070FW/ M2070W/ M2071/ M2071F/ M2071FH/ M2071FW (1800k)</name>
-<price>5900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-MLTD111L.jpg</picture>
 <vendor>Samsung</vendor>
 <currencyId>KZT</currencyId>
@@ -6371,7 +6371,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP41209</vendorCode>
 <name>Картридж NVP совместимый NV-CF210A/ NV-731 Black универсальные для HP/ Canon Color LaserJet Pro M276n/ M276nw/ 200 M251nw/ 200 M251n/ i-Sensys LBP 7100/ 7100CN/ 7110/ 7110CW/ MF 623CN/ 628CW/ 8230/ 8230CN/ 8280/ 8280CW (1600k)</name>
-<price>6900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-CF210A-731Bk.jpg</picture>
 <vendor>HP/Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -6407,7 +6407,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP41211</vendorCode>
 <name>Картридж NVP совместимый NV-CF211A/ NV-731 Cyan универсальные для HP/ Canon LaserJet Pro 200 color MFP M276n/ MFP M276nw/ 200 M251n/ M251nw/ LBP 7100 i-Sensys 7100CN/ 7110/ 7110CW/ MF 623CN/ 628CW/ 8230/ 8230CN/ 8280/ 8280CW (1800k)</name>
-<price>6900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-CF211A-731C.jpg</picture>
 <vendor>HP/Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -6425,7 +6425,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP41212</vendorCode>
 <name>Картридж NVP совместимый NV-CF212A/ NV-731 Yellow универсальные для HP/ Canon LaserJet Pro 200 color MFP M276n/ MFP M276nw/ 200 M251n/ M251nw/ LBP 7100 i-Sensys 7100CN/ 7110/ 7110CW/ MF 623CN/ 628CW/ 8230/ 8230CN/ 8280/ 8280CW (1800k)</name>
-<price>6900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-CF212A-731Y.jpg</picture>
 <vendor>HP/Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -6443,7 +6443,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP41213</vendorCode>
 <name>Картридж NVP совместимый NV-CF213A/ NV-731 Magenta универсальные для HP/ Canon LaserJet Pro 200 color MFP M276n/ MFP M276nw/ 200 M251n/ M251nw/ LBP 7100 i-Sensys 7100CN/ 7110/ 7110CW/ MF 623CN/ 628CW/ 8230/ 8230CN/ 8280/ 8280CW (1800k)</name>
-<price>6900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-CF213A-731M.jpg</picture>
 <vendor>HP/Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -8009,7 +8009,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NP44657</vendorCode>
 <name>Тонер-картридж NVP совместимый NV-106R03623 для Xerox WorkCentre 3335/3345 (15000k)</name>
-<price>7900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-106R03623.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -12185,7 +12185,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPA7088</vendorCode>
 <name>Блок фотобарабана NVP совместимый NV-50F0Z00 для Lexmark MS310/ MS410/ MS510/ MS610/ MX310/ MX317/ MX410/ MX417/ MX510/ MX511/ MX611 (60000K)</name>
-<price>16900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-50F0Z00DU.jpg</picture>
 <vendor>Lexmark</vendor>
 <currencyId>KZT</currencyId>
@@ -12419,7 +12419,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPA7647</vendorCode>
 <name>Картридж NVP совместимый NV-054H Black для Canon i-Sensys LBP-620/621/623/640/ MF-640/641/642/643/644/645 (3100k)</name>
-<price>12900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-054HBk.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -12581,7 +12581,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPA7974</vendorCode>
 <name>Тонер-картридж NVP совместимый NV-W1106A (БЕЗ ЧИПА) для HP 107a/107w/135w/135a/137fnw (1000k)</name>
-<price>5900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-W1106ANC.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -19625,7 +19625,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPC2823</vendorCode>
 <name>Картридж NVP совместимый NV-CF259A (ОГРАНИЧЕНИЕ ПО ПРОШИВКАМ) для HP Laser Jet Pro M304/ M404/ M406/ M428/ M430 (3000k) до версии 002_2428A</name>
-<price>6900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-CF259A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -22075,7 +22075,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD3757</vendorCode>
 <name>Струйный картридж NV Print 727 (NV-B3P22A) Matte Black для HP DesignJet T920/ T930/ T1500/ T1530/ T2500/ T2530 (130 мл) совместимый</name>
-<price>14900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-B3P22A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -22089,7 +22089,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD3758</vendorCode>
 <name>Струйный картридж NV Print 727 (NV-B3P23A) Photo Black для HP DesignJet T920/ T930/ T1500/ T1530/ T2500/ T2530 (130 мл) совместимый</name>
-<price>12900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-B3P23A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -22103,7 +22103,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD3760</vendorCode>
 <name>Струйный картридж NV Print 727 (NV-B3P19A) Cyan для HP DesignJet T920/ T930/ T1500/ T1530/ T2500/ T2530 (130 мл) совместимый</name>
-<price>12900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-B3P19A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -22117,7 +22117,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD3761</vendorCode>
 <name>Струйный картридж NV Print 727 (NV-B3P20A) Magenta для HP DesignJet T920/ T930/ T1500/ T1530/ T2500/ T2530 (130 мл) совместимый</name>
-<price>12900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-B3P20A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -22131,7 +22131,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD3762</vendorCode>
 <name>Струйный картридж NV Print 727 (NV-B3P21A) Yellow для HP DesignJet T920/ T930/ T1500/ T1530/ T2500/ T2530 (130 мл) совместимый</name>
-<price>12900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-B3P21A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -22145,7 +22145,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD3764</vendorCode>
 <name>Струйный картридж NV Print 727 (NV-B3P24A) Gray для HP DesignJet T920/ T930/ T1500/ T1530/ T2500/ T2530 (130 мл) совместимый</name>
-<price>12900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-B3P24A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -23023,7 +23023,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD4290</vendorCode>
 <name>Струйный картридж NV Print 730 (NV-P2V73A) Photo Black для HP DesignJet T1700, T1600, T2600 (300 мл) совместимый</name>
-<price>28900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-P2V73A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -23037,7 +23037,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD4291</vendorCode>
 <name>Струйный картридж NV Print 730 (NV-P2V68A) Cyan для HP DesignJet T1700, T1600, T2600 (300 мл) совместимый</name>
-<price>28900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-P2V68A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -23051,7 +23051,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD4292</vendorCode>
 <name>Струйный картридж NV Print 730 (NV-P2V69A) Magenta для HP DesignJet T1700, T1600, T2600 (300 мл) совместимый</name>
-<price>28900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-P2V69A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -23065,7 +23065,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD4293</vendorCode>
 <name>Струйный картридж NV Print 730 (NV-P2V70A) Yellow для HP DesignJet T1700, T1600, T2600 (300 мл) совместимый</name>
-<price>29900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-P2V70A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -23079,7 +23079,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD4294</vendorCode>
 <name>Струйный картридж NV Print 730 (NV-P2V71A) Matte Black для HP DesignJet T1700, T1600, T2600 (300 мл) совместимый</name>
-<price>28900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-P2V71A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -23093,7 +23093,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD4295</vendorCode>
 <name>Струйный картридж NV Print 730 (NV-P2V72A) Gray для HP DesignJet T1700, T1600, T2600 (300 мл) совместимый</name>
-<price>29900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-P2V72A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -27935,7 +27935,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <categoryId></categoryId>
 <vendorCode>NPD9826</vendorCode>
 <name>Струйный картридж NVP PFI-710MBK (NV-2353C001) Matte Black для Canon ImagePrograf TX-2000/3000/4000/2100/3100/4100 (700 мл) совместимый</name>
-<price>41900</price>
+<price>100</price>
 <picture>https://nvprint.ru/promo/photo/NV-2353C001.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
