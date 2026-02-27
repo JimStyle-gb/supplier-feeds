@@ -821,7 +821,7 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
 # - <name> держим коротким и читаемым (150 по решению пользователя)
 # - <keywords> по правилам YML обычно <= 1024
 CS_NAME_MAX_LEN = int((os.getenv("CS_NAME_MAX_LEN", "150") or "150").strip() or "150")
-CS_KEYWORDS_MAX_LEN = int((os.getenv("CS_KEYWORDS_MAX_LEN", "1024") or "1024").strip() or "1024")
+CS_KEYWORDS_MAX_LEN = int((os.getenv("CS_KEYWORDS_MAX_LEN", "480") or "480").strip() or "480")
 
 CS_COMPAT_CLEAN_YIELD_PACK = (os.getenv("CS_COMPAT_CLEAN_YIELD_PACK", "1") or "1").strip().lower() not in ("0", "false", "no")
 CS_COMPAT_CLEAN_PAPER_OS_DIM = (os.getenv("CS_COMPAT_CLEAN_PAPER_OS_DIM", "1") or "1").strip().lower() not in ("0", "false", "no")
@@ -834,9 +834,6 @@ CS_COMPAT_CLEAN_REPEAT_BLOCKS = (os.getenv("CS_COMPAT_CLEAN_REPEAT_BLOCKS", "1")
 # Заглушка картинки, если у оффера нет фото (можно переопределить env CS_PICTURE_PLACEHOLDER_URL)
 CS_PICTURE_PLACEHOLDER_URL = (os.getenv("CS_PICTURE_PLACEHOLDER_URL") or "https://placehold.co/800x800/png?text=No+Photo").strip()
 # Хвост городов (один и тот же для всех поставщиков)
-CS_CITY_TAIL = (
-    "Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан"
-)
 # WhatsApp блок (единый)
 CS_WA_BLOCK = (
     "<!-- WhatsApp -->\n"
@@ -1997,8 +1994,6 @@ def clean_params(
         raw_v = norm_ws(v)
         raw_k = fix_mixed_cyr_lat(raw_k)
         raw_v = fix_mixed_cyr_lat(raw_v)
-        raw_k = _fix_common_interface_tokens(raw_k)
-        raw_v = _fix_common_interface_tokens(raw_v)
         # Артефакт тех.спеков: номера разделов/строк вида "2.09 ..." — это мусор, не превращаем в param
         if re.match(r"^\d+\.\d+\s", raw_k) or re.match(r"^\d+\.\s", raw_k):
             continue
@@ -2483,23 +2478,6 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
 
 
 # Делает текст описания "без странностей" (убираем лишние пробелы)
-
-# Регексы: интерфейсы/порты (RJ/45 -> RJ-45, RS232/RS/232 -> RS-232, Wi/Fi -> Wi-Fi)
-_RE_FIX_RJ45 = re.compile(r"\bRJ\s*/\s*45\b", flags=re.I)
-_RE_FIX_RS232 = re.compile(r"\bRS\s*(?:/|-)?\s*232\b", flags=re.I)
-_RE_FIX_WIFI = re.compile(r"\bWi\s*/\s*Fi\b", flags=re.I)
-
-
-def _fix_common_interface_tokens(t: str) -> str:
-    # Правит только понятные тех-токены; не трогает совместимости/артикулы и т.п.
-    if not t:
-        return t
-    t = _RE_FIX_RJ45.sub("RJ-45", t)
-    t = _RE_FIX_RS232.sub("RS-232", t)
-    t = _RE_FIX_WIFI.sub("Wi-Fi", t)
-    return t
-
-
 def fix_text(s: str) -> str:
     # Нормализует переносы строк и убирает мусорные пробелы/табуляции на пустых строках
     t = (s or "").replace("\r\n", "\n").replace("\r", "\n").strip()
@@ -3207,22 +3185,43 @@ def normalize_pictures(pictures: Sequence[str]) -> list[str]:
 # Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
 
 
+# Собирает keywords: бренд + имя + ключи по доставке + города (компактно, без "простыни")
+# Важно: никаких "CS_CITY_TAIL" больше нет — keywords строятся только здесь.
+CS_KEYWORDS_CITIES = (
+    "Казахстан",
+    "Алматы",
+    "Астана",
+    "Шымкент",
+    "Караганда",
+    "Актобе",
+    "Павлодар",
+    "Костанай",
+    "Атырау",
+    "Актау",
+    "Усть-Каменогорск",
+    "Семей",
+    "Тараз",
+)
+
+CS_KEYWORDS_PHRASES = (
+    "доставка",
+    "доставка по Казахстану",
+    "отправка в регионы",
+)
+
 def build_keywords(
     vendor: str | None,
     offer_name: str,
-    city_tail: str | None = None,
     extra: list[str] | None = None,
     **_kwargs,
 ) -> str:
-    # Ключевые слова: упор на внутренний поиск Satu + регионы (без простыни городов).
-    # Важно: совместимость с прежними вызовами (city_tail может прилетать из старой логики).
-    max_len = safe_int(os.getenv("CS_KEYWORDS_MAX_LEN")) or 480
-
+    # CS: keywords нужны в основном для внутреннего поиска/фильтров; Google/Yandex meta-keywords почти не учитывают.
+    # Поэтому делаем компактно и без спама городами.
     parts: list[str] = []
     if vendor:
-        parts.append(vendor)
+        parts.append(norm_ws(vendor))
     if offer_name:
-        parts.append(offer_name)
+        parts.append(norm_ws(offer_name))
 
     if extra:
         for x in extra:
@@ -3230,49 +3229,11 @@ def build_keywords(
             if x:
                 parts.append(x)
 
-    # Если старый пайплайн передал city_tail — игнорируем его (чтобы не раздувать keywords),
-    # но оставим возможность включить при явной настройке.
-    if city_tail and (os.getenv("CS_KEYWORDS_KEEP_CITY_TAIL") == "1"):
-        parts.append(norm_ws(city_tail))
+    parts.extend(CS_KEYWORDS_PHRASES)
+    parts.extend(CS_KEYWORDS_CITIES)
 
-    # Доставка по Казахстану — отдельные ключи
-    parts.extend(["доставка", "доставка по Казахстану", "отправка в регионы"])
-
-    # Города: без дублей и альтернативных названий (чтобы не резалось)
-    cities = [
-        "Казахстан",
-        "Алматы",
-        "Астана",
-        "Шымкент",
-        "Караганда",
-        "Актобе",
-        "Павлодар",
-        "Костанай",
-        "Атырау",
-        "Актау",
-        "Усть-Каменогорск",
-        "Семей",
-        "Тараз",
-    ]
-    parts.extend(cities)
-
-    # Дедуп с сохранением порядка
     parts = _dedup_keep_order([norm_ws(p) for p in parts if norm_ws(p)])
-
-    kw = ", ".join(parts)
-
-    # Обрезаем аккуратно по последней запятой (не режем слово/город посередине)
-    if max_len and len(kw) > max_len:
-        cut = kw[:max_len]
-        idx = cut.rfind(", ")
-        if idx > 20:
-            kw = cut[:idx]
-        else:
-            idx = cut.rfind(" ")
-            kw = cut[:idx] if idx > 20 else cut
-
-    return kw
-
+    return ", ".join(parts)
 
 # Похоже на "предложение" (инструкция/маркетинг) в имени параметра — переносим в notes, а не в характеристики.
 # Дублирует часть эвристик выше, но даёт дополнительную страховку.
@@ -3998,7 +3959,6 @@ class OfferOut:
         self,
         *,
         currency_id: str = CURRENCY_ID_DEFAULT,
-        city_tail: str = CS_CITY_TAIL,
         public_vendor: str = "CS",
         param_priority: Sequence[str] | None = None,
     ) -> str:
@@ -4047,7 +4007,7 @@ class OfferOut:
 
         desc_cdata = build_description(name_for_desc, native_desc, params_sorted, notes=notes)
         desc_cdata = sanitize_mixed_text(desc_cdata)
-        keywords = build_keywords(vendor, name_short, city_tail=city_tail)
+        keywords = build_keywords(vendor, name_short)
         keywords = _truncate_text(keywords, CS_KEYWORDS_MAX_LEN)
         keywords = sanitize_mixed_text(keywords)
 
