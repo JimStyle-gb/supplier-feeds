@@ -65,17 +65,6 @@ OUTPUT_ENCODING_DEFAULT = "utf-8"
 CURRENCY_ID_DEFAULT = "KZT"
 ALMATY_TZ = "Asia/Almaty"
 
-# CS: версия core для логов CI (чтобы видеть, какой файл реально отработал)
-CS_CORE_VERSION = "cs-core-v036-compat-codes-safe-2026-02-27"
-_CS_CORE_VERSION_LOGGED = False
-
-def _cs_log_core_version_once() -> None:
-    global _CS_CORE_VERSION_LOGGED
-    if _CS_CORE_VERSION_LOGGED:
-        return
-    _CS_CORE_VERSION_LOGGED = True
-    print(f"CS_CORE_VERSION={CS_CORE_VERSION}")
-
 # --- CS: политики поставщиков (чтобы точечные правки не ломали других) ---
 @dataclass(frozen=True)
 class SupplierPolicy:
@@ -144,39 +133,83 @@ _COMPAT_TYPE_HINTS = (
     "драм-картридж",
     "фотобарабан",
     "барабан",
-    "фоторецептор",
-    "фотокондуктор",
     "чернила",
-    "пигментные чернила",
     "печатающая головка",
-    "чип",
-    "chip",
     "девелопер",
-    "контейнер отработанного тонера",
-    "бункер отработанного тонера",
-    "отработанного тонера",
-    "waste toner",
     "термопленка",
-    "термоблок",
-    "фьюзер",
-    "fuser",
-    "печка",
-    "узел закрепления",
-    "maintenance box",
-    "сервисный контейнер",
 )
 
+def _cs_is_consumable(name_full: str, supplier_code: str) -> bool:
+    # CS: Расходники определяем строго по ПЕРВОМУ слову <name>.
+    # ВАЖНО: сначала нормализуем (опечатки/дефисы), потом решаем "расходка ли".
+    w = _cs_first_word(name_full)
+    w = _cs_norm_first_word(w)
+    if not w:
+        return False
 
-def _cs_is_consumable(name_full: str, params: list[tuple[str, str]]) -> bool:
-    # Совместимость генерируем/чистим только для расходников.
-    # Смотрим прежде всего 'Тип' из параметров, иначе — по названию.
-    t = ""
-    for k, v in (params or []):
-        if (k or "").strip().casefold() == "тип":
-            t = (v or "").strip()
-            break
-    hay = (t + " " + (name_full or "")).casefold()
-    return any(h in hay for h in _COMPAT_TYPE_HINTS)
+    sc = (supplier_code or "").upper()
+    allowed = _CS_CONSUMABLE_FIRST_WORDS_BY_SUPPLIER.get(sc, _CS_CONSUMABLE_FIRST_WORDS_DEFAULT)
+    return w.casefold() in allowed
+
+
+_RE_FIRST_WORD = re.compile(r'^[\s"«»\(\)\[\]\{\}<>\-–—]+')
+
+# Нормализация первых слов (строго по первому слову name)
+# Пример: "Тонер-катридж" (опечатка) -> "Тонер-картридж"
+_CS_FIRST_WORD_NORMALIZE: dict[str, str] = {
+    "тонер-катридж": "Тонер-картридж",
+}
+
+def _cs_first_word(name_full: str) -> str:
+    s = (name_full or "").strip()
+    if not s:
+        return ""
+    s = _RE_FIRST_WORD.sub("", s)
+    if not s:
+        return ""
+    # режем по пробелу
+    w = s.split()[0].strip('",.;:!?)]}»')
+    # нормализуем разные дефисы в обычный "-"
+    w = w.replace("—", "-").replace("–", "-").replace("‑", "-").replace("−", "-")
+    return w
+
+def _cs_norm_first_word(w: str) -> str:
+    ww = (w or "").strip()
+    if not ww:
+        return ""
+    key = ww.casefold()
+    return _CS_FIRST_WORD_NORMALIZE.get(key, ww)
+
+# Список "расходки" по первому слову (без "Печатающая", "Ролик", "Вал")
+_CS_CONSUMABLE_FIRST_WORDS_LIST = [
+    "Картридж",
+    "Тонер-картридж",
+    "Драм-картридж",
+    "Драм-юнит",
+    "Принт-картридж",
+    "Копи-картридж",
+    "Чернила",
+    "Чернильный",
+    "Фотобарабан",
+    "Барабан",
+    "Девелопер",
+    "Контейнер",
+    "Тонер-туба",
+    "Тонер",
+    "Контейнер/поглотитель",
+]
+
+_CS_CONSUMABLE_FIRST_WORDS_DEFAULT = frozenset(x.casefold() for x in _CS_CONSUMABLE_FIRST_WORDS_LIST)
+
+# Переключатели по поставщикам (изолируем правила, чтобы правки одного не портили других)
+# Сейчас одинаково для всех. Если нужно — меняем точечно для конкретного кода ("AS"/"AC"/"CL"/"NP"/"VT").
+_CS_CONSUMABLE_FIRST_WORDS_BY_SUPPLIER: dict[str, frozenset[str]] = {
+    "AS": _CS_CONSUMABLE_FIRST_WORDS_DEFAULT,
+    "AC": _CS_CONSUMABLE_FIRST_WORDS_DEFAULT,
+    "CL": _CS_CONSUMABLE_FIRST_WORDS_DEFAULT,
+    "NP": _CS_CONSUMABLE_FIRST_WORDS_DEFAULT,
+    "VT": _CS_CONSUMABLE_FIRST_WORDS_DEFAULT,
+}
 
 
 # Подсказки, что в строке есть именно модели устройств (а не коды расходника)
@@ -192,7 +225,7 @@ _RE_COMPAT_DEVICE_HINT = re.compile(
 _RE_MODEL_TOKEN = re.compile(r"(?i)\b[0-9]*[A-ZА-Я]{0,4}\d{2,5}[A-ZА-Я0-9-]{0,6}\b")
 
 # Коды расходника (CF283A / TK-1150 / 106R02773 / C13T00R140) — НЕ модели устройств
-_RE_CONSUMABLE_CODE = re.compile(r"(?i)^(?:(?:C-)?(?:PFI|PGI|CLI|GI)-?\d{2,4}[A-Z]{0,5}|[A-Z]{1,4}\d{3,6}[A-Z]{0,3}|\d{6,9}|[A-Z]{1,3}-\d{3,6}|C\d{2}T[0-9A-Z]{5,8}|\d{3}R\d{5})$")
+_RE_CONSUMABLE_CODE = re.compile(r"(?i)^(?:[A-Z]{1,4}\d{3,6}[A-Z]{0,3}|\d{6,9}|[A-Z]{1,3}-\d{3,6}|C\d{2}T[0-9A-Z]{5,8}|\d{3}R\d{5})$")
 
 
 # CS: если "Совместимость" содержит коды расходников (а не модели устройств) — переносим в отдельный параметр
@@ -211,10 +244,6 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
         return True
     # Epson: C13T00R140 / C13T66414A и т.п.
     if re.fullmatch(r"C\d{2}T[0-9A-Z]{5,8}", t):
-        return True
-
-    # Canon ink: PFI/PGI/CLI/GI (PFI-120MBK, C-PFI300, PGI-450 и т.п.)
-    if re.fullmatch(r"(?:C-)?(?:PFI|PGI|CLI|GI)-?\d{2,4}[A-Z]{0,5}", t):
         return True
 
     # Canon: C-EXV34 / NPG-59 / GPR-53
@@ -281,7 +310,6 @@ _RE_CODE_ANY = re.compile(
     r"\d{6,9}|"                  # 6–9 цифр
     r"\d{3}R\d{5}|"               # Xerox 106R02773
     r"C\d{2}T[0-9A-Z]{5,8}|"      # Epson C13T...
-    r"(?:C-)?(?:PFI|PGI|CLI|GI)-?\d{2,4}[A-Z]{0,5}|"  # Canon ink PFI/PGI/CLI/GI
     r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
     r"(?:CZ|CN)\d{3}[A-Z]{1,2}|"  # HP ink CZ*** / CN***AE
     r"\d{4}[A-Z]\d{3}[A-Z]{0,2}|"      # Canon OEM 0287C001
@@ -292,7 +320,7 @@ _RE_CODE_ANY = re.compile(
     r"\d{3,4}[AHX]"            # Short codes 710H/126A
     r")\b"
 )
-_RE_CODE_SHORT_3DIG = re.compile(r"\b(?:703|704|705|706|707|708|712|713|715|716|718|719|725|726|727|728|729|737)\b")  # Canon short codes (safe whitelist)
+_RE_CODE_SHORT_3DIG = re.compile(r"\b[6-7]\d{2}\b")  # Canon 716/725/727/728/737 и т.п.
 
 
 _RE_CODE_GROUPED_PREFIX = re.compile(
@@ -385,7 +413,7 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
     ctx_hp_dj = ("designjet" in ctx) or (" hp " in f" {ctx} " and re.search(r"\bdj\b", ctx))
     ctx_eps_sc = ("surecolor" in ctx) or ("sc-" in ctx) or bool(re.search(r"(?i)\bsc-?t\d{3,5}\b", s))
     ctx_eps = ("epson" in ctx)
-    ctx_canon = bool(re.search(r"(?i)\bcanon\b|\bimagerunner\b|\bimage\s*runner\b|\bimage\s*prograf\b|\bimageprograf\b|\bpixma\b|\bipf\b", s))
+    ctx_canon = bool(re.search(r"(?i)\bcanon\b|\bimagerunner\b|\bimage\s*runner\b", s))
 
     out: list[str] = []
     idx_map: dict[str, int] = {}
@@ -422,14 +450,6 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
     # Основные коды (CF283A, TK-1150, 106R02773, C13T..., MLT-D111S, 710H и т.п.)
     for m in _RE_CODE_ANY.finditer(s):
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
-        # CS: пропускаем HTML-энтити/служебные числа вида "#128172" (например в "&#128172;")
-        if tok.isdigit():
-            if m.start() > 0 and s[m.start() - 1] == "#":
-                continue
-        # Canon ink: C-PFI300 -> PFI300; нормализуем PFI/PGI/CLI/GI
-        tok = re.sub(r"^(?:C-)?(PFI|PGI|CLI|GI)", r"\1", tok)
-        tok = re.sub(r"^(PFI)-?(\d{2,4})([A-Z]{0,5})$", r"PFI-\2\3", tok)
-        tok = re.sub(r"^((?:PGI|CLI|GI))-?(\d{2,4})([A-Z]{0,5})$", r"\1-\2\3", tok)
         if not tok:
             continue
         # нормализация без-дефисных TK/TN/DR
@@ -487,7 +507,7 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         _add(tok)
 
     # Короткие 3-значные (Canon 716/725/727/728/737) — только если разрешено
-    if allow_short_3dig and ctx_canon:
+    if allow_short_3dig:
         for m in _RE_CODE_SHORT_3DIG.finditer(s):
             tok = (m.group(0) or "").strip()
             if not tok:
@@ -669,29 +689,6 @@ def _cs_looks_like_device_models(s: str) -> bool:
         nums = re.findall(r"\b\d{3}\b", s0)
         if len(nums) >= 2:
             return True
-    # CS: пары вида "PRO 300", "TM 200", "IPF 510", "MF 3010" и т.п.
-    # (дефис уже мог стать пробелом в _cs_clean_compat_value)
-    toks2 = [t for t in re.split(r"[\s,/;]+", s0) if t]
-    bad = {
-        "LED", "LCD", "OLED", "USB", "HDMI", "WIFI", "WI-FI", "BT", "BLE", "NFC",
-        "IP", "DPI", "PPI", "PPM", "IPM", "RGB", "CMYK",
-        "MB", "GB", "TB", "MHZ", "GHZ", "HZ", "W", "V", "A", "MA", "ML",
-    }
-    for i in range(len(toks2) - 1):
-        a = toks2[i].strip().strip(".").upper()
-        b = toks2[i + 1].strip().strip(".").upper()
-        if not a or not b:
-            continue
-        if a in bad:
-            continue
-        if re.fullmatch(r"[A-ZА-Я]{2,5}", a) and re.fullmatch(r"\d{2,5}[A-ZА-Я]{0,2}", b):
-            # PRO/TM/TX часто встречаются в Canon imagePROGRAF
-            if a in {"PRO", "TM", "TX"}:
-                if re.search(r"(?i)\bcanon\b|image\s*prograf|imageprograf|pixma", s0):
-                    return True
-                continue
-            return True
-
 
     return False
 
@@ -783,7 +780,7 @@ def _cs_merge_compat_values(vals: list[str]) -> str:
     return out
 
 
-def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, native_desc: str) -> None:
+def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, native_desc: str, supplier_code: str = "") -> None:
     # Совместимость и коды расходников: только для расходников.
     found_raw: list[str] = []
     codes_sources: list[str] = []
@@ -828,7 +825,7 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
 
         new_params.append((kk, vv))
 
-    is_consumable = _cs_is_consumable(name_full, new_params)
+    is_consumable = _cs_is_consumable(name_full, supplier_code)
 
     # Для НЕрасходников совместимость/коды не добавляем вообще
     if not is_consumable:
@@ -3773,7 +3770,6 @@ def write_cs_feed_raw(
     encoding: str = OUTPUT_ENCODING_DEFAULT,
     currency_id: str = CURRENCY_ID_DEFAULT,
 ) -> bool:
-    _cs_log_core_version_once()
     full = build_cs_feed_xml_raw(
         offers,
         supplier=supplier,
@@ -3801,7 +3797,6 @@ def write_cs_feed(
     currency_id: str = CURRENCY_ID_DEFAULT,
     param_priority: Sequence[str] | None = None,
 ) -> bool:
-    _cs_log_core_version_once()
     full = build_cs_feed_xml(
         offers,
         supplier=supplier,
@@ -4048,7 +4043,7 @@ class OfferOut:
         enrich_params_from_desc(params, native_desc)
         enrich_params_from_name_and_desc(params, name_full, native_desc)
         # CS: Совместимость — добавляем только безопасно и только где нужно.
-        ensure_compatibility_param(params, name_full, native_desc)
+        ensure_compatibility_param(params, name_full, native_desc, supplier_code=policy.code)
 
         # финальная починка смешения кир/лат в params после всех enrich/compat
         params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in params]
