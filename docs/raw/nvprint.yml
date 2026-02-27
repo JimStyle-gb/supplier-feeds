@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-27 19:34">
+<yml_catalog date="2026-02-27 23:49">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | NVPrint
 URL поставщика                             | https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true
-Время сборки (Алматы)                      | 2026-02-27 19:34:58
+Время сборки (Алматы)                      | 2026-02-27 23:49:28
 Ближайшая сборка (Алматы)                  | 2026-03-01 04:00:00
 Сколько товаров у поставщика до фильтра    | 3637
 Сколько товаров у поставщика после фильтра | 1785
@@ -29612,7 +29612,7 @@ URL поставщика                             | https://api.nvprint.ru/ap
 <vendorCode>NPE3460</vendorCode>
 <name>Блок фотобарабана NVP совместимый NV-W1120A 120A DU для для HP Color LJ 150/150A/150NW/178NW/179MFP (16000k)</name>
 <price>100</price>
-<picture>https://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<picture>https://nvprint.ru/promo/photo/NV-W1120A%20120A%20DU.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
