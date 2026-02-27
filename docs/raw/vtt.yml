@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-27 14:25">
+<yml_catalog date="2026-02-27 19:08">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-02-27 14:25:18
+Время сборки (Алматы)                      | 2026-02-27 19:08:23
 Ближайшая сборка (Алматы)                  | 2026-03-01 05:00:00
 Сколько товаров у поставщика до фильтра    | 2915
 Сколько товаров у поставщика после фильтра | 2915
@@ -8147,7 +8147,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT2201215</vendorCode>
 <name>Картридж 711 для HP DJ T120/T520, 80мл (O) чёрный CZ133A</name>
-<price>100</price>
+<price>76900</price>
 <picture>https://b2b.vtt.ru/images/2201215.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -9197,7 +9197,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT2LC93014</vendorCode>
 <name>2LC93014/DK-8505 Драм-юнит Kyocera TASKalfa 3050ci/3550ci/4550ci/5550ci (O)</name>
-<price>100</price>
+<price>288900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -19003,13 +19003,13 @@ LE Принт-картридж SP200HE Ricoh серий SP20x/21x, 2,6К (O) 407
 <offer id="VT9890072" available="true">
 <categoryId></categoryId>
 <vendorCode>VT9890072</vendorCode>
-<name>Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A</name>
-<price>100</price>
-<picture>https://b2b.vtt.ru/images/9890072.jpg</picture>
+<name>Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A (уц. срок годности)</name>
+<price>80900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A]]></description>
+Картридж HP №72 DesignJet T1100/T610 Magenta (130ml) (O) C9372A (уц. срок годности)]]></description>
 <param name="Каталожный номер">C9372A</param>
 <param name="OEM-номер">C9372A</param>
 </offer>
@@ -21246,7 +21246,7 @@ DK-450/302J593011/302J593010 Драм-юнит Kyocera FS-6970D (O)]]></descript
 <categoryId></categoryId>
 <vendorCode>VT989606200</vendorCode>
 <name>DK-150/302H493010 Драм-юнит Kyocera FS-1350/1028/1128/1030MFP/1130MFP (O)</name>
-<price>100</price>
+<price>62900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Kyocera-Mita</vendor>
 <currencyId>KZT</currencyId>
@@ -22390,7 +22390,7 @@ DK-475/302K393030/302K393031 Драм-юнит Kyocera FS-6025/6030/6525/6530MFP
 <categoryId></categoryId>
 <vendorCode>VT9896802804</vendorCode>
 <name>Копи-картридж XEROX WC 5019/5021 80K (o) 013R00670</name>
-<price>209900</price>
+<price>100</price>
 <picture>https://b2b.vtt.ru/images/9896802804.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -28015,7 +28015,7 @@ DK-475/302K393030/302K393031 Драм-юнит Kyocera FS-6025/6030/6525/6530MFP
 <categoryId></categoryId>
 <vendorCode>VT995631114</vendorCode>
 <name>Картридж Canon PIXMA MG2140/3140 (O) PG-440, BK</name>
-<price>100</price>
+<price>13900</price>
 <picture>https://b2b.vtt.ru/images/995631114.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -31932,7 +31932,7 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <categoryId></categoryId>
 <vendorCode>VTC13T00S44A</vendorCode>
 <name>Контейнер с чернилами для Epson L3100/3101/3110/3150, желтый, (O), C13T00S44A</name>
-<price>100</price>
+<price>10900</price>
 <picture>https://b2b.vtt.ru/images/C13T00S44A.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -31989,13 +31989,13 @@ B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2
 <offer id="VTCE018A" available="true">
 <categoryId></categoryId>
 <vendorCode>VTCE018A</vendorCode>
-<name>Печатающая головка HP 771 для HP DJ Z6200 (O)CE018A пурпурный/желтый</name>
+<name>Печатающая головка HP 771 для HP DJ Z6200 (О)CE018A пурпурный/желтый (уцен.срок годности)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/CE018A.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Печатающая головка HP 771 для HP DJ Z6200 (O)CE018A пурпурный/желтый]]></description>
+Печатающая головка HP 771 для HP DJ Z6200 (О)CE018A пурпурный/желтый (уцен.срок годности)]]></description>
 <param name="Каталожный номер">CE018A</param>
 <param name="OEM-номер">CE018A</param>
 </offer>
@@ -41266,7 +41266,7 @@ CFRM-0021US74 Узел барабана (без барабана) в сборе 
 <categoryId></categoryId>
 <vendorCode>VTCZ101AK</vendorCode>
 <name>Картридж 650 для HP DJ IA 2515/2516, 360стр (O) CZ101AE/CZ101AK, BK</name>
-<price>17900</price>
+<price>16900</price>
 <picture>https://b2b.vtt.ru/images/CZ101AK.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
