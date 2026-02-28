@@ -80,7 +80,7 @@ def _supplier_code_from_oid(oid: str) -> str:
 
 _POLICIES: dict[str, SupplierPolicy] = {
     "AS": SupplierPolicy("AS", always_true_available=False, drop_desc_specs_pairs=True),
-    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=True),
+    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=False),
     "CL": SupplierPolicy("CL", always_true_available=True, drop_desc_specs_pairs=False),
     "NP": SupplierPolicy("NP", always_true_available=True, drop_desc_specs_pairs=False),
     "VT": SupplierPolicy("VT", always_true_available=True, drop_desc_specs_pairs=False),
@@ -451,16 +451,11 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
             tok = (m.group(0) or "").strip()
             if not tok:
                 continue
-            # отсекаем объёмы/веса: 700 мл / 500ml / 1 л / 250 г и т.п.
-            a, b = m.span()
-            tail = (s[b:b+8] or "").casefold()
-            head = (s[max(0, a-8):a] or "").casefold()
-            if re.match(r"^\s*(мл|ml|л|l|г|гр|kg|кг)\b", tail) or re.search(r"(мл|ml|л|l|г|гр|kg|кг)\s*$", head):
-                continue
             # если уже есть вариант с № — не дублируем голым числом
             if tok and (tok.casefold() in idx_map):
                 continue
             _add(tok)
+
     return out
 
 
@@ -750,8 +745,7 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
             continue
 
         # AkCent/таблицы: "модель устройства" -> "C11..." (SKU техники). Модель переносим в Совместимость, C11 выкидываем.
-        vv_clean = (vv or "").strip(" -")
-        if vv_clean and re.fullmatch(r"(?i)C11[A-Z0-9]{6,}", vv_clean) and re.search(r"\d", kk) and re.search(r"[A-Za-zА-Яа-я]", kk):
+        if vv and re.fullmatch(r"(?i)C11[A-Z0-9]{6,}", vv) and re.search(r"\d", kk) and re.search(r"[A-Za-zА-Яа-я]", kk):
             found_raw.append(kk)
             continue
 
@@ -1253,6 +1247,22 @@ def _shorten_smart_name(name: str, params: list[tuple[str, str]], max_len: int) 
     # Фоллбэк: просто режем по границе и добавляем "…"
     return _truncate_text(name, max_len, suffix=" и др.")
 
+
+
+def _ac_fix_name(name: str) -> str:
+    """CS/AkCent: точечная нормализация наименований, чтобы не ломать других поставщиков."""
+    s = (name or "").strip()
+    if not s:
+        return s
+    # 2, 03 -> 2,03 (десятичная запятая + пробел)
+    s = re.sub(r"(?<=\d),\s+(?=\d)", ",", s)
+    # X -> x в размерах (80" X 80" / 2,03 X 2,03)
+    s = re.sub(r'(?<=[\d"])\s*X\s*(?=[\d"])', ' x ', s)
+    # лист.. -> лист.
+    s = s.replace("лист..", "лист.")
+    # двойные пробелы
+    s = re.sub(r"\s{2,}", " ", s).strip()
+    return s
 
 def enforce_name_policy(oid: str, name: str, params: list[tuple[str, str]]) -> str:
     # CS: глобальная политика имени — одинаково для всех поставщиков
@@ -2272,24 +2282,6 @@ def _ac_drop_barcode_params(params: list[tuple[str, str]]) -> list[tuple[str, st
     return out
 
 
-
-def _ac_extract_model_from_name(name: str) -> str | None:
-    """AkCent: вытаскиваем модель из названия, если в params попал мусор типа 'Europe Ltd.'"""
-    s = norm_ws(name or "")
-    if not s:
-        return None
-    # Ищем токены, похожие на модель (буквы+цифры), короткие и без явного мусора
-    for tok in re.findall(r"[A-Za-z0-9][A-Za-z0-9+\-]{1,10}", s):
-        t = tok.strip(" ,;:/()[]{}")
-        if not t:
-            continue
-        up = t.upper()
-        if up in {"USB", "HDMI", "A4", "A3", "4K", "KZT"}:
-            continue
-        if re.fullmatch(r"[A-Za-z]{1,4}\d{1,4}[A-Za-z]{0,4}", t) or re.fullmatch(r"[A-Za-z]-\d{1,4}[A-Za-z]{0,4}", t) or re.fullmatch(r"[A-Za-z]\d{1,3}", t):
-            return t
-    return None
-
 def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name: str) -> list[tuple[str, str]]:
     """Точечные правила по поставщикам/категориям для <param> и блока характеристик.
     - Удаляем служебные params (Артикул добавляется/может приходить извне)
@@ -2300,7 +2292,6 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
     name_cf = (name or "").strip().casefold()
     is_vtt = oid_u.startswith("VT")
     is_copyline = oid_u.startswith("CL")
-    is_akcent = oid_u.startswith("AC")
 
 
     # AkCent: переименовываем техничные ключи 1D/2D/Распознавание кода в человекочитаемые названия.
@@ -2340,6 +2331,11 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
         if not kk or not vv:
             continue
         k_cf = kk.casefold().replace("ё", "е")
+
+        # AkCent: нормализуем значения бренда в ключевых параметрах (производитель/бренд)
+        if oid_u.startswith("AC") and k_cf in {"производитель", "для бренда", "бренд"}:
+            vv = normalize_vendor(vv)
+
         # глобально: не выводим служебный 'Артикул' как характеристику
         if k_cf == "артикул":
             continue
@@ -2359,75 +2355,6 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
 
         if is_copyline and name_cf.startswith("кабель сетевой") and (k_cf == "совместимость"):
             continue
-
-        if is_akcent:
-            # AkCent: аккуратные точечные правки, чтобы не ломать других
-            if k_cf == "тип резки":
-                kk = "Тип резки"
-
-            # AkCent: булевы "н" / "н." → "нет" (корзина/слот и т.п.)
-            vv_cf = vv.casefold().strip()
-            if vv_cf in {"н", "н.", "n"}:
-                if ("корзина" in k_cf) or ("слот" in k_cf):
-                    vv = "нет"
-
-            # AkCent: дедуп списков через запятую в отдельных ключах
-            if k_cf in {"область применения", "страна происхождения"} and "," in vv:
-                parts = [norm_ws(p) for p in vv.split(",")]
-                parts = [p for p in parts if p]
-                parts = _dedup_keep_order(parts)
-                vv = ", ".join(parts)
-
-            # AkCent: нормализация "Область применения" (запятые/слэши/точки/переносы) + дедуп
-            if k_cf == "область применения":
-                parts2 = re.split(r"[,/;\.\n]+", vv)
-                parts2 = [norm_ws(p).strip(" ,;:-") for p in parts2]
-                parts2 = [p for p in parts2 if p]
-                parts2 = _dedup_keep_order(parts2)
-                vv = ", ".join(parts2)
-
-            # AkCent: нормализация "Страна происхождения" (Жапония/Филиппин и т.п.)
-            if k_cf == "страна происхождения":
-                raw_parts = re.split(r"[,/;\.\n]+", vv)
-                fixed: list[str] = []
-                for p in raw_parts:
-                    p2 = norm_ws(p).strip(" ,;:-")
-                    if not p2:
-                        continue
-                    cf2 = p2.casefold()
-                    if cf2 == "жапония":
-                        p2 = "Япония"
-                    elif cf2 == "филиппин":
-                        p2 = "Филиппины"
-                    elif cf2 in {"филиппины", "филипины"}:
-                        p2 = "Филиппины"
-                    fixed.append(p2)
-                fixed = _dedup_keep_order(fixed)
-                vv = ", ".join(fixed).strip(" ,;")
-
-            # AkCent: шредеры — 'скобки' -> 'скобы' в контексте уничтожения
-            if k_cf == "уничтожение":
-                vv = re.sub(r"(?i)\bскобки\b", "скобы", vv)
-
-            # AkCent: если 'Модель' заполнена юр.лицом (Ltd/Europe) — берём модель из названия
-            if k_cf == "модель" and re.search(r"(?i)\b(ltd|inc|llc|gmbh|europe)\b", vv):
-                cand = _ac_extract_model_from_name(name)
-                if cand:
-                    vv = cand
-
-            # AkCent: чистим "Комплектация" от заголовков/обрезков
-            if k_cf == "комплектация":
-                for marker in ("Основные свойства", "Технические характеристики", "Основные характеристики", "Категория"):
-                    idx = vv.find(marker)
-                    if idx != -1:
-                        vv = vv[:idx].rstrip(" ,;:-")
-                        break
-                vv = re.sub(r"(?:,\s*)?[A-Za-zА-Яа-яЁё]$", "", vv).strip(" ,;")
-
-        if is_akcent:
-            # AkCent: отсекаем мусорные ключи, похожие на рекламные предложения (при кривом парсинге описания)
-            if (len(kk.split()) >= 7 and not re.search(r"\d", kk)) or re.match(r"(?i)^(преимущества|легкий|лёгкий|доступный|используйте|зум\b|простое|простая|идеально|подходит)\b", kk):
-                continue
 
         out.append((kk, vv))
     return out
@@ -2501,7 +2428,7 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
 
     # Ресурс
     if not (_has("Ресурс") or _has("Ресурс, стр")):
-        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр(?!\s*(?:\.\s*)?/\s*мин)|страниц\w*(?!\s*(?:в\s*минут|/\s*мин))|pages?(?!\s+per\s+minute))\b", hay)
+        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр|страниц\w*|pages?)\b", hay)
         if m:
             num = re.sub(r"[^\d]", "", m.group(1))
             if len(num) >= 2 and not re.fullmatch(r"0+", num):
@@ -2542,24 +2469,9 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
             params.append(("Цвет", color_from_name))
         keys_cf.add("цвет")
     else:
-        # Если цвета в названии нет — сначала пробуем найти цвет именно КОРПУСА (из описания)
+        # Если цвета в названии нет — можно попробовать вытащить из имени+описания
         if not _has("Цвет"):
-            m_body = re.search(
-                r"(?i)\bв\s+(черн(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
-                r"сер(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
-                r"красн(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
-                r"бел(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых))\s+корпус\w*\b",
-                hay,
-            )
-            if m_body:
-                canon_body = normalize_color_value(m_body.group(1))
-                if canon_body:
-                    params.append(("Цвет", canon_body))
-                    keys_cf.add("цвет")
-            else:
-                # Если явного цвета корпуса нет — можно попробовать вытащить из имени+описания,
-                # но игнорируем контекст 'чернила/тонер' чтобы не путать цвет расходника с цветом устройства.
-                m = re.search(
+            m = re.search(
                 r"(?i)\b("
                 r"cmyk|cmy|cmy\s*\+\s*bk|bk\s*\+\s*cmy|bk[,/ ]*c[,/ ]*m[,/ ]*y|c[,/ ]*m[,/ ]*y[,/ ]*bk|"
                 r"black|bk|cyan|magenta|yellow|gray|grey|red|light\s*grey|light\s*gray|lgy|chroma\s*optim(?:ize|iser|izer)|"
@@ -2580,15 +2492,7 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
                 hay,
             )
             if m:
-                # контекстный фильтр: если рядом есть 'чернил/чернила/тонер' — это не цвет устройства
-                s0 = hay
-                a = max(0, m.start() - 40)
-                b = min(len(s0), m.end() + 40)
-                ctx = s0[a:b].casefold()
-                if any(w in ctx for w in ("чернил", "чернила", "тонер")):
-                    canon = ""
-                else:
-                    canon = normalize_color_value(m.group(0))
+                canon = normalize_color_value(m.group(0))
                 if canon:
                     params.append(("Цвет", canon))
                     keys_cf.add("цвет")
@@ -2630,30 +2534,12 @@ def fix_text(s: str) -> str:
     # Нормализация частой опечатки (Shuko -> Schuko)
     t = _RE_SHUKO.sub("Schuko", t)
 
-    # Частые опечатки/типографика (безопасно, встречается у поставщиков)
-    t = re.sub(r"(?i)конфернец", "конференц", t)
-    t = re.sub(r"(?i)полотна(?=\d)", "полотна ", t)
-    t = re.sub(r"(?i)высококачетсвенную", "высококачественную", t)
-    t = re.sub(r"(?i)приентеров", "принтеров", t)
-    t = re.sub(r"(?i)панели управление(\s+принтера)?", r"панели управления\1", t)
-
-    # Грамматика: "через 4 минут" -> "через 4 минуты"
-    def _ru_minutes(n: int) -> str:
-        n = abs(int(n))
-        if n % 10 == 1 and n % 100 != 11:
-            return "минуту"
-        if n % 10 in (2, 3, 4) and n % 100 not in (12, 13, 14):
-            return "минуты"
-        return "минут"
-
-    def _repl_minutes(m: re.Match) -> str:
-        n = int(m.group(1))
-        return f"через {n} {_ru_minutes(n)}"
-
-    t = re.sub(r"(?i)\bчерез\s+(\d+)\s+минут\b", _repl_minutes, t)
-
-    # Смысл: "изъять ... документ в ламинатор" -> "из ламинатора"
-    t = re.sub(r"(?i)(изъять[^\n\.]{0,160}?\bдокумент)\s+в\s+ламинатор\b", r"\1 из ламинатора", t)
+    # CS: безопасные точечные орфографические/типографические починки (часто встречаются у AkCent)
+    t = t.replace("характерстики", "характеристики")
+    t = t.replace("конфернец-залы", "конференц-залы")
+    t = t.replace("скобкы", "скобы")
+    # CS: LСD (кирилл. 'С') -> LCD
+    t = re.sub(r"(?i)lСd", "LCD", t)
 
     t = fix_mixed_cyr_lat(t)
     return t
@@ -3282,6 +3168,10 @@ def _build_desc_part(name: str, native_desc: str) -> str:
     # CS: убираем повтор названия в начале и режем длинные простыни
     d = _dedupe_desc_leading_name(d, name)
     d = _clip_desc_plain(d, max_chars=int(os.getenv("CS_NATIVE_DESC_MAX_CHARS", "1200")))
+
+    # CS: убираем обрубки вида "(1," в конце текста (часто у AkCent)
+    d = re.sub(r"\(\s*\d+\s*,\s*$", "", d).strip()
+    d = d.rstrip(" ,.;:-([")
 
     # Если после чистки осталось только название — не выводим пустой <p> с дублем.
     if _cmp_name_like_text(d) == _cmp_name_like_text(name):
@@ -4107,35 +3997,18 @@ class OfferOut:
     ) -> str:
         name_full = normalize_offer_name(self.name)
         name_full = sanitize_mixed_text(name_full)
-        # AkCent: добиваем мелкую типографику имени (не трогаем других поставщиков)
+        # CS/AkCent: точечная нормализация имени (размеры/лист..) — только для AC
         if _supplier_code_from_oid(self.oid) == "AC":
-            # AkCent: лёгкая нормализация имени (SEO/читабельность), не влияющая на других
-            # "лист.." -> "лист.", "®LX45" -> "® LX45"
-            name_full = re.sub(r"\.{2,}", ".", name_full)
-            name_full = re.sub(r"®(?=[A-Za-z0-9])", "® ", name_full)
-            # 5лст / 6 лст. -> 5 лист. / 6 лист.
-            name_full = re.sub(r"(?i)\b(\d+)\s*лст\.?\b", r"\1 лист.", name_full)
-            # 11 лтр / 15 лтр. -> 11 л / 15 л
-            name_full = re.sub(r"(?i)\b(\d+)\s*лтр\.?\b", r"\1 л", name_full)
-            name_full = re.sub(r"(?i)\b(\d+)\s*литров\b", r"\1 л", name_full)
-            # пробел после запятой
-            name_full = re.sub(r",(?=\S)", ", ", name_full)
-            # если по ошибке в конце прицепили 'доставка' — убираем (это должно жить в keywords/блоках)
-            name_full = re.sub(r"(?i)\s+доставка\s*$", "", name_full).strip()
-            name_full = norm_ws(name_full)
+            name_full = _ac_fix_name(name_full)
+            name_full = sanitize_mixed_text(name_full)
         native_desc = fix_text(self.native_desc)
-        if _supplier_code_from_oid(self.oid) == "AC":
-            native_desc = re.sub(r"(?i)пурпурнымичернилами", "пурпурными чернилами", native_desc)
+        # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
+        native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
         policy = get_supplier_policy(self.oid)
-        _spec_pairs: list[tuple[str, str]] = []
-        # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей.
-        # Для AkCent табличные спеки должны разбираться в адаптере; здесь НЕ парсим пары из desc,
-        # чтобы не плодить мусорные params и не ломать другие поставщики.
-        if not (policy.drop_desc_specs_pairs and _supplier_code_from_oid(self.oid) == "AC"):
-            native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
-            # AlStyle/прочие: пары из desc НЕ переносим в params (но описание можем аккуратно подрезать).
-            if policy.drop_desc_specs_pairs:
-                _spec_pairs = []
+        # AlStyle: инлайновые "Основные характеристики" часто ломают пары key/value.
+        # Чтобы не плодить мусорные params (80->Совместимость и т.п.), пары из desc НЕ переносим в params.
+        if policy.drop_desc_specs_pairs:
+            _spec_pairs = []
         native_desc = strip_service_kv_lines(native_desc)
         vendor = pick_vendor(self.vendor, name_full, self.params, native_desc, public_vendor=public_vendor)
 
@@ -4163,12 +4036,14 @@ class OfferOut:
         # CS: лимитируем <name> (умно для NVPrint)
         name_short = enforce_name_policy(self.oid, name_full, params_sorted)
         name_short = sanitize_mixed_text(name_short)
-        if _supplier_code_from_oid(self.oid) == "AC":
-            name_short = re.sub(r"\.{2,}", ".", name_short)
 
         # CS: В описании сохраняем полное наименование (если оно было укорочено).
         # Если <name> был укорочен — в описании сохраняем полное наименование.
-        name_for_desc = name_full if (name_short != name_full) else name_short
+        # AkCent: в описании держим ровно то же имя, что и в <name>, чтобы не было расхождений.
+        if _supplier_code_from_oid(self.oid) == "AC":
+            name_for_desc = name_short
+        else:
+            name_for_desc = name_full if (name_short != name_full) else name_short
         name_for_desc = sanitize_mixed_text(name_for_desc)
 
         desc_cdata = build_description(name_for_desc, native_desc, params_sorted, notes=notes)
