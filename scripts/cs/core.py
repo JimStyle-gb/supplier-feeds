@@ -10,7 +10,7 @@ CS Core — общее ядро для всех поставщиков.
 - стабилизация форматирования (переводы строк, футер)
 """
 
-# core v036_fix_resource_compat_codes: fix Ресурс (6970, 300→300) + чистка Совместимости от упаковки + фильтр 3-значных кодов
+# core v038_fix_type_promo_resource_scope: fix Тип (Жесткий диск/Дополнительный лоток) + убрать РАСПРОДАЖА/АКЦИЯ из name/keywords + Ресурс только для расходников (не 35 стр/мин)
 
 from __future__ import annotations
 
@@ -498,11 +498,6 @@ def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = Tru
     s = re.sub(r"(?i)\b(?:LBP|MF)\s*[-\s]*\d{2,4}x\b", _keep, s)
     s = re.sub(r"(?i)\b(?:LBP|MF)\s*[-\s]*\d{1,4}xx\b", _keep, s)
     s = re.sub(r"(?i)\b(?:FC|PC)\s*[-\s]*\d{1,3}xx\b", _keep, s)
-    # CS v037: защищаем модели техники HP DesignJet (DJ) серии T (T920/T1500/T630 и т.п.)
-    # чтобы их не вырезало как коды расходников (Epson T0481 и т.п.)
-    if re.search(r"(?i)\b(?:DJ|DESIGN\s*JET|DESIGNJET)\b", s):
-        s = re.sub(r"(?i)\bT\d{3,5}\b", _keep, s)
-
     s = _RE_CODE_NUM_SIGN.sub(" ", s)
     s = _RE_CODE_ANY.sub(" ", s)
     s = re.sub(r"(?i)\bC-?EXV\s*\d{1,3}\b", " ", s)
@@ -962,8 +957,10 @@ def normalize_offer_name(name: str) -> str:
     s = norm_ws(name)
     # CS: орфография (частая опечатка)
     s = re.sub(r"(?i)\bmaintance\b", "Maintenance", s)
-    # CS v037: исправляем частую опечатку бренда
-    s = re.sub(r"(?i)\bbrothe\b", "Brother", s)
+    # CS: частая опечатка бренда в имени
+    s = re.sub(r"(?i)\bBrothe\b", "Brother", s)
+    # CS: промо-маркеры в начале имени (РАСПРОДАЖА/АКЦИЯ/Sale) — убираем, чтобы не портить H3/SEO
+    s = re.sub(r"(?iu)^\s*(?:\(?\s*)?(?:(?:распродажа|акция|sale)\b\s*[:\-–—!\.]*\s*)+", "", s).strip()
     if not s:
         return ""
     # "дляPantum" -> "для Pantum"
@@ -2432,32 +2429,53 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
 
     hay = f"{name}\n{desc_text}"
 
-    # Тип (первое слово) — только если нет
+    # Тип (эвристика из первых слов) — только если нет
+    # Раньше брали только первое слово, из-за чего получалось "Тип=Жесткий/Дополнительный".
     if not _has("Тип"):
-        first = (name.split() or [""])[0].strip()
-        if first and len(first) <= 32 and not re.search(r"\d", first):
-            params.append(("Тип", first))
-            keys_cf.add("тип")
+        _stop2 = {"для", "с", "со", "к", "на", "в", "во", "и", "по", "от", "до", "без", "при"}
+        _noun2 = {
+            "диск", "лоток", "головка", "картридж", "тонер", "барабан", "фотобарабан", "драм-юнит",
+            "модуль", "блок", "узел", "кабель", "принтер", "мфу", "сканер", "монитор", "адаптер",
+            "финишер", "плата", "клавиатура", "мышь", "крепление", "кронштейн", "накопитель",
+        }
+        def _has_cyr(s: str) -> bool:
+            return bool(re.search(r"[А-Яа-яЁё]", s or ""))
+        def _is_ru_adj(w: str) -> bool:
+            ww = (w or "").casefold().replace("ё", "е")
+            return bool(re.search(r"(ый|ий|ая|яя|ое|ее|ые|ие|ого|его|ому|ему|ым|им|ыми|ими|ых|их|ую|юю|ой|ей|ный|ний|ная|ное|ные)$", ww))
+        toks = [(t or "").strip("()[]{}<>.,;:!?") for t in (name.split() or [])]
+        toks = [t for t in toks if t]
+        if toks:
+            first = toks[0].strip()
+            second = (toks[1].strip() if len(toks) > 1 else "")
+            # защита: не делаем "Тип=HP/Xerox" (латиница)
+            if first and _has_cyr(first) and len(first) <= 32 and not re.search(r"\d", first):
+                tval = first
+                sec_cf = second.casefold().replace("ё", "е") if second else ""
+                if second and _has_cyr(second) and not re.search(r"\d", second) and sec_cf not in _stop2:
+                    if _is_ru_adj(first) or sec_cf in _noun2:
+                        tval = f"{first} {second}"
+                # если всё равно остался один прилагательный — лучше не добавлять
+                if not (_is_ru_adj(first) and " " not in tval):
+                    params.append(("Тип", tval))
+                    keys_cf.add("тип")
     # CS: Совместимость НЕ создаём и НЕ обогащаем автоматически.
     # Если поставщик не дал параметр совместимости — оставляем пусто (по просьбе пользователя).
 
-    # Ресурс: добавляем ТОЛЬКО для расходников (картриджи/тонеры/чернила/драмы и т.п.)
-    # и НЕ путаем со скоростью печати ("35 стр/мин", "pages/min").
+    # Ресурс — добавляем только для расходников (картриджи/тонеры/чернила),
+    # и НЕ путаем со скоростью печати вида "35 стр/мин".
     if not (_has("Ресурс") or _has("Ресурс, стр")):
-        if _cs_is_consumable(name, params):
-            cand_nums: list[str] = []
-            for m in re.finditer(r"(?i)\b(\d{2,7}|\d{1,3}(?:[ \u00A0\u202f\.,]\d{3})+)\s*(?:стр\.?|страниц\w*|pages?)\b", hay):
-                tail = hay[m.end():m.end() + 24]
-                # пропускаем скорость "стр/мин", "стр в минуту", "pages/min", "per minute"
-                if re.search(r"(?i)^\s*(?:/|\\)\s*(?:мин\.?|minute|min)\b", tail):
+        _consumable_hint = re.search(r"(?i)\b(картридж|тонер|чернил\w*|drum|драм|фотобарабан|developer|девелопер|ink|cartridge|toner)\b", hay)
+        if _consumable_hint:
+            last_num = ""
+            for m in re.finditer(r"(?i)\b(\d{2,7}|\d{1,3}(?:[ \u00A0\u202f\.,]\d{3})+)\s*(?:стр|страниц\w*|pages?)\b", hay):
+                tail = hay[m.end():m.end() + 12].lower()
+                # скорость печати: "стр/мин", "стр./мин", "ppm"
+                if tail.startswith("/мин") or tail.startswith("./мин") or tail.startswith(" /мин") or "ppm" in tail:
                     continue
-                if re.search(r"(?i)^\s*\bв\b\s*(?:минут\w*|minute|min)\b", tail):
-                    continue
-                if re.search(r"(?i)^\s*per\s+minute\b", tail):
-                    continue
-                cand_nums.append(m.group(1))
-            if cand_nums:
-                num = re.sub(r"[^\d]", "", cand_nums[-1])
+                last_num = m.group(1)
+            if last_num:
+                num = re.sub(r"[^\d]", "", last_num)
                 if len(num) >= 2 and not re.fullmatch(r"0+", num):
                     params.append(("Ресурс", num))
                     keys_cf.add("ресурс")
@@ -3268,12 +3286,22 @@ def build_keywords(
     parts: list[str] = []
     if vendor:
         parts.append(norm_ws(vendor))
+    def _strip_promo_kw(s: str) -> str:
+        s = norm_ws(s)
+        if not s:
+            return ""
+        s = re.sub(r"(?iu)\b(?:распродажа|акция|sale)\b", " ", s)
+        s = norm_ws(s).strip(" -–—:;,")
+        return s
+
     if offer_name:
-        parts.append(norm_ws(offer_name))
+        on = _strip_promo_kw(offer_name)
+        if on:
+            parts.append(on)
 
     if extra:
         for x in extra:
-            x = norm_ws(x)
+            x = _strip_promo_kw(x)
             if x:
                 parts.append(x)
 
