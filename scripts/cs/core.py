@@ -10,7 +10,7 @@ CS Core — общее ядро для всех поставщиков.
 - стабилизация форматирования (переводы строк, футер)
 """
 
-# core v035_refactor_policy: final sanitize mixed кир/лат + расширенные маппинги i/И (без изменения бизнес-логики) (fix_mixed_cyr_lat для name/params, пробел после запятой, Maintance->Maintenance, укорочение без '…')
+# core v036_fix_resource_compat_codes: fix Ресурс (6970, 300→300) + чистка Совместимости от упаковки + фильтр 3-значных кодов
 
 from __future__ import annotations
 
@@ -445,12 +445,35 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
         _add(tok)
 
-    # Короткие 3-значные (Canon 716/725/727/728/737) — только если разрешено
+    # Короткие 3-значные (Canon 716/725/727/728/737) — только если контекст похож на код (не модель типа L630)
     if allow_short_3dig:
         for m in _RE_CODE_SHORT_3DIG.finditer(s):
             tok = (m.group(0) or "").strip()
             if not tok:
                 continue
+
+            i0 = m.start()
+            # не брать если код "прилип" к букве слева: L630 / M630 / SC630 и т.п.
+            if i0 > 0 and re.match(r"[A-Za-zА-Яа-я]", s[i0 - 1]):
+                continue
+
+            # не брать если рядом единицы/объёмы
+            tail = s[m.end():m.end() + 8].casefold()
+            if re.match(r"\s*(?:мл|ml|г|гр|kg|кг|gb|гб|dpi|в|v)\b", tail):
+                continue
+
+            # нужен контекст "картридж/тонер/canon/№"
+            win = s[max(0, i0 - 24):min(len(s), m.end() + 24)].casefold()
+            ctx_ok = ctx_canon or any(w in win for w in (
+                "canon", "кэнон", "imagerunner", "image runner",
+                "cartridge", "картридж", "toner", "тонер",
+                "npg", "gpr", "exv", "код", "oem",
+            ))
+            if (not ctx_ok) and i0 > 0 and s[i0 - 1] in "№#":
+                ctx_ok = True
+            if not ctx_ok:
+                continue
+
             # если уже есть вариант с № — не дублируем голым числом
             if tok and (tok.casefold() in idx_map):
                 continue
@@ -1173,6 +1196,12 @@ def _is_valid_compat_fragment(f: str) -> bool:
     # чисто единицы/объём —
     if _COMPAT_UNIT_RE.match(f):
         return False
+    # упаковка/комплект/кол-во — это не модели устройств
+    if re.search(r"(?i)\b(упаковк\w*|комплект\w*|набор\w*|pcs|pieces|шт|pack|set)\b", f):
+        return False
+    if re.search(r"(?i)\b\d+\s*[*xхXХ]\s*\d+\b", f):
+        return False
+
 
     # голые числа/номера —
     if _COMPAT_NUM_ONLY_RE.match(f) or _COMPAT_NO_CODE_RE.match(f):
@@ -2405,11 +2434,11 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
     # CS: Совместимость НЕ создаём и НЕ обогащаем автоматически.
     # Если поставщик не дал параметр совместимости — оставляем пусто (по просьбе пользователя).
 
-    # Ресурс
+    # Ресурс (берём число прямо перед "стр/pages", не склеиваем списки типа "6970, 300 стр")
     if not (_has("Ресурс") or _has("Ресурс, стр")):
-        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр|страниц\w*|pages?)\b", hay)
-        if m:
-            num = re.sub(r"[^\d]", "", m.group(1))
+        ms = re.findall(r"(?i)\b(\d{2,7}|\d{1,3}(?:[ \u00A0\u202f\.,]\d{3})+)\s*(?:стр|страниц\w*|pages?)\b", hay)
+        if ms:
+            num = re.sub(r"[^\d]", "", ms[-1])
             if len(num) >= 2 and not re.fullmatch(r"0+", num):
                 params.append(("Ресурс", num))
                 keys_cf.add("ресурс")
