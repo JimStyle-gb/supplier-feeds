@@ -10,7 +10,7 @@ CS Core — общее ядро для всех поставщиков.
 - стабилизация форматирования (переводы строк, футер)
 """
 
-# core v038_fix_type_promo_resource_scope: fix Тип (Жесткий диск/Дополнительный лоток) + убрать РАСПРОДАЖА/АКЦИЯ из name/keywords + Ресурс только для расходников (не 35 стр/мин)
+# core v035_refactor_policy: final sanitize mixed кир/лат + расширенные маппинги i/И (без изменения бизнес-логики) (fix_mixed_cyr_lat для name/params, пробел после запятой, Maintance->Maintenance, укорочение без '…')
 
 from __future__ import annotations
 
@@ -445,35 +445,12 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
         _add(tok)
 
-    # Короткие 3-значные (Canon 716/725/727/728/737) — только если контекст похож на код (не модель типа L630)
+    # Короткие 3-значные (Canon 716/725/727/728/737) — только если разрешено
     if allow_short_3dig:
         for m in _RE_CODE_SHORT_3DIG.finditer(s):
             tok = (m.group(0) or "").strip()
             if not tok:
                 continue
-
-            i0 = m.start()
-            # не брать если код "прилип" к букве слева: L630 / M630 / SC630 и т.п.
-            if i0 > 0 and re.match(r"[A-Za-zА-Яа-я]", s[i0 - 1]):
-                continue
-
-            # не брать если рядом единицы/объёмы
-            tail = s[m.end():m.end() + 8].casefold()
-            if re.match(r"\s*(?:мл|ml|г|гр|kg|кг|gb|гб|dpi|в|v)\b", tail):
-                continue
-
-            # нужен контекст "картридж/тонер/canon/№"
-            win = s[max(0, i0 - 24):min(len(s), m.end() + 24)].casefold()
-            ctx_ok = ctx_canon or any(w in win for w in (
-                "canon", "кэнон", "imagerunner", "image runner",
-                "cartridge", "картридж", "toner", "тонер",
-                "npg", "gpr", "exv", "код", "oem",
-            ))
-            if (not ctx_ok) and i0 > 0 and s[i0 - 1] in "№#":
-                ctx_ok = True
-            if not ctx_ok:
-                continue
-
             # если уже есть вариант с № — не дублируем голым числом
             if tok and (tok.casefold() in idx_map):
                 continue
@@ -957,10 +934,6 @@ def normalize_offer_name(name: str) -> str:
     s = norm_ws(name)
     # CS: орфография (частая опечатка)
     s = re.sub(r"(?i)\bmaintance\b", "Maintenance", s)
-    # CS: частая опечатка бренда в имени
-    s = re.sub(r"(?i)\bBrothe\b", "Brother", s)
-    # CS: промо-маркеры в начале имени (РАСПРОДАЖА/АКЦИЯ/Sale) — убираем, чтобы не портить H3/SEO
-    s = re.sub(r"(?iu)^\s*(?:\(?\s*)?(?:(?:распродажа|акция|sale)\b\s*[:\-–—!\.]*\s*)+", "", s).strip()
     if not s:
         return ""
     # "дляPantum" -> "для Pantum"
@@ -1200,12 +1173,6 @@ def _is_valid_compat_fragment(f: str) -> bool:
     # чисто единицы/объём —
     if _COMPAT_UNIT_RE.match(f):
         return False
-    # упаковка/комплект/кол-во — это не модели устройств
-    if re.search(r"(?i)\b(упаковк\w*|комплект\w*|набор\w*|pcs|pieces|шт|pack|set)\b", f):
-        return False
-    if re.search(r"(?i)\b\d+\s*[*xхXХ]\s*\d+\b", f):
-        return False
-
 
     # голые числа/номера —
     if _COMPAT_NUM_ONLY_RE.match(f) or _COMPAT_NO_CODE_RE.match(f):
@@ -1933,8 +1900,12 @@ def clean_params(
     params: Sequence[tuple[str, str]],
     *,
     drop: set[str] | None = None,
+    supplier_code: str | None = None,
 ) -> list[tuple[str, str]]:
     drop_set = (PARAM_DROP_DEFAULT_CF if drop is None else {norm_ws(x).casefold() for x in drop})
+
+    supplier = (supplier_code or "").upper()
+    ac_merge_keys = {"область применения", "применение"} if supplier == "AC" else set()
 
     tech_model_candidates: list[str] = []  # из ключей вида 'Технические характеристики ...'
 
@@ -2170,8 +2141,13 @@ def clean_params(
             if vv.casefold() not in have:
                 buckets[key_cf].append(vv)
         else:
-            if not buckets[key_cf]:
-                buckets[key_cf].append(vv)
+            if key_cf in ac_merge_keys:
+                have = {x.casefold() for x in buckets[key_cf]}
+                if vv.casefold() not in have:
+                    buckets[key_cf].append(vv)
+            else:
+                if not buckets[key_cf]:
+                    buckets[key_cf].append(vv)
 
     # Пост-правила: AkCent часто даёт "Вид" == "Тип" — убираем дубль
     if "тип" in buckets and "вид" in buckets:
@@ -2210,9 +2186,79 @@ def clean_params(
                 continue
             out.append((name, v))
         else:
-            out.append((name, vals[0]))
+            if kcf in ac_merge_keys and len(vals) > 1:
+                # AkCent: объединяем значения (например, 'Для дома' + 'Для дома, Для офиса' -> 'Для дома, Для офиса')
+                items: list[str] = []
+                for vv in vals:
+                    for part in re.split(r"[,;]", vv):
+                        part = norm_ws(part)
+                        if part:
+                            items.append(part)
+                items = _dedup_keep_order(items)
+                v = ", ".join(items).strip()
+                if not v:
+                    continue
+                if len(v) > 260:
+                    v = v[:260].rstrip(" ,")
+                out.append((name, v))
+            else:
+                out.append((name, vals[0]))
 
     return out
+
+
+def _ac_normalize_offer_name(name: str) -> str:
+    """AkCent: лёгкая нормализация имени без изменения смысла.
+    - '5лст/6 лст.' -> '5 лист./6 лист.'
+    - '11 лтр.' -> '11 л'
+    - пробел после '®' (Powershred®P-30C -> Powershred® P-30C)
+    """
+    s = norm_ws(name)
+    if not s:
+        return ""
+    # пробел после ®, если дальше сразу буква/цифра
+    s = re.sub(r"®(?=[A-Za-zА-Яа-яЁё0-9])", "® ", s)
+
+    # '5лст.' / '5 лст.,' -> '5 лист.'
+    s = re.sub(r"(\d+)\s*лст\.?\s*(?=[,;\s]|$)", r"\1 лист.", s, flags=re.I)
+    # '11 лтр.' / '11 лтр.,' -> '11 л'
+    s = re.sub(r"(\d+)\s*лтр\.?\s*(?=[,;\s]|$)", r"\1 л", s, flags=re.I)
+
+    # запятая без пробела
+    s = re.sub(r",(?=[0-9A-Za-zА-Яа-яЁё])", ", ", s)
+
+    # двойные точки, хвостовая пунктуация
+    while ".." in s:
+        s = s.replace("..", ".")
+    s = s.rstrip(" ,;.")
+    return norm_ws(s)
+
+
+def _ac_fix_text(desc: str) -> str:
+    """AkCent: точечные правки орфографии/грамматики в нативном описании (без переписывания смысла)."""
+    s = desc or ""
+    # 'через 4 минут' -> 'через 4 минуты' (склонение)
+    def _min_decl(n: int) -> str:
+        n100 = n % 100
+        n10 = n % 10
+        if 11 <= n100 <= 14:
+            return "минут"
+        if n10 == 1:
+            return "минуту"
+        if 2 <= n10 <= 4:
+            return "минуты"
+        return "минут"
+
+    def _repl(m: re.Match) -> str:
+        n = int(m.group(1))
+        return f"через {n} {_min_decl(n)}"
+
+    s = re.sub(r"(?i)\bчерез\s+(\d+)\s+минут\b", _repl, s)
+    # частая опечатка
+    s = re.sub(r"(?i)коэффицент", "коэффициент", s)
+    return s
+
+
 
 # --- AkCent: компактная "поддержка штрихкодов" (читаемо и полезно для SEO) ---
 _AC_BARCODE_PARAM_1D_NAMES = {"1D", "1d"}
@@ -2323,6 +2369,9 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
                 kk0 = "Поддерживаемые 1D-коды"
             elif k_cf0 == "2d" or k_cf0 in {"распознование кода", "распознавание кода"}:
                 kk0 = "Поддерживаемые 2D-коды"
+            # AkCent: типовые опечатки в названиях параметров
+            kk0 = re.sub(r"(?i)коэффицент", "коэффициент", kk0)
+            kk0 = re.sub(r"(?i)тип\s+резки", "Тип резки", kk0)
             renamed.append((kk0, vv0))
         params = renamed
 
@@ -2429,56 +2478,23 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
 
     hay = f"{name}\n{desc_text}"
 
-    # Тип (эвристика из первых слов) — только если нет
-    # Раньше брали только первое слово, из-за чего получалось "Тип=Жесткий/Дополнительный".
+    # Тип (первое слово) — только если нет
     if not _has("Тип"):
-        _stop2 = {"для", "с", "со", "к", "на", "в", "во", "и", "по", "от", "до", "без", "при"}
-        _noun2 = {
-            "диск", "лоток", "головка", "картридж", "тонер", "барабан", "фотобарабан", "драм-юнит",
-            "модуль", "блок", "узел", "кабель", "принтер", "мфу", "сканер", "монитор", "адаптер",
-            "финишер", "плата", "клавиатура", "мышь", "крепление", "кронштейн", "накопитель",
-        }
-        def _has_cyr(s: str) -> bool:
-            return bool(re.search(r"[А-Яа-яЁё]", s or ""))
-        def _is_ru_adj(w: str) -> bool:
-            ww = (w or "").casefold().replace("ё", "е")
-            return bool(re.search(r"(ый|ий|ая|яя|ое|ее|ые|ие|ого|его|ому|ему|ым|им|ыми|ими|ых|их|ую|юю|ой|ей|ный|ний|ная|ное|ные)$", ww))
-        toks = [(t or "").strip("()[]{}<>.,;:!?") for t in (name.split() or [])]
-        toks = [t for t in toks if t]
-        if toks:
-            first = toks[0].strip()
-            second = (toks[1].strip() if len(toks) > 1 else "")
-            # защита: не делаем "Тип=HP/Xerox" (латиница)
-            if first and _has_cyr(first) and len(first) <= 32 and not re.search(r"\d", first):
-                tval = first
-                sec_cf = second.casefold().replace("ё", "е") if second else ""
-                if second and _has_cyr(second) and not re.search(r"\d", second) and sec_cf not in _stop2:
-                    if _is_ru_adj(first) or sec_cf in _noun2:
-                        tval = f"{first} {second}"
-                # если всё равно остался один прилагательный — лучше не добавлять
-                if not (_is_ru_adj(first) and " " not in tval):
-                    params.append(("Тип", tval))
-                    keys_cf.add("тип")
+        first = (name.split() or [""])[0].strip()
+        if first and len(first) <= 32 and not re.search(r"\d", first):
+            params.append(("Тип", first))
+            keys_cf.add("тип")
     # CS: Совместимость НЕ создаём и НЕ обогащаем автоматически.
     # Если поставщик не дал параметр совместимости — оставляем пусто (по просьбе пользователя).
 
-    # Ресурс — добавляем только для расходников (картриджи/тонеры/чернила),
-    # и НЕ путаем со скоростью печати вида "35 стр/мин".
+    # Ресурс
     if not (_has("Ресурс") or _has("Ресурс, стр")):
-        _consumable_hint = re.search(r"(?i)\b(картридж|тонер|чернил\w*|drum|драм|фотобарабан|developer|девелопер|ink|cartridge|toner)\b", hay)
-        if _consumable_hint:
-            last_num = ""
-            for m in re.finditer(r"(?i)\b(\d{2,7}|\d{1,3}(?:[ \u00A0\u202f\.,]\d{3})+)\s*(?:стр|страниц\w*|pages?)\b", hay):
-                tail = hay[m.end():m.end() + 12].lower()
-                # скорость печати: "стр/мин", "стр./мин", "ppm"
-                if tail.startswith("/мин") or tail.startswith("./мин") or tail.startswith(" /мин") or "ppm" in tail:
-                    continue
-                last_num = m.group(1)
-            if last_num:
-                num = re.sub(r"[^\d]", "", last_num)
-                if len(num) >= 2 and not re.fullmatch(r"0+", num):
-                    params.append(("Ресурс", num))
-                    keys_cf.add("ресурс")
+        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр|страниц\w*|pages?)\b", hay)
+        if m:
+            num = re.sub(r"[^\d]", "", m.group(1))
+            if len(num) >= 2 and not re.fullmatch(r"0+", num):
+                params.append(("Ресурс", num))
+                keys_cf.add("ресурс")
     # Цвет
     # ВАЖНО: если цвет явно указан в НАЗВАНИИ — он приоритетнее параметров (исправляем конфликт).
     # CS: чистим мусорные значения ("сервисам", "сертифицированном", "серии" и т.п.) и нормализуем допустимые.
@@ -2764,7 +2780,7 @@ def _split_inline_specs_bullets(rest: str) -> str:
 
 
 
-def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str]]]:
+def extract_specs_pairs_and_strip_desc(d: str, *, supplier_code: str = "") -> tuple[str, list[tuple[str, str]]]:
     """Единый CS-подход:
     - вырезаем блоки тех/осн характеристик из нативного описания
     - превращаем их в пары (k, v), чтобы затем вывести ОДИН CS-блок <h3>Характеристики</h3>
@@ -2795,7 +2811,7 @@ def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str
         if _RE_SPECS_HDR_ANY.search(raw):
             d2 = _RE_SPECS_HDR_ANY.sub(lambda m: "\n" + m.group(0), raw, count=1)
             if d2 != raw:
-                return extract_specs_pairs_and_strip_desc(d2)
+                return extract_specs_pairs_and_strip_desc(d2, supplier_code=supplier_code)
         # если табы — почти всегда таблица характеристик
         if "\t" in raw:
             idx = 0
@@ -2806,7 +2822,7 @@ def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str
     rest = "\n".join(lines_raw[idx:]).strip()
     rest = _split_inline_specs_bullets(rest)
 
-    pairs = _parse_specs_pairs_from_text(rest)
+    pairs = _parse_specs_pairs_from_text(rest, supplier_code=supplier_code)
 
     # страховка: если вообще ничего не распарсили — не трогаем описание
     if not pairs:
@@ -2815,7 +2831,7 @@ def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str
     return pre, pairs
 
 
-def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
+def _parse_specs_pairs_from_text(text: str, *, supplier_code: str = "") -> list[tuple[str, str]]:
     """Парсит блок характеристик в пары key/value.
 
     Поддерживает:
@@ -2824,7 +2840,8 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
     - CopyLine-формат: чередование строк "Ключ" / "Значение" после заголовка
     - секции типа "Состав поставки" -> Комплектация
     """
-    lines = [ln.strip() for ln in (text or "").split("\n")]
+    # важно: не съедаем табы в конце строки (AkCent часто пишет 'Ключ\t' без значения)
+    lines = [ln.strip(" \r") for ln in (text or "").split("\n")]
     lines = [ln for ln in lines if ln]
 
     out: list[tuple[str, str]] = []
@@ -2889,6 +2906,45 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
     i = 0
     while i < len(lines):
         ln = lines[i]
+
+        is_ac = (supplier_code or "").upper() == "AC"
+
+        # AkCent: если предыдущая строка была табличной "Ключ\t" без значения,
+        # то следующие строки (до следующей таб-строки) считаем ПРОДОЛЖЕНИЕМ значения.
+        # Пример: "Область применения" -> "Для дома" / "Для офиса".
+        if is_ac and pending_key and ("\t" not in ln):
+            # если это заголовок/секция — сначала сбрасываем накопленное, затем обрабатываем заголовок обычной логикой
+            if _RE_SPECS_HDR_LINE.search(ln) or re.search(r"(?i)^(основные\s+свойства|(?:основные|технические|системные)\s+характеристики|состав\s+поставки|комплектац)", ln.strip()):
+                flush_pending()
+            else:
+                pending_vals.append(ln)
+                i += 1
+                continue
+
+        # AkCent: "P-4 уровень секретности" -> ("Уровень секретности", "P-4")
+        if is_ac:
+            ms = re.match(r"^(P-\s*\d+)\s+уровень\s+секретности$", ln, flags=re.I)
+            if ms:
+                flush_pending()
+                flush_section()
+                out.append(("Уровень секретности", ms.group(1).replace(" ", "")))
+                i += 1
+                continue
+
+            # AkCent: "Корзина 15 литров (≈ 250 листов...)" -> ("Объём корзины", "15 л (≈ 250 листов)")
+            mk = re.match(r"^корзина\s+(\d+(?:[.,]\d+)?)\s*(?:л|л\.|литр|литра|литров)\b(.*)$", ln, flags=re.I)
+            if mk:
+                num = mk.group(1).replace(",", ".")
+                tail = (mk.group(2) or "").strip()
+                m_sheet = re.search(r"(?:≈|~|около)\s*(\d+)\s*лист", tail, flags=re.I)
+                extra = ""
+                if m_sheet:
+                    extra = f" (≈ {m_sheet.group(1)} листов)"
+                if re.match(r"^\d+\.0$", num):
+                    num = num.split(".", 1)[0]
+                out.append(("Объём корзины", f"{num} л{extra}"))
+                i += 1
+                continue
 
         # bullet/list items (AlStyle often uses '- ...' after 'Основные характеристики:')
         orig_ln = ln
@@ -3286,22 +3342,12 @@ def build_keywords(
     parts: list[str] = []
     if vendor:
         parts.append(norm_ws(vendor))
-    def _strip_promo_kw(s: str) -> str:
-        s = norm_ws(s)
-        if not s:
-            return ""
-        s = re.sub(r"(?iu)\b(?:распродажа|акция|sale)\b", " ", s)
-        s = norm_ws(s).strip(" -–—:;,")
-        return s
-
     if offer_name:
-        on = _strip_promo_kw(offer_name)
-        if on:
-            parts.append(on)
+        parts.append(norm_ws(offer_name))
 
     if extra:
         for x in extra:
-            x = _strip_promo_kw(x)
+            x = norm_ws(x)
             if x:
                 parts.append(x)
 
@@ -4040,10 +4086,14 @@ class OfferOut:
     ) -> str:
         name_full = normalize_offer_name(self.name)
         name_full = sanitize_mixed_text(name_full)
+        if (self.oid or "").upper().startswith("AC"):
+            name_full = _ac_normalize_offer_name(name_full)
         native_desc = fix_text(self.native_desc)
-        # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
-        native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
+        if (self.oid or "").upper().startswith("AC"):
+            native_desc = _ac_fix_text(native_desc)
         policy = get_supplier_policy(self.oid)
+        # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
+        native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc, supplier_code=policy.code)
         # AlStyle: инлайновые "Основные характеристики" часто ломают пары key/value.
         # Чтобы не плодить мусорные params (80->Совместимость и т.п.), пары из desc НЕ переносим в params.
         if policy.drop_desc_specs_pairs:
@@ -4064,7 +4114,7 @@ class OfferOut:
         params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in params]
 
         # чистим и сортируем (ВАЖНО: чистить всегда)
-        params = clean_params(params)
+        params = clean_params(params, supplier_code=policy.code)
         params = apply_supplier_param_rules(params, self.oid, name_full)
         params = apply_color_from_name(params, name_full)
         params_sorted = sort_params(params, priority=list(param_priority or []))
