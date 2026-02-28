@@ -46,8 +46,8 @@ def _cs_norm_url(u: str) -> str:
 
 # Регексы для fix_text (компилируем один раз)
 _RE_SHUKO = re.compile(r"\bShuko\b", flags=re.IGNORECASE)
-_RE_MULTI_NL = re.compile(r"\n{3,}")
-_RE_MULTI_SP = re.compile(r"[ \u00a0]{2,}")
+_RE_MULTI_NL = re.compile(r"\n{3}")
+_RE_MULTI_SP = re.compile(r"[ \u00a0]{2}")
 # Регексы: десятичная запятая внутри чисел (2,44 -> 2.44) — включается через env
 _RE_DECIMAL_COMMA = re.compile(r"(?<=\d),(?=\d)")
 _RE_MULTI_COMMA = re.compile(r"\s*,\s*,+")
@@ -92,802 +92,6 @@ def get_supplier_policy(oid: str) -> SupplierPolicy:
     return _POLICIES.get(_supplier_code_from_oid(oid), _POLICIES["*"])
 
 
-# --- CS: Совместимость (только безопасно и только где нужно) ---
-_COMPAT_PARAM_NAME = "Совместимость"
-_COMPAT_ALIAS_NAMES = {
-    "совместимость с моделями",
-    "совместимость с принтерами",
-    "совместимые модели",
-    "для принтеров",
-    "для принтера",
-    "принтер",
-    "принтеры",
-    "применение",
-    "подходит для",
-    "совместимость",
-}
-
-_PARTNUMBER_PARAM_NAMES = {
-    "партномер",
-    "partnumber",
-    "part number",
-    "part no",
-    "pn",
-    "код производителя",
-    # VTT/другие: часто приходят так
-    "oem-номер",
-    "oem номер",
-    "каталожный номер",
-    "кат. номер",
-    "каталожный №",
-    "кат. №",
-}
-
-# Типы, где совместимость реально уместна (расходники)
-_COMPAT_TYPE_HINTS = (
-    "картридж",
-    "тонер",
-    "тонер-картридж",
-    "драм",
-    "драм-юнит",
-    "драм-картридж",
-    "фотобарабан",
-    "барабан",
-    "чернила",
-    "печатающая головка",
-    "девелопер",
-    "термопленка",
-)
-
-def _cs_is_consumable(name_full: str, supplier_code: str) -> bool:
-    # CS: Расходники определяем строго по ПЕРВОМУ слову <name>.
-    # ВАЖНО: сначала нормализуем (опечатки/дефисы), потом решаем "расходка ли".
-    w = _cs_first_word(name_full)
-    w = _cs_norm_first_word(w)
-    if not w:
-        return False
-
-    sc = (supplier_code or "").upper()
-    allowed = _CS_CONSUMABLE_FIRST_WORDS_BY_SUPPLIER.get(sc, _CS_CONSUMABLE_FIRST_WORDS_DEFAULT)
-    return w.casefold() in allowed
-
-
-_RE_FIRST_WORD = re.compile(r'^[\s"«»\(\)\[\]\{\}<>\-–—]+')
-
-# Нормализация первых слов (строго по первому слову name)
-# Пример: "Тонер-катридж" (опечатка) -> "Тонер-картридж"
-_CS_FIRST_WORD_NORMALIZE: dict[str, str] = {
-    "тонер-катридж": "Тонер-картридж",
-}
-
-def _cs_first_word(name_full: str) -> str:
-    s = (name_full or "").strip()
-    if not s:
-        return ""
-    s = _RE_FIRST_WORD.sub("", s)
-    if not s:
-        return ""
-    # режем по пробелу
-    w = s.split()[0].strip('",.;:!?)]}»')
-    # нормализуем разные дефисы в обычный "-"
-    w = w.replace("—", "-").replace("–", "-").replace("‑", "-").replace("−", "-")
-    return w
-
-def _cs_norm_first_word(w: str) -> str:
-    ww = (w or "").strip()
-    if not ww:
-        return ""
-    key = ww.casefold()
-    return _CS_FIRST_WORD_NORMALIZE.get(key, ww)
-
-# Список "расходки" по первому слову (без "Печатающая", "Ролик", "Вал")
-_CS_CONSUMABLE_FIRST_WORDS_LIST = [
-    "Картридж",
-    "Тонер-картридж",
-    "Драм-картридж",
-    "Драм-юнит",
-    "Принт-картридж",
-    "Копи-картридж",
-    "Чернила",
-    "Чернильный",
-    "Фотобарабан",
-    "Барабан",
-    "Девелопер",
-    "Контейнер",
-    "Тонер-туба",
-    "Тонер",
-    "Контейнер/поглотитель",
-]
-
-_CS_CONSUMABLE_FIRST_WORDS_DEFAULT = frozenset(x.casefold() for x in _CS_CONSUMABLE_FIRST_WORDS_LIST)
-
-# Переключатели по поставщикам (изолируем правила, чтобы правки одного не портили других)
-# Сейчас одинаково для всех. Если нужно — меняем точечно для конкретного кода ("AS"/"AC"/"CL"/"NP"/"VT").
-_CS_CONSUMABLE_FIRST_WORDS_BY_SUPPLIER: dict[str, frozenset[str]] = {
-    "AS": _CS_CONSUMABLE_FIRST_WORDS_DEFAULT,
-    "AC": _CS_CONSUMABLE_FIRST_WORDS_DEFAULT,
-    "CL": _CS_CONSUMABLE_FIRST_WORDS_DEFAULT,
-    "NP": _CS_CONSUMABLE_FIRST_WORDS_DEFAULT,
-    "VT": _CS_CONSUMABLE_FIRST_WORDS_DEFAULT,
-}
-
-
-# Подсказки, что в строке есть именно модели устройств (а не коды расходника)
-_RE_COMPAT_DEVICE_HINT = re.compile(
-    r"(xerox|hp|hewlett|canon|kyocera|ricoh|konica|minolta|bizhub|epson|brother|samsung|pantum|oki|lexmark|sharp|panasonic|toshiba|sindoh|katyusha|катюша|fplus|f\+|avision|"
-    r"laserjet|deskjet|designjet|workcentre|phaser|versalink|altalink|"
-    r"taskalfa|ecosys|aficio|\bmp\b|\bhl\b|\bdcp\b|\bmfc\b|\bscx\b|\bml\b|\bclp\b|\bclx\b|"
-    r"wf[-\s]?\d|l\d{3,4})",
-    flags=re.IGNORECASE,
-)
-
-# Токен, похожий на модель (должна быть цифра; длина >= 3)
-_RE_MODEL_TOKEN = re.compile(r"(?i)\b[0-9]*[A-ZА-Я]{0,4}\d{2,5}[A-ZА-Я0-9-]{0,6}\b")
-
-# Коды расходника (CF283A / TK-1150 / 106R02773 / C13T00R140) — НЕ модели устройств
-_RE_CONSUMABLE_CODE = re.compile(r"(?i)^(?:[A-Z]{1,4}\d{3,6}[A-Z]{0,3}|\d{6,9}|[A-Z]{1,3}-\d{3,6}|C\d{2}T[0-9A-Z]{5,8}|\d{3}R\d{5})$")
-
-
-# CS: если "Совместимость" содержит коды расходников (а не модели устройств) — переносим в отдельный параметр
-_CONSUMABLE_CODES_PARAM_NAME = "Коды расходников"
-
-# CS: токен похож на код расходника (а не модель принтера)
-def _cs_is_consumable_code_token(tok: str) -> bool:
-    t = (tok or "").strip().strip(" ,;./()[]{}").upper()
-    if not t:
-        return False
-    # чистые числа 6–9 знаков
-    if re.fullmatch(r"\d{6,9}", t):
-        return True
-    # Xerox: 106R02773 / 113R00780 / 008R13041
-    if re.fullmatch(r"\d{3}R\d{5}", t):
-        return True
-    # Epson: C13T00R140 / C13T66414A и т.п.
-    if re.fullmatch(r"C\d{2}T[0-9A-Z]{5,8}", t):
-        return True
-
-    # Canon: C-EXV34 / NPG-59 / GPR-53
-    if re.fullmatch(r"C-?EXV\d{1,3}", t.replace(" ", "").replace("-", "")):
-        return True
-    if re.fullmatch(r"(?:NPG|GPR)-?\d{1,3}", t.replace(" ", "")):
-        return True
-
-    # HP ink: 3ED77A / 1VK08A
-    if re.fullmatch(r"\d[A-Z]{2}\d{2}[A-Z]{1,2}", t):
-        return True
-    # Canon OEM: 0287C001 / 0491C001AA и т.п.
-    if re.fullmatch(r"\d{4}[A-Z]\d{3}[A-Z]{0,2}", t):
-        return True
-    # HP: CF283A / CE285A / W1106A и т.п.
-    if re.fullmatch(r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}", t):
-        return True
-    # Canon T-коды (T06/T07/...) — код расходника (важно: не путать с T3000/T5200 и т.п.)
-    if re.fullmatch(r"T0\d", t):
-        return True
-
-    # ML-коды: ML-1710D3 / ML-1210D3 / ML-D1630A
-    if re.fullmatch(r"ML-?\d{3,5}D\d{1,2}", t):
-        return True
-    if re.fullmatch(r"ML-?D\d{3,5}[A-Z]{0,2}", t):
-        return True
-
-    # HP/Canon: C7115A / C9730A / C8543X (но не C11... — это SKU техники)
-    if re.fullmatch(r"C\d{4}[A-Z]{0,3}", t) and (not t.startswith("C11")):
-        if re.fullmatch(r"C\d{4}", t):
-            return False
-        if re.fullmatch(r"C\d{4}(?:DN|DW|DWF|FDN|FDW|MFP)$", t):
-            return False
-        return True
-    # Kyocera: TK-1150 / TK1150
-    if re.fullmatch(r"TK-?\d{3,5}[A-Z]{0,3}", t):
-        return True
-    # Brother: TN-2375 / TN2375 / DR-2335 / DR2335
-    if re.fullmatch(r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}", t):
-        return True
-    # Samsung: MLT-D111S / CLT-K404S
-    if re.fullmatch(r"(?:MLT|CLT)-[A-Z]?\d{3,5}[A-Z]{0,3}", t):
-        return True
-    # Canon/HP short codes: 710H / 051H / 056H / 126A / 435A
-    if re.fullmatch(r"\d{3,4}[AHX]", t):
-        return True
-    return False
-
-def _cs_looks_like_consumable_code_list(s: str) -> bool:
-    s = norm_ws(s)
-    if not s:
-        return False
-    toks = [t for t in re.split(r"[\s,/;]+", s) if t]
-    codes = [t for t in toks if _cs_is_consumable_code_token(t)]
-    # "в основном коды" (не модели устройств)
-    return len(codes) >= 2 and len(codes) >= max(2, int(len(toks) * 0.6))
-
-
-
-# CS: извлечение кодов расходников из любого текста (name/compat/desc)
-_RE_CODE_NUM_SIGN = re.compile(r"(?i)№\s*\d{2,6}[A-Z]{0,4}\b")
-_RE_CODE_ANY = re.compile(
-    r"(?i)\b(?:"
-    r"\d{6,9}|"                  # 6–9 цифр
-    r"\d{3}R\d{5}|"               # Xerox 106R02773
-    r"C\d{2}T[0-9A-Z]{5,8}|"      # Epson C13T...
-    r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
-    r"(?:CZ|CN)\d{3}[A-Z]{1,2}|"  # HP ink CZ*** / CN***AE
-    r"\d{4}[A-Z]\d{3}[A-Z]{0,2}|"      # Canon OEM 0287C001
-    r"T\d{4,5}|"                  # Epson T0481...
-    r"TK-?\d{3,5}[A-Z]{0,3}|"     # Kyocera
-    r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}|"       # Brother
-    r"(?:MLT|CLT)-[A-Z]?\d{3,5}[A-Z]{0,3}|" # Samsung
-    r"\d{3,4}[AHX]"            # Short codes 710H/126A
-    r")\b"
-)
-_RE_CODE_SHORT_3DIG = re.compile(r"\b[6-7]\d{2}\b")  # Canon 716/725/727/728/737 и т.п.
-
-
-_RE_CODE_GROUPED_PREFIX = re.compile(
-    r"(?i)\b(?P<pfx>(?:CF|CE|CB|CC|Q|W))(?P<body>\d{3,5}(?:/\d{3,5}){1,8})(?P<suf>[A-Z]{0,3})\b"
-)
-
-_RE_CODE_GROUPED_GENERIC = re.compile(
-    r"(?i)\b(?P<pfx>(?:TK-?|TN-?|DR-?))(?P<body>\d{2,5}(?:/\d{2,5}){1,8})(?P<suf>[A-Z]{0,3})\b"
-)
-
-
-
-
-def _cs_expand_consumable_code_ranges(s: str) -> str:
-    """Раскрывает диапазоны кодов вида T0481–T0486 → T0481 T0482 ... T0486.
-    Делает это только для безопасных коротких диапазонов (<=20).
-    """
-    if not s:
-        return ""
-    # унифицируем тире
-    t = s.replace("–", "-").replace("—", "-")
-    # Пример: T0481- T0486
-    def _repl(m: re.Match) -> str:
-        a = (m.group("a") or "").upper()
-        b = (m.group("b") or "").upper()
-        # отделяем буквенную и цифровую часть
-        ma = re.match(r"^([A-Z]{1,3})(\d{3,6})$", a)
-        mb = re.match(r"^([A-Z]{1,3})(\d{3,6})$", b)
-        if not ma or not mb:
-            return m.group(0)
-        p1, n1 = ma.group(1), ma.group(2)
-        p2, n2 = mb.group(1), mb.group(2)
-        if p1 != p2:
-            return m.group(0)
-        if len(n1) != len(n2):
-            return m.group(0)
-        i1 = int(n1)
-        i2 = int(n2)
-        if i2 < i1:
-            return m.group(0)
-        if (i2 - i1) > 20:
-            return m.group(0)
-        width = len(n1)
-        out = [f"{p1}{str(i).zfill(width)}" for i in range(i1, i2 + 1)]
-        return " " + " ".join(out) + " "
-    t = re.sub(r"(?i)\b(?P<a>[A-Z]{1,3}\d{3,6})\s*-\s*(?P<b>[A-Z]{1,3}\d{3,6})\b", _repl, t)
-    return t
-
-def _cs_expand_grouped_consumable_codes(s: str) -> str:
-    if not s:
-        return ""
-    # CS: некоторые поставщики префиксуют коды (NV-/NVP-/EP- и т.п.) — убираем префикс только перед кодами
-    s = re.sub(
-        r"(?i)\b(?:NV|NVP|EP|EPR|EPC)-(?=(?:\d{3}R\d{5}|C\d{2}T|(?:CF|CE|CB|CC|Q|W)\d{3,5}|(?:CZ|CN)\d{3}|T\d{4,5}|TK-?\d{2,5}|(?:TN|DR)-?\d{2,5}|(?:MLT|CLT)-[A-Z]?\d{3,5}))",
-        "",
-        s,
-    )
-    s = _cs_expand_consumable_code_ranges(s)
-    # CS: вариант вида "CF283A/285A" → "CF283A CF285A"
-    def _repl2(m: re.Match) -> str:
-        pfx = (m.group("pfx") or "").upper()
-        n1 = m.group("n1") or ""
-        s1 = (m.group("suf1") or "").upper()
-        n2 = m.group("n2") or ""
-        s2 = (m.group("suf2") or "").upper()
-        return " " + f"{pfx}{n1}{s1} {pfx}{n2}{s2}" + " "
-    s = re.sub(
-        r"(?i)\b(?P<pfx>(?:CF|CE|CB|CC|Q|W))(?P<n1>\d{3,5})(?P<suf1>[A-Z]{1,3})/(?P<n2>\d{3,5})(?P<suf2>[A-Z]{1,3})\b",
-        _repl2,
-        s,
-    )
-    def _repl(m: re.Match) -> str:
-        pfx = (m.group("pfx") or "").upper()
-        body = m.group("body") or ""
-        suf = (m.group("suf") or "").upper()
-        nums = [x for x in body.split("/") if x]
-        out = [f"{pfx}{n}{suf}" for n in nums]
-        return " " + " ".join(out) + " "
-    s = _RE_CODE_GROUPED_PREFIX.sub(_repl, s)
-    s = _RE_CODE_GROUPED_GENERIC.sub(_repl, s)
-    return s
-# CS: извлекаем коды расходников (в исходном порядке) из текста. Никаких моделей техники сюда не пускаем.
-def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = True) -> list[str]:
-    s = norm_ws(text)
-    if not s:
-        return []
-    s = _cs_expand_grouped_consumable_codes(s)
-
-    ctx = s.casefold()
-    ctx_hp_dj = ("designjet" in ctx) or (" hp " in f" {ctx} " and re.search(r"\bdj\b", ctx))
-    ctx_eps_sc = ("surecolor" in ctx) or ("sc-" in ctx) or bool(re.search(r"(?i)\bsc-?t\d{3,5}\b", s))
-    ctx_eps = ("epson" in ctx)
-    ctx_canon = bool(re.search(r"(?i)\bcanon\b|\bimagerunner\b|\bimage\s*runner\b", s))
-
-    out: list[str] = []
-    idx_map: dict[str, int] = {}
-
-    def _add(tok: str) -> None:
-        nonlocal out, idx_map
-        t = (tok or '').strip()
-        if not t:
-            return
-        # нормализуем для дедупа: убираем ведущий №, пробелы, приводим к UPPER
-        raw = t.replace(' ', '').upper()
-        base = raw.lstrip('№')
-        key = base.casefold()
-        if key in idx_map:
-            j = idx_map[key]
-            # если уже есть вариант с №, а пришёл без № — заменим (кроме чистых цифр)
-            if out[j].startswith('№') and (not raw.startswith('№')) and (not re.fullmatch(r'\d+', base)):
-                out[j] = base
-            return
-        idx_map[key] = len(out)
-        # храним без № для алфанумерических кодов, но чистые цифры оставляем как есть/с № если пришло
-        if raw.startswith('№') and (not re.fullmatch(r'\d+', base)):
-            out.append(base)
-        else:
-            out.append(raw if (raw.startswith('№') and re.fullmatch(r'\d+', base)) else base)
-
-
-    # №727 / № 727A
-    for m in _RE_CODE_NUM_SIGN.finditer(s):
-        tok = norm_ws(m.group(0)).replace(" ", "")
-        tok = tok.replace("#", "№")
-        _add(tok)
-
-    # Основные коды (CF283A, TK-1150, 106R02773, C13T..., MLT-D111S, 710H и т.п.)
-    for m in _RE_CODE_ANY.finditer(s):
-        tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
-        if not tok:
-            continue
-        # нормализация без-дефисных TK/TN/DR
-        tok = re.sub(r"^(TK)(\d{2,5})([A-Z]{0,3})$", r"TK-\2\3", tok)
-        tok = re.sub(r"^(TN)(\d{3,5})([A-Z]{0,3})$", r"TN-\2\3", tok)
-        tok = re.sub(r"^(DR)(\d{3,5})([A-Z]{0,3})$", r"DR-\2\3", tok)
-        # T-коды: в ряде контекстов это модели принтеров (DesignJet/SureColor), не коды расходников
-        if re.fullmatch(r"(?i)T\d{4,5}", tok):
-            dig = tok[1:]
-            if ctx_hp_dj:
-                continue
-            if (ctx_eps_sc or ctx_eps) and dig and dig[0] in "12357":
-                continue
-        _add(tok)
-
-    # ML-коды (часто приходят как HB-ML-1210D3 / ML-1710D3 / ML-D1630A)
-    for m in re.finditer(r"(?i)\b(?:HB-)?ML-?\d{3,5}D\d{1,2}\b", s):
-        tok = (m.group(0) or "").upper().replace("HB-", "")
-        _add(tok)
-    for m in re.finditer(r"(?i)\b(?:HB-)?ML-?D\d{3,5}[A-Z]{0,2}\b", s):
-        tok = (m.group(0) or "").upper().replace("HB-", "")
-        _add(tok)
-
-    # Canon T-коды (T06/T07/...) — только в канон-контексте, чтобы не путать с моделями принтеров
-    if ctx_canon:
-        for m in re.finditer(r"(?i)\bT0\d\b", s):
-            _add((m.group(0) or "").upper())
-
-    # Canon: C-EXV34 / NPG-59 / GPR-53
-    for m in re.finditer(r"(?i)\bC-?EXV\s*\d{1,3}\b", s):
-        tok = norm_ws(m.group(0)).upper().replace(' ', '')
-        tok = tok.replace('CEXV', 'C-EXV')
-        if tok.startswith('C-EXV'):
-            _add(tok)
-
-    for m in re.finditer(r"(?i)\b(?:NPG|GPR)\s*-\s*\d{1,3}\b", s):
-        tok = norm_ws(m.group(0)).upper().replace(' ', '')
-        tok = tok.replace('--', '-')
-        _add(tok)
-
-    # HP/Canon коды вида C7115A / C9730A / C8543X
-    # Важно: модели техники типа C2020 / C8030 / C2026MFP / C7000DN — это НЕ коды расходников.
-    for m in re.finditer(r"(?i)\bC\d{4}[A-Z]{0,3}\b", s):
-        tok = (m.group(0) or '').upper()
-        if tok.startswith('C11'):
-            continue
-        if re.fullmatch(r"C\d{4}", tok):
-            continue
-        if re.fullmatch(r"C\d{4}(?:DN|DW|DWF|FDN|FDW|MFP)$", tok):
-            continue
-        _add(tok)
-# HP ink: 3ED77A / 1VK08A (не всегда ловится _RE_CODE_ANY)
-    for m in re.finditer(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", s):
-        tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
-        _add(tok)
-
-    # Короткие 3-значные (Canon 716/725/727/728/737) — только если разрешено
-    if allow_short_3dig:
-        for m in _RE_CODE_SHORT_3DIG.finditer(s):
-            tok = (m.group(0) or "").strip()
-            if not tok:
-                continue
-            # если уже есть вариант с № — не дублируем голым числом
-            if tok and (tok.casefold() in idx_map):
-                continue
-            _add(tok)
-
-    return out
-
-
-# CS: удаляет из текста коды расходников (оставляя только возможные модели техники)
-def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = True) -> str:
-    s = norm_ws(text)
-    if not s:
-        return ""
-    s = _cs_expand_grouped_consumable_codes(s)
-    # CS v031: защищаем модели устройств с суффиксом x/xx (LBP-312x, FC-2xx/PC-7xx и т.п.)
-    # чтобы их не вырезало как "короткие коды" (пример: 312X может выглядеть как 051H/126A).
-    keep: dict[str, str] = {}
-    def _keep(m: re.Match) -> str:
-        key = f"__CS_KEEP_{len(keep)}__"
-        keep[key] = (m.group(0) or "")
-        return key
-    s = re.sub(r"(?i)\b(?:LBP|MF)\s*[-\s]*\d{2,4}x\b", _keep, s)
-    s = re.sub(r"(?i)\b(?:LBP|MF)\s*[-\s]*\d{1,4}xx\b", _keep, s)
-    s = re.sub(r"(?i)\b(?:FC|PC)\s*[-\s]*\d{1,3}xx\b", _keep, s)
-    s = _RE_CODE_NUM_SIGN.sub(" ", s)
-    s = _RE_CODE_ANY.sub(" ", s)
-    s = re.sub(r"(?i)\bC-?EXV\s*\d{1,3}\b", " ", s)
-    s = re.sub(r"(?i)\b(?:NPG|GPR)\s*-\s*\d{1,3}\b", " ", s)
-    def _repl_c(m: re.Match) -> str:
-        tok = (m.group(0) or "")
-        t = tok.upper()
-        # Модели техники: C7020, C8020MFP, C7000DN и т.п. — оставляем
-        if re.fullmatch(r"C\d{4}(?:DN|DW|DWF|FDN|FDW|MFP)$", t):
-            return tok
-        return " "
-    s = re.sub(r"(?i)\bC\d{4}[A-Z]{1,3}\b", _repl_c, s)  # CS: не трогаем модели техники типа C7020/C8020MFP
-    s = re.sub(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", " ", s)
-    if allow_short_3dig:
-        s = _RE_CODE_SHORT_3DIG.sub(" ", s)
-    if keep:
-        for k, v in keep.items():
-            s = s.replace(k, v)
-    return norm_ws(s)
-
-
-# CS: финальная чистка строки совместимости (ресурс/цвет/мл/маркетинг/мусор)
-def _cs_clean_compat_value(v: str) -> str:
-    s = (v or "").strip()
-    if not s:
-        return ""
-    # HTML → текст
-    s = _COMPAT_HTML_TAG_RE.sub(" ", s)
-    s = norm_ws(s)
-
-    # убираем маркетинг/служебку
-    s = re.sub(r"(?i)\bбез\s+чипа\b", " ", s)
-
-    s = re.sub(r"(?i)\b(?:новинка|распродажа|акция|хит|sale|new)\b", " ", s)
-
-    # убираем префиксы/служебные слова, которые часто прилетают от поставщиков
-    s = re.sub(r"(?i)\bприменени[ея]\s*[:\-]\s*", " ", s)
-    s = re.sub(r"(?i)\bдля\s+принтер[а-я]*\b\s*[:\-]?\s*", " ", s)
-
-    # если в строке есть явный хинт бренда/линейки — оставляем хвост с первой модели (режем "Применение: ...")
-    m = _RE_COMPAT_DEVICE_HINT.search(s)
-    if m and m.start() > 0:
-        s = s[m.start():]
-
-    # из совместимости вырезаем цвет/страницы/единицы — это НЕ модели устройств
-    s = re.sub(r"(?i)\b(?:ч[её]рн\w*|голуб\w*|ж[её]лт\w*|желт\w*|магент\w*|пурпур\w*|сер\w*|цветн\w*|пигмент\w*)\b", " ", s)
-    s = re.sub(r"(?i)\b(?:black|cyan|magenta|yellow|grey|gray)\b", " ", s)
-    s = re.sub(r"(?i)\b(?:LC|LM|LK|MBK|PBK|Bk|C|M|Y|K)\b", " ", s)
-    s = re.sub(r"(?i)\b\d+\s*(?:стр\.?|страниц\w*|pages?)\b", " ", s)
-
-    s = norm_ws(s)
-
-    # режем типовые "Ресурс: 1600 стр" / "yield 7.3K" и т.п.
-    s = re.sub(r"(?i)\bресурс\b\s*[:\-]?\s*\d+(?:[.,]\d+)?\s*(?:k|к|стр\.?|страниц\w*|pages?)\b", " ", s)
-    s = re.sub(r"(?i)\byield\b\s*[:\-]?\s*\d+(?:[.,]\d+)?\s*k\b", " ", s)
-
-    # отдельный кейс вида 29млХ3шт (убираем полностью)
-    s = re.sub(r"(?i)\b\d+\s*(?:мл|ml)\s*[xхXХ]\s*\d+\s*(?:шт|pcs|pieces)\b", " ", s)
-
-    # чистим по фрагментам (важно: запятая-разделитель, но НЕ десятичная 2,4K)
-    parts = re.split(r"[\n;]+|\s*(?:(?<!\d),|,(?!\d))\s*", s)
-    cleaned: list[str] = []
-    for p in parts:
-        p = _clean_compat_fragment(p)
-        p = norm_ws(p).strip(" ,;/:-")
-        if not p:
-            continue
-        if not _is_valid_compat_fragment(p):
-            continue
-        cleaned.append(p)
-
-    cleaned = _dedup_keep_order(cleaned)
-    out = ", ".join(cleaned).strip()
-    out = norm_ws(out)
-    if not out:
-        return ""
-    # безопасность по длине (дальше всё равно тримится до 260 в clean_params)
-    if len(out) > 600:
-        return ""
-    return out
-
-
-
-
-
-def _cs_trim_compat_to_max(v: str, max_len: int = 260) -> str:
-    """Обрезает совместимость безопасно, не разрезая модель на середине.
-    Стараемся обрезать по последней запятой/точке с запятой/пробелу в пределах max_len,
-    затем удаляем возможные обрывки вида '/P1' на конце.
-    """
-    s = (v or "").strip()
-    if not s:
-        return ""
-    if len(s) <= max_len:
-        return s
-
-    cut = s[:max_len]
-    # Предпочитаем резать по разделителю списка моделей
-    pos = cut.rfind(", ")
-    if pos >= 40:
-        cut = cut[:pos]
-    else:
-        pos = cut.rfind("; ")
-        if pos >= 40:
-            cut = cut[:pos]
-        else:
-            pos = cut.rfind(" ")
-            if pos >= 40:
-                cut = cut[:pos]
-
-    cut = cut.rstrip(" ,;/.-")
-    # Удаляем короткий обрывок после '/', если он начинается с буквы и слишком короткий (например '/P1')
-    cut = re.sub(r"/(?=[A-Za-zА-Яа-я])[A-Za-zА-Яа-я0-9]{1,2}$", "", cut).rstrip(" ,;/.-")
-    # И короткий обрывок после запятой/пробела (например ', M1')
-    cut = re.sub(r"(?:,|\s)+(?=[A-Za-zА-Яа-я])[A-Za-zА-Яа-я0-9]{1,2}$", "", cut).rstrip(" ,;/.-")
-    return cut
-
-
-def _cs_looks_like_device_models(s: str) -> bool:
-    s0 = _cs_clean_compat_value(s)
-    if not s0:
-        return False
-
-    # CS: если строка в основном состоит из кодов расходников — это НЕ модели устройств
-    toks = [t for t in re.split(r"[\s,/;]+", s0) if t]
-    code_cnt = sum(1 for t in toks if _cs_is_consumable_code_token(t))
-    if code_cnt >= 2 and code_cnt >= max(2, int(len(toks) * 0.6)):
-        return False
-
-    # Нужны подсказки бренда/линейки (иначе часто ловим "ресурс/цвет/формат")
-    if not _RE_COMPAT_DEVICE_HINT.search(s0):
-        return False
-
-    # И хотя бы 1 токен, похожий на модель устройства (не код расходника)
-    tokens = _RE_MODEL_TOKEN.findall(s0)
-    device_tokens = [t for t in tokens if (not _cs_is_consumable_code_token(t)) and (not re.fullmatch(r"\d{3}", t))]
-    if len(device_tokens) >= 1:
-        return True
-
-    # CS: серии с пробелом/дефисом (например: Epson L 700 / WF 2810, Ricoh MP 2014, Canon LBP-312x, FC-2xx и т.п.)
-    if re.search(r"(?i)\b(?:l|wf|mp|sp|mx|mf|lbp|fc|pc|i[-\s]?r|hl|dcp|mfc|scx|ml|clp|clx)\s*[-\s]*\d{1,5}(?:x{1,2})?[A-ZА-Я]{0,3}\b", s0):
-        return True
-
-    # CS: 3-значные модели устройств (WorkCentre 315/320 и т.п.) — допускаем только если есть серия/линейка
-    if re.search(r"(?i)\b(?:workcentre|phaser|versalink|altalink|docucolor|color|taskalfa|ecosys|bizhub|laserjet|deskjet|designjet|officejet|pagewide|imagerunner|imageclass|aficio|\bmp\b|\bsp\b)\b", s0):
-        if re.search(r"\b\d{3}\b", s0):
-            return True
-
-    # CS v031: Xerox серии, где указаны только 3-значные номера (205/210/215; 550/560/570 и т.п.)
-    if re.search(r"(?i)\bxerox\b", s0):
-        nums = re.findall(r"\b\d{3}\b", s0)
-        if len(nums) >= 2:
-            return True
-
-    return False
-
-
-
-def _cs_extract_compat_candidate(text: str) -> str:
-    t = norm_ws(text).replace("\xa0", " ").strip()
-    if not t:
-        return ""
-
-    brands = [
-        "Xerox",
-        "Canon",
-        "HP",
-        "Kyocera",
-        "Ricoh",
-        "Konica",
-        "Minolta",
-        "Epson",
-        "Brother",
-        "Samsung",
-        "Pantum",
-        "Oki",
-        "Lexmark",
-        "Sharp",
-        "Toshiba",
-    ]
-
-    def _hint(prefix: str) -> str:
-        p = (prefix or "")
-        for b in brands:
-            if re.search(rf"(?i)\b{re.escape(b)}\b", p):
-                return b
-        m = re.search(
-            r"(?i)\b(laserjet|deskjet|designjet|workcentre|phaser|versalink|altalink|taskalfa|ecosys|bizhub)\b",
-            p,
-        )
-        return (m.group(1) if m else "")
-
-    patterns = [
-        r"(?i)\bдля\s+([^\n\r]{3,240})",
-        r"(?i)\bподходит\s+для\s+([^\n\r]{3,240})",
-        r"(?i)\bиспользуется\s+в\s+(?:принтерах|мфу|устройствах)(?:\s+серий)?\s+([^\n\r]{3,240})",
-        r"(?i)\bприменяется\s+в\s+(?:принтерах|мфу|устройствах)(?:\s+серий)?\s+([^\n\r]{3,240})",
-        r"(?i)\bсовместим\w*\s+с\s+([^\n\r]{3,240})",
-        r"(?i)\bсовместимость\b\s*(?:устройства?|модели)\s+([^\n\r]{3,240})",
-        r"(?i)\bсовместимость\b\s*[:\-–—]?\s+([^\n\r]{3,240})",
-        r"(?i)\bfor\s+([^\n\r]{3,240})",
-    ]
-
-    for pat in patterns:
-        m = re.search(pat, t)
-        if not m:
-            continue
-        cand = m.group(1)
-        cand = re.split(
-            r"(?:(?:\s*[\(\[\{])|(?:\s+[—-]\s+)|(?:\s*\.|\s*!|\s*\?))",
-            cand,
-            maxsplit=1,
-        )[0]
-        cand = _cs_clean_compat_value(cand)
-        if not cand:
-            continue
-
-        hint = _hint(t[: m.start()])
-        if hint and (not re.search(rf"(?i)\b{re.escape(hint)}\b", cand)):
-            cand = _cs_clean_compat_value(f"{hint} {cand}")
-
-        return cand
-
-    return ""
-
-def _cs_merge_compat_values(vals: list[str]) -> str:
-    parts: list[str] = []
-    for v in vals:
-        v = _cs_clean_compat_value(v)
-        if not v:
-            continue
-        # дробим по запятым/точкам с запятой/переводам строк
-        for p in re.split(r"[\n;]+|\s*(?:(?<!\d),|,(?!\d))\s*", v):  # запятая-разделитель, но НЕ десятичная 2,4K
-            p = _cs_clean_compat_value(p)
-            if not p:
-                continue
-            parts.append(p)
-    parts = _dedup_keep_order(parts)
-    out = ", ".join(parts).strip()
-    if len(out) > 600:
-        return ""
-    return out
-
-
-def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, native_desc: str, supplier_code: str = "") -> None:
-    # Совместимость и коды расходников: только для расходников.
-    found_raw: list[str] = []
-    codes_sources: list[str] = []
-    existing_codes_sources: list[str] = []
-
-    new_params: list[tuple[str, str]] = []
-    for k, v in list(params):
-        kk = (k or "").strip()
-        vv = (v or "").strip()
-        if not kk:
-            continue
-        kcf = kk.casefold()
-
-        # Убираем заголовки таблиц/мусор
-        if vv and vv.casefold() == "совместимые продукты":
-            continue
-
-        # Партномер/PN используем как источник кодов, но сам param сохраняем
-        if kcf in _PARTNUMBER_PARAM_NAMES:
-            if vv:
-                existing_codes_sources.append(vv)
-            new_params.append((kk, vv))
-            continue
-
-        # AkCent/таблицы: "модель устройства" -> "C11..." (SKU техники). Модель переносим в Совместимость, C11 выкидываем.
-        if vv and re.fullmatch(r"(?i)C11[A-Z0-9]{6,}", vv) and re.search(r"\d", kk) and re.search(r"[A-Za-zА-Яа-я]", kk):
-            found_raw.append(kk)
-            continue
-
-        # Уже существующие "Коды расходников" пересобираем заново (очищенно)
-        if kcf == _CONSUMABLE_CODES_PARAM_NAME.casefold():
-            if vv:
-                existing_codes_sources.append(vv)
-            continue
-
-        # Любые ключи совместимости/алиасы собираем как источники, но в исходном виде не оставляем
-        if kcf == _COMPAT_PARAM_NAME.casefold() or kcf in _COMPAT_ALIAS_NAMES:
-            if vv:
-                codes_sources.append(vv)
-                found_raw.append(vv)
-            continue
-
-        new_params.append((kk, vv))
-
-    is_consumable = _cs_is_consumable(name_full, supplier_code)
-
-    # Для НЕрасходников совместимость/коды не добавляем вообще
-    if not is_consumable:
-        params[:] = new_params
-        return
-
-    # 1) Коды расходников: из существующих кодов, из совместимости и из названия
-    codes: list[str] = []
-    for src in (existing_codes_sources + codes_sources + [name_full, native_desc]):
-        codes.extend(_cs_extract_consumable_codes_ordered(src, allow_short_3dig=True))
-    codes = _dedup_keep_order(codes)
-
-    # 2) Совместимость: чистим от кодов/служебки, оставляем только модели устройств
-    found_clean: list[str] = []
-    for vv in found_raw:
-        allow_short = _cs_looks_like_consumable_code_list(vv)
-        vv2 = _cs_strip_consumable_codes_from_text(vv, allow_short_3dig=allow_short)
-        vv2 = _cs_clean_compat_value(vv2)
-        if vv2 and _cs_looks_like_device_models(vv2):
-            found_clean.append(vv2)
-
-    merged = _cs_merge_compat_values(found_clean) if found_clean else ""
-    if merged:
-        new_params.append((_COMPAT_PARAM_NAME, merged))
-    else:
-        # 3) Если поставщик не дал пригодную совместимость — пробуем извлечь из name/desc
-        cand_list: list[str] = []
-        c1 = _cs_extract_compat_candidate(name_full)
-        if c1:
-            cand_list.append(c1)
-        c2 = _cs_extract_compat_candidate(native_desc)
-        if c2 and c2 != c1:
-            cand_list.append(c2)
-
-        for cand in cand_list:
-            allow_short = _cs_looks_like_consumable_code_list(cand)
-            cand2 = _cs_strip_consumable_codes_from_text(cand, allow_short_3dig=allow_short)
-            cand2 = _cs_clean_compat_value(cand2)
-            if cand2 and _cs_looks_like_device_models(cand2):
-                merged_cand = _cs_merge_compat_values([cand2])
-                if merged_cand:
-                    new_params.append((_COMPAT_PARAM_NAME, merged_cand))
-                break
-
-    if codes:
-        joined = ", ".join(codes).strip()
-        if joined and len(joined) <= 600:
-            new_params.append((_CONSUMABLE_CODES_PARAM_NAME, joined))
-
-    params[:] = new_params
-
-
-# Лимиты (по умолчанию):
-# - <name> держим коротким и читаемым (150 по решению пользователя)
-# - <keywords> по правилам YML обычно <= 1024
-CS_NAME_MAX_LEN = int((os.getenv("CS_NAME_MAX_LEN", "150") or "150").strip() or "150")
-CS_KEYWORDS_MAX_LEN = int((os.getenv("CS_KEYWORDS_MAX_LEN", "480") or "480").strip() or "480")
-
-CS_COMPAT_CLEAN_YIELD_PACK = (os.getenv("CS_COMPAT_CLEAN_YIELD_PACK", "1") or "1").strip().lower() not in ("0", "false", "no")
-CS_COMPAT_CLEAN_PAPER_OS_DIM = (os.getenv("CS_COMPAT_CLEAN_PAPER_OS_DIM", "1") or "1").strip().lower() not in ("0", "false", "no")
-CS_COMPAT_CLEAN_NOISE_WORDS = (os.getenv("CS_COMPAT_CLEAN_NOISE_WORDS", "1") or "1").strip().lower() not in ("0", "false", "no")
-CS_COMPAT_CLEAN_REPEAT_BLOCKS = (os.getenv("CS_COMPAT_CLEAN_REPEAT_BLOCKS", "1") or "1").strip().lower() not in ("0", "false", "no")
 
 
 
@@ -1015,7 +219,7 @@ def normalize_offer_name(name: str) -> str:
     s = re.sub(r"\s+\)", ")", s)
     # хвостовая запятая
     s = re.sub(r",\s*$", "", s)
-    s = re.sub(r"\s{2,}", " ", s).strip()
+    s = re.sub(r"\s{2}", " ", s).strip()
     # CS: чинить смешение кириллицы/латиницы в имени
     s = fix_mixed_cyr_lat(s)
     return s
@@ -1066,249 +270,29 @@ def _truncate_text(s: str, max_len: int, *, suffix: str = "") -> str:
     return chunk
 
 
-def _compat_fragments(s: str) -> list[str]:
-    # CS: разбиваем строку совместимости на фрагменты (стабильно)
-    s = norm_ws(s)
-    if not s:
-        return []
-    # унифицируем разделители
-    s = s.replace(";", ",").replace("|", ",")
-    parts = [norm_ws(p) for p in s.split(",")]
-    out: list[str] = []
-    seen: set[str] = set()
-    for p in parts:
-        if not p:
-            continue
-        # нормализуем пробелы вокруг слэшей, чтобы одинаковые списки схлопывались
-        p = _COMPAT_SLASH_SPACES_RE.sub("/", p)
-        p = _COMPAT_MULTI_SLASH_RE.sub("/", p)
-        p = norm_ws(p).strip(" ,;/:-")
-        if not p:
-            continue
-        key = p.casefold()
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(p)
-    return out
-
-
-def _get_param_value(params: list[tuple[str, str]], key_name: str) -> str:
-    kn = key_name.casefold()
-    for k, v in params:
-        if norm_ws(k).casefold() == kn:
-            return norm_ws(v)
-    return ""
-
-
-# CS: ключи, где может жить совместимость (в разных поставщиках)
-_COMPAT_KEYS = ("Совместимость", "Совместимые модели", "Для", "Применение")
-
-# CS: фильтрация мусора в совместимости (цвет/объём/служебные слова)
-_COMPAT_UNIT_RE = re.compile(r"^\s*(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml)\b", re.I)
-_COMPAT_PARENS_UNIT_RE = re.compile(r"\(\s*(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml)\s*\)", re.I)
-# CS: вычищаем единицы/объём и служебные слова внутри фрагмента (если они встречаются вместе с моделью)
-_COMPAT_UNIT_ANY_RE = re.compile(r"(?i)\b(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml)\b")
-_COMPAT_SKIP_ANY_RE = re.compile(r"(?i)\b(?:совместим\w*|compatible|original|оригинал)\b")
-# CS: слова/форматы/ОС, которые не должны попадать в "Совместимость" (часто прилетают из ТТХ)
-_COMPAT_PAPER_OS_WORD_RE = re.compile(
-    r"(?i)\b(?:letter|legal|a[4-6]|b5|c6|dl|no\.\s*10|windows(?:\s*\d+)?|mac\s*os|linux|android|ios|"
-    r"конверт\w*|дуплекс|формат|выбрать\s*формат|paper\s*tray\s*capacity)\b"
-)
-# CS: размеры/соотношения сторон — тоже мусор для совместимости
-_COMPAT_DIM_TOKEN_RE = re.compile(r"(?i)\b\d+\s*[xх]\s*\d+\b|\b\d+\s*см\b|\b16:9\b")
-# CS: шумовые слова, которые иногда попадают в совместимость (цвета/маркетинг/описания)
-_COMPAT_NOISE_IN_COMPAT_RE = re.compile(
-    r"(?i)\b(?:euro\s*print|отработанн\w*|чернил\w*|ink|pigment|dye|"
-    r"cyan|magenta|yellow|black|grey|gray|matt\s*black|photo\s*black|photoblack|light\s*cyan|light\s*magenta)\b"
-)
-
-
-# CS: мусор в скобках (ресурс/комплект/обрезанные хвосты)
-_COMPAT_PARENS_YIELD_PACK_RE = re.compile(r"(?i)\([^)]*(?:\b\d+\s*[kк]\b|\b\d+\s*шт\b|pcs|pieces|yield|страниц|стр\.?|ресурс|увелич)[^)]*\)")
-_COMPAT_YIELD_ANY_RE = re.compile(r"(?i)\b\d+\s*[kк]\b")
-_COMPAT_PACK_ANY_RE = re.compile(r"(?i)\b\d+\s*шт\b|\b\d+\s*pcs\b|\b\d+\s*pieces\b")
-_COMPAT_SLASH_SPACES_RE = re.compile(r"\s*/\s*")
-_COMPAT_MULTI_SLASH_RE = re.compile(r"/{2,}")
-_COMPAT_HYPHEN_MODEL_RE = re.compile(r"(?<=\D)-(?=\d)")
-
-_COMPAT_COLOR_ONLY_RE = re.compile(
-    r"^\s*(?:cyan|magenta|yellow|black|grey|gray|matt\s*black|photo\s*black|photoblack|light\s*cyan|light\s*magenta|"
-    r"ч[её]рн(?:ый|ая|ое|ые)?|син(?:ий|яя|ее|ие)?|голуб(?:ой|ая|ое|ые)?|желт(?:ый|ая|ое|ые)?|"
-    r"пурпур(?:ный|ная|ное|ные)?|магент(?:а|ы)?|сер(?:ый|ая|ое|ые)?)\s*$",
-    re.I,
-)
-_COMPAT_SKIP_WORD_RE = re.compile(r"^\s*(?:совместим\w*|compatible|original|оригинал)\s*$", re.I)
-_COMPAT_NUM_ONLY_RE = re.compile(r"^\s*\d+(?:[.,]\d+)?\s*$")
-_COMPAT_NO_CODE_RE = re.compile(r"^\s*(?:№|#)\s*\d{2,}\s*$")
-
-
-def _clean_compat_fragment(f: str) -> str:
-    # CS: чистим один фрагмент совместимости (безопасно)
-    f = norm_ws(f)
-    if not f:
-        return ""
-
-    # нормализуем слэши + модельные дефисы (KM-1620 -> KM 1620)
-    f = _COMPAT_SLASH_SPACES_RE.sub("/", f)
-    f = _COMPAT_MULTI_SLASH_RE.sub("/", f)
-    f = _COMPAT_HYPHEN_MODEL_RE.sub(" ", f)
-
-    # выкидываем цвет/объём/служебные слова
-    f = _COMPAT_PARENS_UNIT_RE.sub("", f)
-    f = _COMPAT_UNIT_ANY_RE.sub("", f)
-    f = _COMPAT_SKIP_ANY_RE.sub("", f)
-
-    # дополнительно: ресурс/комплект в совместимости — мусор
-    if CS_COMPAT_CLEAN_YIELD_PACK:
-        f = _COMPAT_PARENS_YIELD_PACK_RE.sub("", f)
-        f = _COMPAT_YIELD_ANY_RE.sub("", f)
-        f = _COMPAT_PACK_ANY_RE.sub("", f)
-
-    # CS: форматы бумаги / ОС / размеры — не должны жить в "Совместимость"
-    if CS_COMPAT_CLEAN_PAPER_OS_DIM:
-        f = _COMPAT_PAPER_OS_WORD_RE.sub("", f)
-        f = _COMPAT_DIM_TOKEN_RE.sub("", f)
-
-    # CS: шумовые слова (цвета/маркетинг/описания) — тоже режем
-    if CS_COMPAT_CLEAN_NOISE_WORDS:
-        f = _COMPAT_NOISE_IN_COMPAT_RE.sub("", f)
-
-    # если скобки сломаны (обрезан хвост) — режем с последней '('
-    if f.count("(") != f.count(")"):
-        last = f.rfind("(")
-        if last != -1:
-            f = f[:last]
-        f = f.replace(")", "")
-
-    f = norm_ws(f).strip(" ,;/:-")
-
-    # в совместимости скобки не нужны — убираем остатки, чтобы не было "битых" хвостов
-    if "(" in f or ")" in f:
-        f = f.replace("(", " ").replace(")", " ")
-        f = norm_ws(f).strip(" ,;/:-")
-
-    # CS: иногда поставщик повторяет целый список дважды — режем повтор (часто у NVPrint)
-    if CS_COMPAT_CLEAN_REPEAT_BLOCKS and len(f) >= 80:
-        f_low = f.casefold()
-        pfx = norm_ws(f[:60]).casefold()
-        if len(pfx) >= 24:
-            pos = f_low.find(pfx, len(pfx))
-            if pos != -1:
-                f = f[:pos]
-                f = norm_ws(f).strip(" ,;/:-")
-
-    # убираем дубли внутри "A/B/C" (частая грязь у поставщиков)
-    if "/" in f:
-        parts = [norm_ws(x) for x in f.split("/") if norm_ws(x)]
-        out: list[str] = []
-        seen: set[str] = set()
-        for x in parts:
-            if CS_COMPAT_CLEAN_PAPER_OS_DIM:
-                x = _COMPAT_PAPER_OS_WORD_RE.sub("", x)
-                x = _COMPAT_DIM_TOKEN_RE.sub("", x)
-            if CS_COMPAT_CLEAN_NOISE_WORDS:
-                x = _COMPAT_NOISE_IN_COMPAT_RE.sub("", x)
-            x = norm_ws(x).strip(" ,;/:-")
-            if not x:
-                continue
-            k = x.casefold()
-            if k in seen:
-                continue
-            seen.add(k)
-            out.append(x)
-        f = "/".join(out)
-
-    return f
-
-def _is_valid_compat_fragment(f: str) -> bool:
-    """CS: проверка, что фрагмент похож на совместимость (модель/список моделей), а не мусор."""
-    f = norm_ws(f)
-    if not f:
-        return False
-
-    # чисто цвет/служебные слова —
-    if _COMPAT_COLOR_ONLY_RE.match(f) or _COMPAT_SKIP_WORD_RE.match(f):
-        return False
-
-    # чисто единицы/объём —
-    if _COMPAT_UNIT_RE.match(f):
-        return False
-
-    # голые числа/номера —
-    if _COMPAT_NUM_ONLY_RE.match(f) or _COMPAT_NO_CODE_RE.match(f):
-        return False
-
-    # форматы бумаги / ОС / размеры — не совместимость принтеров
-    if CS_COMPAT_CLEAN_PAPER_OS_DIM:
-        if _COMPAT_PAPER_OS_WORD_RE.search(f) or _COMPAT_DIM_TOKEN_RE.search(f):
-            return False
-
-    # должна быть цифра (модели почти всегда с цифрами)
-    if not re.search(r"\d", f):
-        return False
-
-    # и буква (чтобы не ловить голые числа)
-    if not re.search(r"[A-Za-zА-Яа-я]", f):
-        return False
-
-    # слишком коротко — почти наверняка мусор
-    if len(f) < 4:
-        return False
-
-    return True
-
-_COMPAT_MODEL_TOKEN_RE = re.compile(r"(?i)\b[A-ZА-Я]{1,6}\s*\d{2,5}[A-ZА-Я]?\b")
-_COMPAT_TEXT_SPLIT_RE = re.compile(r"[\n\r\.\!\?]+")
-_COMPAT_HTML_TAG_RE = re.compile(r"<[^>]+>")
-
-
 def _shorten_smart_name(name: str, params: list[tuple[str, str]], max_len: int) -> str:
-    # CS: Универсально — делаем короткое имя без потери кода/смысла.
-    # Полная совместимость остаётся в param "Совместимость" (обогащённая из name/desc/params).
+    # CS: Универсально — делаем короткое имя без спец-логики.
     name = norm_ws(name)
     if len(name) <= max_len:
         return name
 
-    compat_full = _get_param_value(params, "Совместимость")
-    frags = _compat_fragments(compat_full)
-
-    # Пытаемся выделить "префикс" до "для ..."
     low = name.casefold()
-    pfx = name
-    tail_sep = ""
-    if " для " in low:
-        i = low.find(" для ")
+    # Если есть 'для' — стараемся не резать посередине смысловой части
+    if ' для ' in low:
+        i = low.find(' для ')
         pfx = norm_ws(name[:i])
-        tail_sep = " для "
-    elif "для " in low:
-        # на случай если без пробелов
-        i = low.find("для ")
-        pfx = norm_ws(name[:i].rstrip())
-        tail_sep = " для "
+        # если префикс сам по себе помещается — оставляем только его
+        if pfx and len(pfx) <= max_len:
+            name = pfx
 
-    # Если нет compat в params — берём хвост из name после "для"
-    if not frags and tail_sep:
-        tail = norm_ws(name[len(pfx) + len(tail_sep):])
-        frags = _compat_fragments(tail)
+    if len(name) <= max_len:
+        return name
 
-    # Собираем короткую совместимость: уменьшаем число фрагментов, пока не влезет
-    # Начинаем с 6, дальше 5..1
-    max_items = 6
-    while max_items >= 1:
-        short = ", ".join(frags[:max_items]) if frags else ""
-        if short:
-            cand = f"{pfx}{tail_sep}{short} и др."
-        else:
-            cand = f"{pfx}"
-        if len(cand) <= max_len:
-            return cand
-        max_items -= 1
-
-    # Фоллбэк: просто режем по границе и добавляем "…"
-    return _truncate_text(name, max_len, suffix=" и др.")
-
-
+    # Обрезаем по последнему пробелу (если возможно), иначе жестко по лимиту
+    cut = name.rfind(' ', 0, max_len + 1)
+    if cut >= int(max_len * 0.6):
+        return name[:cut].rstrip(' ,;:-')
+    return name[:max_len].rstrip(' ,;:-')
 def enforce_name_policy(oid: str, name: str, params: list[tuple[str, str]]) -> str:
     # CS: глобальная политика имени — одинаково для всех поставщиков
     name = norm_ws(name)
@@ -1598,12 +582,12 @@ def fix_mixed_cyr_lat(s: str) -> str:
 
 # Безопасное int из любого значения
 # Нормализация смешанных LAT-CYR токенов с дефисом: "LED-индикаторы" -> "LED индикаторы"
-_RE_MIXED_HYPHEN_LAT_CYR = re.compile(r"\b([A-Za-z]{2,}[A-Za-z0-9]*)[\-–—]([А-Яа-яЁё]{2,})\b")
-_RE_MIXED_HYPHEN_CYR_LAT = re.compile(r"\b([А-Яа-яЁё]{2,})[\-–—]([A-Za-z]{2,}[A-Za-z0-9]*)\b")
-_RE_MIXED_HYPHEN_A1_CYR = re.compile(r"\b([A-Za-z]\d{1,3})[\-–—]([А-Яа-яЁё]{2,})\b")
+_RE_MIXED_HYPHEN_LAT_CYR = re.compile(r"\b([A-Za-z]{2}[A-Za-z0-9]*)[\-–—]([А-Яа-яЁё]{2})\b")
+_RE_MIXED_HYPHEN_CYR_LAT = re.compile(r"\b([А-Яа-яЁё]{2})[\-–—]([A-Za-z]{2}[A-Za-z0-9]*)\b")
+_RE_MIXED_HYPHEN_A1_CYR = re.compile(r"\b([A-Za-z]\d{1,3})[\-–—]([А-Яа-яЁё]{2})\b")
 
-_RE_MIXED_SLASH_LAT_CYR = re.compile(r"([A-Za-z]{1,}[A-Za-z0-9]*)/([Ѐ-ӿ]{2,})")
-_RE_MIXED_SLASH_CYR_LAT = re.compile(r"([Ѐ-ӿ]{2,})/([A-Za-z]{1,}[A-Za-z0-9]*)")
+_RE_MIXED_SLASH_LAT_CYR = re.compile(r"([A-Za-z]{1}[A-Za-z0-9]*)/([Ѐ-ӿ]{2})")
+_RE_MIXED_SLASH_CYR_LAT = re.compile(r"([Ѐ-ӿ]{2})/([A-Za-z]{1}[A-Za-z0-9]*)")
 
 def normalize_mixed_hyphen(s: str) -> str:
     t = s or ""
@@ -1616,8 +600,8 @@ def normalize_mixed_hyphen(s: str) -> str:
     return t
 
 
-_RE_MIXED_SLASH_LAT_CYR = re.compile(r"([A-Za-z]{1,}[A-Za-z0-9]*)/([Ѐ-ӿ]{2,})")
-_RE_MIXED_SLASH_CYR_LAT = re.compile(r"([Ѐ-ӿ]{2,})/([A-Za-z]{1,}[A-Za-z0-9]*)")
+_RE_MIXED_SLASH_LAT_CYR = re.compile(r"([A-Za-z]{1}[A-Za-z0-9]*)/([Ѐ-ӿ]{2})")
+_RE_MIXED_SLASH_CYR_LAT = re.compile(r"([Ѐ-ӿ]{2})/([A-Za-z]{1}[A-Za-z0-9]*)")
 
 def normalize_mixed_slash(s: str) -> str:
     t = s or ""
@@ -1686,7 +670,7 @@ def normalize_mixed_slash_scripts(s: str) -> str:
     if not changed:
         return t
     out = "".join(chars)
-    out = re.sub(r"\s{2,}", " ", out).strip()
+    out = re.sub(r"\s{2}", " ", out).strip()
     return out
 
 def fix_jk_token(s: str) -> str:
@@ -1851,89 +835,6 @@ def _is_sane_dims(v: str) -> bool:
 
 
 
-# Эвристика: похоже ли значение "Совместимость" на список моделей/серий (а не на общее назначение "для дома")
-def _looks_like_model_compat(v: str) -> bool:
-    s = norm_ws(v)
-    if not s:
-        return False
-    scf = s.casefold()
-
-    # CS: "увеличения/использования ..." — это описание назначения, а не список моделей
-    if scf.startswith(("увеличения ", "использования ")):
-        return False
-
-    # CS: ссылки/маркетинг в "Совместимость" — мусор
-    if "http://" in scf or "https://" in scf or "www." in scf:
-        return False
-    if ("™" in s or "®" in s) and len(s) > 40:
-        return False
-
-    has_sep = bool(re.search(r"[,;/\\|]", s))
-    tokens = re.findall(r"[A-Za-zА-Яа-яЁё0-9\-]+", s)
-    word_count = len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", s))
-
-    # ! ? … — всегда предложение; точка — только если после буквы (не "1.0" и не "1010.")
-    has_sentence = bool(re.search(r"[!?…]", s)) or bool(re.search(r"(?<=[A-Za-zА-Яа-яЁё])\.(?:\s|$)", s))
-
-    # бренды/линейки (часто встречающиеся в совместимости)
-    brands = r"(xerox|hp|canon|epson|brother|samsung|kyocera|ricoh|konica|minolta|lexmark|oki|pantum|dell|sharp|olivetti|toshiba|triumph|adler|panasonic)"
-
-    # токены моделей (буквы+цифры)
-    model_tokens = 0
-    for t in tokens:
-        if re.search(r"\d", t) and re.search(r"[A-Za-zА-Яа-яЁё]", t):
-            model_tokens += 1
-        elif re.match(r"^[A-Z]{1,4}\d{2,6}[A-Z]{0,3}$", t):
-            model_tokens += 1
-
-    cyr_words = [t for t in tokens if re.search(r"[а-яё]", t.casefold())]
-    series_hits = sum(
-        1 for t in tokens
-        if t.casefold() in {
-            "laserjet", "deskjet", "officejet", "pixma", "ecotank", "workforce",
-            "workcentre", "versalink", "taskalfa", "ecosys", "bizhub", "i-sensys", "lbp", "mfp", "phaser"
-        }
-    )
-
-    # 1) Списки (коммы/слэши/точки с запятой) и цифры — почти всегда модели
-    if has_sep and re.search(r"\d", s):
-        return True
-
-    # 2) Типовая форма "для принтеров ..."
-    if scf.startswith("для ") and re.search(r"\d", s):
-        return True
-
-    # 3) Короткие коды/серии (без предложений) — ok
-    if (not has_sentence) and len(s) <= 40 and re.search(r"\d", s) and word_count <= 10:
-        return True
-
-    # 4) Много моделей — ok
-    if model_tokens >= 2:
-        return True
-
-    # 5) Коротко + бренд — ok (Sharp C-CUBE, Olivetti PR II, Xerox ...)
-    if len(tokens) <= 6 and re.search(rf"\b{brands}\b", scf):
-        return True
-
-    # 6) Маркетинг/предложения: длинный русскоязычный текст без списков и с точкой после слова
-    if has_sentence and (not has_sep) and word_count >= 7 and len(cyr_words) >= 3 and model_tokens <= 2:
-        stop = {
-            "и","в","во","на","с","со","к","по","при","для","от","это","даже","если","чтобы",
-            "как","но","или","то","же","также","еще","уже","благодаря","обеспечивает","используя",
-            "работы","дома","офиса","победы","плавного","максимальной","четкости","детализации"
-        }
-        stop_hits = sum(1 for t in cyr_words if t.casefold() in stop)
-        ratio = stop_hits / max(1, len(cyr_words))
-        if len(s) > 45 or ratio >= 0.2:
-            return False
-
-    # 7) 1 модель + бренд/линейка — ok
-    if model_tokens >= 1 and (series_hits >= 1 or re.search(rf"\b{brands}\b", scf)):
-        return True
-
-    return False
-
-
 def _cs_trim_float(v: str, max_decimals: int = 4) -> str:
     # CS: аккуратно укорачиваем длинные дроби (объём/вес/габариты) для читаемости
     s = (v or "").strip()
@@ -1971,18 +872,11 @@ def clean_params(
         "наименование производителя": "Модель",
         "модель производителя": "Модель",
 
-        # Совместимость
-        "совместимость": "Совместимость",
-        "совместимость с моделями": "Совместимость",
-        "совместимость с устройствами": "Совместимость",
 
         # заголовки из тех.спека — не должны становиться названием параметра
         "основные характеристики": "Особенности",
         "технические характеристики": "Особенности",
         "системные характеристики": "Система",
-        "совместимость с принтерами": "Совместимость",
-        "совместимые модели": "Совместимость",
-        "совместимость моделей": "Совместимость",
 
         "ресурс, стр": "Ресурс",
         "цвет печати": "Цвет",
@@ -2026,11 +920,7 @@ def clean_params(
         kk = kk.replace("(Bт)", "(Вт)").replace("Bт", "Вт")
         kk = fix_mixed_cyr_lat(kk)
         base = kk.casefold()
-        # Общая эвристика: любые ключи с "совместим..." сводим к "Совместимость" (чтобы не плодить дубли)
-        if "совместим" in base:
-            kk = "Совместимость"
-        else:
-            kk = rename_map.get(base, kk)
+        kk = rename_map.get(base, kk)
         return kk
 
     def _norm_val(key: str, v: str) -> str:
@@ -2044,13 +934,12 @@ def clean_params(
             vv = _normalize_color(vv)
         return vv
 
-    # Сбор значений по ключам (для совместимости допускаем объединение)
+    # Сбор значений по ключам 
     buckets: dict[str, list[str]] = {}
     display: dict[str, str] = {}
     order: list[str] = []
 
     for k, v in params or []:
-        # colon-in-key: иногда поставщик пишет так: "Совместимость: HP ..." (значение попало в имя)
         raw_k = norm_ws(k)
         raw_v = norm_ws(v)
         raw_k = fix_mixed_cyr_lat(raw_k)
@@ -2058,16 +947,6 @@ def clean_params(
         # Артефакт тех.спеков: номера разделов/строк вида "2.09 ..." — это мусор, не превращаем в param
         if re.match(r"^\d+\.\d+\s", raw_k) or re.match(r"^\d+\.\s", raw_k):
             continue
-        if ":" in raw_k:
-            base, tail = raw_k.split(":", 1)
-            base_cf = base.strip().casefold()
-            tail = tail.strip()
-            if base_cf.startswith("совместимость") and tail:
-                if not raw_v:
-                    raw_v = tail
-                elif tail.casefold() not in raw_v.casefold():
-                    raw_v = (raw_v + " " + tail).strip()
-                raw_k = base.strip()
         k = raw_k
         v = raw_v
 
@@ -2095,7 +974,7 @@ def clean_params(
         
         # CS: эвристика против перевёрнутых пар (когда name выглядит как значение, а value как ключ)
         _KEYLIKE = {
-            "совместимость","интерфейс","технология","сертификация","частоты","частота","разрешение",
+            "интерфейс","технология","сертификация","частоты","частота","разрешение",
             "габариты","размер","вес","материал","материал корпуса","питание","напряжение","мощность",
             "модель","бренд","марка","тип","формат","объем","объём","ресурс"
         }
@@ -2111,7 +990,7 @@ def clean_params(
             if re.match(r"^\d", xx) and re.search(r"(?i)\b(?:см|мм|м|кг|г|gb|гб|mhz|гц|мгц|вт|w|v|а|mah|мaч|мл|ml)\b", xx):
                 return True
             # коды/артикулы (497K22640, CC364A и т.п.)
-            if re.fullmatch(r"[A-Z0-9\-]{4,}", xx.upper()) and re.search(r"\d", xx):
+            if re.fullmatch(r"[A-Z0-9\-]{4}", xx.upper()) and re.search(r"\d", xx):
                 return True
             return False
         if _looks_like_value_name(k) and (v_cf in _KEYLIKE) and (k_cf not in _KEYLIKE):
@@ -2185,22 +1064,8 @@ def clean_params(
             display[key_cf] = kk
             order.append(key_cf)
 
-        # Совместимость — объединяем, но предварительно чистим (ресурс/цвет/коды расходников)
-        if key_cf == "совместимость":
-            vv = _cs_strip_consumable_codes_from_text(vv, allow_short_3dig=_cs_looks_like_consumable_code_list(vv))
-            vv = _cs_clean_compat_value(vv)
-            if not vv:
-                continue
-            if not _looks_like_model_compat(vv):
-                continue
-            # уникализация по lower
-            have = {x.casefold() for x in buckets[key_cf]}
-            if vv.casefold() not in have:
-                buckets[key_cf].append(vv)
-        else:
-            if not buckets[key_cf]:
-                buckets[key_cf].append(vv)
-
+        if not buckets[key_cf]:
+            buckets[key_cf].append(vv)
     # Пост-правила: AkCent часто даёт "Вид" == "Тип" — убираем дубль
     if "тип" in buckets and "вид" in buckets:
         tval = (buckets["тип"][0] if buckets["тип"] else "").casefold()
@@ -2228,18 +1093,7 @@ def clean_params(
         if not vals:
             continue
         name = display.get(kcf, kcf)
-        if kcf == "совместимость":
-            v = _cs_merge_compat_values(vals)
-            if not v:
-                continue
-            if len(v) > 260:
-                v = _cs_trim_compat_to_max(v, 260)
-            if not v:
-                continue
-            out.append((name, v))
-        else:
-            out.append((name, vals[0]))
-
+        out.append((name, vals[0]))
     return out
 
 # --- AkCent: компактная "поддержка штрихкодов" (читаемо и полезно для SEO) ---
@@ -2331,7 +1185,6 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
     """Точечные правила по поставщикам/категориям для <param> и блока характеристик.
     - Удаляем служебные params (Артикул добавляется/может приходить извне)
     - VTT: штрих-код/аналоги удаляем; OEM-номер -> Партномер; если OEM нет — Каталожный номер -> Партномер
-    - CopyLine: для 'Кабель сетевой' удаляем 'Совместимость'
     """
     oid_u = (oid or "").upper()
     name_cf = (name or "").strip().casefold()
@@ -2393,7 +1246,6 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
                     continue
                 kk = "Партномер"
 
-        if is_copyline and name_cf.startswith("кабель сетевой") and (k_cf == "совместимость"):
             continue
 
         out.append((kk, vv))
@@ -2442,7 +1294,7 @@ def enrich_params_from_desc(params: list[tuple[str, str]], desc_html: str) -> No
 # Лёгкое обогащение характеристик из name/description (когда у поставщика params бедные)
 
 def _extract_color_from_name(name: str) -> str:
-    """CS: совместимость со старым именем функции (цвет из name)."""
+    """CS: алиас для старого имени функции (цвет из name)."""
     return extract_color_from_name(name)
 
 
@@ -2463,8 +1315,6 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
         if first and len(first) <= 32 and not re.search(r"\d", first):
             params.append(("Тип", first))
             keys_cf.add("тип")
-    # CS: Совместимость НЕ создаём и НЕ обогащаем автоматически.
-    # Если поставщик не дал параметр совместимости — оставляем пусто (по просьбе пользователя).
 
     # Ресурс
     if not (_has("Ресурс") or _has("Ресурс, стр")):
@@ -2596,7 +1446,7 @@ def _native_has_specs_text(d: str) -> bool:
     # 3) Секция "Характеристики" как заголовок (часто у AlStyle)
     if re.search(r"(?:^|\n)\s*Характеристики\b", d, flags=re.IGNORECASE):
         # чтобы не ловить маркетинг, проверим что рядом есть признаки таблицы/списка
-        if re.search(r"(?:^|\n)\s*(Артикул|Модель|Совместимые|Тип|Разрешение|Цвет)\b", d, flags=re.IGNORECASE):
+        if re.search(r"(?:^|\n)\s*(Артикул|Модель|Тип|Разрешение|Цвет)\b", d, flags=re.IGNORECASE):
             return True
     return False
 
@@ -2754,7 +1604,7 @@ def _split_inline_specs_bullets(rest: str) -> str:
     # " ... - Время" -> новая строка с буллетом (не трогаем диапазоны 3-5)
     t = re.sub(r"\s+-\s+(?=[A-Za-zА-Яа-яЁё])", "\n- ", t)
     # нормализуем пустые строки
-    t = re.sub(r"\n{3,}", "\n\n", t)
+    t = re.sub(r"\n{3}", "\n\n", t)
     return t
 
 
@@ -2999,7 +1849,7 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
             # не мешаемся, если следующая строка — заголовок или табличная
             if ("\t" not in ln) and ("\t" not in nxt) and (not _RE_SPECS_HDR_LINE.search(nxt)) and (not re.search(r"(?i)состав\s+поставки|комплектац", nxt)):
                 k_cf = ln.strip().casefold()
-                known_key = k_cf in {"тип", "вид", "цвет", "бренд", "марка", "модель", "артикул", "штрихкод", "совместимость", "технология", "сертификация", "разрешение", "интерфейс", "частота", "частоты", "скорость", "формат", "размер", "габариты", "вес", "объем", "объём", "емкость", "ёмкость", "ресурс", "гарантия", "питание", "напряжение", "мощность"}
+                known_key = k_cf in {"тип", "вид", "цвет", "бренд", "марка", "модель", "артикул", "штрихкод", "технология", "сертификация", "разрешение", "интерфейс", "частота", "частоты", "скорость", "формат", "размер", "габариты", "вес", "объем", "объём", "емкость", "ёмкость", "ресурс", "гарантия", "питание", "напряжение", "мощность"}
                 keyish = (
                     bool(re.search(r"\s", ln))
                     or bool(re.search(r"\d", ln))
@@ -3445,7 +2295,6 @@ def _build_param_summary(params_sorted: Sequence[tuple[str, str]]) -> str:
         "тип", "вид", "тип товара",
         "производитель", "бренд", "марка",
         "модель",
-        "совместимость",
         "цвет",
         "ресурс",
         "формат",
@@ -3548,9 +2397,9 @@ def build_description(
                 # косметика: город и пунктуация
                 t = t.replace("Нур: Султан", "Нур-Султан").replace("Нур : Султан", "Нур-Султан")
                 t = re.sub(r"\s*:\s*", ": ", t)
-                t = re.sub(r"(?:,\s*){2,}", ", ", t)
+                t = re.sub(r"(?:,\s*){2}", ", ", t)
                 t = re.sub(r":\s*:", ": ", t)
-                t = re.sub(r"\s{2,}", " ", t).strip()
+                t = re.sub(r"\s{2}", " ", t).strip()
                 # пробел после точки/воскл/вопрос/многоточия перед заглавной буквой
                 t = re.sub(r"([.!?…])([A-ZА-ЯЁ])", r"\1 \2", t)
                 # пробел между цифрой и кириллицей (>=1299Рекомендуемое -> >=1299 Рекомендуемое)
@@ -3569,7 +2418,7 @@ def build_description(
         # CS: запрещено выводить название поставщика в тексте (кроме ссылок на фото)
     inner = re.sub(r"(?i)\bal[-\s]?style\b", "нашем магазине", inner)
     inner = re.sub(r"(?i)\bal[-\s]?style\.kz\b", "", inner)
-    inner = re.sub(r"\s{2,}", " ", inner)
+    inner = re.sub(r"\s{2}", " ", inner)
     return normalize_cdata_inner(inner)
 
 def make_feed_meta(
@@ -3937,7 +2786,7 @@ def normalize_vendor(v: str) -> str:
             norm_parts.append(p)
     # склеиваем обратно
     out = "/".join(norm_parts)
-    out = re.sub(r"\s{2,}", " ", out).strip()
+    out = re.sub(r"\s{2}", " ", out).strip()
     # CS: не смешиваем бренды через '/' (HP/Canon -> HP) — для vendor нужен один бренд
     if "/" in out:
         parts2 = [p.strip() for p in out.split("/") if p.strip()]
@@ -4030,7 +2879,7 @@ class OfferOut:
         native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
         policy = get_supplier_policy(self.oid)
         # AlStyle: инлайновые "Основные характеристики" часто ломают пары key/value.
-        # Чтобы не плодить мусорные params (80->Совместимость и т.п.), пары из desc НЕ переносим в params.
+        # Чтобы не плодить мусорные params (мусорные params и т.п.), пары из desc НЕ переносим в params.
         if policy.drop_desc_specs_pairs:
             _spec_pairs = []
         native_desc = strip_service_kv_lines(native_desc)
@@ -4042,8 +2891,6 @@ class OfferOut:
             params.extend(_spec_pairs)
         enrich_params_from_desc(params, native_desc)
         enrich_params_from_name_and_desc(params, name_full, native_desc)
-        # CS: Совместимость — добавляем только безопасно и только где нужно.
-        ensure_compatibility_param(params, name_full, native_desc, supplier_code=policy.code)
 
         # финальная починка смешения кир/лат в params после всех enrich/compat
         params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in params]
