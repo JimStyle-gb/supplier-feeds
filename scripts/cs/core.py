@@ -98,6 +98,12 @@ def get_supplier_policy(oid: str) -> SupplierPolicy:
 
 # Заглушка картинки, если у оффера нет фото (можно переопределить env CS_PICTURE_PLACEHOLDER_URL)
 CS_PICTURE_PLACEHOLDER_URL = (os.getenv("CS_PICTURE_PLACEHOLDER_URL") or "https://placehold.co/800x800/png?text=No+Photo").strip()
+# Лимиты (по умолчанию):
+# - <name> держим коротким и читаемым (150 по решению пользователя)
+# - <keywords> компактно (480) — чтобы не было «простыней»
+CS_NAME_MAX_LEN = int((os.getenv("CS_NAME_MAX_LEN", "150") or "150").strip() or "150")
+CS_KEYWORDS_MAX_LEN = int((os.getenv("CS_KEYWORDS_MAX_LEN", "480") or "480").strip() or "480")
+
 # Хвост городов (один и тот же для всех поставщиков)
 # WhatsApp блок (единый)
 CS_WA_BLOCK = (
@@ -293,6 +299,8 @@ def _shorten_smart_name(name: str, params: list[tuple[str, str]], max_len: int) 
     if cut >= int(max_len * 0.6):
         return name[:cut].rstrip(' ,;:-')
     return name[:max_len].rstrip(' ,;:-')
+
+
 def enforce_name_policy(oid: str, name: str, params: list[tuple[str, str]]) -> str:
     # CS: глобальная политика имени — одинаково для всех поставщиков
     name = norm_ws(name)
