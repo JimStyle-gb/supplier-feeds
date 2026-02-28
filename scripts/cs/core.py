@@ -2399,7 +2399,7 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
                         p2 = "Япония"
                     elif cf2 == "филиппин":
                         p2 = "Филиппины"
-                    elif cf2 == "филиппины":
+                    elif cf2 in {"филиппины", "филипины"}:
                         p2 = "Филиппины"
                     fixed.append(p2)
                 fixed = _dedup_keep_order(fixed)
@@ -2501,7 +2501,7 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
 
     # Ресурс
     if not (_has("Ресурс") or _has("Ресурс, стр")):
-        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр(?!\s*(?:\.\s*)?/\s*мин)|страниц\w*|pages?)\b", hay)
+        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр(?!\s*(?:\.\s*)?/\s*мин)|страниц\w*(?!\s*(?:в\s*минут|/\s*мин))|pages?(?!\s+per\s+minute))\b", hay)
         if m:
             num = re.sub(r"[^\d]", "", m.group(1))
             if len(num) >= 2 and not re.fullmatch(r"0+", num):
@@ -2542,9 +2542,24 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
             params.append(("Цвет", color_from_name))
         keys_cf.add("цвет")
     else:
-        # Если цвета в названии нет — можно попробовать вытащить из имени+описания
+        # Если цвета в названии нет — сначала пробуем найти цвет именно КОРПУСА (из описания)
         if not _has("Цвет"):
-            m = re.search(
+            m_body = re.search(
+                r"(?i)\bв\s+(черн(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"сер(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"красн(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"бел(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых))\s+корпус\w*\b",
+                hay,
+            )
+            if m_body:
+                canon_body = normalize_color_value(m_body.group(1))
+                if canon_body:
+                    params.append(("Цвет", canon_body))
+                    keys_cf.add("цвет")
+            else:
+                # Если явного цвета корпуса нет — можно попробовать вытащить из имени+описания,
+                # но игнорируем контекст 'чернила/тонер' чтобы не путать цвет расходника с цветом устройства.
+                m = re.search(
                 r"(?i)\b("
                 r"cmyk|cmy|cmy\s*\+\s*bk|bk\s*\+\s*cmy|bk[,/ ]*c[,/ ]*m[,/ ]*y|c[,/ ]*m[,/ ]*y[,/ ]*bk|"
                 r"black|bk|cyan|magenta|yellow|gray|grey|red|light\s*grey|light\s*gray|lgy|chroma\s*optim(?:ize|iser|izer)|"
@@ -2565,7 +2580,15 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
                 hay,
             )
             if m:
-                canon = normalize_color_value(m.group(0))
+                # контекстный фильтр: если рядом есть 'чернил/чернила/тонер' — это не цвет устройства
+                s0 = hay
+                a = max(0, m.start() - 40)
+                b = min(len(s0), m.end() + 40)
+                ctx = s0[a:b].casefold()
+                if any(w in ctx for w in ("чернил", "чернила", "тонер")):
+                    canon = ""
+                else:
+                    canon = normalize_color_value(m.group(0))
                 if canon:
                     params.append(("Цвет", canon))
                     keys_cf.add("цвет")
@@ -4101,6 +4124,8 @@ class OfferOut:
             name_full = re.sub(r"(?i)\s+доставка\s*$", "", name_full).strip()
             name_full = norm_ws(name_full)
         native_desc = fix_text(self.native_desc)
+        if _supplier_code_from_oid(self.oid) == "AC":
+            native_desc = re.sub(r"(?i)пурпурнымичернилами", "пурпурными чернилами", native_desc)
         policy = get_supplier_policy(self.oid)
         _spec_pairs: list[tuple[str, str]] = []
         # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей.
@@ -4138,6 +4163,8 @@ class OfferOut:
         # CS: лимитируем <name> (умно для NVPrint)
         name_short = enforce_name_policy(self.oid, name_full, params_sorted)
         name_short = sanitize_mixed_text(name_short)
+        if _supplier_code_from_oid(self.oid) == "AC":
+            name_short = re.sub(r"\.{2,}", ".", name_short)
 
         # CS: В описании сохраняем полное наименование (если оно было укорочено).
         # Если <name> был укорочен — в описании сохраняем полное наименование.
