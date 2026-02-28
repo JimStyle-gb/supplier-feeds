@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-28 21:39">
+<yml_catalog date="2026-02-28 22:08">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-28 21:39:40
+Время сборки (Алматы)                      | 2026-02-28 22:08:26
 Ближайшая сборка (Алматы)                  | 2026-03-01 02:00:00
 Сколько товаров у поставщика до фильтра    | 1826
 Сколько товаров у поставщика после фильтра | 143
@@ -30,12 +30,11 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Компактный, быстрый и надежный многофункциональный принтер со скоростью печати до 35 стр/мин, оснащенный функциями автоматического устранения замятий и самовосстановления подключения Wi-Fi®. В комплект работы входит приложение HP, позволяющее с легкостью печатать и сканировать с мобильных устройств.<br>Управляйте принтерами с помощью мощного ПО HP Web Jetadmin, позволяющего легко добавлять и обновлять устройства, решения и политики.</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> МФУ</li><li><strong>Цвет:</strong> Белый</li><li><strong>Ресурс:</strong> 35</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> МФУ</li><li><strong>Цвет:</strong> Белый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">МФУ</param>
 <param name="Цвет">Белый</param>
-<param name="Ресурс">35</param>
 <keywords>HP, МФУ лазерное HP LaserJet Pro 3103fdn белый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -164,14 +163,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="AC4701001" available="true">
 <categoryId></categoryId>
 <vendorCode>AC4701001</vendorCode>
-<name>Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр.</name>
+<name>Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5 лист., 11 л.</name>
 <price>21900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/8a0/dsso4l1oo3q3lle8xlz6d1ritsjf0b36.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр.</h3>
+<h3>Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5 лист., 11 л.</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -189,7 +188,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип резки">продольная</param>
 <param name="Уничтожение">бумага</param>
 <param name="Уровень секретности">P-1</param>
-<keywords>Fellowes, Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр., доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5 лист., 11 л., доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC5050101" available="true">
@@ -234,14 +233,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="AC5502201" available="true">
 <categoryId></categoryId>
 <vendorCode>AC5502201</vendorCode>
-<name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™</name>
+<name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лист.., 22 л., Jam Proof™</name>
 <price>174900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/18e/soiotb0m5krsb9li7hcpuoq606v24158.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™</h3>
+<h3>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лист.., 22 л., Jam Proof™</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -268,7 +267,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Уничтожение степлерных скоб">да</param>
 <param name="Уровень секретности для CD дисков, DIN 66399">нет</param>
 <param name="Уровень секретности, DIN 66399">P-4</param>
-<keywords>Fellowes, Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лист.., 22 л., Jam Proof™, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC5716701" available="true">
@@ -288,12 +287,15 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Lunar A3 – ламинатор начального уровня для домашнего офиса и использования время от времени.<br>Ламинатор Lunar A3 предназначен для работы с пленкой 75/80 мкм. Максимальный формат документа – А3. Ламинатор прост в управлении и не требует дополнительных настроек. Зеленый световой сигнал подскажет о готовности к работе через 6 минут после включения.<br>Рычаг освобождения поможет изъять неправильно поданный документ. Корпус ламинатора не перегревается и безопасен при прикосновении.<br>Ламинатор Lunar A3 позволяет надежно заламинировать документы, презентационные и рекламные материалы, фотографии, грамоты, рисунки, открытки, визитки, инструкции и многое другое.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> Ламинатор А3</li><li><strong>Цвет:</strong> Зеленый</li><li><strong>Страна происхождения:</strong> Китай</li></ul>
+<p><strong>Примечание:</strong> Скорость ламинирования 30 см/мин.: •Время нагрева - 6 мин</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> Ламинатор А3</li><li><strong>Цвет:</strong> Зеленый</li><li><strong>Диапазон плёнок 75:</strong> 80 мкм</li><li><strong>Особенности:</strong> Гарантия 1 год</li><li><strong>Страна происхождения:</strong> Китай</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Fellowes</param>
 <param name="Тип">Ламинатор А3</param>
 <param name="Цвет">Зеленый</param>
+<param name="Диапазон плёнок 75">80 мкм</param>
+<param name="Особенности">Гарантия 1 год</param>
 <param name="Страна происхождения">Китай</param>
 <keywords>Fellowes, Ламинатор Fellowes Lunar A3, 2х80 мкм, 30 см/мин, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -314,7 +316,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Lunar+ A4 серый/синий — яркий ламинатор начального уровня для домашнего офиса и использования время от времени.<br>Ламинатор Lunar+ A4 предназначен для работы с пленкой 75/80 и 125 мкм. Максимальный формат документа — А4. Ламинатор прост в управлении и не требует дополнительных настроек. Зеленый световой сигнал подскажет о готовности к работе через 4 минут после включения.<br>Рычаг освобождения поможет изъять неправильно поданный документ в ламинатор. Корпус ламинатора не перегревается и безопасен при прикосновении. Ламинатор Lunar+ A4 позволяет надежно заламинировать документы, презентационные и рекламные материалы, фотографии, грамоты, рисунки, открытки, визитки, инструкции и многое другое.<br>Бесплатная замена на новый ламинатор вместо бракованного.<br>Fellowes гарантирует непревзойденное качество товаров и сервисного обслуживания. При наступлении гарантийного случая вместо бракованного устройства будет бесплатно предоставлен новый ламинатор в любом из 150 официальных сервисных центров Fellow</p>
+<p>Lunar+ A4 серый/синий — яркий ламинатор начального уровня для домашнего офиса и использования время от времени.<br>Ламинатор Lunar+ A4 предназначен для работы с пленкой 75/80 и 125 мкм. Максимальный формат документа — А4. Ламинатор прост в управлении и не требует дополнительных настроек. Зеленый световой сигнал подскажет о готовности к работе через 4 минуты после включения.<br>Рычаг освобождения поможет изъять неправильно поданный документ в ламинатор. Корпус ламинатора не перегревается и безопасен при прикосновении. Ламинатор Lunar+ A4 позволяет надежно заламинировать документы, презентационные и рекламные материалы, фотографии, грамоты, рисунки, открытки, визитки, инструкции и многое другое.<br>Бесплатная замена на новый ламинатор вместо бракованного.<br>Fellowes гарантирует непревзойденное качество товаров и сервисного обслуживания. При наступлении гарантийного случая вместо бракованного устройства будет бесплатно предоставлен новый ламинатор в любом из 150 официальных сервисных центров Fellow</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> Ламинатор А4</li><li><strong>Цвет:</strong> Серый</li><li><strong>Страна происхождения:</strong> Китай</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -328,14 +330,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="AC6008101" available="true">
 <categoryId></categoryId>
 <vendorCode>AC6008101</vendorCode>
-<name>Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр.</name>
+<name>Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лист.., 15 л.</name>
 <price>29900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/5eb/y8e6uqiax04d5oejggm16lw2w1hdadnh.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр.</h3>
+<h3>Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лист.., 15 л.</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -365,7 +367,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Уничтожение степлерных скоб">да</param>
 <param name="Уровень секретности для CD дисков, DIN 66399">нет</param>
 <param name="Уровень секретности, DIN 66399">P-4</param>
-<keywords>Fellowes, Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр., доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лист.., 15 л., доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC7MD68A" available="true">
@@ -436,7 +438,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Описание -->
 <p>Тип: сканер для дома планшетные</p>
 <p><strong>Примечание:</strong> Digital Ice, непрозрачные оригиналы: Нет<br>Скорость сканирования предварительный просмотр (A4), сек: 10</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> сканер для дома планшетные</li><li><strong>Digital Ice, пленка:</strong> Нет</li><li><strong>Dual Lens System:</strong> Нет</li><li><strong>Epson ReadyScan LED:</strong> Да</li><li><strong>Автоподатчик для пленок:</strong> Нет</li><li><strong>Глубина цвета, бит:</strong> 48/24</li><li><strong>Интерполяционное разрешение, dpi:</strong> 4800</li><li><strong>Интерфейс IEEE-1394 (FireWire):</strong> Нет</li><li><strong>Интерфейс USB:</strong> Да</li><li><strong>Максимальный формат сканирования:</strong> А4</li><li><strong>Пленка 203х254 мм:</strong> Нет</li><li><strong>Пленка 35 мм:</strong> Нет</li><li><strong>Пленка, слайды 4"х5":</strong> Нет</li><li><strong>Пленка, слайды 6х12 см:</strong> Нет</li><li><strong>Пленка, слайды 6х20 см:</strong> Нет</li><li><strong>Подключение по Wi-Fi:</strong> Нет</li><li><strong>Разрешение сканера, dpi:</strong> 4800x4800</li><li><strong>Сканирование с планшета:</strong> Планшетный</li><li><strong>Слайд-модуль:</strong> Нет</li><li><strong>Слайды 35 мм:</strong> Нет</li><li><strong>Тип датчика:</strong> CIS</li><li><strong>Тип лампы:</strong> светодиодная (LED)</li><li><strong>Устройство:</strong> Сканер</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> сканер для дома планшетные</li><li><strong>Digital Ice, пленка:</strong> Нет</li><li><strong>Dual Lens System:</strong> Нет</li><li><strong>Epson ReadyScan LED:</strong> Да</li><li><strong>Автоподатчик для пленок:</strong> Нет</li><li><strong>Глубина цвета, бит:</strong> 48/24</li><li><strong>Дополнительная информация:</strong> Двустороннее сканирование</li><li><strong>Интерполяционное разрешение, dpi:</strong> 4800</li><li><strong>Интерфейс IEEE-1394 (FireWire):</strong> Нет</li><li><strong>Интерфейс USB:</strong> Да</li><li><strong>Комплектация:</strong> Сканер, Руководство по установке, USB кабель, Гарантийный талон</li><li><strong>Максимальный формат сканирования:</strong> А4</li><li><strong>Пленка 203х254 мм:</strong> Нет</li><li><strong>Пленка 35 мм:</strong> Нет</li><li><strong>Пленка, слайды 4"х5":</strong> Нет</li><li><strong>Пленка, слайды 6х12 см:</strong> Нет</li><li><strong>Пленка, слайды 6х20 см:</strong> Нет</li><li><strong>Подключение по Wi-Fi:</strong> Нет</li><li><strong>Разрешение сканера, dpi:</strong> 4800x4800</li><li><strong>Сканирование с планшета:</strong> Планшетный</li><li><strong>Слайд-модуль:</strong> Нет</li><li><strong>Слайды 35 мм:</strong> Нет</li><li><strong>Технология:</strong> Качество сканирования</li><li><strong>Тип датчика:</strong> CIS</li><li><strong>Тип лампы:</strong> светодиодная (LED)</li><li><strong>Устройство:</strong> Сканер</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">сканер для дома планшетные</param>
@@ -445,9 +447,11 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Epson ReadyScan LED">Да</param>
 <param name="Автоподатчик для пленок">Нет</param>
 <param name="Глубина цвета, бит">48/24</param>
+<param name="Дополнительная информация">Двустороннее сканирование</param>
 <param name="Интерполяционное разрешение, dpi">4800</param>
 <param name="Интерфейс IEEE-1394 (FireWire)">Нет</param>
 <param name="Интерфейс USB">Да</param>
+<param name="Комплектация">Сканер, Руководство по установке, USB кабель, Гарантийный талон</param>
 <param name="Максимальный формат сканирования">А4</param>
 <param name="Пленка 203х254 мм">Нет</param>
 <param name="Пленка 35 мм">Нет</param>
@@ -459,6 +463,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Сканирование с планшета">Планшетный</param>
 <param name="Слайд-модуль">Нет</param>
 <param name="Слайды 35 мм">Нет</param>
+<param name="Технология">Качество сканирования</param>
 <param name="Тип датчика">CIS</param>
 <param name="Тип лампы">светодиодная (LED)</param>
 <param name="Устройство">Сканер</param>
@@ -648,12 +653,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Профессиональное решение для печати фотографий, репродукций и цветопроб формата до A3+<br>Пигментные чернила Epson UltraChrome Pro10, 10 цветов<br>Новая 10-канальная печатающая головка Epson Micro Piezo™<br>Идеальное решение для печати фотографий, репродукций и цветопробы<br>Высокое разрешение 5760×1440 dpi<br>Повышенная пылезащита<br>Интегрированный рулонодержатель<br>Не требуется переключение между стандартным и матовым черным картриджами при смене носителя<br>Печать на листовой, рулонной и плотной бумаге (до 1.5 мм) до формата А3+ (13 дюймов)<br>Удобная панель управления с большим цветным сенсорным экраном 4.3”<br>Самое компактное и легкое устройство в классе</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Принтер</li><li><strong>Цвет:</strong> черный</li><li><strong>Устройство:</strong> Широкоформатный принтер</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Принтер</li><li><strong>Цвет:</strong> черный</li><li><strong>Комплектация:</strong> Принтер, Руководство пользователя, CD с программным обеспечением и драйверами, Сетевой кабель, Набор чернильных картриджей по 25 мл, Гарантийный талон, Основные свойства, Основные</li><li><strong>Устройство:</strong> Широкоформатный принтер</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Тип">Принтер</param>
 <param name="Цвет">черный</param>
+<param name="Комплектация">Принтер, Руководство пользователя, CD с программным обеспечением и драйверами, Сетевой кабель, Набор чернильных картриджей по 25 мл, Гарантийный талон, Основные свойства, Основные</param>
 <param name="Устройство">Широкоформатный принтер</param>
 <keywords>Epson, Принтер Epson SureColor SC-P700, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -717,7 +723,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Высокопроизводительный принтер формата А0 для инженерных задач и печати рекламных материалов<br>Скорость печати до 28 сек на отпечаток А1<br>Печатающая головка нового поколения Epson PrecisionCore TFP<br>Картриджи емкостью 110,350 или 700 мл<br>Пигментные чернила Epson UltraChrome XD<br>Печать на листовых и рулонных носителях шириной печати 36 дюймов (914 мм.)<br>Опциональный сканер формата 36”<br>Поддержка PostScript 3<br>Опциональный жесткий диск емкостью 320 Гб<br>Компактный дизайн, полностью фронтальное управление<br>Качественные, яркие отпечатки, устойчивые к смазыванию и попаданию воды</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson SureColor SC-T5200</li><li><strong>Тип:</strong> CAD</li><li><strong>Интерфейс:</strong> USB*Ethernet/Fast Ethernet</li><li><strong>Количество слотов для картриджей:</strong> 5</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 210</li><li><strong>Область применения:</strong> CAD</li><li><strong>Разрешение печати,dpi:</strong> 2880x1440</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> Картриджи</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Формат:</strong> A0</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson SureColor SC-T5200</li><li><strong>Тип:</strong> CAD</li><li><strong>Интерфейс:</strong> USB*Ethernet/Fast Ethernet</li><li><strong>Количество слотов для картриджей:</strong> 5</li><li><strong>Комплектация:</strong> Принтер, Подставка, Руководство пользователя, CD диск с программным обеспечением и драйверами, Сетевой кабель, Набор чернильных картриджей, Гарантийный талон, Адаптеры для рулона, Основные свойства Устройство Широкоформатный принтер, Применение •Для ГИС, Для КАД, Для презентационных материалов, Для точек продаж</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 210</li><li><strong>Область применения:</strong> CAD</li><li><strong>Разрешение печати,dpi:</strong> 2880x1440</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> Картриджи</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Формат:</strong> A0</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -725,6 +731,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">CAD</param>
 <param name="Интерфейс">USB*Ethernet/Fast Ethernet</param>
 <param name="Количество слотов для картриджей">5</param>
+<param name="Комплектация">Принтер, Подставка, Руководство пользователя, CD диск с программным обеспечением и драйверами, Сетевой кабель, Набор чернильных картриджей, Гарантийный талон, Адаптеры для рулона, Основные свойства Устройство Широкоформатный принтер, Применение •Для ГИС, Для КАД, Для презентационных материалов, Для точек продаж</param>
 <param name="Минимальная плотность бумаги, г/м2">210</param>
 <param name="Область применения">CAD</param>
 <param name="Разрешение печати,dpi">2880x1440</param>
@@ -754,7 +761,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Компактное монохромное МФУ для малого офиса с Wi-Fi<br>Компактное МФУ для сверхэкономичной печати черно-белых документов<br>Принтер, сканер, копир. Формат А4<br>Рекордно низкая себестоимость печати благодаря использованию контейнеров с чернилами вместо картриджей<br>Пигментные чернила<br>Скорость печати до 32 стр./мин<br>Время выхода первого отпечатка от 8 сек.<br>Гарантия производителя 12 мес. или 100 000 отпечатков<br>Ресурс контейнера с чернилами – 6 000 отпечатков<br>Беспроводная печать по Wi-Fi Direct, Epson Connect<br>Фронтальные ёмкости и система Ink lock.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson M2120</li><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Цвет:</strong> Белый</li><li><strong>Интерфейс:</strong> USB* тип B*Wi-Fi</li><li><strong>Автоподатчик:</strong> нет</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> да</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 90</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 32</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Область применения:</strong> Для дома, Для дома, Для офиса</li><li><strong>Разрешение печати,dpi:</strong> 1440x720</li><li><strong>Разрешение сканера,dpi:</strong> 1200x2400</li><li><strong>Ресурс:</strong> 32</li><li><strong>Серия устройств:</strong> Фабрика печати Epson</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип устройства:</strong> МФУ</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Формат:</strong> A4</li><li><strong>Функция копирования:</strong> Да</li><li><strong>Цветность:</strong> 1 цвет</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson M2120</li><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Цвет:</strong> Белый</li><li><strong>Интерфейс:</strong> USB* тип B*Wi-Fi</li><li><strong>Автоподатчик:</strong> нет</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> да</li><li><strong>Комплектация:</strong> МФУ, Руководство по установке, Гарантийный талон, Компакт-диск с программным обеспечением и драйверами, Кабель питания, 1 контейнер емкостью 120 мл. с черными пигментными чернилами, Основные свойства, Функция сканирова</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 90</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 32</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Область применения:</strong> Для дома, Для дома, Для офиса</li><li><strong>Разрешение печати,dpi:</strong> 1440x720</li><li><strong>Разрешение сканера,dpi:</strong> 1200x2400</li><li><strong>Ресурс:</strong> 32</li><li><strong>Серия устройств:</strong> Фабрика печати Epson</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип устройства:</strong> МФУ</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Формат:</strong> A4</li><li><strong>Функция копирования:</strong> Да</li><li><strong>Цветность:</strong> 1 цвет</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -765,6 +772,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Автоподатчик">нет</param>
 <param name="Двусторонняя печать">нет</param>
 <param name="ЖК дисплей">да</param>
+<param name="Комплектация">МФУ, Руководство по установке, Гарантийный талон, Компакт-диск с программным обеспечением и драйверами, Кабель питания, 1 контейнер емкостью 120 мл. с черными пигментными чернилами, Основные свойства, Функция сканирова</param>
 <param name="Максимальная плотность бумаги, г/м2">90</param>
 <param name="Максимальная скорость печати А4 стр/мин">32</param>
 <param name="Минимальная плотность бумаги, г/м2">64</param>
@@ -802,7 +810,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Компактное монохромное МФУ для малого офиса<br>Компактное МФУ для сверхэкономичной печати черно-белых документов<br>Принтер, сканер, копир. Формат А4<br>Рекордно низкая себестоимость печати благодаря использованию контейнеров с чернилами вместо картриджей<br>Пигментные чернила<br>Скорость печати до 32 стр./мин<br>Время выхода первого отпечатка от 8 сек.<br>Гарантия производителя 12 мес. или 100 000 отпечатков<br>Ресурс контейнера с чернилами – 6 000 отпечатков<br>Возможность подключения по сети Ethernet<br>Фронтальные ёмкости и система Ink lock.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson M2110</li><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Цвет:</strong> Белый</li><li><strong>Интерфейс:</strong> USB, тип B</li><li><strong>Автоподатчик:</strong> нет</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> да</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 90</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 32</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Область применения:</strong> Для дома, Для дома, Для офиса</li><li><strong>Разрешение печати,dpi:</strong> 1440x720</li><li><strong>Разрешение сканера,dpi:</strong> 1200x2400</li><li><strong>Ресурс:</strong> 32</li><li><strong>Серия устройств:</strong> Фабрика печати Epson</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила, Встроенные емкости для чернил</li><li><strong>Тип устройства:</strong> МФУ</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Формат:</strong> A4</li><li><strong>Цветность:</strong> 1 цвет</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson M2110</li><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Цвет:</strong> Белый</li><li><strong>Интерфейс:</strong> USB, тип B</li><li><strong>Автоподатчик:</strong> нет</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> да</li><li><strong>Комплектация:</strong> МФУ, Руководство по установке, Гарантийный талон, Компакт-диск с программным обеспечением и драйверами, Кабель питания, 1 контейнер емкостью 120 мл с черными пигментными чернилами, Основные свойства, Функ</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 90</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 32</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Область применения:</strong> Для дома, Для дома, Для офиса</li><li><strong>Разрешение печати,dpi:</strong> 1440x720</li><li><strong>Разрешение сканера,dpi:</strong> 1200x2400</li><li><strong>Ресурс:</strong> 32</li><li><strong>Серия устройств:</strong> Фабрика печати Epson</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила, Встроенные емкости для чернил</li><li><strong>Тип устройства:</strong> МФУ</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Формат:</strong> A4</li><li><strong>Цветность:</strong> 1 цвет</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -813,6 +821,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Автоподатчик">нет</param>
 <param name="Двусторонняя печать">нет</param>
 <param name="ЖК дисплей">да</param>
+<param name="Комплектация">МФУ, Руководство по установке, Гарантийный талон, Компакт-диск с программным обеспечением и драйверами, Кабель питания, 1 контейнер емкостью 120 мл с черными пигментными чернилами, Основные свойства, Функ</param>
 <param name="Максимальная плотность бумаги, г/м2">90</param>
 <param name="Максимальная скорость печати А4 стр/мин">32</param>
 <param name="Минимальная плотность бумаги, г/м2">64</param>
@@ -894,7 +903,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Многофункциональное устройство 4-в-1 с возможностью печати документов формата А4, фронтальными чернильными емкостями и поддержкой печати по Wi-Fi и Ethernet.<br>Принтер-сканер-копир-факс для сверхэкономичной печати документов<br>Фронтальные лотки загрузки бумаги общей емкостью 500 листов<br>Задний лоток подачи бумаги на 50 листов<br>Фронтальные чернильные емкости<br>Высокая скорость печати - до 25 стр./мин. ч/б ISO и 12 стр./мин. цвет (ISO)<br>Печать по Wi-Fi Direct, Epson Connect, Ethernet<br>Пигментные чернила всех цветов<br>ЖК-дисплей диагональю 10,9 см с сенсорной панелью управления<br>Набор контейнеров в комплекте поставки рассчитан на 7500 ч/б и 6000 цветных отпечатков<br>Сменная емкость для отработанных чернил<br>Автоматическая двусторонняя печать<br>Автоподатчик для сканирования документов емкостью 50 листов</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson L6550</li><li><strong>Тип:</strong> МФУ Офис</li><li><strong>Интерфейс:</strong> Wi-Fi*Ethernet*USB</li><li><strong>Автоподатчик:</strong> да</li><li><strong>Двусторонняя печать:</strong> да</li><li><strong>ЖК дисплей:</strong> да</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 256</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 32</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Область применения:</strong> Для офиса</li><li><strong>Разрешение печати,dpi:</strong> 4800x2400</li><li><strong>Разрешение сканера,dpi:</strong> 1200x2400</li><li><strong>Ресурс:</strong> 25</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Факс:</strong> да</li><li><strong>Формат:</strong> A4</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson L6550</li><li><strong>Тип:</strong> МФУ Офис</li><li><strong>Интерфейс:</strong> Wi-Fi*Ethernet*USB</li><li><strong>Автоподатчик:</strong> да</li><li><strong>Двусторонняя печать:</strong> да</li><li><strong>ЖК дисплей:</strong> да</li><li><strong>Комплектация:</strong> Принтер-сканер-копир-факс, Кабель питания, CD с программным обеспечением и драйверами для Windows и macOS, Руководство по установке, Руководство по настройке факса, Гаран</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 256</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 32</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Область применения:</strong> Для офиса</li><li><strong>Разрешение печати,dpi:</strong> 4800x2400</li><li><strong>Разрешение сканера,dpi:</strong> 1200x2400</li><li><strong>Ресурс:</strong> 25</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Факс:</strong> да</li><li><strong>Формат:</strong> A4</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -904,6 +913,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Автоподатчик">да</param>
 <param name="Двусторонняя печать">да</param>
 <param name="ЖК дисплей">да</param>
+<param name="Комплектация">Принтер-сканер-копир-факс, Кабель питания, CD с программным обеспечением и драйверами для Windows и macOS, Руководство по установке, Руководство по настройке факса, Гаран</param>
 <param name="Максимальная плотность бумаги, г/м2">256</param>
 <param name="Максимальная скорость печати А4 стр/мин">32</param>
 <param name="Минимальная плотность бумаги, г/м2">64</param>
@@ -1137,13 +1147,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Описание -->
 <p>Тип: МФУ Дом; Производитель: Epson; Модель: Epson L3256</p>
 <p><strong>Примечание:</strong> Гарантия, мес: 12 мес или 30000 отпечатков<br>Скорость печати 10x15 см (цветн.), фото/сек: 69</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson L3256</li><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Интерфейс:</strong> USB* тип B</li><li><strong>Автоподатчик:</strong> нет</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> нет</li><li><strong>Количество цветов:</strong> 4</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 256</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 33</li><li><strong>Максимальное разрешение копира:</strong> 1200х2</li><li><strong>Максимальное разрешение, dpi:</strong> 5760x1440</li><li><strong>Максимальный формат:</strong> A4</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Минимальный объем капли, пл:</strong> 3</li><li><strong>Область применения:</strong> Для дома</li><li><strong>Печать без полей:</strong> да</li><li><strong>Печать фотографий:</strong> да</li><li><strong>Разрешение печати,dpi:</strong> 5760x1440</li><li><strong>Разрешение сканера,dpi:</strong> 600x1200</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Технология печати:</strong> Струйная, пьезоэлектрическая</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> водорастворимые</li><li><strong>Устройство:</strong> МФУ</li><li><strong>Формат:</strong> A4</li><li><strong>Цвет корпуса:</strong> Белый</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson L3256</li><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Интерфейс:</strong> USB* тип B</li><li><strong>L3256:</strong> Стильное белое МФУ с фронтальными чернильными емкостями, возможностью печати и сканирования по Wi-Fi</li><li><strong>Автоподатчик:</strong> нет</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> нет</li><li><strong>Количество цветов:</strong> 4</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 256</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 33</li><li><strong>Максимальное разрешение копира:</strong> 1200х2</li><li><strong>Максимальное разрешение, dpi:</strong> 5760x1440</li><li><strong>Максимальный формат:</strong> A4</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Минимальный объем капли, пл:</strong> 3</li><li><strong>Область применения:</strong> Для дома</li><li><strong>Печать без полей:</strong> да</li><li><strong>Печать фотографий:</strong> да</li><li><strong>Разрешение печати,dpi:</strong> 5760x1440</li><li><strong>Разрешение сканера,dpi:</strong> 600x1200</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Технология печати:</strong> Струйная, пьезоэлектрическая</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> водорастворимые</li><li><strong>Устройство:</strong> МФУ</li><li><strong>Формат:</strong> A4</li><li><strong>Цвет корпуса:</strong> Белый</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Модель">Epson L3256</param>
 <param name="Тип">МФУ Дом</param>
 <param name="Интерфейс">USB* тип B</param>
+<param name="L3256">Стильное белое МФУ с фронтальными чернильными емкостями, возможностью печати и сканирования по Wi-Fi</param>
 <param name="Автоподатчик">нет</param>
 <param name="Двусторонняя печать">нет</param>
 <param name="ЖК дисплей">нет</param>
@@ -1287,6 +1298,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Тип: Ёмкость для отработанных чернил; Производитель: Epson</p>
+<p><strong>Примечание:</strong> Сменная емкость для отработанных чернил.: Информация о необходимости замены появится на панели управления принтера.</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -1315,7 +1327,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 105 EcoTank BK Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L7160, Epson L7180</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00Q140</li><li><strong>Страна происхождения:</strong> Япония/Жапония. Индонезия. Филиппин/Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 105 EcoTank BK Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L7160, Epson L7180</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00Q140</li><li><strong>Страна происхождения:</strong> Япония. Индонезия. Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -1325,7 +1337,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Цвет">Черный</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T00Q140</param>
-<param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</param>
+<param name="Страна происхождения">Япония. Индонезия. Филиппины</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Чернила Epson C13T00Q140 для L7160/L7180 черный пигмент, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -1347,7 +1359,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank Photo BK Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L7160, Epson L7180</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00R140</li><li><strong>Страна происхождения:</strong> Япония/Жапония. Индонезия. Филиппин/Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank Photo BK Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L7160, Epson L7180</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00R140</li><li><strong>Страна происхождения:</strong> Япония. Индонезия. Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -1357,7 +1369,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Цвет">Черный</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T00R140</param>
-<param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</param>
+<param name="Страна происхождения">Япония. Индонезия. Филиппины</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Чернила Epson C13T00R140 для L7160/L7180 чёрный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -1379,7 +1391,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с голубыми чернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank CY Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L7160, Epson L7180</li><li><strong>Цвет:</strong> Голубой</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00R240</li><li><strong>Страна происхождения:</strong> Япония/Жапония. Индонезия. Филиппин/Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank CY Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L7160, Epson L7180</li><li><strong>Цвет:</strong> Голубой</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00R240</li><li><strong>Страна происхождения:</strong> Япония. Индонезия. Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -1389,7 +1401,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Цвет">Голубой</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T00R240</param>
-<param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</param>
+<param name="Страна происхождения">Япония. Индонезия. Филиппины</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Чернила Epson C13T00R240 для L7160/L7180 голубой, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -1410,8 +1422,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Контейнер с пурпурнымичернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank MA Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L7160, Epson L7180</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00R340</li><li><strong>Страна происхождения:</strong> Япония/Жапония. Индонезия. Филиппин/Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<p>Контейнер с пурпурными чернилами</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank MA Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L7160, Epson L7180</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00R340</li><li><strong>Страна происхождения:</strong> Япония. Индонезия. Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -1421,7 +1433,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Цвет">Пурпурный</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T00R340</param>
-<param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</param>
+<param name="Страна происхождения">Япония. Индонезия. Филиппины</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Чернила Epson C13T00R340 для L7160/L7180 пурпурный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -1443,7 +1455,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с желтыми чернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank YE Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L7160, Epson L7180</li><li><strong>Цвет:</strong> Желтый</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00R440</li><li><strong>Страна происхождения:</strong> Япония/Жапония. Индонезия. Филиппин/Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank YE Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L7160, Epson L7180</li><li><strong>Цвет:</strong> Желтый</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00R440</li><li><strong>Страна происхождения:</strong> Япония. Индонезия. Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -1453,7 +1465,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T00R440</param>
-<param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</param>
+<param name="Страна происхождения">Япония. Индонезия. Филиппины</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Чернила Epson C13T00R440 для L7160/L7180 жёлтый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -1475,17 +1487,17 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Тип: Фабрика печати (чернила EPSON); Производитель: Epson; Модель: Epson Чернила 103 EcoTank Cyan ink bottle</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 103 EcoTank Cyan ink bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L3100</li><li><strong>Цвет:</strong> Голубой</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00S24A</li><li><strong>Страна происхождения:</strong> Индонезия. Филиппин/Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 103 EcoTank Cyan ink bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L3100, Epson L3101, Epson L3110, Epson L3150, Epson L3151</li><li><strong>Цвет:</strong> Голубой</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00S24A</li><li><strong>Страна происхождения:</strong> Индонезия. Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Модель">Epson Чернила 103 EcoTank Cyan ink bottle</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Совместимость">Epson L3100</param>
+<param name="Совместимость">Epson L3100, Epson L3101, Epson L3110, Epson L3150, Epson L3151</param>
 <param name="Цвет">Голубой</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T00S24A</param>
-<param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
+<param name="Страна происхождения">Индонезия. Филиппины</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Чернила Epson C13T00S24A для 103 EcoTank L3100/L3101/L3110/L3150 голубой, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -1507,17 +1519,17 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Тип: Фабрика печати (чернила EPSON); Производитель: Epson; Модель: Epson Чернила 103 EcoTank Yellow ink bottle</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 103 EcoTank Yellow ink bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L3100</li><li><strong>Цвет:</strong> Желтый</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00S44A</li><li><strong>Страна происхождения:</strong> Индонезия. Филиппин/Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 103 EcoTank Yellow ink bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L3100, Epson L3101, Epson L3110, Epson L3150, Epson L3151</li><li><strong>Цвет:</strong> Желтый</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T00S44A</li><li><strong>Страна происхождения:</strong> Индонезия. Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Модель">Epson Чернила 103 EcoTank Yellow ink bottle</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Совместимость">Epson L3100</param>
+<param name="Совместимость">Epson L3100, Epson L3101, Epson L3110, Epson L3150, Epson L3151</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T00S44A</param>
-<param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
+<param name="Страна происхождения">Индонезия. Филиппины</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Чернила Epson C13T00S44A 103 EcoTank для L3100/L3101/L3110/L3150 жёлтый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -1563,18 +1575,19 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Тип: Фабрика печати (чернила EPSON); Производитель: Epson; Модель: Epson Чернила EcoTank MX1XX Series Black Bottle L</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила EcoTank MX1XX Series Black Bottle L</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T01L14A</li><li><strong>Объем:</strong> 0,001</li><li><strong>Ресурс:</strong> 2000 стр</li><li><strong>Страна происхождения:</strong> Индонезия. Филиппин/Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила EcoTank MX1XX Series Black Bottle L</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson M1100, Epson M1120, Epson M1140, Epson M1180, Epson M2140, Epson M3140, Epson M3170, Epson M3180, Epson M1170</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T01L14A</li><li><strong>Объем:</strong> 0,001</li><li><strong>Ресурс:</strong> 2000 стр</li><li><strong>Страна происхождения:</strong> Индонезия. Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Модель">Epson Чернила EcoTank MX1XX Series Black Bottle L</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Совместимость">Epson M1100, Epson M1120, Epson M1140, Epson M1180, Epson M2140, Epson M3140, Epson M3170, Epson M3180, Epson M1170</param>
 <param name="Цвет">Черный</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T01L14A</param>
 <param name="Объем">0,001</param>
 <param name="Ресурс">2000 стр</param>
-<param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
+<param name="Страна происхождения">Индонезия. Филиппины</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Чернила Epson C13T01L14A EcoTank MX1XX Series Black Bottle L 40 ml, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -1946,7 +1959,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Совместимые продукты:</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson 108 Eco Tank</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L8050/18050</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Epson L8050:</strong> Epson L18050</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T09C34A</li><li><strong>Страна происхождения:</strong> Индонезия. Филиппин/Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson 108 Eco Tank</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> Epson L8050/18050</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Epson L8050:</strong> Epson L18050</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T09C34A</li><li><strong>Страна происхождения:</strong> Индонезия. Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -1957,7 +1970,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Epson L8050">Epson L18050</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T09C34A</param>
-<param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
+<param name="Страна происхождения">Индонезия. Филиппины</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -1979,13 +1992,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Тип: Картридж EPSON; Производитель: Epson; Модель: Epson Картридж C13T26704010 набор из 3 картриджей для WorkForce WF-100W</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T26704010 набор из 3 картриджей для WorkForce WF-100W</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Совместимость:</strong> Epson WF 100W</li><li><strong>Цвет:</strong> голубой</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T26704010</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T26704010 набор из 3 картриджей для WorkForce WF-100W</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Совместимость:</strong> Epson WorkForce WF 100W</li><li><strong>Цвет:</strong> голубой</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T26704010</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Модель">Epson Картридж C13T26704010 набор из 3 картриджей для WorkForce WF-100W</param>
 <param name="Тип">Картридж EPSON</param>
-<param name="Совместимость">Epson WF 100W</param>
+<param name="Совместимость">Epson WorkForce WF 100W</param>
 <param name="Цвет">голубой</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T26704010</param>
@@ -2044,16 +2057,17 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Тип: Картридж EPSON; Производитель: Epson; Модель: Epson Картридж C13T40D140 UltraChrome XD2 для T40D140(80ml)</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T40D140 UltraChrome XD2 для T40D140(80ml)</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Черный</li><li><strong>Epson SureColor SC-T3100:</strong> C11CF11302A0 -</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T40D140</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T40D140 UltraChrome XD2 для T40D140(80ml)</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Совместимость:</strong> Epson SureColor SC-T3100N без стенда</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T40D140</li><li><strong>Особенности:</strong> Epson SureColor SC-T5100N (без стенда)-C11CF12302A0</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Модель">Epson Картридж C13T40D140 UltraChrome XD2 для T40D140(80ml)</param>
 <param name="Тип">Картридж EPSON</param>
+<param name="Совместимость">Epson SureColor SC-T3100N без стенда</param>
 <param name="Цвет">Черный</param>
-<param name="Epson SureColor SC-T3100">C11CF11302A0 -</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T40D140</param>
+<param name="Особенности">Epson SureColor SC-T5100N (без стенда)-C11CF12302A0</param>
 <param name="Страна происхождения">Индонезия</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Картридж Epson C13T40D140 UltraChrome XD2 Black T40D140(80ml), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
@@ -2075,14 +2089,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Картридж EPSON; Производитель: Epson; Цвет: Голубой</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Голубой</li><li><strong>Epson SureColor SC-T3100:</strong> C11CF11302A0 -</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T40D240</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<p>Тип: Картридж EPSON; Производитель: Epson; Совместимость: Epson SureColor SC-T3100N без стенда, Epson SureColor SC-T5100N без стенда</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Совместимость:</strong> Epson SureColor SC-T3100N без стенда, Epson SureColor SC-T5100N без стенда</li><li><strong>Цвет:</strong> Голубой</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T40D240</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Тип">Картридж EPSON</param>
+<param name="Совместимость">Epson SureColor SC-T3100N без стенда, Epson SureColor SC-T5100N без стенда</param>
 <param name="Цвет">Голубой</param>
-<param name="Epson SureColor SC-T3100">C11CF11302A0 -</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T40D240</param>
 <param name="Страна происхождения">Индонезия</param>
@@ -2106,14 +2120,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Картридж EPSON; Производитель: Epson; Цвет: Пурпурный</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Epson SureColor SC-T3100:</strong> C11CF11302A0 -</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T40D34N</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<p>Тип: Картридж EPSON; Производитель: Epson; Совместимость: Epson SureColor SC-T3100N без стенда, Epson SureColor SC-T5100N без стенда</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Совместимость:</strong> Epson SureColor SC-T3100N без стенда, Epson SureColor SC-T5100N без стенда</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T40D34N</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Тип">Картридж EPSON</param>
+<param name="Совместимость">Epson SureColor SC-T3100N без стенда, Epson SureColor SC-T5100N без стенда</param>
 <param name="Цвет">Пурпурный</param>
-<param name="Epson SureColor SC-T3100">C11CF11302A0 -</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T40D34N</param>
 <param name="Страна происхождения">Индонезия</param>
@@ -2138,13 +2152,15 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Тип: Картридж EPSON; Производитель: Epson; Модель: Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Желтый</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T40D440</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Совместимость:</strong> Epson SureColor SC-T5100N без стенда</li><li><strong>Цвет:</strong> Желтый</li><li><strong>Epson SureColor SC-T3100N (без стенда):</strong> C11CF11301A0 .</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T40D440</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Модель">Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</param>
 <param name="Тип">Картридж EPSON</param>
+<param name="Совместимость">Epson SureColor SC-T5100N без стенда</param>
 <param name="Цвет">Желтый</param>
+<param name="Epson SureColor SC-T3100N (без стенда)">C11CF11301A0 .</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T40D440</param>
 <param name="Страна происхождения">Индонезия</param>
@@ -2260,7 +2276,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачетсвенную печать для приентеров Epson.<br>Вид<br>струйный<br>Назначение<br>широкоформатный принтер<br>Цвет печати<br>фиолетовый<br>Поддерживаемые модели принтеров<br>Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000<br>Ресурс<br>700 мл</p>
+<p>Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачественную печать для принтеров Epson.<br>Вид<br>струйный<br>Назначение<br>широкоформатный принтер<br>Цвет печати<br>фиолетовый<br>Поддерживаемые модели принтеров<br>Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000<br>Ресурс<br>700 мл</p>
 <h3>Характеристики</h3><ul><li><strong>Цвет:</strong> Фиолетовый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -2969,7 +2985,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Фото черный картридж 700 ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T694100 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T694100, 700</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T694100 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T694100</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -2977,7 +2993,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Цвет">Черный</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T694100, 700</param>
+<param name="Коды расходников">C13T694100</param>
 <param name="Ресурс">700 мл</param>
 <param name="Страна происхождения">Индонезия</param>
 <param name="Тип печати">струйная</param>
@@ -3001,7 +3017,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Пурпурный картридж 700 ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T694300 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T69430N, 700</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T694300 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T69430N</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -3009,7 +3025,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T69430N, 700</param>
+<param name="Коды расходников">C13T69430N</param>
 <param name="Ресурс">700 мл</param>
 <param name="Страна происхождения">Индонезия</param>
 <param name="Тип печати">струйная</param>
@@ -3033,7 +3049,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Желтый картридж 700 ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T694400 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Желтый</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T69440N, 700</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T694400 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Желтый</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T69440N</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
@@ -3041,7 +3057,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T69440N, 700</param>
+<param name="Коды расходников">C13T69440N</param>
 <param name="Ресурс">700 мл</param>
 <param name="Страна происхождения">Индонезия</param>
 <param name="Тип печати">струйная</param>
@@ -3064,7 +3080,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Основные преимущества:<br>Сменная емкость для отработанных чернил. Информация о необходимости замены появится на панели управление принтера.</p>
+<p>Основные преимущества:<br>Сменная емкость для отработанных чернил. Информация о необходимости замены появится на панели управления принтера.</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Объем:</strong> 0,003</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -3094,12 +3110,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Тип: Картридж EPSON; Производитель: Epson; Модель: Epson Картридж C13T965140 для WF-M52xx/57xx Series Ink Cartridge XL Bl.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T965140 для WF-M52xx/57xx Series Ink Cartridge XL Bl.</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T965140</li><li><strong>Страна происхождения:</strong> Китай,Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<p><strong>Примечание:</strong> Контейнер с черными чернилами ресурсом 10 000 стр. (XL): Совместимые продукты для Контейнер с черными чернилами ресурсом 10 000 стр. (XL)</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T965140 для WF-M52xx/57xx Series Ink Cartridge XL Bl.</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Совместимость:</strong> Epson WorkForce Pro WF-M5299DW, Epson WorkForce Pro WF-M5299DWSV, Epson WorkForce Pro WF-M5799DWF</li><li><strong>Цвет:</strong> черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды расходников:</strong> C13T965140</li><li><strong>Страна происхождения:</strong> Китай,Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Модель">Epson Картридж C13T965140 для WF-M52xx/57xx Series Ink Cartridge XL Bl.</param>
 <param name="Тип">Картридж EPSON</param>
+<param name="Совместимость">Epson WorkForce Pro WF-M5299DW, Epson WorkForce Pro WF-M5299DWSV, Epson WorkForce Pro WF-M5799DWF</param>
 <param name="Цвет">черный</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T965140</param>
@@ -3226,12 +3244,11 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>МФУ струйное Canon PIXMA G3410 – компактное устройство для осуществления цветной печати, которое отличается поддержкой СНПЧ, что позволяет с легкостью производить замену чернил без обращения к мастеру. Максимальный формат, поддерживаемый МФУ, – A4. Прибор для настольной домашней установки сочетает три устройства – копир, принтер и сканер, поэтому пользователь будет обеспечен всем необходимым для комфортной работы. Планшетный сканер поможет получать отсканированные документы в разрешении 1200x600 dpi со скоростью 19 стр/мин (A4).<br>Благодаря высокому разрешению цветной и монохромной печати 4800x1200 dpi, в режиме принтера Canon PIXMA G3410 демонстрирует получение высококачественных отпечатков, в которых даже мелкий шрифт будет удобочитаемым. Черно-белые отпечатки выходят со скоростью 8.8 стр/мин (А4). Особенность МФУ в поддержке Wi-Fi, а также разъема USB B, что позволит подключаться к устройству двумя способами. Беспроводное подключение позволит осуществлять печать с мобильных устройств и ноутбуков без проводов.</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> МФУ</li><li><strong>Цвет:</strong> Черный</li><li><strong>Ресурс:</strong> 19</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Формат:</strong> A4</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> МФУ</li><li><strong>Цвет:</strong> Черный</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Формат:</strong> A4</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">МФУ</param>
 <param name="Цвет">Черный</param>
-<param name="Ресурс">19</param>
 <param name="Тип печати">струйная</param>
 <param name="Формат">A4</param>
 <keywords>Canon, МФУ струйное Canon Pixma G3410 Wi-Fi черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
@@ -3281,11 +3298,45 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Ручные сканеры штрихкодов серии HN-13 отличаются лёгким и стильным дизайном, обеспечивают удобное считывание как традиционных бумажных, так и экранных штрихкодов. Они поддерживают различные POS системы, включая Android, Windows и macOS, благодаря функции Plug-and-Play.<br>Ручной сканер с функцией Plug-and-Play<br>Поддержка POS систем, таких как Android, Windows и Mac<br>Полное сканирование штрихкодов<br>Поддержка сканирования как одномерных, так и двухмерных штрихкодов<br>Многонациональные клавиатуры и вывод символов<br>Поддержка 84 национальных клавиатур и символов китайского, японского, корейского и тайского языков<br>Версия ручного сканера штрихкодов с Bluetooth<br>Беспроводная версия сканера с Bluetooth поддерживает беспроводную связь на расстоянии до 10 метров<br>Полный набор дополнительных аксессуаров<br>Дополнительные аксессуары включают последовательные кабели, адаптеры, подставки и Bluetooth модули</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Сканер</li><li><strong>Цвет:</strong> Черный</li></ul>
+<p><strong>Примечание:</strong> Виртуальный последовательный интерфейс USB: Метод запуска</p>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Сканер</li><li><strong>Цвет:</strong> Черный</li><li><strong>Разрешение:</strong> 640*480 пикселей</li><li><strong>8 кВ (воздушный разряд):</strong> Падение с высоты 1,2 м</li><li><strong>Аккумулятор:</strong> Литиевая батарея емкостью 2600 мА</li><li><strong>Вес:</strong> 135 г</li><li><strong>Влажность:</strong> от 5% до 95% (без конденсации)</li><li><strong>Время аккумулятора:</strong> 6ч</li><li><strong>Время работы зарядки:</strong> 12ч (сканирование кнопкой один раз в секунду)</li><li><strong>Глубина резкости:</strong> QR (20 мил): 20–150 мм</li><li><strong>Датчик:</strong> CMOS</li><li><strong>Интерфейсы:</strong> Последовательный интерфейс RS-232</li><li><strong>Класс защиты IP42:</strong> Сертификаты: CE, FCC</li><li><strong>Материал корпуса:</strong> PC+ABS</li><li><strong>Непрерывное распознавание:</strong> Рабочее напряжение 5 В постоянного тока ±10%</li><li><strong>Относительная контрастность:</strong> ≥25%</li><li><strong>Поворот (вращение) 360°:</strong> Скос ±45°</li><li><strong>Поддерживаемые 1D-коды:</strong> Code128, UCC/EAN-128, AlM128, EAN-8, EAN-13, ISBN/ISSN, UPC-E, UPCA, Interleaved 2 из 5, ITF-6, ITF-4, Matrix 2 из 5, IndustriaI25, Standard 25, Code39, Codabar, Code 93, Code11, Plessey, MSI-Plessey, RSS-14. RSS-Limited. RSS-Expand и т.д.</li><li><strong>Поддерживаемые 2D-коды:</strong> 2D: PDF417, QR код, Data Matrix, HanXin, Maxicode, почтовые индексы и т. д.</li><li><strong>Подсветка:</strong> Белый свет</li><li><strong>Поле зрения:</strong> Горизонтальное: 40°, вертикальное: 30°</li><li><strong>Рабочая температура:</strong> от -20 до 50 °C</li><li><strong>Рабочий ток:</strong> 230 мА</li><li><strong>Рабочий ток в режиме ожидания:</strong> 50 мА</li><li><strong>Размеры (мм):</strong> 100*68*165</li><li><strong>Распознавание клавиатуры:</strong> Индукционное распознавание</li><li><strong>Режим контрастности:</strong> 10м (открытая площадка)</li><li><strong>Режим связи:</strong> Bluetooth 5.0</li><li><strong>Температура хранения:</strong> от -40 до 70 °C</li><li><strong>Тип интерфейса:</strong> Type-C</li><li><strong>Точность распознавания:</strong> ≥4 мил</li><li><strong>Уведомление:</strong> Звуковой сигнал, светодиод</li><li><strong>Фокусировка:</strong> Красный свет</li><li><strong>Чувствительность штрихкода:</strong> Наклон ±45°</li><li><strong>Электростатический разряд:</strong> ±4 кВ (контактный разряд)</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">Сканер</param>
 <param name="Цвет">Черный</param>
+<param name="Разрешение">640*480 пикселей</param>
+<param name="8 кВ (воздушный разряд)">Падение с высоты 1,2 м</param>
+<param name="Аккумулятор">Литиевая батарея емкостью 2600 мА</param>
+<param name="Вес">135 г</param>
+<param name="Влажность">от 5% до 95% (без конденсации)</param>
+<param name="Время аккумулятора">6ч</param>
+<param name="Время работы зарядки">12ч (сканирование кнопкой один раз в секунду)</param>
+<param name="Глубина резкости">QR (20 мил): 20–150 мм</param>
+<param name="Датчик">CMOS</param>
+<param name="Интерфейсы">Последовательный интерфейс RS-232</param>
+<param name="Класс защиты IP42">Сертификаты: CE, FCC</param>
+<param name="Материал корпуса">PC+ABS</param>
+<param name="Непрерывное распознавание">Рабочее напряжение 5 В постоянного тока ±10%</param>
+<param name="Относительная контрастность">≥25%</param>
+<param name="Поворот (вращение) 360°">Скос ±45°</param>
+<param name="Поддерживаемые 1D-коды">Code128, UCC/EAN-128, AlM128, EAN-8, EAN-13, ISBN/ISSN, UPC-E, UPCA, Interleaved 2 из 5, ITF-6, ITF-4, Matrix 2 из 5, IndustriaI25, Standard 25, Code39, Codabar, Code 93, Code11, Plessey, MSI-Plessey, RSS-14. RSS-Limited. RSS-Expand и т.д.</param>
+<param name="Поддерживаемые 2D-коды">2D: PDF417, QR код, Data Matrix, HanXin, Maxicode, почтовые индексы и т. д.</param>
+<param name="Подсветка">Белый свет</param>
+<param name="Поле зрения">Горизонтальное: 40°, вертикальное: 30°</param>
+<param name="Рабочая температура">от -20 до 50 °C</param>
+<param name="Рабочий ток">230 мА</param>
+<param name="Рабочий ток в режиме ожидания">50 мА</param>
+<param name="Размеры (мм)">100*68*165</param>
+<param name="Распознавание клавиатуры">Индукционное распознавание</param>
+<param name="Режим контрастности">10м (открытая площадка)</param>
+<param name="Режим связи">Bluetooth 5.0</param>
+<param name="Температура хранения">от -40 до 70 °C</param>
+<param name="Тип интерфейса">Type-C</param>
+<param name="Точность распознавания">≥4 мил</param>
+<param name="Уведомление">Звуковой сигнал, светодиод</param>
+<param name="Фокусировка">Красный свет</param>
+<param name="Чувствительность штрихкода">Наклон ±45°</param>
+<param name="Электростатический разряд">±4 кВ (контактный разряд)</param>
 <keywords>IDPRT, Сканер штрих-кода IDPRT HN-1358SR черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3306,11 +3357,15 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Сканер штрих-кодов HN-3308SR — это ручной 2D-имидж сканер, который считывает как одномерные (1D), так и двумерные (2D, например, QR коды) штрих-коды с помощью камеры (2D Imager), а не лазера, и обычно подключен к системе проводом (USB). Он относится к категории проводных и предназначен для ручного использования, считывая коды с высокой точностью.</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Сканер</li><li><strong>Цвет:</strong> Черный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Сканер</li><li><strong>Цвет:</strong> Черный</li><li><strong>Интерфейс:</strong> Проводной (обычно USB).</li><li><strong>Возможности:</strong> Считывание 1D и 2D штрих-кодов, включая поврежденные.</li><li><strong>Тип сканера:</strong> 2D Imager (имидж, фотосканер).</li><li><strong>Форм-фактор:</strong> Ручной (Handheld).</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">Сканер</param>
 <param name="Цвет">Черный</param>
+<param name="Интерфейс">Проводной (обычно USB).</param>
+<param name="Возможности">Считывание 1D и 2D штрих-кодов, включая поврежденные.</param>
+<param name="Тип сканера">2D Imager (имидж, фотосканер).</param>
+<param name="Форм-фактор">Ручной (Handheld).</param>
 <keywords>IDPRT, Сканер штрих-кода IDPRT HN-3308SR черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3428,17 +3483,23 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Тип: Проектор короткофокусный, Портативный, короткофокусный; Производитель: ViewSonic; Модель: ViewSonic Europe Ltd.</p>
-<p><strong>Примечание:</strong> Срок службы лампы (норм./ эконом.) ч.: 30000<br>Уровень шума (норм./эконом.) Дб: 26</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> ViewSonic</li><li><strong>Модель:</strong> ViewSonic Europe Ltd.</li><li><strong>Тип:</strong> Проектор короткофокусный, Портативный, короткофокусный</li><li><strong>Разрешение:</strong> FullHD (1920x1080), Full HD 1920×1080</li><li><strong>USB:</strong> Mini usb</li><li><strong>Wi-Fi:</strong> Да</li><li><strong>Вес:</strong> ~1 кг</li><li><strong>Видео вход HDMI:</strong> Есть</li><li><strong>Встроенный звук:</strong> Harman Kardon (2×3 Вт)</li><li><strong>Источник света:</strong> LED (RGBB), срок службы до 30 000 часов</li><li><strong>Контрастность:</strong> 3 000 000:1 (динамическая)</li><li><strong>Коррекция трапецеидальных искажений:</strong> Автоматическая (вертикальная и горизонтальная)</li><li><strong>Операционная система:</strong> Aptoide TV (аналог Android TV, без Google Play)</li><li><strong>Память:</strong> 16 ГБ (встроенная)</li><li><strong>Подключения:</strong> HDMI 2.0, USB-C, USB-A, microSD, Bluetooth, Wi-Fi, аудиовыход</li><li><strong>Проекционное расстояние:</strong> 0.7–3.2 м</li><li><strong>Размер изображения:</strong> 24"–100"+ (оптимально 60"–100")</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Технология:</strong> DLP</li><li><strong>Фокусировка:</strong> Автофокус</li><li><strong>Яркость:</strong> ~1200 LED люмен</li><li><strong>Яркость (ANSI) лмн:</strong> 1 200</li></ul>
+<p><strong>Примечание:</strong> Питание возможно от Power Delivery (USB-C 45W и выше): Портативный проектор ViewSonic M2 — кинотеатр в вашей сумке!<br>Погрузитесь в мир яркого Full HD изображения с проектором ViewSonic M2: стильным, компактным и мощным устройством для дома, офиса или путешествий. Благодаря короткофокусной оптике…</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> ViewSonic</li><li><strong>Модель:</strong> ViewSonic Europe Ltd.</li><li><strong>Тип:</strong> Проектор короткофокусный, Портативный, короткофокусный</li><li><strong>Разрешение:</strong> FullHD (1920x1080), Full HD 1920×1080</li><li><strong>LED источник света на 30 000 часов:</strong> экономия на лампах</li><li><strong>USB:</strong> Mini usb</li><li><strong>Wi-Fi:</strong> Да</li><li><strong>Автофокус и автоматическая коррекция трапеции:</strong> удобно в любых условиях</li><li><strong>Автофокус и коррекция трапеции:</strong> изображение всегда ровное</li><li><strong>Акустика Harman/Kardon:</strong> насыщенный и объёмный звук без внешних колонок</li><li><strong>Беспроводное подключение:</strong> стриминг с телефона, ноутбука или планшета</li><li><strong>Вес:</strong> ~1 кг</li><li><strong>Вес проектора:</strong> всего 1 кг. Он легко помещается в сумку или рюкзак и не требует сложной настройки. Просто включите — и наслаждайтесь!</li><li><strong>Видео вход HDMI:</strong> Есть</li><li><strong>Встроенный звук:</strong> Harman Kardon (2×3 Вт)</li><li><strong>Источник света:</strong> LED (RGBB), срок службы до 30 000 часов</li><li><strong>Контрастность:</strong> 3 000 000:1 (динамическая)</li><li><strong>Коррекция трапецеидальных искажений:</strong> Автоматическая (вертикальная и горизонтальная)</li><li><strong>Операционная система:</strong> Aptoide TV (аналог Android TV, без Google Play)</li><li><strong>Память:</strong> 16 ГБ (встроенная)</li><li><strong>Подключения:</strong> HDMI 2.0, USB-C, USB-A, microSD, Bluetooth, Wi-Fi, аудиовыход</li><li><strong>Проекционное расстояние:</strong> 0.7–3.2 м</li><li><strong>Работает от внешнего аккумулятора (PD 45W):</strong> идеально для путешествий</li><li><strong>Размер изображения:</strong> 24"–100"+ (оптимально 60"–100")</li><li><strong>Разрешение Full HD (1920×1080):</strong> чёткое и яркое изображение</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Технология:</strong> DLP</li><li><strong>Фокусировка:</strong> Автофокус</li><li><strong>Яркость:</strong> ~1200 LED люмен</li><li><strong>Яркость (ANSI) лмн:</strong> 1 200</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">ViewSonic</param>
 <param name="Модель">ViewSonic Europe Ltd.</param>
 <param name="Тип">Проектор короткофокусный, Портативный, короткофокусный</param>
 <param name="Разрешение">FullHD (1920x1080), Full HD 1920×1080</param>
+<param name="LED источник света на 30 000 часов">экономия на лампах</param>
 <param name="USB">Mini usb</param>
 <param name="Wi-Fi">Да</param>
+<param name="Автофокус и автоматическая коррекция трапеции">удобно в любых условиях</param>
+<param name="Автофокус и коррекция трапеции">изображение всегда ровное</param>
+<param name="Акустика Harman/Kardon">насыщенный и объёмный звук без внешних колонок</param>
+<param name="Беспроводное подключение">стриминг с телефона, ноутбука или планшета</param>
 <param name="Вес">~1 кг</param>
+<param name="Вес проектора">всего 1 кг. Он легко помещается в сумку или рюкзак и не требует сложной настройки. Просто включите — и наслаждайтесь!</param>
 <param name="Видео вход HDMI">Есть</param>
 <param name="Встроенный звук">Harman Kardon (2×3 Вт)</param>
 <param name="Источник света">LED (RGBB), срок службы до 30 000 часов</param>
@@ -3448,7 +3509,9 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Память">16 ГБ (встроенная)</param>
 <param name="Подключения">HDMI 2.0, USB-C, USB-A, microSD, Bluetooth, Wi-Fi, аудиовыход</param>
 <param name="Проекционное расстояние">0.7–3.2 м</param>
+<param name="Работает от внешнего аккумулятора (PD 45W)">идеально для путешествий</param>
 <param name="Размер изображения">24"–100"+ (оптимально 60"–100")</param>
+<param name="Разрешение Full HD (1920×1080)">чёткое и яркое изображение</param>
 <param name="Страна происхождения">Китай</param>
 <param name="Технология">DLP</param>
 <param name="Фокусировка">Автофокус</param>
@@ -3616,7 +3679,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Моторизованный экран Mr.Pixel 80" x 80" (2,03 x 2,03) (MSPSAB112V2)<br>Высота: 2.03 м<br>Ширина: 2.03 м<br>Соотношение сторон: 1:1<br>Основные преимущества:<br>- Идеально подходит для многофункциональных помещений таких, как конфернец-залы, комнаты переговоров и учебные классы.<br>- Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке.<br>- Чёрные границы по краям экрана для лучшего отображения изображения<br>- Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана.<br>- Синхронизированный мотор плавный и тихий в работе.<br>- Активная поверхность полотна1980*1980</p>
+<p>Моторизованный экран Mr.Pixel 80" x 80" (2,03 x 2,03) (MSPSAB112V2)<br>Высота: 2.03 м<br>Ширина: 2.03 м<br>Соотношение сторон: 1:1<br>Основные преимущества:<br>- Идеально подходит для многофункциональных помещений таких, как конференц-залы, комнаты переговоров и учебные классы.<br>- Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке.<br>- Чёрные границы по краям экрана для лучшего отображения изображения<br>- Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана.<br>- Синхронизированный мотор плавный и тихий в работе.<br>- Активная поверхность полотна 1980*1980</p>
 <p><strong>Примечание:</strong> Размер дм.(м.): 80" X 80" (2,03 X 2,03)</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Экран моторизированный</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Формат:</strong> 1X1</li></ul>
 <!-- Оплата и доставка -->
@@ -3644,7 +3707,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Моторизованный экран Mr.Pixel 120" x 120" (MSPSAB167V2)<br>Высота: 3.05 м<br>Ширина: 3.05 м<br>Соотношение сторон: 1:1<br>Основные преимущества:<br>- Идеально подходит для многофункциональных помещений таких, как конфернец-залы, комнаты переговоров и учебные классы.<br>- Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке.<br>- Чёрные границы по краям экрана для лучшего отображения изображения<br>- Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана.<br>- Синхронизированный мотор плавный и тихий в работе.<br>- Активная поверхность полотна 2390*2390</p>
+<p>Моторизованный экран Mr.Pixel 120" x 120" (MSPSAB167V2)<br>Высота: 3.05 м<br>Ширина: 3.05 м<br>Соотношение сторон: 1:1<br>Основные преимущества:<br>- Идеально подходит для многофункциональных помещений таких, как конференц-залы, комнаты переговоров и учебные классы.<br>- Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке.<br>- Чёрные границы по краям экрана для лучшего отображения изображения<br>- Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана.<br>- Синхронизированный мотор плавный и тихий в работе.<br>- Активная поверхность полотна 2390*2390</p>
 <p><strong>Примечание:</strong> Размер дм.(м.): 120" X 120" (3,05 X 3,05)</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Экран моторизированный</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Формат:</strong> 1X1</li></ul>
 <!-- Оплата и доставка -->
@@ -3672,7 +3735,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Моторизованный экран Mr.Pixel 72" x 96" (MSPSAC120V2)<br>Высота: 1.83 м<br>Ширина: 2.44 м<br>Соотношение сторон: 4:3<br>Основные преимущества:<br>- Идеально подходит для многофункциональных помещений таких, как конфернец-залы, комнаты переговоров и учебные классы.<br>- Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке.<br>- Чёрные границы по краям экрана для лучшего отображения изображения<br>- Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана.<br>- Синхронизированный мотор плавный и тихий в работе.</p>
+<p>Моторизованный экран Mr.Pixel 72" x 96" (MSPSAC120V2)<br>Высота: 1.83 м<br>Ширина: 2.44 м<br>Соотношение сторон: 4:3<br>Основные преимущества:<br>- Идеально подходит для многофункциональных помещений таких, как конференц-залы, комнаты переговоров и учебные классы.<br>- Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке.<br>- Чёрные границы по краям экрана для лучшего отображения изображения<br>- Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана.<br>- Синхронизированный мотор плавный и тихий в работе.</p>
 <p><strong>Примечание:</strong> Размер дм.(м.): 72" X 96" (1,83 X 2,44)</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Экран моторизированный</li><li><strong>Цвет:</strong> Белый</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Формат:</strong> 4X3</li></ul>
 <!-- Оплата и доставка -->
@@ -3701,7 +3764,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Моторизованный экран Mr.Pixel 90" x 120" (MSPSAC150V2)<br>Высота: 2,29 м<br>Ширина: 3,05 м<br>Соотношение сторон: 4:3<br>Основные преимущества:<br>- Идеально подходит для многофункциональных помещений таких, как конфернец-залы, комнаты переговоров и учебные классы.<br>- Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке.<br>- Чёрные границы по краям экрана для лучшего отображения изображения<br>- Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана.<br>- Синхронизированный мотор плавный и тихий в работе.<br>- Активная поверхность полотна 2950*2190</p>
+<p>Моторизованный экран Mr.Pixel 90" x 120" (MSPSAC150V2)<br>Высота: 2,29 м<br>Ширина: 3,05 м<br>Соотношение сторон: 4:3<br>Основные преимущества:<br>- Идеально подходит для многофункциональных помещений таких, как конференц-залы, комнаты переговоров и учебные классы.<br>- Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке.<br>- Чёрные границы по краям экрана для лучшего отображения изображения<br>- Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана.<br>- Синхронизированный мотор плавный и тихий в работе.<br>- Активная поверхность полотна 2950*2190</p>
 <p><strong>Примечание:</strong> Размер дм.(м.): 90" X 120" (2,29 X 3,05)</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Экран моторизированный</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Формат:</strong> 4X3</li></ul>
 <!-- Оплата и доставка -->
@@ -3729,7 +3792,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Моторизованный экран Mr.Pixel 120" x 160" (MSPSAC200V2)<br>Высота: 3.05 м<br>Ширина: 4,06 м<br>Соотношение сторон: 4:3<br>Основные преимущества:<br>- Идеально подходит для многофункциональных помещений таких, как конфернец-залы, комнаты переговоров и учебные классы.<br>- Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке.<br>- Чёрные границы по краям экрана для лучшего отображения изображения<br>- Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана.<br>- Синхронизированный мотор плавный и тихий в работе.<br>- Активная поверхность полотна 3960*2900</p>
+<p>Моторизованный экран Mr.Pixel 120" x 160" (MSPSAC200V2)<br>Высота: 3.05 м<br>Ширина: 4,06 м<br>Соотношение сторон: 4:3<br>Основные преимущества:<br>- Идеально подходит для многофункциональных помещений таких, как конференц-залы, комнаты переговоров и учебные классы.<br>- Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке.<br>- Чёрные границы по краям экрана для лучшего отображения изображения<br>- Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана.<br>- Синхронизированный мотор плавный и тихий в работе.<br>- Активная поверхность полотна 3960*2900</p>
 <p><strong>Примечание:</strong> Размер дм.(м.): 120" X 160" (3,05 X 4,06)</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Экран моторизированный</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Формат:</strong> 4X3</li></ul>
 <!-- Оплата и доставка -->
@@ -3956,17 +4019,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Проектор ViewSonic PX701-4K – это высококачественное решение для домашнего кинотеатра и профессиональных презентаций, которое обеспечит четкое изображение в 4K разрешении и превосходную яркость.</p>
-<p><strong>Примечание:</strong> Срок службы лампы (норм./ эконом.) ч.: 6000/20000<br>Уровень шума (норм./эконом.) Дб: 27</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> ViewSonic proj</li><li><strong>Тип:</strong> Проектор домашний</li><li><strong>Разрешение:</strong> 4K Ultra HD (3840x2160)</li><li><strong>3D:</strong> Нет</li><li><strong>Ethernet (RJ-45):</strong> Нет</li><li><strong>USB:</strong> Тип A</li><li><strong>Wi-Fi:</strong> Нет</li><li><strong>Видео вход DisplayPort:</strong> Нет</li><li><strong>Видео вход DVI-D:</strong> Нет</li><li><strong>Видео вход HDMI:</strong> 2</li><li><strong>Видео вход S-video:</strong> Нет</li><li><strong>Видео вход VGA:</strong> Нет</li><li><strong>Интерактивный:</strong> Нет</li><li><strong>Интерфейс HDBaseT/DIGITAL LINK:</strong> Нет</li><li><strong>Контрастность:</strong> 12 000 : 1</li><li><strong>Проекционный коэффициент (Throw ratio):</strong> 1.5 - 1.65</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Технология:</strong> DLP</li><li><strong>Тип источника света:</strong> Ламповый источник света</li><li><strong>Яркость (ANSI) лмн:</strong> 3200</li></ul>
+<p><strong>Примечание:</strong> более отчетливыми.: Лампа: Долговечная лампа с сроком службы до 20,000 часов, что значительно снижает расходы на обслуживание.<br>Высокая яркость для ярких и четких изображений в любом освещении.: Потрясающая четкость 4K для просмотра фильмов, игр или презентаций с максимальной детализацией.</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> ViewSonic proj</li><li><strong>Тип:</strong> Проектор домашний</li><li><strong>Подключение:</strong> HDMI 2.0, USB Type-A, USB Type-B, VGA, аудио выходы, а также поддержка беспроводных подключений с помощью опционального устройства.</li><li><strong>Разрешение:</strong> 4K Ultra HD (3840x2160)</li><li><strong>3D:</strong> Нет</li><li><strong>Ethernet (RJ-45):</strong> Нет</li><li><strong>USB:</strong> Тип A</li><li><strong>Wi-Fi:</strong> Нет</li><li><strong>Аудио:</strong> Встроенные динамики мощностью 10 Вт с поддержкой технологии Smart Sound для качественного звука.</li><li><strong>Вес:</strong> 3.6 кг – компактный и легко переносимый.</li><li><strong>Видео вход DisplayPort:</strong> Нет</li><li><strong>Видео вход DVI-D:</strong> Нет</li><li><strong>Видео вход HDMI:</strong> 2</li><li><strong>Видео вход S-video:</strong> Нет</li><li><strong>Видео вход VGA:</strong> Нет</li><li><strong>Интерактивный:</strong> Нет</li><li><strong>Интерфейс HDBaseT/DIGITAL LINK:</strong> Нет</li><li><strong>Контрастность:</strong> 12 000 : 1</li><li><strong>Проекционные расстояния:</strong> Поддерживает проекцию от 1.2 м до 12 м, в зависимости от размера экрана.</li><li><strong>Проекционный коэффициент (Throw ratio):</strong> 1.5 - 1.65</li><li><strong>Размер проекции:</strong> От 30" до 300", с возможностью настройки для разных помещений.</li><li><strong>Размеры:</strong> 301 x 230 x 123 мм.</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Технология:</strong> DLP</li><li><strong>Технология цветопередачи:</strong> поддержка технологии Cinema SuperColor™, которая обеспечивает точную и насыщенную цветопередачу.</li><li><strong>Тип источника света:</strong> Ламповый источник света</li><li><strong>Яркость:</strong> 3200 ANSI люменов, что позволяет использовать проектор даже в условиях с ярким освещением.</li><li><strong>Яркость (ANSI) лмн:</strong> 3200</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">ViewSonic proj</param>
 <param name="Тип">Проектор домашний</param>
+<param name="Подключение">HDMI 2.0, USB Type-A, USB Type-B, VGA, аудио выходы, а также поддержка беспроводных подключений с помощью опционального устройства.</param>
 <param name="Разрешение">4K Ultra HD (3840x2160)</param>
 <param name="3D">Нет</param>
 <param name="Ethernet (RJ-45)">Нет</param>
 <param name="USB">Тип A</param>
 <param name="Wi-Fi">Нет</param>
+<param name="Аудио">Встроенные динамики мощностью 10 Вт с поддержкой технологии Smart Sound для качественного звука.</param>
+<param name="Вес">3.6 кг – компактный и легко переносимый.</param>
 <param name="Видео вход DisplayPort">Нет</param>
 <param name="Видео вход DVI-D">Нет</param>
 <param name="Видео вход HDMI">2</param>
@@ -3975,10 +4041,15 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Интерактивный">Нет</param>
 <param name="Интерфейс HDBaseT/DIGITAL LINK">Нет</param>
 <param name="Контрастность">12 000 : 1</param>
+<param name="Проекционные расстояния">Поддерживает проекцию от 1.2 м до 12 м, в зависимости от размера экрана.</param>
 <param name="Проекционный коэффициент (Throw ratio)">1.5 - 1.65</param>
+<param name="Размер проекции">От 30" до 300", с возможностью настройки для разных помещений.</param>
+<param name="Размеры">301 x 230 x 123 мм.</param>
 <param name="Страна происхождения">Китай</param>
 <param name="Технология">DLP</param>
+<param name="Технология цветопередачи">поддержка технологии Cinema SuperColor™, которая обеспечивает точную и насыщенную цветопередачу.</param>
 <param name="Тип источника света">Ламповый источник света</param>
+<param name="Яркость">3200 ANSI люменов, что позволяет использовать проектор даже в условиях с ярким освещением.</param>
 <param name="Яркость (ANSI) лмн">3200</param>
 <keywords>ViewSonic, Проектор для дом. кино ViewSonic PX701-4K, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -4000,15 +4071,28 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Общие</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Интерактивная доска</li><li><strong>Цвет:</strong> Черный</li><li><strong>Диагональ:</strong> 102</li><li><strong>Интерфейс подключения:</strong> USB</li><li><strong>Тип управления:</strong> Сенсорное</li></ul>
+<p><strong>Примечание:</strong> Минимальный предмет касания должен быть не менее 5 мм: Температура Эксплуатации: От -20°C До 70°C<br>Питания от USB, мощность пульсации max.200mV rms: Мощность 2 Вт, рабочий ток 200mA</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Интерактивная доска</li><li><strong>Цвет:</strong> Черный</li><li><strong>10 Точек касания:</strong> Интерфейс USB 2.0 и USB 3.0</li><li><strong>Активная область:</strong> 95 дюймов 2120 (мм) х 1150 (мм)</li><li><strong>Время отклика 8 мс:</strong> Скорость отклика 20 мс</li><li><strong>Время эксплуатации не менее 7 лет:</strong> Напряжение тока: +DC 5V, +4.75V to +5.25V</li><li><strong>Диагональ:</strong> 102</li><li><strong>Интерфейс подключения:</strong> USB</li><li><strong>Метод ввода:</strong> палец, маркер или не прозрачные предметы</li><li><strong>Относительная Влажность:</strong> Рабочая: 90% (без конденсации при максимальной температуре 40°C)</li><li><strong>Рамка выполнена из алюминия, цвет серый:</strong> Внешний Размер: (мм) 2252 х 1280 х 44 (мм)</li><li><strong>Сертификаты:</strong> CE, FCC Class B, RoHS</li><li><strong>Соотношение сторон:</strong> 16:9</li><li><strong>Технология:</strong> ИК сенсорная</li><li><strong>Тип управления:</strong> Сенсорное</li><li><strong>Хранение:</strong> 90% (без конденсации при максимальной температуре 40°C)</li><li><strong>Хранения:</strong> -40°C ~ 85°С</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Mr.Pixel</param>
 <param name="Тип">Интерактивная доска</param>
 <param name="Цвет">Черный</param>
+<param name="10 Точек касания">Интерфейс USB 2.0 и USB 3.0</param>
+<param name="Активная область">95 дюймов 2120 (мм) х 1150 (мм)</param>
+<param name="Время отклика 8 мс">Скорость отклика 20 мс</param>
+<param name="Время эксплуатации не менее 7 лет">Напряжение тока: +DC 5V, +4.75V to +5.25V</param>
 <param name="Диагональ">102</param>
 <param name="Интерфейс подключения">USB</param>
+<param name="Метод ввода">палец, маркер или не прозрачные предметы</param>
+<param name="Относительная Влажность">Рабочая: 90% (без конденсации при максимальной температуре 40°C)</param>
+<param name="Рамка выполнена из алюминия, цвет серый">Внешний Размер: (мм) 2252 х 1280 х 44 (мм)</param>
+<param name="Сертификаты">CE, FCC Class B, RoHS</param>
+<param name="Соотношение сторон">16:9</param>
+<param name="Технология">ИК сенсорная</param>
 <param name="Тип управления">Сенсорное</param>
+<param name="Хранение">90% (без конденсации при максимальной температуре 40°C)</param>
+<param name="Хранения">-40°C ~ 85°С</param>
 <keywords>Mr.Pixel, Интерактивная доска Mr.Pixel S102 BLACK, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -4153,7 +4237,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Описание -->
 <p>Проектор Epson EB-W06 создавался с расчетом, чтобы установка и настройка были как можно более быстрыми. Набор функциональных возможностей проектора включает быструю коррекцию трапецеидальных искажений, долгий ресурс лампы и опциональную поддержку Wi-Fi, которая позволяет отображать контент с мобильных устройств с помощью приложения iProjection.<br>Технология: LCD: 3 × 0.59" P-Si TFT<br>Разрешение: WXGA (1280×800)<br>Яркость: 3700 ANSI lm<br>Цветовая яркость: 3700 ANSI lm<br>Контрастность: 16000:1<br>Зум 1,2× (оптический)<br>Передача изображения по беспроводной сети Wi-fi (опционально)<br>Автоматическая коррекция вертикальных трапецеидальных искажений<br>Быстрая коррекция горизонтальных трапецеидальных искажений ручкой-слайдером<br>Функция Quick Corner<br>Возможность просмотра изображений напрямую с USB носителей<br>USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю<br>Функция Split Screen<br>Встроенный динамик 2 Вт<br>Фронтальный вывод тепла<br>Моментальное выключение<br>Вес: 2,5 кг</p>
 <p><strong>Примечание:</strong> Оригинальное разрешение<br>Срок службы лампы (норм./ эконом.) ч.: 6000/12000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Модель:</strong> Epson EB-W06</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Разрешение:</strong> 1280х800</li><li><strong>Ethernet (RJ-45):</strong> Нет</li><li><strong>USB:</strong> Тип A и B</li><li><strong>Wi-Fi:</strong> Опция</li><li><strong>Видео вход DisplayPort:</strong> Нет</li><li><strong>Видео вход DVI-D:</strong> Нет</li><li><strong>Видео вход HDMI:</strong> Есть</li><li><strong>Видео вход S-video:</strong> Нет</li><li><strong>Видео вход VGA:</strong> 1</li><li><strong>Интерактивный:</strong> Нет</li><li><strong>Интерфейс HDBaseT/DIGITAL LINK:</strong> Нет</li><li><strong>Контрастность:</strong> 16 000 : 1</li><li><strong>Проекционный коэффициент (Throw ratio):</strong> 1 - 1.2</li><li><strong>Страна происхождения:</strong> Китай, Филиппины</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Тип источника света:</strong> Ламповый источник света</li><li><strong>Яркость (ANSI) лмн:</strong> 3700</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Модель:</strong> Epson EB-W06</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Разрешение:</strong> 1280х800</li><li><strong>Ethernet (RJ-45):</strong> Нет</li><li><strong>USB:</strong> Тип A и B</li><li><strong>Wi-Fi:</strong> Опция</li><li><strong>Видео вход DisplayPort:</strong> Нет</li><li><strong>Видео вход DVI-D:</strong> Нет</li><li><strong>Видео вход HDMI:</strong> Есть</li><li><strong>Видео вход S-video:</strong> Нет</li><li><strong>Видео вход VGA:</strong> 1</li><li><strong>Интерактивный:</strong> Нет</li><li><strong>Интерфейс HDBaseT/DIGITAL LINK:</strong> Нет</li><li><strong>Комплектация:</strong> Проектор, Кабель питания 1,8 м, Кабель для подключения к ПК с 15-контактным разъемом D-Sub (n/n) 1,8м, Пульт ДУ, Руководство пользователя, Основные свойства, Для офиса и мобильных презентаций, Для образования, к</li><li><strong>Контрастность:</strong> 16 000 : 1</li><li><strong>Проекционный коэффициент (Throw ratio):</strong> 1 - 1.2</li><li><strong>Страна происхождения:</strong> Китай, Филиппины</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Тип источника света:</strong> Ламповый источник света</li><li><strong>Яркость (ANSI) лмн:</strong> 3700</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson Proj</param>
@@ -4170,6 +4254,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Видео вход VGA">1</param>
 <param name="Интерактивный">Нет</param>
 <param name="Интерфейс HDBaseT/DIGITAL LINK">Нет</param>
+<param name="Комплектация">Проектор, Кабель питания 1,8 м, Кабель для подключения к ПК с 15-контактным разъемом D-Sub (n/n) 1,8м, Пульт ДУ, Руководство пользователя, Основные свойства, Для офиса и мобильных презентаций, Для образования, к</param>
 <param name="Контрастность">16 000 : 1</param>
 <param name="Проекционный коэффициент (Throw ratio)">1 - 1.2</param>
 <param name="Страна происхождения">Китай, Филиппины</param>
@@ -4197,7 +4282,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Описание -->
 <p>pson EB-W51 — высококачественный, яркий, мобильный проектор для дома и офиса, построенный на базе технологии Epson 3LCD, с разрешением WXGA и набором дополнительных функций для большей гибкости и простоты использования.<br>Смотрите кино на экране диагональю до 300 дюймов. Быстро начинайте деловую презентацию, не тратя время на предварительную настройку — проектор создавался с расчетом, чтобы установка была как можно более быстрой! Благодаря 4000 люмен яркости и технологии 3LCD, цвета на экране будут яркими и точными, а изображение — таким, как задумал режиссер. Пользователю остается лишь наслаждаться просмотром — ресурс одной лампы позволяет смотреть по фильму в день на протяжении 18 лет.<br>Проектор универсальный Epson EB-W51.<br>Технология: LCD: 3 × 0.59" P-Si TFT<br>Разрешение: WXGA (1280×800)<br>Яркость: 4000 ANSI lm<br>Цветовая яркость: 4000 ANSI lm<br>Контрастность: 16000:1<br>Зум 1,2× (оптический)<br>Передача изображения по беспроводной сети Wi-fi (опционально)<br>Автоматическая коррекция вертикальных трапецеидальных искажений<br>Быстрая коррекция горизонтальных трапецеидальных искажений ручкой-слайдером<br>Функция Quick Corner<br>Возможность просмотра изображений напрямую с USB носителей…</p>
 <p><strong>Примечание:</strong> Оригинальное разрешение<br>Срок службы лампы (норм./ эконом.) ч.: 6000/12000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Модель:</strong> Epson EB-W51</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Цвет:</strong> Белый</li><li><strong>Разрешение:</strong> 1280х800</li><li><strong>3D:</strong> Нет</li><li><strong>Ethernet (RJ-45):</strong> Нет</li><li><strong>USB:</strong> Тип A и B</li><li><strong>Wi-Fi:</strong> Опция</li><li><strong>Видео вход DisplayPort:</strong> Нет</li><li><strong>Видео вход DVI-D:</strong> Нет</li><li><strong>Видео вход HDMI:</strong> Есть</li><li><strong>Видео вход S-video:</strong> Нет</li><li><strong>Видео вход VGA:</strong> 1</li><li><strong>Интерактивный:</strong> Нет</li><li><strong>Интерфейс HDBaseT/DIGITAL LINK:</strong> Нет</li><li><strong>Источник света:</strong> Лампа</li><li><strong>Контрастность:</strong> 16 000 : 1</li><li><strong>Проекционный коэффициент (Throw ratio):</strong> 1 - 1.2</li><li><strong>Страна происхождения:</strong> Китай, Филиппины</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Тип источника света:</strong> Ламповый источник света</li><li><strong>Яркость (ANSI) лмн:</strong> 4000</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Модель:</strong> Epson EB-W51</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Цвет:</strong> Белый</li><li><strong>Разрешение:</strong> 1280х800</li><li><strong>3D:</strong> Нет</li><li><strong>Ethernet (RJ-45):</strong> Нет</li><li><strong>USB:</strong> Тип A и B</li><li><strong>Wi-Fi:</strong> Опция</li><li><strong>Видео вход DisplayPort:</strong> Нет</li><li><strong>Видео вход DVI-D:</strong> Нет</li><li><strong>Видео вход HDMI:</strong> Есть</li><li><strong>Видео вход S-video:</strong> Нет</li><li><strong>Видео вход VGA:</strong> 1</li><li><strong>Доступный яркий WXGA проектор:</strong> Технология: LCD: 3 × 0.59" P-Si TFT</li><li><strong>Зум 1,2× (оптический):</strong> Передача изображения по беспроводной сети Wi-fi (опционально)</li><li><strong>Интерактивный:</strong> Нет</li><li><strong>Интерфейс HDBaseT/DIGITAL LINK:</strong> Нет</li><li><strong>Источник света:</strong> Лампа</li><li><strong>Контрастность:</strong> 16 000 : 1</li><li><strong>Проекционный коэффициент (Throw ratio):</strong> 1 - 1.2</li><li><strong>Страна происхождения:</strong> Китай, Филиппины</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Тип источника света:</strong> Ламповый источник света</li><li><strong>Цветовая яркость:</strong> 4000 ANSI lm</li><li><strong>Яркость:</strong> 4000 ANSI lm</li><li><strong>Яркость (ANSI) лмн:</strong> 4000</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson Proj</param>
@@ -4214,6 +4299,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Видео вход HDMI">Есть</param>
 <param name="Видео вход S-video">Нет</param>
 <param name="Видео вход VGA">1</param>
+<param name="Доступный яркий WXGA проектор">Технология: LCD: 3 × 0.59" P-Si TFT</param>
+<param name="Зум 1,2× (оптический)">Передача изображения по беспроводной сети Wi-fi (опционально)</param>
 <param name="Интерактивный">Нет</param>
 <param name="Интерфейс HDBaseT/DIGITAL LINK">Нет</param>
 <param name="Источник света">Лампа</param>
@@ -4222,6 +4309,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Страна происхождения">Китай, Филиппины</param>
 <param name="Технология">3LCD</param>
 <param name="Тип источника света">Ламповый источник света</param>
+<param name="Цветовая яркость">4000 ANSI lm</param>
+<param name="Яркость">4000 ANSI lm</param>
 <param name="Яркость (ANSI) лмн">4000</param>
 <keywords>Epson, Проектор универсальный Epson EB-W51, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -4270,11 +4359,21 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Описание -->
 <p>Создать впечатление от большого экрана дома легко, если у вас есть проектор Epson CO-FD01, он также идеально подходит для офиса или класса. Вы можете получить впечатляющий 391-дюймовый дисплей и иметь Android TV . Он прост в настройке и имеет яркость 3000 люменов для четкого и яркого изображения. Долговечное решение со сроком службы лампы, обеспечивающим 18 лет развлечений.<br>Источник света: лампа<br>Тип лампы: UHE<br>Типы проекции: фронтальная<br>Тип матрицы: 3LCD<br>Разрешение матрицы: 1920 × 1080 (FHD)<br>Максимальное поддерживаемое разрешение: 1920 × 1080 (FHD)<br>Яркость, ANSI: 3000 лм<br>Контрастность: 350:1<br>Количество отображаемых цветов: 16.7 млн.<br>Поддержка форматов изображения: 16:9<br>Проекционное отношение: 1.19...1.61 :1<br>Коррекция трапецеидальных искажений (°): вертикальная ±30, горизонтальная ±30<br>Минимальное проекционное расстояние: 0.9 м<br>Максимальное проекционное расстояние: 10.4 м<br>Минимальная диагональ изображения: 0.66 м<br>Максимальная диагональ изображения: 9.93 м<br>Фокусировка: ручная<br>Вертикальная развёртка: 100...120 Гц<br>Интерфейсы и порты: 1 × HDMI<br>1 × USB-A 2.0<br>1 × USB-B 2.0<br>Функциональные особенности: поддержка MHL<br>встроенный динамик</p>
 <p><strong>Примечание:</strong> Гарантия: 12 месяцев</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Тип:</strong> Проектор для дома</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Тип:</strong> Проектор для дома</li><li><strong>Цвет:</strong> Белый</li><li><strong>Безопасность:</strong> разъём Kensington Lock</li><li><strong>Вентиляционный шум:</strong> 38 дБ</li><li><strong>Вес:</strong> 2.4 кг</li><li><strong>Диапазон рабочих температур:</strong> 5...40 °C</li><li><strong>Мощность лампы:</strong> 188 Вт</li><li><strong>Питание:</strong> сеть 220 В</li><li><strong>Размеры:</strong> 295 × 211 × 87 мм</li><li><strong>Ресурс лампы:</strong> 6000 часов (стандартный режим), 12000 часов (экономичный режим)</li><li><strong>Энергопотребление в экономичном режиме:</strong> 214 Вт</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson Proj</param>
 <param name="Тип">Проектор для дома</param>
+<param name="Цвет">Белый</param>
+<param name="Безопасность">разъём Kensington Lock</param>
+<param name="Вентиляционный шум">38 дБ</param>
+<param name="Вес">2.4 кг</param>
+<param name="Диапазон рабочих температур">5...40 °C</param>
+<param name="Мощность лампы">188 Вт</param>
+<param name="Питание">сеть 220 В</param>
+<param name="Размеры">295 × 211 × 87 мм</param>
+<param name="Ресурс лампы">6000 часов (стандартный режим), 12000 часов (экономичный режим)</param>
+<param name="Энергопотребление в экономичном режиме">214 Вт</param>
 <keywords>Epson, Проектор для дома Epson CO-FD01, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -4321,13 +4420,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Описание -->
 <p>Доступный яркий WXGA проектор<br>Технология: LCD: 3 х 0.59" P-Si TFT<br>Разрешение: WXGA (1280х800)<br>Яркость: 3000 ANSI lm<br>Цветовая яркость: 3000 ANSI lm<br>Зум 1,35х (цифровой)<br>Передача изображения по беспроводной сети Wi-fi (опционально)<br>Функция Quick Corner<br>Возможность просмотра изображений напрямую с USB носителей<br>USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю<br>Встроенный динамик 5 Вт<br>Моментальное выключение<br>Вес: 2,2 кг</p>
 <p><strong>Примечание:</strong> Оригинальное разрешение: WXGA (1280x800)</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>ЖК дисплей, дюймы:</strong> 0.59</li><li><strong>Используемая технология:</strong> LCD:3 P-Si TFT</li><li><strong>Категория:</strong> Для офиса и мобильных презентаций, Для образования, Варианты проекции, крепление к потолку</li><li><strong>Поддерживаемые разрешения:</strong> VGA (640x480), SVGA (800x600), XGA (1024x768), SXGA1 (1152x864)</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>ЖК дисплей, дюймы:</strong> 0.59</li><li><strong>Используемая технология:</strong> LCD:3 P-Si TFT</li><li><strong>Категория:</strong> Для офиса и мобильных презентаций, Для образования, Варианты проекции, крепление к потолку</li><li><strong>Комплектация:</strong> Проектор, Кабель питания 1,8 м, Пульт ДУ, Руководство пользователя, Основные свойства, крепление к потолку, обратная, фронтальная, SXGA1 (1152x864), WXGA (1280x800), SXGA2 (1280x960), SXGA3 (1280x1024), WXGA2 (1280x768), WXGA3 (1366x7</li><li><strong>Поддерживаемые разрешения:</strong> VGA (640x480), SVGA (800x600), XGA (1024x768), SXGA1 (1152x864)</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">Проектор универсальный</param>
 <param name="ЖК дисплей, дюймы">0.59</param>
 <param name="Используемая технология">LCD:3 P-Si TFT</param>
 <param name="Категория">Для офиса и мобильных презентаций, Для образования, Варианты проекции, крепление к потолку</param>
+<param name="Комплектация">Проектор, Кабель питания 1,8 м, Пульт ДУ, Руководство пользователя, Основные свойства, крепление к потолку, обратная, фронтальная, SXGA1 (1152x864), WXGA (1280x800), SXGA2 (1280x960), SXGA3 (1280x1024), WXGA2 (1280x768), WXGA3 (1366x7</param>
 <param name="Поддерживаемые разрешения">VGA (640x480), SVGA (800x600), XGA (1024x768), SXGA1 (1152x864)</param>
 <keywords>Epson, Проектор универсальный Epson CO-WX02, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -4401,7 +4501,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Epson EB-E24 — это компактный и надёжный 3LСD-проектор, созданный для проведения ярких презентаций, обучающих сессий и семинаров. Благодаря сочетанию высокой яркости и контрастности, устройство обеспечивает чёткое изображение даже при дневном освещении.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Разрешение:</strong> XGA (1024×768)</li><li><strong>Вес:</strong> ~2,4 кг</li><li><strong>Встроенный динамик:</strong> 5 Вт</li><li><strong>Интерфейсы:</strong> HDMI, USB-A, USB-B, VGA, аудио</li><li><strong>Контрастность:</strong> 16 000:1</li><li><strong>Коррекция трапеции:</strong> Вертикальная и горизонтальная</li><li><strong>Проекционное расстояние:</strong> 1,77 – 2,4 м (на 80")</li><li><strong>Ресурс лампы:</strong> до 12 000 ч (в экономичном режиме)</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Яркость:</strong> 3600 люмен</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Разрешение:</strong> XGA (1024×768)</li><li><strong>Вес:</strong> ~2,4 кг</li><li><strong>Встроенный динамик:</strong> 5 Вт</li><li><strong>Высокая яркость:</strong> работает даже при свете</li><li><strong>Интерфейсы:</strong> HDMI, USB-A, USB-B, VGA, аудио</li><li><strong>Контрастность:</strong> 16 000:1</li><li><strong>Коррекция трапеции:</strong> Вертикальная и горизонтальная</li><li><strong>Лёгкий и портативный:</strong> удобно носить с собой</li><li><strong>Преимущества:</strong> Отлично подходит для офисных задач и учебных аудиторий</li><li><strong>Проекционное расстояние:</strong> 1,77 – 2,4 м (на 80")</li><li><strong>Простое подключение через HDMI и USB:</strong> Встроенный динамик позволяет обойтись без внешней акустики</li><li><strong>Ресурс лампы:</strong> до 12 000 ч (в экономичном режиме)</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Яркость:</strong> 3600 люмен</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson Proj</param>
@@ -4409,10 +4509,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Разрешение">XGA (1024×768)</param>
 <param name="Вес">~2,4 кг</param>
 <param name="Встроенный динамик">5 Вт</param>
+<param name="Высокая яркость">работает даже при свете</param>
 <param name="Интерфейсы">HDMI, USB-A, USB-B, VGA, аудио</param>
 <param name="Контрастность">16 000:1</param>
 <param name="Коррекция трапеции">Вертикальная и горизонтальная</param>
+<param name="Лёгкий и портативный">удобно носить с собой</param>
+<param name="Преимущества">Отлично подходит для офисных задач и учебных аудиторий</param>
 <param name="Проекционное расстояние">1,77 – 2,4 м (на 80")</param>
+<param name="Простое подключение через HDMI и USB">Встроенный динамик позволяет обойтись без внешней акустики</param>
 <param name="Ресурс лампы">до 12 000 ч (в экономичном режиме)</param>
 <param name="Технология">3LCD</param>
 <param name="Яркость">3600 люмен</param>
