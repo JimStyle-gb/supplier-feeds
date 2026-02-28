@@ -80,7 +80,7 @@ def _supplier_code_from_oid(oid: str) -> str:
 
 _POLICIES: dict[str, SupplierPolicy] = {
     "AS": SupplierPolicy("AS", always_true_available=False, drop_desc_specs_pairs=True),
-    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=True),
+    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=False),
     "CL": SupplierPolicy("CL", always_true_available=True, drop_desc_specs_pairs=False),
     "NP": SupplierPolicy("NP", always_true_available=True, drop_desc_specs_pairs=False),
     "VT": SupplierPolicy("VT", always_true_available=True, drop_desc_specs_pairs=False),
@@ -451,6 +451,10 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
             tok = (m.group(0) or "").strip()
             if not tok:
                 continue
+            # CS: не считаем объёмы (700 ml / 700 мл) "кодами" — это не Canon 7xx
+            tail = s[m.end(): m.end() + 8]
+            if re.match(r"(?i)^\s*(?:мл|ml)\b", tail):
+                continue
             # если уже есть вариант с № — не дублируем голым числом
             if tok and (tok.casefold() in idx_map):
                 continue
@@ -745,7 +749,7 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
             continue
 
         # AkCent/таблицы: "модель устройства" -> "C11..." (SKU техники). Модель переносим в Совместимость, C11 выкидываем.
-        if vv and re.fullmatch(r"(?i)C11[A-Z0-9]{6,}", vv) and re.search(r"\d", kk) and re.search(r"[A-Za-zА-Яа-я]", kk):
+        if vv and re.fullmatch(r"(?i)C11[A-Z0-9]{6,}(?:\s*[-–—]\s*)?$", vv) and re.search(r"\d", kk) and re.search(r"[A-Za-zА-Яа-я]", kk):
             found_raw.append(kk)
             continue
 
@@ -940,6 +944,11 @@ def normalize_offer_name(name: str) -> str:
     s = re.sub(r"\bдля(?=[A-ZА-Я])", "для ", s)
     # "(аналогDL-5120)" -> "(аналог DL-5120)" (только если далее заглавная/цифра)
     s = re.sub(r"(?i)\bаналог(?=[A-ZА-Я0-9])", "аналог ", s)
+    # CS: нормализация сокращений (читабельность + SEO)
+    # 5лст -> 5 лист.; 11 лтр. -> 11 л
+    s = re.sub(r"(?i)\b(\d+)\s*лст\b", r"\1 лист.", s)
+    s = re.sub(r"(?i)\b(\d+)\s*лтр\.?\b", r"\1 л", s)
+
     # двойной слэш в моделях
     s = s.replace("//", "/")
     # ",Color" -> ", Color"
@@ -2286,6 +2295,12 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
             kk0 = norm_ws(k0)
             vv0 = norm_ws(v0)
             k_cf0 = kk0.casefold()
+            # AkCent: чистим опечатки/варианты страны происхождения
+            if k_cf0 == "страна происхождения":
+                vv0 = re.sub(r"(?i)япония/жапония", "Япония", vv0)
+                vv0 = re.sub(r"(?i)жапония", "Япония", vv0)
+                vv0 = re.sub(r"(?i)филиппин/филиппины", "Филиппины", vv0)
+                vv0 = re.sub(r"(?i)\bфилиппин\b", "Филиппины", vv0)
             if k_cf0 == "1d":
                 kk0 = "Поддерживаемые 1D-коды"
             elif k_cf0 == "2d" or k_cf0 in {"распознование кода", "распознавание кода"}:
@@ -2407,7 +2422,7 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
 
     # Ресурс
     if not (_has("Ресурс") or _has("Ресурс, стр")):
-        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр|страниц\w*|pages?)\b", hay)
+        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр\.?(?!\s*/\s*мин)|страниц\w*|pages?)\b", hay)
         if m:
             num = re.sub(r"[^\d]", "", m.group(1))
             if len(num) >= 2 and not re.fullmatch(r"0+", num):
@@ -2512,6 +2527,16 @@ def fix_text(s: str) -> str:
 
     # Нормализация частой опечатки (Shuko -> Schuko)
     t = _RE_SHUKO.sub("Schuko", t)
+
+    # CS: частые опечатки/сцепления (встречаются у AkCent и не ломают других)
+    t = re.sub(r"(?i)\bконфернец-?залы\b", "конференц-залы", t)
+    t = re.sub(r"(?i)\bпанели\s+управление\b", "панели управления", t)
+    t = re.sub(r"(?i)пурпурнымичернилами", "пурпурными чернилами", t)
+    t = re.sub(r"(?i)высококачетсв", "высококачеств", t)
+    t = re.sub(r"(?i)\bприентер", "принтер", t)
+    t = re.sub(r"(?i)\bполотна(?=\d)", "полотна ", t)
+    t = re.sub(r"(?i)\bчерез\s+([234])\s+минут\b", r"через \1 минуты", t)
+
     t = fix_mixed_cyr_lat(t)
     return t
 
@@ -4010,6 +4035,8 @@ class OfferOut:
         keywords = build_keywords(vendor, name_short)
         keywords = _truncate_text(keywords, CS_KEYWORDS_MAX_LEN)
         keywords = sanitize_mixed_text(keywords)
+        # CS: страховка — если где-то пропала запятая перед "доставка"
+        keywords = re.sub(r"(?i)([A-Za-zА-Яа-яЁё0-9\)\]»\"\.])\s+доставка,", r"\1, доставка,", keywords, count=1)
 
         # Финальный санитайзер для AC/VT: добиваем смешение кир/лат в name/keywords/params.
         # Применяем ПОСЛЕ всех enrich/merge, чтобы не возвращалось.
