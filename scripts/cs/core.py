@@ -444,9 +444,8 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
     for m in re.finditer(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", s):
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
         _add(tok)
-
-    # Короткие 3-значные (Canon 716/725/727/728/737) — только если разрешено
-    if allow_short_3dig:
+    # Короткие 3-значные (Canon 716/725/727/728/737) — только в КАНОН-контексте (иначе ловим мусор вида "серия 664" или "700 мл")
+    if allow_short_3dig and ctx_canon:
         for m in _RE_CODE_SHORT_3DIG.finditer(s):
             tok = (m.group(0) or "").strip()
             if not tok:
@@ -942,6 +941,10 @@ def normalize_offer_name(name: str) -> str:
     s = re.sub(r"(?i)\bаналог(?=[A-ZА-Я0-9])", "аналог ", s)
     # двойной слэш в моделях
     s = s.replace("//", "/")
+    # CS: пробел после ®, если дальше сразу идёт буква/цифра (Powershred®P-30C -> Powershred® P-30C)
+    s = re.sub(r"®(?=[A-Za-zА-Яа-я0-9])", "® ", s)
+    # CS: "DIN P-4,4х34" -> "DIN P-4, 4х34" (это не десятичная дробь, а перечисление)
+    s = re.sub(r"(?i)\b(P-\d),(?=\d)", r"\1, ", s)
     # ",Color" -> ", Color"
     s = re.sub(r"(?i),\s*color\b", ", Color", s)
     # убрать пробелы перед знаками
@@ -1995,6 +1998,10 @@ def clean_params(
         vv = fix_mixed_cyr_lat(vv)
         # иногда после парсинга остаётся хвостовая пунктуация
         vv = vv.rstrip(" ,;")
+        # CS: булевы "да/нет" иногда приходят как одиночная буква (например "н" = "нет")
+        vv_cf = vv.casefold().replace("ё", "е")
+        if vv_cf == "н":
+            vv = "нет"
         if key.casefold() == "цвет":
             vv = _normalize_color(vv)
         return vv
@@ -2425,16 +2432,21 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
             keys_cf.add("тип")
     # CS: Совместимость НЕ создаём и НЕ обогащаем автоматически.
     # Если поставщик не дал параметр совместимости — оставляем пусто (по просьбе пользователя).
-
     # Ресурс
+    # ВАЖНО: не путать "ресурс (стр.)" с "скорость печати (стр/мин, стр./мин, страниц в минуту, ppm)".
     if not (_has("Ресурс") or _has("Ресурс, стр")):
-        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр|страниц\w*|pages?)\b", hay)
+        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр\.?|страниц\w*|pages?)\b", hay)
+        if m:
+            tail = (hay[m.end():m.end()+30] or "").casefold().replace("ё", "е")
+            # скорость печати
+            if ("/мин" in tail) or ("стр/мин" in tail) or ("стр./мин" in tail) or ("в минут" in tail) or ("ppm" in tail):
+                m = None
         if m:
             num = re.sub(r"[^\d]", "", m.group(1))
             if len(num) >= 2 and not re.fullmatch(r"0+", num):
                 params.append(("Ресурс", num))
                 keys_cf.add("ресурс")
-    # Цвет
+# Цвет
     # ВАЖНО: если цвет явно указан в НАЗВАНИИ — он приоритетнее параметров (исправляем конфликт).
     # CS: чистим мусорные значения ("сервисам", "сертифицированном", "серии" и т.п.) и нормализуем допустимые.
     _bad_color_re = re.compile(r"(?i)\b(сервис\w*|сертифиц\w*|сертификац\w*|сер(?:ии|ий|ия))\b")
@@ -2540,6 +2552,13 @@ def fix_text(s: str) -> str:
     t = t.replace("скобкы", "скобы")
     # CS: LСD (кирилл. 'С') -> LCD
     t = re.sub(r"(?i)lСd", "LCD", t)
+
+    # CS: точечные грамматические/орфографические фиксы (AkCent)
+    t = t.replace("через 4 минут", "через 4 минуты")
+    t = t.replace("документ в ламинатор", "документ из ламинатора")
+    t = t.replace("пурпурнымичернилами", "пурпурными чернилами")
+    # "полотна1980*1980" -> "полотна 1980×1980"
+    t = re.sub(r"(?i)\bполотна\s*(\d{3,4})\s*[*xхXХ×]\s*(\d{3,4})\b", r"полотна \1×\2", t)
 
     t = fix_mixed_cyr_lat(t)
     return t
