@@ -225,6 +225,153 @@ def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]]) -> str:
 def _extract_desc(offer: ET.Element) -> str:
     return _get_text(offer.find("description"))
 
+
+# -------------------------------
+# AkCent: табличные характеристики в description (формат: "Ключ\tЗначение")
+# Переносим их в params адаптера, чтобы CS-core не гадал и не ломал другие поставщики.
+# -------------------------------
+
+_AC_KEY_BAD_CHARS_RE = re.compile(r"[!?]|\.{2,}")
+_AC_FIX_REPLACEMENTS = {
+    "скобкы": "скобки",
+    "коэффицент": "коэффициент",
+}
+
+def _ac_fix_text(s: str) -> str:
+    """AkCent-only: безопасные правки опечаток/единиц (не переписываем смысл)."""
+    if not s:
+        return ""
+    out = s
+    # опечатки (case-insensitive)
+    for bad, good in _AC_FIX_REPLACEMENTS.items():
+        out = re.sub(re.escape(bad), good, out, flags=re.IGNORECASE)
+    # единицы: "15 литров" -> "15 л"
+    out = re.sub(r"\b(\d+)\s*литр(?:ов|а)?\b", r"\1 л", out, flags=re.IGNORECASE)
+    out = re.sub(r"\b(\d+)\s*лтр\.?\b", r"\1 л", out, flags=re.IGNORECASE)
+    return out.strip()
+
+def _ac_fix_param_key(k: str) -> str:
+    k2 = _ac_fix_text(k)
+    # точечные правки заголовков параметров
+    k2 = re.sub(r"\bкоэффициент\b", "коэффициент", k2, flags=re.IGNORECASE)
+    # убираем двоеточие на конце
+    k2 = re.sub(r"\s*:\s*$", "", k2).strip()
+    return k2
+
+def _ac_is_plausible_key(k: str) -> bool:
+    if not k:
+        return False
+    k = k.strip()
+    if len(k) < 2 or len(k) > 80:
+        return False
+    # слишком "предложение" — это не ключ
+    if _AC_KEY_BAD_CHARS_RE.search(k):
+        return False
+    # ключ не должен выглядеть как рекламная фраза
+    if k.count(" ") > 10:
+        return False
+    return True
+
+def _ac_merge_params(base: list[tuple[str, str]], extra: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    """AkCent-only: мерджим значения одинаковых ключей, не плодим дубли."""
+    if not extra:
+        return base
+    out: list[tuple[str, str]] = []
+    idx: dict[str, int] = {}
+    for k, v in base:
+        k2 = _ac_fix_param_key(k)
+        v2 = _ac_fix_text(v)
+        out.append((k2, v2))
+        idx[k2.casefold()] = len(out) - 1
+
+    for k, v in extra:
+        k2 = _ac_fix_param_key(k)
+        v2 = _ac_fix_text(v)
+        if not k2 or not v2:
+            continue
+        key_cf = k2.casefold()
+        if key_cf in idx:
+            old_k, old_v = out[idx[key_cf]]
+            # добавляем только если новой части ещё нет
+            parts = [p.strip() for p in re.split(r"\s*,\s*", old_v) if p.strip()]
+            if v2 not in parts:
+                parts.append(v2)
+            out[idx[key_cf]] = (old_k, ", ".join(parts))
+        else:
+            out.append((k2, v2))
+            idx[key_cf] = len(out) - 1
+    return out
+
+def _ac_extract_tab_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], str]:
+    """
+    Возвращает: (табличные пары key/value, description без табличных строк).
+    Поддержка кейса, когда значение идёт следующими строками после "Ключ\t".
+    """
+    if not desc:
+        return [], ""
+
+    lines = desc.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+    extracted: list[tuple[str, str]] = []
+    kept: list[str] = []
+
+    i = 0
+    while i < len(lines):
+        raw = lines[i]
+        line = raw.strip("\n")
+
+        # Табличная строка только по TAB. Двоеточия/прочие форматы не трогаем — пусть остаются в тексте.
+        if "\t" in line:
+            left, right = line.split("\t", 1)
+            k = _ac_fix_param_key(left)
+            v = _ac_fix_text(right)
+
+            if _ac_is_plausible_key(k):
+                # если справа пусто — значение может быть в следующих строках (Для дома / Для офиса)
+                if not v:
+                    vals: list[str] = []
+                    j = i + 1
+                    while j < len(lines):
+                        nxt = lines[j].strip()
+                        if not nxt:
+                            break
+                        if "\t" in nxt:
+                            break
+                        # стоп-слова/заголовки секций
+                        if nxt.endswith(":") and len(nxt) < 60:
+                            break
+                        vals.append(_ac_fix_text(nxt))
+                        # обычно 1-3 строки, не раздуваем
+                        if len(vals) >= 4:
+                            break
+                        j += 1
+                    v = ", ".join([x for x in vals if x])
+                    i = j  # съели строки значений
+                else:
+                    i += 1
+
+                if k and v:
+                    extracted.append((k, v))
+                continue
+
+        # не табличная строка — оставляем в описании
+        kept.append(raw)
+        i += 1
+
+    # чистим пустые хвосты
+    cleaned_desc = "\n".join([ln for ln in kept]).strip()
+    return extracted, _ac_fix_text(cleaned_desc)
+
+def _ac_fix_params(params: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    """AkCent-only: правки ключей/значений после clean_params()."""
+    out: list[tuple[str, str]] = []
+    for k, v in params:
+        k2 = _ac_fix_param_key(k)
+        v2 = _ac_fix_text(v)
+        if not k2 or not v2:
+            continue
+        out.append((k2, v2))
+    return out
+
 # Достаём исходную цену:
 # AkCent кладёт цены в <prices><price type="Цена дилерского портала KZT">41727</price> ...</prices>
 def _extract_price_in(offer: ET.Element) -> int:
@@ -315,16 +462,22 @@ def main() -> int:
 
         available = _extract_available(offer)
         pics = _collect_pictures(offer)
-        params_raw = _collect_params(offer)
-        params = clean_params(params_raw, drop=AKCENT_PARAM_DROP)
 
+        native_desc_raw = _extract_desc(offer)
+        tab_pairs, native_desc = _ac_extract_tab_specs_from_desc(native_desc_raw)
+
+        params_raw = _collect_params(offer)
+        # AkCent: табличные спеки из description превращаем в params
+        params_raw = _ac_merge_params(params_raw, tab_pairs)
+
+        params = clean_params(params_raw, drop=AKCENT_PARAM_DROP)
+        params = _ac_fix_params(params)
         price_in = _extract_price_in(offer)
         if not price_in or int(price_in) < 1:
             price_missing += 1
         price = compute_price(price_in)
 
         vendor = _extract_vendor(offer, params)
-        native_desc = _extract_desc(offer)
 
         out_offers.append(
             OfferOut(
