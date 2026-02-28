@@ -498,6 +498,11 @@ def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = Tru
     s = re.sub(r"(?i)\b(?:LBP|MF)\s*[-\s]*\d{2,4}x\b", _keep, s)
     s = re.sub(r"(?i)\b(?:LBP|MF)\s*[-\s]*\d{1,4}xx\b", _keep, s)
     s = re.sub(r"(?i)\b(?:FC|PC)\s*[-\s]*\d{1,3}xx\b", _keep, s)
+    # CS v037: защищаем модели техники HP DesignJet (DJ) серии T (T920/T1500/T630 и т.п.)
+    # чтобы их не вырезало как коды расходников (Epson T0481 и т.п.)
+    if re.search(r"(?i)\b(?:DJ|DESIGN\s*JET|DESIGNJET)\b", s):
+        s = re.sub(r"(?i)\bT\d{3,5}\b", _keep, s)
+
     s = _RE_CODE_NUM_SIGN.sub(" ", s)
     s = _RE_CODE_ANY.sub(" ", s)
     s = re.sub(r"(?i)\bC-?EXV\s*\d{1,3}\b", " ", s)
@@ -957,6 +962,8 @@ def normalize_offer_name(name: str) -> str:
     s = norm_ws(name)
     # CS: орфография (частая опечатка)
     s = re.sub(r"(?i)\bmaintance\b", "Maintenance", s)
+    # CS v037: исправляем частую опечатку бренда
+    s = re.sub(r"(?i)\bbrothe\b", "Brother", s)
     if not s:
         return ""
     # "дляPantum" -> "для Pantum"
@@ -2434,14 +2441,26 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
     # CS: Совместимость НЕ создаём и НЕ обогащаем автоматически.
     # Если поставщик не дал параметр совместимости — оставляем пусто (по просьбе пользователя).
 
-    # Ресурс (берём число прямо перед "стр/pages", не склеиваем списки типа "6970, 300 стр")
+    # Ресурс: добавляем ТОЛЬКО для расходников (картриджи/тонеры/чернила/драмы и т.п.)
+    # и НЕ путаем со скоростью печати ("35 стр/мин", "pages/min").
     if not (_has("Ресурс") or _has("Ресурс, стр")):
-        ms = re.findall(r"(?i)\b(\d{2,7}|\d{1,3}(?:[ \u00A0\u202f\.,]\d{3})+)\s*(?:стр|страниц\w*|pages?)\b", hay)
-        if ms:
-            num = re.sub(r"[^\d]", "", ms[-1])
-            if len(num) >= 2 and not re.fullmatch(r"0+", num):
-                params.append(("Ресурс", num))
-                keys_cf.add("ресурс")
+        if _cs_is_consumable(name, params):
+            cand_nums: list[str] = []
+            for m in re.finditer(r"(?i)\b(\d{2,7}|\d{1,3}(?:[ \u00A0\u202f\.,]\d{3})+)\s*(?:стр\.?|страниц\w*|pages?)\b", hay):
+                tail = hay[m.end():m.end() + 24]
+                # пропускаем скорость "стр/мин", "стр в минуту", "pages/min", "per minute"
+                if re.search(r"(?i)^\s*(?:/|\\)\s*(?:мин\.?|minute|min)\b", tail):
+                    continue
+                if re.search(r"(?i)^\s*\bв\b\s*(?:минут\w*|minute|min)\b", tail):
+                    continue
+                if re.search(r"(?i)^\s*per\s+minute\b", tail):
+                    continue
+                cand_nums.append(m.group(1))
+            if cand_nums:
+                num = re.sub(r"[^\d]", "", cand_nums[-1])
+                if len(num) >= 2 and not re.fullmatch(r"0+", num):
+                    params.append(("Ресурс", num))
+                    keys_cf.add("ресурс")
     # Цвет
     # ВАЖНО: если цвет явно указан в НАЗВАНИИ — он приоритетнее параметров (исправляем конфликт).
     # CS: чистим мусорные значения ("сервисам", "сертифицированном", "серии" и т.п.) и нормализуем допустимые.
