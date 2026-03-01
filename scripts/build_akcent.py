@@ -228,6 +228,14 @@ def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]]) -> str:
             v2 = _clean_vendor(val)
             if v2:
                 return v2
+    # фолбэк: по имени товара (чтобы raw уже был ближе к идеалу)
+    nm = _ac_norm_name(_get_text(offer.find("name")))
+    ncf = (nm or "").casefold()
+    # порядок важен: сначала самые частые бренды
+    for b in ["HP", "Epson", "Canon", "Brother", "Xerox", "Kyocera", "Ricoh", "Panasonic", "Zebra", "Fellowes", "ViewSonic", "Mr.Pixel", "SMART", "IDPRT"]:
+        bcf = b.casefold()
+        if bcf in ncf:
+            return b
     return ""
 
 # Достаём описание
@@ -564,15 +572,42 @@ def _ac_cyr_like(s: str) -> str:
     # приводим латинские "похожие" буквы к кириллице для устойчивых замен (только внутри AkCent)
     return (s or "").translate(_LAT2CYR)
 
+def _ac_fix_mixed_cyr_lat(s: str) -> str:
+    # Лечим частые опечатки, когда в русских словах попадаются латинские буквы (x вместо х и т.п.)
+    # Важно: меняем ТОЛЬКО если латинская буква стоит между кириллическими.
+    t = s or ""
+    for lat_code, cyr_code in _LAT2CYR.items():
+        lat = chr(lat_code) if isinstance(lat_code, int) else str(lat_code)
+        cyr = chr(cyr_code) if isinstance(cyr_code, int) else str(cyr_code)
+        t = re.sub(rf"(?<=[А-Яа-яЁё]){re.escape(lat)}(?=[А-Яа-яЁё])", cyr, t)
+    return t
+
 def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> list[tuple[str, str]]:
     out = []
+    compat_vals: list[str] = []
+    # для Epson-плоттеров/принтеров: если в параметре "Модель" поехала модель, подтягиваем из <name>
+    name_model_token = ""
+    mmt = re.search(r"(?i)\bSC-T\d{4}[A-Z0-9]{0,3}\b", name or "")
+    if mmt:
+        name_model_token = mmt.group(0).upper()
     # rename keys / values
     for k, v in params:
         kk = (k or "").strip()
         vv = (v or "").strip()
         if not kk or not vv:
             continue
+        kk = _ac_fix_mixed_cyr_lat(kk)
+        vv = _ac_fix_mixed_cyr_lat(vv)
+        # частая опечатка от поставщика: "КартриджC13T..." -> "Картридж C13T..."
+        vv = re.sub(r"(?i)\bкартридж(?=C\d)", "Картридж ", vv)
         kcf = kk.casefold()
+        # Совместимость: если поставщик дал кодами/артикулами — позже отфильтруем
+        if kcf == "совместимость":
+            compat_vals.append(vv)
+            continue
+        # Epson plotter: синхронизируем модель с названием
+        if kcf == "модель" and name_model_token and re.search(r"(?i)\bSC-T\d{4}[A-Z0-9]{0,3}\b", vv):
+            vv = re.sub(r"(?i)\bSC-T\d{4}[A-Z0-9]{0,3}\b", name_model_token, vv)
         # ключи
         if kcf == "проекционный коэффицент (throw ratio)" or kcf == "проекционный коэффицент":
             kk = "Проекционный коэффициент"
@@ -588,17 +623,36 @@ def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> l
         if kk.casefold().startswith("отдельная корзина") and vv.casefold() in {"н", "н.", "нету", "нет"}:
             vv = "нет"
         out.append((kk, vv))
-    # Совместимость из табличных параметров вида "Epson L7160"="C11..." и т.п.
+
+    # Совместимость:
+    # 1) из табличных параметров вида "Epson L7160"="C11..." (это модели)
+    # 2) из параметра поставщика <param name="Совместимость">...</param> (но только если это НЕ просто коды)
+    is_cons = _ac_is_consumable(name, out)
+
     compat = []
+    if is_cons:
+        # совместимость от поставщика: оставляем только "читаемые" значения (с буквами/словами), а не коды вида C12C...
+        for vv in compat_vals:
+            vv2 = (vv or "").strip()
+            if not vv2:
+                continue
+            if re.search(r"[А-Яа-яЁё]", vv2) or re.search(r"[a-z]", vv2):
+                for t in _ac_split_list(vv2):
+                    tt = t.strip()
+                    if tt and tt not in compat:
+                        compat.append(tt)
+
     cleaned2 = []
     for k, v in out:
-        if re.match(r"(?i)^(epson|hp|canon|brother|xerox|panasonic|ricoh|kyocera)\b", k.strip()):
-            # если значение похоже на код/артикул производителя, считаем это строкой совместимости
+        if is_cons and re.match(r"(?i)^(epson|hp|canon|brother|xerox|panasonic|ricoh|kyocera)\b", k.strip()):
+            # если значение похоже на код/артикул производителя, считаем это строкой совместимости (ключ = модель)
             if re.search(r"\bC\d{2,}\b", v) or re.search(r"\b[A-Z]{1,2}\d{3,}\b", v) or v.strip().endswith("-"):
-                compat.append(k.strip())
+                if k.strip() not in compat:
+                    compat.append(k.strip())
                 continue
         cleaned2.append((k, v))
     out = cleaned2
+
     if compat:
         compat_u = []
         for c in compat:
@@ -641,13 +695,14 @@ def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> l
             if c not in codes:
                 codes.append(c)
 
-    # добираем коды из name/desc (только по безопасным паттернам)
-    for c in _ac_extract_codes_from_fields(name, out, desc):
-        cc = c.upper()
-        if re.fullmatch(r"T\d{3,4}[A-Z]?", cc):
-            continue
-        if cc not in codes:
-            codes.append(cc)
+    # добираем коды из name/desc (только по безопасным паттернам) — ТОЛЬКО для расходников
+    if _ac_is_consumable(name, out):
+        for c in _ac_extract_codes_from_fields(name, out, desc):
+            cc = c.upper()
+            if re.fullmatch(r"T\d{3,4}[A-Z]?", cc):
+                continue
+            if cc not in codes:
+                codes.append(cc)
 
     if codes:
         out.append(("Коды", ", ".join(codes)))
