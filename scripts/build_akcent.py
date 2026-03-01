@@ -89,6 +89,9 @@ def _clean_vendor(v: str) -> str:
     if not s:
         return ""
     cf = s.casefold()
+    # AkCent: иногда бренд приходит как 'Epson Proj' — нормализуем к бренду Epson
+    if cf in {"epson proj", "epson proj.", "epson projector"}:
+        return "Epson"
     # чистим "made in ..." и явные страны
     if "made in" in cf or cf in COUNTRY_VENDOR_BLACKLIST_CF:
         return ""
@@ -269,21 +272,38 @@ def _ac_fix_text(desc: str) -> str:
     # 3LСD (кириллическая С) -> 3LCD
     t = t.replace("3LСD", "3LCD").replace("3lсd", "3lcd")
 
+    # вырезаем огромные табличные простыни из описания (они пойдут в параметры)
+    t = re.sub(
+        r"(?is)\n\s*Технические\s+характеристики\s+Параметр/\s*\n\s*Значение\s*\n.*$",
+        "",
+        t,
+    )
+
+    # лечим оборванный хвост (встречается в AkCent): 'Уничтожение CD ... (1,'
+    t = re.sub(
+        r"(?is)\bУничтожение\s+CD\s+или\s+Blu-?Ray\s+DVD\s*\(1,\s*(?=$|\n)",
+        "",
+        t,
+    )
+
     return t.strip()
 
 def _ac_norm_name(name: str) -> str:
     s = (name or "").strip()
     if not s:
         return s
+    # NBSP/узкие пробелы -> обычный пробел (иначе regex не ловит)
+    s = s.replace("\u00A0", " ").replace("\u202F", " ")
     # пробел после ®
     s = re.sub(r"®\s*(?=[A-Za-z0-9])", "® ", s)
     # шредеры: 5лст/11 лтр -> 5 лист., 11 л
     s = re.sub(r"(?i)\b(\d+)\s*лст\.?\b", r"\1 лист.", s)
     s = re.sub(r"(?i)\b(\d+)\s*лтр\.?\b", r"\1 л", s)
     s = s.replace("лист..", "лист.")
-    # размеры/десятичные: 2, 03 -> 2,03; X -> x
-    s = re.sub(r"(\d),\s+(\d)", r"\1,\2", s)
-    s = re.sub(r"\s+X\s+", " x ", s)
+    # размеры/десятичные: 2, 03 -> 2,03; X/× -> x
+    s = re.sub(r"(\d),[ \t\u00A0\u202F]+(\d)", r"\1,\2", s)
+    s = re.sub(r"[ \t\u00A0\u202F]+X[ \t\u00A0\u202F]+", " x ", s)
+    s = s.replace("×", " x ")
     # запятые/пробелы
     s = re.sub(r",(\S)", r", \1", s)
     s = re.sub(r"\s{2,}", " ", s)
@@ -348,8 +368,7 @@ def _ac_extract_tab_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], s
     cleaned = "\n".join(keep).strip()
     return out, cleaned
 
-_CODE_TOKEN_RE = re.compile(r"\b[A-Z]\d{2}[A-Z]\d{3,6}\b|\bT\d{3,4}[A-Z]?\b|\bW\d{4}[A-Z]\b", re.IGNORECASE)
-
+_CODE_TOKEN_RE = re.compile(r\"\bC13T\d{5,6}[A-Z]?\b|\b[A-Z]\d{2}[A-Z]\d{3,6}\b|\bT\d{2}[A-Z]?\b|\bW\d{4}[A-Z]\b\", re.IGNORECASE)\n
 def _ac_extract_codes_from_fields(name: str, params: list[tuple[str, str]], desc: str) -> list[str]:
     text = " ".join([name or "", desc or ""] + [f"{k} {v}" for k, v in (params or [])])
     codes = []
@@ -394,7 +413,7 @@ def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> l
         # значения
         if kk.casefold() == "уничтожение":
             vv_norm = _ac_cyr_like(vv)
-            vv_norm = re.sub(r"(?i)скобк[ыи]", "скобы", vv_norm)
+            vv_norm = re.sub(r"(?i)\bскобк[ыи]\b", "скобы", vv_norm)
             vv = vv_norm
         if kk.casefold() == "страна происхождения":
             vv = _ac_norm_country(vv)
@@ -418,8 +437,50 @@ def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> l
             if c not in compat_u:
                 compat_u.append(c)
         out.append(("Совместимость", ", ".join(compat_u)))
-    # Коды расходников
-    codes = _ac_extract_codes_from_fields(name, out, desc)
+    # Коды расходников (AkCent): оставляем только реальные коды расходников, а модели (T3000/T5200/...) убираем
+    existing_vals: list[str] = []
+    tmp: list[tuple[str, str]] = []
+    for k, v in out:
+        if k.casefold() == "коды расходников":
+            if v:
+                existing_vals.append(v)
+        else:
+            tmp.append((k, v))
+    out = tmp
+
+    def _codes_from_val(vv: str) -> list[str]:
+        toks = re.split(r"[;,\s]+", (vv or ""))
+        res: list[str] = []
+        for t in toks:
+            tt = t.strip().strip(".,:()[]{}<>")
+            if not tt:
+                continue
+            uu = tt.upper()
+            if uu.isdigit():
+                continue
+            # это модели устройств, не коды расходников (Epson SureColor T3000/T5200/T5700D и т.п.)
+            if re.fullmatch(r"T\d{3,4}[A-Z]?", uu):
+                continue
+            # допускаем типовые коды (Epson C13T..., HP/Canon вида CE278A и т.п., а также T09/T11 и т.п.)
+            if re.fullmatch(r"C13T\d{5,6}[A-Z]?", uu) or re.fullmatch(r"[A-Z]\d{2}[A-Z]\d{3,6}", uu) or re.fullmatch(r"W\d{4}[A-Z]", uu) or re.fullmatch(r"T\d{2}[A-Z]?", uu):
+                if uu not in res:
+                    res.append(uu)
+        return res
+
+    codes: list[str] = []
+    for vv in existing_vals:
+        for c in _codes_from_val(vv):
+            if c not in codes:
+                codes.append(c)
+
+    # добираем коды из name/desc (только по безопасным паттернам)
+    for c in _ac_extract_codes_from_fields(name, out, desc):
+        cc = c.upper()
+        if re.fullmatch(r"T\d{3,4}[A-Z]?", cc):
+            continue
+        if cc not in codes:
+            codes.append(cc)
+
     if codes:
         out.append(("Коды расходников", ", ".join(codes)))
     # Ресурс (только для расходников)
