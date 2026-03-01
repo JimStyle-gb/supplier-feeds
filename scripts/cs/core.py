@@ -73,6 +73,12 @@ class SupplierPolicy:
     drop_desc_specs_pairs: bool = False  # AS: не переносим пары specs из native_desc в params
 
 
+    # Модули "умного" обогащения. По умолчанию включены для всех, но для некоторых поставщиков
+    # (например AkCent) лучше отключать и делать эти правки в адаптере, чтобы не ломать других.
+    enable_enrich_from_desc: bool = True
+    enable_enrich_from_name_desc: bool = True
+    enable_auto_compat: bool = True
+    enable_apply_color_from_name: bool = True
 def _supplier_code_from_oid(oid: str) -> str:
     oid_u = (oid or "").upper()
     return oid_u[:2] if len(oid_u) >= 2 else oid_u
@@ -80,7 +86,7 @@ def _supplier_code_from_oid(oid: str) -> str:
 
 _POLICIES: dict[str, SupplierPolicy] = {
     "AS": SupplierPolicy("AS", always_true_available=False, drop_desc_specs_pairs=True),
-    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=False),
+    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=True, enable_enrich_from_desc=False, enable_enrich_from_name_desc=False, enable_auto_compat=False, enable_apply_color_from_name=False),
     "CL": SupplierPolicy("CL", always_true_available=True, drop_desc_specs_pairs=False),
     "NP": SupplierPolicy("NP", always_true_available=True, drop_desc_specs_pairs=False),
     "VT": SupplierPolicy("VT", always_true_available=True, drop_desc_specs_pairs=False),
@@ -444,8 +450,9 @@ def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = Tru
     for m in re.finditer(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", s):
         tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
         _add(tok)
-    # Короткие 3-значные (Canon 716/725/727/728/737) — только в КАНОН-контексте (иначе ловим мусор вида "серия 664" или "700 мл")
-    if allow_short_3dig and ctx_canon:
+
+    # Короткие 3-значные (Canon 716/725/727/728/737) — только если разрешено
+    if allow_short_3dig:
         for m in _RE_CODE_SHORT_3DIG.finditer(s):
             tok = (m.group(0) or "").strip()
             if not tok:
@@ -941,10 +948,6 @@ def normalize_offer_name(name: str) -> str:
     s = re.sub(r"(?i)\bаналог(?=[A-ZА-Я0-9])", "аналог ", s)
     # двойной слэш в моделях
     s = s.replace("//", "/")
-    # CS: пробел после ®, если дальше сразу идёт буква/цифра (Powershred®P-30C -> Powershred® P-30C)
-    s = re.sub(r"®(?=[A-Za-zА-Яа-я0-9])", "® ", s)
-    # CS: "DIN P-4,4х34" -> "DIN P-4, 4х34" (это не десятичная дробь, а перечисление)
-    s = re.sub(r"(?i)\b(P-\d),(?=\d)", r"\1, ", s)
     # ",Color" -> ", Color"
     s = re.sub(r"(?i),\s*color\b", ", Color", s)
     # убрать пробелы перед знаками
@@ -1250,22 +1253,6 @@ def _shorten_smart_name(name: str, params: list[tuple[str, str]], max_len: int) 
     # Фоллбэк: просто режем по границе и добавляем "…"
     return _truncate_text(name, max_len, suffix=" и др.")
 
-
-
-def _ac_fix_name(name: str) -> str:
-    """CS/AkCent: точечная нормализация наименований, чтобы не ломать других поставщиков."""
-    s = (name or "").strip()
-    if not s:
-        return s
-    # 2, 03 -> 2,03 (десятичная запятая + пробел)
-    s = re.sub(r"(?<=\d),\s+(?=\d)", ",", s)
-    # X -> x в размерах (80" X 80" / 2,03 X 2,03)
-    s = re.sub(r'(?<=[\d"])\s*X\s*(?=[\d"])', ' x ', s)
-    # лист.. -> лист.
-    s = s.replace("лист..", "лист.")
-    # двойные пробелы
-    s = re.sub(r"\s{2,}", " ", s).strip()
-    return s
 
 def enforce_name_policy(oid: str, name: str, params: list[tuple[str, str]]) -> str:
     # CS: глобальная политика имени — одинаково для всех поставщиков
@@ -1998,10 +1985,6 @@ def clean_params(
         vv = fix_mixed_cyr_lat(vv)
         # иногда после парсинга остаётся хвостовая пунктуация
         vv = vv.rstrip(" ,;")
-        # CS: булевы "да/нет" иногда приходят как одиночная буква (например "н" = "нет")
-        vv_cf = vv.casefold().replace("ё", "е")
-        if vv_cf == "н":
-            vv = "нет"
         if key.casefold() == "цвет":
             vv = _normalize_color(vv)
         return vv
@@ -2338,11 +2321,6 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
         if not kk or not vv:
             continue
         k_cf = kk.casefold().replace("ё", "е")
-
-        # AkCent: нормализуем значения бренда в ключевых параметрах (производитель/бренд)
-        if oid_u.startswith("AC") and k_cf in {"производитель", "для бренда", "бренд"}:
-            vv = normalize_vendor(vv)
-
         # глобально: не выводим служебный 'Артикул' как характеристику
         if k_cf == "артикул":
             continue
@@ -2432,21 +2410,16 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
             keys_cf.add("тип")
     # CS: Совместимость НЕ создаём и НЕ обогащаем автоматически.
     # Если поставщик не дал параметр совместимости — оставляем пусто (по просьбе пользователя).
+
     # Ресурс
-    # ВАЖНО: не путать "ресурс (стр.)" с "скорость печати (стр/мин, стр./мин, страниц в минуту, ppm)".
     if not (_has("Ресурс") or _has("Ресурс, стр")):
-        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр\.?|страниц\w*|pages?)\b", hay)
-        if m:
-            tail = (hay[m.end():m.end()+30] or "").casefold().replace("ё", "е")
-            # скорость печати
-            if ("/мин" in tail) or ("стр/мин" in tail) or ("стр./мин" in tail) or ("в минут" in tail) or ("ppm" in tail):
-                m = None
+        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр|страниц\w*|pages?)\b", hay)
         if m:
             num = re.sub(r"[^\d]", "", m.group(1))
             if len(num) >= 2 and not re.fullmatch(r"0+", num):
                 params.append(("Ресурс", num))
                 keys_cf.add("ресурс")
-# Цвет
+    # Цвет
     # ВАЖНО: если цвет явно указан в НАЗВАНИИ — он приоритетнее параметров (исправляем конфликт).
     # CS: чистим мусорные значения ("сервисам", "сертифицированном", "серии" и т.п.) и нормализуем допустимые.
     _bad_color_re = re.compile(r"(?i)\b(сервис\w*|сертифиц\w*|сертификац\w*|сер(?:ии|ий|ия))\b")
@@ -2545,21 +2518,6 @@ def fix_text(s: str) -> str:
 
     # Нормализация частой опечатки (Shuko -> Schuko)
     t = _RE_SHUKO.sub("Schuko", t)
-
-    # CS: безопасные точечные орфографические/типографические починки (часто встречаются у AkCent)
-    t = t.replace("характерстики", "характеристики")
-    t = t.replace("конфернец-залы", "конференц-залы")
-    t = t.replace("скобкы", "скобы")
-    # CS: LСD (кирилл. 'С') -> LCD
-    t = re.sub(r"(?i)lСd", "LCD", t)
-
-    # CS: точечные грамматические/орфографические фиксы (AkCent)
-    t = t.replace("через 4 минут", "через 4 минуты")
-    t = t.replace("документ в ламинатор", "документ из ламинатора")
-    t = t.replace("пурпурнымичернилами", "пурпурными чернилами")
-    # "полотна1980*1980" -> "полотна 1980×1980"
-    t = re.sub(r"(?i)\bполотна\s*(\d{3,4})\s*[*xхXХ×]\s*(\d{3,4})\b", r"полотна \1×\2", t)
-
     t = fix_mixed_cyr_lat(t)
     return t
 
@@ -3187,10 +3145,6 @@ def _build_desc_part(name: str, native_desc: str) -> str:
     # CS: убираем повтор названия в начале и режем длинные простыни
     d = _dedupe_desc_leading_name(d, name)
     d = _clip_desc_plain(d, max_chars=int(os.getenv("CS_NATIVE_DESC_MAX_CHARS", "1200")))
-
-    # CS: убираем обрубки вида "(1," в конце текста (часто у AkCent)
-    d = re.sub(r"\(\s*\d+\s*,\s*$", "", d).strip()
-    d = d.rstrip(" ,.;:-([")
 
     # Если после чистки осталось только название — не выводим пустой <p> с дублем.
     if _cmp_name_like_text(d) == _cmp_name_like_text(name):
@@ -4016,10 +3970,6 @@ class OfferOut:
     ) -> str:
         name_full = normalize_offer_name(self.name)
         name_full = sanitize_mixed_text(name_full)
-        # CS/AkCent: точечная нормализация имени (размеры/лист..) — только для AC
-        if _supplier_code_from_oid(self.oid) == "AC":
-            name_full = _ac_fix_name(name_full)
-            name_full = sanitize_mixed_text(name_full)
         native_desc = fix_text(self.native_desc)
         # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
         native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
@@ -4035,10 +3985,13 @@ class OfferOut:
         params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in (self.params or [])]
         if _spec_pairs:
             params.extend(_spec_pairs)
-        enrich_params_from_desc(params, native_desc)
-        enrich_params_from_name_and_desc(params, name_full, native_desc)
+        if policy.enable_enrich_from_desc:
+            enrich_params_from_desc(params, native_desc)
+        if policy.enable_enrich_from_name_desc:
+            enrich_params_from_name_and_desc(params, name_full, native_desc)
         # CS: Совместимость — добавляем только безопасно и только где нужно.
-        ensure_compatibility_param(params, name_full, native_desc)
+        if policy.enable_auto_compat:
+            ensure_compatibility_param(params, name_full, native_desc)
 
         # финальная починка смешения кир/лат в params после всех enrich/compat
         params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in params]
@@ -4046,7 +3999,8 @@ class OfferOut:
         # чистим и сортируем (ВАЖНО: чистить всегда)
         params = clean_params(params)
         params = apply_supplier_param_rules(params, self.oid, name_full)
-        params = apply_color_from_name(params, name_full)
+        if policy.enable_apply_color_from_name:
+            params = apply_color_from_name(params, name_full)
         params_sorted = sort_params(params, priority=list(param_priority or []))
 
                 # выносим "параметры-фразы" в примечания и оставляем чистые характеристики
@@ -4058,11 +4012,7 @@ class OfferOut:
 
         # CS: В описании сохраняем полное наименование (если оно было укорочено).
         # Если <name> был укорочен — в описании сохраняем полное наименование.
-        # AkCent: в описании держим ровно то же имя, что и в <name>, чтобы не было расхождений.
-        if _supplier_code_from_oid(self.oid) == "AC":
-            name_for_desc = name_short
-        else:
-            name_for_desc = name_full if (name_short != name_full) else name_short
+        name_for_desc = name_full if (name_short != name_full) else name_short
         name_for_desc = sanitize_mixed_text(name_for_desc)
 
         desc_cdata = build_description(name_for_desc, native_desc, params_sorted, notes=notes)
