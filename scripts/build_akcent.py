@@ -234,15 +234,41 @@ _AC_TEXT_REPL = [
 ]
 _AC_TEXT_REPL_RE = [(re.compile(p, flags=re.IGNORECASE), rep) for p, rep in _AC_TEXT_REPL]
 
+def _ru_minutes(n: int) -> str:
+    # 1 минуту, 2-4 минуты, 5-20 минут, 21 минуту...
+    n_abs = abs(int(n))
+    n_mod100 = n_abs % 100
+    n_mod10 = n_abs % 10
+    if 11 <= n_mod100 <= 14:
+        return "минут"
+    if n_mod10 == 1:
+        return "минуту"
+    if 2 <= n_mod10 <= 4:
+        return "минуты"
+    return "минут"
+
 def _ac_fix_text(desc: str) -> str:
     t = (desc or "").replace("\r\n", "\n").replace("\r", "\n")
     for rx, rep in _AC_TEXT_REPL_RE:
         t = rx.sub(rep, t)
-    # грамматика (безопасные шаблонные)
-    t = re.sub(r"(?i)\bчерез\s+(\d+)\s+минут\b", r"через \1 минуты", t)
+
+    # типовые орфо/опечатки (AkCent)
+    t = re.sub(r"(?i)\bтраспортировк", "транспортировк", t)
+    t = re.sub(r"(?i)\bв\s+хранение\b", "в хранении", t)
+    t = re.sub(r"(?i)\bв\s+комплект\s+работы\s+входит\b", "В комплект входит", t)
+
+    # грамматика минут (склонение)
+    def _min_repl(mm: re.Match) -> str:
+        n = int(mm.group(1))
+        return f"через {n} {_ru_minutes(n)}"
+    t = re.sub(r"(?i)\bчерез\s+(\d+)\s+минут(?:ы|у)?\b", _min_repl, t)
+
+    # ламинатор: изъять документ
     t = re.sub(r"(?i)\bдокумент\s+в\s+ламинатор\b", "документ из ламинатора", t)
+
     # 3LСD (кириллическая С) -> 3LCD
     t = t.replace("3LСD", "3LCD").replace("3lсd", "3lcd")
+
     return t.strip()
 
 def _ac_norm_name(name: str) -> str:
@@ -255,6 +281,9 @@ def _ac_norm_name(name: str) -> str:
     s = re.sub(r"(?i)\b(\d+)\s*лст\.?\b", r"\1 лист.", s)
     s = re.sub(r"(?i)\b(\d+)\s*лтр\.?\b", r"\1 л", s)
     s = s.replace("лист..", "лист.")
+    # размеры/десятичные: 2, 03 -> 2,03; X -> x
+    s = re.sub(r"(\d),\s+(\d)", r"\1,\2", s)
+    s = re.sub(r"\s+X\s+", " x ", s)
     # запятые/пробелы
     s = re.sub(r",(\S)", r", \1", s)
     s = re.sub(r"\s{2,}", " ", s)
@@ -337,6 +366,17 @@ def _ac_extract_volume_ml(name: str, desc: str, params: list[tuple[str, str]]) -
         return f"{m.group(1)} мл"
     return ""
 
+
+_LAT2CYR = str.maketrans({
+    "A":"А","a":"а","B":"В","E":"Е","e":"е","K":"К","k":"к","M":"М","m":"м",
+    "H":"Н","h":"н","O":"О","o":"о","P":"Р","p":"р","C":"С","c":"с",
+    "T":"Т","t":"т","X":"Х","x":"х","Y":"У","y":"у"
+})
+
+def _ac_cyr_like(s: str) -> str:
+    # приводим латинские "похожие" буквы к кириллице для устойчивых замен (только внутри AkCent)
+    return (s or "").translate(_LAT2CYR)
+
 def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> list[tuple[str, str]]:
     out = []
     # rename keys / values
@@ -353,7 +393,9 @@ def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> l
             kk = "Тип резки"
         # значения
         if kk.casefold() == "уничтожение":
-            vv = re.sub(r"(?i)\bскобк[ыи]\b", "скобы", vv)
+            vv_norm = _ac_cyr_like(vv)
+            vv_norm = re.sub(r"(?i)скобк[ыи]", "скобы", vv_norm)
+            vv = vv_norm
         if kk.casefold() == "страна происхождения":
             vv = _ac_norm_country(vv)
         if kk.casefold().startswith("отдельная корзина") and vv.casefold() in {"н", "н.", "нету", "нет"}:
