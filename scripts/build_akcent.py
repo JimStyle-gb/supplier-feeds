@@ -92,6 +92,11 @@ def _clean_vendor(v: str) -> str:
     # AkCent: иногда бренд приходит как 'Epson Proj' — нормализуем к бренду Epson
     if cf in {"epson proj", "epson proj.", "epson projector"}:
         return "Epson"
+    # AkCent: общий случай "Brand proj"/"Brand projector" -> Brand
+    if cf.endswith(" proj") or cf.endswith(" proj.") or cf.endswith(" projector"):
+        base = s.split()[0].strip()
+        if base:
+            return base
     # чистим "made in ..." и явные страны
     if "made in" in cf or cf in COUNTRY_VENDOR_BLACKLIST_CF:
         return ""
@@ -269,8 +274,8 @@ def _ac_fix_text(desc: str) -> str:
     # ламинатор: изъять документ
     t = re.sub(r"(?i)\bдокумент\s+в\s+ламинатор\b", "документ из ламинатора", t)
 
-    # 3LСD (кириллическая С) -> 3LCD
-    t = t.replace("3LСD", "3LCD").replace("3lсd", "3lcd")
+    # 3LCD: ловим и латинскую C/c, и кириллическую С/с (частая опечатка)
+    t = re.sub(r"(?i)\b3l[сc]d\b", "3LCD", t)
 
     # вырезаем огромные табличные простыни из описания (они пойдут в параметры)
     t = re.sub(
@@ -599,6 +604,16 @@ def main() -> int:
         price = compute_price(price_in)
 
         vendor = _extract_vendor(offer, params)
+        # AkCent: вычищаем значение параметра 'Производитель' (Proj/страны) -> бренд
+        if vendor:
+            fixed_params: list[tuple[str, str]] = []
+            for pk, pv in params:
+                if pk and pk.casefold() == 'производитель':
+                    pv2 = _clean_vendor(pv) or vendor
+                    fixed_params.append((pk, pv2))
+                else:
+                    fixed_params.append((pk, pv))
+            params = fixed_params
 
         out_offers.append(
             OfferOut(
