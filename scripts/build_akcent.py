@@ -368,7 +368,7 @@ def _ac_extract_tab_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], s
     cleaned = "\n".join(keep).strip()
     return out, cleaned
 
-_CODE_TOKEN_RE = re.compile(r\"\bC13T\d{5,6}[A-Z]?\b|\b[A-Z]\d{2}[A-Z]\d{3,6}\b|\bT\d{2}[A-Z]?\b|\bW\d{4}[A-Z]\b\", re.IGNORECASE)\n
+_CODE_TOKEN_RE = re.compile(r"\bC13T\d{5,6}[A-Z]?\b|\b[A-Z]\d{2}[A-Z]\d{3,6}\b|\bT\d{2}[A-Z]?\b|\bW\d{4}[A-Z]\b", re.IGNORECASE)
 def _ac_extract_codes_from_fields(name: str, params: list[tuple[str, str]], desc: str) -> list[str]:
     text = " ".join([name or "", desc or ""] + [f"{k} {v}" for k, v in (params or [])])
     codes = []
