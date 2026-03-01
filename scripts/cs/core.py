@@ -2519,8 +2519,8 @@ def fix_text(s: str) -> str:
     # Нормализация частой опечатки (Shuko -> Schuko)
     t = _RE_SHUKO.sub("Schuko", t)
     t = fix_mixed_cyr_lat(t)
-    # 3LСD/3LCD (кириллическая/латинская C) -> 3LCD
-    t = re.sub(r"(?i)3l[сc]d", "3LCD", t)
+    # 3LCD: после нормализации кир/лат иногда 'C' превращается в кириллическую 'С'
+    t = t.replace("3LСD", "3LCD").replace("3lсd", "3lcd")
     return t
 
 
