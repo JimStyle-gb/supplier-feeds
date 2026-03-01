@@ -222,155 +222,175 @@ def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]]) -> str:
     return ""
 
 # Достаём описание
-def _extract_desc(offer: ET.Element) -> str:
-    return _get_text(offer.find("description"))
 
+# --- AkCent: максимум поставщик-специфичных правок в адаптере (CS-ready raw) ---
 
-# -------------------------------
-# AkCent: табличные характеристики в description (формат: "Ключ\tЗначение")
-# Переносим их в params адаптера, чтобы CS-core не гадал и не ломал другие поставщики.
-# -------------------------------
+_AC_TEXT_REPL = [
+    # орфография/типографика
+    (r"конфернец", "конференц"),
+    (r"характерстик", "характеристик"),
+    (r"пурпурнымичернилами", "пурпурными чернилами"),
+    (r"полотна(\d{3,4}\*)", r"полотна \1"),
+]
+_AC_TEXT_REPL_RE = [(re.compile(p, flags=re.IGNORECASE), rep) for p, rep in _AC_TEXT_REPL]
 
-_AC_KEY_BAD_CHARS_RE = re.compile(r"[!?]|\.{2,}")
-_AC_FIX_REPLACEMENTS = {
-    "скобкы": "скобки",
-    "коэффицент": "коэффициент",
-}
+def _ac_fix_text(desc: str) -> str:
+    t = (desc or "").replace("\r\n", "\n").replace("\r", "\n")
+    for rx, rep in _AC_TEXT_REPL_RE:
+        t = rx.sub(rep, t)
+    # грамматика (безопасные шаблонные)
+    t = re.sub(r"(?i)\bчерез\s+(\d+)\s+минут\b", r"через \1 минуты", t)
+    t = re.sub(r"(?i)\bдокумент\s+в\s+ламинатор\b", "документ из ламинатора", t)
+    # 3LСD (кириллическая С) -> 3LCD
+    t = t.replace("3LСD", "3LCD").replace("3lсd", "3lcd")
+    return t.strip()
 
-def _ac_fix_text(s: str) -> str:
-    """AkCent-only: безопасные правки опечаток/единиц (не переписываем смысл)."""
+def _ac_norm_name(name: str) -> str:
+    s = (name or "").strip()
     if not s:
+        return s
+    # пробел после ®
+    s = re.sub(r"®\s*(?=[A-Za-z0-9])", "® ", s)
+    # шредеры: 5лст/11 лтр -> 5 лист., 11 л
+    s = re.sub(r"(?i)\b(\d+)\s*лст\.?\b", r"\1 лист.", s)
+    s = re.sub(r"(?i)\b(\d+)\s*лтр\.?\b", r"\1 л", s)
+    s = s.replace("лист..", "лист.")
+    # запятые/пробелы
+    s = re.sub(r",(\S)", r", \1", s)
+    s = re.sub(r"\s{2,}", " ", s)
+    return s.strip()
+
+def _ac_norm_country(v: str) -> str:
+    t = (v or "").strip()
+    if not t:
         return ""
-    out = s
-    # опечатки (case-insensitive)
-    for bad, good in _AC_FIX_REPLACEMENTS.items():
-        out = re.sub(re.escape(bad), good, out, flags=re.IGNORECASE)
-    # единицы: "15 литров" -> "15 л"
-    out = re.sub(r"\b(\d+)\s*литр(?:ов|а)?\b", r"\1 л", out, flags=re.IGNORECASE)
-    out = re.sub(r"\b(\d+)\s*лтр\.?\b", r"\1 л", out, flags=re.IGNORECASE)
-    return out.strip()
-
-def _ac_fix_param_key(k: str) -> str:
-    k2 = _ac_fix_text(k)
-    # точечные правки заголовков параметров
-    k2 = re.sub(r"\bкоэффициент\b", "коэффициент", k2, flags=re.IGNORECASE)
-    # убираем двоеточие на конце
-    k2 = re.sub(r"\s*:\s*$", "", k2).strip()
-    return k2
-
-def _ac_is_plausible_key(k: str) -> bool:
-    if not k:
-        return False
-    k = k.strip()
-    if len(k) < 2 or len(k) > 80:
-        return False
-    # слишком "предложение" — это не ключ
-    if _AC_KEY_BAD_CHARS_RE.search(k):
-        return False
-    # ключ не должен выглядеть как рекламная фраза
-    if k.count(" ") > 10:
-        return False
-    return True
-
-def _ac_merge_params(base: list[tuple[str, str]], extra: list[tuple[str, str]]) -> list[tuple[str, str]]:
-    """AkCent-only: мерджим значения одинаковых ключей, не плодим дубли."""
-    if not extra:
-        return base
-    out: list[tuple[str, str]] = []
-    idx: dict[str, int] = {}
-    for k, v in base:
-        k2 = _ac_fix_param_key(k)
-        v2 = _ac_fix_text(v)
-        out.append((k2, v2))
-        idx[k2.casefold()] = len(out) - 1
-
-    for k, v in extra:
-        k2 = _ac_fix_param_key(k)
-        v2 = _ac_fix_text(v)
-        if not k2 or not v2:
-            continue
-        key_cf = k2.casefold()
-        if key_cf in idx:
-            old_k, old_v = out[idx[key_cf]]
-            # добавляем только если новой части ещё нет
-            parts = [p.strip() for p in re.split(r"\s*,\s*", old_v) if p.strip()]
-            if v2 not in parts:
-                parts.append(v2)
-            out[idx[key_cf]] = (old_k, ", ".join(parts))
-        else:
-            out.append((k2, v2))
-            idx[key_cf] = len(out) - 1
-    return out
+    # приводим к запятым
+    t = t.replace("/", ",").replace(";", ",")
+    t = re.sub(r"\.\s*", ", ", t)
+    t = re.sub(r"\s{2,}", " ", t)
+    parts = [p.strip() for p in t.split(",") if p.strip()]
+    normed = []
+    for p in parts:
+        p2 = p
+        p2 = re.sub(r"(?i)\bжапония\b", "Япония", p2)
+        p2 = re.sub(r"(?i)\bфилипин(ы|)\b", "Филиппины", p2)
+        p2 = re.sub(r"(?i)\bфилиппин\b", "Филиппины", p2)
+        p2 = re.sub(r"(?i)\bфилипины\b", "Филиппины", p2)
+        p2 = p2[:1].upper() + p2[1:] if p2 else p2
+        if p2 and p2 not in normed:
+            normed.append(p2)
+    return ", ".join(normed)
 
 def _ac_extract_tab_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], str]:
-    """
-    Возвращает: (табличные пары key/value, description без табличных строк).
-    Поддержка кейса, когда значение идёт следующими строками после "Ключ\t".
-    """
-    if not desc:
-        return [], ""
-
-    lines = desc.replace("\r\n", "\n").replace("\r", "\n").split("\n")
-    extracted: list[tuple[str, str]] = []
-    kept: list[str] = []
-
+    """Вытаскиваем табличные строки AkCent вида 'Ключ\\tЗначение' в params и вычищаем их из описания."""
+    t = (desc or "").replace("\r\n", "\n").replace("\r", "\n")
+    if "\t" not in t:
+        return [], (t.strip())
+    lines = t.split("\n")
+    out: list[tuple[str, str]] = []
+    keep: list[str] = []
     i = 0
     while i < len(lines):
-        raw = lines[i]
-        line = raw.strip("\n")
-
-        # Табличная строка только по TAB. Двоеточия/прочие форматы не трогаем — пусть остаются в тексте.
-        if "\t" in line:
-            left, right = line.split("\t", 1)
-            k = _ac_fix_param_key(left)
-            v = _ac_fix_text(right)
-
-            if _ac_is_plausible_key(k):
-                # если справа пусто — значение может быть в следующих строках (Для дома / Для офиса)
-                if not v:
-                    vals: list[str] = []
-                    j = i + 1
-                    while j < len(lines):
-                        nxt = lines[j].strip()
-                        if not nxt:
-                            break
-                        if "\t" in nxt:
-                            break
-                        # стоп-слова/заголовки секций
-                        if nxt.endswith(":") and len(nxt) < 60:
-                            break
-                        vals.append(_ac_fix_text(nxt))
-                        # обычно 1-3 строки, не раздуваем
-                        if len(vals) >= 4:
-                            break
-                        j += 1
-                    v = ", ".join([x for x in vals if x])
-                    i = j  # съели строки значений
-                else:
-                    i += 1
-
-                if k and v:
-                    extracted.append((k, v))
-                continue
-
-        # не табличная строка — оставляем в описании
-        kept.append(raw)
+        ln = lines[i]
+        if "\t" in ln:
+            left, right = ln.split("\t", 1)
+            k = left.strip()
+            v = right.strip()
+            # если значение пустое, собираем следующие строки пока не встретим новую таб-пару или пустую строку
+            if k and not v:
+                vals = []
+                j = i + 1
+                while j < len(lines):
+                    ln2 = lines[j]
+                    if "\t" in ln2:
+                        break
+                    if ln2.strip() == "":
+                        break
+                    vals.append(ln2.strip())
+                    j += 1
+                v = ", ".join(dict.fromkeys(vals)) if vals else ""
+                i = j - 1
+            if k and v:
+                out.append((k, v))
+            # не добавляем эту строку в описание
+        else:
+            keep.append(ln)
         i += 1
+    cleaned = "\n".join(keep).strip()
+    return out, cleaned
 
-    # чистим пустые хвосты
-    cleaned_desc = "\n".join([ln for ln in kept]).strip()
-    return extracted, _ac_fix_text(cleaned_desc)
+_CODE_TOKEN_RE = re.compile(r"\b[A-Z]\d{2}[A-Z]\d{3,6}\b|\bT\d{3,4}[A-Z]?\b|\bW\d{4}[A-Z]\b", re.IGNORECASE)
 
-def _ac_fix_params(params: list[tuple[str, str]]) -> list[tuple[str, str]]:
-    """AkCent-only: правки ключей/значений после clean_params()."""
-    out: list[tuple[str, str]] = []
+def _ac_extract_codes_from_fields(name: str, params: list[tuple[str, str]], desc: str) -> list[str]:
+    text = " ".join([name or "", desc or ""] + [f"{k} {v}" for k, v in (params or [])])
+    codes = []
+    for m in _CODE_TOKEN_RE.finditer(text):
+        c = m.group(0).upper()
+        if c not in codes:
+            codes.append(c)
+    return codes
+
+def _ac_extract_volume_ml(name: str, desc: str, params: list[tuple[str, str]]) -> str:
+    text = " ".join([name or "", desc or ""] + [v for _, v in (params or [])])
+    m = re.search(r"(?i)\b(\d{2,4})\s*(мл|ml)\b", text)
+    if m:
+        return f"{m.group(1)} мл"
+    return ""
+
+def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> list[tuple[str, str]]:
+    out = []
+    # rename keys / values
     for k, v in params:
-        k2 = _ac_fix_param_key(k)
-        v2 = _ac_fix_text(v)
-        if not k2 or not v2:
+        kk = (k or "").strip()
+        vv = (v or "").strip()
+        if not kk or not vv:
             continue
-        out.append((k2, v2))
+        kcf = kk.casefold()
+        # ключи
+        if kcf == "проекционный коэффицент (throw ratio)" or kcf == "проекционный коэффицент":
+            kk = "Проекционный коэффициент"
+        elif kcf == "тип резки":
+            kk = "Тип резки"
+        # значения
+        if kk.casefold() == "уничтожение":
+            vv = re.sub(r"(?i)\bскобк[ыи]\b", "скобы", vv)
+        if kk.casefold() == "страна происхождения":
+            vv = _ac_norm_country(vv)
+        if kk.casefold().startswith("отдельная корзина") and vv.casefold() in {"н", "н.", "нету", "нет"}:
+            vv = "нет"
+        out.append((kk, vv))
+    # Совместимость из табличных параметров вида "Epson L7160"="C11..." и т.п.
+    compat = []
+    cleaned2 = []
+    for k, v in out:
+        if re.match(r"(?i)^(epson|hp|canon|brother|xerox|panasonic|ricoh|kyocera)\b", k.strip()):
+            # если значение похоже на код/артикул производителя, считаем это строкой совместимости
+            if re.search(r"\bC\d{2,}\b", v) or re.search(r"\b[A-Z]{1,2}\d{3,}\b", v) or v.strip().endswith("-"):
+                compat.append(k.strip())
+                continue
+        cleaned2.append((k, v))
+    out = cleaned2
+    if compat:
+        compat_u = []
+        for c in compat:
+            if c not in compat_u:
+                compat_u.append(c)
+        out.append(("Совместимость", ", ".join(compat_u)))
+    # Коды расходников
+    codes = _ac_extract_codes_from_fields(name, out, desc)
+    if codes:
+        out.append(("Коды расходников", ", ".join(codes)))
+    # Ресурс (только для расходников)
+    name_cf = (name or "").casefold()
+    if any(w in name_cf for w in ["чернила", "картридж", "тонер", "драм", "drum", "ink", "toner", "cartridge"]):
+        vol = _ac_extract_volume_ml(name, desc, out)
+        if vol:
+            out.append(("Ресурс", vol))
     return out
+
+
+def _extract_desc(offer: ET.Element) -> str:
+    return _get_text(offer.find("description"))
 
 # Достаём исходную цену:
 # AkCent кладёт цены в <prices><price type="Цена дилерского портала KZT">41727</price> ...</prices>
@@ -442,7 +462,7 @@ def main() -> int:
     price_missing = 0
 
     for offer in offers_in:
-        name = _get_text(offer.find("name"))
+        name = _ac_norm_name(_get_text(offer.find("name")))
         if not name or not _passes_name_prefixes(name):
             continue
 
@@ -462,16 +482,14 @@ def main() -> int:
 
         available = _extract_available(offer)
         pics = _collect_pictures(offer)
-
-        native_desc_raw = _extract_desc(offer)
-        tab_pairs, native_desc = _ac_extract_tab_specs_from_desc(native_desc_raw)
-
         params_raw = _collect_params(offer)
-        # AkCent: табличные спеки из description превращаем в params
-        params_raw = _ac_merge_params(params_raw, tab_pairs)
-
+        native_desc = _ac_fix_text(_extract_desc(offer))
+        extra_params, native_desc = _ac_extract_tab_specs_from_desc(native_desc)
+        if extra_params:
+            params_raw.extend(extra_params)
+        params_raw = _ac_params_postfix(params_raw, name, native_desc)
         params = clean_params(params_raw, drop=AKCENT_PARAM_DROP)
-        params = _ac_fix_params(params)
+
         price_in = _extract_price_in(offer)
         if not price_in or int(price_in) < 1:
             price_missing += 1
