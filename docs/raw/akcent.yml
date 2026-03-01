@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-01 15:22">
+<yml_catalog date="2026-03-01 17:06">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-01 15:22:29
+Время сборки (Алматы)                      | 2026-03-01 17:06:02
 Ближайшая сборка (Алматы)                  | 2026-03-02 02:00:00
 Сколько товаров у поставщика до фильтра    | 1826
 Сколько товаров у поставщика после фильтра | 143
@@ -102,11 +102,11 @@ P-4 уровень секретности
 <param name="Уровень шума под нагрузкой, дБ">70</param>
 <param name="Гарантия, лет">2</param>
 <param name="Гарантия на ножи, лет">3</param>
-<param name="Габаритные размеры, мм (ВхШхГ)">401 x 310 x 220</param>
+<param name="Габаритные размеры, мм (ВxШxГ)">401 x 310 x 220</param>
 <param name="Вес, кг">4,2</param>
-<param name="Размеры розничной упаковки, мм (ВхШхГ)">380 x 330 x 240</param>
+<param name="Размеры розничной упаковки, мм (ВxШxГ)">380 x 330 x 240</param>
 <param name="Вес розничной упаковки, кг">4,9</param>
-<param name="Размеры транспортной упаковки, мм (ВхШхГ)">395 x 495 x 343</param>
+<param name="Размеры транспортной упаковки, мм (ВxШxГ)">395 x 495 x 343</param>
 <param name="Вес транспортной упаковки, кг">10,5</param>
 <param name="Количество в транспортной упаковке">2</param>
 </offer>
@@ -473,7 +473,7 @@ Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye]]]></description>
 <param name="Тип расходных материалов">чернила</param>
 <param name="Максимальная скорость печати А4 стр/мин">9</param>
 <param name="Модель">Epson L121</param>
-<param name="Коды расходников">C13T66414A, C13T66424A, C13T66434A, C13T66444A</param>
+<param name="Коды">C13T66414A, C13T66424A, C13T66434A, C13T66444A</param>
 </offer>
 
 <offer id="ACC11CE58403" available="true">
@@ -562,7 +562,7 @@ USB
 <param name="Максимальная плотность бумаги, г/м2">255</param>
 <param name="Тип расходных материалов">чернила</param>
 <param name="Модель">Epson L132</param>
-<param name="Коды расходников">C13T66414A, C13T66424A, C13T66434A, C13T66444A</param>
+<param name="Коды">C13T66414A, C13T66424A, C13T66434A, C13T66444A</param>
 </offer>
 
 <offer id="ACC11CG95405" available="true">
@@ -669,7 +669,7 @@ ESC/P, ESC/P-R
 <param name="Область применения">Для дома</param>
 <param name="Тип расходных материалов">чернила</param>
 <param name="Модель">Epson M1100</param>
-<param name="Коды расходников">C13S041256, C13S041342</param>
+<param name="Коды">C13S041256, C13S041342</param>
 </offer>
 
 <offer id="ACC11CG96405" available="true">
@@ -776,7 +776,7 @@ ESC/P, ESC/P-R, GDI
 <param name="Тип чернил">пигментные</param>
 <param name="Область применения">Для дома</param>
 <param name="Тип расходных материалов">чернила</param>
-<param name="Коды расходников">C13S041256, C13S041342</param>
+<param name="Коды">C13S041256, C13S041342</param>
 </offer>
 
 <offer id="ACC11CH38402" available="true">
@@ -887,7 +887,7 @@ CD с программным обеспечением и драйверами
 <param name="Область применения">Для офиса</param>
 <param name="Тип расходных материалов">чернила</param>
 <param name="Модель">Epson L15150</param>
-<param name="Коды расходников">C12C934591</param>
+<param name="Коды">C12C934591</param>
 </offer>
 
 <offer id="ACC11CH81301A0" available="true">
@@ -944,7 +944,7 @@ CD с программным обеспечением и драйверами
 <param name="Тип расходных материалов">Картриджи</param>
 <param name="Область применения">CAD</param>
 <param name="Модель">Epson SureColor SC-T5200</param>
-<param name="Коды расходников">C13T692300, C13T692100, C13T692500, C13T694200, C13T694400, C13T694300, C13T692200, C13T692400, C13T693100, C13T693200, C13T693300, C13T693400</param>
+<param name="Коды">C13T692300, C13T692100, C13T692500, C13T694200, C13T694400, C13T694300, C13T692200, C13T692400, C13T693100, C13T693200, C13T693300, C13T693400</param>
 </offer>
 
 <offer id="ACC11CJ18404" available="true">
@@ -999,7 +999,7 @@ CD с программным обеспечением и драйверами
 <param name="Модель">Epson M2120</param>
 <param name="Тип устройства">МФУ</param>
 <param name="Серия устройств">Фабрика печати Epson</param>
-<param name="Технология печати">Струйная</param>
+<param name="Теxнология печати">Струйная</param>
 <param name="Назначение">Для печати черно-белых документов</param>
 <param name="Функция копирования">Да</param>
 </offer>
@@ -1056,7 +1056,7 @@ CD с программным обеспечением и драйверами
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип устройства">МФУ</param>
 <param name="Серия устройств">Фабрика печати Epson</param>
-<param name="Технология печати">Струйная</param>
+<param name="Теxнология печати">Струйная</param>
 <param name="Назначение">Для печати черно-белых документов</param>
 </offer>
 
@@ -1197,7 +1197,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 <param name="Максимальная плотность бумаги, г/м2">300</param>
 <param name="Область применения">Для офиса</param>
 <param name="Тип расходных материалов">чернила</param>
-<param name="Коды расходников">C12C934591</param>
+<param name="Коды">C12C934591</param>
 </offer>
 
 <offer id="ACC11CJ30404" available="true">
@@ -1253,7 +1253,7 @@ CD с программным обеспечением и драйверами д
 <param name="Тип расходных материалов">чернила</param>
 <param name="Модель">Epson L6550</param>
 <param name="Разрешение печати,dpi">4800x2400</param>
-<param name="Коды расходников">C12C934591</param>
+<param name="Коды">C12C934591</param>
 </offer>
 
 <offer id="ACC11CJ36301A0" available="true">
@@ -2040,7 +2040,7 @@ ESC/P-R
 <param name="Область применения">Для дома</param>
 <param name="Тип расходных материалов">чернила</param>
 <param name="Модель">Epson L850</param>
-<param name="Коды расходников">C13T67324A, C13T67344A, C13T67334A, C13T67314A, C13T67354A, C13T67364A</param>
+<param name="Коды">C13T67324A, C13T67344A, C13T67334A, C13T67314A, C13T67354A, C13T67364A</param>
 </offer>
 
 <offer id="ACC12C890191" available="true">
@@ -2064,7 +2064,7 @@ ESC/P-R
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C12C890191</param>
+<param name="Коды">C12C890191</param>
 </offer>
 
 <offer id="ACC13T00Q140" available="true">
@@ -2570,7 +2570,7 @@ Epson WorkForce WF-7110DTW]]></description>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">T40D140</param>
+<param name="Коды">T40D140</param>
 <param name="Ресурс">80 мл</param>
 </offer>
 
@@ -2591,7 +2591,7 @@ Epson WorkForce WF-7110DTW]]></description>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">T40D240</param>
+<param name="Коды">T40D240</param>
 <param name="Ресурс">50 мл</param>
 </offer>
 
@@ -2613,7 +2613,7 @@ Epson WorkForce WF-7110DTW]]></description>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">T40D340</param>
+<param name="Коды">T40D340</param>
 <param name="Ресурс">50 мл</param>
 </offer>
 
@@ -2637,7 +2637,7 @@ Epson WorkForce WF-7110DTW]]></description>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">желтый</param>
 <param name="Epson SureColor SC-T3100">C11CF11302A0</param>
-<param name="Коды расходников">T40D440</param>
+<param name="Коды">T40D440</param>
 <param name="Ресурс">50 мл</param>
 </offer>
 
@@ -2661,7 +2661,7 @@ Epson WorkForce WF-7110DTW]]></description>
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">350 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">T41F340</param>
+<param name="Коды">T41F340</param>
 </offer>
 
 <offer id="ACC13T41F440" available="true">
@@ -2685,7 +2685,7 @@ Epson SureColor T-7000]]></description>
 <param name="Ресурс">350 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">желтый</param>
-<param name="Коды расходников">T41F440</param>
+<param name="Коды">T41F440</param>
 </offer>
 
 <offer id="ACC13T54LA00" available="true">
@@ -2760,7 +2760,7 @@ Epson Stylus Pro 4880]]></description>
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T606100</param>
+<param name="Коды">C13T606100</param>
 </offer>
 
 <offer id="ACC13T606300" available="true">
@@ -2783,7 +2783,7 @@ Epson Stylus Pro 4880]]></description>
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T606300</param>
+<param name="Коды">C13T606300</param>
 </offer>
 
 <offer id="ACC13T606400" available="true">
@@ -2806,7 +2806,7 @@ Epson Stylus Pro 4880]]></description>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">желтый</param>
-<param name="Коды расходников">C13T606400</param>
+<param name="Коды">C13T606400</param>
 </offer>
 
 <offer id="ACC13T606700" available="true">
@@ -2829,7 +2829,7 @@ Epson Stylus Pro 4880]]></description>
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T606700</param>
+<param name="Коды">C13T606700</param>
 </offer>
 
 <offer id="ACC13T606B00" available="true">
@@ -2889,7 +2889,7 @@ Epson Stylus Pro 4450]]></description>
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T614200</param>
+<param name="Коды">C13T614200</param>
 </offer>
 
 <offer id="ACC13T614300" available="true">
@@ -2907,13 +2907,13 @@ Epson Stylus Pro 4450]]></description>
 <param name="Страна происхождения">Китай</param>
 <param name="Производитель">Epson</param>
 <param name="Цвет">пурпурный</param>
-<param name="Модель">Epson КартриджС13Т614300 SP-4450 пурпурный</param>
+<param name="Модель">Epson КартриджC13T614300 SP-4450 пурпурный</param>
 <param name="Гарантия">3</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T614300</param>
+<param name="Коды">C13T614300</param>
 </offer>
 
 <offer id="ACC13T614400" available="true">
@@ -2936,7 +2936,7 @@ Epson Stylus Pro 4450]]></description>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">желтый</param>
-<param name="Коды расходников">C13T614400</param>
+<param name="Коды">C13T614400</param>
 </offer>
 
 <offer id="ACC13T61480N" available="true">
@@ -2962,7 +2962,7 @@ Epson Stylus Pro 4450]]></description>
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T61480N, C13T614800</param>
+<param name="Коды">C13T61480N, C13T614800</param>
 </offer>
 
 <offer id="ACC13T619300" available="true">
@@ -2990,7 +2990,7 @@ SC-B6000]]></description>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T619300</param>
+<param name="Коды">C13T619300</param>
 </offer>
 
 <offer id="ACC13T66414A" available="true">
@@ -3020,7 +3020,7 @@ Epson L550]]></description>
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">4000 – 7100 страниц формата A4*</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T66414A</param>
+<param name="Коды">C13T66414A</param>
 </offer>
 
 <offer id="ACC13T66434A" available="true">
@@ -3050,7 +3050,7 @@ Epson L550]]></description>
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">5700 – 6500 страниц формата A4*</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T66434A</param>
+<param name="Коды">C13T66434A</param>
 </offer>
 
 <offer id="ACC13T66444A" available="true">
@@ -3079,7 +3079,7 @@ Epson L550]]></description>
 <param name="Ресурс">5700 – 6500 страниц формата A4*</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">желтый</param>
-<param name="Коды расходников">C13T66444A</param>
+<param name="Коды">C13T66444A</param>
 </offer>
 
 <offer id="ACC13T66464A" available="true">
@@ -3121,7 +3121,7 @@ Epson L550]]></description>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T671400</param>
+<param name="Коды">C13T671400</param>
 </offer>
 
 <offer id="ACC13T67314A" available="true">
@@ -3150,7 +3150,7 @@ Epson L800
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T67314A</param>
+<param name="Коды">C13T67314A</param>
 </offer>
 
 <offer id="ACC13T67324A" available="true">
@@ -3179,7 +3179,7 @@ Epson L800
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T67324A</param>
+<param name="Коды">C13T67324A</param>
 </offer>
 
 <offer id="ACC13T67334A" available="true">
@@ -3207,7 +3207,7 @@ Epson L800
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T67334A</param>
+<param name="Коды">C13T67334A</param>
 </offer>
 
 <offer id="ACC13T67344A" available="true">
@@ -3236,7 +3236,7 @@ Epson L800
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">желтый</param>
-<param name="Коды расходников">C13T67344A</param>
+<param name="Коды">C13T67344A</param>
 </offer>
 
 <offer id="ACC13T67354A" available="true">
@@ -3265,7 +3265,7 @@ Epson L800
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T67354A</param>
+<param name="Коды">C13T67354A</param>
 </offer>
 
 <offer id="ACC13T67364A" available="true">
@@ -3294,7 +3294,7 @@ Epson L800
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T67364A</param>
+<param name="Коды">C13T67364A</param>
 </offer>
 
 <offer id="ACC13T694100" available="true">
@@ -3319,7 +3319,7 @@ Epson SureColor T-7000]]></description>
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">700 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T694100</param>
+<param name="Коды">C13T694100</param>
 </offer>
 
 <offer id="ACC13T69430N" available="true">
@@ -3344,7 +3344,7 @@ Epson SureColor T-7000]]></description>
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">700 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T69430N, C13T694300</param>
+<param name="Коды">C13T69430N, C13T694300</param>
 </offer>
 
 <offer id="ACC13T69440N" available="true">
@@ -3369,7 +3369,7 @@ Epson SureColor T-7000]]></description>
 <param name="Ресурс">700 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">желтый</param>
-<param name="Коды расходников">C13T69440N, C13T694400</param>
+<param name="Коды">C13T69440N, C13T694400</param>
 </offer>
 
 <offer id="ACC13T699700" available="true">
@@ -3390,7 +3390,7 @@ Epson SureColor T-7000]]></description>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T699700</param>
+<param name="Коды">C13T699700</param>
 </offer>
 
 <offer id="ACC13T965140" available="true">
@@ -3412,7 +3412,7 @@ Epson SureColor T-7000]]></description>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды расходников">C13T965140</param>
+<param name="Коды">C13T965140</param>
 </offer>
 
 <offer id="ACC33S021601" available="true">
@@ -3427,7 +3427,7 @@ Epson SureColor T-7000]]></description>
 Ёмкость для отработанных чернил Epson C33S021601SJMB4000 C4000e Maintenance box]]></description>
 <param name="Гарантия">3</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
-<param name="Коды расходников">C33S021601</param>
+<param name="Коды">C33S021601</param>
 </offer>
 
 <offer id="ACFS-45700" available="true">
@@ -3473,11 +3473,11 @@ Epson SureColor T-7000]]></description>
 <param name="Выходной лоток">нет</param>
 <param name="Гарантия, лет">1</param>
 <param name="Стартовый набор для 10 документов">да</param>
-<param name="Габаритные размеры, мм (ВхШхГ)">62 x 359 x 113</param>
+<param name="Габаритные размеры, мм (ВxШxГ)">62 x 359 x 113</param>
 <param name="Вес, кг">1</param>
-<param name="Размеры розничной упаковки, мм (ВхШхГ)">157 x 405 x 101</param>
+<param name="Размеры розничной упаковки, мм (ВxШxГ)">157 x 405 x 101</param>
 <param name="Вес розничной упаковки, кг">1,5</param>
-<param name="Размеры транспортной упаковки, мм (ВхШхГ)">171 x 390 x 412</param>
+<param name="Размеры транспортной упаковки, мм (ВxШxГ)">171 x 390 x 412</param>
 <param name="Вес транспортной упаковки, кг">6,7</param>
 <param name="Количество в транспортной упаковке">4</param>
 </offer>
@@ -3753,7 +3753,7 @@ RS232:1
 Высота Упаковки, см:30
 Глубина Упаковки, см:18.8
 Вес Нетто, кг:2.45
-Габариты товара:293x221x115mm
+Габариты товара:293x221x115мм
 Дополнительно
 Рабочая температура:0~40℃]]></description>
 <param name="Производитель">ViewSonic</param>
@@ -4705,7 +4705,7 @@ USB Display 3-в-1 – передача изображения, звука и с
 <param name="3D">Нет</param>
 <param name="Страна происхождения">Китай, Филиппины</param>
 <param name="Срок службы лампы (норм./ эконом.) ч.">6000/12000</param>
-<param name="Коды расходников">V12H757040, V12H758040</param>
+<param name="Коды">V12H757040, V12H758040</param>
 </offer>
 
 <offer id="ACV11HA84040" available="true">
