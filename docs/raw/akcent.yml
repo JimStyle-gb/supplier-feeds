@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-01 17:06">
+<yml_catalog date="2026-03-01 23:47">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-01 17:06:02
+Время сборки (Алматы)                      | 2026-03-01 23:47:39
 Ближайшая сборка (Алматы)                  | 2026-03-02 02:00:00
 Сколько товаров у поставщика до фильтра    | 1826
 Сколько товаров у поставщика после фильтра | 143
@@ -19,7 +19,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>МФУ лазерное HP LaserJet Pro 3103fdn белый</name>
 <price>180900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e71/o7kxcvbim1lkrjh7det4bbho7j8ze897.png</picture>
-<vendor></vendor>
+<vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Компактный, быстрый и надежный многофункциональный принтер со скоростью печати до 35 стр/мин, оснащенный функциями автоматического устранения замятий и самовосстановления подключения Wi-Fi®. В комплект входит приложение HP, позволяющее с легкостью печатать и сканировать с мобильных устройств. 
@@ -32,7 +32,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>МФУ лазерное HP LaserJet Pro 3103fdw белый</name>
 <price>187900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b08/vx05ixpcci2nrjjugnuowqz07k1eij69.jpg</picture>
-<vendor></vendor>
+<vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 МФУ лазерное HP LaserJet Pro MFP 3103fdw разработано для рабочих групп, обеспечивает профессиональную производительность, быструю высококачественную печать, сканирование и копирование - все это в компактном корпусе.]]></description>
@@ -44,7 +44,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Шредер Fellowes® Powershred® LX45 SHREDDER (CROSS CUT) 230V EU</name>
 <price>54900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/8de/jvif2fk2yekaywpn95c8bj6d1k7yn188.jpg</picture>
-<vendor></vendor>
+<vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Шредер Powershred® LX45
@@ -102,11 +102,11 @@ P-4 уровень секретности
 <param name="Уровень шума под нагрузкой, дБ">70</param>
 <param name="Гарантия, лет">2</param>
 <param name="Гарантия на ножи, лет">3</param>
-<param name="Габаритные размеры, мм (ВxШxГ)">401 x 310 x 220</param>
+<param name="Габаритные размеры, мм (ВхШхГ)">401 x 310 x 220</param>
 <param name="Вес, кг">4,2</param>
-<param name="Размеры розничной упаковки, мм (ВxШxГ)">380 x 330 x 240</param>
+<param name="Размеры розничной упаковки, мм (ВхШхГ)">380 x 330 x 240</param>
 <param name="Вес розничной упаковки, кг">4,9</param>
-<param name="Размеры транспортной упаковки, мм (ВxШxГ)">395 x 495 x 343</param>
+<param name="Размеры транспортной упаковки, мм (ВхШхГ)">395 x 495 x 343</param>
 <param name="Вес транспортной упаковки, кг">10,5</param>
 <param name="Количество в транспортной упаковке">2</param>
 </offer>
@@ -167,7 +167,7 @@ Fellowes P-25S - Шредер предназначен для персональ
 <name>Шредер Fellowes Powershred LX201 белый</name>
 <price>204900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/bb3/srjj8vt77lmeoqdjdg4ybapui7tj29c1.jpg</picture>
-<vendor></vendor>
+<vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Шредер Powershred® LX201 белый
@@ -205,7 +205,7 @@ P-5 уровень секретности, резка листа А4 на 2200+ 
 <name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лист., 22 л., Jam Proof™,</name>
 <price>174900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/18e/soiotb0m5krsb9li7hcpuoq606v24158.jpg</picture>
-<vendor></vendor>
+<vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Шредер Powershred® LX200
@@ -334,7 +334,7 @@ P-4 уровень секретности
 <name>Принтер лазерный HP LaserJet M111w белый</name>
 <price>76900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/122/8cvubtx3fl3rvtupgqwi4plcijkye6fv.jpg</picture>
-<vendor></vendor>
+<vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Принтер HP LaserJet M111w имеет компактный и стильный дизайн, позволяющий легко интегрировать его в рабочую среду. Монохромная лазерная технология печати, используемая в данном принтере, позволит распечатывать тексты и графики отличного качества. Устройство поддерживает печать на конвертах, обычной бумаге, открытках, этикетках.]]></description>
@@ -346,7 +346,7 @@ P-4 уровень секретности
 <name>МФУ лазерное HP LaserJet M141w белый</name>
 <price>96900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b46/j9s3oezxi9zrvjavmukw5yfosv69dge9.jpg</picture>
-<vendor></vendor>
+<vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Эффективное, высококачественное и доступное по цене многофункциональное устройство, которое можно разместить где угодно. Самое компактное в своем классе лазерное МФУ с быстрой печатью и приложением HP Smart для экономии времени. Простая настройка и печать материалов профессионального качества.
@@ -369,7 +369,7 @@ P-4 уровень секретности
 <name>Сканер Epson Perfection V39II</name>
 <price>68900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/cf6/s6b251wzwuckych5x78795z6x330h6u0.jpg</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Технические характеристики Epson Perfection V39II Photo
@@ -473,7 +473,6 @@ Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye]]]></description>
 <param name="Тип расходных материалов">чернила</param>
 <param name="Максимальная скорость печати А4 стр/мин">9</param>
 <param name="Модель">Epson L121</param>
-<param name="Коды">C13T66414A, C13T66424A, C13T66434A, C13T66444A</param>
 </offer>
 
 <offer id="ACC11CE58403" available="true">
@@ -562,7 +561,6 @@ USB
 <param name="Максимальная плотность бумаги, г/м2">255</param>
 <param name="Тип расходных материалов">чернила</param>
 <param name="Модель">Epson L132</param>
-<param name="Коды">C13T66414A, C13T66424A, C13T66434A, C13T66444A</param>
 </offer>
 
 <offer id="ACC11CG95405" available="true">
@@ -669,7 +667,6 @@ ESC/P, ESC/P-R
 <param name="Область применения">Для дома</param>
 <param name="Тип расходных материалов">чернила</param>
 <param name="Модель">Epson M1100</param>
-<param name="Коды">C13S041256, C13S041342</param>
 </offer>
 
 <offer id="ACC11CG96405" available="true">
@@ -776,7 +773,6 @@ ESC/P, ESC/P-R, GDI
 <param name="Тип чернил">пигментные</param>
 <param name="Область применения">Для дома</param>
 <param name="Тип расходных материалов">чернила</param>
-<param name="Коды">C13S041256, C13S041342</param>
 </offer>
 
 <offer id="ACC11CH38402" available="true">
@@ -887,7 +883,6 @@ CD с программным обеспечением и драйверами
 <param name="Область применения">Для офиса</param>
 <param name="Тип расходных материалов">чернила</param>
 <param name="Модель">Epson L15150</param>
-<param name="Коды">C12C934591</param>
 </offer>
 
 <offer id="ACC11CH81301A0" available="true">
@@ -944,7 +939,6 @@ CD с программным обеспечением и драйверами
 <param name="Тип расходных материалов">Картриджи</param>
 <param name="Область применения">CAD</param>
 <param name="Модель">Epson SureColor SC-T5200</param>
-<param name="Коды">C13T692300, C13T692100, C13T692500, C13T694200, C13T694400, C13T694300, C13T692200, C13T692400, C13T693100, C13T693200, C13T693300, C13T693400</param>
 </offer>
 
 <offer id="ACC11CJ18404" available="true">
@@ -999,7 +993,7 @@ CD с программным обеспечением и драйверами
 <param name="Модель">Epson M2120</param>
 <param name="Тип устройства">МФУ</param>
 <param name="Серия устройств">Фабрика печати Epson</param>
-<param name="Теxнология печати">Струйная</param>
+<param name="Технология печати">Струйная</param>
 <param name="Назначение">Для печати черно-белых документов</param>
 <param name="Функция копирования">Да</param>
 </offer>
@@ -1056,7 +1050,7 @@ CD с программным обеспечением и драйверами
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип устройства">МФУ</param>
 <param name="Серия устройств">Фабрика печати Epson</param>
-<param name="Теxнология печати">Струйная</param>
+<param name="Технология печати">Струйная</param>
 <param name="Назначение">Для печати черно-белых документов</param>
 </offer>
 
@@ -1197,7 +1191,6 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 <param name="Максимальная плотность бумаги, г/м2">300</param>
 <param name="Область применения">Для офиса</param>
 <param name="Тип расходных материалов">чернила</param>
-<param name="Коды">C12C934591</param>
 </offer>
 
 <offer id="ACC11CJ30404" available="true">
@@ -1253,7 +1246,6 @@ CD с программным обеспечением и драйверами д
 <param name="Тип расходных материалов">чернила</param>
 <param name="Модель">Epson L6550</param>
 <param name="Разрешение печати,dpi">4800x2400</param>
-<param name="Коды">C12C934591</param>
 </offer>
 
 <offer id="ACC11CJ36301A0" available="true">
@@ -1318,7 +1310,7 @@ CD с программным обеспечением и драйверами д
 <name>МФУ Epson L4267 фабрика печати</name>
 <price>229900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/c5a/ohm0qiezepysqc27cjzbckfrfgdcsjqa.png</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Домашний струйный принтер
@@ -1423,7 +1415,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google
 <name>МФУ Epson L5290 фабрика печати, факс, Wi-Fi</name>
 <price>271900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ca7/nf3rr4pa3rockbljc48gyy3o0zv4dku9.jpg</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Принтер-сканер-копир-факс с фронтальными чернильными емкостями, Wi-Fi, Ethernet и автоподатчиком для сканирования документов
@@ -1574,7 +1566,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google
 <name>МФУ Epson L3266 фабрика печати, Wi-Fi</name>
 <price>137900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/860/k04y2f9a08l1p21jsheg2xlgvfaisx59.jpg</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Домашний струйный принтер
@@ -1723,7 +1715,7 @@ L3256
 <name>МФУ Epson L3200 фабрика печати</name>
 <price>103900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/763/qu9kcxpvv8la732hqigmmskkstop1d2j.jpg</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Домашний струйный принтер
@@ -1819,7 +1811,7 @@ Black]]></description>
 <name>МФУ Epson L3560 фабрика печати, Wi-Fi</name>
 <price>189900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/0bf/34830ig99bsckrnz03tavpjuuulx0fiw.jpg</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 МФУ с чернильными емкостями для печати дома
@@ -2040,7 +2032,6 @@ ESC/P-R
 <param name="Область применения">Для дома</param>
 <param name="Тип расходных материалов">чернила</param>
 <param name="Модель">Epson L850</param>
-<param name="Коды">C13T67324A, C13T67344A, C13T67334A, C13T67314A, C13T67354A, C13T67364A</param>
 </offer>
 
 <offer id="ACC12C890191" available="true">
@@ -2838,7 +2829,7 @@ Epson Stylus Pro 4880]]></description>
 <name>Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</name>
 <price>102900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/13f/4e003pi2n3p83pjenshmqjhzv915k6lk.jpg</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Пурпурный картридж для:
@@ -2907,7 +2898,7 @@ Epson Stylus Pro 4450]]></description>
 <param name="Страна происхождения">Китай</param>
 <param name="Производитель">Epson</param>
 <param name="Цвет">пурпурный</param>
-<param name="Модель">Epson КартриджC13T614300 SP-4450 пурпурный</param>
+<param name="Модель">Epson Картридж C13T614300 SP-4450 пурпурный</param>
 <param name="Гарантия">3</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
@@ -3421,7 +3412,7 @@ Epson SureColor T-7000]]></description>
 <name>Ёмкость для отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance box</name>
 <price>24900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/93a/rjszo6e7gjv3nl9122h7l7sui2jhglrv.jpg</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ёмкость для отработанных чернил Epson C33S021601SJMB4000 C4000e Maintenance box]]></description>
@@ -3473,11 +3464,11 @@ Epson SureColor T-7000]]></description>
 <param name="Выходной лоток">нет</param>
 <param name="Гарантия, лет">1</param>
 <param name="Стартовый набор для 10 документов">да</param>
-<param name="Габаритные размеры, мм (ВxШxГ)">62 x 359 x 113</param>
+<param name="Габаритные размеры, мм (ВхШхГ)">62 x 359 x 113</param>
 <param name="Вес, кг">1</param>
-<param name="Размеры розничной упаковки, мм (ВxШxГ)">157 x 405 x 101</param>
+<param name="Размеры розничной упаковки, мм (ВхШхГ)">157 x 405 x 101</param>
 <param name="Вес розничной упаковки, кг">1,5</param>
-<param name="Размеры транспортной упаковки, мм (ВxШxГ)">171 x 390 x 412</param>
+<param name="Размеры транспортной упаковки, мм (ВхШхГ)">171 x 390 x 412</param>
 <param name="Вес транспортной упаковки, кг">6,7</param>
 <param name="Количество в транспортной упаковке">4</param>
 </offer>
@@ -3488,7 +3479,7 @@ Epson SureColor T-7000]]></description>
 <name>Пленка для ламинирования А4 Fellowes, 80мкм, 100 шт.</name>
 <price>7900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/72c/r2m7dmccr35j23xqduu1gb6uf1j72tma.jpg</picture>
-<vendor></vendor>
+<vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Пленка для ламинирования
@@ -3512,7 +3503,7 @@ Epson SureColor T-7000]]></description>
 <name>МФУ струйное Canon Pixma G3410 Wi-Fi черный</name>
 <price>119900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/4ff/a757sz3lvsmqy4wjg5r2b7xyd4sjaf8e.png</picture>
-<vendor></vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 МФУ струйное Canon PIXMA G3410 – компактное устройство для осуществления цветной печати, которое отличается поддержкой СНПЧ, что позволяет с легкостью производить замену чернил без обращения к мастеру. Максимальный формат, поддерживаемый МФУ, – A4. Прибор для настольной домашней установки сочетает три устройства – копир, принтер и сканер, поэтому пользователь будет обеспечен всем необходимым для комфортной работы. Планшетный сканер поможет получать отсканированные документы в разрешении 1200x600 dpi со скоростью 19 стр/мин (A4).
@@ -3528,7 +3519,7 @@ Epson SureColor T-7000]]></description>
 <name>МФУ струйное Canon Pixma G3430 Wi-Fi черный</name>
 <price>128900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/d21/rk25u67wme1s98uygdsaxo1ouffuu4ua.png</picture>
-<vendor></vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 МФУ струйное Canon PIXMA G3430 обеспечивает высокое качество печати документов и изображений. Данная модель одновременно сочетает в себе функциональность принтера, копира и сканера. Термоструйная технология печати создает четкие отпечатки с насыщенностью цветов. В МФУ реализована система непрерывной подачи чернил.
@@ -3544,7 +3535,7 @@ Epson SureColor T-7000]]></description>
 <name>Сканер штрих-кода IDPRT HN-1358SR черный</name>
 <price>19900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/c32/kzxpzpukhblbodbkm7p2zwwigvr13apw.jpg</picture>
-<vendor></vendor>
+<vendor>IDPRT</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ручные сканеры штрихкодов серии HN-13 отличаются лёгким и стильным дизайном, обеспечивают удобное считывание как традиционных бумажных, так и экранных штрихкодов. Они поддерживают различные POS-системы, включая Android, Windows и macOS, благодаря функции Plug-and-Play.
@@ -3622,7 +3613,7 @@ USB-клавиатура
 <name>Сканер штрих-кода IDPRT HN-3308SR черный</name>
 <price>17900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/12f/txacffp72k148ya2vz2n8sq2ah6s18a2.png</picture>
-<vendor></vendor>
+<vendor>IDPRT</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Сканер штрих-кодов HN-3308SR — это ручной 2D-имидж сканер, который считывает как одномерные (1D), так и двумерные (2D, например, QR-коды) штрих-коды с помощью камеры (2D Imager), а не лазера, и обычно подключен к системе проводом (USB). Он относится к категории проводных и предназначен для ручного использования, считывая коды с высокой точностью. 
@@ -4705,7 +4696,6 @@ USB Display 3-в-1 – передача изображения, звука и с
 <param name="3D">Нет</param>
 <param name="Страна происхождения">Китай, Филиппины</param>
 <param name="Срок службы лампы (норм./ эконом.) ч.">6000/12000</param>
-<param name="Коды">V12H757040, V12H758040</param>
 </offer>
 
 <offer id="ACV11HA84040" available="true">
@@ -4853,7 +4843,7 @@ Offset
 <name>Проектор универсальный Epson CO-WX02</name>
 <price>253900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/722/qeijdfcsjnzx8xk6w54pdthh80evpy8o.jpg</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Доступный яркий WXGA проектор
@@ -5058,7 +5048,7 @@ Epson EB-E24 — это компактный и надёжный 3LCD-проек
 <name>Проектор универсальный Epson EB-W53 белый</name>
 <price>407900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/07d/nv3rc3phbezu5nq77t45hvjzneur3fwc.png</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Проектор Epson EB-W53 — надёжное решение для офиса, учебных классов и домашних презентаций. Благодаря технологии 3LCD изображение получается ярким и реалистичным. Разрешение WXGA (1280×800) и яркость 4000 люмен позволяют выводить чёткую картинку даже в хорошо освещённом помещении.
@@ -5077,7 +5067,7 @@ Epson EB-E24 — это компактный и надёжный 3LCD-проек
 <name>Проектор универсальный Epson EB-W55 белый</name>
 <price>395900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/9fb/bh7bmyjx42db3zapkp7ai4noolmc4ref.png</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Управляйте своими презентациями с помощью надежного и высокопроизводительного бизнес-проектора Epson EB-W55. Проводите ли вы совещания в зале заседаний или преподаете в загруженном классе, этот проектор обеспечит кристально чистое изображение, которое подчеркнет ваш контент. Забудьте о сложных настройках — наша функция беспроводной проекции позволяет легко подключаться напрямую с совместимых мобильных устройств без необходимости установки дополнительного программного обеспечения. Гибкий, удобный и созданный для того, чтобы впечатлять, Epson EB-W55 — ваш разумный выбор для создания впечатляющих презентаций каждый раз.
@@ -5097,7 +5087,7 @@ Epson EB-E24 — это компактный и надёжный 3LCD-проек
 <name>Монитор ViewSonic VA2732-H</name>
 <price>70900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/95b/85yzrw305i03p1c6ovg1y2z9cburva6h.jpg</picture>
-<vendor></vendor>
+<vendor>ViewSonic</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 27" IPS монитор с интерфейсом HDMI - Технология SuperClear® IPS для насыщенных цветов и широких углов обзора - Разрешение Full HD 1080p - Частота обновления 75 Гц обеспечивает плавные визуальные эффекты - Трехсторонний безрамочный дизайн для удобного просмотра - Входы HDMI и VGA для гибкости подключения - Улучшенные параметры цветопередачи ViewMode - Технология защиты зрения для комфортного просмотра - Эко-режим для низкого потребления энергии - Совместимость со стандартом VESA ViewSonic VA2732-h - это 27-дюймовый IPS-монитор Full HD с входом HDMI и VGA, предназначенный для бизнеса или дома. Благодаря технологии SuperClear® IPS и разрешению Full HD изображения получаются четкими и детализированными при широком диапазоне углов обзора. Трехсторонняя безрамочная конструкция VA2732-h добавляет модели элегантности и удобства. Монитор имеет шесть предустановок ViewMode, которые обеспечивают оптимальную работу экрана в различных приложениях. Технология Eye-Care и энергосберегающий режим Eco помогают снизить нагрузку на глаза при длительном просмотре.
@@ -5154,7 +5144,7 @@ HDMI доп информация:версия 1.4
 <name>Монитор Viewsonic VX2418C</name>
 <price>80900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/0fc/bbhdqomaqtc6d0qzu2dl2wmjn7ytzoi5.jpeg</picture>
-<vendor></vendor>
+<vendor>ViewSonic</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Оснащен четким дисплеем Full HD в сочетании со сверхвысокой частотой обновления 165 Гц для плавного игрового процесса. Изгиб экрана 1500R обеспечивает действительно захватывающее впечатление от просмотра, которое позволяет вам наслаждаться большими, яркими и потрясающими панорамными видами. Частота обновления 165 Гц обеспечивает больше кадров для плавного игрового процесса с меньшими задержками. Время отклика 1 мс гарантирует, что ваши реакции будут такими же быстрыми, как и игра, что поможет вам одержать еще больше побед. FreeSync Premium практически устраняет разрывы и рывки изображения, обеспечивая максимально плавный игровой процесс.
@@ -5218,7 +5208,7 @@ Adaptive Sync:FreeSync
 <name>Монитор Viewsonic VX2719-PC-MHD</name>
 <price>142900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/044/5e1wzo70t9xqq0n8a0pagfy6brjgxk83.jpg</picture>
-<vendor></vendor>
+<vendor>ViewSonic</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 27-дюймовый дисплей Full HD VX2719-PC-MHD. Получите еще больше впечатлений с захватывающим изогнутым экраном 1500R, который фокусирует ваш игровой процесс. Дисплей 240 Гц обеспечивает частоту обновления профессионального уровня, поэтому вы можете опережать конкурентов и наслаждаться плавными играми независимо от того, насколько интенсивными становятся действия. Чистый дизайн, трехсторонний дисплей без рамок создают продукт, в котором есть все, что вам нужно. Adaptive ™ Sync практически устраняет разрывы на экране и заикание, обеспечивая плавный игровой процесс. А время отклика MPRT 1 мс позволяет вам точно реагировать на игровой процесс. VX2719-PC-MHD также оснащен эксклюзивными предустановками ViewMode ™ от ViewSonic, которые обеспечивают оптимизированную работу экрана для различных нужд, таких как игры, редактирование или просмотр фильмов. Кроме того, входы DisplayPort и HDMI предлагают гибкие возможности подключения для игр и развлечений.
