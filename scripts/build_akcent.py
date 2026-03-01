@@ -112,6 +112,7 @@ AKCENT_PARAM_PRIORITY = [
     "Тип",
     "Назначение",
     "Совместимость",
+    "Коды",
     "Цвет",
     "Размер",
     "Материал",
@@ -375,7 +376,19 @@ def _ac_extract_tab_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], s
     cleaned = "\n".join(keep).strip()
     return out, cleaned
 
-_CODE_TOKEN_RE = re.compile(r"\bC13T\d{5,6}[A-Z]?\b|\b[A-Z]\d{2}[A-Z]\d{3,6}\b|\bT\d{2}[A-Z]?\b|\bW\d{4}[A-Z]\b", re.IGNORECASE)
+_CODE_TOKEN_RE = re.compile(
+    r"\bC13T\d{5,6}[A-Z]?\b"
+    r"|\bC\d{2}C\d{5,6}\b"
+    r"|\b(?:CE|CF|CC|CB|Q)\d{3,6}[A-Z]?\b"
+    r"|\b106R\d{5}\b"
+    r"|\b(?:TN|DR|TK)\s*-?\s*\d{3,5}[A-Z]?\b"
+    r"|\bMLT\s*-?\s*[A-Z]?\d{3,4}[A-Z]?\b"
+    r"|\bCRG\s*-?\s*\d{3,4}[A-Z]?\b"
+    r"|\b[A-Z]\d{2}[A-Z]\d{3,6}\b"
+    r"|\bT\d{2}[A-Z]?\b"
+    r"|\bW\d{4}[A-Z]\b",
+    re.IGNORECASE,
+)
 def _ac_extract_codes_from_fields(name: str, params: list[tuple[str, str]], desc: str) -> list[str]:
     text = " ".join([name or "", desc or ""] + [f"{k} {v}" for k, v in (params or [])])
     codes = []
@@ -384,6 +397,154 @@ def _ac_extract_codes_from_fields(name: str, params: list[tuple[str, str]], desc
         if c not in codes:
             codes.append(c)
     return codes
+
+def _ac_is_consumable(name: str, params: list[tuple[str, str]]) -> bool:
+    ncf = (name or "").casefold()
+    if any(w in ncf for w in ("чернил", "чернила", "тонер", "картридж", "drum", "драм", "фотобарабан", "лента", "этикет", "maintenance box", "ёмкость для отработанных чернил", "емкость для отработанных чернил")):
+        return True
+    for k, v in (params or []):
+        if (k or "").casefold() == "тип" and any(w in (v or "").casefold() for w in ("чернила", "тонер", "картридж", "расход")):
+            return True
+    return False
+
+def _ac_split_list(s: str) -> list[str]:
+    if not s:
+        return []
+    parts = re.split(r"[;,/\n\r]+", s)
+    out: list[str] = []
+    for p in parts:
+        t = p.strip().strip(" .,:()[]{}<>\"'")
+        if t:
+            out.append(t)
+    return out
+
+def _ac_norm_code_token(tok: str) -> str:
+    t = (tok or "").strip().upper()
+    t = re.sub(r"\s+", "", t)
+    t = re.sub(r"^(TN|DR|TK)(\d)", r"\1-\2", t)
+    t = re.sub(r"^(MLT)([A-Z]?\d)", r"\1-\2", t)
+    t = re.sub(r"^(CRG)(\d)", r"\1-\2", t)
+    return t
+
+def _ac_codes_from_text(text: str) -> list[str]:
+    codes: list[str] = []
+    for m in _CODE_TOKEN_RE.finditer(text or ""):
+        c = _ac_norm_code_token(m.group(0))
+        if c and c not in codes:
+            codes.append(c)
+    return codes
+
+def _ac_extract_compat_models_from_name(name: str, vendor: str) -> list[str]:
+    n = (name or "").strip()
+    if not n:
+        return []
+    tail = ""
+    m = re.search(r"(?i)\bдля\s+([^,]+)", n)
+    if m:
+        tail = m.group(1).strip()
+    else:
+        last = None
+        for mm in _CODE_TOKEN_RE.finditer(n):
+            last = mm
+        if last:
+            tail = (n[last.end():] or "").strip()
+
+    if not tail:
+        return []
+
+    tail = re.split(r"(?i)\b(черн\w*|black|cyan|magenta|yellow|голуб\w*|пурпур\w*|ж[её]лт\w*|пигмент\w*|dye|пакет|набор)\b", tail)[0].strip()
+    toks: list[str] = []
+    for part in re.split(r"[;/,]+", tail):
+        t = part.strip()
+        if t:
+            toks.append(t)
+
+    models: list[str] = []
+    for t in toks:
+        tt = t.strip().strip(" .,:()[]{}<>\"'")
+        if not tt:
+            continue
+        if _CODE_TOKEN_RE.fullmatch(tt):
+            continue
+        if not re.fullmatch(r"[A-Za-z]{0,4}-?\d{3,5}[A-Za-z]{0,3}", tt) and not re.fullmatch(r"[A-Za-z]{0,3}\d{3,5}[A-Za-z]{0,2}", tt):
+            continue
+
+        v = (vendor or "").strip()
+        vcf = v.casefold()
+        out_t = tt
+        if v and vcf == "epson" and not re.search(r"(?i)\bepson\b", tt):
+            if re.match(r"(?i)^(L|M|XP|WF|ET|SC|SP)\d{3,5}", tt):
+                out_t = f"{v} {tt}"
+
+        if out_t not in models:
+            models.append(out_t)
+
+    return models[:40]
+
+def _ac_enrich_codes_and_compat(oid: str, name: str, vendor: str, params: list[tuple[str, str]], desc: str) -> list[tuple[str, str]]:
+    codes_vals: list[str] = []
+    compat_vals: list[str] = []
+    rest: list[tuple[str, str]] = []
+
+    for k, v in (params or []):
+        kcf = (k or "").casefold()
+        vv = (v or "").strip()
+        if not vv:
+            continue
+        if kcf in {"коды", "коды расходников"}:
+            codes_vals.append(vv)
+            continue
+        if kcf == "совместимость":
+            compat_vals.append(vv)
+            continue
+        rest.append((k, vv))
+
+    # коды: из oid + текста + существующих значений
+    codes: list[str] = []
+    text_for_codes = " ".join([oid or "", name or "", desc or ""] + [f"{k} {v}" for k, v in rest])
+    for c in _ac_codes_from_text(text_for_codes):
+        if c not in codes:
+            codes.append(c)
+    for vv in codes_vals:
+        for c in _ac_codes_from_text(vv):
+            if c not in codes:
+                codes.append(c)
+
+    # совместимость: для расходников — из имени (для ...)
+    compat_models: list[str] = []
+    if _ac_is_consumable(name, rest):
+        for mm in _ac_extract_compat_models_from_name(name, vendor):
+            if mm not in compat_models:
+                compat_models.append(mm)
+
+    def _looks_like_models(s: str) -> bool:
+        toks = _ac_split_list(s)
+        if not toks:
+            return False
+        code_like = 0
+        for t in toks:
+            if _CODE_TOKEN_RE.fullmatch(t.strip()):
+                code_like += 1
+        return code_like < max(1, int(len(toks) * 0.8))
+
+    # если поставщик дал совместимость-модели — добавляем; если дал только коды — переносим их в codes
+    for vv in compat_vals:
+        if _looks_like_models(vv):
+            for t in _ac_split_list(vv):
+                tt = t.strip()
+                if tt and tt not in compat_models and not _CODE_TOKEN_RE.fullmatch(tt):
+                    compat_models.append(tt)
+        else:
+            for c in _ac_codes_from_text(vv):
+                if c not in codes:
+                    codes.append(c)
+
+    out = list(rest)
+    if compat_models:
+        out.append(("Совместимость", ", ".join(compat_models[:40])))
+    if codes:
+        out.append(("Коды", ", ".join(codes[:40])))
+    return out
 
 def _ac_extract_volume_ml(name: str, desc: str, params: list[tuple[str, str]]) -> str:
     text = " ".join([name or "", desc or ""] + [v for _, v in (params or [])])
@@ -489,7 +650,7 @@ def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> l
             codes.append(cc)
 
     if codes:
-        out.append(("Коды расходников", ", ".join(codes)))
+        out.append(("Коды", ", ".join(codes)))
     # Ресурс (только для расходников)
     name_cf = (name or "").casefold()
     if any(w in name_cf for w in ["чернила", "картридж", "тонер", "драм", "drum", "ink", "toner", "cartridge"]):
