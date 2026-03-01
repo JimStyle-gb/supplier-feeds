@@ -385,15 +385,18 @@ def _ac_extract_tab_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], s
     return out, cleaned
 
 _CODE_TOKEN_RE = re.compile(
-    r"\bC13T\d{5,6}[A-Z]?\b"
-    r"|\bC\d{2}C\d{5,6}\b"
-    r"|\b(?:CE|CF|CC|CB|Q)\d{3,6}[A-Z]?\b"
-    r"|\b106R\d{5}\b"
-    r"|\b(?:TN|DR|TK)\s*-?\s*\d{3,5}[A-Z]?\b"
-    r"|\bMLT\s*-?\s*[A-Z]?\d{3,4}[A-Z]?\b"
-    r"|\bCRG\s*-?\s*\d{3,4}[A-Z]?\b"
-    r"|\b[A-Z]\d{2}[A-Z]\d{3,6}\b"
-    r"|\bT\d{2}[A-Z]?\b"
+    r"\bC13T\d{5,8}[A-Z]?\b"  # Epson ink/maintenance codes
+    r"|\bC12C\d{6}\b"          # Epson accessory codes
+    r"|\bC11[A-Z]{2}\d{5}\b"   # Epson C11XX12345
+    r"|\bV12H\d{7}\b"          # Epson V12Hxxxxxxx
+    r"|\bC\d{2}C\d{5,6}\b"    # Epson paper/parts (CxxCxxxxxx)
+    r"|\b(?:CE|CF|CC|CB|Q)\d{3,6}[A-Z]?\b"  # HP/Canon style
+    r"|\b106R\d{5}\b"          # Xerox
+    r"|\b(?:TN|DR|TK)\s*-?\s*\d{3,5}[A-Z]?\b"  # Brother/Kyocera
+    r"|\bMLT\s*-?\s*[A-Z]?\d{3,4}[A-Z]?\b"      # Samsung
+    r"|\bCRG\s*-?\s*\d{3,4}[A-Z]?\b"            # Canon
+    r"|\b[A-Z]\d{2}[A-Z]\d{3,6}\b"               # Generic (E13E....)
+    r"|\bT\d{2}[A-Z]?\b"                          # Epson bottle short
     r"|\bW\d{4}[A-Z]\b",
     re.IGNORECASE,
 )
@@ -472,7 +475,7 @@ def _ac_extract_compat_models_from_name(name: str, vendor: str) -> list[str]:
         tt = t.strip().strip(" .,:()[]{}<>\"'")
         if not tt:
             continue
-        if _CODE_TOKEN_RE.fullmatch(tt):
+        if _CODE_TOKEN_RE.fullmatch(_ac_norm_code_token(tt)):
             continue
         if not re.fullmatch(r"[A-Za-z]{0,4}-?\d{3,5}[A-Za-z]{0,3}", tt) and not re.fullmatch(r"[A-Za-z]{0,3}\d{3,5}[A-Za-z]{0,2}", tt):
             continue
@@ -489,391 +492,89 @@ def _ac_extract_compat_models_from_name(name: str, vendor: str) -> list[str]:
 
     return models[:40]
 
+
 def _ac_enrich_codes_and_compat(oid: str, name: str, vendor: str, params: list[tuple[str, str]], desc: str) -> list[tuple[str, str]]:
     codes_vals: list[str] = []
     compat_vals: list[str] = []
     rest: list[tuple[str, str]] = []
 
+    compat_models: list[str] = []
+    codes: list[str] = []
+
     for k, v in (params or []):
-        kcf = (k or "").casefold()
+        k0 = (k or "").strip()
         vv = (v or "").strip()
-        if not vv:
+        if not k0 or not vv:
             continue
+
+        kcf = k0.casefold()
+
+        # Нормализация некоторых значений (до дальнейшей логики)
+        if kcf in {"интерфейс", "интерфейсы", "подключение"}:
+            vv = _ac_norm_interface_value(vv)
+
+        # Пара вида "Модель принтера" = "КОД"
+        if _ac_key_looks_like_model(k0) and _CODE_TOKEN_RE.fullmatch(_ac_norm_code_token(vv)):
+            if k0 not in compat_models:
+                compat_models.append(k0)
+            c = _ac_norm_code_token(vv)
+            if c and c not in codes:
+                codes.append(c)
+            continue
+
         if kcf in {"коды", "коды расходников"}:
             codes_vals.append(vv)
             continue
+
         if kcf == "совместимость":
             compat_vals.append(vv)
             continue
-        rest.append((k, vv))
+
+        rest.append((k0, vv))
 
     # коды: из oid + текста + существующих значений
-    codes: list[str] = []
     text_for_codes = " ".join([oid or "", name or "", desc or ""] + [f"{k} {v}" for k, v in rest])
     for c in _ac_codes_from_text(text_for_codes):
         if c not in codes:
             codes.append(c)
+
     for vv in codes_vals:
         for c in _ac_codes_from_text(vv):
             if c not in codes:
                 codes.append(c)
 
     # совместимость: для расходников — из имени (для ...)
-    compat_models: list[str] = []
     if _ac_is_consumable(name, rest):
         for mm in _ac_extract_compat_models_from_name(name, vendor):
             if mm not in compat_models:
                 compat_models.append(mm)
 
-    def _looks_like_models(s: str) -> bool:
-        toks = _ac_split_list(s)
-        if not toks:
-            return False
-        code_like = 0
-        for t in toks:
-            if _CODE_TOKEN_RE.fullmatch(t.strip()):
-                code_like += 1
-        return code_like < max(1, int(len(toks) * 0.8))
-
-    # если поставщик дал совместимость-модели — добавляем; если дал только коды — переносим их в codes
+    # если поставщик дал совместимость:
     for vv in compat_vals:
-        if _looks_like_models(vv):
-            for t in _ac_split_list(vv):
-                tt = t.strip()
-                if tt and tt not in compat_models and not _CODE_TOKEN_RE.fullmatch(tt):
-                    compat_models.append(tt)
-        else:
+        # только коды -> это 'Коды'
+        if _ac_is_code_only_list(vv):
             for c in _ac_codes_from_text(vv):
                 if c not in codes:
                     codes.append(c)
+            continue
+
+        # модели + коды (если случайно попали)
+        for t in _ac_split_list(vv):
+            tt = t.strip()
+            if not tt:
+                continue
+            if _CODE_TOKEN_RE.fullmatch(_ac_norm_code_token(tt)):
+                c = _ac_norm_code_token(tt)
+                if c and c not in codes:
+                    codes.append(c)
+                continue
+            if tt not in compat_models:
+                compat_models.append(tt)
 
     out = list(rest)
     if compat_models:
         out.append(("Совместимость", ", ".join(compat_models[:40])))
     if codes:
-        out.append(("Коды", ", ".join(codes[:40])))
+        out.append(("Коды", ", ".join(codes[:60])))
     return out
 
-def _ac_extract_volume_ml(name: str, desc: str, params: list[tuple[str, str]]) -> str:
-    text = " ".join([name or "", desc or ""] + [v for _, v in (params or [])])
-    m = re.search(r"(?i)\b(\d{2,4})\s*(мл|ml)\b", text)
-    if m:
-        return f"{m.group(1)} мл"
-    return ""
-
-
-_LAT2CYR = str.maketrans({
-    "A":"А","a":"а","B":"В","E":"Е","e":"е","K":"К","k":"к","M":"М","m":"м",
-    "H":"Н","h":"н","O":"О","o":"о","P":"Р","p":"р","C":"С","c":"с",
-    "T":"Т","t":"т","X":"Х","x":"х","Y":"У","y":"у"
-})
-
-def _ac_cyr_like(s: str) -> str:
-    # приводим латинские "похожие" буквы к кириллице для устойчивых замен (только внутри AkCent)
-    return (s or "").translate(_LAT2CYR)
-
-def _ac_fix_mixed_cyr_lat(s: str) -> str:
-    # Лечим частые опечатки, когда в русских словах попадаются латинские буквы (x вместо х и т.п.)
-    # Важно: меняем ТОЛЬКО если латинская буква стоит между кириллическими.
-    t = s or ""
-    for lat_code, cyr_code in _LAT2CYR.items():
-        lat = chr(lat_code) if isinstance(lat_code, int) else str(lat_code)
-        cyr = chr(cyr_code) if isinstance(cyr_code, int) else str(cyr_code)
-        t = re.sub(rf"(?<=[А-Яа-яЁё]){re.escape(lat)}(?=[А-Яа-яЁё])", cyr, t)
-    return t
-
-def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> list[tuple[str, str]]:
-    out = []
-    compat_vals: list[str] = []
-    # для Epson-плоттеров/принтеров: если в параметре "Модель" поехала модель, подтягиваем из <name>
-    name_model_token = ""
-    mmt = re.search(r"(?i)\bSC-T\d{4}[A-Z0-9]{0,3}\b", name or "")
-    if mmt:
-        name_model_token = mmt.group(0).upper()
-    # rename keys / values
-    for k, v in params:
-        kk = (k or "").strip()
-        vv = (v or "").strip()
-        if not kk or not vv:
-            continue
-        kk = _ac_fix_mixed_cyr_lat(kk)
-        vv = _ac_fix_mixed_cyr_lat(vv)
-        # частая опечатка от поставщика: "КартриджC13T..." -> "Картридж C13T..."
-        vv = re.sub(r"(?i)\bкартридж(?=C\d)", "Картридж ", vv)
-        kcf = kk.casefold()
-        # Совместимость: если поставщик дал кодами/артикулами — позже отфильтруем
-        if kcf == "совместимость":
-            compat_vals.append(vv)
-            continue
-        # Epson plotter: синхронизируем модель с названием
-        if kcf == "модель" and name_model_token and re.search(r"(?i)\bSC-T\d{4}[A-Z0-9]{0,3}\b", vv):
-            vv = re.sub(r"(?i)\bSC-T\d{4}[A-Z0-9]{0,3}\b", name_model_token, vv)
-        # ключи
-        if kcf == "проекционный коэффицент (throw ratio)" or kcf == "проекционный коэффицент":
-            kk = "Проекционный коэффициент"
-        elif kcf == "тип резки":
-            kk = "Тип резки"
-        # значения
-        if kk.casefold() == "уничтожение":
-            vv_norm = _ac_cyr_like(vv)
-            vv_norm = re.sub(r"(?i)\bскобк[ыи]\b", "скобы", vv_norm)
-            vv = vv_norm
-        if kk.casefold() == "страна происхождения":
-            vv = _ac_norm_country(vv)
-        if kk.casefold().startswith("отдельная корзина") and vv.casefold() in {"н", "н.", "нету", "нет"}:
-            vv = "нет"
-        out.append((kk, vv))
-
-    # Совместимость:
-    # 1) из табличных параметров вида "Epson L7160"="C11..." (это модели)
-    # 2) из параметра поставщика <param name="Совместимость">...</param> (но только если это НЕ просто коды)
-    is_cons = _ac_is_consumable(name, out)
-
-    compat = []
-    if is_cons:
-        # совместимость от поставщика: оставляем только "читаемые" значения (с буквами/словами), а не коды вида C12C...
-        for vv in compat_vals:
-            vv2 = (vv or "").strip()
-            if not vv2:
-                continue
-            if re.search(r"[А-Яа-яЁё]", vv2) or re.search(r"[a-z]", vv2):
-                for t in _ac_split_list(vv2):
-                    tt = t.strip()
-                    if tt and tt not in compat:
-                        compat.append(tt)
-
-    cleaned2 = []
-    for k, v in out:
-        if is_cons and re.match(r"(?i)^(epson|hp|canon|brother|xerox|panasonic|ricoh|kyocera)\b", k.strip()):
-            # если значение похоже на код/артикул производителя, считаем это строкой совместимости (ключ = модель)
-            if re.search(r"\bC\d{2,}\b", v) or re.search(r"\b[A-Z]{1,2}\d{3,}\b", v) or v.strip().endswith("-"):
-                if k.strip() not in compat:
-                    compat.append(k.strip())
-                continue
-        cleaned2.append((k, v))
-    out = cleaned2
-
-    if compat:
-        compat_u = []
-        for c in compat:
-            if c not in compat_u:
-                compat_u.append(c)
-        out.append(("Совместимость", ", ".join(compat_u)))
-    # Коды расходников (AkCent): оставляем только реальные коды расходников, а модели (T3000/T5200/...) убираем
-    existing_vals: list[str] = []
-    tmp: list[tuple[str, str]] = []
-    for k, v in out:
-        if k.casefold() == "коды расходников":
-            if v:
-                existing_vals.append(v)
-        else:
-            tmp.append((k, v))
-    out = tmp
-
-    def _codes_from_val(vv: str) -> list[str]:
-        toks = re.split(r"[;,\s]+", (vv or ""))
-        res: list[str] = []
-        for t in toks:
-            tt = t.strip().strip(".,:()[]{}<>")
-            if not tt:
-                continue
-            uu = tt.upper()
-            if uu.isdigit():
-                continue
-            # это модели устройств, не коды расходников (Epson SureColor T3000/T5200/T5700D и т.п.)
-            if re.fullmatch(r"T\d{3,4}[A-Z]?", uu):
-                continue
-            # допускаем типовые коды (Epson C13T..., HP/Canon вида CE278A и т.п., а также T09/T11 и т.п.)
-            if re.fullmatch(r"C13T\d{5,6}[A-Z]?", uu) or re.fullmatch(r"[A-Z]\d{2}[A-Z]\d{3,6}", uu) or re.fullmatch(r"W\d{4}[A-Z]", uu) or re.fullmatch(r"T\d{2}[A-Z]?", uu):
-                if uu not in res:
-                    res.append(uu)
-        return res
-
-    codes: list[str] = []
-    for vv in existing_vals:
-        for c in _codes_from_val(vv):
-            if c not in codes:
-                codes.append(c)
-
-    # добираем коды из name/desc (только по безопасным паттернам) — ТОЛЬКО для расходников
-    if _ac_is_consumable(name, out):
-        for c in _ac_extract_codes_from_fields(name, out, desc):
-            cc = c.upper()
-            if re.fullmatch(r"T\d{3,4}[A-Z]?", cc):
-                continue
-            if cc not in codes:
-                codes.append(cc)
-
-    if codes:
-        out.append(("Коды", ", ".join(codes)))
-    # Ресурс (только для расходников)
-    name_cf = (name or "").casefold()
-    if any(w in name_cf for w in ["чернила", "картридж", "тонер", "драм", "drum", "ink", "toner", "cartridge"]):
-        vol = _ac_extract_volume_ml(name, desc, out)
-        if vol:
-            out.append(("Ресурс", vol))
-    return out
-
-
-def _extract_desc(offer: ET.Element) -> str:
-    return _get_text(offer.find("description"))
-
-# Достаём исходную цену:
-# AkCent кладёт цены в <prices><price type="Цена дилерского портала KZT">41727</price> ...</prices>
-def _extract_price_in(offer: ET.Element) -> int:
-    prices = offer.find("prices")
-    if prices is not None:
-        best_any: int | None = None
-        best_rrp: int | None = None
-        for pe in prices.findall("price"):
-            t = (pe.get("type") or "").casefold()
-            cur = (pe.get("currencyId") or "").strip().upper()
-            v = safe_int(_get_text(pe))
-            if not v:
-                continue
-            if cur and cur != "KZT":
-                continue
-
-            # 1) приоритет — дилерская цена
-            if "дилер" in t or "dealer" in t:
-                return int(v)
-
-            # 2) RRP как запасной приоритет
-            if "rrp" in t:
-                best_rrp = int(v)
-
-            if best_any is None:
-                best_any = int(v)
-
-        if best_rrp is not None:
-            return best_rrp
-        if best_any is not None:
-            return best_any
-
-    # запасные варианты (на случай другого формата)
-    p1 = safe_int(_get_text(offer.find("purchase_price")))
-    if p1:
-        return int(p1)
-    p2 = safe_int(_get_text(offer.find("price")))
-    return int(p2 or 0)
-
-# Достаём доступность (если нет атрибута — считаем true)
-def _extract_available(offer: ET.Element) -> bool:
-    a = (offer.get("available") or "").strip().lower()
-    if not a:
-        return True
-    return a in ("1", "true", "yes", "y", "да")
-
-# Вытаскиваем offers из XML
-def _extract_offers(root: ET.Element) -> list[ET.Element]:
-    offers_node = root.find(".//offers")
-    if offers_node is None:
-        return []
-    return list(offers_node.findall("offer"))
-
-# main
-def main() -> int:
-    build_time = now_almaty()
-    next_run = next_run_at_hour(build_time, SCHEDULE_HOUR_ALMATY)
-
-    r = requests.get(_normalize_url(SUPPLIER_URL), timeout=90)
-    r.raise_for_status()
-    root = ET.fromstring(r.content)
-
-    offers_in = _extract_offers(root)
-    before = len(offers_in)
-
-    out_offers: list[OfferOut] = []
-
-    price_missing = 0
-
-    for offer in offers_in:
-        name = _ac_norm_name(_get_text(offer.find("name")))
-        if not name or not _passes_name_prefixes(name):
-            continue
-
-        # CS: выкидываем "картриджи для фильтра/бутылки" (Philips AWP) из ассортимента
-        art_raw = (offer.get("article") or "").strip()
-        if art_raw in AKCENT_DROP_ARTICLES:
-            continue
-        ncf = (name or "").casefold()
-        if ("картридж" in ncf or "cartridge" in ncf) and ("фильтр" in ncf or "filter" in ncf or "бутылк" in ncf or "bottle" in ncf) and ("philips" in ncf or "awp" in ncf):
-            continue
-
-        oid = _make_oid(offer, name)
-        if not oid:
-            continue
-        if not oid:
-            continue
-
-        available = _extract_available(offer)
-        pics = _collect_pictures(offer)
-        params_raw = _collect_params(offer)
-        native_desc = _ac_fix_text(_extract_desc(offer))
-        extra_params, native_desc = _ac_extract_tab_specs_from_desc(native_desc)
-        if extra_params:
-            params_raw.extend(extra_params)
-        params_raw = _ac_params_postfix(params_raw, name, native_desc)
-        params = clean_params(params_raw, drop=AKCENT_PARAM_DROP)
-
-        price_in = _extract_price_in(offer)
-        if not price_in or int(price_in) < 1:
-            price_missing += 1
-        price = compute_price(price_in)
-
-        vendor = _extract_vendor(offer, params)
-        # AkCent: вычищаем значение параметра 'Производитель' (Proj/страны) -> бренд
-        if vendor:
-            fixed_params: list[tuple[str, str]] = []
-            for pk, pv in params:
-                if pk and pk.casefold() == 'производитель':
-                    pv2 = _clean_vendor(pv) or vendor
-                    fixed_params.append((pk, pv2))
-                else:
-                    fixed_params.append((pk, pv))
-            params = fixed_params
-
-        out_offers.append(
-            OfferOut(
-                oid=oid,
-                available=available,
-                name=name,
-                price=price,
-                pictures=pics,
-                vendor=vendor,
-                params=params,
-                native_desc=native_desc,
-            )
-        )
-
-    after = len(out_offers)
-    in_true = sum(1 for o in out_offers if o.available)
-    in_false = after - in_true
-
-    public_vendor = get_public_vendor()
-
-    # Стабильный порядок офферов (меньше лишних диффов между коммитами)
-    out_offers.sort(key=lambda x: x.oid)
-
-    write_cs_feed_raw(out_offers, supplier=SUPPLIER_NAME, supplier_url=SUPPLIER_URL, out_file="docs/raw/akcent.yml", build_time=build_time, next_run=next_run, before=before, encoding=OUTPUT_ENCODING, currency_id="KZT")
-
-    changed = write_cs_feed(
-        out_offers,
-        supplier=SUPPLIER_NAME,
-        supplier_url=SUPPLIER_URL,
-        out_file=OUT_FILE,
-        build_time=build_time,
-        next_run=next_run,
-        before=before,
-        encoding=OUTPUT_ENCODING,
-        public_vendor=public_vendor,
-        currency_id="KZT",
-        param_priority=AKCENT_PARAM_PRIORITY,
-    )
-
-    print(f"[akcent] before={before} after={after} price_missing={price_missing} changed={changed}")
-
-    return 0
-
-if __name__ == "__main__":
-    raise SystemExit(main())
