@@ -51,13 +51,26 @@ jobs:
           git diff --stat || true
           ls -la docs docs/raw || true
           wc -c docs/akcent.yml docs/raw/akcent.yml 2>/dev/null || true
-      - name: Commit & push docs/akcent.yml (if changed)
+      - name: Commit & push docs/akcent.yml (with heartbeat)
         run: |
-          git add docs/akcent.yml docs/raw/akcent.yml
+          # Всегда фиксируем время успешного прогона, даже если фид не изменился
+          TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          mkdir -p docs/raw
+          echo "$TS" > docs/raw/akcent_last_run.txt
+
+          git add docs/akcent.yml docs/raw/akcent.yml docs/raw/akcent_last_run.txt
+
           if git diff --cached --quiet; then
-            echo "No changes to commit."
+            echo "No changes detected (including heartbeat)."
             exit 0
           fi
-          git commit -m "build: akcent feed"
+
+          # Если изменился только heartbeat — это тоже валидный признак успешного прогона
+          if [ "$(git diff --cached --name-only | wc -l)" -eq 1 ] && git diff --cached --name-only | grep -qx "docs/raw/akcent_last_run.txt"; then
+            git commit -m "build: akcent heartbeat ($TS)"
+          else
+            git commit -m "build: akcent feed"
+          fi
+
           git pull --rebase --autostash
           git push
