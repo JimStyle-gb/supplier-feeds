@@ -7,28 +7,18 @@ on:
 
 permissions:
   contents: write
+
 jobs:
   build_vtt:
     runs-on: ubuntu-latest
     concurrency:
       group: build_vtt
       cancel-in-progress: true
-    env:
-      VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
-      VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
-      VTT_SSL_VERIFY: "0"
-      VTT_SOFTFAIL: "true"
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Snapshot previous feeds
-        run: |
-          cp -f docs/vtt.yml /tmp/prev_feed.yml 2>/dev/null || true
-          cp -f docs/raw/vtt.yml /tmp/prev_raw.yml 2>/dev/null || true
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -52,10 +42,15 @@ jobs:
       - name: Smoke test (py_compile)
         run: |
           python -m py_compile scripts/cs/core.py scripts/build_vtt.py
-      - name: Check required env
+
+      - name: Snapshot previous feed (for no-change detection)
         run: |
-          if [ -z "${VTT_LOGIN}" ]; then echo "VTT_LOGIN is empty. Set repository secret VTT_LOGIN."; exit 1; fi
-          if [ -z "${VTT_PASSWORD}" ]; then echo "VTT_PASSWORD is empty. Set repository secret VTT_PASSWORD."; exit 1; fi
+          mkdir -p /tmp
+          if [ -f docs/vtt.yml ]; then
+            cp -f docs/vtt.yml /tmp/prev_feed.yml
+          else
+            : > /tmp/prev_feed.yml
+          fi
 
       - name: "Gate by day-of-month (Asia/Almaty: 1/10/20)"
         id: gate
@@ -75,17 +70,15 @@ jobs:
         run: |
           python scripts/build_vtt.py
 
-
       - name: Diagnostics (git status / diff / sizes)
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         run: |
-          git status --porcelain
+          git status --porcelain || true
           git diff --stat || true
           ls -la docs docs/raw || true
           wc -c docs/vtt.yml docs/raw/vtt.yml 2>/dev/null || true
 
-
-      - name: Update FEED_META build time (and mark no-changes)
+      - name: Update FEED_META build time + next run (and mark no-changes)
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         run: |
           # Считаем, изменились ли офферы (игнорируем <yml_catalog date=...> и блок FEED_META)
@@ -103,23 +96,54 @@ jobs:
           if [ -n "$OLD_HASH" ] && [ -n "$NEW_HASH" ] && [ "$OLD_HASH" = "$NEW_HASH" ]; then
             NO_CHANGES=1
           fi
+
+          # Текущее локальное время Алматы
           TS=$(TZ='Asia/Almaty' date '+%Y-%m-%d %H:%M:%S')
           NOTE=""
           if [ "$NO_CHANGES" -eq 1 ]; then
             NOTE=" (не было изменений)"
           fi
 
+          # Следующий запуск (только 1/10/20 числа, в 05:00:00 по Алматы)
+          NOW_EPOCH=$(TZ='Asia/Almaty' date +%s)
+          NEXT_RUN=""
+          for i in $(seq 0 45); do
+            CAND_DATE=$(TZ='Asia/Almaty' date -d "+${i} day" '+%Y-%m-%d')
+            DOM=$(TZ='Asia/Almaty' date -d "${CAND_DATE}" '+%d')
+            if [ "$DOM" != "01" ] && [ "$DOM" != "10" ] && [ "$DOM" != "20" ]; then
+              continue
+            fi
+            CAND_EPOCH=$(TZ='Asia/Almaty' date -d "${CAND_DATE} 05:00:00" +%s)
+            if [ "$CAND_EPOCH" -gt "$NOW_EPOCH" ]; then
+              NEXT_RUN=$(TZ='Asia/Almaty' date -d "@${CAND_EPOCH}" '+%Y-%m-%d %H:%M:%S')
+              break
+            fi
+          done
+          if [ -z "$NEXT_RUN" ]; then
+            # fallback (на всякий случай)
+            NEXT_RUN=$(TZ='Asia/Almaty' date -d "+50 day" '+%Y-%m-%d')" 05:00:00"
+          fi
+
           for F in docs/vtt.yml docs/raw/vtt.yml; do
             if [ ! -f "$F" ]; then
               continue
             fi
+
+            # 1) Обновляем <yml_catalog date="...">
+            sed -i -E "s/^<yml_catalog date=\"[^\"]+\">/<yml_catalog date=\"${TS}\">/" "$F" || true
+
+            # 2) Обновляем строки FEED_META
             tmp="$F.__tmp"
             : > "$tmp"
             while IFS= read -r ln; do
               if [[ "$ln" == Время\ сборки\ \(Алматы\)* ]]; then
                 left="${ln%%|*}"
                 echo "${left}| ${TS}${NOTE}" >> "$tmp"
+              elif [[ "$ln" == Ближайшая\ сборка\ \(Алматы\)* ]]; then
+                left="${ln%%|*}"
+                echo "${left}| ${NEXT_RUN}" >> "$tmp"
               else
+                # если изменения появились — убираем старую пометку
                 if [ "$NO_CHANGES" -eq 0 ]; then
                   echo "${ln// (не было изменений)/}" >> "$tmp"
                 else
@@ -129,9 +153,10 @@ jobs:
             done < "$F"
             mv "$tmp" "$F"
           done
+
           echo "CS_NO_CHANGES=$NO_CHANGES" >> $GITHUB_ENV
 
-      - name: Commit & push docs/vtt.yml (time always updates)
+      - name: Commit & push docs/vtt.yml (if changed)
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         run: |
           git add docs/vtt.yml docs/raw/vtt.yml
@@ -142,4 +167,3 @@ jobs:
           git commit -m "build: vtt feed"
           git pull --rebase --autostash
           git push
-
