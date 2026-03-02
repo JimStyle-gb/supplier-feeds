@@ -53,6 +53,8 @@ jobs:
       - name: Build feed (akcent) + show which script is used
         run: |
           python -c "import hashlib,pathlib; p=pathlib.Path('scripts/build_akcent.py'); print('AKCENT_PY_MD5', hashlib.md5(p.read_bytes()).hexdigest()); print('AKCENT_PY_BYTES', p.stat().st_size)"
+          python -c "import pathlib; t=pathlib.Path('scripts/build_akcent.py').read_text(encoding='utf-8', errors='ignore'); print('HAS_ENRICH', 'def _ac_enrich_codes_and_compat' in t); print('CALLS_ENRICH', 'params = _ac_enrich_codes_and_compat' in t)"
+          python -c "import pathlib; t=pathlib.Path('scripts/build_akcent.py').read_text(encoding='utf-8', errors='ignore'); print('HAS_VERSION_PRINT', ('script_version=' in t) or ('BUILD_AKCENT_VERSION' in t))"
           python scripts/build_akcent.py
 
       - name: Update FEED_META build time + next run (and mark no-changes)
