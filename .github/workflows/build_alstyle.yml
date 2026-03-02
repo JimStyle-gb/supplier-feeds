@@ -22,6 +22,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Snapshot previous feeds
+        run: |
+          cp -f docs/alstyle.yml /tmp/prev_feed.yml 2>/dev/null || true
+          cp -f docs/raw/alstyle.yml /tmp/prev_raw.yml 2>/dev/null || true
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -60,7 +66,59 @@ jobs:
           git diff --stat || true
           ls -la docs docs/raw || true
           wc -c docs/alstyle.yml docs/raw/alstyle.yml 2>/dev/null || true
-      - name: Commit & push docs/alstyle.yml (if changed)
+
+      - name: Update FEED_META build time (and mark no-changes)
+        run: |
+          python - <<'PY'
+import hashlib, pathlib, os
+def norm(path: str) -> bytes | None:
+    p = pathlib.Path(path)
+    if not p.exists():
+        return None
+    lines = p.read_text(encoding='utf-8', errors='ignore').splitlines()
+    out = []
+    skip = False
+    for ln in lines:
+        if ln.startswith('<yml_catalog date='):
+            continue
+        if ln.strip() == '<!--FEED_META':
+            skip = True
+            continue
+        if skip:
+            if ln.strip() == '-->':
+                skip = False
+            continue
+        out.append(ln)
+    return ('\n'.join(out) + '\n').encode('utf-8')
+old = norm('/tmp/prev_feed.yml')
+new = norm('docs/alstyle.yml')
+no_changes = False
+if old is not None and new is not None:
+    no_changes = hashlib.md5(old).digest() == hashlib.md5(new).digest()
+note = ' (не было изменений)' if no_changes else ''
+ts = os.popen("TZ='Asia/Almaty' date '+%Y-%m-%d %H:%M:%S'").read().strip()
+def patch(path: str) -> None:
+    p = pathlib.Path(path)
+    if not p.exists():
+        return
+    lines = p.read_text(encoding='utf-8', errors='ignore').splitlines()
+    out = []
+    for ln in lines:
+        if ln.startswith('Время сборки (Алматы)'):
+            left = ln.split('|', 1)[0] if '|' in ln else 'Время сборки (Алматы)                      '
+            out.append(f"{left}| {ts}{note}")
+        else:
+            if '(не было изменений)' in ln and not no_changes:
+                out.append(ln.replace(' (не было изменений)', ''))
+            else:
+                out.append(ln)
+    p.write_text('\n'.join(out) + '\n', encoding='utf-8')
+for pth in ['docs/alstyle.yml', 'docs/raw/alstyle.yml']:
+    patch(pth)
+print('CS_NO_CHANGES=' + ('1' if no_changes else '0'))
+PY
+
+      - name: Commit & push docs/alstyle.yml (time always updates)
         run: |
           git add docs/alstyle.yml docs/raw/alstyle.yml
           if git diff --cached --quiet; then
@@ -70,3 +128,4 @@ jobs:
           git commit -m "build: alstyle feed"
           git pull --rebase --autostash
           git push
+
