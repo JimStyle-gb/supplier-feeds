@@ -3,7 +3,6 @@ name: Build_AkCent
 on:
   workflow_dispatch:
   schedule:
-    # 02:00 по Алматы (UTC+5) = 21:00 UTC предыдущего дня
     - cron: '0 21 * * *'
 
 permissions:
@@ -15,7 +14,6 @@ jobs:
     concurrency:
       group: build_akcent
       cancel-in-progress: true
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -49,7 +47,7 @@ jobs:
         run: |
           mkdir -p /tmp
           if [ -f docs/akcent.yml ]; then
-            cp docs/akcent.yml /tmp/prev_feed.yml
+            cp -f docs/akcent.yml /tmp/prev_feed.yml
           else
             : > /tmp/prev_feed.yml
           fi
@@ -58,10 +56,12 @@ jobs:
         run: |
           python scripts/build_akcent.py
 
-      - name: Diagnostics (git status / diff stats)
+      - name: Diagnostics (git status / diff / sizes)
         run: |
           git status --porcelain || true
           git diff --stat || true
+          ls -la docs docs/raw || true
+          wc -c docs/akcent.yml docs/raw/akcent.yml 2>/dev/null || true
 
       - name: Update FEED_META build time + next run (and mark no-changes)
         run: |
@@ -88,7 +88,7 @@ jobs:
             NOTE=" (не было изменений)"
           fi
 
-          # Следующий запуск (AkCent: ежедневно в 02:00 по Алматы)
+          # Следующий запуск (ежедневно в 02:00:00 по Алматы)
           NOW_EPOCH=$(TZ='Asia/Almaty' date +%s)
           TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
           CAND_EPOCH=$(TZ='Asia/Almaty' date -d "${TODAY} 02:00:00" +%s)
@@ -129,7 +129,9 @@ jobs:
             mv "$tmp" "$F"
           done
 
-      - name: Commit & push docs/akcent.yml (always shows last run in FEED_META)
+          echo "CS_NO_CHANGES=$NO_CHANGES" >> $GITHUB_ENV
+
+      - name: Commit & push docs/akcent.yml (if changed)
         run: |
           git add docs/akcent.yml docs/raw/akcent.yml
           if git diff --cached --quiet; then
@@ -137,4 +139,5 @@ jobs:
             exit 0
           fi
           git commit -m "build: akcent feed"
+          git pull --rebase --autostash
           git push
