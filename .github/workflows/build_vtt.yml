@@ -84,57 +84,52 @@ jobs:
           ls -la docs docs/raw || true
           wc -c docs/vtt.yml docs/raw/vtt.yml 2>/dev/null || true
 
+
       - name: Update FEED_META build time (and mark no-changes)
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         run: |
-          python - <<'PY'
-import hashlib, pathlib, os
-def norm(path: str) -> bytes | None:
-    p = pathlib.Path(path)
-    if not p.exists():
-        return None
-    lines = p.read_text(encoding='utf-8', errors='ignore').splitlines()
-    out = []
-    skip = False
-    for ln in lines:
-        if ln.startswith('<yml_catalog date='):
-            continue
-        if ln.strip() == '<!--FEED_META':
-            skip = True
-            continue
-        if skip:
-            if ln.strip() == '-->':
-                skip = False
-            continue
-        out.append(ln)
-    return ('\n'.join(out) + '\n').encode('utf-8')
-old = norm('/tmp/prev_feed.yml')
-new = norm('docs/vtt.yml')
-no_changes = False
-if old is not None and new is not None:
-    no_changes = hashlib.md5(old).digest() == hashlib.md5(new).digest()
-note = ' (не было изменений)' if no_changes else ''
-ts = os.popen("TZ='Asia/Almaty' date '+%Y-%m-%d %H:%M:%S'").read().strip()
-def patch(path: str) -> None:
-    p = pathlib.Path(path)
-    if not p.exists():
-        return
-    lines = p.read_text(encoding='utf-8', errors='ignore').splitlines()
-    out = []
-    for ln in lines:
-        if ln.startswith('Время сборки (Алматы)'):
-            left = ln.split('|', 1)[0] if '|' in ln else 'Время сборки (Алматы)                      '
-            out.append(f"{left}| {ts}{note}")
-        else:
-            if '(не было изменений)' in ln and not no_changes:
-                out.append(ln.replace(' (не было изменений)', ''))
-            else:
-                out.append(ln)
-    p.write_text('\n'.join(out) + '\n', encoding='utf-8')
-for pth in ['docs/vtt.yml', 'docs/raw/vtt.yml']:
-    patch(pth)
-print('CS_NO_CHANGES=' + ('1' if no_changes else '0'))
-PY
+          # Считаем, изменились ли офферы (игнорируем <yml_catalog date=...> и блок FEED_META)
+          norm_hash() {
+            local f="$1"
+            if [ ! -f "$f" ]; then
+              echo ""
+              return 0
+            fi
+            sed '/<!--FEED_META/,/-->/d' "$f" | sed '/^<yml_catalog date=/d' | md5sum | awk '{print $1}'
+          }
+          OLD_HASH=$(norm_hash /tmp/prev_feed.yml)
+          NEW_HASH=$(norm_hash docs/vtt.yml)
+          NO_CHANGES=0
+          if [ -n "$OLD_HASH" ] && [ -n "$NEW_HASH" ] && [ "$OLD_HASH" = "$NEW_HASH" ]; then
+            NO_CHANGES=1
+          fi
+          TS=$(TZ='Asia/Almaty' date '+%Y-%m-%d %H:%M:%S')
+          NOTE=""
+          if [ "$NO_CHANGES" -eq 1 ]; then
+            NOTE=" (не было изменений)"
+          fi
+
+          for F in docs/vtt.yml docs/raw/vtt.yml; do
+            if [ ! -f "$F" ]; then
+              continue
+            fi
+            tmp="$F.__tmp"
+            : > "$tmp"
+            while IFS= read -r ln; do
+              if [[ "$ln" == Время\ сборки\ \(Алматы\)* ]]; then
+                left="${ln%%|*}"
+                echo "${left}| ${TS}${NOTE}" >> "$tmp"
+              else
+                if [ "$NO_CHANGES" -eq 0 ]; then
+                  echo "${ln// (не было изменений)/}" >> "$tmp"
+                else
+                  echo "$ln" >> "$tmp"
+                fi
+              fi
+            done < "$F"
+            mv "$tmp" "$F"
+          done
+          echo "CS_NO_CHANGES=$NO_CHANGES" >> $GITHUB_ENV
 
       - name: Commit & push docs/vtt.yml (time always updates)
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
