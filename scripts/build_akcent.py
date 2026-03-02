@@ -31,7 +31,8 @@ OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
 
-BUILD_AKCENT_VERSION = "v22_enrich_compat_codes"
+BUILD_AKCENT_VERSION = "v23_call_enrich"
+
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -646,36 +647,3 @@ def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]],
 
     cleaned = "\n".join(out_lines).strip()
     return out_params, cleaned
-
-def _ac_key_looks_like_model(k: str) -> bool:
-    """Параметр-ключ выглядит как модель устройства (например 'Epson L7160')."""
-    s = (k or "").strip()
-    if not s:
-        return False
-    if len(s) > 80:
-        return False
-    if not re.search(r"\d", s):
-        return False
-    return bool(re.search(r"(?i)\b(epson|hp|canon|brother|xerox|kyocera|ricoh|konica|minolta|samsung|pantum|oki|lexmark|sharp)\b", s))
-
-def _ac_norm_interface_value(v: str) -> str:
-    # AkCent: 'USB*Ethernet*Wi-Fi' -> 'USB, Ethernet, Wi-Fi'
-    if not v:
-        return ""
-    t = v.replace("*", ", ")
-    t = re.sub(r"\s*,\s*", ", ", t)
-    t = re.sub(r"\s{2,}", " ", t).strip(" ,")
-    # prettier USB тип B
-    t = re.sub(r"(?i)\bUSB\s*,\s*тип\s*B\b", "USB (тип B)", t)
-    return t
-
-def _ac_is_code_only_list(s: str) -> bool:
-    toks = _ac_split_list(s)
-    if not toks:
-        return False
-    code_like = 0
-    for t in toks:
-        if _CODE_TOKEN_RE.fullmatch(_ac_norm_code_token(t)):
-            code_like += 1
-    # 80% и более — считаем, что это список кодов, а не моделей
-    return code_like >= max(1, int(len(toks) * 0.8))
