@@ -3,7 +3,7 @@ name: Build_AkCent
 on:
   workflow_dispatch:
   schedule:
-    # 02:00 Asia/Almaty = 21:00 UTC (daily)
+    # GitHub cron is UTC. 21:00 UTC = 02:00 Asia/Almaty (UTC+5)
     - cron: '0 21 * * *'
 
 permissions:
@@ -15,7 +15,6 @@ jobs:
     concurrency:
       group: build_akcent
       cancel-in-progress: true
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,79 +40,93 @@ jobs:
 
       - name: Smoke test (py_compile)
         run: |
-          python -m py_compile scripts/cs/core.py scripts/build_akcent.py
+          python -m py_compile scripts/cs/core.py scripts/build_*.py
 
       - name: Snapshot previous feed (for no-change detection)
         run: |
-          mkdir -p /tmp/cs_prev
           if [ -f docs/akcent.yml ]; then
-            cp docs/akcent.yml /tmp/cs_prev/akcent.yml
+            cp docs/akcent.yml /tmp/prev_feed.yml
+          else
+            : > /tmp/prev_feed.yml
           fi
 
-      - name: Build feed (akcent) + show which script is used
+      - name: Build feed (akcent)
         run: |
           python -c "import hashlib,pathlib; p=pathlib.Path('scripts/build_akcent.py'); print('AKCENT_PY_MD5', hashlib.md5(p.read_bytes()).hexdigest()); print('AKCENT_PY_BYTES', p.stat().st_size)"
-          python -c "import pathlib; t=pathlib.Path('scripts/build_akcent.py').read_text(encoding='utf-8', errors='ignore'); print('HAS_ENRICH', 'def _ac_enrich_codes_and_compat' in t); print('CALLS_ENRICH', 'params = _ac_enrich_codes_and_compat' in t)"
-          python -c "import pathlib; t=pathlib.Path('scripts/build_akcent.py').read_text(encoding='utf-8', errors='ignore'); print('HAS_VERSION_PRINT', ('script_version=' in t) or ('BUILD_AKCENT_VERSION' in t))"
+          python -c "import pathlib,re; t=pathlib.Path('scripts/build_akcent.py').read_text(encoding='utf-8', errors='ignore'); print('HAS_ENRICH_DEF', 'def _ac_enrich_codes_and_compat' in t); print('CALLS_ENRICH', bool(re.search(r'_ac_enrich_codes_and_compat\s*\(', t)))"
           python scripts/build_akcent.py
 
       - name: Update FEED_META build time + next run (and mark no-changes)
         run: |
-          python - <<'PY'
-          from __future__ import annotations
-          import pathlib
-          from datetime import datetime, timedelta
-          from zoneinfo import ZoneInfo
+          norm_hash() {
+            local f="$1"
+            if [ ! -f "$f" ]; then
+              echo ""
+              return 0
+            fi
+            # исключаем FEED_META и yml_catalog date, чтобы "нет изменений" считалось по товарам
+            sed '/<!--FEED_META/,/-->/d' "$f" | sed '/^<yml_catalog date=/d' | md5sum | awk '{print $1}'
+          }
 
-          tz = ZoneInfo("Asia/Almaty")
-          now = datetime.now(tz).replace(tzinfo=None)
-          build_str = now.strftime("%Y-%m-%d %H:%M:%S")
+          OLD_HASH=$(norm_hash /tmp/prev_feed.yml)
+          NEW_HASH=$(norm_hash docs/akcent.yml)
+          NO_CHANGES=0
+          if [ -n "$OLD_HASH" ] && [ -n "$NEW_HASH" ] && [ "$OLD_HASH" = "$NEW_HASH" ]; then
+            NO_CHANGES=1
+          fi
 
-          # Next run: daily 02:00 Almaty (same as cron above)
-          cand = now.replace(hour=2, minute=0, second=0, microsecond=0)
-          if cand <= now:
-            cand = cand + timedelta(days=1)
-          next_str = cand.strftime("%Y-%m-%d %H:%M:%S")
+          TS=$(TZ='Asia/Almaty' date '+%Y-%m-%d %H:%M:%S')
+          NOTE=""
+          if [ "$NO_CHANGES" -eq 1 ]; then
+            NOTE=" (не было изменений)"
+          fi
 
-          prev = pathlib.Path("/tmp/cs_prev/akcent.yml")
-          cur = pathlib.Path("docs/akcent.yml")
+          # Next run: daily 02:00 Almaty
+          NOW_EPOCH=$(TZ='Asia/Almaty' date +%s)
+          TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
+          CAND_EPOCH=$(TZ='Asia/Almaty' date -d "${TODAY} 02:00:00" +%s)
+          if [ "$CAND_EPOCH" -le "$NOW_EPOCH" ]; then
+            NEXT_EPOCH=$(TZ='Asia/Almaty' date -d "${TODAY} 02:00:00 + 1 day" +%s)
+          else
+            NEXT_EPOCH="$CAND_EPOCH"
+          fi
+          NEXT_RUN=$(TZ='Asia/Almaty' date -d "@${NEXT_EPOCH}" '+%Y-%m-%d %H:%M:%S')
 
-          prev_bytes = prev.read_bytes() if prev.exists() else b""
-          cur_bytes = cur.read_bytes() if cur.exists() else b""
-          changed = (prev_bytes != cur_bytes)
+          # Жёстко фиксируем "красивые" отступы, чтобы FEED_META всегда выглядел одинаково
+          META_TIME_PREFIX="Время сборки (Алматы)                      | "
+          META_NEXT_PREFIX="Ближайшая сборка (Алматы)                  | "
 
-          text = cur.read_text(encoding="utf-8", errors="ignore").splitlines(True)
-          out = []
-
-          for ln in text:
-            lstrip = ln.lstrip()
-            pref = ln[:len(ln) - len(lstrip)]  # keep indent (if any)
-
-            if lstrip.startswith("Время сборки (Алматы)"):
-              note = "" if changed else " (не было изменений)"
-              left = lstrip.split("|", 1)[0].rstrip()
-              out.append(f"{pref}{left} | {build_str}{note}\n")
+          for F in docs/akcent.yml docs/raw/akcent.yml; do
+            if [ ! -f "$F" ]; then
               continue
+            fi
 
-            if lstrip.startswith("Ближайшая сборка (Алматы)"):
-              left = lstrip.split("|", 1)[0].rstrip()
-              out.append(f"{pref}{left} | {next_str}\n")
-              continue
+            # update yml_catalog date
+            sed -i -E "s/^<yml_catalog date=\"[^\"]+\">/<yml_catalog date=\"${TS}\">/" "$F" || true
 
-            out.append(ln)
+            tmp="$F.__tmp"
+            : > "$tmp"
+            while IFS= read -r ln; do
+              if [[ "$ln" == Время\ сборки\ \(Алматы\)* ]]; then
+                echo "${META_TIME_PREFIX}${TS}${NOTE}" >> "$tmp"
+                continue
+              fi
+              if [[ "$ln" == Ближайшая\ сборка\ \(Алматы\)* ]]; then
+                echo "${META_NEXT_PREFIX}${NEXT_RUN}" >> "$tmp"
+                continue
+              fi
+              echo "$ln" >> "$tmp"
+            done < "$F"
 
-          cur.write_text("".join(out), encoding="utf-8")
-          print(f"[feedmeta] changed={'yes' if changed else 'no'} build={build_str} next={next_str}")
-          PY
+            mv "$tmp" "$F"
+          done
 
-      - name: Commit & push docs/akcent.yml docs/raw/akcent.yml
+      - name: Commit & push docs/akcent.yml + docs/raw/akcent.yml
         run: |
           git add docs/akcent.yml docs/raw/akcent.yml
           if git diff --cached --quiet; then
-            echo "No changes to commit (even after FEED_META update) — creating heartbeat."
-            date -u +"%Y-%m-%dT%H:%M:%SZ" > docs/raw/akcent_last_run.txt
-            git add docs/raw/akcent_last_run.txt
+            echo "No changes to commit."
+            exit 0
           fi
           git commit -m "build: akcent feed"
-          git pull --rebase --autostash
           git push
