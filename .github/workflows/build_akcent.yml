@@ -3,7 +3,7 @@ name: Build_AkCent
 on:
   workflow_dispatch:
   schedule:
-    # GitHub cron is UTC. 21:00 UTC = 02:00 Asia/Almaty (UTC+5)
+    # GitHub cron is UTC. 21:00 UTC = 02:00 Asia/Almaty
     - cron: '0 21 * * *'
 
 permissions:
@@ -15,9 +15,12 @@ jobs:
     concurrency:
       group: build_akcent
       cancel-in-progress: true
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -40,23 +43,20 @@ jobs:
 
       - name: Smoke test (py_compile)
         run: |
-          python -m py_compile scripts/cs/core.py scripts/build_*.py
+          python -m py_compile scripts/cs/core.py scripts/build_akcent.py
 
       - name: Snapshot previous feed (for no-change detection)
         run: |
-          if [ -f docs/akcent.yml ]; then
-            cp docs/akcent.yml /tmp/prev_feed.yml
-          else
-            : > /tmp/prev_feed.yml
-          fi
+          mkdir -p /tmp/cs_prev
+          cp -f docs/akcent.yml /tmp/cs_prev/akcent.yml 2>/dev/null || true
 
-      - name: Build feed (akcent)
+      - name: Build feed (akcent) + show which script is used
         run: |
           python -c "import hashlib,pathlib; p=pathlib.Path('scripts/build_akcent.py'); print('AKCENT_PY_MD5', hashlib.md5(p.read_bytes()).hexdigest()); print('AKCENT_PY_BYTES', p.stat().st_size)"
-          python -c "import pathlib,re; t=pathlib.Path('scripts/build_akcent.py').read_text(encoding='utf-8', errors='ignore'); print('HAS_ENRICH_DEF', 'def _ac_enrich_codes_and_compat' in t); print('CALLS_ENRICH', bool(re.search(r'_ac_enrich_codes_and_compat\s*\(', t)))"
+          python -c "import pathlib; t=pathlib.Path('scripts/build_akcent.py').read_text(encoding='utf-8', errors='ignore'); print('HAS_ENRICH', 'def _ac_enrich_codes_and_compat' in t); print('CALLS_ENRICH', 'params = _ac_enrich_codes_and_compat' in t)"
           python scripts/build_akcent.py
 
-      - name: Update FEED_META build time + next run (and mark no-changes)
+      - name: Update FEED_META + yml_catalog date (docs + raw)
         run: |
           norm_hash() {
             local f="$1"
@@ -64,11 +64,10 @@ jobs:
               echo ""
               return 0
             fi
-            # исключаем FEED_META и yml_catalog date, чтобы "нет изменений" считалось по товарам
             sed '/<!--FEED_META/,/-->/d' "$f" | sed '/^<yml_catalog date=/d' | md5sum | awk '{print $1}'
           }
 
-          OLD_HASH=$(norm_hash /tmp/prev_feed.yml)
+          OLD_HASH=$(norm_hash /tmp/cs_prev/akcent.yml)
           NEW_HASH=$(norm_hash docs/akcent.yml)
           NO_CHANGES=0
           if [ -n "$OLD_HASH" ] && [ -n "$NEW_HASH" ] && [ "$OLD_HASH" = "$NEW_HASH" ]; then
@@ -92,7 +91,6 @@ jobs:
           fi
           NEXT_RUN=$(TZ='Asia/Almaty' date -d "@${NEXT_EPOCH}" '+%Y-%m-%d %H:%M:%S')
 
-          # Жёстко фиксируем "красивые" отступы, чтобы FEED_META всегда выглядел одинаково
           META_TIME_PREFIX="Время сборки (Алматы)                      | "
           META_NEXT_PREFIX="Ближайшая сборка (Алматы)                  | "
 
@@ -101,7 +99,6 @@ jobs:
               continue
             fi
 
-            # update yml_catalog date
             sed -i -E "s/^<yml_catalog date=\"[^\"]+\">/<yml_catalog date=\"${TS}\">/" "$F" || true
 
             tmp="$F.__tmp"
@@ -115,13 +112,18 @@ jobs:
                 echo "${META_NEXT_PREFIX}${NEXT_RUN}" >> "$tmp"
                 continue
               fi
-              echo "$ln" >> "$tmp"
+              if [ "$NO_CHANGES" -eq 0 ]; then
+                echo "${ln// (не было изменений)/}" >> "$tmp"
+              else
+                echo "$ln" >> "$tmp"
+              fi
             done < "$F"
-
             mv "$tmp" "$F"
           done
 
-      - name: Commit & push docs/akcent.yml + docs/raw/akcent.yml
+          echo "[feedmeta] no_changes=$NO_CHANGES ts=$TS next=$NEXT_RUN"
+
+      - name: Commit & push (docs + raw)
         run: |
           git add docs/akcent.yml docs/raw/akcent.yml
           if git diff --cached --quiet; then
@@ -129,4 +131,5 @@ jobs:
             exit 0
           fi
           git commit -m "build: akcent feed"
+          git pull --rebase --autostash
           git push
