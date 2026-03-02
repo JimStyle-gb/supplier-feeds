@@ -387,15 +387,15 @@ def _ac_extract_tab_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], s
 _CODE_TOKEN_RE = re.compile(
     r"\bC13T\d{5,8}[A-Z]?\b"  # Epson ink/maintenance codes
     r"|\bC12C\d{6}\b"          # Epson accessory codes
-    r"|\bC11[A-Z]{2}\d{5}\b"   # Epson C11XX12345
-    r"|\bV12H\d{7}\b"          # Epson V12Hxxxxxxx
+    r"|\bC11[A-Z]{2}\d{5}[A-Z0-9]{0,2}\b"   # Epson C11XX12345 + suffix
+    r"|\bV1[23]H\d{7,8}\b"     # Epson V12H/V13Hxxxxxxx
     r"|\bC\d{2}C\d{5,6}\b"    # Epson paper/parts (CxxCxxxxxx)
     r"|\b(?:CE|CF|CC|CB|Q)\d{3,6}[A-Z]?\b"  # HP/Canon style
     r"|\b106R\d{5}\b"          # Xerox
     r"|\b(?:TN|DR|TK)\s*-?\s*\d{3,5}[A-Z]?\b"  # Brother/Kyocera
     r"|\bMLT\s*-?\s*[A-Z]?\d{3,4}[A-Z]?\b"      # Samsung
     r"|\bCRG\s*-?\s*\d{3,4}[A-Z]?\b"            # Canon
-    r"|\b[A-Z]\d{2}[A-Z]\d{3,6}\b"               # Generic (E13E....)
+    r"|\b[A-Z]\d{2}[A-Z]\d{3,6}\b"               # Generic
     r"|\bT\d{2}[A-Z]?\b"                          # Epson bottle short
     r"|\bW\d{4}[A-Z]\b",
     re.IGNORECASE,
@@ -578,3 +578,69 @@ def _ac_enrich_codes_and_compat(oid: str, name: str, vendor: str, params: list[t
         out.append(("Коды", ", ".join(codes[:60])))
     return out
 
+
+def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], str]:
+    """Извлекает характеристики из многострочного описания вида 'Ключ: Значение'."""
+    if not desc:
+        return [], desc
+
+    lines = desc.splitlines()
+    out_params: list[tuple[str, str]] = []
+    out_lines: list[str] = []
+
+    # Заголовки секций (обычно без ':') — не сохраняем как характеристики
+    section_headers = {
+        "общие параметры", "изображение", "интерфейсы", "корпус", "разъемы", "питание",
+        "функции", "другое", "экран", "сеть", "память", "звук",
+    }
+
+    def is_good_key(k: str) -> bool:
+        k = (k or "").strip()
+        if not k or len(k) > 70:
+            return False
+        kcf = k.casefold()
+        if kcf in section_headers:
+            return False
+        # не тащим URL как ключ
+        if "http" in kcf:
+            return False
+        return True
+
+    def is_good_val(v: str) -> bool:
+        v = (v or "").strip()
+        if not v:
+            return False
+        if len(v) > 250:
+            return False
+        return True
+
+    extracted = 0
+    for ln in lines:
+        s = (ln or "").strip()
+        if not s:
+            out_lines.append(ln)
+            continue
+
+        # табличные 'Ключ: Значение'
+        if ":" in s and not s.startswith("http"):
+            k, v = s.split(":", 1)
+            k = k.strip()
+            v = v.strip()
+            if is_good_key(k) and is_good_val(v):
+                # дедуп
+                pair = (k, v)
+                if pair not in out_params:
+                    out_params.append(pair)
+                extracted += 1
+                # строку выкидываем из текста
+                continue
+
+        out_lines.append(ln)
+
+        if extracted >= 80:
+            # страховка
+            out_lines.extend(lines[len(out_lines):])
+            break
+
+    cleaned = "\n".join(out_lines).strip()
+    return out_params, cleaned
