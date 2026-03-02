@@ -21,6 +21,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      with:
+        fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -42,7 +44,7 @@ jobs:
 
       - name: Smoke test (py_compile)
         run: |
-          python -m py_compile scripts/cs/core.py scripts/build_*.py
+          python -m py_compile scripts/cs/core.py scripts/build_alstyle.py
       - name: Check required env
         run: |
           if [ -z "${ALSTYLE_LOGIN}" ]; then echo "ALSTYLE_LOGIN is empty. Set repository secret ALSTYLE_LOGIN."; exit 1; fi
@@ -52,6 +54,13 @@ jobs:
         run: |
           python scripts/build_alstyle.py
 
+
+      - name: Diagnostics (git status / diff / sizes)
+        run: |
+          git status --porcelain
+          git diff --stat || true
+          ls -la docs docs/raw || true
+          wc -c docs/alstyle.yml docs/raw/alstyle.yml 2>/dev/null || true
       - name: Commit & push docs/alstyle.yml (if changed)
         run: |
           git add docs/alstyle.yml docs/raw/alstyle.yml
@@ -60,4 +69,5 @@ jobs:
             exit 0
           fi
           git commit -m "build: alstyle feed"
+          git pull --rebase --autostash
           git push
