@@ -30,6 +30,8 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
+
+BUILD_AKCENT_VERSION = "v22_enrich_compat_codes"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -644,6 +646,17 @@ def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]],
 
     cleaned = "\n".join(out_lines).strip()
     return out_params, cleaned
+
+def _ac_key_looks_like_model(k: str) -> bool:
+    """Параметр-ключ выглядит как модель устройства (например 'Epson L7160')."""
+    s = (k or "").strip()
+    if not s:
+        return False
+    if len(s) > 80:
+        return False
+    if not re.search(r"\d", s):
+        return False
+    return bool(re.search(r"(?i)\b(epson|hp|canon|brother|xerox|kyocera|ricoh|konica|minolta|samsung|pantum|oki|lexmark|sharp)\b", s))
 
 def _ac_norm_interface_value(v: str) -> str:
     # AkCent: 'USB*Ethernet*Wi-Fi' -> 'USB, Ethernet, Wi-Fi'
