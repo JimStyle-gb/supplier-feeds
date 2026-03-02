@@ -32,7 +32,8 @@ SCHEDULE_HOUR_ALMATY = 2
 
 
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = \"build_akcent_v24_calls_enrich_true\"
+BUILD_AKCENT_VERSION = "build_akcent_v28_fixed_regex_calls_enrich"
+
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -110,6 +111,7 @@ AKCENT_PARAM_PRIORITY = [
     "Тип",
     "Назначение",
     "Совместимость",
+    "Коды",
     "Цвет",
     "Размер",
     "Материал",
@@ -371,7 +373,7 @@ def _ac_extract_tab_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], s
     cleaned = "\n".join(keep).strip()
     return out, cleaned
 
-_CODE_TOKEN_RE = re.compile(r\"\bC13T\d{5,6}[A-Z]?\b|\b[A-Z]\d{2}[A-Z]\d{3,6}\b|\bT\d{2}[A-Z]?\b|\bW\d{4}[A-Z]\b\", re.IGNORECASE)\n
+_CODE_TOKEN_RE = re.compile(r"\bC13T\d{5,8}[A-Z]?\b"r"|\bC12C\d{6}\b"r"|\bC11[A-Z]{2}\d{5}[A-Z0-9]{0,2}\b"r"|\bV1[23]H\d{7,8}\b"r"|\bC\d{2}C\d{5,6}\b"r"|\b(?:CE|CF|CC|CB|Q)\d{3,6}[A-Z]?\b"r"|\b106R\d{5}\b"r"|\b(?:TN|DR|TK)\s*-?\s*\d{3,5}[A-Z]?\b"r"|\bMLT\s*-?\s*[A-Z]?\d{3,4}[A-Z]?\b"r"|\bCRG\s*-?\s*\d{3,4}[A-Z]?\b"r"|\bW\d{4}[A-Z]\b"r"|\bT\d{2}[A-Z]?\b"r"|\b[A-Z]\d{2}[A-Z]\d{3,6}\b", re.IGNORECASE)
 def _ac_extract_codes_from_fields(name: str, params: list[tuple[str, str]], desc: str) -> list[str]:
     text = " ".join([name or "", desc or ""] + [f"{k} {v}" for k, v in (params or [])])
     codes = []
@@ -553,7 +555,7 @@ def _extract_offers(root: ET.Element) -> list[ET.Element]:
 
 # main
 def main() -> int:
-    print(f\"[akcent] version={BUILD_AKCENT_VERSION}\")
+    print(f"[akcent] version={BUILD_AKCENT_VERSION}")
     build_time = now_almaty()
     next_run = next_run_at_hour(build_time, SCHEDULE_HOUR_ALMATY)
 
@@ -591,7 +593,10 @@ def main() -> int:
         pics = _collect_pictures(offer)
         params_raw = _collect_params(offer)
         native_desc = _ac_fix_text(_extract_desc(offer))
+        extra_params2, native_desc = _ac_extract_colon_specs_from_desc(native_desc)
         extra_params, native_desc = _ac_extract_tab_specs_from_desc(native_desc)
+        if extra_params2:
+            params_raw.extend(extra_params2)
         if extra_params:
             params_raw.extend(extra_params)
         params_raw = _ac_params_postfix(params_raw, name, native_desc)
@@ -601,20 +606,9 @@ def main() -> int:
         if not price_in or int(price_in) < 1:
             price_missing += 1
         price = compute_price(price_in)
-
         vendor = _extract_vendor(offer, params)
 
-
-
-        # AkCent: SEO-обогащение (коды + совместимость) и правки интерфейсов/кодовых полей
-
-
         params = _ac_enrich_codes_and_compat(oid, name, vendor, params, native_desc)
-
-
-        # Второй проход чистки: дедуп + унификация после обогащения
-
-
         params = clean_params(params, drop=AKCENT_PARAM_DROP)
         out_offers.append(
             OfferOut(
@@ -660,3 +654,175 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], str]:
+    """Извлекает характеристики из многострочного описания вида 'Ключ: Значение'."""
+    if not desc:
+        return [], desc
+
+    lines = desc.splitlines()
+    out_params: list[tuple[str, str]] = []
+    out_lines: list[str] = []
+
+    section_headers = {
+        "общие параметры", "изображение", "интерфейсы", "корпус", "разъемы", "питание",
+        "функции", "другое", "экран", "сеть", "память", "звук",
+    }
+
+    def is_good_key(k: str) -> bool:
+        k = (k or "").strip()
+        if not k or len(k) > 70:
+            return False
+        kcf = k.casefold()
+        if kcf in section_headers:
+            return False
+        if "http" in kcf:
+            return False
+        return True
+
+    def is_good_val(v: str) -> bool:
+        v = (v or "").strip()
+        if not v:
+            return False
+        if len(v) > 250:
+            return False
+        return True
+
+    extracted = 0
+    for ln in lines:
+        s = (ln or "").strip()
+        if not s:
+            out_lines.append(ln)
+            continue
+
+        if ":" in s and not s.startswith("http"):
+            k, v = s.split(":", 1)
+            k = k.strip()
+            v = v.strip()
+            if is_good_key(k) and is_good_val(v):
+                pair = (k, v)
+                if pair not in out_params:
+                    out_params.append(pair)
+                extracted += 1
+                continue
+
+        out_lines.append(ln)
+
+        if extracted >= 80:
+            break
+
+    cleaned = "\n".join(out_lines).strip()
+    return out_params, cleaned
+
+
+def _ac_norm_code_token(t: str) -> str:
+    s = (t or "").strip().upper()
+    if not s:
+        return ""
+    s = re.sub(r"[^A-Z0-9]+", "", s)
+    return s
+
+def _ac_split_list(v: str) -> list[str]:
+    if not v:
+        return []
+    t = (v or "").replace("\r\n", "\n").replace("\r", "\n")
+    t = re.sub(r"\s+/\s+", ",", t)
+    parts = re.split(r"[,;\n]+", t)
+    out: list[str] = []
+    for p in parts:
+        pp = p.strip().strip(".,:()[]{}<>")
+        if pp:
+            out.append(pp)
+    return out
+
+def _ac_is_code_only_list(v: str) -> bool:
+    items = _ac_split_list(v)
+    if not items:
+        return False
+    for it in items:
+        tt = _ac_norm_code_token(it)
+        if not tt or not _CODE_TOKEN_RE.fullmatch(tt):
+            return False
+    return True
+
+def _ac_key_looks_like_model(k: str) -> bool:
+    s = (k or "").strip()
+    if not s:
+        return False
+    if len(s) > 80:
+        return False
+    if not re.search(r"\d", s):
+        return False
+    return bool(re.search(r"(?i)\b(epson|hp|canon|brother|xerox|kyocera|ricoh|konica|minolta|samsung|pantum|oki|lexmark|sharp)\b", s))
+
+def _ac_norm_interface_value(v: str) -> str:
+    t = (v or "").strip()
+    if not t:
+        return ""
+    t = re.sub(r"\s*\*\s*", " / ", t)
+    t = re.sub(r"\s*/\s*", " / ", t)
+    t = re.sub(r"\s{2,}", " ", t).strip(" /")
+    return t
+
+def _ac_enrich_codes_and_compat(oid: str, name: str, vendor: str, params: list[tuple[str, str]], desc: str) -> list[tuple[str, str]]:
+    """Adapter-first финальная нормализация параметров AkCent:
+    - Интерфейс/Подключение: '*' -> '/'
+    - Если 'Совместимость' содержит только коды -> перенос в 'Коды'
+    - 'Коды расходников' -> 'Коды'
+    - Если param-name выглядит как модель, а value как код -> модель в 'Совместимость', код в 'Коды'
+    """
+    out: list[tuple[str, str]] = []
+    codes_accum: list[str] = []
+    compat_accum: list[str] = []
+
+    for k, v in (params or []):
+        k0 = (k or "").strip()
+        v0 = (v or "").strip()
+        if not k0 or not v0:
+            continue
+
+        kcf = k0.casefold()
+
+        if kcf in {"интерфейс", "интерфейсы", "подключение"}:
+            v0 = _ac_norm_interface_value(v0)
+
+        # "Epson L7160" = "C11CG15404"
+        if _ac_key_looks_like_model(k0) and _CODE_TOKEN_RE.fullmatch(_ac_norm_code_token(v0)):
+            if k0 not in compat_accum:
+                compat_accum.append(k0)
+            c = _ac_norm_code_token(v0)
+            if c and c not in codes_accum:
+                codes_accum.append(c)
+            continue
+
+        if kcf == "совместимость" and _ac_is_code_only_list(v0):
+            for c in _ac_split_list(v0):
+                cc = _ac_norm_code_token(c)
+                if cc and cc not in codes_accum:
+                    codes_accum.append(cc)
+            continue
+
+        if kcf in {"коды", "коды расходников"}:
+            for c in _ac_split_list(v0):
+                cc = _ac_norm_code_token(c)
+                if cc and cc not in codes_accum:
+                    codes_accum.append(cc)
+            continue
+
+        out.append((k0, v0))
+
+    # Добираем коды из имени/описания/oid (мягко)
+    text_for_codes = " ".join([oid or "", name or "", desc or ""])
+    for c in _ac_extract_codes_from_fields(text_for_codes, out, vendor or ""):
+        cc = _ac_norm_code_token(c)
+        if cc and cc not in codes_accum:
+            codes_accum.append(cc)
+
+    if compat_accum:
+        out.append(("Совместимость", ", ".join(compat_accum[:40])))
+    if codes_accum:
+        out.append(("Коды", ", ".join(codes_accum[:80])))
+
+    return out
+
