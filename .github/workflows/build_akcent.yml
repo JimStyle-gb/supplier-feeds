@@ -3,6 +3,7 @@ name: Build_AkCent
 on:
   workflow_dispatch:
   schedule:
+    # 02:00 по Алматы = 21:00 UTC
     - cron: '0 21 * * *'
 
 permissions:
@@ -14,6 +15,7 @@ jobs:
     concurrency:
       group: build_akcent
       cancel-in-progress: true
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -56,16 +58,8 @@ jobs:
         run: |
           python scripts/build_akcent.py
 
-      - name: Diagnostics (git status / diff / sizes)
-        run: |
-          git status --porcelain || true
-          git diff --stat || true
-          ls -la docs docs/raw || true
-          wc -c docs/akcent.yml docs/raw/akcent.yml 2>/dev/null || true
-
       - name: Update FEED_META build time + next run (and mark no-changes)
         run: |
-          # Считаем, изменились ли офферы (игнорируем <yml_catalog date=...> и блок FEED_META)
           norm_hash() {
             local f="$1"
             if [ ! -f "$f" ]; then
@@ -81,14 +75,13 @@ jobs:
             NO_CHANGES=1
           fi
 
-          # Текущее локальное время Алматы
           TS=$(TZ='Asia/Almaty' date '+%Y-%m-%d %H:%M:%S')
           NOTE=""
           if [ "$NO_CHANGES" -eq 1 ]; then
             NOTE=" (не было изменений)"
           fi
 
-          # Следующий запуск (ежедневно в 02:00:00 по Алматы)
+          # Next run: daily 02:00 Almaty
           NOW_EPOCH=$(TZ='Asia/Almaty' date +%s)
           TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
           CAND_EPOCH=$(TZ='Asia/Almaty' date -d "${TODAY} 02:00:00" +%s)
@@ -104,10 +97,9 @@ jobs:
               continue
             fi
 
-            # 1) Обновляем <yml_catalog date="...">
+            # update yml_catalog date
             sed -i -E "s/^<yml_catalog date=\"[^\"]+\">/<yml_catalog date=\"${TS}\">/" "$F" || true
 
-            # 2) Обновляем строки FEED_META
             tmp="$F.__tmp"
             : > "$tmp"
             while IFS= read -r ln; do
@@ -118,7 +110,6 @@ jobs:
                 left="${ln%%|*}"
                 echo "${left}| ${NEXT_RUN}" >> "$tmp"
               else
-                # если изменения появились — убираем старую пометку
                 if [ "$NO_CHANGES" -eq 0 ]; then
                   echo "${ln// (не было изменений)/}" >> "$tmp"
                 else
@@ -129,9 +120,7 @@ jobs:
             mv "$tmp" "$F"
           done
 
-          echo "CS_NO_CHANGES=$NO_CHANGES" >> $GITHUB_ENV
-
-      - name: Commit & push docs/akcent.yml (if changed)
+      - name: Commit & push docs/akcent.yml (always updates FEED_META time)
         run: |
           git add docs/akcent.yml docs/raw/akcent.yml
           if git diff --cached --quiet; then
