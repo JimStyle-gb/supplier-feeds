@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-03 16:05:19">
+<yml_catalog date="2026-03-03 16:41:59">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-03 16:05:19
+Время сборки (Алматы)                      | 2026-03-03 16:41:59
 Ближайшая сборка (Алматы)                  | 2026-03-04 02:00:00
 Сколько товаров у поставщика до фильтра    | 1819
 Сколько товаров у поставщика после фильтра | 146
@@ -3903,7 +3903,7 @@ Epson SureColor T-7000]]></description>
 <name>Сканер штрих-кода IDPRT HN-1358SR черный</name>
 <price>19900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/c32/kzxpzpukhblbodbkm7p2zwwigvr13apw.jpg</picture>
-<vendor>Xiamen Hanin Co., Ltd</vendor>
+<vendor>iDPRT</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ручные сканеры штрихкодов серии HN-13 отличаются лёгким и стильным дизайном, обеспечивают удобное считывание как традиционных бумажных, так и экранных штрихкодов. Они поддерживают различные POS-системы, включая Android, Windows и macOS, благодаря функции Plug-and-Play.
@@ -3947,7 +3947,7 @@ USB-клавиатура
 ±8 кВ (воздушный разряд)
 Падение с высоты 1,2 м
 Класс защиты IP42]]></description>
-<param name="Производитель">Xiamen Hanin Co., Ltd</param>
+<param name="Производитель">iDPRT</param>
 <param name="Разрешение">640*480 пикселей</param>
 <param name="Страна происхождения">Китай</param>
 <param name="Гарантия">12 мес</param>
@@ -3983,14 +3983,14 @@ USB-клавиатура
 <name>Сканер штрих-кода IDPRT HN-3308SR черный</name>
 <price>17900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/12f/txacffp72k148ya2vz2n8sq2ah6s18a2.png</picture>
-<vendor>Xiamen Hanin Co., Ltd</vendor>
+<vendor>iDPRT</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Сканер штрих-кодов HN-3308SR — это ручной 2D-имидж сканер, который считывает как одномерные (1D), так и двумерные (2D, например, QR-коды) штрих-коды с помощью камеры (2D Imager), а не лазера, и обычно подключен к системе проводом (USB). Он относится к категории проводных и предназначен для ручного использования, считывая коды с высокой точностью. 
 
 Основные характеристики вида:
 Современный ручной сканер, который использует технологию изображения для распознавания штрих-кодов, что делает его универсальным для работы с различными типами кодов, в том числе для маркировки.]]></description>
-<param name="Производитель">Xiamen Hanin Co., Ltd</param>
+<param name="Производитель">iDPRT</param>
 <param name="Интерфейс">Проводной (обычно USB).</param>
 <param name="Страна происхождения">Китай</param>
 <param name="Гарантия">12 мес</param>
@@ -5063,12 +5063,6 @@ Projection Lens F Number
 1,44
 Фокус
 Вручную]]></description>
-<param name="Производитель">Epson</param>
-<param name="Тип">Проектор для дома</param>
-<param name="Соотношение сторон">16:9</param>
-<param name="Гарантия">12 мес</param>
-<param name="Вручную vertical">± 30 °, Вручную horizontal ± 30 °</param>
-<param name="Смещение">7:1</param>
 </offer>
 
 <offer id="ACV11HA84240" available="true">

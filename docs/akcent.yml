@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-03 16:05:19">
+<yml_catalog date="2026-03-03 16:41:59">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-03 16:05:19
+Время сборки (Алматы)                      | 2026-03-03 16:41:59
 Ближайшая сборка (Алматы)                  | 2026-03-04 02:00:00
 Сколько товаров у поставщика до фильтра    | 1819
 Сколько товаров у поставщика после фильтра | 146
@@ -3322,7 +3322,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Сканер штрих-кода IDPRT HN-1358SR черный</name>
 <price>19900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/c32/kzxpzpukhblbodbkm7p2zwwigvr13apw.jpg</picture>
-<vendor>Xiamen Hanin Co., Ltd</vendor>
+<vendor>iDPRT</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
@@ -3333,10 +3333,10 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Ручные сканеры штрихкодов серии HN-13 отличаются лёгким и стильным дизайном, обеспечивают удобное считывание как традиционных бумажных, так и экранных штрихкодов. Они поддерживают различные POS системы, включая Android, Windows и macOS, благодаря функции Plug-and-Play.<br>Ручной сканер с функцией Plug-and-Play<br>Поддержка POS систем, таких как Android, Windows и Mac<br>Полное сканирование штрихкодов<br>Поддержка сканирования как одномерных, так и двухмерных штрихкодов<br>Многонациональные клавиатуры и вывод символов<br>Поддержка 84 национальных клавиатур и символов китайского, японского, корейского и тайского языков<br>Версия ручного сканера штрихкодов с Bluetooth<br>Беспроводная версия сканера с Bluetooth поддерживает беспроводную связь на расстоянии до 10 метров<br>Полный набор дополнительных аксессуаров<br>Дополнительные аксессуары включают последовательные кабели, адаптеры, подставки и Bluetooth модули</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Xiamen Hanin Co., Ltd</li><li><strong>Разрешение:</strong> 640*480 пикселей</li><li><strong>QR (20 мил):</strong> 20–150 мм</li><li><strong>Аккумулятор:</strong> Литиевая батарея емкостью 2600 мА</li><li><strong>Вес:</strong> 135 г</li><li><strong>Влажность:</strong> от 5% до 95% (без конденсации)</li><li><strong>Время аккумулятора:</strong> 6ч</li><li><strong>Время работы зарядки:</strong> 12ч (сканирование кнопкой один раз в секунду)</li><li><strong>Датчик:</strong> CMOS</li><li><strong>Материал корпуса:</strong> PC+ABS</li><li><strong>Относительная контрастность:</strong> ≥25%</li><li><strong>Подсветка:</strong> Белый свет</li><li><strong>Поле зрения:</strong> Горизонтальное: 40°, вертикальное: 30°</li><li><strong>Рабочая температура:</strong> от -20 до 50 °C</li><li><strong>Рабочий ток:</strong> 230 мА</li><li><strong>Рабочий ток в режиме ожидания:</strong> 50 мА</li><li><strong>Размеры (мм):</strong> 100*68*165</li><li><strong>Режим контрастности:</strong> 10м (открытая площадка)</li><li><strong>Режим связи:</strong> Bluetooth 5.0</li><li><strong>Сертификаты:</strong> CE, FCC</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Температура хранения:</strong> от -40 до 70 °C</li><li><strong>Тип интерфейса:</strong> Type-C</li><li><strong>Точность распознавания:</strong> ≥4 мил</li><li><strong>Уведомление:</strong> Звуковой сигнал, светодиод</li><li><strong>Фокусировка:</strong> Красный свет</li><li><strong>Электростатический разряд:</strong> ±4 кВ (контактный разряд)</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> iDPRT</li><li><strong>Разрешение:</strong> 640*480 пикселей</li><li><strong>QR (20 мил):</strong> 20–150 мм</li><li><strong>Аккумулятор:</strong> Литиевая батарея емкостью 2600 мА</li><li><strong>Вес:</strong> 135 г</li><li><strong>Влажность:</strong> от 5% до 95% (без конденсации)</li><li><strong>Время аккумулятора:</strong> 6ч</li><li><strong>Время работы зарядки:</strong> 12ч (сканирование кнопкой один раз в секунду)</li><li><strong>Датчик:</strong> CMOS</li><li><strong>Материал корпуса:</strong> PC+ABS</li><li><strong>Относительная контрастность:</strong> ≥25%</li><li><strong>Подсветка:</strong> Белый свет</li><li><strong>Поле зрения:</strong> Горизонтальное: 40°, вертикальное: 30°</li><li><strong>Рабочая температура:</strong> от -20 до 50 °C</li><li><strong>Рабочий ток:</strong> 230 мА</li><li><strong>Рабочий ток в режиме ожидания:</strong> 50 мА</li><li><strong>Размеры (мм):</strong> 100*68*165</li><li><strong>Режим контрастности:</strong> 10м (открытая площадка)</li><li><strong>Режим связи:</strong> Bluetooth 5.0</li><li><strong>Сертификаты:</strong> CE, FCC</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Температура хранения:</strong> от -40 до 70 °C</li><li><strong>Тип интерфейса:</strong> Type-C</li><li><strong>Точность распознавания:</strong> ≥4 мил</li><li><strong>Уведомление:</strong> Звуковой сигнал, светодиод</li><li><strong>Фокусировка:</strong> Красный свет</li><li><strong>Электростатический разряд:</strong> ±4 кВ (контактный разряд)</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Xiamen Hanin Co., Ltd</param>
+<param name="Производитель">iDPRT</param>
 <param name="Разрешение">640*480 пикселей</param>
 <param name="QR (20 мил)">20–150 мм</param>
 <param name="Аккумулятор">Литиевая батарея емкостью 2600 мА</param>
@@ -3363,7 +3363,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Уведомление">Звуковой сигнал, светодиод</param>
 <param name="Фокусировка">Красный свет</param>
 <param name="Электростатический разряд">±4 кВ (контактный разряд)</param>
-<keywords>Xiamen Hanin Co., Ltd, Сканер штрих-кода IDPRT HN-1358SR черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>iDPRT, Сканер штрих-кода IDPRT HN-1358SR черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACHN-3308SR" available="true">
@@ -3372,7 +3372,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Сканер штрих-кода IDPRT HN-3308SR черный</name>
 <price>17900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/12f/txacffp72k148ya2vz2n8sq2ah6s18a2.png</picture>
-<vendor>Xiamen Hanin Co., Ltd</vendor>
+<vendor>iDPRT</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
@@ -3383,16 +3383,16 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Сканер штрих-кодов HN-3308SR — это ручной 2D-имидж сканер, который считывает как одномерные (1D), так и двумерные (2D, например, QR коды) штрих-коды с помощью камеры (2D Imager), а не лазера, и обычно подключен к системе проводом (USB). Он относится к категории проводных и предназначен для ручного использования, считывая коды с высокой точностью.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Xiamen Hanin Co., Ltd</li><li><strong>Интерфейс:</strong> Проводной (обычно USB).</li><li><strong>Возможности:</strong> Считывание 1D и 2D штрих-кодов, включая поврежденные.</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип сканера:</strong> 2D Imager (имидж, фотосканер).</li><li><strong>Форм-фактор:</strong> Ручной (Handheld).</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> iDPRT</li><li><strong>Интерфейс:</strong> Проводной (обычно USB).</li><li><strong>Возможности:</strong> Считывание 1D и 2D штрих-кодов, включая поврежденные.</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип сканера:</strong> 2D Imager (имидж, фотосканер).</li><li><strong>Форм-фактор:</strong> Ручной (Handheld).</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Xiamen Hanin Co., Ltd</param>
+<param name="Производитель">iDPRT</param>
 <param name="Интерфейс">Проводной (обычно USB).</param>
 <param name="Возможности">Считывание 1D и 2D штрих-кодов, включая поврежденные.</param>
 <param name="Страна происхождения">Китай</param>
 <param name="Тип сканера">2D Imager (имидж, фотосканер).</param>
 <param name="Форм-фактор">Ручной (Handheld).</param>
-<keywords>Xiamen Hanin Co., Ltd, Сканер штрих-кода IDPRT HN-3308SR черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>iDPRT, Сканер штрих-кода IDPRT HN-3308SR черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACLI4278-TRBU0100ZER" available="true">
@@ -4430,14 +4430,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Проектор с разрешением Full HD<br>Воспроизведение на большом экране Любимые фильмы, игры и спорт на большом экране у вас дома<br>Простота настройки Коррекция искажений, разъем HDMI<br>Долговечность До 18 лет¹ работы<br>Доступное высокотехнологичное оборудование Насладитесь качеством изображения на проекторе с разрешением Full HD 1080p<br>Впечатляюще яркий экран Одинаково высокая цветовая яркость и яркость по белому цвету 3 000 люмен<br>Техника<br>Projection System<br>3LCD Technology, RGB liquid crystal shutter<br>LCD Panel<br>0,59 inch with MLA (D10)<br>Image<br>Насыщенность цвета<br>3.000 Люмен- 2.000 Люмен (экономичный) In accordance with ISO 21118:2020<br>Насыщенность белого<br>3.000 Люмен - 2.000 Люмен (экономичный) In accordance with ISO 21118:2020<br>Разрешение<br>1080p<br>Высокая четкость (HD)<br>Full HD<br>Light source<br>Lamp<br>Лампа<br>UHE, 188 Вт, 6.000 в Срок службы, 12.000 в Срок службы (в экономном режиме)<br>Коррекция трапеции<br>Обработка видеоизображения<br>8 биты<br>2D Vertical Refresh Rate<br>100 Гц - 120 Гц<br>Colour Reproduction<br>16.77 million colours<br>Оптика<br>Соотношение сторон проецируемого изображения<br>1,19 - 1,61:1<br>Изменение фокусного расстояния<br>Digital, Factor: 1 - 1,35<br>Объектив<br>Оптика<br>Размер проекции<br>26 inches - 391 inches…</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Проектор для дома</li><li><strong>Вручную vertical:</strong> ± 30 °, Вручную horizontal ± 30 °</li><li><strong>Смещение:</strong> 7:1</li><li><strong>Соотношение сторон:</strong> 16:9</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Тип">Проектор для дома</param>
-<param name="Вручную vertical">± 30 °, Вручную horizontal ± 30 °</param>
-<param name="Смещение">7:1</param>
-<param name="Соотношение сторон">16:9</param>
 <keywords>Epson, Проектор для дома Epson CO-FH01, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
