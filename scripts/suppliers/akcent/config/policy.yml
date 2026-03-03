@@ -1,20 +1,16 @@
 supplier: akcent
 timezone: Asia/Almaty
 next_run_hour_local: 2
-
 core_stages:
   pricing: true
   keywords: true
   description_template: true
   feed_meta_heartbeat: true
-
-  # На будущее (пока выключено)
   category_assignment: false
   seo_reviews: false
   seo_faq: false
-
 core_rules:
   mutate_params: false
   auto_codes_from_text: false
   auto_compat_from_text: false
-  placeholder_picture: "https://placehold.co/800x800/png?text=No+Photo"
+  placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
