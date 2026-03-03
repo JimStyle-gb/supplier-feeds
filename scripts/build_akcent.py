@@ -32,7 +32,7 @@ SCHEDULE_HOUR_ALMATY = 2
 
 
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v30_order_fix"
+BUILD_AKCENT_VERSION = "build_akcent_v31_fix_meta_params"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -372,7 +372,7 @@ def _ac_extract_tab_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], s
     cleaned = "\n".join(keep).strip()
     return out, cleaned
 
-_CODE_TOKEN_RE = re.compile(r"\bC13T\d{5,8}[A-Z]?\b"r"|\bC12C\d{6}\b"r"|\bC11[A-Z]{2}\d{5}[A-Z0-9]{0,2}\b"r"|\bV1[23]H\d{7,8}\b"r"|\bC\d{2}C\d{5,6}\b"r"|\b(?:CE|CF|CC|CB|Q)\d{3,6}[A-Z]?\b"r"|\b106R\d{5}\b"r"|\b(?:TN|DR|TK)\s*-?\s*\d{3,5}[A-Z]?\b"r"|\bMLT\s*-?\s*[A-Z]?\d{3,4}[A-Z]?\b"r"|\bCRG\s*-?\s*\d{3,4}[A-Z]?\b"r"|\bW\d{4}[A-Z]\b"r"|\bT\d{2}[A-Z]?\b"r"|\b[A-Z]\d{2}[A-Z]\d{3,6}\b", re.IGNORECASE)
+_CODE_TOKEN_RE = re.compile(r"\bC13T\d{5,8}[A-Z]?\b"r"|\bC12C\d{6}\b"r"|\bC11[A-Z]{2}\d{5}[A-Z0-9]{0,2}\b"r"|\bV1[23]H[0-9A-Z]{6,12}\b"r"|\bC\d{2}C\d{5,6}\b"r"|\b(?:CE|CF|CC|CB|Q)\d{3,6}[A-Z]?\b"r"|\b106R\d{5}\b"r"|\b(?:TN|DR|TK)\s*-?\s*\d{3,5}[A-Z]?\b"r"|\bMLT\s*-?\s*[A-Z]?\d{3,4}[A-Z]?\b"r"|\bCRG\s*-?\s*\d{3,4}[A-Z]?\b"r"|\bW\d{4}[A-Z]\b"r"|\bT\d{2}[A-Z]?\b"r"|\b[A-Z]\d{2}[A-Z]\d{3,6}\b", re.IGNORECASE)
 def _ac_extract_codes_from_fields(name: str, params: list[tuple[str, str]], desc: str) -> list[str]:
     text = " ".join([name or "", desc or ""] + [f"{k} {v}" for k, v in (params or [])])
     codes = []
@@ -778,6 +778,13 @@ def _ac_enrich_codes_and_compat(oid: str, name: str, vendor: str, params: list[t
 
         kcf = k0.casefold()
 
+
+        # Диапазоны '...'
+        v0 = _ac_norm_ranges(v0)
+
+        # Чистим производителя (Epson Proj -> Epson)
+        if kcf == "производитель":
+            v0 = _clean_vendor(v0)
         if kcf in {"интерфейс", "интерфейсы", "подключение"}:
             v0 = _ac_norm_interface_value(v0)
 
@@ -822,3 +829,16 @@ def _ac_enrich_codes_and_compat(oid: str, name: str, vendor: str, params: list[t
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+def _ac_norm_ranges(v: str) -> str:
+    """Нормализует диапазоны вида '5...40' -> '5–40'."""
+    s = (v or "").strip()
+    if not s:
+        return ""
+    # 5...40 -> 5–40 ; 1.19...1.61 -> 1.19–1.61
+    s = re.sub(r"(\d(?:[\d.,]*\d)?)\s*\.\.\.\s*(\d(?:[\d.,]*\d)?)", r"\1–\2", s)
+    # иногда встречается '... ' без пробелов
+    s = s.replace("…", "…")  # keep unicode ellipsis as-is
+    return s
+
