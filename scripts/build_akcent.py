@@ -32,7 +32,7 @@ SCHEDULE_HOUR_ALMATY = 2
 
 
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v31_fix_meta_params"
+BUILD_AKCENT_VERSION = "build_akcent_v33_fix_norm_ranges_defined"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -827,10 +827,6 @@ def _ac_enrich_codes_and_compat(oid: str, name: str, vendor: str, params: list[t
 
     return out
 
-if __name__ == "__main__":
-    raise SystemExit(main())
-
-
 def _ac_norm_ranges(v: str) -> str:
     """Нормализует диапазоны вида '5...40' -> '5–40'."""
     s = (v or "").strip()
@@ -842,3 +838,16 @@ def _ac_norm_ranges(v: str) -> str:
     s = s.replace("…", "…")  # keep unicode ellipsis as-is
     return s
 
+
+
+def _ac_norm_ranges(v: str) -> str:
+    """Нормализует диапазоны вида '5...40' -> '5–40', '1.19...1.61' -> '1.19–1.61'."""
+    s = (v or "").strip()
+    if not s:
+        return ""
+    # 5...40 -> 5–40 ; 1.19...1.61 -> 1.19–1.61
+    s = re.sub(r"(\d(?:[\d.,]*\d)?)\s*\.\.\.\s*(\d(?:[\d.,]*\d)?)", r"\1–\2", s)
+    return s
+
+if __name__ == "__main__":
+    raise SystemExit(main())
