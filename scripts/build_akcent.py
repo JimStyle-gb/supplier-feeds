@@ -30,7 +30,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v35_fix_aspect_vendor_raw"
+BUILD_AKCENT_VERSION = "build_akcent_v36_drop_sku_fix_next_run_02"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -57,7 +57,8 @@ AKCENT_NAME_PREFIXES: list[str] = [
 AKCENT_NAME_PREFIXES_CF = tuple((p or "").casefold() for p in AKCENT_NAME_PREFIXES)
 
 # Параметры AkCent, которые не являются характеристиками (только для этого поставщика)
-AKCENT_PARAM_DROP = {"Сопутствующие товары"}
+AKCENT_PARAM_DROP = {    "Артикул",
+"Сопутствующие товары"}
 
 # CS: исключаем "картриджи для фильтра/бутылки" Philips AWP (не наша категория)
 AKCENT_DROP_ARTICLES = {"AWP201/10", "AWP286/10"}
