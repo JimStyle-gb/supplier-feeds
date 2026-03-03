@@ -78,7 +78,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v45_param_schema"
+BUILD_AKCENT_VERSION = "build_akcent_v46_schema_vendor_warranty_codes"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -934,7 +934,12 @@ def _clean_vendor(v: str) -> str:
     if "made in" in cf2 or cf2 in COUNTRY_VENDOR_BLACKLIST_CF:
         return ""
 
-    return s2
+    # Модель: если пришло название компании (Europe Ltd / GmbH / Inc / LLC) — убираем
+if (k or "").casefold() == "модель":
+    cf = s.casefold()
+    if any(tok in cf for tok in [" ltd", "ltd.", " gmbh", " inc", " llc", " co.", " company", " europe ltd"]):
+        return ""
+return s2
 
 
 
@@ -1102,6 +1107,23 @@ def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]], name: str 
         for rx, brand in brand_map:
             if rx.search(n):
                 return brand
+
+    # name-based fallback (если vendor/производитель не пришли)
+    name_cf = (name or "").casefold()
+    brand_map = [
+        (r"\bhp\b", "HP"),
+        (r"\bepson\b", "Epson"),
+        (r"\bfellowes\b", "Fellowes"),
+        (r"\bviewsonic\b", "ViewSonic"),
+        (r"\bzebra\b", "Zebra"),
+        (r"\bsmart\b", "SMART"),
+        (r"\bmr\.pixel\b", "Mr.Pixel"),
+        (r"\bidprt\b", "IDPRT"),
+    ]
+    for rx, outv in brand_map:
+        if re.search(rx, name_cf, flags=re.IGNORECASE):
+            return outv
+
     return ""
 
 
@@ -1191,7 +1213,12 @@ def _ac_fix_text(desc: str) -> str:
 def _ac_norm_name(name: str) -> str:
     s = (name or "").strip()
     if not s:
-        return s
+        # Модель: если пришло название компании (Europe Ltd / GmbH / Inc / LLC) — убираем
+if (k or "").casefold() == "модель":
+    cf = s.casefold()
+    if any(tok in cf for tok in [" ltd", "ltd.", " gmbh", " inc", " llc", " co.", " company", " europe ltd"]):
+        return ""
+return s
     # NBSP/узкие пробелы -> обычный пробел (иначе regex не ловит)
     s = s.replace("\u00A0", " ").replace("\u202F", " ")
     # пробел после ®
@@ -1341,7 +1368,7 @@ def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> l
     existing_vals: list[str] = []
     tmp: list[tuple[str, str]] = []
     for k, v in out:
-        if k.casefold() == "коды расходников":
+        if k.casefold() in ("коды расходников", "коды"):
             if v:
                 existing_vals.append(v)
         else:
@@ -1382,7 +1409,7 @@ def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> l
             codes.append(cc)
 
     if codes:
-        out.append(("Коды расходников", ", ".join(codes)))
+        out.append(("Коды", ", ".join(codes)))
     # Ресурс (только для расходников)
     name_cf = (name or "").casefold()
     if any(w in name_cf for w in ["чернила", "картридж", "тонер", "драм", "drum", "ink", "toner", "cartridge"]):
