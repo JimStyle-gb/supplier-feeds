@@ -99,6 +99,7 @@ jobs:
               continue
             fi
 
+            # update yml_catalog date to TS
             sed -i -E "s/^<yml_catalog date=\"[^\"]+\">/<yml_catalog date=\"${TS}\">/" "$F" || true
 
             tmp="$F.__tmp"
