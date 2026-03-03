@@ -30,7 +30,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v38_fix_next_run_02"
+BUILD_AKCENT_VERSION = "build_akcent_v39_force_next_run_02"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -638,7 +638,7 @@ def _next_run_almaty(build_time: str, hour: int) -> str:
 def main() -> int:
     print(f"[akcent] version={BUILD_AKCENT_VERSION}")
     build_time = now_almaty()
-    next_run = _next_run_almaty(build_time, SCHEDULE_HOUR_ALMATY)
+    next_run = _next_run_almaty(build_time, 2)
     r = requests.get(_normalize_url(SUPPLIER_URL), timeout=90)
     r.raise_for_status()
     root = ET.fromstring(r.content)
