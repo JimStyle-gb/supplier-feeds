@@ -78,7 +78,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v47_indent_fix_schema"
+BUILD_AKCENT_VERSION = "build_akcent_v48_keystone_warranty_norm"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -1328,6 +1328,9 @@ def _ac_params_postfix(params: list[tuple[str, str]], name: str, desc: str) -> l
         if not kk or not vv:
             continue
         kcf = kk.casefold()
+        # Keystone manual labels from specs
+        if kcf in {"вручную vertical", "manual vertical"}:
+            return "Коррекция трапецеидальных искажений"
         # ключи
         if kcf == "проекционный коэффицент (throw ratio)" or kcf == "проекционный коэффицент":
             kk = "Проекционный коэффициент"
@@ -1917,6 +1920,26 @@ def _ac_norm_ranges(v: str) -> str:
         return ""
     # 5...40 -> 5–40 ; 1.19...1.61 -> 1.19–1.61
     s = re.sub(r"(\d(?:[\d.,]*\d)?)\s*\.\.\.\s*(\d(?:[\d.,]*\d)?)", r"\1–\2", s)
+    # Warranty: if only digits, assume months
+    if (k or '').casefold() in {'гарантия', 'гарантия, мес', 'гарантия (мес)'}:
+        vv = (s or '').strip()
+        if re.fullmatch(r'\d{1,3}', vv):
+            return f"{int(vv)} мес"
+
+    # _keystone: normalize combined vertical/horizontal manual correction
+    if (k or '').casefold() == 'коррекция трапецеидальных искажений':
+        vv = (s or '').strip()
+        m_v = re.search(r'±\s*\d+\s*°', vv)
+        m_h = re.search(r'горизонт\w*\s*±\s*\d+\s*°', vv, flags=re.IGNORECASE)
+        if m_v or m_h:
+            vpart = m_v.group(0).replace(' ', '') if m_v else ''
+            hdeg = re.search(r'±\s*\d+\s*°', m_h.group(0)).group(0).replace(' ', '') if m_h else ''
+            parts = []
+            if vpart: parts.append(f"вертикальная {vpart}")
+            if hdeg: parts.append(f"горизонтальная {hdeg}")
+            if parts:
+                return ', '.join(parts)
+
     return s
 
 if __name__ == "__main__":
