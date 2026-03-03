@@ -30,7 +30,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v34_fix_vendor_proj_and_model_scheduletime"
+BUILD_AKCENT_VERSION = "build_akcent_v35_fix_aspect_vendor_raw"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -224,7 +224,7 @@ def _collect_params(offer: ET.Element) -> list[tuple[str, str]]:
     return out
 
 # Достаём vendor (если пусто — CS Core сам определит бренд по имени/парам/описанию)
-def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]]) -> str:
+def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]], name: str = "") -> str:
     v = _clean_vendor(_get_text(offer.find("vendor")))
     if v:
         return v
@@ -233,7 +233,54 @@ def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]]) -> str:
             v2 = _clean_vendor(val)
             if v2:
                 return v2
+
+    # фолбэк по имени (если поставщик не дал vendor/производителя в XML/params)
+    n = (name or "").strip()
+    if n:
+        # порядок важен (самые специфичные выше)
+        brand_map: list[tuple[re.Pattern, str]] = [
+            (re.compile(r"\bMr\.?\s*Pixel\b", re.IGNORECASE), "Mr.Pixel"),
+            (re.compile(r"\bView\s*Sonic\b", re.IGNORECASE), "ViewSonic"),
+            (re.compile(r"\bSMART\b", re.IGNORECASE), "SMART"),
+            (re.compile(r"\bFellowes\b", re.IGNORECASE), "Fellowes"),
+            (re.compile(r"\bEpson\b", re.IGNORECASE), "Epson"),
+            (re.compile(r"\bCanon\b", re.IGNORECASE), "Canon"),
+            (re.compile(r"\bBrother\b", re.IGNORECASE), "Brother"),
+            (re.compile(r"\bKyocera\b", re.IGNORECASE), "Kyocera"),
+            (re.compile(r"\bRicoh\b", re.IGNORECASE), "Ricoh"),
+            (re.compile(r"\bXerox\b", re.IGNORECASE), "Xerox"),
+            (re.compile(r"\bLexmark\b", re.IGNORECASE), "Lexmark"),
+            (re.compile(r"\bPantum\b", re.IGNORECASE), "Pantum"),
+            (re.compile(r"\bSamsung\b", re.IGNORECASE), "Samsung"),
+            (re.compile(r"\bToshiba\b", re.IGNORECASE), "Toshiba"),
+            (re.compile(r"\bSharp\b", re.IGNORECASE), "Sharp"),
+            (re.compile(r"\bOki\b", re.IGNORECASE), "OKI"),
+            (re.compile(r"\bHP\b", re.IGNORECASE), "HP"),
+        ]
+        for rx, brand in brand_map:
+            if rx.search(n):
+                return brand
     return ""
+
+
+_ASPECT_FIX_NAME_RE = re.compile(r"^\s*Соотношение\s+сторон\s+(\d{1,2})\s*$", re.IGNORECASE)
+_ASPECT_FIX_VAL_RE = re.compile(r"^\s*(\d{1,2})\s*$")
+
+def _ac_fix_aspect_ratio_params(params: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    """Фиксит битый кейс: <param name="Соотношение сторон 16">9</param> -> Соотношение сторон=16:9."""
+    out: list[tuple[str, str]] = []
+    for k, v in (params or []):
+        k0 = (k or "").strip()
+        v0 = (v or "").strip()
+        m = _ASPECT_FIX_NAME_RE.match(k0)
+        if m:
+            m2 = _ASPECT_FIX_VAL_RE.match(v0)
+            if m2:
+                out.append(("Соотношение сторон", f"{m.group(1)}:{m2.group(1)}"))
+                continue
+        out.append((k, v))
+    return out
+
 
 # Достаём описание
 
@@ -612,10 +659,11 @@ def main() -> int:
         if not price_in or int(price_in) < 1:
             price_missing += 1
         price = compute_price(price_in)
-        vendor = _extract_vendor(offer, params)
+        vendor = _extract_vendor(offer, params, name)
 
         params = _ac_enrich_codes_and_compat(oid, name, vendor, params, native_desc)
         params = _ac_fix_model_by_name(name, vendor, params)
+        params = _ac_fix_aspect_ratio_params(params)
         params = clean_params(params, drop=AKCENT_PARAM_DROP)
         out_offers.append(
             OfferOut(
