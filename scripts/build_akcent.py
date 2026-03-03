@@ -30,7 +30,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v39_force_next_run_02"
+BUILD_AKCENT_VERSION = "build_akcent_v41_fix_ratio_specs_compile_ok"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -734,7 +734,13 @@ def main() -> int:
 
     return 0
 def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], str]:
-    """Извлекает характеристики из многострочного описания вида 'Ключ: Значение'."""
+    """Извлекает характеристики из многострочного описания вида 'Ключ: Значение'.
+
+    Важно (фикс под AkCent):
+    - не превращаем строки-отношения вида '16:9', '5.000.000:1', '10 : 1' в мусорные параметры (key='16', value='9')
+    - поддерживаем связку "Aspect Ratio" -> следующая строка (значение) как 'Соотношение сторон'
+      и аналогично для Contrast/Throw Ratio/Offset.
+    """
     if not desc:
         return [], desc
 
@@ -742,10 +748,20 @@ def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]],
     out_params: list[tuple[str, str]] = []
     out_lines: list[str] = []
 
+    # Заголовки секций (обычно без ':') — не сохраняем как характеристики
     section_headers = {
         "общие параметры", "изображение", "интерфейсы", "корпус", "разъемы", "питание",
         "функции", "другое", "экран", "сеть", "память", "звук",
     }
+
+    # Англ. заголовки из Epson-спеков -> куда кладём значение следующей строкой
+    pending_map = {
+        "aspect ratio": "Соотношение сторон",
+        "contrast ratio": "Контрастность",
+        "throw ratio": "Проекционный коэффициент",
+        "offset": "Смещение",
+    }
+    pending_key: str = ""
 
     def is_good_key(k: str) -> bool:
         k = (k or "").strip()
@@ -754,7 +770,11 @@ def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]],
         kcf = k.casefold()
         if kcf in section_headers:
             return False
+        # не тащим URL как ключ
         if "http" in kcf:
+            return False
+        # ключ должен содержать буквы (иначе получаем мусор вроде key='16')
+        if not re.search(r"[A-Za-zА-Яа-я]", k):
             return False
         return True
 
@@ -773,21 +793,61 @@ def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]],
             out_lines.append(ln)
             continue
 
+        s_cf = s.casefold()
+
+        # 1) Заголовок-ожидание (англ. спек)
+        if s_cf in pending_map:
+            pending_key = pending_map[s_cf]
+            # заголовок в текст не пишем (чтобы не мусорить описание)
+            continue
+
+        # 2) Следующая строка после заголовка — значение
+        if pending_key:
+            # нормализация "10 : 1" -> "10:1"
+            v = re.sub(r"\s*:\s*", ":", s).strip()
+            # принимаем как значение, если есть цифры
+            if re.search(r"\d", v):
+                pair = (pending_key, v)
+                if pair not in out_params:
+                    out_params.append(pair)
+                extracted += 1
+                pending_key = ""
+                continue
+            pending_key = ""
+
+        # 3) Отдельные строки-отношения вида "16:9" / "5.000.000:1" — НЕ парсим как "ключ:значение"
+        if re.fullmatch(r"\d[\d\s.,-]*:\s*\d[\d\s.,-]*", s):
+            out_lines.append(ln)
+            continue
+
+        # 4) Обычные строки "Ключ: Значение"
         if ":" in s and not s.startswith("http"):
             k, v = s.split(":", 1)
             k = k.strip()
             v = v.strip()
+
+            # спец-кейс: "Контрастность 16 000:1" -> key="Контрастность", value="16 000:1"
+            if v == "1":
+                kcf = k.casefold().replace("ё", "е")
+                if ("контраст" in kcf or "contrast" in kcf) and re.search(r"\d", k):
+                    digits = re.sub(r"[^0-9\s.,]", "", k).strip()
+                    if digits:
+                        k = "Динамическая контрастность" if ("dynamic" in kcf or "динамичес" in kcf) else "Контрастность"
+                        digits2 = re.sub(r"\s{2,}", " ", digits)
+                        v = digits2 + ":1"
+
             if is_good_key(k) and is_good_val(v):
                 pair = (k, v)
                 if pair not in out_params:
                     out_params.append(pair)
                 extracted += 1
+                # строку выкидываем из текста
+                if extracted >= 80:
+                    out_lines.extend(lines[len(out_lines):])
+                    break
                 continue
 
         out_lines.append(ln)
-
-        if extracted >= 80:
-            break
 
     cleaned = "\n".join(out_lines).strip()
     return out_params, cleaned
