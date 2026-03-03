@@ -10,6 +10,54 @@ from __future__ import annotations
 import re
 from xml.etree import ElementTree as ET
 
+
+def _detect_xml_encoding(data: bytes) -> str:
+    """Пытаемся вытащить encoding из XML-декларации, иначе utf-8."""
+    try:
+        head = data[:400].decode("ascii", errors="ignore")
+        m = re.search(r'encoding=["\']([^"\']+)["\']', head, flags=re.IGNORECASE)
+        if m:
+            return m.group(1).strip()
+    except Exception:
+        pass
+    return "utf-8"
+
+def _sanitize_xml_text(s: str) -> str:
+    """Чистим мусорные символы/битые амперсанды, чтобы парсер не падал."""
+    if not s:
+        return s
+    # Удаляем управляющие символы (кроме \t \n \r)
+    s = re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F]", "", s)
+    # Экранируем голые '&' (не сущности)
+    s = re.sub(r"&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9A-Fa-f]+;)", "&amp;", s)
+    return s
+
+def _xml_from_bytes_safe(data: bytes):
+    """Надёжный парсинг XML: пытаемся как есть, затем с декодированием/очисткой, затем lxml(recover)."""
+    # 1) пробуем как есть
+    try:
+        return ET.fromstring(data)
+    except ET.ParseError as e:
+        # 2) декодируем по XML-encoding и чистим
+        enc = _detect_xml_encoding(data)
+        try:
+            text = data.decode(enc, errors="replace")
+        except Exception:
+            text = data.decode("utf-8", errors="replace")
+        text = _sanitize_xml_text(text)
+        try:
+            return ET.fromstring(text)
+        except ET.ParseError:
+            # 3) lxml recover (если доступен)
+            try:
+                from lxml import etree  # type: ignore
+                parser = etree.XMLParser(recover=True, huge_tree=True)
+                root = etree.fromstring(data, parser=parser)
+                return ET.fromstring(etree.tostring(root, encoding="utf-8"))
+            except Exception:
+                raise e
+
+
 import requests
 
 from cs.core import (
@@ -30,7 +78,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v41_fix_ratio_specs_compile_ok"
+BUILD_AKCENT_VERSION = "build_akcent_v42_safe_xml_parse_recover"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -641,8 +689,7 @@ def main() -> int:
     next_run = _next_run_almaty(build_time, 2)
     r = requests.get(_normalize_url(SUPPLIER_URL), timeout=90)
     r.raise_for_status()
-    root = ET.fromstring(r.content)
-
+    root = _xml_from_bytes_safe(r.content)
     offers_in = _extract_offers(root)
     before = len(offers_in)
 
