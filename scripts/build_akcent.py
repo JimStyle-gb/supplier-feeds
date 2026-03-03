@@ -78,7 +78,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v50_fix_params_raw_pairs"
+BUILD_AKCENT_VERSION = "build_akcent_v51_param_schema_warranty_fix"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -120,6 +120,8 @@ AKCENT_SCHEMA_MAX_KEY_LEN = 60
 AKCENT_SCHEMA_MAX_KEY_WORDS = 8
 
 AKCENT_SCHEMA_DROP_KEY_EXACT = {
+    "Артикул",
+    "SKU",
     "EcoTank обеспечивает удобную и недорогую печать в домашних условиях",
     "Комбинированный картридж с голубыми, пурпурными и желтыми чернилами (C13T26704010) для Epson WorkForce WF-100W",
 }
@@ -797,12 +799,41 @@ def _ac_schema_norm_key(k: str) -> str:
         k = "Разрешение печати, dpi"
     if k == "Разрешение сканера,dpi":
         k = "Разрешение сканера, dpi"
+
+    kcf = k.casefold()
+    # нормализуем основные синонимы
+    if kcf in {"коды расходников", "код расходников", "коды картриджей", "codes", "code"}:
+        k = "Коды"
+        kcf = "коды"
+    if kcf in {"гарантия, мес", "гарантия (мес)", "гарантия (мес.)", "гарантия в мес", "гарантия, месяцев"}:
+        k = "Гарантия"
+        kcf = "гарантия"
+    if kcf in {"гарантия, лет", "гарантия (лет)", "гарантия в годах"}:
+        k = "Гарантия"
+        kcf = "гарантия"
+
     return k
 
 def _ac_schema_norm_value(k: str, v: str) -> str:
     v = (v or "").strip()
     if not v:
         return ""
+
+    # гарантия: если пришло просто число, считаем месяцами (AkCent обычно так и дает)
+    if k == "Гарантия":
+        cf = v.casefold()
+        # "12 мес", "12 месяцев", "12 month" -> "12 мес"
+        mm = re.fullmatch(r"(\d{1,3})\s*(мес\.?|месяц(ев|а)?|month(s)?)", cf)
+        if mm:
+            return f"{int(mm.group(1))} мес"
+        yy = re.fullmatch(r"(\d{1,3})\s*(год(а|ов)?|лет|year(s)?)", cf)
+        if yy:
+            return f"{int(yy.group(1))} лет"
+        if re.fullmatch(r"\d{1,3}", v):
+            return f"{int(v)} мес"
+        if cf in {"нет", "no", "n/a", "-", "не указано"}:
+            return "нет"
+
     # мусорное "Оригинальное"
     if k == "Оригинальное разрешение" and v.casefold() == "оригинальное":
         return ""
@@ -831,6 +862,8 @@ _CODE_TOKEN_RE_SCHEMA = re.compile(r"\b[A-Z]{1,4}\d{2,}[A-Z0-9-]*\b")
 
 def _ac_schema_is_bad_key(k: str) -> bool:
     if not k:
+        return True
+    if k.casefold() in {'артикул','sku','код товара','код продукта','штрихкод','barcode'}:
         return True
     if k in AKCENT_SCHEMA_DROP_KEY_EXACT:
         return True
@@ -1074,6 +1107,8 @@ def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]], name: str 
     if oid_cf:
         # Epson: большинство расходников AkCent кодируются как C13T... прямо в oid (например ACC13T00S64A)
         if "c13t" in oid_cf:
+            return "Epson"
+        if "c33s" in oid_cf:
             return "Epson"
         # SMART: интерактивные панели/дисплеи часто идут SBID-... без явного бренда в названии
         if "sbid" in oid_cf:
