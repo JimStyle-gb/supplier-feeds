@@ -30,7 +30,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v37_vendor_fill_smart_idprt_epsoncodes"
+BUILD_AKCENT_VERSION = "build_akcent_v38_fix_next_run_02"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -618,12 +618,27 @@ def _extract_offers(root: ET.Element) -> list[ET.Element]:
         return []
     return list(offers_node.findall("offer"))
 
+def _next_run_almaty(build_time: str, hour: int) -> str:
+    """Ближайшая сборка по Алматы: следующий запуск сегодня/завтра в hour:00:00.
+    build_time — строка now_almaty() вида 'YYYY-MM-DD HH:MM:SS'.
+    """
+    try:
+        from datetime import datetime, timedelta
+
+        dt = datetime.strptime((build_time or "").strip(), "%Y-%m-%d %H:%M:%S")
+        cand = dt.replace(hour=int(hour), minute=0, second=0, microsecond=0)
+        if cand <= dt:
+            cand = cand + timedelta(days=1)
+        return cand.strftime("%Y-%m-%d %H:%M:%S")
+    except Exception:
+        # fallback на core-хелпер (если формат времени вдруг поменяется)
+        return next_run_at_hour(build_time, int(hour))
+
 # main
 def main() -> int:
     print(f"[akcent] version={BUILD_AKCENT_VERSION}")
     build_time = now_almaty()
-    next_run = next_run_at_hour(build_time, SCHEDULE_HOUR_ALMATY)
-
+    next_run = _next_run_almaty(build_time, SCHEDULE_HOUR_ALMATY)
     r = requests.get(_normalize_url(SUPPLIER_URL), timeout=90)
     r.raise_for_status()
     root = ET.fromstring(r.content)
