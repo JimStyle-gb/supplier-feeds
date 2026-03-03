@@ -32,8 +32,7 @@ SCHEDULE_HOUR_ALMATY = 2
 
 
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v28_fixed_regex_calls_enrich"
-
+BUILD_AKCENT_VERSION = "build_akcent_v30_order_fix"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -651,11 +650,6 @@ def main() -> int:
     print(f"[akcent] before={before} after={after} price_missing={price_missing} changed={changed}")
 
     return 0
-
-if __name__ == "__main__":
-    raise SystemExit(main())
-
-
 def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]], str]:
     """Извлекает характеристики из многострочного описания вида 'Ключ: Значение'."""
     if not desc:
@@ -826,3 +820,5 @@ def _ac_enrich_codes_and_compat(oid: str, name: str, vendor: str, params: list[t
 
     return out
 
+if __name__ == "__main__":
+    raise SystemExit(main())
