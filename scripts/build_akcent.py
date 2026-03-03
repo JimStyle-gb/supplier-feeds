@@ -29,10 +29,8 @@ SUPPLIER_URL = "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml"
 OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
-
-
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v33_fix_norm_ranges_defined"
+BUILD_AKCENT_VERSION = "build_akcent_v34_fix_vendor_proj_and_model_scheduletime"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -92,13 +90,22 @@ def _clean_vendor(v: str) -> str:
     if not s:
         return ""
     cf = s.casefold()
-    # AkCent: иногда бренд приходит как 'Epson Proj' — нормализуем к бренду Epson
-    if cf in {"epson proj", "epson proj.", "epson projector"}:
+
+    # AkCent: иногда бренд приходит как 'Epson Proj' / 'ViewSonic proj' / '... projector'
+    # Убираем хвост "proj"/"projector" и точки.
+    s2 = re.sub(r"\s+(proj\.?|projector)\s*$", "", s, flags=re.IGNORECASE).strip()
+    cf2 = s2.casefold()
+
+    # Спец-кейс Epson (часто именно так и приходит)
+    if cf in {"epson proj", "epson proj.", "epson projector"} or cf2 == "epson":
         return "Epson"
+
     # чистим "made in ..." и явные страны
-    if "made in" in cf or cf in COUNTRY_VENDOR_BLACKLIST_CF:
+    if "made in" in cf2 or cf2 in COUNTRY_VENDOR_BLACKLIST_CF:
         return ""
-    return s
+
+    return s2
+
 
 
 # Приоритет характеристик (как в AlStyle: сначала важное, потом остальное по алфавиту)
@@ -608,6 +615,7 @@ def main() -> int:
         vendor = _extract_vendor(offer, params)
 
         params = _ac_enrich_codes_and_compat(oid, name, vendor, params, native_desc)
+        params = _ac_fix_model_by_name(name, vendor, params)
         params = clean_params(params, drop=AKCENT_PARAM_DROP)
         out_offers.append(
             OfferOut(
@@ -824,6 +832,51 @@ def _ac_enrich_codes_and_compat(oid: str, name: str, vendor: str, params: list[t
         out.append(("Совместимость", ", ".join(compat_accum[:40])))
     if codes_accum:
         out.append(("Коды", ", ".join(codes_accum[:80])))
+
+    return out
+
+
+_SC_T_CODE_RE = re.compile(r"\bSC-T\d{4,5}[A-Z]?\b", re.IGNORECASE)
+
+
+def _ac_fix_model_by_name(name: str, vendor: str, params: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    """Фикс редкого, но критичного кейса AkCent:
+    в названии одна модель (например SC-T5700D), а в param 'Модель' приходит другая (SC-T5200).
+
+    Правило: если vendor=Epson и в name есть код SC-T..., то 'Модель' должна содержать этот код.
+    """
+    nm = (name or "").strip()
+    if not nm:
+        return params
+    if (vendor or "").casefold() != "epson":
+        return params
+
+    mm = _SC_T_CODE_RE.search(nm)
+    if not mm:
+        return params
+
+    code = (mm.group(0) or "").upper()
+    if not code:
+        return params
+
+    prefix = "Epson SureColor" if "surecolor" in nm.casefold() else "Epson"
+    desired = f"{prefix} {code}".strip()
+
+    out: list[tuple[str, str]] = []
+    found_model = False
+    for k, v0 in (params or []):
+        if (k or "").strip().casefold() == "модель":
+            found_model = True
+            cur = (v0 or "").strip()
+            if code not in cur.upper():
+                out.append(("Модель", desired))
+            else:
+                out.append(("Модель", cur))
+        else:
+            out.append((k, v0))
+
+    if not found_model:
+        out.append(("Модель", desired))
 
     return out
 
