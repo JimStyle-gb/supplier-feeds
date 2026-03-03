@@ -30,7 +30,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v36_drop_sku_fix_next_run_02"
+BUILD_AKCENT_VERSION = "build_akcent_v37_vendor_fill_smart_idprt_epsoncodes"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -57,8 +57,7 @@ AKCENT_NAME_PREFIXES: list[str] = [
 AKCENT_NAME_PREFIXES_CF = tuple((p or "").casefold() for p in AKCENT_NAME_PREFIXES)
 
 # Параметры AkCent, которые не являются характеристиками (только для этого поставщика)
-AKCENT_PARAM_DROP = {    "Артикул",
-"Сопутствующие товары"}
+AKCENT_PARAM_DROP = {"Артикул", "Сопутствующие товары"}
 
 # CS: исключаем "картриджи для фильтра/бутылки" Philips AWP (не наша категория)
 AKCENT_DROP_ARTICLES = {"AWP201/10", "AWP286/10"}
@@ -225,7 +224,7 @@ def _collect_params(offer: ET.Element) -> list[tuple[str, str]]:
     return out
 
 # Достаём vendor (если пусто — CS Core сам определит бренд по имени/парам/описанию)
-def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]], name: str = "") -> str:
+def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]], name: str = "", oid: str = "") -> str:
     v = _clean_vendor(_get_text(offer.find("vendor")))
     if v:
         return v
@@ -234,6 +233,16 @@ def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]], name: str 
             v2 = _clean_vendor(val)
             if v2:
                 return v2
+    # фолбэк по oid/артикулу (если поставщик не дал vendor/производителя)
+    oid_cf = (oid or "").casefold()
+    if oid_cf:
+        # Epson: большинство расходников AkCent кодируются как C13T... прямо в oid (например ACC13T00S64A)
+        if "c13t" in oid_cf:
+            return "Epson"
+        # SMART: интерактивные панели/дисплеи часто идут SBID-... без явного бренда в названии
+        if "sbid" in oid_cf:
+            return "SMART"
+
 
     # фолбэк по имени (если поставщик не дал vendor/производителя в XML/params)
     n = (name or "").strip()
@@ -243,6 +252,8 @@ def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]], name: str 
             (re.compile(r"\bMr\.?\s*Pixel\b", re.IGNORECASE), "Mr.Pixel"),
             (re.compile(r"\bView\s*Sonic\b", re.IGNORECASE), "ViewSonic"),
             (re.compile(r"\bSMART\b", re.IGNORECASE), "SMART"),
+            (re.compile(r"\bSBID\b", re.IGNORECASE), "SMART"),
+            (re.compile(r"\bIDPRT\b", re.IGNORECASE), "IDPRT"),
             (re.compile(r"\bFellowes\b", re.IGNORECASE), "Fellowes"),
             (re.compile(r"\bEpson\b", re.IGNORECASE), "Epson"),
             (re.compile(r"\bCanon\b", re.IGNORECASE), "Canon"),
@@ -660,7 +671,7 @@ def main() -> int:
         if not price_in or int(price_in) < 1:
             price_missing += 1
         price = compute_price(price_in)
-        vendor = _extract_vendor(offer, params, name)
+        vendor = _extract_vendor(offer, params, name, oid)
 
         params = _ac_enrich_codes_and_compat(oid, name, vendor, params, native_desc)
         params = _ac_fix_model_by_name(name, vendor, params)
