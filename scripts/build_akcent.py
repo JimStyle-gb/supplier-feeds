@@ -78,7 +78,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v43_fix_contrast_ratio_split_dynamic"
+BUILD_AKCENT_VERSION = "build_akcent_v44_fix_noise_loudspeaker_drop_garbage"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -807,6 +807,8 @@ def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]],
         "contrast ratio": "Контрастность",
         "throw ratio": "Проекционный коэффициент",
         "offset": "Смещение",
+        "noise level": "Уровень шума (норм./эконом.)",
+        "loudspeaker": "Динамик",
     }
     pending_key: str = ""
 
@@ -823,6 +825,20 @@ def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]],
         # ключ должен содержать буквы (иначе получаем мусор вроде key='16')
         if not re.search(r"[A-Za-zА-Яа-я]", k):
             return False
+
+        # не принимаем ключи, начинающиеся с цифры (мусор вроде "5 Watt, Stereo")
+        if re.match(r"^\d", k):
+            return False
+
+        # явный мусор из Epson-спеков
+        if kcf in {"from", "to", "normal", "digital, factor", "yes", "no"}:
+            return False
+
+        # если ключ полностью на латинице — разрешаем только небольшую whitelist (иначе мусор вроде "Normal")
+        if re.search(r"[A-Za-z]", k) and not re.search(r"[А-Яа-яЁё]", k):
+            if not re.fullmatch(r"(?i)(3d|usb|wi-?fi|ethernet\s*\(rj-45\)|rs-?232|hdmi|vga\s*\(d-sub\)|vga|dvi-d|displayport|adaptive\s+sync|freesync)", k.strip()):
+                return False
+
         return True
 
     def is_good_val(v: str) -> bool:
@@ -852,6 +868,18 @@ def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]],
         if pending_key:
             # нормализация "10 : 1" -> "10:1"
             v = re.sub(r"\s*:\s*", ":", s).strip()
+
+            # спец-нормализация для Epson-спеков
+            if pending_key == "Уровень шума (норм./эконом.)":
+                # "Normal: 22 dB (A) - Economy: 18 dB (A)" -> "22 dB (A) / 18 dB (A)"
+                v = re.sub(r"(?i)^normal\s*:\s*", "", v).strip()
+                v = re.sub(r"(?i)\s*-\s*economy\s*:\s*", " / ", v).strip()
+            elif pending_key == "Динамик":
+                # "5 Watt, Stereo:Stereo" -> "5 Вт, стерео"
+                v = re.sub(r"(?i)\bwatt\b", "Вт", v)
+                v = re.sub(r"(?i),\s*stereo", ", стерео", v)
+                v = re.sub(r"(?i):\s*stereo\s*$", "", v).strip()
+
             # принимаем как значение, если есть цифры
             if re.search(r"\d", v):
                 pair = (pending_key, v)
