@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-03 09:25:21">
+<yml_catalog date="2026-03-03 09:53:23">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-03 09:25:21 (не было изменений)
+Время сборки (Алматы)                      | 2026-03-03 09:53:23 (не было изменений)
 Ближайшая сборка (Алматы)                  | 2026-03-04 06:00:00
 Сколько товаров у поставщика до фильтра    | 1825
 Сколько товаров у поставщика после фильтра | 147
@@ -2591,7 +2591,7 @@ ESC/P-R
 <name>Экономичный набор из четырех контейнеров с чернилами, серия 103</name>
 <price>20900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/791/yxb66jypq1bhzpjx8gp8edrxzte3uzpd.jpg</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Экономичный набор из четырех контейнеров с чернилами, серия 103]]></description>
@@ -3080,7 +3080,7 @@ Epson SureColor T-7000]]></description>
 <name>C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</name>
 <price>192900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/923/0p8oyvwd4ts90r6c77nk7geyql2ycozc.jpg</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачетсвенную печать для приентеров Epson.
@@ -3456,7 +3456,7 @@ Epson L550]]></description>
 <name>Экономичный набор из четырех контейнеров с чернилами, серия 664</name>
 <price>20900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ac1/n0qqf3iwn8mynu6hkm97h7soqkislcwf.jpg</picture>
-<vendor></vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Чернила Epson серии 664
@@ -3909,7 +3909,7 @@ Epson SureColor T-7000]]></description>
 <name>Сканер штрих-кода IDPRT HN-1358SR черный</name>
 <price>19900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/c32/kzxpzpukhblbodbkm7p2zwwigvr13apw.jpg</picture>
-<vendor></vendor>
+<vendor>IDPRT</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ручные сканеры штрихкодов серии HN-13 отличаются лёгким и стильным дизайном, обеспечивают удобное считывание как традиционных бумажных, так и экранных штрихкодов. Они поддерживают различные POS-системы, включая Android, Windows и macOS, благодаря функции Plug-and-Play.
@@ -3988,7 +3988,7 @@ USB-клавиатура
 <name>Сканер штрих-кода IDPRT HN-3308SR черный</name>
 <price>17900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/12f/txacffp72k148ya2vz2n8sq2ah6s18a2.png</picture>
-<vendor></vendor>
+<vendor>IDPRT</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Сканер штрих-кодов HN-3308SR — это ручной 2D-имидж сканер, который считывает как одномерные (1D), так и двумерные (2D, например, QR-коды) штрих-коды с помощью камеры (2D Imager), а не лазера, и обычно подключен к системе проводом (USB). Он относится к категории проводных и предназначен для ручного использования, считывая коды с высокой точностью. 
@@ -4870,7 +4870,7 @@ HDMI вход с поддержкой HDCP 2.3
 <name>Интерактивная панель SBID-QX275-P</name>
 <price>3218900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b9c/bsakwv3flgk9o4bysxztw9wovd58r8hg.jpg</picture>
-<vendor></vendor>
+<vendor>SMART</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 MicroSD slot
