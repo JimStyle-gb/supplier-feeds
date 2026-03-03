@@ -78,7 +78,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v49_fix_norm_ranges_k_bug"
+BUILD_AKCENT_VERSION = "build_akcent_v50_fix_params_raw_pairs"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -1490,6 +1490,19 @@ def _next_run_almaty(build_time: str, hour: int) -> str:
         # fallback на core-хелпер (если формат времени вдруг поменяется)
         return next_run_at_hour(build_time, int(hour))
 
+def _ac_only_kv_pairs(params) -> list[tuple[str, str]]:
+    """Гарантирует список (k,v). Убирает мусорные элементы, чтобы clean_params не падал."""
+    out: list[tuple[str, str]] = []
+    for it in (params or []):
+        if isinstance(it, (list, tuple)) and len(it) == 2:
+            k, v = it
+            k = (k or "").strip()
+            v = (v or "").strip()
+            if k and v:
+                out.append((k, v))
+        # всё остальное (строки, 1-элементные tuples) — пропускаем
+    return out
+
 # main
 def main() -> int:
     print(f"[akcent] version={BUILD_AKCENT_VERSION}")
@@ -1535,8 +1548,7 @@ def main() -> int:
         if extra_params:
             params_raw.extend(extra_params)
         params_raw = _ac_params_postfix(params_raw, name, native_desc)
-        params = clean_params(params_raw, drop=AKCENT_PARAM_DROP)
-
+        params = clean_params(_ac_only_kv_pairs(params_raw), drop=AKCENT_PARAM_DROP)
         price_in = _extract_price_in(offer)
         if not price_in or int(price_in) < 1:
             price_missing += 1
