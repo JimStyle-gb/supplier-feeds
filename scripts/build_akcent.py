@@ -78,7 +78,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v46_schema_vendor_warranty_codes"
+BUILD_AKCENT_VERSION = "build_akcent_v47_indent_fix_schema"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -816,6 +816,12 @@ def _ac_schema_norm_value(k: str, v: str) -> str:
     # разрешение: "1280х800" -> "1280×800"
     if k == "Разрешение":
         v = v.replace("х", "×").replace("x", "×")
+    # Модель: если пришло название компании (Europe Ltd / GmbH / Inc / LLC) — убираем
+    if k == "Модель":
+        cf = v.casefold()
+        if any(tok in cf for tok in [" ltd", "ltd.", " gmbh", " inc", " llc", " co.", " company", " europe ltd"]):
+            return ""
+
     return v
 
 def _ac_schema_word_count(s: str) -> int:
@@ -934,12 +940,7 @@ def _clean_vendor(v: str) -> str:
     if "made in" in cf2 or cf2 in COUNTRY_VENDOR_BLACKLIST_CF:
         return ""
 
-    # Модель: если пришло название компании (Europe Ltd / GmbH / Inc / LLC) — убираем
-if (k or "").casefold() == "модель":
-    cf = s.casefold()
-    if any(tok in cf for tok in [" ltd", "ltd.", " gmbh", " inc", " llc", " co.", " company", " europe ltd"]):
-        return ""
-return s2
+    return s2
 
 
 
@@ -1213,12 +1214,7 @@ def _ac_fix_text(desc: str) -> str:
 def _ac_norm_name(name: str) -> str:
     s = (name or "").strip()
     if not s:
-        # Модель: если пришло название компании (Europe Ltd / GmbH / Inc / LLC) — убираем
-if (k or "").casefold() == "модель":
-    cf = s.casefold()
-    if any(tok in cf for tok in [" ltd", "ltd.", " gmbh", " inc", " llc", " co.", " company", " europe ltd"]):
         return ""
-return s
     # NBSP/узкие пробелы -> обычный пробел (иначе regex не ловит)
     s = s.replace("\u00A0", " ").replace("\u202F", " ")
     # пробел после ®
