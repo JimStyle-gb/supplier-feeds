@@ -54,13 +54,10 @@ jobs:
             : > /tmp/prev_feed.yml
           fi
 
-      - name: Verify build_akcent.py identity
-        run: |
-          python -c "import hashlib,pathlib; p=pathlib.Path('scripts/build_akcent.py'); print('AKCENT_PY_MD5', hashlib.md5(p.read_bytes()).hexdigest()); print('AKCENT_PY_BYTES', p.stat().st_size)"
-          python -c "import pathlib,re; t=pathlib.Path('scripts/build_akcent.py').read_text(encoding='utf-8', errors='ignore'); m=re.search(r'BUILD_AKCENT_VERSION\s*=\s*[\"\']([^\"\']+)[\"\']', t); print('AKCENT_VERSION', m.group(1) if m else 'UNKNOWN'); print('CALLS_ENRICH', 'params = _ac_enrich_codes_and_compat' in t)"
-      
       - name: Build feed (akcent)
         run: |
+          python -c "import hashlib,pathlib; p=pathlib.Path('scripts/build_akcent.py'); print('AKCENT_PY_MD5', hashlib.md5(p.read_bytes()).hexdigest()); print('AKCENT_PY_BYTES', p.stat().st_size)"
+          python -c "import pathlib; t=pathlib.Path('scripts/build_akcent.py').read_text(encoding='utf-8', errors='ignore'); print('HAS_VERSION', ('BUILD_AKCENT_VERSION' in t)); print('CALLS_ENRICH', ('_ac_enrich_codes_and_compat' in t and 'params = _ac_enrich_codes_and_compat' in t))"
           python scripts/build_akcent.py
 
       - name: Update FEED_META build time + next run (and mark no-changes)
@@ -96,6 +93,9 @@ jobs:
             NEXT_EPOCH="$CAND_EPOCH"
           fi
           NEXT_RUN=$(TZ='Asia/Almaty' date -d "@${NEXT_EPOCH}" '+%Y-%m-%d %H:%M:%S')
+          echo "[workflow] TS=${TS}${NOTE}"
+          echo "[workflow] NEXT_RUN=${NEXT_RUN}"
+          echo "[workflow] TZ=$(TZ='Asia/Almaty' date '+%z %Z')"
 
           for F in docs/akcent.yml docs/raw/akcent.yml; do
             if [ ! -f "$F" ]; then
@@ -132,6 +132,7 @@ jobs:
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "build: akcent feed"
+          TS_COMMIT=$(TZ='Asia/Almaty' date '+%Y-%m-%d %H:%M:%S')
+          git commit -m "build: akcent feed (${TS_COMMIT})"
           git pull --rebase --autostash
           git push
