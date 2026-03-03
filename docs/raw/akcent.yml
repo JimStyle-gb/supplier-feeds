@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-03 07:25:32">
+<yml_catalog date="2026-03-03 08:24:22">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-03 07:25:32 (не было изменений)
+Время сборки (Алматы)                      | 2026-03-03 08:24:22
 Ближайшая сборка (Алматы)                  | 2026-03-04 06:00:00
 Сколько товаров у поставщика до фильтра    | 1826
 Сколько товаров у поставщика после фильтра | 147
@@ -4956,7 +4956,7 @@ USB Display 3-в-1 – передача изображения, звука и с
 <param name="Яркость (ANSI) лмн">3700</param>
 <param name="Видео вход HDMI">Есть</param>
 <param name="Проекционный коэффициент">1 - 1.2</param>
-<param name="Производитель">Epson Proj</param>
+<param name="Производитель">Epson</param>
 <param name="Тип">Проектор универсальный</param>
 <param name="Видео вход VGA">1</param>
 <param name="Интерфейс HDBaseT/DIGITAL LINK">Нет</param>
@@ -4968,7 +4968,6 @@ USB Display 3-в-1 – передача изображения, звука и с
 <param name="Разрешение">1280х800</param>
 <param name="Оригинальное разрешение">Оригинальное</param>
 <param name="Модель">Epson EB-W06</param>
-<param name="Совместимость">V12H005A01, V12H003B23, V12H003P13, V12H003P14, V13H134A32, V13H010L97</param>
 <param name="Тип источника света">Ламповый источник света</param>
 <param name="Гарантия">24</param>
 <param name="Технология">3LCD</param>
@@ -4980,6 +4979,7 @@ USB Display 3-в-1 – передача изображения, звука и с
 <param name="Яркость">3700 ANSI lm</param>
 <param name="Цветовая яркость">3700 ANSI lm</param>
 <param name="Вес">2,5 кг</param>
+<param name="Коды">V12H005A01, V12H003B23, V12H003P13, V12H003P14, V13H134A32, V13H010L97</param>
 </offer>
 
 <offer id="ACV11H977040" available="true">
@@ -5018,7 +5018,7 @@ USB Display 3-в-1 – передача изображения, звука и с
 <param name="Яркость (ANSI) лмн">4000</param>
 <param name="Видео вход HDMI">Есть</param>
 <param name="Проекционный коэффициент">1 - 1.2</param>
-<param name="Производитель">Epson Proj</param>
+<param name="Производитель">Epson</param>
 <param name="Тип">Проектор универсальный</param>
 <param name="Цвет">Белый</param>
 <param name="Видео вход VGA">1</param>
@@ -5032,7 +5032,6 @@ USB Display 3-в-1 – передача изображения, звука и с
 <param name="Оригинальное разрешение">Оригинальное</param>
 <param name="Источник света">Лампа</param>
 <param name="Модель">Epson EB-W51</param>
-<param name="Совместимость">V12H005A01, V12H757040, V12H758040, V13H010L97, V13H134A32, V12H003B23, V12H003P13, V12H003P14</param>
 <param name="Тип источника света">Ламповый источник света</param>
 <param name="Гарантия">12 мес</param>
 <param name="Технология">3LCD</param>
@@ -5045,7 +5044,7 @@ USB Display 3-в-1 – передача изображения, звука и с
 <param name="Яркость">4000 ANSI lm</param>
 <param name="Цветовая яркость">4000 ANSI lm</param>
 <param name="Вес">2,5 кг</param>
-<param name="Коды">V12H757040, V12H758040</param>
+<param name="Коды">V12H005A01, V12H757040, V12H758040, V13H010L97, V13H134A32, V12H003B23, V12H003P13, V12H003P14</param>
 </offer>
 
 <offer id="ACV11HA84040" available="true">
@@ -5105,7 +5104,7 @@ Projection Lens F Number
 Фокус
 Вручную
 Offset]]></description>
-<param name="Производитель">Epson Proj</param>
+<param name="Производитель">Epson</param>
 <param name="Тип">Проектор для дома</param>
 <param name="Гарантия">12 мес</param>
 <param name="16">9</param>
@@ -5130,7 +5129,7 @@ Offset]]></description>
 1 × USB-B 2.0
 встроенный динамик
 Питание: сеть 220 В]]></description>
-<param name="Производитель">Epson Proj</param>
+<param name="Производитель">Epson</param>
 <param name="Тип">Проектор для дома</param>
 <param name="Гарантия">12 месяцев</param>
 <param name="Источник света">лампа</param>
@@ -5149,7 +5148,7 @@ Offset]]></description>
 <param name="Минимальная диагональ изображения">0.66 м</param>
 <param name="Максимальная диагональ изображения">9.93 м</param>
 <param name="Фокусировка">ручная</param>
-<param name="Вертикальная развёртка">100...120 Гц</param>
+<param name="Вертикальная развёртка">100–120 Гц</param>
 <param name="Интерфейсы и порты">1 × HDMI</param>
 <param name="Функциональные особенности">поддержка MHL</param>
 <param name="Характеристики встроенных динамиков">1 × 5 Вт</param>
@@ -5158,7 +5157,7 @@ Offset]]></description>
 <param name="Энергопотребление в экономичном режиме">214 Вт</param>
 <param name="Ресурс лампы">6000 часов (стандартный режим), 12000 часов (экономичный режим)</param>
 <param name="Вентиляционный шум">38 дБ</param>
-<param name="Диапазон рабочих температур">5...40 °C</param>
+<param name="Диапазон рабочих температур">5–40 °C</param>
 <param name="Размеры">295 × 211 × 87 мм</param>
 <param name="Вес">2.4 кг</param>
 <param name="Цвет">белый</param>
@@ -5179,7 +5178,7 @@ Offset]]></description>
 Чем больше, тем лучше
 Независимо от того, смотрите ли вы свой любимый фильм или проводите презентацию, этот проектор может создать впечатляющий 378-дюймовый дисплей. CO-W01 предлагает великолепное качество благодаря технологии 3LCD, которая делает дисплей в три раза ярче, чем продукты конкурентов¹, благодаря ярким и живым цветам. От семьи и друзей до коллег по бизнесу и клиентов, он обязательно привлечет внимание каждого.
 Качественные, яркие изображени]]></description>
-<param name="Производитель">Epson Proj</param>
+<param name="Производитель">Epson</param>
 <param name="Тип">Проектор универсальный</param>
 <param name="Гарантия">12 мес</param>
 </offer>
@@ -5249,7 +5248,7 @@ EF-21R стильный и компактный с размером экрана
 Выход белого света
 Повышение разрешения
 Full HD]]></description>
-<param name="Производитель">Epson Proj</param>
+<param name="Производитель">Epson</param>
 <param name="Тип">Проектор универсальный</param>
 <param name="Гарантия">24 мес</param>
 </offer>
@@ -5341,7 +5340,7 @@ Black
 Other
 Warranty
 60 months Carry in or 12.000 h]]></description>
-<param name="Производитель">Epson Proj</param>
+<param name="Производитель">Epson</param>
 <param name="Тип">Проектор универсальный</param>
 <param name="Гарантия">24</param>
 <param name="16">9</param>
@@ -5375,7 +5374,7 @@ Epson EB-E24 — это компактный и надёжный 3LCD-проек
  Встроенный динамик позволяет обойтись без внешней акустики
 
  Лёгкий и портативный — удобно носить с собой]]></description>
-<param name="Производитель">Epson Proj</param>
+<param name="Производитель">Epson</param>
 <param name="Тип">Проектор универсальный</param>
 <param name="Гарантия">24</param>
 <param name="Контрастность 16 000">1</param>
