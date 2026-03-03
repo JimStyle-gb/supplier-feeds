@@ -78,7 +78,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 # Версия скрипта (для отладки в GitHub Actions)
-BUILD_AKCENT_VERSION = "build_akcent_v42_safe_xml_parse_recover"
+BUILD_AKCENT_VERSION = "build_akcent_v43_fix_contrast_ratio_split_dynamic"
 AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -873,13 +873,14 @@ def _ac_extract_colon_specs_from_desc(desc: str) -> tuple[list[tuple[str, str]],
             k = k.strip()
             v = v.strip()
 
-            # спец-кейс: "Контрастность 16 000:1" -> key="Контрастность", value="16 000:1"
-            if v == "1":
+            # спец-кейс: "Контрастность 16 000:1" / "Контрастность 3 000 000:1 (динамическая)"
+            if re.match(r"^1(\s|$|\()", v):
                 kcf = k.casefold().replace("ё", "е")
                 if ("контраст" in kcf or "contrast" in kcf) and re.search(r"\d", k):
                     digits = re.sub(r"[^0-9\s.,]", "", k).strip()
                     if digits:
-                        k = "Динамическая контрастность" if ("dynamic" in kcf or "динамичес" in kcf) else "Контрастность"
+                        is_dyn = ("dynamic" in kcf) or ("динамичес" in kcf) or ("динамичес" in v.casefold())
+                        k = "Динамическая контрастность" if is_dyn else "Контрастность"
                         digits2 = re.sub(r"\s{2,}", " ", digits)
                         v = digits2 + ":1"
 
