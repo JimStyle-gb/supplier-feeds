@@ -13,6 +13,7 @@ AkCent adapter (config-driven, strict, no-guessing) — CS template.
 from __future__ import annotations
 
 import html
+import urllib.parse
 import os
 import re
 from dataclasses import dataclass
@@ -40,7 +41,7 @@ RAW_OUT_FILE = "docs/raw/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
-BUILD_AKCENT_VERSION = "build_akcent_v54_desc_sanitize_typos"
+BUILD_AKCENT_VERSION = "build_akcent_v55_desc_sanitize_typos_picture_guard"
 
 
 # ----------------------------- Config loading -----------------------------
@@ -271,6 +272,26 @@ def _infer_vendor_from_name(name: str, lexicon: list[str]) -> str:
     if w and len(w) <= 20 and _LETTER_RE.search(w):
         return w
     return ""
+def _is_picture_url(url: str) -> bool:
+    # Строгая проверка, чтобы не попадали "пустые" ссылки вроде https://b2b.ak-cent.kz
+    if not url:
+        return False
+    u = url.strip()
+    if not (u.startswith("http://") or u.startswith("https://")):
+        return False
+    if any(ch.isspace() for ch in u):
+        return False
+    try:
+        parts = urllib.parse.urlsplit(u)
+    except Exception:
+        return False
+    path = (parts.path or "").strip()
+    if not path or path == "/":
+        return False
+    low = path.casefold()
+    return low.endswith((".jpg", ".jpeg", ".png", ".webp", ".gif"))
+
+
 
 
 # ----------------------------- Filter -----------------------------
@@ -687,7 +708,7 @@ def build() -> None:
         # pictures
         pics = []
         pic = _get_text(off.find("picture"))
-        if pic and pic.startswith("http"):
+        if _is_picture_url(pic):
             pics.append(pic)
         if not pics:
             # core сам умеет placeholder, но лучше страховка
