@@ -9,6 +9,7 @@ CS Description — общий сборщик HTML для <description>.
 from __future__ import annotations
 
 import re
+from .keywords import fix_mixed_cyr_lat  # без циклических импортов
 
 
 # Константы (вынесены из core без изменения)
