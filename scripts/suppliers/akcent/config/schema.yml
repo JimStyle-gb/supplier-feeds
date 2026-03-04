@@ -256,6 +256,10 @@ value_normalizers:
   Гарантия:
   - warranty_to_months
   - warranty_drop_zero
+  Объем:
+  - volume_drop_zero
+  Объём:
+  - volume_drop_zero
 dedupe_rules:
   Гарантия: prefer_months_max
   '*': keep_first
