@@ -107,6 +107,8 @@ def normalize_mixed_hyphen(s: str) -> str:
 
 
 _RE_MIXED_SLASH_LAT_CYR = re.compile(r"([A-Za-z]{1,}[A-Za-z0-9]*)/([Ѐ-ӿ]{2,})")
+_RE_MIXED_HYPHEN_LAT_CYR = re.compile(r"([A-Za-z])\s*[-–—]\s*([А-Яа-яЁё])")
+_RE_MIXED_HYPHEN_CYR_LAT = re.compile(r"([А-Яа-яЁё])\s*[-–—]\s*([A-Za-z])")
 _RE_MIXED_SLASH_CYR_LAT = re.compile(r"([Ѐ-ӿ]{2,})/([A-Za-z]{1,}[A-Za-z0-9]*)")
 
 def normalize_mixed_slash(s: str) -> str:
