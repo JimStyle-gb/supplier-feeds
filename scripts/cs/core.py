@@ -3459,6 +3459,19 @@ def _build_param_summary(params_sorted: Sequence[tuple[str, str]]) -> str:
     # "Тип: ...; Модель: ...; ..."
     return "; ".join(f"{k}: {v}" for k, v in picked).strip()
 
+def xml_escape(s: str) -> str:
+    """Экранирует текст для безопасного HTML/XML вывода."""
+    if s is None:
+        return ""
+    s = str(s)
+    return (s
+            .replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace('"', "&quot;")
+            .replace("'", "&apos;"))
+
+
 def _cs_chars_block_html(params: list[tuple[str, str]]) -> str:
     """HTML-блок характеристик. Если параметров нет — выводим заглушку."""
     if not params:
