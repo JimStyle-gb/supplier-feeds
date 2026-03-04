@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-04 11:01:43">
+<yml_catalog date="2026-03-04 11:28:18">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-04 11:01:43
+Время сборки (Алматы)                      | 2026-03-04 11:28:18
 Ближайшая сборка (Алматы)                  | 2026-03-05 02:00:00
 Сколько товаров у поставщика до фильтра    | 1814
 Сколько товаров у поставщика после фильтра | 143
@@ -247,15 +247,16 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Общие</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Диагональ:</strong> 102</li><li><strong>Интерфейсы:</strong> USB</li><li><strong>Тип:</strong> Интерактивная доска</li><li><strong>Тип управления:</strong> Сенсорное</li><li><strong>Цвет:</strong> черный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Диагональ:</strong> 102</li><li><strong>Интерфейсы:</strong> USB</li><li><strong>Совместимость ПО с ОС:</strong> Windows 7/8/10</li><li><strong>Тип:</strong> Интерактивная доска</li><li><strong>Тип управления:</strong> Сенсорное</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Диагональ">102</param>
 <param name="Интерфейсы">USB</param>
+<param name="Совместимость ПО с ОС">Windows 7/8/10</param>
 <param name="Тип">Интерактивная доска</param>
 <param name="Тип управления">Сенсорное</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Чёрный</param>
 <keywords>Mr.Pixel, Интерактивная доска Mr.Pixel S102 BLACK, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -276,7 +277,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Общие характерстики:<br>Внешний материал рамки выполнен из Алюминия, цвет черный<br>Соотношение сторон: 4:3<br>Технология: ИК-Сенсорная<br>10 точек касания<br>Интерфейс USB 2.0 и USB 3.0<br>Внешние Размеры: 1688*1208*32<br>Активная область: 77 дюймов 1610 (мм) х 1130 (мм)<br>Размер упаковки: 178*130*70мм<br>Вес нетто: 16.5 кг<br>Вес брутто: 25kg<br>Разрешение (Интерполяция): 32767*32767<br>Время отклика: 8мс<br>Скорость отклика: 20мс<br>Метод ввода: палец, маркер или не прозрачные предметы<br>Время прикосновения маркера к доске: неограниченно<br>Минимальный предмет касания к доске: не менее 5 мм<br>Температура в окружающей среде:<br>Эксплуатации: От -20°C До 70°C<br>Хранения: -40°C ~ 85°С<br>В относительной влажности:<br>Рабочая: 90% (без конденсации при максимальной температуре 40°C)<br>Хранение: 90% (без конденсации при максимальной температуре 40°C)<br>Срок службы: не менее 7 лет<br>Рабочее напряжение: + DC 5V, + 4.75V до + 5.25V<br>Источник питания от USB, мощность max. 200mV rms<br>Мощность 2 Вт, рабочий ток 200 мА<br>Сертификаты: CE, FCC, RoHS<br>ОС Windows XP, Win7, Win8, Win10, не совместим с операционной системой Mac OC<br>Комплектация:<br>Настенные крепежи - 8 штук<br>Руководство по установке<br>Удлинительный кабель USB 7,5 м<br>Маркеры - 3 штуки…</p>
-<h3>Характеристики</h3><ul><li><strong>Активная область:</strong> 77 дюймов 1610 (мм) х 1130 (мм)</li><li><strong>Вес брутто:</strong> 25kg</li><li><strong>Вес нетто:</strong> 16.5 кг</li><li><strong>Внешние Размеры:</strong> 1688*1208*32</li><li><strong>Время отклика:</strong> 8мс</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Диагональ:</strong> 82</li><li><strong>Интерфейсы:</strong> USB</li><li><strong>Метод ввода:</strong> палец, маркер или не прозрачные предметы</li><li><strong>Размер упаковки:</strong> 178*130*70мм</li><li><strong>Разрешение (Интерполяция):</strong> 32767*32767</li><li><strong>Скорость отклика:</strong> 20мс</li><li><strong>Тип:</strong> Интерактивная доска</li><li><strong>Тип управления:</strong> Сенсорное</li><li><strong>Цвет:</strong> черный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Активная область:</strong> 77 дюймов 1610 (мм) х 1130 (мм)</li><li><strong>Вес брутто:</strong> 25kg</li><li><strong>Вес нетто:</strong> 16.5 кг</li><li><strong>Внешние Размеры:</strong> 1688*1208*32</li><li><strong>Время отклика:</strong> 8мс</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Диагональ:</strong> 82</li><li><strong>Интерфейсы:</strong> USB</li><li><strong>Метод ввода:</strong> палец, маркер или не прозрачные предметы</li><li><strong>Размер упаковки:</strong> 178*130*70мм</li><li><strong>Разрешение (Интерполяция):</strong> 32767*32767</li><li><strong>Скорость отклика:</strong> 20мс</li><li><strong>Совместимость ПО с ОС:</strong> Windows 7/8/10</li><li><strong>Тип:</strong> Интерактивная доска</li><li><strong>Тип управления:</strong> Сенсорное</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Активная область">77 дюймов 1610 (мм) х 1130 (мм)</param>
@@ -291,9 +292,10 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер упаковки">178*130*70мм</param>
 <param name="Разрешение (Интерполяция)">32767*32767</param>
 <param name="Скорость отклика">20мс</param>
+<param name="Совместимость ПО с ОС">Windows 7/8/10</param>
 <param name="Тип">Интерактивная доска</param>
 <param name="Тип управления">Сенсорное</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Mr.Pixel, Интерактивная доска Mr.Pixel S82 BLACK, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -314,6 +316,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Подробности уточняйте в WhatsApp.</p>
+<h3>Характеристики</h3><p>Характеристики уточняются.</p>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <keywords>SMART, Интерактивная панель SBID-QX275-P, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
@@ -359,15 +362,15 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Картридж EPSON; Модель: Epson Картридж C13T26704010 набор из 3 картриджей для WorkForce WF-100W; Цвет: голубой</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T26704010 набор из 3 картриджей для WorkForce WF-100W</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубой</li></ul>
+<p>Тип: Картридж EPSON; Модель: Epson Картридж C13T26704010 набор из 3 картриджей для WorkForce WF-100W; Цвет: голубой*пурпурный*желтый</p>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T26704010 набор из 3 картриджей для WorkForce WF-100W</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубой*пурпурный*желтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Epson Картридж C13T26704010 набор из 3 картриджей для WorkForce WF-100W</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">голубой</param>
+<param name="Цвет">голубой*пурпурный*желтый</param>
 <keywords>Epson, Картридж Epson C13T26704010 Tri-colour Ink for WorkForce WF-100W, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -388,7 +391,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Epson WorkForce WF-7620DTWF<br>Epson WorkForce WF-7610DWF<br>Epson WorkForce WF-7110DTW</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T27914022 для WF-7620DTW</li><li><strong>Ресурс:</strong> Около 2200 стр.</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> черный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T27914022 для WF-7620DTW</li><li><strong>Ресурс:</strong> Около 2200 стр.</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -397,7 +400,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">Около 2200 стр.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Epson, Картридж Epson C13T27914022 для WF-7620DTWF черный new, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -417,15 +420,15 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Картридж EPSON; Модель: Epson Картридж C13T40D140 UltraChrome XD2 для T40D140(80ml); Цвет: черный</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T40D140 UltraChrome XD2 для T40D140(80ml)</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> черный</li></ul>
+<p>Тип: Картридж EPSON; Модель: Epson Картридж C13T40D140 UltraChrome XD2 для T40D140(80ml); Цвет: Черный</p>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T40D140 UltraChrome XD2 для T40D140(80ml)</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Epson Картридж C13T40D140 UltraChrome XD2 для T40D140(80ml)</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Epson, Картридж Epson C13T40D140 UltraChrome XD2 Black T40D140(80ml), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -445,14 +448,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Картридж EPSON; Цвет: голубой</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубой</li></ul>
+<p>Тип: Картридж EPSON; Цвет: Голубой</p>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">Epson</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">голубой</param>
+<param name="Цвет">Голубой</param>
 <keywords>Epson, Картридж Epson C13T40D240 UltraChrome XD2 Cyan T40D240(50ml), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -499,15 +502,15 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Картридж EPSON; Модель: Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml); Цвет: желтый</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> желтый</li></ul>
+<p>Тип: Картридж EPSON; Модель: Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml); Цвет: Желтый</p>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Желтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">желтый</param>
+<param name="Цвет">Желтый</param>
 <keywords>Epson, Картридж Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -556,14 +559,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Фото черный картридж 110ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 350 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> желтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 350 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Желтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">350 мл</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">желтый</param>
+<param name="Цвет">Желтый</param>
 <keywords>Epson, Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350ml жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -610,7 +613,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Фото черный картридж для:<br>Epson Stylus Pro 4800<br>Epson Stylus Pro 4880</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T606100 для SP-4880</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> черный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T606100 для SP-4880</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -619,7 +622,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">220 мл</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Epson, Картридж Epson C13T606100 SP-4880 фото черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -670,7 +673,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Желтый картридж для:<br>Epson Stylus Pro 4800<br>Epson Stylus Pro 4880</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> желтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Желтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -678,7 +681,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">220 мл</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">желтый</param>
+<param name="Цвет">Желтый</param>
 <keywords>Epson, Картридж Epson C13T606400 SP-4880 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -780,7 +783,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Голубой картридж для:<br>Epson Stylus Pro 4400<br>Epson Stylus Pro 4450</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T614200 SP-4450 голубой</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T614200 SP-4450 голубой</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -789,7 +792,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">220 мл</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">голубой</param>
+<param name="Цвет">Голубой</param>
 <keywords>Epson, Картридж Epson C13T614200 SP-4450 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -840,7 +843,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Желтый картридж для:<br>Epson Stylus Pro 4400<br>Epson Stylus Pro 4450</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> желтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Желтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -848,7 +851,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">220 мл</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">желтый</param>
+<param name="Цвет">Желтый</param>
 <keywords>Epson, Картридж Epson C13T614400 SP-4450 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -869,7 +872,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Матовый черный картридж для:<br>Epson Stylus Pro 4800<br>Epson Stylus Pro 4880<br>Epson Stylus Pro 4400<br>Epson Stylus Pro 4450</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T614800 SP-4450 220ml</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> черный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T614800 SP-4450 220ml</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -878,7 +881,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">220 мл</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Epson, Картридж Epson C13T61480N SP-4450 220ml черный матовый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -899,7 +902,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Фото черный картридж 700 ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T694100 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> черный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T694100 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -908,7 +911,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">700 мл</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Epson, Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -959,7 +962,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Желтый картридж 700 ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T694400 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> желтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T694400 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Желтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -968,7 +971,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">700 мл</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">желтый</param>
+<param name="Цвет">Желтый</param>
 <keywords>Epson, Картридж Epson C13T69440N T3000/5000/7000, Т3200/5200/7200 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -988,15 +991,15 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Картридж EPSON; Модель: Epson Картридж C13T965140 для WF-M52xx/57xx Series Ink Cartridge XL Bl.; Цвет: черный</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T965140 для WF-M52xx/57xx Series Ink Cartridge XL Bl.</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> черный</li></ul>
+<p>Тип: Картридж EPSON; Модель: Epson Картридж C13T965140 для WF-M52xx/57xx Series Ink Cartridge XL Bl.; Цвет: Черный</p>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T965140 для WF-M52xx/57xx Series Ink Cartridge XL Bl.</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Epson Картридж C13T965140 для WF-M52xx/57xx Series Ink Cartridge XL Bl.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Epson, Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl., доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -1706,6 +1709,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Эффективное, высококачественное и доступное по цене многофункциональное устройство, которое можно разместить где угодно. Самое компактное в своем классе лазерное МФУ с быстрой печатью и приложением HP Smart для экономии времени. Простая настройка и печать материалов профессионального качества.<br>Самое компактное МФУ<br>Самое компактное МФУ HP LaserJet, отличающееся высокой производительностью. Быстрая печать, сканирование и копирование, а также удобное копирование удостоверений личности.<br>Используйте свой смартфон, чтобы работать эффективнее<br>Контролируйте свой бизнес. С легкостью настраивайте устройство прямо со своего ПК, используя приложение HP Smart 3. Настройте специальные ярлыки, чтобы экономить время и обрабатывать документы вдвое быстрее.<br>Проверенное качество и удобство<br>Оцените стабильность, качество и удобство лазерной печати. Знаменитое стабильное качество и надежность HP в сочетании с удобной настройкой и простотой печати.<br>Экономьте ресурсы без ущерба для производительности<br>Экономьте ресурсы без ущерба для производительности благодаря технологии HP Auto-On/Auto-Off, которая включает МФУ, когда это необходимо, и выключает, когда устройство не используется.</p>
+<h3>Характеристики</h3><p>Характеристики уточняются.</p>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <keywords>HP, МФУ лазерное HP LaserJet M141w белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
@@ -1728,6 +1732,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Компактный, быстрый и надежный многофункциональный принтер со скоростью печати до 35 стр/мин, оснащенный функциями автоматического устранения замятий и самовосстановления подключения Wi-Fi®. В комплект работы входит приложение HP, позволяющее с легкостью печатать и сканировать с мобильных устройств.<br>Управляйте принтерами с помощью мощного ПО HP Web Jetadmin, позволяющего легко добавлять и обновлять устройства, решения и политики.</p>
+<h3>Характеристики</h3><p>Характеристики уточняются.</p>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <keywords>HP, МФУ лазерное HP LaserJet Pro 3103fdn белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
@@ -1750,6 +1755,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>МФУ лазерное HP LaserJet Pro MFP 3103fdw разработано для рабочих групп, обеспечивает профессиональную производительность, быструю высококачественную печать, сканирование и копирование - все это в компактном корпусе.</p>
+<h3>Характеристики</h3><p>Характеристики уточняются.</p>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <keywords>HP, МФУ лазерное HP LaserJet Pro 3103fdw белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
@@ -1844,7 +1850,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Универсальное инженерное МФУ<br>Универсальный инженерный принтер с шириной печати 24 дюйма Решение 3-в-1 (печать, копирование и сканирование)<br>Лаконичный эргономичный дизайн Сдержанный дизайн для любого интерьера<br>Контроль и производительность Epson Cloud Solution PORT<br>Возможности подключения Встроенный Wi-Fi, AirPrint, USB/LAN<br>Безопасность Сканирование зашифрованных файлов в защищенное назначение<br>Соотношение сторон: A1+</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Интерфейсы:</strong> USB 3.0 Gigabit ethernet interface Wireless LAN IEEE 802.11b, g, n Wi-Fi Direct</li><li><strong>Количество слотов для картриджей:</strong> 4</li><li><strong>Модель:</strong> Epson SureColor SC-T3100X</li><li><strong>Область применения:</strong> CAD</li><li><strong>Разрешение печати, dpi:</strong> 2400x1200</li><li><strong>Тип:</strong> CAD</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> пигментные (K), водорастворимые (CMY)</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Интерфейсы:</strong> USB 3.0 Gigabit ethernet interface Wireless LAN IEEE 802.11b, g, n Wi-Fi Direct</li><li><strong>Количество слотов для картриджей:</strong> 4</li><li><strong>Модель:</strong> Epson SureColor SC-T3100X</li><li><strong>Область применения:</strong> CAD</li><li><strong>Разрешение печати, dpi:</strong> 2400x1200</li><li><strong>Тип:</strong> CAD</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> пигментные (K), водорастворимые (CMY)</li><li><strong>Цветность:</strong> 4 цвета</li><li><strong>Ширина печати, дюймы:</strong> 24</li><li><strong>Ширина печати, мм:</strong> 610</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
@@ -1858,6 +1864,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">пигментные (K), водорастворимые (CMY)</param>
 <param name="Цветность">4 цвета</param>
+<param name="Ширина печати, дюймы">24</param>
+<param name="Ширина печати, мм">610</param>
 <keywords>Epson, Плоттер Epson SureColor SC-T3100M-MFP, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -1878,7 +1886,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Высокопроизводительный принтер формата А0 для инженерных задач и печати рекламных материалов<br>Скорость печати до 28 сек на отпечаток А1<br>Печатающая головка нового поколения Epson PrecisionCore TFP<br>Картриджи емкостью 110,350 или 700 мл<br>Пигментные чернила Epson UltraChrome XD<br>Печать на листовых и рулонных носителях шириной печати 36 дюймов (914 мм.)<br>Опциональный сканер формата 36”<br>Поддержка PostScript 3<br>Опциональный жесткий диск емкостью 320 Гб<br>Компактный дизайн, полностью фронтальное управление<br>Качественные, яркие отпечатки, устойчивые к смазыванию и попаданию воды</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Интерфейсы:</strong> USB Ethernet, Fast Ethernet</li><li><strong>Коды:</strong> C13T692100, C13T692200, C13T692300, C13T692400, C13T692500, C13T693100, C13T693200, C13T693300, C13T693400</li><li><strong>Количество слотов для картриджей:</strong> 5</li><li><strong>Модель:</strong> Epson SureColor SC-T5200</li><li><strong>Область применения:</strong> CAD</li><li><strong>Разрешение печати, dpi:</strong> 2880x1440</li><li><strong>Тип:</strong> CAD</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> Картриджи</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Интерфейсы:</strong> USB Ethernet, Fast Ethernet</li><li><strong>Коды:</strong> C13T692100, C13T692200, C13T692300, C13T692400, C13T692500, C13T693100, C13T693200, C13T693300, C13T693400</li><li><strong>Количество слотов для картриджей:</strong> 5</li><li><strong>Модель:</strong> Epson SureColor SC-T5200</li><li><strong>Область применения:</strong> CAD</li><li><strong>Разрешение печати, dpi:</strong> 2880x1440</li><li><strong>Тип:</strong> CAD</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> Картриджи</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Цветность:</strong> 4 цвета</li><li><strong>Ширина печати, дюймы:</strong> 36</li><li><strong>Ширина печати, мм:</strong> 914</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
@@ -1893,6 +1901,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">Картриджи</param>
 <param name="Тип чернил">пигментные</param>
 <param name="Цветность">4 цвета</param>
+<param name="Ширина печати, дюймы">36</param>
+<param name="Ширина печати, мм">914</param>
 <keywords>Epson, Плоттер Epson SureColor SC-T5700D, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -2089,6 +2099,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Принтер HP LaserJet M111w имеет компактный и стильный дизайн, позволяющий легко интегрировать его в рабочую среду. Монохромная лазерная технология печати, используемая в данном принтере, позволит распечатывать тексты и графики отличного качества. Устройство поддерживает печать на конвертах, обычной бумаге, открытках, этикетках.</p>
+<h3>Характеристики</h3><p>Характеристики уточняются.</p>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <keywords>HP, Принтер лазерный HP LaserJet M111w белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
@@ -2737,8 +2748,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила 105 EcoTank BK Ink Bottle; Цвет: черный</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 105 EcoTank BK Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> черный</li></ul>
+<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила 105 EcoTank BK Ink Bottle; Цвет: Черный</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 105 EcoTank BK Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -2746,7 +2757,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Epson Чернила 105 EcoTank BK Ink Bottle</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Epson, Чернила Epson C13T00Q140 для L7160/L7180 черный пигмент, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -2766,8 +2777,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила 106 EcoTank Photo BK Ink Bottle; Цвет: черный</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank Photo BK Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> черный</li></ul>
+<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила 106 EcoTank Photo BK Ink Bottle; Цвет: Черный</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank Photo BK Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -2775,7 +2786,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Epson Чернила 106 EcoTank Photo BK Ink Bottle</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Epson, Чернила Epson C13T00R140 для L7160/L7180 чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -2795,8 +2806,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила 106 EcoTank CY Ink Bottle; Цвет: голубой</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank CY Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубой</li></ul>
+<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила 106 EcoTank CY Ink Bottle; Цвет: Голубой</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank CY Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -2804,7 +2815,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Epson Чернила 106 EcoTank CY Ink Bottle</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">голубой</param>
+<param name="Цвет">Голубой</param>
 <keywords>Epson, Чернила Epson C13T00R240 для L7160/L7180 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -2853,8 +2864,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила 106 EcoTank YE Ink Bottle; Цвет: желтый</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank YE Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> желтый</li></ul>
+<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила 106 EcoTank YE Ink Bottle; Цвет: Желтый</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 106 EcoTank YE Ink Bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Желтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -2862,7 +2873,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Epson Чернила 106 EcoTank YE Ink Bottle</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">желтый</param>
+<param name="Цвет">Желтый</param>
 <keywords>Epson, Чернила Epson C13T00R440 для L7160/L7180 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -2882,8 +2893,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила 103 EcoTank Cyan ink bottle; Цвет: голубой</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 103 EcoTank Cyan ink bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубой</li></ul>
+<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила 103 EcoTank Cyan ink bottle; Цвет: Голубой</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 103 EcoTank Cyan ink bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -2891,7 +2902,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Epson Чернила 103 EcoTank Cyan ink bottle</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">голубой</param>
+<param name="Цвет">Голубой</param>
 <keywords>Epson, Чернила Epson C13T00S24A для 103 EcoTank L3100/L3101/L3110/L3150 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -2911,8 +2922,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила 103 EcoTank Yellow ink bottle; Цвет: желтый</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 103 EcoTank Yellow ink bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> желтый</li></ul>
+<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила 103 EcoTank Yellow ink bottle; Цвет: Желтый</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 103 EcoTank Yellow ink bottle</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Желтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -2920,7 +2931,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Epson Чернила 103 EcoTank Yellow ink bottle</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">желтый</param>
+<param name="Цвет">Желтый</param>
 <keywords>Epson, Чернила Epson C13T00S44A 103 EcoTank для L3100/L3101/L3110/L3150 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -2940,8 +2951,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила EcoTank MX1XX Series Black Bottle L; Цвет: черный</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила EcoTank MX1XX Series Black Bottle L</li><li><strong>Объем:</strong> 0,001</li><li><strong>Ресурс:</strong> 2000 стр</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> черный</li></ul>
+<p>Тип: Фабрика печати (чернила EPSON); Модель: Epson Чернила EcoTank MX1XX Series Black Bottle L; Цвет: Черный</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила EcoTank MX1XX Series Black Bottle L</li><li><strong>Объем:</strong> 0,001</li><li><strong>Ресурс:</strong> 2000 стр</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -2951,7 +2962,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">2000 стр</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Epson, Чернила Epson C13T01L14A EcoTank MX1XX Series Black Bottle L 40 ml, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -2972,7 +2983,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с голубыми чернилами для:<br>L4150/L4160</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 101 EcoTank Black ink bottle 127ml</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> черный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 101 EcoTank Black ink bottle 127ml</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -2981,7 +2992,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Объем">0,001</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Epson, Чернила Epson C13T03V14A 101 EcoTank 127ml для L4150/L4160 черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3002,7 +3013,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с голубыми чернилами для:<br>L4150/L4160</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 101 EcoTank Cyan ink bottle 70ml</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила 101 EcoTank Cyan ink bottle 70ml</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -3011,7 +3022,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Объем">0,001</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">голубой</param>
+<param name="Цвет">Голубой</param>
 <keywords>Epson, Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3062,7 +3073,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила для L65**/L15***</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила для L65**/L15***</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -3071,7 +3082,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Объем">0,001</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">голубой</param>
+<param name="Цвет">Голубой</param>
 <keywords>Epson, Чернила Epson C13T06C24A для L15150 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3092,7 +3103,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила для L65**/L15***</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> желтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила для L65**/L15***</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> жёлтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -3101,7 +3112,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Объем">0,001</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">желтый</param>
+<param name="Цвет">жёлтый</param>
 <keywords>Epson, Чернила Epson C13T06C44A для L15150 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3122,7 +3133,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с голубыми чернилами (C13T07D24A)</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила C13T07C14A для L8160/L8180</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила C13T07C14A для L8160/L8180</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубые</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -3131,7 +3142,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Объем">0,001</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">голубой</param>
+<param name="Цвет">голубые</param>
 <keywords>Epson, Чернила Epson C13T07D24A для L8160/L8180 голубые, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3182,7 +3193,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Оригинальные водорастворимые чернила Epson 115 желтого цвета емкостью 70 мл для струйных МФУ Epson L8160/L8180</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила C13T07C14A для L8160/L8180</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> желтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила C13T07C14A для L8160/L8180</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Желтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -3191,7 +3202,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Объем">0,001</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">желтый</param>
+<param name="Цвет">Желтый</param>
 <keywords>Epson, Чернила Epson C13T07D44A для L8160/L8180 жёлтые, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3211,8 +3222,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Фабрика печати (чернила EPSON); Модель: Чернила Epson 108 Eco Tank; Цвет: голубой</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson 108 Eco Tank</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубой</li></ul>
+<p>Тип: Фабрика печати (чернила EPSON); Модель: Чернила Epson 108 Eco Tank; Цвет: Голубой</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson 108 Eco Tank</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -3220,7 +3231,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Чернила Epson 108 Eco Tank</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">голубой</param>
+<param name="Цвет">Голубой</param>
 <keywords>Epson, Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3241,7 +3252,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами для:<br>Epson L100<br>Epson L200<br>Epson L110<br>Epson L210<br>Epson L300<br>Epson L355<br>Epson L550</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L100 черные 70 ml</li><li><strong>Объем:</strong> 0,001</li><li><strong>Ресурс:</strong> 4000 – 7100 страниц формата A4*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> черный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L100 черные 70 ml</li><li><strong>Объем:</strong> 0,001</li><li><strong>Ресурс:</strong> 4000 – 7100 страниц формата A4*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
@@ -3251,7 +3262,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">4000 – 7100 страниц формата A4*</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Epson, Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3303,16 +3314,17 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с желтыми чернилами для:<br>Epson L100<br>Epson L200<br>Epson L110<br>Epson L210<br>Epson L300<br>Epson L355<br>Epson L550</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L100 желтые 70ml</li><li><strong>Ресурс:</strong> 5700 – 6500 страниц формата A4*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> желтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L100 желтые 70ml</li><li><strong>Объем:</strong> 0,000</li><li><strong>Ресурс:</strong> 5700 – 6500 страниц формата A4*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Желтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Epson Чернила L100 желтые 70ml</param>
+<param name="Объем">0,000</param>
 <param name="Ресурс">5700 – 6500 страниц формата A4*</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">желтый</param>
+<param name="Цвет">Желтый</param>
 <keywords>Epson, Чернила Epson C13T66444A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3333,16 +3345,17 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами для:<br>Epson L800<br>Высококачественная фотопечать<br>Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил.<br>Раскройте свой творческий потенциал<br>Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1.<br>Оригинальные расходные материалы<br>Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 черные 70ml</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> черный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 черные 70ml</li><li><strong>Объем:</strong> 0,000</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Epson Чернила L800 черные 70ml</param>
+<param name="Объем">0,000</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">черный</param>
+<param name="Цвет">Черный</param>
 <keywords>Epson, Чернила Epson C13T67314A L800/1800/810/850 черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3363,16 +3376,17 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с голубыми чернилами для:<br>Epson L800<br>Высококачественная фотопечать<br>Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил.<br>Раскройте свой творческий потенциал<br>Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1.<br>Оригинальные расходные материалы<br>Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 голубые 70ml</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 голубые 70ml</li><li><strong>Объем:</strong> 0,000</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Epson Чернила L800 голубые 70ml</param>
+<param name="Объем">0,000</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">голубой</param>
+<param name="Цвет">Голубой</param>
 <keywords>Epson, Чернила Epson C13T67324A L800/1800/810/850 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3393,12 +3407,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с пурпурными чернилами для:<br>Высококачественная фотопечать<br>Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил.<br>Раскройте свой творческий потенциал<br>Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1.<br>Оригинальные расходные материалы<br>Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 пурпурные 70ml</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> пурпурный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 пурпурные 70ml</li><li><strong>Объем:</strong> 0,000</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> пурпурный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Epson Чернила L800 пурпурные 70ml</param>
+<param name="Объем">0,000</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
@@ -3423,16 +3438,17 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с желтыми чернилами для:<br>Epson L800<br>Высококачественная фотопечать<br>Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил.<br>Раскройте свой творческий потенциал<br>Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1.<br>Оригинальные расходные материалы<br>Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 желтые 70ml</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> желтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 желтые 70ml</li><li><strong>Объем:</strong> 0,000</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Желтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Epson Чернила L800 желтые 70ml</param>
+<param name="Объем">0,000</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">желтый</param>
+<param name="Цвет">Желтый</param>
 <keywords>Epson, Чернила Epson C13T67344A L800/1800/810/850 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3453,16 +3469,17 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер со светло-голубыми чернилами для:<br>Epson L800<br>Высококачественная фотопечать<br>Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил.<br>Раскройте свой творческий потенциал<br>Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1.<br>Оригинальные расходные материалы<br>Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 светоло-голубые 70ml</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 светоло-голубые 70ml</li><li><strong>Объем:</strong> 0,000</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> светло-голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Epson Чернила L800 светоло-голубые 70ml</param>
+<param name="Объем">0,000</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">голубой</param>
+<param name="Цвет">светло-голубой</param>
 <keywords>Epson, Чернила Epson C13T67354A L800/1800/810/850 светло-голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3483,16 +3500,17 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер со светло-пурпурными чернилами для:<br>Epson L800<br>Высококачественная фотопечать<br>Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил.<br>Раскройте свой творческий потенциал<br>Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1.<br>Оригинальные расходные материалы<br>Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 светло-пурпурные 70ml</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> пурпурный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 светло-пурпурные 70ml</li><li><strong>Объем:</strong> 0,000</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> светло-пурпурный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Epson Чернила L800 светло-пурпурные 70ml</param>
+<param name="Объем">0,000</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
-<param name="Цвет">пурпурный</param>
+<param name="Цвет">светло-пурпурный</param>
 <keywords>Epson, Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3934,16 +3952,18 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Экран на треноге Mr.Pixel 80" x 80" (MSPSDB112V2)<br>Высота: 2.03 м<br>Ширина: 2.03 м<br>Вес в упак.: 10,4 кг<br>Вес без упак.: 9,4 кг<br>Габариты: 2,21м х 0,19м х 0,12м<br>Соотношение сторон: 1:1<br>Основные преимущества:<br>- Нет необходимости в монтаже, необходимо всего 3 секунды, чтобы развернуть экран, лучшее решение для презентаций на улице и мобильных презентаций в офисе.<br>- Глянцевый стальной корпус чёрного цвета<br>- Удобный и практичный дизайн<br>- Складные ножки и поддерживающая стойка обеспечивают удобство в хранение и траспортировке экрана<br>- Чёрные границы по краям экрана для лучшего отображения изображения</p>
-<h3>Характеристики</h3><ul><li><strong>Вес (без упак.):</strong> 9,4 кг</li><li><strong>Вес (в упак.):</strong> 10,4 кг</li><li><strong>Габариты:</strong> 2,21м х 0,19м х 0,12м</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Размер:</strong> 80" X 80" (2,03 X 2,03)</li><li><strong>Соотношение сторон:</strong> 1X1</li><li><strong>Тип:</strong> Экран на треноге</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Вес (без упак.):</strong> 9,4 кг</li><li><strong>Вес (в упак.):</strong> 10,4 кг</li><li><strong>Высота:</strong> 2.03 м</li><li><strong>Габариты:</strong> 2,21м х 0,19м х 0,12м</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Размер:</strong> 80" X 80" (2,03 X 2,03)</li><li><strong>Соотношение сторон:</strong> 1X1</li><li><strong>Тип:</strong> Экран на треноге</li><li><strong>Ширина:</strong> 2.03 м</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Вес (без упак.)">9,4 кг</param>
 <param name="Вес (в упак.)">10,4 кг</param>
+<param name="Высота">2.03 м</param>
 <param name="Габариты">2,21м х 0,19м х 0,12м</param>
 <param name="Гарантия">12 мес</param>
 <param name="Размер">80" X 80" (2,03 X 2,03)</param>
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран на треноге</param>
+<param name="Ширина">2.03 м</param>
 <keywords>Mr.Pixel, Экран на треноге Mr.Pixel 80" X 80" (2,03 X 2,03), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -3964,16 +3984,18 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Экран на треноге Mr.Pixel 96" x 96" (MSPSDB135V2)<br>Высота: 2.44 м<br>Ширина: 2.44 м<br>Вес в упак.: 12,8 кг<br>Вес без упак.: 11,8 кг<br>Габариты: 2,62м х 0,19м х 0,12м<br>Соотношение сторон: 1:1<br>Основные преимущества:<br>- Нет необходимости в монтаже, необходимо всего 3 секунды, чтобы развернуть экран, лучшее решение для презентаций на улице и мобильных презентаций в офисе.<br>- Глянцевый стальной корпус чёрного цвета<br>- Удобный и практичный дизайн<br>- Складные ножки и поддерживающая стойка обеспечивают удобство в хранение и траспортировке экрана<br>- Чёрные границы по краям экрана для лучшего отображения изображения</p>
-<h3>Характеристики</h3><ul><li><strong>Вес (без упак.):</strong> 11,8 кг</li><li><strong>Вес (в упак.):</strong> 12,8 кг</li><li><strong>Габариты:</strong> 2,62м х 0,19м х 0,12м</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Размер:</strong> 96" X 96" (2,44 X 2,44)</li><li><strong>Соотношение сторон:</strong> 1X1</li><li><strong>Тип:</strong> Экран на треноге</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Вес (без упак.):</strong> 11,8 кг</li><li><strong>Вес (в упак.):</strong> 12,8 кг</li><li><strong>Высота:</strong> 2.44 м</li><li><strong>Габариты:</strong> 2,62м х 0,19м х 0,12м</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Размер:</strong> 96" X 96" (2,44 X 2,44)</li><li><strong>Соотношение сторон:</strong> 1X1</li><li><strong>Тип:</strong> Экран на треноге</li><li><strong>Ширина:</strong> 2.44 м</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Вес (без упак.)">11,8 кг</param>
 <param name="Вес (в упак.)">12,8 кг</param>
+<param name="Высота">2.44 м</param>
 <param name="Габариты">2,62м х 0,19м х 0,12м</param>
 <param name="Гарантия">12 мес</param>
 <param name="Размер">96" X 96" (2,44 X 2,44)</param>
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран на треноге</param>
+<param name="Ширина">2.44 м</param>
 <keywords>Mr.Pixel, Экран на треноге Mr.Pixel 96" X 96" (2,44 X 2,44), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -4021,16 +4043,18 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Экран на треноге Mr.Pixel 96" x 96" (MSPSDB135V2)<br>Высота: 2.44 м<br>Ширина: 2.44 м<br>Вес в упак.: 12,8 кг<br>Вес без упак.: 11,8 кг<br>Габариты: 2,62м х 0,19м х 0,12м<br>Соотношение сторон: 1:1<br>Основные преимущества:<br>- Нет необходимости в монтаже, необходимо всего 3 секунды, чтобы развернуть экран, лучшее решение для презентаций на улице и мобильных презентаций в офисе.<br>- Глянцевый стальной корпус чёрного цвета<br>- Удобный и практичный дизайн<br>- Складные ножки и поддерживающая стойка обеспечивают удобство в хранение и траспортировке экрана<br>- Чёрные границы по краям экрана для лучшего отображения изображения</p>
-<h3>Характеристики</h3><ul><li><strong>Вес (без упак.):</strong> 11,8 кг</li><li><strong>Вес (в упак.):</strong> 12,8 кг</li><li><strong>Габариты:</strong> 2,62м х 0,19м х 0,12м</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Размер:</strong> 96" X 96" (2,44 X 2,44)</li><li><strong>Соотношение сторон:</strong> 1X1</li><li><strong>Тип:</strong> Экран на треноге</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Вес (без упак.):</strong> 11,8 кг</li><li><strong>Вес (в упак.):</strong> 12,8 кг</li><li><strong>Высота:</strong> 2.44 м</li><li><strong>Габариты:</strong> 2,62м х 0,19м х 0,12м</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Размер:</strong> 96" X 96" (2,44 X 2,44)</li><li><strong>Соотношение сторон:</strong> 1X1</li><li><strong>Тип:</strong> Экран на треноге</li><li><strong>Ширина:</strong> 2.44 м</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Вес (без упак.)">11,8 кг</param>
 <param name="Вес (в упак.)">12,8 кг</param>
+<param name="Высота">2.44 м</param>
 <param name="Габариты">2,62м х 0,19м х 0,12м</param>
 <param name="Гарантия">12 мес</param>
 <param name="Размер">96" X 96" (2,44 X 2,44)</param>
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран на треноге</param>
+<param name="Ширина">2.44 м</param>
 <keywords>Mr.Pixel, Экран на треноге Mr.Pixel ECO 96" X 96" (2,44 X 2,44), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
