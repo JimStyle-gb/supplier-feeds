@@ -26,6 +26,7 @@ import re
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
 from .keywords import build_keywords, CS_KEYWORDS_MAX_LEN
+from .description import build_description, build_chars_block
 
 # Fallback: если кто-то случайно удалит импорт, всё равно будет лимит
 CS_KEYWORDS_MAX_LEN_FALLBACK = 380
@@ -3328,19 +3329,6 @@ def split_params_for_chars(
     return kept, notes[:2]
 
 
-def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
-    items: list[str] = []
-    for k, v in params_sorted or []:
-        kk = xml_escape_text(norm_ws(k))
-        vv = xml_escape_text(norm_ws(v))
-        if not kk or not vv:
-            continue
-        items.append(f"<li><strong>{kk}:</strong> {vv}</li>")
-    if not items:
-        # CS: характеристики отсутствуют — выводим заглушку (единообразие + SEO)
-        return "<h3>Характеристики</h3><p>Характеристики уточняются.</p>"
-    return "<h3>Характеристики</h3><ul>" + "".join(items) + "</ul>"
-
 def _build_param_summary(params_sorted: Sequence[tuple[str, str]]) -> str:
     """
     Короткая фраза из существующих param, если родного описания нет.
@@ -3421,86 +3409,6 @@ def _cs_chars_block_html(params: list[tuple[str, str]]) -> str:
         return '<h3>Характеристики</h3><p>Характеристики уточняются.</p>'
     return f'<h3>Характеристики</h3><ul>{items}</ul>'
 
-
-def build_description(
-    name: str,
-    native_desc: str,
-    params_sorted: Sequence[tuple[str, str]],
-    *,
-    notes: Sequence[str] | None = None,
-    wa_block: str = CS_WA_DIV,
-    hr_2px: str = CS_HR_2PX,
-    pay_block: str = CS_PAY_BLOCK,
-) -> str:
-    n = norm_ws(name)
-    n_esc = xml_escape_text(n)
-
-    # Тело родного описания (без <h3>)
-    desc_body = _build_desc_part(n, native_desc)
-
-    # Если родного описания нет — берём короткий summary из параметров,
-    # иначе (если и параметров нет) — короткий нейтральный фолбэк.
-    if not desc_body:
-        sm = _build_param_summary(params_sorted)
-        if sm:
-            desc_body = f"<p>{xml_escape_text(sm)}</p>"
-        else:
-            desc_body = "<p>Подробности уточняйте в WhatsApp.</p>"
-
-    # Характеристики (если пусто — блок не выводим)
-    chars = build_chars_block(params_sorted)
-
-    # WA: страховка, если кто-то передал старый CS_WA_BLOCK с комментарием
-    w = (wa_block or "").lstrip()
-    if w.startswith("<!--"):
-        w = re.sub(r"^<!--.*?-->\s*\n?", "", w, flags=re.S).strip()
-    if not w:
-        w = CS_WA_DIV
-
-    parts: list[str] = []
-    parts.append("<!-- Наименование товара -->")
-    parts.append(f"<h3>{n_esc}</h3>")
-
-    parts.append("<!-- WhatsApp -->")
-    parts.append(hr_2px)
-    parts.append(w)
-    parts.append(hr_2px)
-
-    parts.append("<!-- Описание -->")
-    parts.append(desc_body)
-
-    # Примечания (вынесены из "параметров-фраз", чтобы не засорять характеристики)
-    if notes:
-        nn: list[str] = []
-        for x in (notes or [])[:2]:
-            t = xml_escape_text(norm_ws(x))
-            if t:
-                # косметика: город и пунктуация
-                t = t.replace("Нур: Султан", "Нур-Султан").replace("Нур : Султан", "Нур-Султан")
-                t = re.sub(r"\s*:\s*", ": ", t)
-                t = re.sub(r"(?:,\s*){2,}", ", ", t)
-                t = re.sub(r":\s*:", ": ", t)
-                t = re.sub(r"\s{2,}", " ", t).strip()
-                # пробел после точки/воскл/вопрос/многоточия перед заглавной буквой
-                t = re.sub(r"([.!?…])([A-ZА-ЯЁ])", r"\1 \2", t)
-                # пробел между цифрой и кириллицей (>=1299Рекомендуемое -> >=1299 Рекомендуемое)
-                t = re.sub(r"(\d)([А-Яа-яЁё])", r"\1 \2", t)
-                if len(t) > 180:
-                    t = t[:180].rstrip(" ,.;") + "…"
-                nn.append(t)
-        if nn:
-            parts.append(f"<p><strong>Примечание:</strong> " + "<br>".join(nn) + "</p>")
-
-    if chars:
-        parts.append(chars)
-    parts.append(pay_block)
-
-    inner = "\n".join([p for p in parts if p is not None and str(p).strip() != ""])
-        # CS: запрещено выводить название поставщика в тексте (кроме ссылок на фото)
-    inner = re.sub(r"(?i)\bal[-\s]?style\b", "нашем магазине", inner)
-    inner = re.sub(r"(?i)\bal[-\s]?style\.kz\b", "", inner)
-    inner = re.sub(r"\s{2,}", " ", inner)
-    return normalize_cdata_inner(inner)
 
 def make_feed_meta(
     supplier: str,
@@ -4296,3 +4204,15 @@ def validate_cs_yml(xml: str) -> None:
 
     if errors:
         raise ValueError("CS-валидация не пройдена:\n- " + "\n- ".join(errors))
+
+
+
+# ----------------------------- Backward-compatible wrappers -----------------------------
+# (core стал тоньше: реализация вынесена в scripts/cs/description.py)
+
+def _cs_build_description(*args, **kwargs):
+    return build_description(*args, **kwargs)
+
+def _cs_build_chars_block(*args, **kwargs):
+    return build_chars_block(*args, **kwargs)
+
