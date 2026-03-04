@@ -40,7 +40,7 @@ RAW_OUT_FILE = "docs/raw/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
-BUILD_AKCENT_VERSION = "build_akcent_v52_config_driven_strict_schema"
+BUILD_AKCENT_VERSION = "build_akcent_v53_schema_drop_zero_volume"
 
 
 # ----------------------------- Config loading -----------------------------
@@ -118,6 +118,8 @@ def _interfaces_cleanup(v: str) -> str:
 _WARRANTY_NUM_RE = re.compile(r"\b(\d{1,3})\b")
 _WARRANTY_MONTHS_RE = re.compile(r"(?i)\b(\d{1,3})\s*(мес|месяц|months?)\b")
 _WARRANTY_YEARS_RE = re.compile(r"(?i)\b(\d{1,2})\s*(год|года|лет|years?)\b")
+
+_ZERO_VOLUME_RE = re.compile(r"^0+(?:[\.,]0+)?\s*(?:мл|ml|л|l)?$", re.IGNORECASE)
 
 
 def _warranty_to_months(v: str) -> str:
@@ -317,6 +319,10 @@ def _apply_value_normalizers(k: str, v: str, normals: dict[str, list[str]]) -> s
             s = _warranty_to_months(s)
         elif op == "warranty_drop_zero":
             s = _warranty_drop_zero(s)
+        elif op == "volume_drop_zero":
+            # '0', '0,0', '0,000', '0 мл' -> пусто (выкидываем мусорный объем)
+            ss = _norm_ws(s)
+            s = "" if (ss and _ZERO_VOLUME_RE.fullmatch(ss)) else s
         # неизвестные опы игнорим (без падения)
     return _norm_ws(s)
 
