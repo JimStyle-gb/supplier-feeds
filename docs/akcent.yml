@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-04 09:42:11">
+<yml_catalog date="2026-03-04 10:22:12">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-04 09:42:11
+Время сборки (Алматы)                      | 2026-03-04 10:22:12
 Ближайшая сборка (Алматы)                  | 2026-03-05 02:00:00
 Сколько товаров у поставщика до фильтра    | 1818
 Сколько товаров у поставщика после фильтра | 146
@@ -34,7 +34,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
-<keywords>Epson, C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC12C890191" available="true">
@@ -61,7 +61,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Для бренда">Epson</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">струйная</param>
-<keywords>Epson, Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T04D000" available="true">
@@ -89,7 +89,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Epson Ёмкость для отработанных чернил Epson C13T04D000</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">струйная</param>
-<keywords>Epson, Ёмкость для отработанных чернил Epson C13T04D000 EcoTank Maintenance Box (5clr), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Ёмкость для отработанных чернил Epson C13T04D000 EcoTank Maintenance Box (5clr), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T04D100" available="true">
@@ -118,7 +118,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Epson Ёмкость для отработанных чернил C13T04D100</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">струйная</param>
-<keywords>Epson, Ёмкость для отработанных чернил Epson C13T04D100 EcoTank Maintenance Box (4clr), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Ёмкость для отработанных чернил Epson C13T04D100 EcoTank Maintenance Box (4clr), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T619300" available="true">
@@ -146,7 +146,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Ёмкость для отработанных чернил для T3000/5000/7000, Т3200/5200/7200</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">струйная</param>
-<keywords>Epson, Ёмкость для отработанных чернил Epson C13T619300 T3000/5000/7000, Т3200/5200/7200, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Ёмкость для отработанных чернил Epson C13T619300 T3000/5000/7000, Т3200/5200/7200, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T671400" available="true">
@@ -175,7 +175,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Epson Ёмкость для отработанных чернил C13T671400 для WorkForce Pro WF-C869R</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">струйная</param>
-<keywords>Epson, Ёмкость для отработанных чернил Epson C13T671400 WorkForce Pro WF-C869R Maintenance Box (80K), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Ёмкость для отработанных чернил Epson C13T671400 WorkForce Pro WF-C869R Maintenance Box (80K), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T699700" available="true">
@@ -202,7 +202,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Объем">0,003</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">струйная</param>
-<keywords>Epson, Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC33S021601" available="true">
@@ -227,7 +227,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
-<keywords>Epson, Ёмкость для отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance box, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Ёмкость для отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance box, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACS102ABK43" available="true">
@@ -256,7 +256,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Интерактивная доска</param>
 <param name="Тип управления">Сенсорное</param>
 <param name="Цвет">черный</param>
-<keywords>Mr.Pixel, Интерактивная доска Mr.Pixel S102 BLACK, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Интерактивная доска Mr.Pixel S102 BLACK, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACS82ABK43" available="true">
@@ -294,7 +294,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Интерактивная доска</param>
 <param name="Тип управления">Сенсорное</param>
 <param name="Цвет">черный</param>
-<keywords>Mr.Pixel, Интерактивная доска Mr.Pixel S82 BLACK, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Интерактивная доска Mr.Pixel S82 BLACK, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACSBID-QX275-P" available="true">
@@ -316,7 +316,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <p>Подробности уточняйте в WhatsApp.</p>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<keywords>SMART, Интерактивная панель SBID-QX275-P, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>SMART, Интерактивная панель SBID-QX275-P, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACSBID-MX265-V4" available="true">
@@ -340,7 +340,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">36 мес</param>
-<keywords>SMART, Интерактивный дисплей SMART SBID-MX265-V4, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>SMART, Интерактивный дисплей SMART SBID-MX265-V4, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T26704010" available="true">
@@ -368,7 +368,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">голубой</param>
-<keywords>Epson, Картридж Epson C13T26704010 Tri-colour Ink for WorkForce WF-100W, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T26704010 Tri-colour Ink for WorkForce WF-100W, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T27914022" available="true">
@@ -398,7 +398,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">черный</param>
-<keywords>Epson, Картридж Epson C13T27914022 для WF-7620DTWF черный new, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T27914022 для WF-7620DTWF черный new, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T40D140" available="true">
@@ -426,7 +426,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">черный</param>
-<keywords>Epson, Картридж Epson C13T40D140 UltraChrome XD2 Black T40D140(80ml), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T40D140 UltraChrome XD2 Black T40D140(80ml), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T40D240" available="true">
@@ -453,7 +453,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">голубой</param>
-<keywords>Epson, Картридж Epson C13T40D240 UltraChrome XD2 Cyan T40D240(50ml), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T40D240 UltraChrome XD2 Cyan T40D240(50ml), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T40D34N" available="true">
@@ -480,7 +480,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">пурпурный</param>
-<keywords>Epson, Картридж Epson C13T40D34N UltraChrome XD2 Magenta T40D340(50ml), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T40D34N UltraChrome XD2 Magenta T40D340(50ml), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T40D440" available="true">
@@ -508,7 +508,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">желтый</param>
-<keywords>Epson, Картридж Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T41F34N" available="true">
@@ -536,7 +536,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">пурпурный</param>
-<keywords>Epson, Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T41F440" available="true">
@@ -564,7 +564,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">желтый</param>
-<keywords>Epson, Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350ml жёлтый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350ml жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T54LA00" available="true">
@@ -590,7 +590,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Для бренда">Epson</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
-<keywords>Epson, Картридж Epson C13T54LA00 UltraChrome DG2 (800 мл) белый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T54LA00 UltraChrome DG2 (800 мл) белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606100" available="true">
@@ -620,7 +620,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">черный</param>
-<keywords>Epson, Картридж Epson C13T606100 SP-4880 фото черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606100 SP-4880 фото черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606300" available="true">
@@ -650,7 +650,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">пурпурный</param>
-<keywords>Epson, Картридж Epson C13T606300 SP-4880 пурпурный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606300 SP-4880 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606400" available="true">
@@ -679,7 +679,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">желтый</param>
-<keywords>Epson, Картридж Epson C13T606400 SP-4880 желтый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606400 SP-4880 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606700" available="true">
@@ -708,7 +708,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">Серый</param>
-<keywords>Epson, Картридж Epson C13T606700 SP-4880 серый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606700 SP-4880 серый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606B00" available="true">
@@ -732,7 +732,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<keywords>Epson, Картридж Epson C13T606B00 SP-4800 220ml пурпурный new, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606B00 SP-4800 220ml пурпурный new, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606C00" available="true">
@@ -760,7 +760,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">пурпурный</param>
-<keywords>Epson, Картридж Epson C13T606C00 SP-4800 пурпурный светлый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606C00 SP-4800 пурпурный светлый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T614200" available="true">
@@ -790,7 +790,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">голубой</param>
-<keywords>Epson, Картридж Epson C13T614200 SP-4450 голубой, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T614200 SP-4450 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T614300" available="true">
@@ -820,7 +820,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">пурпурный</param>
-<keywords>Epson, Картридж Epson C13T614300 SP-4450 пурпурный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T614300 SP-4450 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T614400" available="true">
@@ -849,7 +849,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">желтый</param>
-<keywords>Epson, Картридж Epson C13T614400 SP-4450 желтый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T614400 SP-4450 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T61480N" available="true">
@@ -879,7 +879,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">черный</param>
-<keywords>Epson, Картридж Epson C13T61480N SP-4450 220ml черный матовый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T61480N SP-4450 220ml черный матовый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T694100" available="true">
@@ -909,7 +909,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">черный</param>
-<keywords>Epson, Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T69430N" available="true">
@@ -939,7 +939,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">пурпурный</param>
-<keywords>Epson, Картридж Epson C13T69430N T3000/5000/7000, Т3200/5200/7200 пурпурный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T69430N T3000/5000/7000, Т3200/5200/7200 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T69440N" available="true">
@@ -969,7 +969,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">желтый</param>
-<keywords>Epson, Картридж Epson C13T69440N T3000/5000/7000, Т3200/5200/7200 желтый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T69440N T3000/5000/7000, Т3200/5200/7200 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T965140" available="true">
@@ -997,7 +997,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">черный</param>
-<keywords>Epson, Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl., доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl., доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACFS-45700" available="true">
@@ -1022,7 +1022,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">Ламинатор А4</param>
-<keywords>Fellowes, Ламинатор Fellowes Arc A4, 75/80 мкм, 30 см/мин, AutoShutOff, механизм освобожд., старт.набор пленок, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Ламинатор Fellowes Arc A4, 75/80 мкм, 30 см/мин, AutoShutOff, механизм освобожд., старт.набор пленок, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC5716701" available="true">
@@ -1047,7 +1047,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">Ламинатор А3</param>
-<keywords>Fellowes, Ламинатор Fellowes Lunar A3, 2х80 мкм, 30 см/мин, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Ламинатор Fellowes Lunar A3, 2х80 мкм, 30 см/мин, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC5742801" available="true">
@@ -1072,7 +1072,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">Ламинатор А4</param>
-<keywords>Fellowes, Ламинатор Fellowes Lunar+ A4, Blue, 75/80,125 мкм, 30 см/мин, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Ламинатор Fellowes Lunar+ A4, Blue, 75/80,125 мкм, 30 см/мин, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACVA2732-H" available="true">
@@ -1112,7 +1112,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Цвета">16.7 миллионов цветов</param>
 <param name="Частота обновления">75 Гц</param>
 <param name="Яркость">250</param>
-<keywords>ViewSonic, Монитор ViewSonic VA2732-H, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>ViewSonic, Монитор ViewSonic VA2732-H, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACVX2418C" available="true">
@@ -1148,7 +1148,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Углы обзора">178º horizontal, 178º vertical</param>
 <param name="Цвета">16.7M</param>
 <param name="Яркость">250 cd/m² (typ)</param>
-<keywords>ViewSonic, Монитор Viewsonic VX2418C, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>ViewSonic, Монитор Viewsonic VX2418C, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACVX2719-PC-MHD" available="true">
@@ -1183,7 +1183,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Цвета">16.7M</param>
 <param name="Частота обновления">240 Гц</param>
 <param name="Яркость">250</param>
-<keywords>ViewSonic, Монитор Viewsonic VX2719-PC-MHD, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>ViewSonic, Монитор Viewsonic VX2719-PC-MHD, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CH96404" available="true">
@@ -1224,7 +1224,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">пигментные</param>
 <param name="Цветность">4 цвета</param>
-<keywords>Epson, МФУ Epson L14150 фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L14150 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CH72404" available="true">
@@ -1265,7 +1265,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">пигментные</param>
 <param name="Цветность">4 цвета</param>
-<keywords>Epson, МФУ Epson L15150 фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L15150 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ69401" available="true">
@@ -1290,7 +1290,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">МФУ Дом</param>
-<keywords>Epson, МФУ Epson L3200 фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L3200 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ67413" available="true">
@@ -1315,7 +1315,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">МФУ Дом</param>
-<keywords>Epson, МФУ Epson L3251 фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L3251 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ67414" available="true">
@@ -1355,7 +1355,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">водорастворимые</param>
 <param name="Цветность">4 цвета</param>
-<keywords>Epson, МФУ Epson L3256 фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L3256 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ66409" available="true">
@@ -1393,7 +1393,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип печати">струйная</param>
 <param name="Тип чернил">водорастворимые</param>
 <param name="Цветность">4 цвета</param>
-<keywords>Epson, МФУ Epson L3260 фабрика печати, Wi-Fi, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L3260 фабрика печати, Wi-Fi, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ66411" available="true">
@@ -1421,7 +1421,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Двусторонняя печать">нет</param>
 <param name="ЖК дисплей">да</param>
 <param name="Тип">МФУ Дом</param>
-<keywords>Epson, МФУ Epson L3266 фабрика печати, Wi-Fi, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L3266 фабрика печати, Wi-Fi, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CK58404" available="true">
@@ -1446,7 +1446,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">МФУ Дом</param>
-<keywords>Epson, МФУ Epson L3560 фабрика печати, Wi-Fi, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L3560 фабрика печати, Wi-Fi, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ63413" available="true">
@@ -1471,7 +1471,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">МФУ Дом</param>
-<keywords>Epson, МФУ Epson L4267 фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L4267 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ65407" available="true">
@@ -1496,7 +1496,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">МФУ Офис</param>
-<keywords>Epson, МФУ Epson L5290 фабрика печати, факс, Wi-Fi, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L5290 фабрика печати, факс, Wi-Fi, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ62404" available="true">
@@ -1521,7 +1521,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">МФУ Дом</param>
-<keywords>Epson, МФУ Epson L6260 фабрика печати, Wi-Fi, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L6260 фабрика печати, Wi-Fi, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ30404" available="true">
@@ -1562,7 +1562,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">пигментные</param>
 <param name="Цветность">4 цвета</param>
-<keywords>Epson, МФУ Epson L6550 фабрика печати, факс, Wi-Fi, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L6550 фабрика печати, факс, Wi-Fi, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CK94401" available="true">
@@ -1603,7 +1603,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">водорастворимые</param>
 <param name="Цветность">6 цветов</param>
-<keywords>Epson, МФУ Epson L8100 фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L8100 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ20404" available="true">
@@ -1642,7 +1642,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип печати">струйная</param>
 <param name="Тип чернил">водорастворимые и пигментные</param>
 <param name="Цветность">6 цветов</param>
-<keywords>Epson, МФУ Epson L8160 фабрика печати, Wi-Fi, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L8160 фабрика печати, Wi-Fi, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ21403" available="true">
@@ -1684,7 +1684,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">водорастворимые и пигментные</param>
 <param name="Цветность">6 цветов</param>
-<keywords>Epson, МФУ Epson L8180 фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson L8180 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ19401" available="true">
@@ -1724,7 +1724,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">пигментные</param>
 <param name="Цветность">1 цвет</param>
-<keywords>Epson, МФУ Epson M2110 (CIS) фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson M2110 (CIS) фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ18404" available="true">
@@ -1765,7 +1765,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">пигментные</param>
 <param name="Цветность">1 цвет</param>
-<keywords>Epson, МФУ Epson M2120 (CIS) фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, МФУ Epson M2120 (CIS) фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC7MD74A" available="true">
@@ -1787,7 +1787,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <p>Эффективное, высококачественное и доступное по цене многофункциональное устройство, которое можно разместить где угодно. Самое компактное в своем классе лазерное МФУ с быстрой печатью и приложением HP Smart для экономии времени. Простая настройка и печать материалов профессионального качества.<br>Самое компактное МФУ<br>Самое компактное МФУ HP LaserJet, отличающееся высокой производительностью. Быстрая печать, сканирование и копирование, а также удобное копирование удостоверений личности.<br>Используйте свой смартфон, чтобы работать эффективнее<br>Контролируйте свой бизнес. С легкостью настраивайте устройство прямо со своего ПК, используя приложение HP Smart 3. Настройте специальные ярлыки, чтобы экономить время и обрабатывать документы вдвое быстрее.<br>Проверенное качество и удобство<br>Оцените стабильность, качество и удобство лазерной печати. Знаменитое стабильное качество и надежность HP в сочетании с удобной настройкой и простотой печати.<br>Экономьте ресурсы без ущерба для производительности<br>Экономьте ресурсы без ущерба для производительности благодаря технологии HP Auto-On/Auto-Off, которая включает МФУ, когда это необходимо, и выключает, когда устройство не используется.</p>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<keywords>HP, МФУ лазерное HP LaserJet M141w белый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>HP, МФУ лазерное HP LaserJet M141w белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC3G631A" available="true">
@@ -1809,7 +1809,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <p>Компактный, быстрый и надежный многофункциональный принтер со скоростью печати до 35 стр/мин, оснащенный функциями автоматического устранения замятий и самовосстановления подключения Wi-Fi®. В комплект работы входит приложение HP, позволяющее с легкостью печатать и сканировать с мобильных устройств.<br>Управляйте принтерами с помощью мощного ПО HP Web Jetadmin, позволяющего легко добавлять и обновлять устройства, решения и политики.</p>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<keywords>HP, МФУ лазерное HP LaserJet Pro 3103fdn белый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>HP, МФУ лазерное HP LaserJet Pro 3103fdn белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC3G632A" available="true">
@@ -1831,7 +1831,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <p>МФУ лазерное HP LaserJet Pro MFP 3103fdw разработано для рабочих групп, обеспечивает профессиональную производительность, быструю высококачественную печать, сканирование и копирование - все это в компактном корпусе.</p>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<keywords>HP, МФУ лазерное HP LaserJet Pro 3103fdw белый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>HP, МФУ лазерное HP LaserJet Pro 3103fdw белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACG3410" available="true">
@@ -1855,7 +1855,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип печати">струйная</param>
-<keywords>Canon, МФУ струйное Canon Pixma G3410 Wi-Fi черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Canon, МФУ струйное Canon Pixma G3410 Wi-Fi черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACG3430" available="true">
@@ -1879,7 +1879,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип печати">струйная</param>
-<keywords>Canon, МФУ струйное Canon Pixma G3430 Wi-Fi черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Canon, МФУ струйное Canon Pixma G3430 Wi-Fi черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACFS-53061" available="true">
@@ -1903,7 +1903,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">пленка для ламинирования</param>
-<keywords>Fellowes, Пленка для ламинирования А4 Fellowes, 80мкм, 100 шт., доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Пленка для ламинирования А4 Fellowes, 80мкм, 100 шт., доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ36301A0" available="true">
@@ -1937,7 +1937,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">пигментные (K), водорастворимые (CMY)</param>
 <param name="Цветность">4 цвета</param>
-<keywords>Epson, Плоттер Epson SureColor SC-T3100M-MFP, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Плоттер Epson SureColor SC-T3100M-MFP, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CH81301A0" available="true">
@@ -1972,7 +1972,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">Картриджи</param>
 <param name="Тип чернил">пигментные</param>
 <param name="Цветность">4 цвета</param>
-<keywords>Epson, Плоттер Epson SureColor SC-T5700D, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Плоттер Epson SureColor SC-T5700D, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CD76414" available="true">
@@ -2010,7 +2010,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">водорастворимые</param>
 <param name="Цветность">4 цвета</param>
-<keywords>Epson, Принтер Epson L121 фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Принтер Epson L121 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CE58403" available="true">
@@ -2048,7 +2048,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">водорастворимые</param>
 <param name="Цветность">4 цвета</param>
-<keywords>Epson, Принтер Epson L132 фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Принтер Epson L132 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CG95405" available="true">
@@ -2086,7 +2086,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">пигментные</param>
 <param name="Цветность">1 цвет</param>
-<keywords>Epson, Принтер Epson M1100 фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Принтер Epson M1100 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CG96405" available="true">
@@ -2124,7 +2124,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип расходных материалов">чернила</param>
 <param name="Тип чернил">пигментные</param>
 <param name="Цветность">1 цвет</param>
-<keywords>Epson, Принтер Epson M1120 фабрика печати, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Принтер Epson M1120 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CH38402" available="true">
@@ -2148,7 +2148,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<keywords>Epson, Принтер Epson SureColor SC-P700, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Принтер Epson SureColor SC-P700, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC7MD68A" available="true">
@@ -2170,7 +2170,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <p>Принтер HP LaserJet M111w имеет компактный и стильный дизайн, позволяющий легко интегрировать его в рабочую среду. Монохромная лазерная технология печати, используемая в данном принтере, позволит распечатывать тексты и графики отличного качества. Устройство поддерживает печать на конвертах, обычной бумаге, открытках, этикетках.</p>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<keywords>HP, Принтер лазерный HP LaserJet M111w белый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>HP, Принтер лазерный HP LaserJet M111w белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACZD4A042-30EE00EZ" available="true">
@@ -2194,7 +2194,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<keywords>Zebra, Принтер этикеток Zebra ZD421-30EE чёрный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Zebra, Принтер этикеток Zebra ZD421-30EE чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACZD4A042-30EM00EZ" available="true">
@@ -2218,7 +2218,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<keywords>Zebra, Принтер этикеток Zebra ZD421-30EM чёрный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Zebra, Принтер этикеток Zebra ZD421-30EM чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACZD4A042-D0EE00EZ" available="true">
@@ -2242,7 +2242,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<keywords>Zebra, Принтер этикеток Zebra ZD421-D0EE чёрный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Zebra, Принтер этикеток Zebra ZD421-D0EE чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACLS550WH" available="true">
@@ -2273,7 +2273,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Срок службы источника света">30000</param>
 <param name="Тип">Проектор</param>
 <param name="Яркость (ANSI LUMEN)">2000</param>
-<keywords>ViewSonic, Проектор ViewSonic LS550WH, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>ViewSonic, Проектор ViewSonic LS550WH, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACLS500WH" available="true">
@@ -2317,7 +2317,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип источника света">UHM</param>
 <param name="Уровень шума (норм./эконом.) Дб">32/28</param>
 <param name="Яркость (ANSI) лмн">3 500</param>
-<keywords>ViewSonic, Проектор для дом. кино ViewSonic LS500WH, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>ViewSonic, Проектор для дом. кино ViewSonic LS500WH, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACPX701-4K" available="true">
@@ -2364,7 +2364,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Уровень шума (норм./эконом.) Дб">27</param>
 <param name="Яркость">3200 ANSI люменов, что позволяет использовать проектор даже в условиях с ярким освещением.</param>
 <param name="Яркость (ANSI) лмн">3200</param>
-<keywords>ViewSonic, Проектор для дом. кино ViewSonic PX701-4K, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>ViewSonic, Проектор для дом. кино ViewSonic PX701-4K, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11HA84240" available="true">
@@ -2394,7 +2394,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размеры">295 × 211 × 87 мм</param>
 <param name="Тип">Проектор для дома</param>
 <param name="Цвет">белый</param>
-<keywords>Epson, Проектор для дома Epson CO-FD01, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Проектор для дома Epson CO-FD01, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11HA84040" available="true">
@@ -2419,7 +2419,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">Проектор для дома</param>
-<keywords>Epson, Проектор для дома Epson CO-FH01, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Проектор для дома Epson CO-FH01, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACM2" available="true">
@@ -2453,7 +2453,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Проектор короткофокусный</param>
 <param name="Уровень шума (норм./эконом.) Дб">26</param>
 <param name="Яркость (ANSI) лмн">1 200</param>
-<keywords>ViewSonic, Проектор короткофокусный ViewSonic M2, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>ViewSonic, Проектор короткофокусный ViewSonic M2, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11HA86040" available="true">
@@ -2478,7 +2478,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">Проектор универсальный</param>
-<keywords>Epson, Проектор универсальный Epson CO-W01, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Проектор универсальный Epson CO-W01, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11HA86340" available="true">
@@ -2503,7 +2503,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">Проектор универсальный</param>
-<keywords>Epson, Проектор универсальный Epson CO-WX02, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Проектор универсальный Epson CO-WX02, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11HB51042" available="true">
@@ -2528,7 +2528,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">24 мес</param>
 <param name="Тип">Проектор универсальный</param>
-<keywords>Epson, Проектор универсальный Epson EB-E24, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Проектор универсальный Epson EB-E24, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11H973040" available="true">
@@ -2575,7 +2575,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Цветовая яркость">3700 ANSI lm</param>
 <param name="Яркость">3700 ANSI lm</param>
 <param name="Яркость (ANSI) лмн">3700</param>
-<keywords>Epson, Проектор универсальный Epson EB-W06, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Проектор универсальный Epson EB-W06, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11H977040" available="true">
@@ -2625,7 +2625,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Цветовая яркость">4000 ANSI lm</param>
 <param name="Яркость">4000 ANSI lm</param>
 <param name="Яркость (ANSI) лмн">4000</param>
-<keywords>Epson, Проектор универсальный Epson EB-W51, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Проектор универсальный Epson EB-W51, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11HB57042" available="true">
@@ -2649,7 +2649,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<keywords>Epson, Проектор универсальный Epson EB-W53 белый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Проектор универсальный Epson EB-W53 белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11HB58042" available="true">
@@ -2673,7 +2673,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<keywords>Epson, Проектор универсальный Epson EB-W55 белый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Проектор универсальный Epson EB-W55 белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11HB35240" available="true">
@@ -2698,7 +2698,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">24 мес</param>
 <param name="Тип">Проектор универсальный</param>
-<keywords>Epson, Проектор универсальный Epson EF-21R розовый кварц, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Проектор универсальный Epson EF-21R розовый кварц, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11HB38140" available="true">
@@ -2723,7 +2723,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">24 мес</param>
 <param name="Тип">Проектор универсальный</param>
-<keywords>Epson, Проектор универсальный Epson EF-22B, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Проектор универсальный Epson EF-22B, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACB11B268401" available="true">
@@ -2748,7 +2748,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Тип">сканер для дома планшетные</param>
-<keywords>Epson, Сканер Epson Perfection V39II, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Сканер Epson Perfection V39II, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACHN-1358SR" available="true">
@@ -2773,7 +2773,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <param name="Интерфейсы">Type-C</param>
-<keywords>iDPRT, Сканер штрих-кода IDPRT HN-1358SR черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>iDPRT, Сканер штрих-кода IDPRT HN-1358SR черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACHN-3308SR" available="true">
@@ -2797,7 +2797,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<keywords>iDPRT, Сканер штрих-кода IDPRT HN-3308SR черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>iDPRT, Сканер штрих-кода IDPRT HN-3308SR черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACLI4278-TRBU0100ZER" available="true">
@@ -2821,7 +2821,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<keywords>Zebra, Сканер штрих-кода Zebra LI4278 чёрный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Zebra, Сканер штрих-кода Zebra LI4278 чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00Q140" available="true">
@@ -2850,7 +2850,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">черный</param>
-<keywords>Epson, Чернила Epson C13T00Q140 для L7160/L7180 черный пигмент, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00Q140 для L7160/L7180 черный пигмент, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00R140" available="true">
@@ -2879,7 +2879,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">черный</param>
-<keywords>Epson, Чернила Epson C13T00R140 для L7160/L7180 чёрный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00R140 для L7160/L7180 чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00R240" available="true">
@@ -2908,7 +2908,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">голубой</param>
-<keywords>Epson, Чернила Epson C13T00R240 для L7160/L7180 голубой, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00R240 для L7160/L7180 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00R340" available="true">
@@ -2937,7 +2937,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">пурпурный</param>
-<keywords>Epson, Чернила Epson C13T00R340 для L7160/L7180 пурпурный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00R340 для L7160/L7180 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00R440" available="true">
@@ -2966,7 +2966,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">желтый</param>
-<keywords>Epson, Чернила Epson C13T00R440 для L7160/L7180 жёлтый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00R440 для L7160/L7180 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00S24A" available="true">
@@ -2995,7 +2995,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">голубой</param>
-<keywords>Epson, Чернила Epson C13T00S24A для 103 EcoTank L3100/L3101/L3110/L3150 голубой, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00S24A для 103 EcoTank L3100/L3101/L3110/L3150 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00S44A" available="true">
@@ -3024,7 +3024,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">желтый</param>
-<keywords>Epson, Чернила Epson C13T00S44A 103 EcoTank для L3100/L3101/L3110/L3150 жёлтый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00S44A 103 EcoTank для L3100/L3101/L3110/L3150 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T01L14A" available="true">
@@ -3055,7 +3055,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">черный</param>
-<keywords>Epson, Чернила Epson C13T01L14A EcoTank MX1XX Series Black Bottle L 40 ml, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T01L14A EcoTank MX1XX Series Black Bottle L 40 ml, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T03V14A" available="true">
@@ -3085,7 +3085,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">черный</param>
-<keywords>Epson, Чернила Epson C13T03V14A 101 EcoTank 127ml для L4150/L4160 черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T03V14A 101 EcoTank 127ml для L4150/L4160 черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T03V24A" available="true">
@@ -3115,7 +3115,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">голубой</param>
-<keywords>Epson, Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T03V34A" available="true">
@@ -3145,7 +3145,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">пурпурный</param>
-<keywords>Epson, Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T06C24A" available="true">
@@ -3175,7 +3175,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">голубой</param>
-<keywords>Epson, Чернила Epson C13T06C24A для L15150 голубой, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T06C24A для L15150 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T06C44A" available="true">
@@ -3205,7 +3205,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">желтый</param>
-<keywords>Epson, Чернила Epson C13T06C44A для L15150 жёлтый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T06C44A для L15150 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T07D24A" available="true">
@@ -3235,7 +3235,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">голубой</param>
-<keywords>Epson, Чернила Epson C13T07D24A для L8160/L8180 голубые, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T07D24A для L8160/L8180 голубые, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T07D34A" available="true">
@@ -3265,7 +3265,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">пурпурный</param>
-<keywords>Epson, Чернила Epson C13T07D34A для L8160/L8180 пурпурные, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T07D34A для L8160/L8180 пурпурные, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T07D44A" available="true">
@@ -3295,7 +3295,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">желтый</param>
-<keywords>Epson, Чернила Epson C13T07D44A для L8160/L8180 жёлтые, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T07D44A для L8160/L8180 жёлтые, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T09C34A" available="true">
@@ -3324,7 +3324,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">голубой</param>
-<keywords>Epson, Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T66414A" available="true">
@@ -3355,7 +3355,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">черный</param>
-<keywords>Epson, Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T66434A" available="true">
@@ -3386,7 +3386,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">пурпурный</param>
-<keywords>Epson, Чернила Epson C13T66434A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 пурпурный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T66434A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T66444A" available="true">
@@ -3416,7 +3416,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">желтый</param>
-<keywords>Epson, Чернила Epson C13T66444A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 желтый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T66444A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T67314A" available="true">
@@ -3446,7 +3446,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">черный</param>
-<keywords>Epson, Чернила Epson C13T67314A L800/1800/810/850 черный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T67314A L800/1800/810/850 черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T67324A" available="true">
@@ -3476,7 +3476,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">голубой</param>
-<keywords>Epson, Чернила Epson C13T67324A L800/1800/810/850 голубой, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T67324A L800/1800/810/850 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T67334A" available="true">
@@ -3506,7 +3506,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">пурпурный</param>
-<keywords>Epson, Чернила Epson C13T67334A L800/1800/810/850 пурпурный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T67334A L800/1800/810/850 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T67344A" available="true">
@@ -3536,7 +3536,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">желтый</param>
-<keywords>Epson, Чернила Epson C13T67344A L800/1800/810/850 желтый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T67344A L800/1800/810/850 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T67354A" available="true">
@@ -3566,7 +3566,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">голубой</param>
-<keywords>Epson, Чернила Epson C13T67354A L800/1800/810/850 светло-голубой, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T67354A L800/1800/810/850 светло-голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T67364A" available="true">
@@ -3596,7 +3596,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Цвет">пурпурный</param>
-<keywords>Epson, Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC5050101" available="true">
@@ -3621,7 +3621,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">24 мес</param>
 <param name="Тип">шредеры офисные</param>
-<keywords>Fellowes, Шредер Fellowes Powershred LX201 белый, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Шредер Fellowes Powershred LX201 белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC4653101" available="true">
@@ -3649,7 +3649,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип резки">перекрестная</param>
 <param name="Уничтожение">cкобкы, карты, скрепки</param>
 <param name="Уровень секретности">P-4</param>
-<keywords>Fellowes, Шредер Fellowes® Powershred® 53C, DIN P-4, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Шредер Fellowes® Powershred® 53C, DIN P-4, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC5502201" available="true">
@@ -3674,7 +3674,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">24 мес</param>
 <param name="Тип">шредеры офисные</param>
-<keywords>Fellowes, Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC4701001" available="true">
@@ -3704,7 +3704,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип резки">продольная</param>
 <param name="Уничтожение">бумага</param>
 <param name="Уровень секретности">P-1</param>
-<keywords>Fellowes, Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр., доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр., доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC4400501" available="true">
@@ -3728,7 +3728,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">шредеры офисные</param>
-<keywords>Fellowes, Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC6008101" available="true">
@@ -3752,7 +3752,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 месяцев</param>
-<keywords>Fellowes, Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр., доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Fellowes, Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр., доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T03V64A" available="true">
@@ -3777,7 +3777,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
-<keywords>Epson, Экономичный набор из четырех контейнеров с чернилами, серия 101, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Экономичный набор из четырех контейнеров с чернилами, серия 101, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00S64A" available="true">
@@ -3802,7 +3802,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
-<keywords>Epson, Экономичный набор из четырех контейнеров с чернилами, серия 103, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Экономичный набор из четырех контейнеров с чернилами, серия 103, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T66464A" available="true">
@@ -3827,7 +3827,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
-<keywords>Epson, Экономичный набор из четырех контейнеров с чернилами, серия 664, доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Экономичный набор из четырех контейнеров с чернилами, серия 664, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSAB167V2" available="true">
@@ -3854,7 +3854,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">120" X 120" (3,05 X 3,05)</param>
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран моторизированный</param>
-<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 120" X 120" (3,05 X 3,05), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 120" X 120" (3,05 X 3,05), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSAC200V2" available="true">
@@ -3881,7 +3881,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">120" X 160" (3,05 X 4,06)</param>
 <param name="Соотношение сторон">4X3</param>
 <param name="Тип">Экран моторизированный</param>
-<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 120" X 160" (3,05 X 4,06), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 120" X 160" (3,05 X 4,06), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSAC120V2" available="true">
@@ -3909,7 +3909,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Соотношение сторон">4X3</param>
 <param name="Тип">Экран моторизированный</param>
 <param name="Цвет">Белый</param>
-<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 72" X 96" (1,83 X 2,44), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 72" X 96" (1,83 X 2,44), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSAB112V2" available="true">
@@ -3936,7 +3936,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">80" X 80" (2,03 X 2,03)</param>
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран моторизированный</param>
-<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 80" X 80" (2,03 X 2,03), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 80" X 80" (2,03 X 2,03), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSAC150V2" available="true">
@@ -3963,7 +3963,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">90" X 120" (2,29 X 3,05)</param>
 <param name="Соотношение сторон">4X3</param>
 <param name="Тип">Экран моторизированный</param>
-<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 90" X 120" (2,29 X 3,05), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 90" X 120" (2,29 X 3,05), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMAGNASAB112V2" available="true">
@@ -3990,7 +3990,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">80" X 80" (2,03 x 2,03)</param>
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран моторизированный</param>
-<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel ECO 80" X 80" (2,03 X 2,03), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel ECO 80" X 80" (2,03 X 2,03), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMAGNASAB135V2" available="true">
@@ -4017,7 +4017,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">96" X 96" (2,44 X 2,44)</param>
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран моторизированный</param>
-<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel ECO 96" X 96" (2,44 X 2,44), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel ECO 96" X 96" (2,44 X 2,44), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSDB112V2" available="true">
@@ -4047,7 +4047,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">80" X 80" (2,03 X 2,03)</param>
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран на треноге</param>
-<keywords>Mr.Pixel, Экран на треноге Mr.Pixel 80" X 80" (2,03 X 2,03), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран на треноге Mr.Pixel 80" X 80" (2,03 X 2,03), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSDB135V2" available="true">
@@ -4077,7 +4077,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">96" X 96" (2,44 X 2,44)</param>
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран на треноге</param>
-<keywords>Mr.Pixel, Экран на треноге Mr.Pixel 96" X 96" (2,44 X 2,44), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран на треноге Mr.Pixel 96" X 96" (2,44 X 2,44), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMAGNASDB112V2" available="true">
@@ -4104,7 +4104,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">80" X 80" (2,03 x 2,03)</param>
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран на треноге</param>
-<keywords>Mr.Pixel, Экран на треноге Mr.Pixel ECO 80" X 80" (2,03 X 2,03), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран на треноге Mr.Pixel ECO 80" X 80" (2,03 X 2,03), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMAGNASDB135V2" available="true">
@@ -4134,7 +4134,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">96" X 96" (2,44 X 2,44)</param>
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран на треноге</param>
-<keywords>Mr.Pixel, Экран на треноге Mr.Pixel ECO 96" X 96" (2,44 X 2,44), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран на треноге Mr.Pixel ECO 96" X 96" (2,44 X 2,44), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSBB167V2" available="true">
@@ -4161,7 +4161,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">120" X 120" (3,05 X 3,05)</param>
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран настенный</param>
-<keywords>Mr.Pixel, Экран настенный Mr.Pixel 120' X 120" (3,05 X 3,05), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран настенный Mr.Pixel 120' X 120" (3,05 X 3,05), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSBC100V2" available="true">
@@ -4188,7 +4188,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">60" X 80" (1,53 X 2,03)</param>
 <param name="Соотношение сторон">4X3</param>
 <param name="Тип">Экран настенный</param>
-<keywords>Mr.Pixel, Экран настенный Mr.Pixel 60" X 80" (1,52 X 2,03), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран настенный Mr.Pixel 60" X 80" (1,52 X 2,03), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSBB112V2" available="true">
@@ -4216,7 +4216,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Соотношение сторон">1X1</param>
 <param name="Тип">Экран настенный</param>
 <param name="Цвет">Белый</param>
-<keywords>Mr.Pixel, Экран настенный Mr.Pixel 80" X 80" (2,03 X 2,03), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран настенный Mr.Pixel 80" X 80" (2,03 X 2,03), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSBC150V2" available="true">
@@ -4243,7 +4243,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Размер">90" X 120" (2,29 X 3,05)</param>
 <param name="Соотношение сторон">4X3</param>
 <param name="Тип">Экран настенный</param>
-<keywords>Mr.Pixel, Экран настенный Mr.Pixel 90" X 120" (2,29 X 3,05), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран настенный Mr.Pixel 90" X 120" (2,29 X 3,05), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSBB135V2" available="true">
@@ -4269,7 +4269,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Гарантия">12 мес</param>
 <param name="Размер">96" X 96" (2.44 X 2.44)</param>
 <param name="Тип">Экран настенный</param>
-<keywords>Mr.Pixel, Экран настенный Mr.Pixel 96" X 96" (2.44 X 2.44), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран настенный Mr.Pixel 96" X 96" (2.44 X 2.44), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMAGNASBB135V2" available="true">
@@ -4295,7 +4295,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Гарантия">12 мес</param>
 <param name="Размер">96" X 96" (2.44 X 2.44)</param>
 <param name="Тип">Экран настенный</param>
-<keywords>Mr.Pixel, Экран настенный Mr.Pixel ECO 96" X 96" (2.44 X 2.44), доставка, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Mr.Pixel, Экран настенный Mr.Pixel ECO 96" X 96" (2.44 X 2.44), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 </offers>
