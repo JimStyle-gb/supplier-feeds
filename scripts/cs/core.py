@@ -10,7 +10,7 @@ CS Core — общее ядро для всех поставщиков.
 - стабилизация форматирования (переводы строк, футер)
 """
 
-# core v042_modular_stage1_keywords_guard: AC отключаем split_params_for_chars по policy; гарантия не считается фразой; защита от vendor=тип/код
+# core v036_policy_ac_split_vendor_guard: AC отключаем split_params_for_chars по policy; гарантия не считается фразой; защита от vendor=тип/код
 
 from __future__ import annotations
 
@@ -24,8 +24,8 @@ import os
 import hashlib
 import re
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
-from .keywords import build_keywords, CS_KEYWORDS_MAX_LEN
 
+from .keywords import build_keywords
 
 def _dedup_keep_order(items: list[str]) -> list[str]:
     """CS: дедупликация со стабильным порядком (без сортировки)."""
@@ -3196,12 +3196,7 @@ def normalize_pictures(pictures: Sequence[str]) -> list[str]:
 
 # Собирает keywords: бренд + имя + ключи по доставке + города (компактно, без "простыни")
 # Важно: никаких "CS_CITY_TAIL" больше нет — keywords строятся только здесь.
-CS_KEYWORDS_CITIES = (
-    "Казахстан",
-    "Алматы",
-    "Астана",
-    "Шымкент",
-    "Караганхарактеристики.
+# Похоже на "предложение" (инструкция/маркетинг) в имени параметра — переносим в notes, а не в характеристики.
 # Дублирует часть эвристик выше, но даёт дополнительную страховку.
 _RE_PARAM_SENTENCEY = re.compile(r"[.!?]|\b(?:вы|вам|вас|можете|пожалуйста|важно|внимание|доставка|оплата)\b", re.IGNORECASE)
 
