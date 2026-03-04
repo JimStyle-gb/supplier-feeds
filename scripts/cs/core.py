@@ -25,8 +25,10 @@ import hashlib
 import re
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
-from .keywords import build_keywords
+from .keywords import build_keywords, CS_KEYWORDS_MAX_LEN
 
+# Fallback: если кто-то случайно удалит импорт, всё равно будет лимит
+CS_KEYWORDS_MAX_LEN_FALLBACK = 380
 def _dedup_keep_order(items: list[str]) -> list[str]:
     """CS: дедупликация со стабильным порядком (без сортировки)."""
     seen: set[str] = set()
@@ -4034,7 +4036,7 @@ class OfferOut:
         desc_cdata = build_description(name_for_desc, native_desc, params_sorted, notes=notes)
         desc_cdata = sanitize_mixed_text(desc_cdata)
         keywords = build_keywords(vendor, name_short)
-        keywords = _truncate_text(keywords, CS_KEYWORDS_MAX_LEN)
+        keywords = _truncate_text(keywords, int(CS_KEYWORDS_MAX_LEN or CS_KEYWORDS_MAX_LEN_FALLBACK))
         keywords = sanitize_mixed_text(keywords)
 
         # Финальный санитайзер для AC/VT: добиваем смешение кир/лат в name/keywords/params.
