@@ -40,7 +40,7 @@ RAW_OUT_FILE = "docs/raw/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
-BUILD_AKCENT_VERSION = "build_akcent_v53_schema_drop_zero_volume"
+BUILD_AKCENT_VERSION = "build_akcent_v54_desc_sanitize_typos"
 
 
 # ----------------------------- Config loading -----------------------------
@@ -88,6 +88,64 @@ def _clean_html_to_lines(s: str) -> list[str]:
     s = re.sub(r"\n{2,}", "\n", s)
     lines = [ln.strip() for ln in s.split("\n")]
     return [ln for ln in lines if ln]
+
+def _apply_desc_typos(s: str) -> str:
+    # ТОЛЬКО очевидные опечатки (без умных замен, чтобы не сломать смысл)
+    if not s:
+        return s
+    fixes = {
+        "высококачетсвенную": "высококачественную",
+        "приентеров": "принтеров",
+        "приентера": "принтера",
+        "коeffицент": "коэффициент",
+        "коэффицент": "коэффициент",
+    }
+    out = s
+    for a, b in fixes.items():
+        out = out.replace(a, b).replace(a.capitalize(), b.capitalize())
+    return out
+
+
+_BR_RE = re.compile(r"(?i)<br\s*/?>")
+
+
+def _sanitize_native_desc(native_desc_html: str) -> str:
+    # Улучшает читабельность длинных <br>-простыней.
+    # ВАЖНО: не извлекает новые параметры и не "угадывает" ничего — только форматирование.
+    if not native_desc_html:
+        return native_desc_html
+
+    # Не трогаем хвост с доп. данными (его добавляет schema)
+    marker = "<!-- Доп. данные"
+    if marker in native_desc_html:
+        base, tail = native_desc_html.split(marker, 1)
+        tail = marker + tail
+    else:
+        base, tail = native_desc_html, ""
+
+    base = _apply_desc_typos(base)
+
+    # если уже есть список — не перекраиваем
+    if re.search(r"(?i)<\s*ul\b|<\s*ol\b|<\s*li\b", base):
+        return (base + tail) if tail else base
+
+    br_count = len(_BR_RE.findall(base))
+    if br_count <= 10:
+        return (base + tail) if tail else base
+
+    # Превращаем в аккуратный список: <ul><li>...</li></ul>
+    # Сначала превращаем в строки текста (без HTML-тегов)
+    lines = _clean_html_to_lines(base)
+    if len(lines) < 6:
+        return (base + tail) if tail else base
+
+    # Ограничение, чтобы не делать простыню на 200 пунктов
+    lines = lines[:80]
+
+    items = "\n".join([f"<li>{html.escape(ln)}</li>" for ln in lines if ln])
+    out = f"<ul>\n{items}\n</ul>"
+    return (out + "\n\n" + tail) if tail else out
+
 
 
 def _dash_ranges(s: str) -> str:
@@ -655,6 +713,9 @@ def build() -> None:
 
         # apply schema (clean params, strict codes/compat, extra_info -> desc)
         params_clean, desc_clean = _apply_schema(name, params_raw, desc_html, scfg)
+
+        # читабельность описания (только форматирование)
+        desc_clean = _sanitize_native_desc(desc_clean or desc_html or \"\")
 
         # price
         price_in = _pick_price_kzt(off)
