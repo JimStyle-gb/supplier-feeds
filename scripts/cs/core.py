@@ -10,7 +10,7 @@ CS Core — общее ядро для всех поставщиков.
 - стабилизация форматирования (переводы строк, футер)
 """
 
-# core v036_policy_ac_split_vendor_guard: AC отключаем split_params_for_chars по policy; гарантия не считается фразой; защита от vendor=тип/код
+# core v042_modular_stage1_keywords_guard: AC отключаем split_params_for_chars по policy; гарантия не считается фразой; защита от vendor=тип/код
 
 from __future__ import annotations
 
@@ -24,6 +24,8 @@ import os
 import hashlib
 import re
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
+from .keywords import build_keywords, CS_KEYWORDS_MAX_LEN
+
 
 def _dedup_keep_order(items: list[str]) -> list[str]:
     """CS: дедупликация со стабильным порядком (без сортировки)."""
@@ -829,7 +831,6 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
 # - <name> держим коротким и читаемым (150 по решению пользователя)
 # - <keywords> по правилам YML обычно <= 1024
 CS_NAME_MAX_LEN = int((os.getenv("CS_NAME_MAX_LEN", "150") or "150").strip() or "150")
-CS_KEYWORDS_MAX_LEN = int((os.getenv("CS_KEYWORDS_MAX_LEN", "380") or "480").strip() or "480")
 
 CS_COMPAT_CLEAN_YIELD_PACK = (os.getenv("CS_COMPAT_CLEAN_YIELD_PACK", "1") or "1").strip().lower() not in ("0", "false", "no")
 CS_COMPAT_CLEAN_PAPER_OS_DIM = (os.getenv("CS_COMPAT_CLEAN_PAPER_OS_DIM", "1") or "1").strip().lower() not in ("0", "false", "no")
@@ -3200,67 +3201,7 @@ CS_KEYWORDS_CITIES = (
     "Алматы",
     "Астана",
     "Шымкент",
-    "Караганда",
-    "Актобе",
-    "Павлодар",
-    "Костанай",
-    "Атырау",
-    "Актау",
-    "Усть-Каменогорск",
-    "Семей",
-    "Тараз",
-)
-
-CS_KEYWORDS_PHRASES = (
-    "доставка",
-    "доставка по Казахстану",
-    "отправка в регионы",
-)
-
-def build_keywords(
-    vendor: str | None,
-    offer_name: str,
-    extra: list[str] | None = None,
-    **_kwargs,
-) -> str:
-    # CS: keywords нужны в основном для внутреннего поиска/фильтров; Google meta-keywords не использует,
-    # Yandex учитывает слабо. Но для Satu/маркетплейса и внутреннего поиска — полезно.
-    # Правила:
-    # - без дублей
-    # - "доставка" убираем, если есть "доставка по Казахстану"
-    # - лимит по длине (CS_KEYWORDS_MAX_LEN, по умолчанию 380)
-    parts: list[str] = []
-    if vendor:
-        parts.append(norm_ws(vendor))
-    if offer_name:
-        parts.append(norm_ws(offer_name))
-
-    if extra:
-        for x in extra:
-            x = norm_ws(x)
-            if x:
-                parts.append(x)
-
-    parts.extend(CS_KEYWORDS_PHRASES)
-    parts.extend(CS_KEYWORDS_CITIES)
-
-    parts = _dedup_keep_order([norm_ws(p) for p in parts if norm_ws(p)])
-
-    # анти-дубль: если есть "доставка по Казахстану" — убираем отдельный токен "доставка"
-    low = [p.casefold() for p in parts]
-    if "доставка по казахстану" in low and "доставка" in low:
-        parts = [p for p in parts if p.casefold() != "доставка"]
-
-    # лимит длины: сначала уходят города (они добавлены в конец)
-    max_len = int(CS_KEYWORDS_MAX_LEN or 380)
-    joined = ", ".join(parts)
-    while len(joined) > max_len and len(parts) > 2:
-        parts.pop()
-        joined = ", ".join(parts)
-
-    return joined
-
-# Похоже на "предложение" (инструкция/маркетинг) в имени параметра — переносим в notes, а не в характеристики.
+    "Караганхарактеристики.
 # Дублирует часть эвристик выше, но даёт дополнительную страховку.
 _RE_PARAM_SENTENCEY = re.compile(r"[.!?]|\b(?:вы|вам|вас|можете|пожалуйста|важно|внимание|доставка|оплата)\b", re.IGNORECASE)
 
