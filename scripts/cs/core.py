@@ -10,7 +10,7 @@ CS Core — общее ядро для всех поставщиков.
 - стабилизация форматирования (переводы строк, футер)
 """
 
-# core v035_refactor_policy: final sanitize mixed кир/лат + расширенные маппинги i/И (без изменения бизнес-логики) (fix_mixed_cyr_lat для name/params, пробел после запятой, Maintance->Maintenance, укорочение без '…')
+# core v036_policy_ac_split_vendor_guard: AC отключаем split_params_for_chars по policy; гарантия не считается фразой; защита от vendor=тип/код
 
 from __future__ import annotations
 
@@ -71,7 +71,6 @@ class SupplierPolicy:
     code: str
     always_true_available: bool = False
     drop_desc_specs_pairs: bool = False  # AS: не переносим пары specs из native_desc в params
-    enable_mutate_params: bool = True  # если False — core не чистит/не правит params (адаптер уже идеальный)
 
 
     # Модули "умного" обогащения. По умолчанию включены для всех, но для некоторых поставщиков
@@ -80,6 +79,7 @@ class SupplierPolicy:
     enable_enrich_from_name_desc: bool = True
     enable_auto_compat: bool = True
     enable_apply_color_from_name: bool = True
+    enable_split_params_for_chars: bool = True  # вынос "параметры-фразы" в notes (можно отключать для AC)
 def _supplier_code_from_oid(oid: str) -> str:
     oid_u = (oid or "").upper()
     return oid_u[:2] if len(oid_u) >= 2 else oid_u
@@ -87,7 +87,7 @@ def _supplier_code_from_oid(oid: str) -> str:
 
 _POLICIES: dict[str, SupplierPolicy] = {
     "AS": SupplierPolicy("AS", always_true_available=False, drop_desc_specs_pairs=True),
-    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=True, enable_enrich_from_desc=False, enable_enrich_from_name_desc=False, enable_auto_compat=False, enable_apply_color_from_name=False, enable_mutate_params=False),
+    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=True, enable_enrich_from_desc=False, enable_enrich_from_name_desc=False, enable_auto_compat=False, enable_apply_color_from_name=False, enable_split_params_for_chars=False),
     "CL": SupplierPolicy("CL", always_true_available=True, drop_desc_specs_pairs=False),
     "NP": SupplierPolicy("NP", always_true_available=True, drop_desc_specs_pairs=False),
     "VT": SupplierPolicy("VT", always_true_available=True, drop_desc_specs_pairs=False),
@@ -3257,6 +3257,10 @@ def _is_sentence_like_param_name(k: str) -> bool:
         return False
 
 
+    # исключение: гарантия — это характеристика (а не маркетинг/фраза)
+    if cf.startswith("гаранти") and (len(kk) <= 25) and (len(kk.split()) <= 3):
+        return False
+
     # 1) Явные фразы/инструкции/маркетинг — не характеристики
     if any(x in cf for x in (
         "вы можете купить",
@@ -3895,6 +3899,30 @@ def normalize_vendor(v: str) -> str:
     return out
 
 # Пытается определить бренд (vendor) по vendor_src / name / params / description (если пусто — public_vendor)
+
+# CS: защита от ошибочного vendor (тип товара/префикс/код вместо бренда)
+_BAD_VENDOR_WORDS = {
+    "мфу", "принтер", "сканер", "плоттер", "шредер", "ламинатор", "переплетчик",
+    "монитор", "экран", "проектор",
+    "интерактивная", "интерактивный", "интерактивная панель", "интерактивный дисплей", "интерактивная доска",
+    "экономичный", "экономичный набор",
+    "картридж", "чернила", "тонер", "барабан", "чип",
+    "пленка для ламинирования", "емкость для отработанных чернил",
+}
+_RE_VENDOR_CODELIKE = re.compile(r"^[A-ZА-ЯЁ]{1,3}\d")
+
+def _is_bad_vendor_token(v: str) -> bool:
+    vv = norm_ws(v)
+    if not vv:
+        return False
+    cf = vv.casefold().replace("ё", "е")
+    if cf in _BAD_VENDOR_WORDS:
+        return True
+    # коды/артикулы вида C13T55KD00, W1335A, V12H... не являются брендом
+    if (" " not in vv) and (len(vv) <= 24) and _RE_VENDOR_CODELIKE.match(vv):
+        return True
+    return False
+
 def pick_vendor(
     vendor_src: str,
     name: str,
@@ -3911,7 +3939,10 @@ def pick_vendor(
     # 5) иначе fallback (public_vendor), который НЕ должен быть названием поставщика.
     v = norm_ws(vendor_src)
     if v:
-        return normalize_vendor(v)
+        v2 = normalize_vendor(v)
+        if v2 and (not _is_bad_vendor_token(v2)):
+            return v2
+
 
     # CS: спец-правило для SMART интерактивных панелей (модельный префикс SBID-)
     if name and re.search(r"\bSBID-", name, flags=re.IGNORECASE):
@@ -3998,15 +4029,16 @@ class OfferOut:
         params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in params]
 
         # чистим и сортируем (ВАЖНО: чистить всегда)
-        if policy.enable_mutate_params:
-            params = clean_params(params)
-            params = apply_supplier_param_rules(params, self.oid, name_full)
-            if policy.enable_apply_color_from_name:
-                params = apply_color_from_name(params, name_full)
+        params = clean_params(params)
+        params = apply_supplier_param_rules(params, self.oid, name_full)
+        if policy.enable_apply_color_from_name:
+            params = apply_color_from_name(params, name_full)
         params_sorted = sort_params(params, priority=list(param_priority or []))
 
                 # выносим "параметры-фразы" в примечания и оставляем чистые характеристики
-        params_sorted, notes = split_params_for_chars(params_sorted)
+        notes: list[str] = []
+        if policy.enable_split_params_for_chars:
+            params_sorted, notes = split_params_for_chars(params_sorted)
 
         # CS: лимитируем <name> (умно для NVPrint)
         name_short = enforce_name_policy(self.oid, name_full, params_sorted)
