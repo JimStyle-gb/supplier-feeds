@@ -80,6 +80,7 @@ class SupplierPolicy:
     enable_auto_compat: bool = True
     enable_apply_color_from_name: bool = True
     enable_split_params_for_chars: bool = True  # вынос "параметры-фразы" в notes (можно отключать для AC)
+    enable_clean_params: bool = True  # для AC можно отключать (params уже чистит адаптер)
 def _supplier_code_from_oid(oid: str) -> str:
     oid_u = (oid or "").upper()
     return oid_u[:2] if len(oid_u) >= 2 else oid_u
@@ -87,7 +88,7 @@ def _supplier_code_from_oid(oid: str) -> str:
 
 _POLICIES: dict[str, SupplierPolicy] = {
     "AS": SupplierPolicy("AS", always_true_available=False, drop_desc_specs_pairs=True),
-    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=True, enable_enrich_from_desc=False, enable_enrich_from_name_desc=False, enable_auto_compat=False, enable_apply_color_from_name=False, enable_split_params_for_chars=False),
+    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=True, enable_enrich_from_desc=False, enable_enrich_from_name_desc=False, enable_auto_compat=False, enable_apply_color_from_name=False, enable_split_params_for_chars=False, enable_clean_params=False),
     "CL": SupplierPolicy("CL", always_true_available=True, drop_desc_specs_pairs=False),
     "NP": SupplierPolicy("NP", always_true_available=True, drop_desc_specs_pairs=False),
     "VT": SupplierPolicy("VT", always_true_available=True, drop_desc_specs_pairs=False),
@@ -3398,8 +3399,8 @@ def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
             continue
         items.append(f"<li><strong>{kk}:</strong> {vv}</li>")
     if not items:
-        # CS: если характеристик нет — не выводим пустой блок
-        return ""
+        # CS: характеристики отсутствуют — выводим заглушку (единообразие + SEO)
+        return "<h3>Характеристики</h3><p>Характеристики уточняются.</p>"
     return "<h3>Характеристики</h3><ul>" + "".join(items) + "</ul>"
 
 def _build_param_summary(params_sorted: Sequence[tuple[str, str]]) -> str:
@@ -4069,8 +4070,11 @@ class OfferOut:
         # финальная починка смешения кир/лат в params после всех enrich/compat
         params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in params]
 
-        # чистим и сортируем (ВАЖНО: чистить всегда)
-        params = clean_params(params)
+        # чистим и сортируем
+        # Важно: для AkCent (AC) адаптер уже отдаёт 'идеальные' params по schema, поэтому
+        # чистку/эвристики core (compat/dims/volume) отключаем, чтобы не терять валидные ключи.
+        if policy.enable_clean_params:
+            params = clean_params(params)
         params = apply_supplier_param_rules(params, self.oid, name_full)
         if policy.enable_apply_color_from_name:
             params = apply_color_from_name(params, name_full)
