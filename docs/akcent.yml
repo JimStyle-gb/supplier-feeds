@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-04 10:22:12">
+<yml_catalog date="2026-03-04 11:01:43">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-04 10:22:12
+Время сборки (Алматы)                      | 2026-03-04 11:01:43
 Ближайшая сборка (Алматы)                  | 2026-03-05 02:00:00
-Сколько товаров у поставщика до фильтра    | 1818
-Сколько товаров у поставщика после фильтра | 146
-Сколько товаров есть в наличии (true)      | 146
+Сколько товаров у поставщика до фильтра    | 1814
+Сколько товаров у поставщика после фильтра | 143
+Сколько товаров есть в наличии (true)      | 143
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -1227,47 +1227,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, МФУ Epson L14150 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="ACC11CH72404" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC11CH72404</vendorCode>
-<name>МФУ Epson L15150 фабрика печати</name>
-<price>883900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/850/htr5v7efov1369os0yacsrphvrryff1u.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>МФУ Epson L15150 фабрика печати</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Высокая производительность печати<br>Быстрое многофункциональное устройство EcoTank формата A3+ для печати, сканирования, копирования и отправки факсов. Низкие затраты на печать страницы, лоток на 550 листов и автоподатчик на 50 листов.<br>Высокая скорость печати и сканирования<br>Низкие затраты на печать страницы<br>Печать, сканирование и отправка факсов в формате A3<br>Очень высокая скорость печати и сканирования<br>До 25 изображений в минуту¹<br>Рекордно низкая стоимость печати страницы<br>Экономичная система емкостей для чернил<br>Удобная фронтальная емкость для чернил<br>Простая и удобная доливка чернил с обновленными контейнерами<br>Печать с мобильных устройств и возможности подключения<br>Поддержка Wi-Fi, Wi-Fi Direct, Ethernet и бесплатных приложений для мобильной печати⁴<br>Создан для бизнеса<br>МФУ A3+, 2 фронтальных лотка A3 на 250 листов, автоподатчик A3 на 50 листов…</p>
-<h3>Характеристики</h3><ul><li><strong>Автоподатчик:</strong> да</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Двусторонняя печать:</strong> да</li><li><strong>ЖК дисплей:</strong> да</li><li><strong>Интерфейсы:</strong> USB Ethernet</li><li><strong>Коды:</strong> C12C934591</li><li><strong>Максимальная плотность бумаги, г/м²:</strong> 256</li><li><strong>Минимальная плотность бумаги, г/м²:</strong> 64</li><li><strong>Модель:</strong> Epson L15150</li><li><strong>Область применения:</strong> Для офиса</li><li><strong>Разрешение печати, dpi:</strong> 4800 x 1200</li><li><strong>Разрешение сканера, dpi:</strong> 1200x2400</li><li><strong>Скорость печати (A4):</strong> 33</li><li><strong>Тип:</strong> МФУ Офис</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Автоподатчик">да</param>
-<param name="Гарантия">12 мес</param>
-<param name="Двусторонняя печать">да</param>
-<param name="ЖК дисплей">да</param>
-<param name="Интерфейсы">USB Ethernet</param>
-<param name="Коды">C12C934591</param>
-<param name="Максимальная плотность бумаги, г/м²">256</param>
-<param name="Минимальная плотность бумаги, г/м²">64</param>
-<param name="Модель">Epson L15150</param>
-<param name="Область применения">Для офиса</param>
-<param name="Разрешение печати, dpi">4800 x 1200</param>
-<param name="Разрешение сканера, dpi">1200x2400</param>
-<param name="Скорость печати (A4)">33</param>
-<param name="Тип">МФУ Офис</param>
-<param name="Тип печати">струйная</param>
-<param name="Тип расходных материалов">чернила</param>
-<param name="Тип чернил">пигментные</param>
-<param name="Цветность">4 цвета</param>
-<keywords>Epson, МФУ Epson L15150 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="ACC11CJ69401" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC11CJ69401</vendorCode>
@@ -1356,44 +1315,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип чернил">водорастворимые</param>
 <param name="Цветность">4 цвета</param>
 <keywords>Epson, МФУ Epson L3256 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="ACC11CJ66409" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC11CJ66409</vendorCode>
-<name>МФУ Epson L3260 фабрика печати, Wi-Fi</name>
-<price>138900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/ab2/fyz9mxa5dg35dwpz2qzrcrxhhfrgve3p.png</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>МФУ Epson L3260 фабрика печати, Wi-Fi</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Домашний струйный принтер<br>Многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct и ЖК-экраном<br>Печать, сканирование и копирование<br>Wi-Fi Direct<br>ЖК-экран<br>Благодаря отсутствию необходимости в замене картриджей это многофункциональное устройство (печать, сканирование, копирование) с Wi-Fi Direct и ЖК-экраном подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. С помощью 100-листового заднего лотка для бумаги, печати фотографий без полей (до 10 x 15 см) и скорости печати до 10 страниц в минуту¹ вы с легкостью сможете выполнять различные задачи.<br>Попрощайтесь с дорогостоящими картриджами<br>EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета.<br>Постоянная экономия<br>Этот принтер EcoTank, поставляемый с чернилами на срок до 3 лет², обеспечивает значительную экономию средств при печати. Сменный набор чернильных флаконов может использоваться для печати до 4500 страниц в черном цвете и до 7500 страниц в цвете³…</p>
-<h3>Характеристики</h3><ul><li><strong>Автоподатчик:</strong> нет</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> нет</li><li><strong>Интерфейсы:</strong> USB, тип B</li><li><strong>Максимальная плотность бумаги, г/м²:</strong> 256</li><li><strong>Минимальная плотность бумаги, г/м²:</strong> 64</li><li><strong>Модель:</strong> Epson L3260</li><li><strong>Разрешение печати, dpi:</strong> 5760x1440</li><li><strong>Разрешение сканера, dpi:</strong> 1200x2400</li><li><strong>Скорость печати (A4):</strong> 33</li><li><strong>Тип:</strong> МФУ Офис</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип чернил:</strong> водорастворимые</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Автоподатчик">нет</param>
-<param name="Гарантия">12 мес</param>
-<param name="Двусторонняя печать">нет</param>
-<param name="ЖК дисплей">нет</param>
-<param name="Интерфейсы">USB, тип B</param>
-<param name="Максимальная плотность бумаги, г/м²">256</param>
-<param name="Минимальная плотность бумаги, г/м²">64</param>
-<param name="Модель">Epson L3260</param>
-<param name="Разрешение печати, dpi">5760x1440</param>
-<param name="Разрешение сканера, dpi">1200x2400</param>
-<param name="Скорость печати (A4)">33</param>
-<param name="Тип">МФУ Офис</param>
-<param name="Тип печати">струйная</param>
-<param name="Тип чернил">водорастворимые</param>
-<param name="Цветность">4 цвета</param>
-<keywords>Epson, МФУ Epson L3260 фабрика печати, Wi-Fi, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ66411" available="true">
@@ -2650,30 +2571,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <keywords>Epson, Проектор универсальный Epson EB-W53 белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="ACV11HB58042" available="true">
-<categoryId></categoryId>
-<vendorCode>ACV11HB58042</vendorCode>
-<name>Проектор универсальный Epson EB-W55 белый</name>
-<price>397900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/9fb/bh7bmyjx42db3zapkp7ai4noolmc4ref.png</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Проектор универсальный Epson EB-W55 белый</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Управляйте своими презентациями с помощью надежного и высокопроизводительного бизнес-проектора Epson EB-W55. Проводите ли вы совещания в зале заседаний или преподаете в загруженном классе, этот проектор обеспечит кристально чистое изображение, которое подчеркнет ваш контент. Забудьте о сложных настройках — наша функция беспроводной проекции позволяет легко подключаться напрямую с совместимых мобильных устройств без необходимости установки дополнительного программного обеспечения. Гибкий, удобный и созданный для того, чтобы впечатлять, Epson EB-W55 — ваш разумный выбор для создания впечатляющих презентаций каждый раз.<br>Технология 3LCD для яркого и качественного изображения.<br>4000 люменов цветной и белой яркости *1<br>Разрешение WXGA для четких и детальных изображений<br>Автоматическая коррекция вертикальных и горизонтальных трапецеидальных искажений<br>Встроенные динамики мощностью 2 Вт<br>Встроенная беспроводная связь</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Гарантия">12 мес</param>
-<keywords>Epson, Проектор универсальный Epson EB-W55 белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11HB35240" available="true">
