@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 CS Keywords — общий сборщик <keywords>.
-
-Вынесено из cs/core.py для постепенного "утончения" core.
-Логика НЕ меняется относительно core_v041.
-
-Правила:
-- дедуп токенов
-- если есть "доставка по Казахстану" — убираем отдельный "доставка"
-- лимит по длине CS_KEYWORDS_MAX_LEN (по умолчанию 380), сначала уходят города (они в хвосте)
+Этап 1 рефакторинга: вынос keywords из cs/core.py без изменения логики.
 """
 
 from __future__ import annotations
@@ -18,12 +11,11 @@ import re
 
 CS_KEYWORDS_MAX_LEN = int((os.getenv("CS_KEYWORDS_MAX_LEN", "380") or "480").strip() or "480")
 
-
-def _norm_ws(s: str) -> str:
+def norm_ws(s: str) -> str:
     s2 = (s or "").replace("\u00a0", " ").strip()
     s2 = re.sub(r"\s+", " ", s2)
+    s2 = fix_mixed_cyr_lat(s2)
     return s2.strip()
-
 
 def _dedup_keep_order(items: list[str]) -> list[str]:
     """CS: дедупликация со стабильным порядком (без сортировки)."""
@@ -40,7 +32,6 @@ def _dedup_keep_order(items: list[str]) -> list[str]:
     return out
 
 
-# Города Казахстана — хвост для локального поиска внутри маркетплейса
 CS_KEYWORDS_CITIES = (
     "Казахстан",
     "Алматы",
@@ -57,13 +48,11 @@ CS_KEYWORDS_CITIES = (
     "Тараз",
 )
 
-# Общие коммерческие фразы
 CS_KEYWORDS_PHRASES = (
     "доставка",
     "доставка по Казахстану",
     "отправка в регионы",
 )
-
 
 def build_keywords(
     vendor: str | None,
@@ -79,20 +68,20 @@ def build_keywords(
     # - лимит по длине (CS_KEYWORDS_MAX_LEN, по умолчанию 380)
     parts: list[str] = []
     if vendor:
-        parts.append(_norm_ws(vendor))
+        parts.append(norm_ws(vendor))
     if offer_name:
-        parts.append(_norm_ws(offer_name))
+        parts.append(norm_ws(offer_name))
 
     if extra:
         for x in extra:
-            x = _norm_ws(x)
+            x = norm_ws(x)
             if x:
                 parts.append(x)
 
     parts.extend(CS_KEYWORDS_PHRASES)
     parts.extend(CS_KEYWORDS_CITIES)
 
-    parts = _dedup_keep_order([_norm_ws(p) for p in parts if _norm_ws(p)])
+    parts = _dedup_keep_order([norm_ws(p) for p in parts if norm_ws(p)])
 
     # анти-дубль: если есть "доставка по Казахстану" — убираем отдельный токен "доставка"
     low = [p.casefold() for p in parts]
