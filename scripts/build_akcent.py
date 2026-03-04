@@ -41,7 +41,7 @@ RAW_OUT_FILE = "docs/raw/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
-BUILD_AKCENT_VERSION = "build_akcent_v55_desc_sanitize_typos_picture_guard"
+BUILD_AKCENT_VERSION = "build_akcent_v56_xml_model_warranty_params"
 
 
 # ----------------------------- Config loading -----------------------------
@@ -325,6 +325,18 @@ def _get_text(el: ET.Element | None) -> str:
     if el is None:
         return ""
     return "".join(el.itertext()).strip()
+
+
+def _add_param_if_missing(params_raw: list[tuple[str, str]], key: str, val: str) -> None:
+    # Добавляет (key,val) только если такого ключа ещё нет (case-insensitive) и val не пустой.
+    kk = _norm_ws(key)
+    vv = _norm_ws(val)
+    if not kk or not vv:
+        return
+    exists = {(_norm_ws(k)).casefold() for k, _ in params_raw}
+    if kk.casefold() in exists:
+        return
+    params_raw.append((kk, vv))
 
 
 def _extract_desc_kv_pairs(desc_html: str, min_lines: int) -> list[tuple[str, str]]:
@@ -732,7 +744,13 @@ def build() -> None:
             min_lines = int(desc_cfg.get("min_kv_lines") or 5)
             params_raw.extend(_extract_desc_kv_pairs(desc_html, min_lines))
 
-        # apply schema (clean params, strict codes/compat, extra_info -> desc)
+                # Явные поля XML (строго, без гаданий):
+        # - <model> -> param 'Модель'
+        # - <manufacturer_warranty> -> param 'Гарантия'
+        _add_param_if_missing(params_raw, "Модель", _get_text(off.find("model")))
+        _add_param_if_missing(params_raw, "Гарантия", _get_text(off.find("manufacturer_warranty")))
+
+# apply schema (clean params, strict codes/compat, extra_info -> desc)
         params_clean, desc_clean = _apply_schema(name, params_raw, desc_html, scfg)
 
         # читабельность описания (только форматирование)
