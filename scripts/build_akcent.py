@@ -346,7 +346,7 @@ def _key_valid(key: str, key_rules: dict[str, Any]) -> bool:
     if k.casefold() in banned:
         return False
     # ключ начинается с мусорных маркеров
-    if re.match(r'^[•\-\"\'✅]', k):
+    if re.match(r'^[•\-"\'✅]', k):
         return False
     return True
 
@@ -715,7 +715,7 @@ def build() -> None:
         params_clean, desc_clean = _apply_schema(name, params_raw, desc_html, scfg)
 
         # читабельность описания (только форматирование)
-        desc_clean = _sanitize_native_desc(desc_clean or desc_html or \"\")
+        desc_clean = _sanitize_native_desc(desc_clean or desc_html or "")
 
         # price
         price_in = _pick_price_kzt(off)
