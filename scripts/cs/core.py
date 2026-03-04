@@ -71,6 +71,7 @@ class SupplierPolicy:
     code: str
     always_true_available: bool = False
     drop_desc_specs_pairs: bool = False  # AS: не переносим пары specs из native_desc в params
+    enable_mutate_params: bool = True  # если False — core не чистит/не правит params (адаптер уже идеальный)
 
 
     # Модули "умного" обогащения. По умолчанию включены для всех, но для некоторых поставщиков
@@ -86,7 +87,7 @@ def _supplier_code_from_oid(oid: str) -> str:
 
 _POLICIES: dict[str, SupplierPolicy] = {
     "AS": SupplierPolicy("AS", always_true_available=False, drop_desc_specs_pairs=True),
-    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=True, enable_enrich_from_desc=False, enable_enrich_from_name_desc=False, enable_auto_compat=False, enable_apply_color_from_name=False),
+    "AC": SupplierPolicy("AC", always_true_available=False, drop_desc_specs_pairs=True, enable_enrich_from_desc=False, enable_enrich_from_name_desc=False, enable_auto_compat=False, enable_apply_color_from_name=False, enable_mutate_params=False),
     "CL": SupplierPolicy("CL", always_true_available=True, drop_desc_specs_pairs=False),
     "NP": SupplierPolicy("NP", always_true_available=True, drop_desc_specs_pairs=False),
     "VT": SupplierPolicy("VT", always_true_available=True, drop_desc_specs_pairs=False),
@@ -3997,10 +3998,11 @@ class OfferOut:
         params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in params]
 
         # чистим и сортируем (ВАЖНО: чистить всегда)
-        params = clean_params(params)
-        params = apply_supplier_param_rules(params, self.oid, name_full)
-        if policy.enable_apply_color_from_name:
-            params = apply_color_from_name(params, name_full)
+        if policy.enable_mutate_params:
+            params = clean_params(params)
+            params = apply_supplier_param_rules(params, self.oid, name_full)
+            if policy.enable_apply_color_from_name:
+                params = apply_color_from_name(params, name_full)
         params_sorted = sort_params(params, priority=list(param_priority or []))
 
                 # выносим "параметры-фразы" в примечания и оставляем чистые характеристики
