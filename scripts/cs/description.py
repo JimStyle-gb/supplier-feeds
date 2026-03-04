@@ -46,6 +46,7 @@ CS_WA_DIV = (
 
 # Regex/константы
 _RE_MULTI_NL = re.compile(r"\n{3,}")
+_RE_SHUKO = re.compile(r"(?i)\bshuko\b|\bшуко\b")
 
 # Утилиты (как в core)
 def _truncate_text(s: str, max_len: int, *, suffix: str = "") -> str:
