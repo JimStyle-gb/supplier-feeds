@@ -8,13 +8,14 @@ CS Description — общий сборщик HTML для <description>.
 
 from __future__ import annotations
 
+import os
 import re
-from .keywords import fix_mixed_cyr_lat  # без циклических импортов
+from typing import Sequence
 
+from .keywords import fix_mixed_cyr_lat  # общий хелпер без циклических импортов
 
 # Константы (вынесены из core без изменения)
 CS_HR_2PX = "<hr style=\"border:none; border-top:2px solid #E7D6B7; margin:12px 0;\" />"
-
 CS_PAY_BLOCK = (
     "<!-- Оплата и доставка -->\n"
     "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
@@ -34,17 +35,6 @@ CS_PAY_BLOCK = (
     "</ul>"
     "</div></div>"
 )
-
-CS_WA_BLOCK = (
-    "<!-- WhatsApp -->\n"
-    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
-    "<p style=\"text-align:center; margin:0 0 12px;\">"
-    "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
-    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; "
-    "border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);\">"
-    "&#128172; Написать в WhatsApp</a></p></div>"
-)
-
 CS_WA_DIV = (
     "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
     "<p style=\"text-align:center; margin:0 0 12px;\">"
@@ -54,25 +44,10 @@ CS_WA_DIV = (
     "&#128172; Написать в WhatsApp</a></p></div>"
 )
 
+# Regex/константы
+_RE_MULTI_NL = re.compile(r"\n{3,}")
 
-# Утилиты (скопировано из core, без изменения)
-def norm_ws(s: str) -> str:
-    s2 = (s or "").replace("\u00a0", " ").strip()
-    s2 = re.sub(r"\s+", " ", s2)
-    s2 = fix_mixed_cyr_lat(s2)
-    return s2.strip()
-
-def xml_escape_text(s: str) -> str:
-    return (
-        (s or "")
-        .replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-    )
-
-
-# XML escape для атрибутов
-
+# Утилиты (как в core)
 def _truncate_text(s: str, max_len: int, *, suffix: str = "") -> str:
     # CS: безопасно режем строку по границе слова/запятой
     s = norm_ws(s)
@@ -100,6 +75,340 @@ def _truncate_text(s: str, max_len: int, *, suffix: str = "") -> str:
 
 
 # Сборщики description/характеристик (вынесено из core, без изменения)
+
+def norm_ws(s: str) -> str:
+    s2 = (s or "").replace("\u00a0", " ").strip()
+    s2 = re.sub(r"\s+", " ", s2)
+    s2 = fix_mixed_cyr_lat(s2)
+    return s2.strip()
+
+def xml_escape_text(s: str) -> str:
+    return (
+        (s or "")
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+    )
+
+
+# XML escape для атрибутов
+
+# Нормализация смешанных текстов (как в core)
+def normalize_mixed_hyphen(s: str) -> str:
+    t = s or ""
+    if not t:
+        return t
+    # LED-индикаторы, USB-кабель, OPS-слот, Eco-режим, A3-формат
+    t = _RE_MIXED_HYPHEN_LAT_CYR.sub(r"\1 \2", t)
+    t = _RE_MIXED_HYPHEN_A1_CYR.sub(r"\1 \2", t)
+    t = _RE_MIXED_HYPHEN_CYR_LAT.sub(r"\1 \2", t)
+    return t
+
+
+_RE_MIXED_SLASH_LAT_CYR = re.compile(r"([A-Za-z]{1,}[A-Za-z0-9]*)/([Ѐ-ӿ]{2,})")
+_RE_MIXED_SLASH_CYR_LAT = re.compile(r"([Ѐ-ӿ]{2,})/([A-Za-z]{1,}[A-Za-z0-9]*)")
+
+def normalize_mixed_slash(s: str) -> str:
+    t = s or ""
+    if not t:
+        return t
+    # Только кир/лат переходы: колодка/IEC, CD/банк, ЖК/USB, контактілер/EPO.
+    # Лат/лат (RJ11/RJ45) и цифры/лат (4/IEC) не трогаем.
+    for _ in range(3):  # на случай нескольких вхождений
+        t2 = _RE_MIXED_SLASH_LAT_CYR.sub(r"\1 \2", t)
+        t2 = _RE_MIXED_SLASH_CYR_LAT.sub(r"\1 \2", t2)
+        if t2 == t:
+            break
+        t = t2
+    return t
+
+# Нормализация слэша между разными алфавитами (LAT <-> CYR), включая казахские буквы.
+_CYR_CHAR_RE = re.compile(r"[\u0400-\u04FF]")
+_LAT_CHAR_RE = re.compile(r"[A-Za-z]")
+
+def sanitize_mixed_text(s: str) -> str:
+    t = fix_mixed_cyr_lat(s)
+    # Каз/рус тексты: исправляем короткие смешанные токены (ЖK -> ЖК)
+    t = t.replace("ЖK", "ЖК").replace("Жk", "ЖК")
+    return normalize_mixed_slash(normalize_mixed_hyphen(t))
+
+# Хелперы описания (как в core)
+def fix_text(s: str) -> str:
+    # Нормализует переносы строк и убирает мусорные пробелы/табуляции на пустых строках
+    t = (s or "").replace("\r\n", "\n").replace("\r", "\n").strip()
+
+    # Убираем служебные/паспортные строки (CRC/Barcode/внутренние коды), чтобы не портить описание
+    def _is_service_line(ln: str) -> bool:
+        s2 = (ln or "").strip()
+        if not s2:
+            return False
+        # типичные ключи паспорта/склада
+        if re.search(r"(?i)^(CRC|Retail\s*Bar\s*Code|Retail\s*Barcode|Bar\s*Code|Barcode|EAN|GTIN|SKU)\b", s2):
+            return (":" in s2) or ("\t" in s2)
+        # русские служебные строки (VTT часто так пишет)
+        if re.search(r"(?i)^(Артикул|Каталожн\w*\s*номер|Кат\.\s*номер|OEM(?:-номер)?|ОЕМ(?:-номер)?|Код\s*производител\w*|Код\s*товара|Штрих[-\s]?код)\b", s2):
+            return (":" in s2) or ("\t" in s2)
+        if re.search(r"(?i)^Дата\s*(ввода|вывода|введения|обновления)\b", s2):
+            return (":" in s2) or ("\t" in s2)
+        # строки вида "1.01 ...:" или "2.14 ...\t..."
+        if re.match(r"^\d+\.\d+\b", s2) and ((":" in s2[:60]) or ("\t" in s2)):
+            return True
+        return False
+
+    if t:
+        t = "\n".join([ln for ln in t.split("\n") if not _is_service_line(ln)])
+
+    # строки, которые состоят только из пробелов/табов, считаем пустыми
+    if t:
+        t = "\n".join("" if (ln.strip() == "") else ln for ln in t.split("\n"))
+
+    # убираем тройные пустые строки
+    t = _RE_MULTI_NL.sub("\n\n", t)
+
+    # Нормализация частой опечатки (Shuko -> Schuko)
+    t = _RE_SHUKO.sub("Schuko", t)
+    t = fix_mixed_cyr_lat(t)
+    return t
+
+def _native_has_specs_text(d: str) -> bool:
+    # Если в "родном" описании уже есть свой блок характеристик/спецификаций — НЕ дублируем CS-блок.
+    # Важно: у части поставщиков характеристики приходят таблично (через "\t") или внутри одной строки
+    # (например: "⚙️ Основные характеристики" или "Основные характеристики: ...").
+    if not d:
+        return False
+    # 1) Любые табы почти всегда означают таблицу характеристик
+    if "\t" in d:
+        return True
+    # 2) Технические/основные характеристики — ловим В ЛЮБОМ месте, а не только в начале строки
+    if re.search(r"\b(Технические характеристики|Основные характеристики)\b", d, flags=re.IGNORECASE):
+        return True
+    # 3) Секция "Характеристики" как заголовок (часто у AlStyle)
+    if re.search(r"(?:^|\n)\s*Характеристики\b", d, flags=re.IGNORECASE):
+        # чтобы не ловить маркетинг, проверим что рядом есть признаки таблицы/списка
+        if re.search(r"(?:^|\n)\s*(Артикул|Модель|Совместимые|Тип|Разрешение|Цвет)\b", d, flags=re.IGNORECASE):
+            return True
+    return False
+
+def _cmp_name_like_text(s: str) -> str:
+    # Для сравнения "похоже ли это на название" (используем только в дедупе описаний).
+    t = (s or "")
+    # срезаем простые HTML-теги и HTML-энтити (иногда поставщик кладёт <p>Название</p>)
+    t = re.sub(r"<[^>]+>", " ", t)
+    t = re.sub(r"&[a-zA-Z]+;|&#\d+;|&#x[0-9a-fA-F]+;", " ", t)
+    t = norm_ws(t)
+    t = t.strip(" \t\r\n\"'«»„“”‘’`")
+    t = re.sub(r"[\s\-–—:|·•,\.]+$", "", t).strip()
+    t = re.sub(r"^[\s\-–—:|·•,\.]+", "", t).strip()
+    return t.casefold()
+
+def _dedupe_desc_leading_name(desc: str, name: str) -> str:
+    # CS: убираем повтор названия в начале "родного" описания (заголовок <h3> выводим сами).
+    d = (desc or "").strip()
+    n = norm_ws(name).strip()
+    if not d or not n:
+        return d
+
+    n_cmp = _cmp_name_like_text(n)
+
+    lines = d.splitlines()
+    idx = None
+    for i, ln in enumerate(lines):
+        if ln.strip():
+            idx = i
+            break
+    if idx is None:
+        return d
+
+    first = lines[idx].lstrip()
+    first_cmp = _cmp_name_like_text(first)
+
+    # Случай: первая строка = "Название" (или "Название:" и т.п.) — убираем строку целиком.
+    tail_cut = re.sub(r"[\s\-–—:|·•,\.]+$", "", first_cmp).strip()
+    if tail_cut == n_cmp:
+        lines[idx] = ""
+        out = "\n".join(ln for ln in lines if ln.strip()).strip()
+        if not out:
+            # если было только название — описание оставляем пустым (останется <h3>).
+            if _cmp_name_like_text(d) == n_cmp:
+                return ""
+            return d
+        return out
+
+    # Regex: название с гибкими пробелами + разделители (решает проблему разных пробелов в исходнике)
+    tokens = [re.escape(t) for t in n.split()]
+    if not tokens:
+        return d
+    name_pat = r"\s+".join(tokens)
+    rx = re.compile(
+        rf"^\s*[«\"\'„“”‘’`]*{name_pat}[»\"\'”’`]*\s*(?:[\-–—:|·•,\.]|\s)+",
+        re.IGNORECASE,
+    )
+    m = rx.search(first)
+    if not m:
+        return d
+
+    rest = first[m.end():].lstrip(" \t-–—:|·•,.")
+    if not rest:
+        lines[idx] = ""
+    else:
+        lines[idx] = rest
+
+    out = "\n".join(ln for ln in lines if ln.strip()).strip()
+
+    # Если после вырезания осталось пусто — это был только дубль названия.
+    if not out:
+        if _cmp_name_like_text(d) == n_cmp:
+            return ""
+        return d
+
+    # Safety: не превращаем описание в пустоту, если текста по сути не было.
+    if len(out) < 20 and len(d) <= len(n) + 15:
+        # Исключение: если d был по сути только названием — разрешаем "пусто" (или очень короткий остаток).
+        if _cmp_name_like_text(d) == n_cmp:
+            return out
+        return d
+    return out
+
+def _clip_desc_plain(desc: str, *, max_chars: int = 1200) -> str:
+    # CS: обрезание слишком длинного текста описания (маркетинговые простыни),
+    # чтобы карточка была читабельной и не дублировала характеристики.
+    s = (desc or "").strip()
+    if not s:
+        return s
+    max_chars = int(max_chars)
+    if len(s) <= max_chars:
+        return s
+
+    min_cut = 260
+
+    # 1) режем по абзацам/строкам
+    cut = s.rfind("\n\n", 0, max_chars)
+    if cut >= min_cut:
+        out = s[:cut].strip()
+    else:
+        cut = s.rfind("\n", 0, max_chars)
+        if cut >= min_cut:
+            out = s[:cut].strip()
+        else:
+            out = ""
+
+    # 2) если разрывов нет — режем по знакам препинания/разделителям
+    if not out:
+        seps = [". ", "! ", "? ", "… ", "; ", ": ", ", "]
+        best = -1
+        for sep in seps:
+            pos = s.rfind(sep, 0, max_chars)
+            if pos > best:
+                best = pos
+        if best >= min_cut:
+            out = s[: best + 1].strip()
+        else:
+            out = s[:max_chars].strip()
+
+    out = out.rstrip(" ,.;:-")
+    if len(s) - len(out) >= 80 and not out.endswith("…"):
+        out = out + "…"
+    return out
+
+def _build_desc_part(name: str, native_desc: str) -> str:
+    # CS: возвращает ТОЛЬКО тело описания (<p>...</p>), без <h3> (заголовок строится выше шаблоном)
+    d = fix_text(native_desc)
+    if not d:
+        return ""
+
+    # Если в нативном описании есть технические/основные характеристики или табличные данные,
+    # не дублируем это в описании (единый CS-блок характеристик будет ниже).
+    if _native_has_specs_text(d):
+        ls = d.split("\n")
+        cut = None
+        for i, ln in enumerate(ls):
+            if "\t" in ln:
+                cut = i
+                break
+            if re.search(r"(?i)\b(технические\s+характеристики|основные\s+характеристики|характеристики)\b", ln):
+                cut = i
+                break
+        if cut is not None:
+            d = "\n".join(ls[:cut]).strip()
+
+    # CS: убираем повтор названия в начале и режем длинные простыни
+    d = _dedupe_desc_leading_name(d, name)
+    d = _clip_desc_plain(d, max_chars=int(os.getenv("CS_NATIVE_DESC_MAX_CHARS", "1200")))
+
+    # Если после чистки осталось только название — не выводим пустой <p> с дублем.
+    if _cmp_name_like_text(d) == _cmp_name_like_text(name):
+        d = ""
+
+    if not d:
+        return ""
+
+    d2 = xml_escape_text(d).replace("\n", "<br>")
+    return f"<p>{d2}</p>"
+
+def _build_param_summary(params_sorted: Sequence[tuple[str, str]]) -> str:
+    """
+    Короткая фраза из существующих param, если родного описания нет.
+    Ничего не выдумываем, берем только реальные значения.
+    """
+    # приоритетные поля (без габаритов/объемов и прочего шумного)
+    pri = [
+        "тип", "вид", "тип товара",
+        "производитель", "бренд", "марка",
+        "модель",
+        "совместимость",
+        "цвет",
+        "ресурс",
+        "формат",
+        "интерфейс",
+    ]
+    blacklist = {
+        "артикул", "штрихкод", "ean", "sku", "код",
+        "вес", "габариты", "габариты (шхгхв)", "ширина", "высота", "длина", "объём", "объем",
+    }
+    # собираем последние значения по ключу
+    buckets: dict[str, tuple[str, str]] = {}
+    for k, v in params_sorted or []:
+        kk = norm_ws(k).lower()
+        vv = sanitize_mixed_text(norm_ws(v))
+        if not kk or not vv:
+            continue
+        if kk in blacklist:
+            continue
+        # отсекаем "да/нет/есть" — в кратком абзаце это мусор
+        vv_l = vv.strip().lower()
+        if vv_l in {"да", "нет", "есть", "имеется", "-", "—"}:
+            continue
+        if len(vv) > 140:
+            continue
+        buckets[kk] = (k.strip(), vv.strip())
+
+    picked: list[tuple[str, str]] = []
+    for want in pri:
+        if want in buckets:
+            picked.append(buckets[want])
+        if len(picked) >= 3:
+            break
+
+    # fallback: первые 2 адекватных
+    if not picked:
+        for _, (k, v) in buckets.items():
+            picked.append((k, v))
+            if len(picked) >= 2:
+                break
+
+    if not picked:
+        return ""
+
+    # "Тип: ...; Модель: ...; ..."
+    return "; ".join(f"{k}: {v}" for k, v in picked).strip()
+
+def normalize_cdata_inner(inner: str) -> str:
+    # Убираем мусорные пробелы/пустые строки внутри CDATA, без лишних ведущих/хвостовых переводов строк
+    inner = (inner or "").strip()
+    inner = _RE_MULTI_NL.sub("\n\n", inner)
+    return inner
+
+# Сборщики характеристик/описания
 def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
     items: list[str] = []
     for k, v in params_sorted or []:
@@ -192,3 +501,4 @@ def build_description(
     inner = re.sub(r"(?i)\bal[-\s]?style\.kz\b", "", inner)
     inner = re.sub(r"\s{2,}", " ", inner)
     return normalize_cdata_inner(inner)
+
