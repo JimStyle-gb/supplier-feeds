@@ -828,7 +828,7 @@ def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, na
 # - <name> держим коротким и читаемым (150 по решению пользователя)
 # - <keywords> по правилам YML обычно <= 1024
 CS_NAME_MAX_LEN = int((os.getenv("CS_NAME_MAX_LEN", "150") or "150").strip() or "150")
-CS_KEYWORDS_MAX_LEN = int((os.getenv("CS_KEYWORDS_MAX_LEN", "480") or "480").strip() or "480")
+CS_KEYWORDS_MAX_LEN = int((os.getenv("CS_KEYWORDS_MAX_LEN", "380") or "380").strip() or "380")
 
 CS_COMPAT_CLEAN_YIELD_PACK = (os.getenv("CS_COMPAT_CLEAN_YIELD_PACK", "1") or "1").strip().lower() not in ("0", "false", "no")
 CS_COMPAT_CLEAN_PAPER_OS_DIM = (os.getenv("CS_COMPAT_CLEAN_PAPER_OS_DIM", "1") or "1").strip().lower() not in ("0", "false", "no")
@@ -3211,7 +3211,6 @@ CS_KEYWORDS_CITIES = (
 )
 
 CS_KEYWORDS_PHRASES = (
-    "доставка",
     "доставка по Казахстану",
     "отправка в регионы",
 )
@@ -3222,25 +3221,72 @@ def build_keywords(
     extra: list[str] | None = None,
     **_kwargs,
 ) -> str:
-    # CS: keywords нужны в основном для внутреннего поиска/фильтров; Google/Yandex meta-keywords почти не учитывают.
-    # Поэтому делаем компактно и без спама городами.
-    parts: list[str] = []
+    # Keywords: делаем полезно для Satu/внутреннего поиска и аккуратно для SEO.
+    # Правила:
+    # - убираем дубли (например "доставка" не нужна, если есть "доставка по Казахстану")
+    # - города добавляем по приоритету, пока помещается в лимит
+    max_len = CS_KEYWORDS_MAX_LEN or 380
+
+    head: list[str] = []
     if vendor:
-        parts.append(norm_ws(vendor))
+        head.append(norm_ws(vendor))
     if offer_name:
-        parts.append(norm_ws(offer_name))
+        head.append(norm_ws(offer_name))
 
     if extra:
         for x in extra:
             x = norm_ws(x)
             if x:
-                parts.append(x)
+                head.append(x)
 
-    parts.extend(CS_KEYWORDS_PHRASES)
-    parts.extend(CS_KEYWORDS_CITIES)
+    head = _dedup_keep_order([norm_ws(p) for p in head if norm_ws(p)])
 
-    parts = _dedup_keep_order([norm_ws(p) for p in parts if norm_ws(p)])
-    return ", ".join(parts)
+    phrases = _dedup_keep_order([norm_ws(p) for p in CS_KEYWORDS_PHRASES if norm_ws(p)])
+    cities = _dedup_keep_order([norm_ws(c) for c in CS_KEYWORDS_CITIES if norm_ws(c)])
+
+    # Финальная сборка под лимит: сначала head, потом фразы, потом города
+    parts: list[str] = []
+
+    def can_add(tok: str) -> bool:
+        if not tok:
+            return False
+        test = parts + [tok]
+        return len(", ".join(test)) <= max_len
+
+    for t in head:
+        if can_add(t):
+            parts.append(t)
+
+    for t in phrases:
+        # если по каким-то причинам фраза "доставка" присутствует — выкидываем как дубль
+        if t.casefold() == "доставка" and any(p.casefold() == "доставка по казахстану" for p in phrases):
+            continue
+        if can_add(t):
+            parts.append(t)
+
+    for c in cities:
+        if can_add(c):
+            parts.append(c)
+
+    # Страховка: если head слишком длинный — урезаем имя товара
+    s = ", ".join(parts)
+    if len(s) > max_len and parts:
+        if parts and len(parts) >= 2:
+            v = parts[0]
+            n = parts[1]
+            fixed = [v]
+            # оставляем место под ", " + n
+            budget = max_len - len(v) - 2
+            if budget < 20:
+                # если совсем тесно — просто обрезаем с жёстким лимитом
+                fixed = [s[:max_len].rstrip(", ")]
+            else:
+                n2 = n[:budget].rstrip()
+                fixed.append(n2)
+            parts = fixed
+        s = ", ".join(parts)
+
+    return s
 
 # Похоже на "предложение" (инструкция/маркетинг) в имени параметра — переносим в notes, а не в характеристики.
 # Дублирует часть эвристик выше, но даёт дополнительную страховку.
