@@ -26,6 +26,7 @@ import re
 
 # Числа для парсинга float/int (вес/объём/габариты и т.п.)
 _RE_NUM = re.compile(r"(\d+(?:[\.,]\d+)?)")
+_RE_DIM_SEP = re.compile(r"(?:[xх×*/]|\bto\b)")  # 10x20, 10×20, 10х20, 10/20, 10 to 20
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
 from .keywords import build_keywords, CS_KEYWORDS_MAX_LEN
