@@ -30,7 +30,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v60_config_driven_schedule_fix_value_sanitize"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v61_fix_policy_cfg_order"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -190,15 +190,7 @@ def main() -> int:
     raw_out = (os.getenv("RAW_OUT_FILE") or ALSTYLE_RAW_OUT_DEFAULT).strip()
     encoding = (os.getenv("OUTPUT_ENCODING") or "utf-8").strip() or "utf-8"
 
-    hour = int((policy_cfg.get("schedule_hour_almaty") or 1))
-    env_hour = (os.getenv("SCHEDULE_HOUR_ALMATY") or "").strip()
-    if env_hour:
-        try:
-            eh = int(env_hour)
-            if eh != hour:
-                print(f"[build_alstyle] WARN: ignoring SCHEDULE_HOUR_ALMATY={eh}; policy.yml schedule_hour_almaty={hour}")
-        except Exception:
-            print(f"[build_alstyle] WARN: bad SCHEDULE_HOUR_ALMATY={env_hour!r}; using policy.yml schedule_hour_almaty={hour}")
+    env_hour = (os.getenv("SCHEDULE_HOUR_ALMATY") or "").strip()  # legacy env, будет сравнение после чтения policy.yml
     timeout = int(os.getenv("HTTP_TIMEOUT", "90"))
 
     login = os.getenv("ALSTYLE_LOGIN")
@@ -208,6 +200,16 @@ def main() -> int:
     filter_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_FILTER_FILE") or FILTER_FILE_DEFAULT))
     schema_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_SCHEMA_FILE") or SCHEMA_FILE_DEFAULT))
     policy_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_POLICY_FILE") or POLICY_FILE_DEFAULT))
+
+    # schedule hour: источник истины — policy.yml
+    hour = int((policy_cfg.get("schedule_hour_almaty") or 1))
+    if env_hour:
+        try:
+            eh = int(env_hour)
+            if eh != hour:
+                print(f"[build_alstyle] WARN: ignoring SCHEDULE_HOUR_ALMATY={eh}; policy.yml schedule_hour_almaty={hour}")
+        except Exception:
+            print(f"[build_alstyle] WARN: bad SCHEDULE_HOUR_ALMATY={env_hour!r}; using policy.yml schedule_hour_almaty={hour}")
 
     placeholder_picture = (
         os.getenv("PLACEHOLDER_PICTURE")
