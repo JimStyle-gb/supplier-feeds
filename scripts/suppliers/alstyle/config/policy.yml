@@ -1,0 +1,16 @@
+supplier: AlStyle
+id_prefix: AS
+schedule_hour_almaty: 1
+placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
+vendor_blacklist_casefold:
+- alstyle
+param_priority:
+- Бренд
+- Модель
+- Тип
+- Совместимость
+- Цвет
+- Размер
+- Материал
+- Гарантия
+notes: Core-level policy for AS is in scripts/cs/policy.py (disable clean/split/enrich/auto-compat).
