@@ -28,6 +28,7 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from .keywords import build_keywords, CS_KEYWORDS_MAX_LEN
 from .description import build_description, build_chars_block
 from .writer import (
+from .pricing import compute_price, CS_PRICE_TIERS
     xml_escape_text,
     xml_escape_attr,
     bool_to_xml,
@@ -1697,58 +1698,6 @@ def parse_id_set(env_value: str | None, fallback: Iterable[int] | None = None) -
 
 
 # Генератор стабильного id (если у поставщика нет id)
-CS_PRICE_TIERS = [
-    (101, 10_000, 3_000),
-    (10_001, 25_000, 4_000),
-    (25_001, 50_000, 5_000),
-    (50_001, 75_000, 7_000),
-    (75_001, 100_000, 10_000),
-    (100_001, 150_000, 12_000),
-    (150_001, 200_000, 15_000),
-    (200_001, 300_000, 20_000),
-    (300_001, 500_000, 25_000),
-    (500_001, 750_000, 30_000),
-    (750_001, 1_000_000, 35_000),
-    (1_000_001, 1_500_000, 40_000),
-    (1_500_001, 2_000_000, 45_000),
-]
-
-def compute_price(price_in: int | None) -> int:
-    p = safe_int(price_in)
-    if p is None or p <= 100:
-        return 100
-    if p >= 9_000_000:
-        return 100
-
-    tiers = CS_PRICE_TIERS
-    add = 60_000
-    for lo, hi, a in tiers:
-        if lo <= p <= hi:
-            add = a
-            break
-
-    raw = int(p * 1.04 + add)
-
-    # "хвост 900" (всегда заканчиваем на 900)
-    out = (raw // 1000) * 1000 + 900
-
-    if out >= 9_000_000:
-        return 100
-    if out <= 100:
-        return 100
-    return out
-
-
-# Убирает мусорные параметры, пустые значения и дубли (применять всегда!)
-
-# Параметры "вес/габариты/объем" полезны покупателю, но у некоторых поставщиков бывают мусорные значения.
-# Валидируем мягко: оставляем только "похожие на правду".
-_DIM_WORDS = ("габарит", "размер", "длина", "ширина", "высота")
-_VOL_WORDS = ("объем", "объём", "volume")
-_WGT_WORDS = ("вес", "масса", "weight")
-
-_RE_NUM = re.compile(r"(\d+(?:[\.,]\d+)?)")
-_RE_DIM_SEP = re.compile(r"[xх×\*]", re.I)
 
 def _looks_like_weight(name: str) -> bool:
     nl = (name or "").casefold()
