@@ -1,0 +1,24 @@
+drop_keys_casefold:
+- артикул
+- штрихкод
+- код тн вэд
+- код товара kaspi
+- код товара kaspi.kz
+- благотворительность
+- снижена цена
+- новинка
+- короткое наименование (каз)
+- полное наименование (каз)
+- назначение
+- безопасность
+aliases_casefold:
+  мощность (bт): Мощность (Вт)
+value_normalizers:
+  Гарантия:
+  - warranty_months
+key_rules:
+  require_letter: true
+  max_len: 60
+  max_words: 9
+notes: 'Schema is strict: adapter cleans params; core policy for AS should disable
+  clean/split/enrich.'
