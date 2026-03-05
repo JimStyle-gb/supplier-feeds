@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-05 17:48:53">
+<yml_catalog date="2026-03-05 18:24:12">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-05 17:48:53
+Время сборки (Алматы)                      | 2026-03-05 18:24:12
 Ближайшая сборка (Алматы)                  | 2026-03-06 02:00:00
 Сколько товаров у поставщика до фильтра    | 1798
 Сколько товаров у поставщика после фильтра | 139
@@ -835,7 +835,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Epson КартриджC13T614300 SP-4450 пурпурный</param>
+<param name="Модель">Epson КартриджС13Т614300 SP-4450 пурпурный</param>
 <param name="Ресурс">220 мл</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
@@ -3529,7 +3529,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Шредер Fellowes® Powershred® 53C, DIN P-4</param>
 <param name="Тип">шредеры офисные</param>
 <param name="Тип резки">перекрестная</param>
-<param name="Уничтожение">cкобкы, карты, скрепки</param>
+<param name="Уничтожение">скобкы, карты, скрепки</param>
 <param name="Уровень секретности">P-4</param>
 <keywords>Fellowes, Шредер Fellowes® Powershred® 53C, DIN P-4, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
