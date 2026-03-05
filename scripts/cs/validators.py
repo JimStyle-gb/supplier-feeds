@@ -2,7 +2,7 @@
 """
 CS Validators — проверки готового CS-фида.
 
-Этап 7: вынос в отдельный модуль, без изменения логики.
+Этап 7: вынесено в отдельный модуль.
 Важно: модуль НЕ импортирует cs/core.py (без циклических импортов).
 """
 
@@ -10,6 +10,27 @@ from __future__ import annotations
 
 import re
 
+_RE_WS = re.compile(r"\s+")
+_RE_INT = re.compile(r"-?\d+")
+
+def norm_ws(s: str) -> str:
+    """Нормализует пробелы (для валидатора)."""
+    s2 = (s or "").replace("\u00a0", " ").strip()
+    s2 = _RE_WS.sub(" ", s2).strip()
+    return s2
+
+def safe_int(s: str) -> int | None:
+    """Безопасно парсит int из строки (берёт первое целое)."""
+    if s is None:
+        return None
+    ss = str(s).strip()
+    m = _RE_INT.search(ss.replace(" ", ""))
+    if not m:
+        return None
+    try:
+        return int(m.group(0))
+    except Exception:
+        return None
 
 def validate_cs_yml(xml: str, *, param_drop_default_cf: set[str]) -> None:
     errors: list[str] = []
@@ -164,8 +185,3 @@ def validate_cs_yml(xml: str, *, param_drop_default_cf: set[str]) -> None:
 
     if errors:
         raise ValueError("CS-валидация не пройдена:\n- " + "\n- ".join(errors))
-
-
-
-# ----------------------------- Backward-compatible wrappers -----------------------------
-# (core стал тоньше: реализация вынесена в scripts/cs/description.py)
