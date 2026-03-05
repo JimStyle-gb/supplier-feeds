@@ -27,8 +27,8 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
 from .keywords import build_keywords, CS_KEYWORDS_MAX_LEN
 from .description import build_description, build_chars_block
-from .writer import (
 from .pricing import compute_price, CS_PRICE_TIERS
+from .writer import (
     xml_escape_text,
     xml_escape_attr,
     bool_to_xml,
@@ -4002,4 +4002,3 @@ def _cs_build_description(*args, **kwargs):
 
 def _cs_build_chars_block(*args, **kwargs):
     return build_chars_block(*args, **kwargs)
-
