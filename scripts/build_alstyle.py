@@ -30,7 +30,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v59_config_driven_filter_schema"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v60_config_driven_schedule_fix_value_sanitize"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -44,6 +44,7 @@ POLICY_FILE_DEFAULT = "policy.yml"  # опционально
 
 
 _RE_HAS_LETTER = re.compile(r"[A-Za-zА-Яа-яЁё]")
+_RE_LETTER_SLASH_LETTER = re.compile(r"([A-Za-zА-Яа-яЁё])\s*/\s*([A-Za-zА-Яа-яЁё])")
 
 
 def _read_yaml(path: Path) -> dict[str, Any]:
@@ -112,6 +113,8 @@ def _apply_value_normalizers(key: str, val: str, schema: dict[str, Any]) -> str:
             v = _normalize_warranty_to_months(v)
         elif op == "trim_ws":
             v = norm_ws(v)
+    # Нормализация: 'слово/Word' -> 'слово Word' (только если по обе стороны буквы)
+    v = _RE_LETTER_SLASH_LETTER.sub(r"\1 \2", v)
     return v
 
 
@@ -187,7 +190,15 @@ def main() -> int:
     raw_out = (os.getenv("RAW_OUT_FILE") or ALSTYLE_RAW_OUT_DEFAULT).strip()
     encoding = (os.getenv("OUTPUT_ENCODING") or "utf-8").strip() or "utf-8"
 
-    hour = int(os.getenv("SCHEDULE_HOUR_ALMATY", "1"))
+    hour = int((policy_cfg.get("schedule_hour_almaty") or 1))
+    env_hour = (os.getenv("SCHEDULE_HOUR_ALMATY") or "").strip()
+    if env_hour:
+        try:
+            eh = int(env_hour)
+            if eh != hour:
+                print(f"[build_alstyle] WARN: ignoring SCHEDULE_HOUR_ALMATY={eh}; policy.yml schedule_hour_almaty={hour}")
+        except Exception:
+            print(f"[build_alstyle] WARN: bad SCHEDULE_HOUR_ALMATY={env_hour!r}; using policy.yml schedule_hour_almaty={hour}")
     timeout = int(os.getenv("HTTP_TIMEOUT", "90"))
 
     login = os.getenv("ALSTYLE_LOGIN")
