@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-AlStyle adapter (AS) — CS-шаблон.
+AlStyle adapter (AS) — CS-шаблон (config-driven).
 
-Цель: адаптер отдаёт ИДЕАЛЬНЫЙ raw (чистые params без мусора, стабильные id/vendorCode, pictures с placeholder),
-а cs/core.py делает только 100% общие вещи (keywords/description/FEED_META/writer).
+Адаптер делает ИДЕАЛЬНЫЙ raw:
+- фильтр товаров по categoryId (include) из config/filter.yml
+- schema чистит params (drop/aliases/normalizers), без гаданий по совместимости/кодам
+- стабильный id/vendorCode с префиксом AS
+- pictures: если нет — placeholder
+- vendor не должен содержать имя поставщика
 
-Важно:
-- фильтр товаров: include по categoryId (строго по списку ALSTYLE_CATEGORY_IDS или fallback)
-- никаких эвристик по совместимости/кодам тут не делаем (AlStyle отдаёт свои params — мы их только чистим)
+Core делает только общее (keywords/description/FEED_META/writer). Для AS в scripts/cs/policy.py
+должно быть отключено вмешательство core в params (enable_clean_params=False и т.п.).
 """
 
 from __future__ import annotations
@@ -15,8 +18,11 @@ from __future__ import annotations
 import os
 import re
 import xml.etree.ElementTree as ET
+from pathlib import Path
+from typing import Any
 
 import requests
+import yaml
 
 from cs.core import OfferOut, write_cs_feed, write_cs_feed_raw
 from cs.meta import now_almaty, next_run_at_hour
@@ -24,57 +30,32 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v58_fix_next_run_kwarg"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v59_config_driven_filter_schema"
 
-ALSTYLE_SUPPLIER = "AlStyle"
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
-ALSTYLE_RAW_OUT = "docs/raw/alstyle.yml"
+ALSTYLE_RAW_OUT_DEFAULT = "docs/raw/alstyle.yml"
 ALSTYLE_ID_PREFIX = "AS"
 
-PLACEHOLDER_PICTURE = "https://placehold.co/800x800/png?text=No+Photo"
+CFG_DIR_DEFAULT = "scripts/suppliers/alstyle/config"
+FILTER_FILE_DEFAULT = "filter.yml"
+SCHEMA_FILE_DEFAULT = "schema.yml"
+POLICY_FILE_DEFAULT = "policy.yml"  # опционально
 
-# Категории (include-режим). Можно переопределить ENV=ALSTYLE_CATEGORY_IDS (через запятую/пробел/перенос).
-ALSTYLE_ALLOWED_CATEGORY_IDS_FALLBACK = {
-    "3540", "3541", "3542", "3543", "3544", "3545",
-    "3566", "3567", "3569", "3570", "3580", "3688", "3708", "3721", "3722",
-    "4889", "4890", "4895", "5017", "5075", "5649",
-    "5710", "5711", "5712", "5713",
-    "21279", "21281", "21291", "21356", "21451",
-    "21572", "21573", "21574", "21575", "21576", "21578", "21580",
-    "21498", "21500",
-    "21640", "21664", "21665", "21666", "21698",
-    "21367", "21368", "21369", "21370", "21371", "21372",
-}
-
-# Приоритет сортировки характеристик (если core сортирует, тут задаём список)
-ALSTYLE_PARAM_PRIORITY = [
-    "Бренд",
-    "Модель",
-    "Тип",
-    "Совместимость",
-    "Цвет",
-    "Размер",
-    "Материал",
-    "Гарантия",
-]
-
-# Drop-лист мусорных ключей (строго то, что реально мешает)
-_DROP_KEYS_CF = {
-    "артикул",
-    "штрихкод",
-    "код тн вэд",
-    "код товара kaspi",
-    "код товара kaspi.kz",
-    "благотворительность",
-    "снижена цена",
-    "новинка",
-    "короткое наименование (каз)",
-    "полное наименование (каз)",
-}
 
 _RE_HAS_LETTER = re.compile(r"[A-Za-zА-Яа-яЁё]")
-_RE_WS = re.compile(r"\s+")
+
+
+def _read_yaml(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+
+
+def _t(el: ET.Element | None) -> str:
+    if el is None:
+        return ""
+    return "".join(el.itertext()).strip()
 
 
 def _parse_id_set(env: str | None, fallback: set[str]) -> set[str]:
@@ -88,81 +69,71 @@ def _parse_id_set(env: str | None, fallback: set[str]) -> set[str]:
     return out or set(fallback)
 
 
-def _fetch_xml(url: str, *, timeout: int, login: str | None, password: str | None) -> str:
-    auth = (login, password) if (login and password) else None
-    r = requests.get(url, timeout=timeout, auth=auth)
-    r.raise_for_status()
-    return r.text
+def _key_quality_ok(k: str, *, require_letter: bool, max_len: int, max_words: int) -> bool:
+    kk = norm_ws(k)
+    if not kk:
+        return False
+    if require_letter and not _RE_HAS_LETTER.search(kk):
+        return False
+    if max_len and len(kk) > int(max_len):
+        return False
+    if max_words and len(kk.split()) > int(max_words):
+        return False
+    return True
 
 
-def _t(el: ET.Element | None) -> str:
-    if el is None:
+def _normalize_warranty_to_months(v: str) -> str:
+    vv = norm_ws(v)
+    if not vv:
         return ""
-    return "".join(el.itertext()).strip()
+    low = vv.casefold()
+    if low in ("нет", "no", "-", "—"):
+        return ""
+    m = re.search(r"(\d{1,2})\s*(год|года|лет)\b", low)
+    if m:
+        n = int(m.group(1))
+        return f"{n*12} мес"
+    if re.fullmatch(r"\d{1,3}", low):
+        return f"{int(low)} мес"
+    m = re.search(r"\b(\d{1,3})\b", low)
+    if m and ("мес" in low or "month" in low):
+        return f"{int(m.group(1))} мес"
+    return vv
 
 
-def _collect_pictures(offer_el: ET.Element) -> list[str]:
+def _apply_value_normalizers(key: str, val: str, schema: dict[str, Any]) -> str:
+    v = norm_ws(val)
+    if not v:
+        return ""
+    vn = (schema.get("value_normalizers") or {})
+    ops = vn.get(key) or vn.get(key.casefold()) or []
+    for op in ops:
+        if op == "warranty_months":
+            v = _normalize_warranty_to_months(v)
+        elif op == "trim_ws":
+            v = norm_ws(v)
+    return v
+
+
+def _collect_pictures(offer_el: ET.Element, placeholder: str) -> list[str]:
     pics: list[str] = []
     for p in offer_el.findall("picture"):
         u = norm_ws(_t(p))
         if u:
             pics.append(u)
     if not pics:
-        pics = [PLACEHOLDER_PICTURE]
+        pics = [placeholder]
     return pics
 
 
-def _key_quality_ok(k: str) -> bool:
-    # Запрещено:
-    # - без букв
-    # - слишком длинный ключ
-    # - ключ-предложение (слишком много слов)
-    kk = norm_ws(k)
-    if not kk:
-        return False
-    if not _RE_HAS_LETTER.search(kk):
-        return False
-    if len(kk) > 60:
-        return False
-    if len(kk.split()) > 9:
-        return False
-    return True
+def _collect_params(offer_el: ET.Element, schema: dict[str, Any]) -> list[tuple[str, str]]:
+    drop = {str(x).casefold() for x in (schema.get("drop_keys_casefold") or [])}
+    aliases = {str(k).casefold(): str(v) for k, v in (schema.get("aliases_casefold") or {}).items()}
+    rules = schema.get("key_rules") or {}
+    require_letter = bool(rules.get("require_letter", True))
+    max_len = int(rules.get("max_len", 60))
+    max_words = int(rules.get("max_words", 9))
 
-
-def _normalize_key(k: str) -> str:
-    kk = norm_ws(k)
-    # исправление латинской B в (Bт)
-    kk = kk.replace("Bт", "Вт").replace("BТ", "Вт")
-    # единообразие мощности
-    if kk == "Мощность (Bт)":
-        kk = "Мощность (Вт)"
-    return kk
-
-
-def _should_drop_param(k: str, v: str) -> bool:
-    kcf = norm_ws(k).casefold()
-    vcf = norm_ws(v).casefold()
-
-    if not _key_quality_ok(k):
-        return True
-
-    if kcf in _DROP_KEYS_CF:
-        return True
-
-    # частные мусорные булевы
-    if kcf == "назначение" and vcf in ("да", "есть"):
-        return True
-    if kcf == "безопасность" and vcf == "есть":
-        return True
-
-    # гарантия "нет" — выкидываем, но нормальную гарантию оставляем
-    if kcf == "гарантия" and vcf in ("нет", "no", "-"):
-        return True
-
-    return False
-
-
-def _collect_params(offer_el: ET.Element) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
 
@@ -170,36 +141,50 @@ def _collect_params(offer_el: ET.Element) -> list[tuple[str, str]]:
         k0 = p.get("name") or ""
         v0 = _t(p)
 
-        k = _normalize_key(k0)
+        k = norm_ws(k0)
         v = norm_ws(v0)
-
         if not k or not v:
             continue
-        if _should_drop_param(k, v):
+
+        kcf = k.casefold()
+        if kcf in aliases:
+            k = aliases[kcf]
+
+        if not _key_quality_ok(k, require_letter=require_letter, max_len=max_len, max_words=max_words):
             continue
 
-        key = (k.casefold(), v.casefold())
-        if key in seen:
+        if k.casefold() in drop:
             continue
-        seen.add(key)
-        out.append((k, v))
 
-    # Если в параметрах есть Бренд/Модель и т.п. — хорошо.
-    # Тип: добавляем строго и безопасно, только если его нет.
-    keys_cf = {k.casefold() for k, _ in out}
-    if "тип" not in keys_cf:
-        # Берём первое слово названия (только если похоже на тип)
-        name = norm_ws(_t(offer_el.find("name")))
-        first = name.split()[0] if name else ""
-        if first and len(first) <= 20:
-            out.append(("Тип", first))
+        if k.casefold() == "назначение" and v.casefold() in ("да", "есть"):
+            continue
+        if k.casefold() == "безопасность" and v.casefold() == "есть":
+            continue
+
+        v2 = _apply_value_normalizers(k, v, schema)
+        if not v2:
+            continue
+
+        sig = (k.casefold(), v2.casefold())
+        if sig in seen:
+            continue
+        seen.add(sig)
+        out.append((k, v2))
 
     return out
 
 
+def _fetch_xml(url: str, *, timeout: int, login: str | None, password: str | None) -> str:
+    auth = (login, password) if (login and password) else None
+    r = requests.get(url, timeout=timeout, auth=auth)
+    r.raise_for_status()
+    return r.text
+
+
 def main() -> int:
-    url = os.getenv("ALSTYLE_URL", ALSTYLE_URL_DEFAULT).strip()
-    out_file = os.getenv("OUT_FILE", ALSTYLE_OUT_DEFAULT).strip()
+    url = (os.getenv("ALSTYLE_URL") or ALSTYLE_URL_DEFAULT).strip()
+    out_file = (os.getenv("OUT_FILE") or ALSTYLE_OUT_DEFAULT).strip()
+    raw_out = (os.getenv("RAW_OUT_FILE") or ALSTYLE_RAW_OUT_DEFAULT).strip()
     encoding = (os.getenv("OUTPUT_ENCODING") or "utf-8").strip() or "utf-8"
 
     hour = int(os.getenv("SCHEDULE_HOUR_ALMATY", "1"))
@@ -208,7 +193,19 @@ def main() -> int:
     login = os.getenv("ALSTYLE_LOGIN")
     password = os.getenv("ALSTYLE_PASSWORD")
 
-    allowed = _parse_id_set(os.getenv("ALSTYLE_CATEGORY_IDS"), ALSTYLE_ALLOWED_CATEGORY_IDS_FALLBACK)
+    cfg_dir = Path(os.getenv("ALSTYLE_CFG_DIR", CFG_DIR_DEFAULT))
+    filter_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_FILTER_FILE") or FILTER_FILE_DEFAULT))
+    schema_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_SCHEMA_FILE") or SCHEMA_FILE_DEFAULT))
+    policy_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_POLICY_FILE") or POLICY_FILE_DEFAULT))
+
+    placeholder_picture = (
+        os.getenv("PLACEHOLDER_PICTURE")
+        or policy_cfg.get("placeholder_picture")
+        or "https://placehold.co/800x800/png?text=No+Photo"
+    )
+
+    fallback_ids = {str(x) for x in (filter_cfg.get("category_ids") or [])}
+    allowed = _parse_id_set(os.getenv("ALSTYLE_CATEGORY_IDS"), fallback_ids)
 
     build_time = now_almaty()
     next_run = next_run_at_hour(build_time, hour=hour)
@@ -223,6 +220,9 @@ def main() -> int:
     in_true = 0
     in_false = 0
 
+    supplier_name = (policy_cfg.get("supplier") or "AlStyle").strip()
+    vendor_blacklist = {str(x).casefold() for x in (policy_cfg.get("vendor_blacklist_casefold") or ["alstyle"])}
+
     for o in offers_in:
         cat = norm_ws(_t(o.find("categoryId")))
         if allowed and (not cat or cat not in allowed):
@@ -235,7 +235,6 @@ def main() -> int:
 
         oid = raw_id if raw_id.upper().startswith(ALSTYLE_ID_PREFIX) else f"{ALSTYLE_ID_PREFIX}{raw_id}"
 
-        # available: offer@available -> <available>
         av_attr = (o.get("available") or "").strip().lower()
         if av_attr in ("true", "1", "yes"):
             available = True
@@ -250,22 +249,19 @@ def main() -> int:
         else:
             in_false += 1
 
-        pics = _collect_pictures(o)
-        params = _collect_params(o)
+        pics = _collect_pictures(o, placeholder_picture)
+        params = _collect_params(o, schema_cfg)
 
         vendor_src = norm_ws(_t(o.find("vendor")))
+        if vendor_src and vendor_src.casefold() in vendor_blacklist:
+            vendor_src = ""
+
         desc_src = _t(o.find("description")) or ""
 
-        # цена: purchase_price -> price
         price_in = safe_int(_t(o.find("purchase_price")))
         if price_in is None:
             price_in = safe_int(_t(o.find("price")))
-
         price = compute_price(price_in)
-
-        # не раскрываем имя поставщика как vendor
-        if vendor_src.casefold() == ALSTYLE_SUPPLIER.casefold():
-            vendor_src = ""
 
         out_offers.append(
             OfferOut(
@@ -281,15 +277,13 @@ def main() -> int:
         )
 
     after = len(out_offers)
-
-    # стабильный порядок
     out_offers.sort(key=lambda x: x.oid)
 
     write_cs_feed_raw(
         out_offers,
-        supplier=ALSTYLE_SUPPLIER,
+        supplier=supplier_name,
         supplier_url=url,
-        out_file=ALSTYLE_RAW_OUT,
+        out_file=raw_out,
         build_time=build_time,
         next_run=next_run,
         before=before,
@@ -299,7 +293,7 @@ def main() -> int:
 
     changed = write_cs_feed(
         out_offers,
-        supplier=ALSTYLE_SUPPLIER,
+        supplier=supplier_name,
         supplier_url=url,
         out_file=out_file,
         build_time=build_time,
@@ -308,7 +302,7 @@ def main() -> int:
         encoding=encoding,
         public_vendor=os.getenv("PUBLIC_VENDOR", "CS").strip() or "CS",
         currency_id="KZT",
-        param_priority=ALSTYLE_PARAM_PRIORITY,
+        param_priority=(policy_cfg.get("param_priority") or None),
     )
 
     print(
