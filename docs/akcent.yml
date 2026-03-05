@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-05 12:46:10">
+<yml_catalog date="2026-03-05 17:48:53">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-05 12:46:10 (не было изменений)
+Время сборки (Алматы)                      | 2026-03-05 17:48:53
 Ближайшая сборка (Алматы)                  | 2026-03-06 02:00:00
-Сколько товаров у поставщика до фильтра    | 1805
-Сколько товаров у поставщика после фильтра | 141
-Сколько товаров есть в наличии (true)      | 141
+Сколько товаров у поставщика до фильтра    | 1798
+Сколько товаров у поставщика после фильтра | 139
+Сколько товаров есть в наличии (true)      | 139
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -3505,32 +3505,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="AC5050101" available="true">
-<categoryId></categoryId>
-<vendorCode>AC5050101</vendorCode>
-<name>Шредер Fellowes Powershred LX201 белый</name>
-<price>201900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/bb3/srjj8vt77lmeoqdjdg4ybapui7tj29c1.jpg</picture>
-<vendor>Fellowes</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Шредер Fellowes Powershred LX201 белый</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Тип: шредеры офисные; Модель: Шредер Fellowes Powershred LX201 белый</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Модель:</strong> Шредер Fellowes Powershred LX201 белый</li><li><strong>Тип:</strong> шредеры офисные</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Гарантия">24 мес</param>
-<param name="Модель">Шредер Fellowes Powershred LX201 белый</param>
-<param name="Тип">шредеры офисные</param>
-<keywords>Fellowes, Шредер Fellowes Powershred LX201 белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="AC4653101" available="true">
 <categoryId></categoryId>
 <vendorCode>AC4653101</vendorCode>
@@ -3558,32 +3532,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Уничтожение">cкобкы, карты, скрепки</param>
 <param name="Уровень секретности">P-4</param>
 <keywords>Fellowes, Шредер Fellowes® Powershred® 53C, DIN P-4, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="AC5502201" available="true">
-<categoryId></categoryId>
-<vendorCode>AC5502201</vendorCode>
-<name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™</name>
-<price>172900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/18e/soiotb0m5krsb9li7hcpuoq606v24158.jpg</picture>
-<vendor>Fellowes</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Тип: шредеры офисные; Модель: Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Модель:</strong> Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</li><li><strong>Тип:</strong> шредеры офисные</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Гарантия">24 мес</param>
-<param name="Модель">Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</param>
-<param name="Тип">шредеры офисные</param>
-<keywords>Fellowes, Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC4701001" available="true">
