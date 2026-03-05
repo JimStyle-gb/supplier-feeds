@@ -28,6 +28,7 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from .keywords import build_keywords, CS_KEYWORDS_MAX_LEN
 from .description import build_description, build_chars_block
 from .pricing import compute_price, CS_PRICE_TIERS
+from .meta import now_almaty, next_run_at_hour
 from .writer import (
     xml_escape_text,
     xml_escape_attr,
@@ -932,26 +933,6 @@ PARAM_DROP_DEFAULT_CF = {str(x).strip().casefold() for x in PARAM_DROP_DEFAULT}
 
 
 # Возвращает текущее время в Алматы
-def now_almaty() -> datetime:
-    forced = (os.getenv("CS_FORCE_BUILD_TIME_ALMATY", "") or "").strip()
-    if forced:
-        try:
-            return datetime.strptime(forced, "%Y-%m-%d %H:%M:%S")
-        except Exception:
-            pass
-    return datetime.now(ZoneInfo(ALMATY_TZ)).replace(tzinfo=None)
-
-
-# Считает ближайший запуск на заданный час (Алматы) — для FEED_META
-def next_run_at_hour(now_local: datetime, hour: int) -> datetime:
-    hour = int(hour)
-    candidate = now_local.replace(hour=hour, minute=0, second=0, microsecond=0)
-    if candidate <= now_local:
-        candidate = candidate + timedelta(days=1)
-    return candidate
-
-
-# Нормализует пробелы/переводы строк в строке
 def norm_ws(s: str) -> str:
     s2 = (s or "").replace("\u00a0", " ").strip()
     s2 = re.sub(r"\s+", " ", s2)
