@@ -35,7 +35,17 @@ def _supplier_code_from_oid(oid: str) -> str:
 
 
 _POLICIES: dict[str, SupplierPolicy] = {
-    "AS": SupplierPolicy("AS", always_true_available=False, drop_desc_specs_pairs=True),
+    "AS": SupplierPolicy(
+        "AS",
+        always_true_available=False,
+        drop_desc_specs_pairs=True,
+        enable_enrich_from_desc=False,
+        enable_enrich_from_name_desc=False,
+        enable_auto_compat=False,
+        enable_apply_color_from_name=False,
+        enable_split_params_for_chars=False,
+        enable_clean_params=False,
+    ),
     "AC": SupplierPolicy(
         "AC",
         always_true_available=False,
