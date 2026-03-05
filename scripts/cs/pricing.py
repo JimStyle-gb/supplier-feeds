@@ -12,9 +12,10 @@ CS Pricing — общий расчёт цены.
 - хвост всегда "...900"
 """
 
-import re
-
 from __future__ import annotations
+
+import os
+import re
 
 def safe_int(v) -> int | None:
     if v is None:
