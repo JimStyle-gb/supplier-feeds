@@ -1598,6 +1598,10 @@ def parse_id_set(env_value: str | None, fallback: Iterable[int] | None = None) -
 
 # Генератор стабильного id (если у поставщика нет id)
 
+_WGT_WORDS = ("вес", "масса", "weight")
+_VOL_WORDS = ("объем", "объём", "volume")
+_DIM_WORDS = ("габарит", "размер", "длина", "ширина", "высота")
+
 def _looks_like_weight(name: str) -> bool:
     nl = (name or "").casefold()
     return any(w in nl for w in _WGT_WORDS)
