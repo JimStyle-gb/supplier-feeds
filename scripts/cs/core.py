@@ -31,6 +31,7 @@ from .pricing import compute_price, CS_PRICE_TIERS
 from .meta import now_almaty, next_run_at_hour
 from .policy import SupplierPolicy, get_supplier_policy, _supplier_code_from_oid
 from .validators import validate_cs_yml
+from .util import norm_ws, safe_int, _truncate_text
 from .writer import (
     xml_escape_text,
     xml_escape_attr,
@@ -900,12 +901,6 @@ PARAM_DROP_DEFAULT_CF = {str(x).strip().casefold() for x in PARAM_DROP_DEFAULT}
 
 
 # Возвращает текущее время в Алматы
-def norm_ws(s: str) -> str:
-    s2 = (s or "").replace("\u00a0", " ").strip()
-    s2 = re.sub(r"\s+", " ", s2)
-    s2 = fix_mixed_cyr_lat(s2)
-    return s2.strip()
-
 def normalize_offer_name(name: str) -> str:
     # CS: лёгкая типографика имени (без изменения смысла)
     s = norm_ws(name)
@@ -954,32 +949,6 @@ _RE_COLOR_TOKENS = [
 ]
 
 _RE_HI_BLACK = re.compile(r"\bhi[-\s]?black\b", re.IGNORECASE)
-
-
-def _truncate_text(s: str, max_len: int, *, suffix: str = "") -> str:
-    # CS: безопасно режем строку по границе слова/запятой
-    s = norm_ws(s)
-    if max_len <= 0:
-        return ""
-    if len(s) <= max_len:
-        return s
-
-    cut_len = max_len - len(suffix)
-    if cut_len <= 0:
-        return suffix[:max_len]
-
-    chunk = s[:cut_len].rstrip()
-    # режем по последней "хорошей" границе
-    for sep in (",", " ", "/", ";"):
-        j = chunk.rfind(sep)
-        if j >= max(0, cut_len - 40):  # не уходим слишком далеко назад
-            chunk = chunk[:j].rstrip(" ,/;")
-            break
-
-    chunk = chunk.rstrip(" ,/;")
-    if suffix:
-        return (chunk + suffix)[:max_len]
-    return chunk
 
 
 def _compat_fragments(s: str) -> list[str]:
@@ -1615,24 +1584,6 @@ def sanitize_mixed_text(s: str) -> str:
     t = t.replace("ЖK", "ЖК").replace("Жk", "ЖК")
     return normalize_mixed_slash(normalize_mixed_hyphen(t))
 
-def safe_int(v) -> int | None:
-    if v is None:
-        return None
-    try:
-        if isinstance(v, (int, float)):
-            return int(v)
-        s = str(v).strip()
-        if not s:
-            return None
-        s = s.replace(" ", "").replace("\u00a0", "")
-        # иногда цена приходит как "12 345.00"
-        s = s.split(".")[0]
-        return int(s)
-    except Exception:
-        return None
-
-
-# Парсит множество id из env (например "1,10,20") или из fallback списка
 def parse_id_set(env_value: str | None, fallback: Iterable[int] | None = None) -> set[str]:
     out: set[str] = set()
     if env_value:
