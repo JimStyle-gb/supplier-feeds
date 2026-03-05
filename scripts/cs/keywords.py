@@ -95,6 +95,9 @@ def build_keywords(
     **_kwargs,
 ) -> str:
     parts: list[str] = []
+    # В keywords запятая — это разделитель токенов, поэтому убираем запятые из vendor/name
+    vendor = (vendor or "").replace(",", " ") or None
+    offer_name = (offer_name or "").replace(",", " ")
     if vendor:
         parts.append(norm_ws(vendor))
     if offer_name:
