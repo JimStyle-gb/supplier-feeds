@@ -3,7 +3,14 @@
 CS Util — мелкие общие утилиты.
 
 Этап 8: вынос из cs/core.py в отдельный модуль.
-Важно: модуль НЕ импортирует cs/core.py (без циклических импортов).
+Файл сделан САМОДОСТАТОЧНЫМ: содержит fix_mixed_cyr_lat(), чтобы не зависеть от cs/keywords.py
+и не ловить NameError при частичных заменах файлов.
+
+Содержит:
+- fix_mixed_cyr_lat()
+- norm_ws()
+- safe_int()
+- _truncate_text()
 """
 
 from __future__ import annotations
@@ -12,52 +19,62 @@ import re
 from typing import Any
 
 
-def norm_ws(s: str) -> str:
-    s2 = (s or "").replace("\u00a0", " ").strip()
-    s2 = re.sub(r"\s+", " ", s2)
-    s2 = fix_mixed_cyr_lat(s2)
-    return s2.strip()
+# ----------------------------- text helpers -----------------------------
 
-def safe_int(v) -> int | None:
-    if v is None:
+_RE_WS = re.compile(r"\s+")
+_RE_INT = re.compile(r"-?\d+")
+
+# Визуально похожие латинские -> кириллические (только внутри смешанных слов)
+_MIX_MAP = str.maketrans({
+    "A": "А", "B": "В", "C": "С", "E": "Е", "H": "Н", "K": "К", "M": "М", "O": "О", "P": "Р", "T": "Т", "X": "Х", "Y": "У",
+    "a": "а", "c": "с", "e": "е", "h": "н", "k": "к", "m": "м", "o": "о", "p": "р", "t": "т", "x": "х", "y": "у",
+})
+_RE_CYR = re.compile(r"[А-Яа-яЁё]")
+_RE_LAT = re.compile(r"[A-Za-z]")
+
+
+def fix_mixed_cyr_lat(s: str) -> str:
+    """Чинит смешение кириллицы/латиницы в одном слове (Pабота → Работа)."""
+    if not s:
+        return s
+
+    def _fix_word(w: str) -> str:
+        if _RE_CYR.search(w) and _RE_LAT.search(w):
+            return w.translate(_MIX_MAP)
+        return w
+
+    parts = re.split(r"(\s+)", s)
+    return "".join(_fix_word(p) if i % 2 == 0 else p for i, p in enumerate(parts))
+
+
+def norm_ws(s: str) -> str:
+    """Нормализует пробелы и правит смешанную кир/лат."""
+    s2 = (s or "").replace("\u00a0", " ").strip()
+    s2 = _RE_WS.sub(" ", s2).strip()
+    return fix_mixed_cyr_lat(s2)
+
+
+def safe_int(s: Any) -> int | None:
+    """Безопасно парсит int из строки (берёт первое целое)."""
+    if s is None:
+        return None
+    ss = str(s).strip()
+    m = _RE_INT.search(ss.replace(" ", ""))
+    if not m:
         return None
     try:
-        if isinstance(v, (int, float)):
-            return int(v)
-        s = str(v).strip()
-        if not s:
-            return None
-        s = s.replace(" ", "").replace("\u00a0", "")
-        # иногда цена приходит как "12 345.00"
-        s = s.split(".")[0]
-        return int(s)
+        return int(m.group(0))
     except Exception:
         return None
 
 
-# Парсит множество id из env (например "1,10,20") или из fallback списка
-
-def _truncate_text(s: str, max_len: int, *, suffix: str = "") -> str:
-    # CS: безопасно режем строку по границе слова/запятой
-    s = norm_ws(s)
-    if max_len <= 0:
+def _truncate_text(s: str, max_len: int) -> str:
+    """Обрезает текст до max_len, аккуратно (без обрыва HTML, только plain)."""
+    if not s:
         return ""
+    max_len = int(max_len or 0)
+    if max_len <= 0:
+        return s
     if len(s) <= max_len:
         return s
-
-    cut_len = max_len - len(suffix)
-    if cut_len <= 0:
-        return suffix[:max_len]
-
-    chunk = s[:cut_len].rstrip()
-    # режем по последней "хорошей" границе
-    for sep in (",", " ", "/", ";"):
-        j = chunk.rfind(sep)
-        if j >= max(0, cut_len - 40):  # не уходим слишком далеко назад
-            chunk = chunk[:j].rstrip(" ,/;")
-            break
-
-    chunk = chunk.rstrip(" ,/;")
-    if suffix:
-        return (chunk + suffix)[:max_len]
-    return chunk
+    return s[:max_len].rstrip()
