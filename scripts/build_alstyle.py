@@ -24,7 +24,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v57_strict_raw_no_core_guess"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v58_fix_next_run_kwarg"
 
 ALSTYLE_SUPPLIER = "AlStyle"
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
@@ -211,7 +211,7 @@ def main() -> int:
     allowed = _parse_id_set(os.getenv("ALSTYLE_CATEGORY_IDS"), ALSTYLE_ALLOWED_CATEGORY_IDS_FALLBACK)
 
     build_time = now_almaty()
-    next_run = next_run_at_hour(build_time, hour)
+    next_run = next_run_at_hour(build_time, hour=hour)
 
     xml_text = _fetch_xml(url, timeout=timeout, login=login, password=password)
     root = ET.fromstring(xml_text)
