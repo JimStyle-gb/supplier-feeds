@@ -23,6 +23,9 @@ from zoneinfo import ZoneInfo
 import os
 import hashlib
 import re
+
+# Числа для парсинга float/int (вес/объём/габариты и т.п.)
+_RE_NUM = re.compile(r"(\d+(?:[\.,]\d+)?)")
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
 from .keywords import build_keywords, CS_KEYWORDS_MAX_LEN
