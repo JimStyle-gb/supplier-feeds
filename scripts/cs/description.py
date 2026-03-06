@@ -155,6 +155,11 @@ def _fix_common_broken_words(s: str) -> str:
         (r"(?iu)\bв\s+случаи\b", "в случае"),
         (r"(?iu)\bКолличество\b", "Количество"),
         (r"(?iu)\bпитание\s+м\b", "питанием"),
+        (r"(?iu)\bконтраст\s+ност", "контрастност"),
+        (r"(?iu)\bос\s+нован", "основан"),
+        (r"(?iu)\bос\s+новани", "основани"),
+        (r"(?iu)\bОС\s+ОБЕННОСТИ\s+И\s+ПРЕИМУЩЕСТВА\b", "Особенности и преимущества"),
+        (r"(?iu)\bОС\s+ОБЕННОСТИ\b", "Особенности"),
     ]
     for pat, rep in repl:
         t = re.sub(pat, rep, t)
@@ -210,6 +215,12 @@ def _fix_desc_quality_text(s: str) -> str:
     t = re.sub(r"(?im)^\s*\.\s*$", "", t)
     t = re.sub(r"(?iu)Проводное\s+зеркалированиепо\b", "Проводное зеркалирование по", t)
     t = re.sub(r"(?iu)Смарт-?система(?=[A-Za-zА-Яа-яЁё0-9])", "Смарт-система ", t)
+    t = re.sub(r"(?iu)\bос\s+новные\s+характеристики\b", "Основные характеристики", t)
+    t = re.sub(r"(?iu)\bос\s+новные\b", "основные", t)
+    t = re.sub(r"(?iu)\bос\s+новной\b", "основной", t)
+    t = re.sub(r"(?iu)\bос\s+нова\b", "основа", t)
+    t = re.sub(r"(?iu)\bос\s+нове\b", "основе", t)
+    t = re.sub(r"(?iu)\bос\s+новании\b", "основании", t)
     return t
 
 
@@ -251,6 +262,7 @@ def fix_text(s: str) -> str:
     t = fix_mixed_cyr_lat(t)
     t = sanitize_mixed_text(t)
     t = _fix_desc_quality_text(t)
+    t = re.sub(r"(?i)^\s*Устройства\s*,\s*(?=(Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)", "", t)
     t = re.sub(r"\n{3,}", "\n\n", t)
     return t.strip()
 
