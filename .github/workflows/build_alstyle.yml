@@ -11,8 +11,6 @@ permissions:
 jobs:
   build_alstyle:
     runs-on: ubuntu-latest
-    env:
-      SCHEDULE_HOUR_ALMATY: '1'
     concurrency:
       group: build_alstyle
       cancel-in-progress: true
@@ -91,18 +89,18 @@ jobs:
           fi
 
           # Следующий запуск (ежедневно в 01:00:00 по Алматы)
-          NOW_EPOCH=$(TZ='Asia/Almaty' date +%s)
-          TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
-          CAND_EPOCH=$(TZ='Asia/Almaty' date -d "${TODAY} 01:00:00" +%s)
-          if [ "$CAND_EPOCH" -le "$NOW_EPOCH" ]; then
-            NEXT_EPOCH=$(TZ='Asia/Almaty' date -d "${TODAY} 01:00:00 + 1 day" +%s)
-          else
-            NEXT_EPOCH="$CAND_EPOCH"
-          fi
-          NEXT_RUN=$(TZ='Asia/Almaty' date -d "@${NEXT_EPOCH}" '+%Y-%m-%d %H:%M:%S')
+  # Важно: не используем epoch-конверсию (@EPOCH), чтобы не ловить сдвиги TZ на раннерах.
+  NOW_HMS=$(TZ='Asia/Almaty' date '+%H%M%S')
+  TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
+  if [ "$NOW_HMS" -ge "010000" ]; then
+    NEXT_DATE=$(TZ='Asia/Almaty' date -d 'tomorrow' '+%Y-%m-%d')
+  else
+    NEXT_DATE="$TODAY"
+  fi
+  NEXT_RUN="${NEXT_DATE} 01:00:00"
 
-          echo "FEED_META_TS=${TS}${NOTE}" 
-          echo "FEED_META_NEXT_RUN=${NEXT_RUN}"
+  echo "FEED_META_TS=${TS}${NOTE}"
+  echo "FEED_META_NEXT_RUN=${NEXT_RUN}"
 
           for F in docs/alstyle.yml docs/raw/alstyle.yml; do
             if [ ! -f "$F" ]; then
