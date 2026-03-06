@@ -28,15 +28,17 @@ import yaml
 from cs.core import OfferOut, write_cs_feed, write_cs_feed_raw
 from cs.meta import now_almaty, next_run_at_hour
 from cs.pricing import compute_price
-from cs.util import fix_mixed_cyr_lat, norm_ws, safe_int
+from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v75_text_join_final_cleanup"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v76_adapter_first_monitor_root_cause_fix"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
 ALSTYLE_RAW_OUT_DEFAULT = "docs/raw/alstyle.yml"
 ALSTYLE_ID_PREFIX = "AS"
+# Исторически выпавшие офферы не дорисовываем, только диагностируем причину пропажи.
+ALSTYLE_WATCH_OIDS = {"AS257478"}
 
 CFG_DIR_DEFAULT = "scripts/suppliers/alstyle/config"
 FILTER_FILE_DEFAULT = "filter.yml"
@@ -203,6 +205,12 @@ _PROJECTOR_RICH_LINE_RE = re.compile(
     r"Беспроводные подключения|Беспроводные возможности)"
     r"\s*(?::|[-–—])?\s*(.+?)\s*$"
 )
+_MONITOR_RICH_LINE_RE = re.compile(
+    r"(?im)^\s*"
+    r"(Управление|Пользовательские настройки|Встроенные колонки|Защита замком|HDMI|DisplayPort|USB-?хаб|"
+    r"Разъ[её]м для наушников|Поддержка HDCP|Языки меню OSD)"
+    r"\s*(?::|[-–—])\s*(.+?)\s*$"
+)
 _DESC_COMPAT_LABEL_ONLY_RE = re.compile(r"(?im)^\s*(Совместимость|Совместимые модели|Устройства)\s*:?\s*$")
 _DESC_COMPAT_SENTENCE_RE = re.compile(
     r"(?is)\bСовместим(?:а|о|ы)?\s+с\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)"
@@ -271,6 +279,17 @@ _DESC_SPEC_KEY_MAP = {
     "беспроводные интерфейсы": "Беспроводные интерфейсы",
     "беспроводные подключения": "Беспроводные подключения",
     "беспроводные возможности": "Беспроводные возможности",
+    "управление": "Управление",
+    "пользовательские настройки": "Пользовательские настройки",
+    "встроенные колонки": "Встроенные колонки",
+    "защита замком": "Защита замком",
+    "hdmi": "HDMI",
+    "displayport": "DisplayPort",
+    "usb-хаб": "USB-хаб",
+    "usb хаб": "USB-хаб",
+    "разъём для наушников": "Разъём для наушников",
+    "поддержка hdcp": "Поддержка HDCP",
+    "языки меню osd": "Языки меню OSD",
 }
 
 
@@ -282,8 +301,9 @@ def _clean_desc_text(s: str) -> str:
     t = re.sub(r"(?i)<\s*p[^>]*>", "", t)
     t = re.sub(r"<[^>]+>", " ", t)
     t = t.replace("\xa0", " ")
+    t = unescape(t)
+    t = _sanitize_desc_quality_text(t)
     return t
-
 
 
 def _is_heading_only_value(val: str) -> bool:
@@ -305,77 +325,71 @@ def _fix_common_broken_words(s: str) -> str:
     if not t:
         return ""
 
-    def _smart_rep(m: re.Match[str], rep: str) -> str:
-        src = m.group(0)
-        if src[:1].isupper():
-            return rep[:1].upper() + rep[1:]
-        return rep
-
-    repl = [
+    exact_repl = [
+        (r"(?iu)\bос\s+новное\b", "основное"),
+        (r"(?iu)\bос\s+новной\b", "основной"),
+        (r"(?iu)\bос\s+новные\b", "основные"),
+        (r"(?iu)\bос\s+новного\b", "основного"),
+        (r"(?iu)\bос\s+новным\b", "основным"),
+        (r"(?iu)\bос\s+нове\b", "основе"),
+        (r"(?iu)\bос\s+нова\b", "основа"),
+        (r"(?iu)\bос\s+новываясь\b", "основываясь"),
+        (r"(?iu)\bос\s+новании\b", "основании"),
+        (r"(?iu)\bос\s+нован\b", "основан"),
+        (r"(?iu)\bос\s+ью\b", "осью"),
+        (r"(?iu)\bос\s+ыпался\b", "осыпался"),
+        (r"(?iu)\bос\s+ып\b", "осып"),
+        (r"(?iu)\bос\s+нащена\b", "оснащена"),
+        (r"(?iu)\bос\s+нащен\b", "оснащен"),
+        (r"(?iu)\bОс\s+обенности\b", "Особенности"),
         (r"(?iu)\bОС\s+ОБЕННОСТИ\s+И\s+ПРЕИМУЩЕСТВА\b", "Особенности и преимущества"),
         (r"(?iu)\bОС\s+ОБЕННОСТИ\b", "Особенности"),
-        (r"(?iu)\bос\s+обенностям\b", "особенностям"),
-        (r"(?iu)\bос\s+обенност\b", "особенност"),
+        (r"(?iu)\bос\s+обенности\b", "особенности"),
         (r"(?iu)\bос\s+обенно\b", "особенно"),
-        (r"(?iu)\bос\s+обенность\b", "особенность"),
-        (r"(?iu)\bос\s+об\b", "особ"),
-        (r"(?iu)\bос\s+нащ", "оснащ"),
+        (r"(?iu)\bКонтраст\s+ность\b", "Контрастность"),
+        (r"(?iu)\bконтраст\s+ность\b", "контрастность"),
+        (r"(?iu)\bв\s+случаи\b", "в случае"),
+        (r"(?iu)\bКолличество\b", "Количество"),
+        (r"(?iu)\bпроеци=ирования\b", "проецирования"),
+        (r"(?iu)\bпроеци=рует\b", "проецирует"),
+    ]
+    for pat, rep in exact_repl:
+        t = re.sub(pat, rep, t)
+
+    stem_repl = [
         (r"(?iu)\bос\s+уществ", "осуществ"),
-        (r"(?iu)\bос\s+ып", "осып"),
-        (r"(?iu)\bос\s+ью\b", "осью"),
-        (r"(?iu)\bос\s+новыва", "основыва"),
-        (r"(?iu)\bос\s+нов", "основ"),
-        (r"(?iu)\bос\s+нован", "основан"),
-        (r"(?iu)\bос\s+новани", "основани"),
         (r"(?iu)\bос\s+вещ", "освещ"),
+        (r"(?iu)\bос\s+тав", "остав"),
+        (r"(?iu)\bос\s+тат", "остат"),
+        (r"(?iu)\bос\s+тан", "остан"),
         (r"(?iu)\bос\s+вобожд", "освобожд"),
         (r"(?iu)\bос\s+вобод", "освобод"),
         (r"(?iu)\bос\s+леп", "ослеп"),
         (r"(?iu)\bос\s+лаб", "ослаб"),
-        (r"(?iu)\bос\s+тав", "остав"),
-        (r"(?iu)\bос\s+тат", "остат"),
-        (r"(?iu)\bос\s+тан", "остан"),
-        (r"(?iu)\bос\s+анки\b", "осанки"),
-        (r"(?iu)\bос\s+ям\b", "осям"),
-        (r"(?iu)\bос\s+ей\b", "осей"),
-        (r"(?iu)\bв\s+случаи\b", "в случае"),
-        (r"(?iu)\bКолличество\b", "Количество"),
-        (r"(?iu)\bпитание\s+м\b", "питанием"),
-        (r"(?iu)\bконтраст\s+ност", "контрастност"),
     ]
-    for pat, rep in repl:
-        t = re.sub(pat, lambda m, rep=rep: _smart_rep(m, rep), t)
+    for pat, rep in stem_repl:
+        t = re.sub(pat, rep, t)
 
-    # Повторная страховка для разорванных supplier-слов, которые могут приходить
-    # со смешанной кир/лат или с нестабильными пробелами.
-    t = fix_mixed_cyr_lat(t)
-    t = re.sub(r"(?iu)\bос\s+(?=обен|обенн|обенност|обенно|обенностям|обенность)", "ос", t)
-    t = re.sub(r"(?iu)\bос\s+(?=нов|новн|новыва|нован|новани|нащ|уществ|ып|ью\b|вещ|вобожд|вобод|леп|лаб|тав|тат|тан|анки\b|ям\b|ей\b)", "ос", t)
-    t = re.sub(r"(?iu)\bконтраст\s+(?=ност)", "контраст", t)
-    t = re.sub(r"(?iu)\bпроеци\s*=\s*", "проец", t)
-
-    # Склейки списков совместимости: "... C7055 Canon ..." -> "... C7055, Canon ..."
     t = re.sub(
         r"([A-ZА-ЯЁ0-9][A-Za-zА-Яа-яЁё0-9/.-]{1,})\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
         r"\1, ",
         t,
     )
-    # Склейки вида "... DR-G1100Протяжный сканер Canon ..."
     t = re.sub(
         r"([A-Z0-9][A-Za-z0-9/-]{2,})(?=(Протяжный сканер|Сканер|Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
         r"\1, ",
         t,
     )
+    t = re.sub(r"(?<=\d),\s+(?=\d)", ",", t)
     t = re.sub(r"\s*,\s*", ", ", t)
     return t
+
 
 
 def _sanitize_desc_quality_text(s: str) -> str:
     t = s or ""
     if not t:
         return ""
-
-    t = fix_mixed_cyr_lat(t)
 
     # Частые смешанные лат/кир техно-токены от поставщика.
     repl = [
@@ -422,15 +436,7 @@ def _sanitize_desc_quality_text(s: str) -> str:
     t = re.sub(r"(?iu)\bос\s+нова\b", "основа", t)
     t = re.sub(r"(?iu)\bос\s+нове\b", "основе", t)
     t = re.sub(r"(?iu)\bос\s+новании\b", "основании", t)
-    t = re.sub(r"(?iu)\bОс\s+обенности\b", "Особенности", t)
-    t = re.sub(r"(?iu)\bОС\s+ОБЕННОСТИ\b", "Особенности", t)
-    t = re.sub(r"(?iu)\bос\s+обенности\b", "особенности", t)
-    t = re.sub(r"(?iu)\bос\s+нащен([аоы])\b", r"оснащен\1", t)
-    t = re.sub(r"(?iu)\bос\s+вещени([еяи])\b", r"освещени\1", t)
-    t = re.sub(r"(?iu)\bКонтраст\s+ность\b", "Контрастность", t)
-    t = re.sub(r"(?iu)\bпроеци\s*=\s*ирования\b", "проецирования", t)
-    t = re.sub(r"(?iu)\bпроеци\s*=\s*рует\b", "проецирует", t)
-    t = re.sub(r"(?im)^\s*\.\s*$", "", t)
+    t = re.sub(r"(?<=\d),\s+(?=\d)", ",", t)
     t = re.sub(r"\n{3,}", "\n\n", t)
     return t.strip()
 
@@ -500,6 +506,10 @@ def _sanitize_param_value(key: str, val: str) -> str:
 
     if kcf == "ёмкость":
         v = re.sub(r"(?i)^[её]мкость(?:\s+лотка)?\s*[-:–—]\s*", "", v).strip()
+
+    if kcf in {"встроенные колонки", "hdmi", "displayport", "usb-хаб", "управление", "пользовательские настройки", "разъём для наушников", "поддержка hdcp", "языки меню osd"}:
+        v = re.sub(r"(?<=\d),\s+(?=\d)", ",", v)
+        v = re.sub(r"(?iu)\b(\d+)\s+(\d+)\s*Вт\b", r"\1 × \2 Вт", v)
 
     if kcf == "ресурс":
         # Убираем обрезанные хвосты из source, чтобы не тащить мусор в final
@@ -616,6 +626,13 @@ def _parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
         return ("Совместимость", norm_ws(m.group(1)))
 
     m = _PROJECTOR_RICH_LINE_RE.match(raw)
+    if m:
+        val = norm_ws(m.group(2))
+        if _is_heading_only_value(val):
+            return None
+        return (_canon_desc_spec_key(m.group(1)), val)
+
+    m = _MONITOR_RICH_LINE_RE.match(raw)
     if m:
         val = norm_ws(m.group(2))
         if _is_heading_only_value(val):
@@ -803,14 +820,18 @@ def main() -> int:
 
     supplier_name = (policy_cfg.get("supplier") or "AlStyle").strip()
     vendor_blacklist = {str(x).casefold() for x in (policy_cfg.get("vendor_blacklist_casefold") or ["alstyle"])}
+    watch_source: dict[str, dict[str, str]] = {}
+    watch_out: set[str] = set()
 
     for o in offers_in:
         cat = norm_ws(_t(o.find("categoryId")))
-        if allowed and (not cat or cat not in allowed):
-            continue
-
         raw_id = norm_ws(o.get("id") or _t(o.find("vendorCode")))
         name = norm_ws(_t(o.find("name")))
+        oid_probe = raw_id if raw_id.upper().startswith(ALSTYLE_ID_PREFIX) else f"{ALSTYLE_ID_PREFIX}{raw_id}" if raw_id else ""
+        if oid_probe in ALSTYLE_WATCH_OIDS:
+            watch_source[oid_probe] = {"categoryId": cat, "name": name}
+        if allowed and (not cat or cat not in allowed):
+            continue
         name = re.sub(r"\(\s+", "(", name)
         name = re.sub(r"\s+\)", ")", name)
         if not name or not raw_id:
@@ -862,6 +883,7 @@ def main() -> int:
             price_in = safe_int(_t(o.find("price")))
         price = compute_price(price_in)
 
+        watch_out.add(oid)
         out_offers.append(
             OfferOut(
                 oid=oid,
@@ -876,6 +898,16 @@ def main() -> int:
         )
 
     after = len(out_offers)
+    for wid in sorted(ALSTYLE_WATCH_OIDS):
+        if wid not in watch_source:
+            print(f"[build_alstyle] WARN: watched offer missing in supplier XML: {wid}")
+        elif wid not in watch_out:
+            info = watch_source[wid]
+            print(
+                f"[build_alstyle] WARN: watched offer skipped after source read: {wid}; "
+                f"categoryId={info.get('categoryId', '')!r}; name={info.get('name', '')!r}"
+            )
+
     out_offers.sort(key=lambda x: x.oid)
 
     write_cs_feed_raw(
