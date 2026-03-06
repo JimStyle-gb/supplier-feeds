@@ -31,7 +31,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v68_desc_gt_tail_cleanup"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v69_quality_text_cleanup"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -244,6 +244,47 @@ def _clean_desc_text(s: str) -> str:
     return t
 
 
+
+def _sanitize_desc_quality_text(s: str) -> str:
+    t = s or ""
+    if not t:
+        return ""
+
+    # Частые смешанные лат/кир техно-токены от поставщика.
+    repl = [
+        (r"(?iu)\b[LЛ][CС][DD]\b", "LCD"),
+        (r"(?iu)\b[LЛ][EЕ][DD]\b", "LED"),
+        (r"(?iu)\b[SЅ][NN][MМ][PР]\b", "SNMP"),
+        (r"(?iu)\b[HН][DD][MМ][IІ]\b", "HDMI"),
+        (r"(?iu)\b[Ff][RrГг][Oо0][Nп][Tт]\b", "Front"),
+        (r"(?iu)\bc[иi]c[tт]e[mм]a\b", "система"),
+        (r"(?iu)\bд[иi][cс]пл[eе]й\b", "дисплей"),
+    ]
+    for pat, rep in repl:
+        t = re.sub(pat, rep, t)
+
+    # Нормальные пробелы после типовых spec-лейблов внутри native description.
+    t = re.sub(
+        r"(?iu)\b("
+        r"Технология|Разрешение|Яркость|Контраст|Источник света|Оптика|Методы установки|Размер экрана|"
+        r"Дистанция|Коэффициент проекции|Форматы сторон|Смарт-?система|Беспроводной дисплей|"
+        r"Проводное зеркалирование|Интерфейсы|Акустика|Питание|Габариты проектора|Вес проектора|"
+        r"Габариты упаковки|Вес упаковки|Языки интерфейса|Комплектация"
+        r")(?=[A-Za-zА-Яа-яЁё0-9])",
+        r"\1 ",
+        t,
+    )
+
+    # Локальные quality-правки.
+    t = re.sub(r"(?iu)\bplenum\s+полост", "plenum-полост", t)
+    t = re.sub(r"(?im)^\s*\.\s*$", "", t)
+    t = re.sub(r"(?iu)Проводное\s+зеркалированиепо\b", "Проводное зеркалирование по", t)
+    t = re.sub(r"(?iu)Смарт-?система(?=[A-Za-zА-Яа-яЁё0-9])", "Смарт-система ", t)
+
+    t = re.sub(r"\n{3,}", "\n\n", t)
+    return t.strip()
+
+
 def _sanitize_native_desc(s: str) -> str:
     t = s or ""
     if not t:
@@ -258,6 +299,7 @@ def _sanitize_native_desc(s: str) -> str:
     # Косметика для raw: лишние пробелы внутри скобок.
     t = re.sub(r"\(\s+", "(", t)
     t = re.sub(r"\s+\)", ")", t)
+    t = _sanitize_desc_quality_text(t)
     t = re.sub(r"\n{3,}", "\n\n", t)
     return t.strip()
 
