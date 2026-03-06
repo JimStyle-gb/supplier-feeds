@@ -81,6 +81,7 @@ def norm_ws(s: str) -> str:
     s2 = (s or "").replace("\u00a0", " ").strip()
     s2 = re.sub(r"\s+", " ", s2)
     s2 = fix_mixed_cyr_lat(s2)
+    s2 = _fix_desc_quality_text(s2)
     return s2.strip()
 
 def xml_escape_text(s: str) -> str:
@@ -136,6 +137,41 @@ def sanitize_mixed_text(s: str) -> str:
     t = t.replace("ЖK", "ЖК").replace("Жk", "ЖК")
     return normalize_mixed_slash(normalize_mixed_hyphen(t))
 
+
+def _fix_desc_quality_text(s: str) -> str:
+    t = s or ""
+    if not t:
+        return t
+
+    repl = [
+        (r"(?iu)\b[LЛ][CС][DD]\b", "LCD"),
+        (r"(?iu)\b[LЛ][EЕ][DD]\b", "LED"),
+        (r"(?iu)\b[SЅ][NN][MМ][PР]\b", "SNMP"),
+        (r"(?iu)\b[HН][DD][MМ][IІ]\b", "HDMI"),
+        (r"(?iu)\b[Ff][RrГг][Oо0][Nп][Tт]\b", "Front"),
+        (r"(?iu)\bc[иi]c[tт]e[mм]a\b", "система"),
+        (r"(?iu)\bд[иi][cс]пл[eе]й\b", "дисплей"),
+    ]
+    for pat, rep in repl:
+        t = re.sub(pat, rep, t)
+
+    t = re.sub(
+        r"(?iu)\b("
+        r"Технология|Разрешение|Яркость|Контраст|Источник света|Оптика|Методы установки|Размер экрана|"
+        r"Дистанция|Коэффициент проекции|Форматы сторон|Смарт-?система|Беспроводной дисплей|"
+        r"Проводное зеркалирование|Интерфейсы|Акустика|Питание|Габариты проектора|Вес проектора|"
+        r"Габариты упаковки|Вес упаковки|Языки интерфейса|Комплектация"
+        r")(?=[A-Za-zА-Яа-яЁё0-9])",
+        r"\1 ",
+        t,
+    )
+    t = re.sub(r"(?iu)\bplenum\s+полост", "plenum-полост", t)
+    t = re.sub(r"(?im)^\s*\.\s*$", "", t)
+    t = re.sub(r"(?iu)Проводное\s+зеркалированиепо\b", "Проводное зеркалирование по", t)
+    t = re.sub(r"(?iu)Смарт-?система(?=[A-Za-zА-Яа-яЁё0-9])", "Смарт-система ", t)
+    return t
+
+
 # Хелперы описания (как в core)
 def fix_text(s: str) -> str:
     # Нормализует переносы строк и убирает мусорные пробелы/табуляции на пустых строках
@@ -172,7 +208,10 @@ def fix_text(s: str) -> str:
     # Нормализация частой опечатки (Shuko -> Schuko)
     t = _RE_SHUKO.sub("Schuko", t)
     t = fix_mixed_cyr_lat(t)
-    return t
+    t = sanitize_mixed_text(t)
+    t = _fix_desc_quality_text(t)
+    t = re.sub(r"\n{3,}", "\n\n", t)
+    return t.strip()
 
 def _native_has_specs_text(d: str) -> bool:
     # Если в "родном" описании уже есть свой блок характеристик/спецификаций — НЕ дублируем CS-блок.
