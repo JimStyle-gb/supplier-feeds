@@ -30,7 +30,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v62_config_driven_sort_params"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v63_desc_specs_lift"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -177,6 +177,148 @@ def _collect_params(offer_el: ET.Element, schema: dict[str, Any]) -> list[tuple[
     return out
 
 
+_DESC_SPEC_START_RE = re.compile(r"(?im)^\s*(Характеристики|Основные характеристики)\s*$")
+_DESC_SPEC_STOP_RE = re.compile(
+    r"(?im)^\s*(Преимущества|Комплектация|Условия гарантии|Гарантия|Примечание|Примечания|Особенности|Описание|EUROPRINT)\s*:??\s*$"
+)
+_DESC_SPEC_LINE_RE = re.compile(
+    r"(?im)^\s*"
+    r"(Модель|Аналог модели|Совместимость|Совместимые модели|Устройства|Для принтеров|"
+    r"Цвет|Цвет печати|Ресурс|Ресурс картриджа|Ресурс картриджа, cтр\.|"
+    r"Количество страниц|Кол-во страниц при 5% заполнении А4|Емкость|Ёмкость|"
+    r"Степлирование|Дополнительные опции|Применение|Количество в упаковке|Колличество в упаковке)"
+    r"\s*(?::|\t+|\s{2,})\s*(.+?)\s*$"
+)
+_DESC_SPEC_KEY_MAP = {
+    "модель": "Модель",
+    "аналог модели": "Аналог модели",
+    "совместимость": "Совместимость",
+    "совместимые модели": "Совместимость",
+    "устройства": "Совместимость",
+    "для принтеров": "Совместимость",
+    "цвет": "Цвет",
+    "цвет печати": "Цвет",
+    "ресурс": "Ресурс",
+    "ресурс картриджа": "Ресурс",
+    "ресурс картриджа, cтр.": "Ресурс",
+    "количество страниц": "Ресурс",
+    "кол-во страниц при 5% заполнении а4": "Ресурс",
+    "емкость": "Ёмкость",
+    "ёмкость": "Ёмкость",
+    "степлирование": "Степлирование",
+    "дополнительные опции": "Дополнительные опции",
+    "применение": "Применение",
+    "количество в упаковке": "Количество в упаковке",
+    "колличество в упаковке": "Количество в упаковке",
+}
+
+
+def _clean_desc_text(s: str) -> str:
+    t = s or ""
+    t = t.replace("\r", "\n")
+    t = re.sub(r"(?i)<\s*br\s*/?>", "\n", t)
+    t = re.sub(r"(?i)</\s*p\s*>", "\n", t)
+    t = re.sub(r"(?i)<\s*p[^>]*>", "", t)
+    t = re.sub(r"<[^>]+>", " ", t)
+    t = t.replace("\xa0", " ")
+    return t
+
+
+def _canon_desc_spec_key(k: str) -> str:
+    kk = norm_ws(k).casefold()
+    return _DESC_SPEC_KEY_MAP.get(kk, norm_ws(k))
+
+
+def _extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
+    text = _clean_desc_text(desc_src)
+    if not text.strip():
+        return []
+
+    m = _DESC_SPEC_START_RE.search(text)
+    if not m:
+        return []
+
+    block = text[m.end():]
+    stop = _DESC_SPEC_STOP_RE.search(block)
+    if stop:
+        block = block[:stop.start()]
+
+    lines = [ln.strip(" \t-–—") for ln in block.splitlines()]
+    lines = [ln for ln in lines if norm_ws(ln)]
+
+    out: list[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+
+    for ln in lines:
+        raw = ln
+        m2 = _DESC_SPEC_LINE_RE.match(raw)
+        if m2:
+            key = _canon_desc_spec_key(m2.group(1))
+            val = norm_ws(m2.group(2))
+        else:
+            compact = re.sub(r"\t+", "  ", raw)
+            compact = re.sub(r"\s{3,}", "  ", compact)
+            m3 = _DESC_SPEC_LINE_RE.match(compact)
+            if not m3:
+                continue
+            key = _canon_desc_spec_key(m3.group(1))
+            val = norm_ws(m3.group(2))
+
+        if not key or not val:
+            continue
+
+        # отрезаем мусорные хвосты, если внезапно склеилось несколько секций
+        val = re.split(
+            r"(?i)\b(Преимущества|Комплектация|Условия гарантии|Примечание|Примечания|Особенности|Описание)\b",
+            val,
+            maxsplit=1,
+        )[0].strip(" ;,.-")
+        if not val:
+            continue
+
+        drop = {str(x).casefold() for x in (schema.get("drop_keys_casefold") or [])}
+        rules = schema.get("key_rules") or {}
+        require_letter = bool(rules.get("require_letter", True))
+        max_len = int(rules.get("max_len", 60))
+        max_words = int(rules.get("max_words", 9))
+
+        if key.casefold() in drop:
+            continue
+        if not _key_quality_ok(key, require_letter=require_letter, max_len=max_len, max_words=max_words):
+            continue
+
+        val2 = _apply_value_normalizers(key, val, schema)
+        if not val2:
+            continue
+
+        sig = (key.casefold(), val2.casefold())
+        if sig in seen:
+            continue
+        seen.add(sig)
+        out.append((key, val2))
+
+    return out
+
+
+def _merge_params(base_params: list[tuple[str, str]], extra_params: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = list(base_params)
+    seen = {(norm_ws(k).casefold(), norm_ws(v).casefold()) for k, v in base_params}
+    seen_keys = {norm_ws(k).casefold() for k, _ in base_params}
+
+    for k, v in extra_params:
+        kcf = norm_ws(k).casefold()
+        sig = (kcf, norm_ws(v).casefold())
+        if sig in seen:
+            continue
+        if kcf in seen_keys:
+            continue
+        out.append((k, v))
+        seen.add(sig)
+        seen_keys.add(kcf)
+
+    return out
+
+
 def _fetch_xml(url: str, *, timeout: int, login: str | None, password: str | None) -> str:
     auth = (login, password) if (login and password) else None
     r = requests.get(url, timeout=timeout, auth=auth)
@@ -265,6 +407,14 @@ def main() -> int:
         pics = _collect_pictures(o, placeholder_picture)
 
         params = _collect_params(o, schema_cfg)
+
+        vendor_src = norm_ws(_t(o.find("vendor")))
+        if vendor_src and vendor_src.casefold() in vendor_blacklist:
+            vendor_src = ""
+
+        desc_src = _t(o.find("description")) or ""
+        params = _merge_params(params, _extract_desc_spec_pairs(desc_src, schema_cfg))
+
         # Стабильный порядок params: приоритетные ключи первыми, затем по алфавиту (чтобы raw ближе к final)
         prio = [str(x) for x in (policy_cfg.get("param_priority") or [])]
         prio_cf = [p.casefold() for p in prio]
@@ -278,12 +428,6 @@ def main() -> int:
             return (idx, kcf, (v or "").casefold())
         if prio:
             params = sorted(params, key=_pkey)
-
-        vendor_src = norm_ws(_t(o.find("vendor")))
-        if vendor_src and vendor_src.casefold() in vendor_blacklist:
-            vendor_src = ""
-
-        desc_src = _t(o.find("description")) or ""
 
         price_in = safe_int(_t(o.find("purchase_price")))
         if price_in is None:
