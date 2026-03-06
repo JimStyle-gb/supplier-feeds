@@ -30,7 +30,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v61_fix_policy_cfg_order"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v62_config_driven_sort_params"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -263,7 +263,21 @@ def main() -> int:
             in_false += 1
 
         pics = _collect_pictures(o, placeholder_picture)
+
         params = _collect_params(o, schema_cfg)
+        # Стабильный порядок params: приоритетные ключи первыми, затем по алфавиту (чтобы raw ближе к final)
+        prio = [str(x) for x in (policy_cfg.get("param_priority") or [])]
+        prio_cf = [p.casefold() for p in prio]
+        def _pkey(kv):
+            k, v = kv
+            kcf = (k or "").casefold()
+            try:
+                idx = prio_cf.index(kcf)
+            except ValueError:
+                idx = 10_000
+            return (idx, kcf, (v or "").casefold())
+        if prio:
+            params = sorted(params, key=_pkey)
 
         vendor_src = norm_ws(_t(o.find("vendor")))
         if vendor_src and vendor_src.casefold() in vendor_blacklist:
