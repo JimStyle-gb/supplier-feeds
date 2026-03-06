@@ -28,10 +28,10 @@ import yaml
 from cs.core import OfferOut, write_cs_feed, write_cs_feed_raw
 from cs.meta import now_almaty, next_run_at_hour
 from cs.pricing import compute_price
-from cs.util import norm_ws, safe_int
+from cs.util import fix_mixed_cyr_lat, norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v74_rich_touch_text_cleanup"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v75_text_join_final_cleanup"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -346,6 +346,14 @@ def _fix_common_broken_words(s: str) -> str:
     for pat, rep in repl:
         t = re.sub(pat, lambda m, rep=rep: _smart_rep(m, rep), t)
 
+    # Повторная страховка для разорванных supplier-слов, которые могут приходить
+    # со смешанной кир/лат или с нестабильными пробелами.
+    t = fix_mixed_cyr_lat(t)
+    t = re.sub(r"(?iu)\bос\s+(?=обен|обенн|обенност|обенно|обенностям|обенность)", "ос", t)
+    t = re.sub(r"(?iu)\bос\s+(?=нов|новн|новыва|нован|новани|нащ|уществ|ып|ью\b|вещ|вобожд|вобод|леп|лаб|тав|тат|тан|анки\b|ям\b|ей\b)", "ос", t)
+    t = re.sub(r"(?iu)\bконтраст\s+(?=ност)", "контраст", t)
+    t = re.sub(r"(?iu)\bпроеци\s*=\s*", "проец", t)
+
     # Склейки списков совместимости: "... C7055 Canon ..." -> "... C7055, Canon ..."
     t = re.sub(
         r"([A-ZА-ЯЁ0-9][A-Za-zА-Яа-яЁё0-9/.-]{1,})\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
@@ -366,6 +374,8 @@ def _sanitize_desc_quality_text(s: str) -> str:
     t = s or ""
     if not t:
         return ""
+
+    t = fix_mixed_cyr_lat(t)
 
     # Частые смешанные лат/кир техно-токены от поставщика.
     repl = [
@@ -412,6 +422,15 @@ def _sanitize_desc_quality_text(s: str) -> str:
     t = re.sub(r"(?iu)\bос\s+нова\b", "основа", t)
     t = re.sub(r"(?iu)\bос\s+нове\b", "основе", t)
     t = re.sub(r"(?iu)\bос\s+новании\b", "основании", t)
+    t = re.sub(r"(?iu)\bОс\s+обенности\b", "Особенности", t)
+    t = re.sub(r"(?iu)\bОС\s+ОБЕННОСТИ\b", "Особенности", t)
+    t = re.sub(r"(?iu)\bос\s+обенности\b", "особенности", t)
+    t = re.sub(r"(?iu)\bос\s+нащен([аоы])\b", r"оснащен\1", t)
+    t = re.sub(r"(?iu)\bос\s+вещени([еяи])\b", r"освещени\1", t)
+    t = re.sub(r"(?iu)\bКонтраст\s+ность\b", "Контрастность", t)
+    t = re.sub(r"(?iu)\bпроеци\s*=\s*ирования\b", "проецирования", t)
+    t = re.sub(r"(?iu)\bпроеци\s*=\s*рует\b", "проецирует", t)
+    t = re.sub(r"(?im)^\s*\.\s*$", "", t)
     t = re.sub(r"\n{3,}", "\n\n", t)
     return t.strip()
 
