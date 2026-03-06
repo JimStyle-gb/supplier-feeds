@@ -18,6 +18,7 @@ from __future__ import annotations
 import os
 import re
 import xml.etree.ElementTree as ET
+from html import unescape
 from pathlib import Path
 from typing import Any
 
@@ -30,7 +31,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v67_text_sanitize_canon_commas"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v68_desc_gt_tail_cleanup"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -243,33 +244,27 @@ def _clean_desc_text(s: str) -> str:
     return t
 
 
+def _sanitize_native_desc(s: str) -> str:
+    t = s or ""
+    if not t:
+        return ""
+    t = t.replace("\r\n", "\n").replace("\r", "\n")
+    # Двойные HTML-энтити от поставщика вроде &amp;gt; / &gt; не должны попадать в raw/final.
+    t = t.replace("&amp;gt;", "&gt;")
+    t = unescape(t)
+    # Убираем служебные хвосты-строки, состоящие только из '>' или '&gt;'.
+    t = re.sub(r"(?im)^\s*>+\s*$", "", t)
+    t = re.sub(r"(?im)^\s*&gt;\s*$", "", t)
+    # Косметика для raw: лишние пробелы внутри скобок.
+    t = re.sub(r"\(\s+", "(", t)
+    t = re.sub(r"\s+\)", ")", t)
+    t = re.sub(r"\n{3,}", "\n\n", t)
+    return t.strip()
+
+
 def _canon_desc_spec_key(k: str) -> str:
     kk = norm_ws(k).casefold()
     return _DESC_SPEC_KEY_MAP.get(kk, norm_ws(k))
-
-
-def _format_compat_list(s: str) -> str:
-    v = norm_ws(s)
-    if not v:
-        return ""
-
-    # Склеенные списки: ...4525iCanon...
-    v = re.sub(
-        r"(?<=[A-Za-zА-Яа-яЁё0-9])(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-        ", ",
-        v,
-    )
-    # Списки через пробел: ...C7055 Canon imageRUNNER...
-    v = re.sub(
-        r"(?<=[A-Za-zА-Яа-яЁё0-9])\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-        ", ",
-        v,
-    )
-
-    v = re.sub(r"\s*/\s*", "/", v)
-    v = re.sub(r"\s*,\s*", ", ", v)
-    v = re.sub(r"(,\s*){2,}", ", ", v)
-    return norm_ws(v.strip(" ,"))
 
 
 def _sanitize_param_value(key: str, val: str) -> str:
@@ -291,7 +286,15 @@ def _sanitize_param_value(key: str, val: str) -> str:
     if kcf == "совместимость":
         v = re.sub(r"(?i)^совместим(?:а|о|ы)?\s+с\s+", "", v).strip()
         v = re.sub(r"(?i)^для\s+(?:устройств|принтеров(?:\s+и\s+мфу)?|мфу|аппаратов)\s+", "", v).strip()
-        v = _format_compat_list(v)
+        v = re.sub(
+            r"(?<=[A-Za-zА-Яа-яЁё0-9])(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
+            ", ",
+            v,
+        )
+        v = re.sub(r"\s*/\s*", "/", v)
+        v = re.sub(r"(?:,?\s*(?:&gt;|&amp;gt;|>))+\s*$", "", v).strip(" ,;.-")
+        v = re.sub(r"\s*,\s*", ", ", v)
+        v = norm_ws(v)
 
     if kcf == "ёмкость":
         v = re.sub(r"(?i)^[её]мкость(?:\s+лотка)?\s*[-:–—]\s*", "", v).strip()
@@ -311,6 +314,8 @@ def _iter_desc_lines(text: str) -> list[str]:
     for raw in text.splitlines():
         ln = raw.strip(" 	-–—•")
         if not norm_ws(ln):
+            continue
+        if ln in {">", "&gt;", "&amp;gt;"}:
             continue
         out.append(ln)
     return out
@@ -339,7 +344,12 @@ def _join_compat_lines(lines: list[str]) -> str:
     if not parts:
         return ""
     s = ", ".join(parts)
-    return _format_compat_list(s)
+    s = re.sub(
+        r"(?<=[A-Za-zА-Яа-яЁё0-9])(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
+        ", ",
+        s,
+    )
+    return norm_ws(s)
 
 
 def _extract_multiline_compat_pairs(lines: list[str]) -> list[tuple[str, str]]:
@@ -587,6 +597,8 @@ def main() -> int:
 
         raw_id = norm_ws(o.get("id") or _t(o.find("vendorCode")))
         name = norm_ws(_t(o.find("name")))
+        name = re.sub(r"\(\s+", "(", name)
+        name = re.sub(r"\s+\)", ")", name)
         if not name or not raw_id:
             continue
 
@@ -614,7 +626,7 @@ def main() -> int:
         if vendor_src and vendor_src.casefold() in vendor_blacklist:
             vendor_src = ""
 
-        desc_src = _t(o.find("description")) or ""
+        desc_src = _sanitize_native_desc(_t(o.find("description")) or "")
         params = _merge_params(params, _extract_desc_spec_pairs(desc_src, schema_cfg))
 
         # Стабильный порядок params: приоритетные ключи первыми, затем по алфавиту (чтобы raw ближе к final)
