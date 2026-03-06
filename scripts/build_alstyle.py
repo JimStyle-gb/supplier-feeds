@@ -117,9 +117,21 @@ def _apply_value_normalizers(key: str, val: str, schema: dict[str, Any]) -> str:
         elif op == "trim_ws":
             v = norm_ws(v)
     # Нормализация: 'слово/Word' -> 'слово Word' только там, где slash не несёт смысл модели/совместимости
-    if norm_ws(key).casefold() not in {"совместимость", "модель", "аналог модели"}:
+    kcf = norm_ws(key).casefold()
+    if kcf not in {"совместимость", "модель", "аналог модели"}:
         v = _RE_LETTER_SLASH_LETTER.sub(r"\1 \2", v)
     v = _sanitize_param_value(key, v)
+    if not v:
+        return ""
+    # Безопасная техно-нормализация только после основной очистки значений.
+    # Не трогаем модель/совместимость, чтобы не ломать vendor/model tokens и слэши.
+    if kcf not in {"совместимость", "модель", "аналог модели"}:
+        v = _normalize_tech_value(v)
+        v = re.sub(r"(?<=\d),\s+(?=\d)", ",", v)
+        v = re.sub(r"(?iu)\b(\d),(\d{1,3})\s+(мм|см|м|кг|г|Вт|Гц|мс|дюйм(?:а|ов)?|дюйма|дюймов|ГБ|ТБ)\b", r"\1,\2 \3", v)
+        v = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+кд\s*(?:/\s*м²|м2)\b", r"\1 кд/м²", v)
+        v = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гбит\s*/?\s*с\b", r"\1 Гбит/с", v)
+        v = re.sub(r"(?iu)\b(\d+)\s*[xх×]\s*(\d+)\s*Вт\b", r"\1 × \2 Вт", v)
     return v
 
 
@@ -430,6 +442,8 @@ def _sanitize_desc_quality_text(s: str) -> str:
     t = re.sub(r"(?im)^\s*\.\s*$", "", t)
     t = re.sub(r"(?iu)Проводное\s+зеркалированиепо\b", "Проводное зеркалирование по", t)
     t = re.sub(r"(?iu)Смарт-?система(?=[A-Za-zА-Яа-яЁё0-9])", "Смарт-система ", t)
+    t = re.sub(r"(?iu)^\s*ОСОБЕННОСТИ\s+И\s+ПРЕИМУЩЕСТВА\s*$", "Особенности и преимущества", t, flags=re.M)
+    t = re.sub(r"(?iu)^\s*ИНТЕРФЕЙСЫ\s*/\s*РАЗЪ[ЕЁ]МЫ\s*/\s*УПРАВЛЕНИЕ:?\s*$", "Интерфейсы / разъёмы / управление", t, flags=re.M)
     t = re.sub(r"(?iu)\bос\s+новные\s+характеристики\b", "Основные характеристики", t)
     t = re.sub(r"(?iu)\bос\s+новные\b", "основные", t)
     t = re.sub(r"(?iu)\bос\s+новной\b", "основной", t)
@@ -437,6 +451,10 @@ def _sanitize_desc_quality_text(s: str) -> str:
     t = re.sub(r"(?iu)\bос\s+нове\b", "основе", t)
     t = re.sub(r"(?iu)\bос\s+новании\b", "основании", t)
     t = re.sub(r"(?<=\d),\s+(?=\d)", ",", t)
+    t = re.sub(r"(?iu)\b(\d{3,4})\s{2,}(\d{3,4})(?=(?:\s*@|\s*(?:пикс|dpi|Гц|кд(?:/м²|\s*м2)?|$)))", r"\1×\2", t)
+    t = re.sub(r"(?iu)\b(\d+)\s{2,}(\d+)\s*Вт\b", r"\1 × \2 Вт", t)
+    t = re.sub(r"(?iu)\b(\d+)\s+Гбит\s+с\b", r"\1 Гбит/с", t)
+    t = re.sub(r"(?iu)\bкд\s*м2\b", "кд/м²", t)
     t = re.sub(r"\n{3,}", "\n\n", t)
     return t.strip()
 
