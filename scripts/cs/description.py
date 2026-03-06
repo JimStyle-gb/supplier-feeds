@@ -138,6 +138,42 @@ def sanitize_mixed_text(s: str) -> str:
     return normalize_mixed_slash(normalize_mixed_hyphen(t))
 
 
+
+
+def _fix_common_broken_words(s: str) -> str:
+    t = s or ""
+    if not t:
+        return ""
+
+    repl = [
+        (r"(?iu)\bос\s+нов", "основ"),
+        (r"(?iu)\bос\s+нащ", "оснащ"),
+        (r"(?iu)\bос\s+уществ", "осуществ"),
+        (r"(?iu)\bос\s+ып", "осып"),
+        (r"(?iu)\bос\s+ью\b", "осью"),
+        (r"(?iu)\bос\s+об", "особ"),
+        (r"(?iu)\bв\s+случаи\b", "в случае"),
+        (r"(?iu)\bКолличество\b", "Количество"),
+        (r"(?iu)\bпитание\s+м\b", "питанием"),
+    ]
+    for pat, rep in repl:
+        t = re.sub(pat, rep, t)
+
+    # Склейки списков совместимости: "... C7055 Canon ..." -> "... C7055, Canon ..."
+    t = re.sub(
+        r"([A-ZА-ЯЁ0-9][A-Za-zА-Яа-яЁё0-9/.-]{1,})\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
+        r"\1, ",
+        t,
+    )
+    # Склейки вида "... DR-G1100Протяжный сканер Canon ..."
+    t = re.sub(
+        r"([A-Z0-9][A-Za-z0-9/-]{2,})(?=(Протяжный сканер|Сканер|Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
+        r"\1, ",
+        t,
+    )
+    t = re.sub(r"\s*,\s*", ", ", t)
+    return t
+
 def _fix_desc_quality_text(s: str) -> str:
     t = s or ""
     if not t:
@@ -154,6 +190,8 @@ def _fix_desc_quality_text(s: str) -> str:
     ]
     for pat, rep in repl:
         t = re.sub(pat, rep, t)
+
+    t = _fix_common_broken_words(t)
 
     t = re.sub(
         r"(?iu)\b("
