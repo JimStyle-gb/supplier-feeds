@@ -3384,7 +3384,7 @@ def normalize_vendor(v: str) -> str:
     elif v_cf.startswith("brothe"):
         v = "Brother"
     elif v_cf.startswith("europrint"):
-        v = "Euro Print"
+        v = "Europrint"
     # унификация Konica Minolta
     if "konica" in v_cf and "minolta" in v_cf:
         v = "Konica Minolta"
