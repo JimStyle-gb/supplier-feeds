@@ -81,7 +81,6 @@ def norm_ws(s: str) -> str:
     s2 = (s or "").replace("\u00a0", " ").strip()
     s2 = re.sub(r"\s+", " ", s2)
     s2 = fix_mixed_cyr_lat(s2)
-    s2 = _fix_desc_quality_text(s2)
     return s2.strip()
 
 def xml_escape_text(s: str) -> str:
@@ -137,131 +136,6 @@ def sanitize_mixed_text(s: str) -> str:
     t = t.replace("ЖK", "ЖК").replace("Жk", "ЖК")
     return normalize_mixed_slash(normalize_mixed_hyphen(t))
 
-
-
-
-def _fix_common_broken_words(s: str) -> str:
-    t = s or ""
-    if not t:
-        return ""
-
-    def _smart_rep(m: re.Match[str], rep: str) -> str:
-        src = m.group(0)
-        if src[:1].isupper():
-            return rep[:1].upper() + rep[1:]
-        return rep
-
-    repl = [
-        (r"(?iu)\bОС\s+ОБЕННОСТИ\s+И\s+ПРЕИМУЩЕСТВА\b", "Особенности и преимущества"),
-        (r"(?iu)\bОС\s+ОБЕННОСТИ\b", "Особенности"),
-        (r"(?iu)\bос\s+обенностям\b", "особенностям"),
-        (r"(?iu)\bос\s+обенност\b", "особенност"),
-        (r"(?iu)\bос\s+обенно\b", "особенно"),
-        (r"(?iu)\bос\s+обенность\b", "особенность"),
-        (r"(?iu)\bос\s+об\b", "особ"),
-        (r"(?iu)\bос\s+нащ", "оснащ"),
-        (r"(?iu)\bос\s+уществ", "осуществ"),
-        (r"(?iu)\bос\s+ып", "осып"),
-        (r"(?iu)\bос\s+ью\b", "осью"),
-        (r"(?iu)\bос\s+новыва", "основыва"),
-        (r"(?iu)\bос\s+нов", "основ"),
-        (r"(?iu)\bос\s+нован", "основан"),
-        (r"(?iu)\bос\s+новани", "основани"),
-        (r"(?iu)\bос\s+вещ", "освещ"),
-        (r"(?iu)\bос\s+вобожд", "освобожд"),
-        (r"(?iu)\bос\s+вобод", "освобод"),
-        (r"(?iu)\bос\s+леп", "ослеп"),
-        (r"(?iu)\bос\s+лаб", "ослаб"),
-        (r"(?iu)\bос\s+тав", "остав"),
-        (r"(?iu)\bос\s+тат", "остат"),
-        (r"(?iu)\bос\s+тан", "остан"),
-        (r"(?iu)\bос\s+анки\b", "осанки"),
-        (r"(?iu)\bос\s+ям\b", "осям"),
-        (r"(?iu)\bос\s+ей\b", "осей"),
-        (r"(?iu)\bв\s+случаи\b", "в случае"),
-        (r"(?iu)\bКолличество\b", "Количество"),
-        (r"(?iu)\bпитание\s+м\b", "питанием"),
-        (r"(?iu)\bконтраст\s+ност", "контрастност"),
-    ]
-    for pat, rep in repl:
-        t = re.sub(pat, lambda m, rep=rep: _smart_rep(m, rep), t)
-
-    t = fix_mixed_cyr_lat(t)
-    t = re.sub(r"(?iu)\bос\s+(?=обен|обенн|обенност|обенно|обенностям|обенность)", "ос", t)
-    t = re.sub(r"(?iu)\bос\s+(?=нов|новн|новыва|нован|новани|нащ|уществ|ып|ью\b|вещ|вобожд|вобод|леп|лаб|тав|тат|тан|анки\b|ям\b|ей\b)", "ос", t)
-    t = re.sub(r"(?iu)\bконтраст\s+(?=ност)", "контраст", t)
-    t = re.sub(r"(?iu)\bпроеци\s*=\s*", "проец", t)
-
-    # Склейки списков совместимости: "... C7055 Canon ..." -> "... C7055, Canon ..."
-    t = re.sub(
-        r"([A-ZА-ЯЁ0-9][A-Za-zА-Яа-яЁё0-9/.-]{1,})\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-        r"\1, ",
-        t,
-    )
-    # Склейки вида "... DR-G1100Протяжный сканер Canon ..."
-    t = re.sub(
-        r"([A-Z0-9][A-Za-z0-9/-]{2,})(?=(Протяжный сканер|Сканер|Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-        r"\1, ",
-        t,
-    )
-    t = re.sub(r"\s*,\s*", ", ", t)
-    return t
-
-def _fix_desc_quality_text(s: str) -> str:
-    t = s or ""
-    if not t:
-        return t
-
-    t = fix_mixed_cyr_lat(t)
-
-    repl = [
-        (r"(?iu)\b[LЛ][CС][DD]\b", "LCD"),
-        (r"(?iu)\b[LЛ][EЕ][DD]\b", "LED"),
-        (r"(?iu)\b[SЅ][NN][MМ][PР]\b", "SNMP"),
-        (r"(?iu)\b[HН][DD][MМ][IІ]\b", "HDMI"),
-        (r"(?iu)\b[Ff][RrГг][Oо0][Nп][Tт]\b", "Front"),
-        (r"(?iu)\bc[иi]c[tт]e[mм]a\b", "система"),
-        (r"(?iu)\bд[иi][cс]пл[eе]й\b", "дисплей"),
-    ]
-    for pat, rep in repl:
-        t = re.sub(pat, rep, t)
-
-    t = _fix_common_broken_words(t)
-
-    t = re.sub(
-        r"(?iu)\b("
-        r"ОС|Технология|Разрешение|Яркость|Контраст|Источник света|Световой источник|Оптика|Методы установки|Способы установки|Размер экрана|"
-        r"Дистанция|Коэффициент проекции|Форматы сторон|Смарт-?система|Беспроводной дисплей|"
-        r"Проводное зеркалирование|Интерфейсы|Акустика|Питание|Габариты проектора|Вес проектора|"
-        r"Габариты упаковки|Вес упаковки|Языки интерфейса|Комплектация|Беспроводные модули|"
-        r"Беспроводные интерфейсы|Беспроводные подключения|Беспроводные возможности"
-        r")(?=[A-Za-zА-Яа-яЁё0-9])",
-        r"\1 ",
-        t,
-    )
-    t = re.sub(r"(?iu)\bразрешение\s+м(?=\s+\d)", "разрешением", t)
-    t = re.sub(r"(?iu)\bяркость\s+ю(?=\s+\d)", "яркостью", t)
-    t = re.sub(r"(?iu)\bplenum\s+полост", "plenum-полост", t)
-    t = re.sub(r"(?im)^\s*\.\s*$", "", t)
-    t = re.sub(r"(?iu)Проводное\s+зеркалированиепо\b", "Проводное зеркалирование по", t)
-    t = re.sub(r"(?iu)Смарт-?система(?=[A-Za-zА-Яа-яЁё0-9])", "Смарт-система ", t)
-    t = re.sub(r"(?iu)\bос\s+новные\s+характеристики\b", "Основные характеристики", t)
-    t = re.sub(r"(?iu)\bос\s+новные\b", "основные", t)
-    t = re.sub(r"(?iu)\bос\s+новной\b", "основной", t)
-    t = re.sub(r"(?iu)\bос\s+нова\b", "основа", t)
-    t = re.sub(r"(?iu)\bос\s+нове\b", "основе", t)
-    t = re.sub(r"(?iu)\bос\s+новании\b", "основании", t)
-    t = re.sub(r"(?iu)\bОс\s+обенности\b", "Особенности", t)
-    t = re.sub(r"(?iu)\bОС\s+ОБЕННОСТИ\b", "Особенности", t)
-    t = re.sub(r"(?iu)\bос\s+обенности\b", "особенности", t)
-    t = re.sub(r"(?iu)\bос\s+нащен([аоы])\b", r"оснащен\1", t)
-    t = re.sub(r"(?iu)\bос\s+вещени([еяи])\b", r"освещени\1", t)
-    t = re.sub(r"(?iu)\bКонтраст\s+ность\b", "Контрастность", t)
-    t = re.sub(r"(?iu)\bпроеци\s*=\s*ирования\b", "проецирования", t)
-    t = re.sub(r"(?iu)\bпроеци\s*=\s*рует\b", "проецирует", t)
-    return t
-
-
 # Хелперы описания (как в core)
 def fix_text(s: str) -> str:
     # Нормализует переносы строк и убирает мусорные пробелы/табуляции на пустых строках
@@ -298,11 +172,7 @@ def fix_text(s: str) -> str:
     # Нормализация частой опечатки (Shuko -> Schuko)
     t = _RE_SHUKO.sub("Schuko", t)
     t = fix_mixed_cyr_lat(t)
-    t = sanitize_mixed_text(t)
-    t = _fix_desc_quality_text(t)
-    t = re.sub(r"(?i)^\s*Устройства\s*,\s*(?=(Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)", "", t)
-    t = re.sub(r"\n{3,}", "\n\n", t)
-    return t.strip()
+    return t
 
 def _native_has_specs_text(d: str) -> bool:
     # Если в "родном" описании уже есть свой блок характеристик/спецификаций — НЕ дублируем CS-блок.
