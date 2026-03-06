@@ -30,7 +30,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v66_canon_multiline_compat_fix"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v67_text_sanitize_canon_commas"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -248,6 +248,30 @@ def _canon_desc_spec_key(k: str) -> str:
     return _DESC_SPEC_KEY_MAP.get(kk, norm_ws(k))
 
 
+def _format_compat_list(s: str) -> str:
+    v = norm_ws(s)
+    if not v:
+        return ""
+
+    # Склеенные списки: ...4525iCanon...
+    v = re.sub(
+        r"(?<=[A-Za-zА-Яа-яЁё0-9])(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
+        ", ",
+        v,
+    )
+    # Списки через пробел: ...C7055 Canon imageRUNNER...
+    v = re.sub(
+        r"(?<=[A-Za-zА-Яа-яЁё0-9])\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
+        ", ",
+        v,
+    )
+
+    v = re.sub(r"\s*/\s*", "/", v)
+    v = re.sub(r"\s*,\s*", ", ", v)
+    v = re.sub(r"(,\s*){2,}", ", ", v)
+    return norm_ws(v.strip(" ,"))
+
+
 def _sanitize_param_value(key: str, val: str) -> str:
     v = norm_ws(val)
     if not v:
@@ -267,14 +291,7 @@ def _sanitize_param_value(key: str, val: str) -> str:
     if kcf == "совместимость":
         v = re.sub(r"(?i)^совместим(?:а|о|ы)?\s+с\s+", "", v).strip()
         v = re.sub(r"(?i)^для\s+(?:устройств|принтеров(?:\s+и\s+мфу)?|мфу|аппаратов)\s+", "", v).strip()
-        v = re.sub(
-            r"(?<=[A-Za-zА-Яа-яЁё0-9])(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-            ", ",
-            v,
-        )
-        v = re.sub(r"\s*/\s*", "/", v)
-        v = re.sub(r"\s*,\s*", ", ", v)
-        v = norm_ws(v)
+        v = _format_compat_list(v)
 
     if kcf == "ёмкость":
         v = re.sub(r"(?i)^[её]мкость(?:\s+лотка)?\s*[-:–—]\s*", "", v).strip()
@@ -322,12 +339,7 @@ def _join_compat_lines(lines: list[str]) -> str:
     if not parts:
         return ""
     s = ", ".join(parts)
-    s = re.sub(
-        r"(?<=[A-Za-zА-Яа-яЁё0-9])(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-        ", ",
-        s,
-    )
-    return norm_ws(s)
+    return _format_compat_list(s)
 
 
 def _extract_multiline_compat_pairs(lines: list[str]) -> list[tuple[str, str]]:
