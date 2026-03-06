@@ -31,7 +31,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v79_restore_desc_lift_monitor_numeric_safe"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v81_monitor_desc_cleanup_watch_report"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -44,6 +44,7 @@ CFG_DIR_DEFAULT = "scripts/suppliers/alstyle/config"
 FILTER_FILE_DEFAULT = "filter.yml"
 SCHEMA_FILE_DEFAULT = "schema.yml"
 POLICY_FILE_DEFAULT = "policy.yml"  # опционально
+WATCH_REPORT_DEFAULT = "docs/raw/alstyle_watch.txt"
 
 
 _RE_HAS_LETTER = re.compile(r"[A-Za-zА-Яа-яЁё]")
@@ -442,8 +443,12 @@ def _sanitize_desc_quality_text(s: str) -> str:
     t = re.sub(r"(?im)^\s*\.\s*$", "", t)
     t = re.sub(r"(?iu)Проводное\s+зеркалированиепо\b", "Проводное зеркалирование по", t)
     t = re.sub(r"(?iu)Смарт-?система(?=[A-Za-zА-Яа-яЁё0-9])", "Смарт-система ", t)
-    t = re.sub(r"(?iu)^\s*ОСОБЕННОСТИ\s+И\s+ПРЕИМУЩЕСТВА\s*$", "Особенности и преимущества", t, flags=re.M)
+    t = re.sub(r"(?iu)^\s*ОСОБЕННОСТИ\s+И\s+ПРЕИМУЩЕСТВА:?\s*$", "Особенности и преимущества", t, flags=re.M)
     t = re.sub(r"(?iu)^\s*ИНТЕРФЕЙСЫ\s*/\s*РАЗЪ[ЕЁ]МЫ\s*/\s*УПРАВЛЕНИЕ:?\s*$", "Интерфейсы / разъёмы / управление", t, flags=re.M)
+    t = re.sub(r"(?iu)^\s*АКСЕССУАРЫ:?\s*$", "Аксессуары", t, flags=re.M)
+    t = re.sub(r"(?iu)^\s*ПОРТЫ\s+И\s+ПОДКЛЮЧЕНИЕ:?\s*$", "Порты и подключение", t, flags=re.M)
+    t = re.sub(r"(?iu)^\s*ЗАДНЯЯ\s+ПАНЕЛЬ:?\s*$", "Задняя панель", t, flags=re.M)
+    t = re.sub(r"(?iu)^\s*ПЕРЕДНЯЯ\s+ПАНЕЛЬ:?\s*$", "Передняя панель", t, flags=re.M)
     t = re.sub(r"(?iu)\bос\s+новные\s+характеристики\b", "Основные характеристики", t)
     t = re.sub(r"(?iu)\bос\s+новные\b", "основные", t)
     t = re.sub(r"(?iu)\bос\s+новной\b", "основной", t)
@@ -451,10 +456,15 @@ def _sanitize_desc_quality_text(s: str) -> str:
     t = re.sub(r"(?iu)\bос\s+нове\b", "основе", t)
     t = re.sub(r"(?iu)\bос\s+новании\b", "основании", t)
     t = re.sub(r"(?<=\d),\s+(?=\d)", ",", t)
-    t = re.sub(r"(?iu)\b(\d{3,4})\s{2,}(\d{3,4})(?=(?:\s*@|\s*(?:пикс|dpi|Гц|кд(?:/м²|\s*м2)?|$)))", r"\1×\2", t)
-    t = re.sub(r"(?iu)\b(\d+)\s{2,}(\d+)\s*Вт\b", r"\1 × \2 Вт", t)
-    t = re.sub(r"(?iu)\b(\d+)\s+Гбит\s+с\b", r"\1 Гбит/с", t)
+    t = re.sub(r"(?iu)\b(\d{3,4})\s+(\d{3,4})(?=(?:\s*@|\s*(?:пикс|dpi|px|Гц|кд(?:/м²|\s*м2)?|\)|$)))", r"\1×\2", t)
+    t = re.sub(r"(?iu)\b(\d+)\s{1,}(\d+)\s*Вт\b", r"\1 × \2 Вт", t)
+    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гбит\s+с\b", r"\1 Гбит/с", t)
     t = re.sub(r"(?iu)\bкд\s*м2\b", "кд/м²", t)
+    t = re.sub(r"(?iu)\b(\d+)\s+порта?\s+(\d+)\s+Type-([AC])\b", r"\1 порта: \2 × Type-\3", t)
+    t = re.sub(r"(?iu)\b(\d+)\s+Type-([AC])\b", r"\1 × Type-\2", t)
+    t = re.sub(r"(?iu)\b(\d),\s+(\d{1,3})\s+(мм|см|м|кг|г|Вт|Гц|мс|ГБ|ТБ)\b", r"\1,\2 \3", t)
+    t = re.sub(r"(?iu)\bЕсть\s+разъ[её]м\s+для\s+наушников\.?", "Разъём для наушников: есть.", t)
+    t = re.sub(r"(?iu)\bПоддержка\s+HDCP\.?", "Поддержка HDCP: есть.", t)
     t = re.sub(r"\n{3,}", "\n\n", t)
     return t.strip()
 
@@ -489,12 +499,13 @@ def _normalize_tech_value(s: str) -> str:
         return ""
     # Безопасная техно-нормализация только для значений, не для всего description.
     t = re.sub(r"(?<=\d),\s+(?=\d)", ",", t)
-    t = re.sub(r"(?iu)\b(\d{3,4})\s+(\d{3,4})(?=(?:\s*@|\s*(?:пикс|dpi|Гц|кд(?:/м²|\s*м2)?|$)))", r"\1×\2", t)
-    t = re.sub(r"(?iu)\b(\d+)\s+Гбит\s+с\b", r"\1 Гбит/с", t)
-    t = re.sub(r"(?iu)\bкд\s*м2\b", "кд/м²", t)
+    t = re.sub(r"(?iu)\b(\d{3,4})\s+(\d{3,4})(?=(?:\s*@|\s*(?:пикс|dpi|px|Гц|кд(?:/м²|\s*м2)?|$)))", r"\1×\2", t)
+    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гбит\s+с\b", r"\1 Гбит/с", t)
+    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+кд\s*(?:/\s*м²|м2)\b", r"\1 кд/м²", t)
     t = re.sub(r"(?iu)\b(\d+)\s*[xх×]\s*(\d+)\s*Вт\b", r"\1 × \2 Вт", t)
     t = re.sub(r"(?iu)\b(\d+)\s+Type-([AC])\b", r"\1 × Type-\2", t)
-    t = re.sub(r"(?iu)\b(\d+)\s+порта?\s+(\d+)\s*×\s*Type-([AC])\b", r"\1 порта: \2 × Type-\3", t)
+    t = re.sub(r"(?iu)\b(\d+)\s+порта?\s+(\d+)\s*×?\s*Type-([AC])\b", r"\1 порта: \2 × Type-\3", t)
+    t = re.sub(r"(?iu)\b(\d),\s+(\d{1,3})\s+(мм|см|м|кг|г|Вт|Гц|мс|ГБ|ТБ)\b", r"\1,\2 \3", t)
     return t
 
 
@@ -540,9 +551,17 @@ def _sanitize_param_value(key: str, val: str) -> str:
     if kcf == "ёмкость":
         v = re.sub(r"(?i)^[её]мкость(?:\s+лотка)?\s*[-:–—]\s*", "", v).strip()
 
-    if kcf in {"встроенные колонки", "hdmi", "displayport", "usb-хаб", "управление", "пользовательские настройки", "разъём для наушников", "поддержка hdcp", "языки меню osd"}:
+    if kcf in {"встроенные колонки", "hdmi", "displayport", "usb-хаб", "управление", "пользовательские настройки", "разъём для наушников", "поддержка hdcp", "языки меню osd", "интерфейсы"}:
         v = re.sub(r"(?<=\d),\s+(?=\d)", ",", v)
         v = re.sub(r"(?iu)\b(\d+)\s+(\d+)\s*Вт\b", r"\1 × \2 Вт", v)
+        v = _normalize_tech_value(v)
+        if _is_heading_only_value(v):
+            return ""
+
+    if kcf == "разъём для наушников":
+        v = re.sub(r"(?iu)^есть\.?$", "есть", v)
+    if kcf == "поддержка hdcp":
+        v = re.sub(r"(?iu)^есть\.?$", "есть", v)
 
     if kcf == "ресурс":
         # Убираем обрезанные хвосты из source, чтобы не тащить мусор в final
@@ -644,6 +663,8 @@ def _extract_multiline_compat_pairs(lines: list[str]) -> list[tuple[str, str]]:
 def _parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
     ln = norm_ws(raw)
     if not ln:
+        return None
+    if re.fullmatch(r"(?iu)(Интерфейсы\s*/\s*разъ[её]мы\s*/\s*управление|Аксессуары|Порты\s+и\s+подключение|Задняя\s+панель|Передняя\s+панель):?", ln):
         return None
 
     m = _DESC_SPEC_LINE_RE.match(raw)
@@ -806,6 +827,7 @@ def main() -> int:
     url = (os.getenv("ALSTYLE_URL") or ALSTYLE_URL_DEFAULT).strip()
     out_file = (os.getenv("OUT_FILE") or ALSTYLE_OUT_DEFAULT).strip()
     raw_out = (os.getenv("RAW_OUT_FILE") or ALSTYLE_RAW_OUT_DEFAULT).strip()
+    watch_report = (os.getenv("WATCH_REPORT_FILE") or WATCH_REPORT_DEFAULT).strip()
     encoding = (os.getenv("OUTPUT_ENCODING") or "utf-8").strip() or "utf-8"
 
     env_hour = (os.getenv("SCHEDULE_HOUR_ALMATY") or "").strip()  # legacy env, будет сравнение после чтения policy.yml
@@ -931,23 +953,38 @@ def main() -> int:
         )
 
     after = len(out_offers)
+    watch_messages: list[str] = []
     for wid in sorted(ALSTYLE_WATCH_OIDS):
         if wid not in watch_source:
-            print(f"[build_alstyle] ROOT_CAUSE: watched offer not present in supplier XML: {wid}")
+            msg = f"[build_alstyle] ROOT_CAUSE: watched offer not present in supplier XML: {wid}"
+            print(msg)
+            watch_messages.append(msg)
         elif wid not in watch_out:
             info = watch_source[wid]
             cat = info.get('categoryId', '')
             reason = "filtered_by_category" if (allowed and (not cat or cat not in allowed)) else "skipped_after_parse"
-            print(
+            msg = (
                 f"[build_alstyle] ROOT_CAUSE: watched offer missing in output: {wid}; reason={reason}; "
                 f"categoryId={cat!r}; name={info.get('name', '')!r}"
             )
+            print(msg)
+            watch_messages.append(msg)
         else:
             info = watch_source[wid]
-            print(
+            msg = (
                 f"[build_alstyle] WATCH_OK: {wid}; categoryId={info.get('categoryId', '')!r}; "
                 f"name={info.get('name', '')!r}"
             )
+            print(msg)
+            watch_messages.append(msg)
+
+    try:
+        if watch_report:
+            rp = Path(watch_report)
+            rp.parent.mkdir(parents=True, exist_ok=True)
+            rp.write_text("\n".join(watch_messages) + ("\n" if watch_messages else ""), encoding="utf-8")
+    except Exception as e:
+        print(f"[build_alstyle] WARN: failed to write watch report {watch_report!r}: {e}")
 
     out_offers.sort(key=lambda x: x.oid)
 
