@@ -1498,14 +1498,12 @@ def normalize_mixed_hyphen(s: str) -> str:
     t = s or ""
     if not t:
         return t
-    # LED-индикаторы, USB-кабель, OPS-слот, Eco-режим, A3-формат
-    t = _RE_MIXED_HYPHEN_LAT_CYR.sub(r"\1 \2", t)
-    t = _RE_MIXED_HYPHEN_A1_CYR.sub(r"\1 \2", t)
-    t = _RE_MIXED_HYPHEN_CYR_LAT.sub(r"\1 \2", t)
+    # Начиная с v061 не удаляем дефис между LAT/CYR:
+    # LCD-дисплей, LED-индикаторы, SNMP-карты, Android-приставка и т.п.
     return t
 
 
-_RE_MIXED_SLASH_LAT_CYR = re.compile(r"([A-Za-z]{1,}[A-Za-z0-9]*)/([Ѐ-ӿ]{2,})")
+_RE_MIXED_SLASH_LAT_CYR_RE_MIXED_SLASH_LAT_CYR = re.compile(r"([A-Za-z]{1,}[A-Za-z0-9]*)/([Ѐ-ӿ]{2,})")
 _RE_MIXED_SLASH_CYR_LAT = re.compile(r"([Ѐ-ӿ]{2,})/([A-Za-z]{1,}[A-Za-z0-9]*)")
 
 _RE_KEEP_LAT_CYR_SLASH = re.compile(r"[A-Z]{1,5}(?:\d{0,3}[A-Z]{0,3})?")
@@ -1513,15 +1511,12 @@ _RE_KEEP_LAT_CYR_SLASH = re.compile(r"[A-Z]{1,5}(?:\d{0,3}[A-Z]{0,3})?")
 def _mixed_slash_repl_lat_cyr(m: re.Match[str]) -> str:
     left = m.group(1)
     right = m.group(2)
-    # В compat/моделях сохраняем слэш у коротких LAT-токенов: LX/Улучшенный, OPS/модуль и т.п.
-    if _RE_KEEP_LAT_CYR_SLASH.fullmatch(left or ""):
-        return f"{left}/{right}"
-    return f"{left} {right}"
+    return f"{left}/{right}"
 
 def _mixed_slash_repl_cyr_lat(m: re.Match[str]) -> str:
     left = m.group(1)
     right = m.group(2)
-    return f"{left} {right}"
+    return f"{left}/{right}"
 
 def normalize_mixed_slash(s: str) -> str:
     t = s or ""
@@ -1601,7 +1596,9 @@ def sanitize_mixed_text(s: str) -> str:
     t = fix_mixed_cyr_lat(s)
     # Каз/рус тексты: исправляем короткие смешанные токены (ЖK -> ЖК)
     t = t.replace("ЖK", "ЖК").replace("Жk", "ЖК")
-    return normalize_mixed_slash(normalize_mixed_hyphen(t))
+    # Не ломаем техно-токены вида LCD-дисплей, SNMP-карты, Android-приставка.
+    # Слэш тоже сохраняем: LX/Улучшенный, Xerox/Карты и т.п.
+    return normalize_mixed_slash(t)
 
 def parse_id_set(env_value: str | None, fallback: Iterable[int] | None = None) -> set[str]:
     out: set[str] = set()
