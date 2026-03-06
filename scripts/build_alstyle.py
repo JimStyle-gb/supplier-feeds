@@ -31,7 +31,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v69_quality_text_cleanup"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v70_desc_label_guard"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -264,16 +264,22 @@ def _sanitize_desc_quality_text(s: str) -> str:
         t = re.sub(pat, rep, t)
 
     # Нормальные пробелы после типовых spec-лейблов внутри native description.
+    # Важно: добавляем пробел только когда после лейбла идёт LAT/цифра.
+    # Так не ломаем обычные русские формы вроде "разрешением"/"яркостью".
     t = re.sub(
         r"(?iu)\b("
-        r"Технология|Разрешение|Яркость|Контраст|Источник света|Оптика|Методы установки|Размер экрана|"
+        r"ОС|Технология|Разрешение|Яркость|Контраст|Источник света|Световой источник|Оптика|Методы установки|Размер экрана|"
         r"Дистанция|Коэффициент проекции|Форматы сторон|Смарт-?система|Беспроводной дисплей|"
         r"Проводное зеркалирование|Интерфейсы|Акустика|Питание|Габариты проектора|Вес проектора|"
         r"Габариты упаковки|Вес упаковки|Языки интерфейса|Комплектация"
-        r")(?=[A-Za-zА-Яа-яЁё0-9])",
+        r")(?=[A-Za-z0-9])",
         r"\1 ",
         t,
     )
+
+    # Страховка для уже сломанных форм, если такое пришло от прошлой чистки.
+    t = re.sub(r"(?iu)\bразрешение\s+м(?=\s+\d)", "разрешением", t)
+    t = re.sub(r"(?iu)\bяркость\s+ю(?=\s+\d)", "яркостью", t)
 
     # Локальные quality-правки.
     t = re.sub(r"(?iu)\bplenum\s+полост", "plenum-полост", t)
