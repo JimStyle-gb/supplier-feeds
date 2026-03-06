@@ -1508,6 +1508,21 @@ def normalize_mixed_hyphen(s: str) -> str:
 _RE_MIXED_SLASH_LAT_CYR = re.compile(r"([A-Za-z]{1,}[A-Za-z0-9]*)/([Ѐ-ӿ]{2,})")
 _RE_MIXED_SLASH_CYR_LAT = re.compile(r"([Ѐ-ӿ]{2,})/([A-Za-z]{1,}[A-Za-z0-9]*)")
 
+_RE_KEEP_LAT_CYR_SLASH = re.compile(r"[A-Z]{1,5}(?:\d{0,3}[A-Z]{0,3})?")
+
+def _mixed_slash_repl_lat_cyr(m: re.Match[str]) -> str:
+    left = m.group(1)
+    right = m.group(2)
+    # В compat/моделях сохраняем слэш у коротких LAT-токенов: LX/Улучшенный, OPS/модуль и т.п.
+    if _RE_KEEP_LAT_CYR_SLASH.fullmatch(left or ""):
+        return f"{left}/{right}"
+    return f"{left} {right}"
+
+def _mixed_slash_repl_cyr_lat(m: re.Match[str]) -> str:
+    left = m.group(1)
+    right = m.group(2)
+    return f"{left} {right}"
+
 def normalize_mixed_slash(s: str) -> str:
     t = s or ""
     if not t:
@@ -1515,8 +1530,8 @@ def normalize_mixed_slash(s: str) -> str:
     # Только кир/лат переходы: колодка/IEC, CD/банк, ЖК/USB, контактілер/EPO.
     # Лат/лат (RJ11/RJ45) и цифры/лат (4/IEC) не трогаем.
     for _ in range(3):  # на случай нескольких вхождений
-        t2 = _RE_MIXED_SLASH_LAT_CYR.sub(r"\1 \2", t)
-        t2 = _RE_MIXED_SLASH_CYR_LAT.sub(r"\1 \2", t2)
+        t2 = _RE_MIXED_SLASH_LAT_CYR.sub(_mixed_slash_repl_lat_cyr, t)
+        t2 = _RE_MIXED_SLASH_CYR_LAT.sub(_mixed_slash_repl_cyr_lat, t2)
         if t2 == t:
             break
         t = t2
