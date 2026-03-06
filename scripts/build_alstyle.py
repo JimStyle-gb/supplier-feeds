@@ -30,7 +30,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v63_desc_specs_lift"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v64_inline_specs_tail_fix"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -115,6 +115,7 @@ def _apply_value_normalizers(key: str, val: str, schema: dict[str, Any]) -> str:
             v = norm_ws(v)
     # Нормализация: 'слово/Word' -> 'слово Word' (только если по обе стороны буквы)
     v = _RE_LETTER_SLASH_LETTER.sub(r"\1 \2", v)
+    v = _sanitize_param_value(key, v)
     return v
 
 
@@ -177,18 +178,19 @@ def _collect_params(offer_el: ET.Element, schema: dict[str, Any]) -> list[tuple[
     return out
 
 
-_DESC_SPEC_START_RE = re.compile(r"(?im)^\s*(Характеристики|Основные характеристики)\s*$")
+_DESC_SPEC_START_RE = re.compile(r"(?im)^\s*(Характеристики|Основные характеристики)\s*:?\s*$")
 _DESC_SPEC_STOP_RE = re.compile(
-    r"(?im)^\s*(Преимущества|Комплектация|Условия гарантии|Гарантия|Примечание|Примечания|Особенности|Описание|EUROPRINT)\s*:??\s*$"
+    r"(?im)^\s*(Преимущества|Комплектация|Условия гарантии|Гарантия|Примечание|Примечания|Особенности|Описание|EUROPRINT)\s*:?\s*$"
 )
 _DESC_SPEC_LINE_RE = re.compile(
     r"(?im)^\s*"
     r"(Модель|Аналог модели|Совместимость|Совместимые модели|Устройства|Для принтеров|"
     r"Цвет|Цвет печати|Ресурс|Ресурс картриджа|Ресурс картриджа, cтр\.|"
-    r"Количество страниц|Кол-во страниц при 5% заполнении А4|Емкость|Ёмкость|"
+    r"Количество страниц|Кол-во страниц при 5% заполнении А4|Емкость|Ёмкость|Емкость лотка|Ёмкость лотка|"
     r"Степлирование|Дополнительные опции|Применение|Количество в упаковке|Колличество в упаковке)"
-    r"\s*(?::|\t+|\s{2,})\s*(.+?)\s*$"
+    r"\s*(?::|\t+|\s{2,}|[-–—])\s*(.+?)\s*$"
 )
+_DESC_COMPAT_LINE_RE = re.compile(r"(?im)^\s*Совместим(?:а|о|ы)?\s+с\s+(.+?)\s*$")
 _DESC_SPEC_KEY_MAP = {
     "модель": "Модель",
     "аналог модели": "Аналог модели",
@@ -205,6 +207,8 @@ _DESC_SPEC_KEY_MAP = {
     "кол-во страниц при 5% заполнении а4": "Ресурс",
     "емкость": "Ёмкость",
     "ёмкость": "Ёмкость",
+    "емкость лотка": "Ёмкость",
+    "ёмкость лотка": "Ёмкость",
     "степлирование": "Степлирование",
     "дополнительные опции": "Дополнительные опции",
     "применение": "Применение",
@@ -229,73 +233,127 @@ def _canon_desc_spec_key(k: str) -> str:
     return _DESC_SPEC_KEY_MAP.get(kk, norm_ws(k))
 
 
+def _sanitize_param_value(key: str, val: str) -> str:
+    v = norm_ws(val)
+    if not v:
+        return ""
+
+    # Обрезаем случайно склеенные секции
+    v = re.split(
+        r"(?i)\b(Преимущества|Комплектация|Условия гарантии|Примечание|Примечания|Особенности|Описание)\b",
+        v,
+        maxsplit=1,
+    )[0].strip(" ;,.-")
+    if not v:
+        return ""
+
+    kcf = norm_ws(key).casefold()
+
+    if kcf == "совместимость":
+        v = re.sub(r"(?i)^совместим(?:а|о|ы)?\s+с\s+", "", v).strip()
+        v = re.sub(r"(?i)^для\s+принтеров\s+", "", v).strip()
+
+    if kcf == "ёмкость":
+        v = re.sub(r"(?i)^[её]мкость(?:\s+лотка)?\s*[-:–—]\s*", "", v).strip()
+
+    if kcf == "ресурс":
+        # Убираем обрезанные хвосты из source, чтобы не тащить мусор в final
+        v = re.sub(r"(?i)\.\s*Ресурс указан в соответствии.*$", "", v).strip(" ;,.-")
+        v = re.sub(r"(?i)Ресурс указан в соответствии.*$", "", v).strip(" ;,.-")
+        v = re.sub(r"(?i)\.\s*ISO\s*/?\s*IEC\s*\d{4,6}\.?\s*[A-Za-zА-Яа-яЁё]?$", "", v).strip(" ;,.-")
+        v = re.sub(r"(?<=[A-Za-zА-Яа-яЁё])\s+[A-Za-zА-Яа-яЁё]$", "", v)
+
+    return norm_ws(v)
+
+
+def _iter_desc_lines(text: str) -> list[str]:
+    out: list[str] = []
+    for raw in text.splitlines():
+        ln = raw.strip(" 	-–—•")
+        if not norm_ws(ln):
+            continue
+        out.append(ln)
+    return out
+
+
+def _parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
+    ln = norm_ws(raw)
+    if not ln:
+        return None
+
+    m = _DESC_SPEC_LINE_RE.match(raw)
+    if not m:
+        compact = re.sub(r"\t+", "  ", raw)
+        compact = re.sub(r"\s{3,}", "  ", compact)
+        m = _DESC_SPEC_LINE_RE.match(compact)
+    if m:
+        return (_canon_desc_spec_key(m.group(1)), norm_ws(m.group(2)))
+
+    m = _DESC_COMPAT_LINE_RE.match(raw)
+    if m:
+        return ("Совместимость", norm_ws(m.group(1)))
+
+    return None
+
+
+def _validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str, str] | None:
+    if not key or not val:
+        return None
+
+    drop = {str(x).casefold() for x in (schema.get("drop_keys_casefold") or [])}
+    rules = schema.get("key_rules") or {}
+    require_letter = bool(rules.get("require_letter", True))
+    max_len = int(rules.get("max_len", 60))
+    max_words = int(rules.get("max_words", 9))
+
+    if key.casefold() in drop:
+        return None
+    if not _key_quality_ok(key, require_letter=require_letter, max_len=max_len, max_words=max_words):
+        return None
+
+    val2 = _apply_value_normalizers(key, val, schema)
+    if not val2:
+        return None
+
+    return (key, val2)
+
+
 def _extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
     text = _clean_desc_text(desc_src)
     if not text.strip():
         return []
 
+    candidates: list[tuple[str, str]] = []
+
+    # 1) Строгий блок характеристик
     m = _DESC_SPEC_START_RE.search(text)
-    if not m:
-        return []
+    if m:
+        block = text[m.end():]
+        stop = _DESC_SPEC_STOP_RE.search(block)
+        if stop:
+            block = block[:stop.start()]
+        for ln in _iter_desc_lines(block):
+            pair = _parse_desc_spec_line(ln)
+            if pair:
+                candidates.append(pair)
 
-    block = text[m.end():]
-    stop = _DESC_SPEC_STOP_RE.search(block)
-    if stop:
-        block = block[:stop.start()]
-
-    lines = [ln.strip(" \t-–—") for ln in block.splitlines()]
-    lines = [ln for ln in lines if norm_ws(ln)]
+    # 2) Inline-строки по всему описанию: "Модель:", "Совместимость:", "Совместим с", "Емкость лотка -"
+    for ln in _iter_desc_lines(text):
+        pair = _parse_desc_spec_line(ln)
+        if pair:
+            candidates.append(pair)
 
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
-
-    for ln in lines:
-        raw = ln
-        m2 = _DESC_SPEC_LINE_RE.match(raw)
-        if m2:
-            key = _canon_desc_spec_key(m2.group(1))
-            val = norm_ws(m2.group(2))
-        else:
-            compact = re.sub(r"\t+", "  ", raw)
-            compact = re.sub(r"\s{3,}", "  ", compact)
-            m3 = _DESC_SPEC_LINE_RE.match(compact)
-            if not m3:
-                continue
-            key = _canon_desc_spec_key(m3.group(1))
-            val = norm_ws(m3.group(2))
-
-        if not key or not val:
+    for key, val in candidates:
+        checked = _validate_desc_pair(key, val, schema)
+        if not checked:
             continue
-
-        # отрезаем мусорные хвосты, если внезапно склеилось несколько секций
-        val = re.split(
-            r"(?i)\b(Преимущества|Комплектация|Условия гарантии|Примечание|Примечания|Особенности|Описание)\b",
-            val,
-            maxsplit=1,
-        )[0].strip(" ;,.-")
-        if not val:
-            continue
-
-        drop = {str(x).casefold() for x in (schema.get("drop_keys_casefold") or [])}
-        rules = schema.get("key_rules") or {}
-        require_letter = bool(rules.get("require_letter", True))
-        max_len = int(rules.get("max_len", 60))
-        max_words = int(rules.get("max_words", 9))
-
-        if key.casefold() in drop:
-            continue
-        if not _key_quality_ok(key, require_letter=require_letter, max_len=max_len, max_words=max_words):
-            continue
-
-        val2 = _apply_value_normalizers(key, val, schema)
-        if not val2:
-            continue
-
-        sig = (key.casefold(), val2.casefold())
+        sig = (checked[0].casefold(), checked[1].casefold())
         if sig in seen:
             continue
         seen.add(sig)
-        out.append((key, val2))
+        out.append(checked)
 
     return out
 
