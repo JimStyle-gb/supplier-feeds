@@ -30,7 +30,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v65_compat_sentence_slash_fix"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v66_canon_multiline_compat_fix"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -192,6 +192,7 @@ _DESC_SPEC_LINE_RE = re.compile(
     r"\s*(?::|\t+|\s{2,}|[-–—])\s*(.+?)\s*$"
 )
 _DESC_COMPAT_LINE_RE = re.compile(r"(?im)^\s*Совместим(?:а|о|ы)?\s+с\s+(.+?)\s*$")
+_DESC_COMPAT_LABEL_ONLY_RE = re.compile(r"(?im)^\s*(Совместимость|Совместимые модели|Устройства)\s*:?\s*$")
 _DESC_COMPAT_SENTENCE_RE = re.compile(
     r"(?is)\bСовместим(?:а|о|ы)?\s+с\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)"
 )
@@ -266,6 +267,11 @@ def _sanitize_param_value(key: str, val: str) -> str:
     if kcf == "совместимость":
         v = re.sub(r"(?i)^совместим(?:а|о|ы)?\s+с\s+", "", v).strip()
         v = re.sub(r"(?i)^для\s+(?:устройств|принтеров(?:\s+и\s+мфу)?|мфу|аппаратов)\s+", "", v).strip()
+        v = re.sub(
+            r"(?<=[A-Za-zА-Яа-яЁё0-9])(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
+            ", ",
+            v,
+        )
         v = re.sub(r"\s*/\s*", "/", v)
         v = re.sub(r"\s*,\s*", ", ", v)
         v = norm_ws(v)
@@ -290,6 +296,76 @@ def _iter_desc_lines(text: str) -> list[str]:
         if not norm_ws(ln):
             continue
         out.append(ln)
+    return out
+
+
+def _is_label_only_line(raw: str) -> bool:
+    ln = norm_ws(raw)
+    if not ln:
+        return False
+    if _DESC_COMPAT_LABEL_ONLY_RE.match(ln):
+        return True
+    if _DESC_SPEC_START_RE.match(ln) or _DESC_SPEC_STOP_RE.match(ln):
+        return True
+    return False
+
+
+def _join_compat_lines(lines: list[str]) -> str:
+    parts: list[str] = []
+    for raw in lines:
+        ln = norm_ws(raw)
+        if not ln:
+            continue
+        if _DESC_COMPAT_LABEL_ONLY_RE.match(ln):
+            continue
+        parts.append(ln)
+    if not parts:
+        return ""
+    s = ", ".join(parts)
+    s = re.sub(
+        r"(?<=[A-Za-zА-Яа-яЁё0-9])(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
+        ", ",
+        s,
+    )
+    return norm_ws(s)
+
+
+def _extract_multiline_compat_pairs(lines: list[str]) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+    i = 0
+    n = len(lines)
+    while i < n:
+        cur = norm_ws(lines[i])
+        if not cur:
+            i += 1
+            continue
+        if not _DESC_COMPAT_LABEL_ONLY_RE.match(cur):
+            i += 1
+            continue
+
+        j = i + 1
+        buf: list[str] = []
+        while j < n:
+            nxt = norm_ws(lines[j])
+            if not nxt:
+                break
+            if _DESC_SPEC_STOP_RE.match(nxt) or _DESC_SPEC_START_RE.match(nxt):
+                break
+            parsed = _parse_desc_spec_line(nxt)
+            if parsed and parsed[0] != "Совместимость":
+                break
+            if _DESC_COMPAT_LABEL_ONLY_RE.match(nxt):
+                j += 1
+                continue
+            if re.match(r"(?i)^(Производитель|Устройство|Секция аппарата|Технология печати|Гарантия)\s*$", nxt):
+                break
+            buf.append(nxt)
+            j += 1
+
+        cand = _join_compat_lines(buf)
+        if cand and _looks_like_compatibility_value(cand):
+            out.append(("Совместимость", cand))
+        i = max(j, i + 1)
     return out
 
 
@@ -381,16 +457,20 @@ def _extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tupl
         stop = _DESC_SPEC_STOP_RE.search(block)
         if stop:
             block = block[:stop.start()]
-        for ln in _iter_desc_lines(block):
+        block_lines = _iter_desc_lines(block)
+        for ln in block_lines:
             pair = _parse_desc_spec_line(ln)
             if pair:
                 candidates.append(pair)
+        candidates.extend(_extract_multiline_compat_pairs(block_lines))
 
     # 2) Inline-строки по всему описанию: "Модель:", "Совместимость:", "Совместим с", "Емкость лотка -"
-    for ln in _iter_desc_lines(text):
+    all_lines = _iter_desc_lines(text)
+    for ln in all_lines:
         pair = _parse_desc_spec_line(ln)
         if pair:
             candidates.append(pair)
+    candidates.extend(_extract_multiline_compat_pairs(all_lines))
 
     # 3) Фразы в обычных предложениях: "для устройств Xerox ...", "для принтеров и МФУ Canon ..."
     candidates.extend(_extract_sentence_compat_pairs(text))
