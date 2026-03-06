@@ -87,20 +87,19 @@ jobs:
           if [ "$NO_CHANGES" -eq 1 ]; then
             NOTE=" (не было изменений)"
           fi
-
           # Следующий запуск (ежедневно в 01:00:00 по Алматы)
-  # Важно: не используем epoch-конверсию (@EPOCH), чтобы не ловить сдвиги TZ на раннерах.
-  NOW_HMS=$(TZ='Asia/Almaty' date '+%H%M%S')
-  TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
-  if [ "$NOW_HMS" -ge "010000" ]; then
-    NEXT_DATE=$(TZ='Asia/Almaty' date -d 'tomorrow' '+%Y-%m-%d')
-  else
-    NEXT_DATE="$TODAY"
-  fi
-  NEXT_RUN="${NEXT_DATE} 01:00:00"
+          # Важно: не используем epoch-конверсию (@EPOCH), чтобы не ловить сдвиги TZ на раннерах.
+          NOW_HMS=$(TZ='Asia/Almaty' date '+%H%M%S')
+          TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
+          if [ "$NOW_HMS" -ge "010000" ]; then
+            NEXT_DATE=$(TZ='Asia/Almaty' date -d 'tomorrow' '+%Y-%m-%d')
+          else
+            NEXT_DATE="$TODAY"
+          fi
+          NEXT_RUN="${NEXT_DATE} 01:00:00"
 
-  echo "FEED_META_TS=${TS}${NOTE}"
-  echo "FEED_META_NEXT_RUN=${NEXT_RUN}"
+          echo "FEED_META_TS=${TS}${NOTE}"
+          echo "FEED_META_NEXT_RUN=${NEXT_RUN}"
 
           for F in docs/alstyle.yml docs/raw/alstyle.yml; do
             if [ ! -f "$F" ]; then
