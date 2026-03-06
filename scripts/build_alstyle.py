@@ -31,7 +31,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v76_adapter_first_monitor_root_cause_fix"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v78_monitor_numeric_cleanup"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -386,6 +386,26 @@ def _fix_common_broken_words(s: str) -> str:
 
 
 
+def _normalize_tech_text(s: str) -> str:
+    t = norm_ws(s)
+    if not t:
+        return ""
+
+    # Разрешения/частоты и технич. единицы.
+    t = re.sub(r"\b(\d{3,4})\s+(\d{3,4})(?=\s*@|\s*(?:пикс|dpi|Гц|кд|$))", r"\1×\2", t)
+    t = re.sub(r"(?iu)\b(\d+)\s+Гбит\s+с\b", r"\1 Гбит/с", t)
+    t = re.sub(r"(?iu)\bкд\s*м2\b", "кд/м²", t)
+    t = re.sub(r"(?iu)\b(\d+)\s*[xх×]\s*(\d+)\s*Вт\b", r"\1 × \2 Вт", t)
+    t = re.sub(r"(?iu)\b(\d+)\s+Type-([AC])\b", r"\1 × Type-\2", t)
+    t = re.sub(r"(?iu)\b(\d+)\s+порта?\s+(\d+)\s+×\s*Type-([AC])\b", r"\1 порта: \2 × Type-\3", t)
+
+    # Заголовки rich-block делаем человеческими.
+    t = re.sub(r"(?im)^\s*ОСОБЕННОСТИ\s+И\s+ПРЕИМУЩЕСТВА\s*:?\s*$", "Особенности и преимущества", t)
+    t = re.sub(r"(?im)^\s*ИНТЕРФЕЙСЫ\s*/\s*РАЗЪ[ЕЁ]МЫ\s*/\s*УПРАВЛЕНИЕ\s*:?\s*$", "Интерфейсы / разъёмы / управление", t)
+
+    return t
+
+
 def _sanitize_desc_quality_text(s: str) -> str:
     t = s or ""
     if not t:
@@ -437,6 +457,7 @@ def _sanitize_desc_quality_text(s: str) -> str:
     t = re.sub(r"(?iu)\bос\s+нове\b", "основе", t)
     t = re.sub(r"(?iu)\bос\s+новании\b", "основании", t)
     t = re.sub(r"(?<=\d),\s+(?=\d)", ",", t)
+    t = _normalize_tech_text(t)
     t = re.sub(r"\n{3,}", "\n\n", t)
     return t.strip()
 
@@ -518,6 +539,7 @@ def _sanitize_param_value(key: str, val: str) -> str:
         v = re.sub(r"(?i)\.\s*ISO\s*/?\s*IEC\s*\d{4,6}\.?\s*[A-Za-zА-Яа-яЁё]?$", "", v).strip(" ;,.-")
         v = re.sub(r"(?<=[A-Za-zА-Яа-яЁё])\s+[A-Za-zА-Яа-яЁё]$", "", v)
 
+    v = _normalize_tech_text(v)
     return norm_ws(v)
 
 
@@ -638,6 +660,11 @@ def _parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
         if _is_heading_only_value(val):
             return None
         return (_canon_desc_spec_key(m.group(1)), val)
+
+    if re.match(r"(?iu)^\s*Поддержка\s+HDCP\.?\s*$", raw):
+        return ("Поддержка HDCP", "есть")
+    if re.match(r"(?iu)^\s*Есть\s+разъ[её]м\s+для\s+наушников\.?\s*$", raw):
+        return ("Разъём для наушников", "есть")
 
     return None
 
@@ -900,12 +927,20 @@ def main() -> int:
     after = len(out_offers)
     for wid in sorted(ALSTYLE_WATCH_OIDS):
         if wid not in watch_source:
-            print(f"[build_alstyle] WARN: watched offer missing in supplier XML: {wid}")
+            print(f"[build_alstyle] ROOT_CAUSE: watched offer not present in supplier XML: {wid}")
         elif wid not in watch_out:
             info = watch_source[wid]
+            cat = info.get('categoryId', '')
+            reason = "filtered_by_category" if (allowed and (not cat or cat not in allowed)) else "skipped_after_parse"
             print(
-                f"[build_alstyle] WARN: watched offer skipped after source read: {wid}; "
-                f"categoryId={info.get('categoryId', '')!r}; name={info.get('name', '')!r}"
+                f"[build_alstyle] ROOT_CAUSE: watched offer missing in output: {wid}; reason={reason}; "
+                f"categoryId={cat!r}; name={info.get('name', '')!r}"
+            )
+        else:
+            info = watch_source[wid]
+            print(
+                f"[build_alstyle] WATCH_OK: {wid}; categoryId={info.get('categoryId', '')!r}; "
+                f"name={info.get('name', '')!r}"
             )
 
     out_offers.sort(key=lambda x: x.oid)
