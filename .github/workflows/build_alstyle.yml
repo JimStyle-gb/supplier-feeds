@@ -11,6 +11,8 @@ permissions:
 jobs:
   build_alstyle:
     runs-on: ubuntu-latest
+    env:
+      SCHEDULE_HOUR_ALMATY: '1'
     concurrency:
       group: build_alstyle
       cancel-in-progress: true
@@ -98,6 +100,9 @@ jobs:
             NEXT_EPOCH="$CAND_EPOCH"
           fi
           NEXT_RUN=$(TZ='Asia/Almaty' date -d "@${NEXT_EPOCH}" '+%Y-%m-%d %H:%M:%S')
+
+          echo "FEED_META_TS=${TS}${NOTE}" 
+          echo "FEED_META_NEXT_RUN=${NEXT_RUN}"
 
           for F in docs/alstyle.yml docs/raw/alstyle.yml; do
             if [ ! -f "$F" ]; then
