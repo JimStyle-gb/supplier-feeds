@@ -30,7 +30,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v64_inline_specs_tail_fix"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v65_compat_sentence_slash_fix"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -113,8 +113,9 @@ def _apply_value_normalizers(key: str, val: str, schema: dict[str, Any]) -> str:
             v = _normalize_warranty_to_months(v)
         elif op == "trim_ws":
             v = norm_ws(v)
-    # Нормализация: 'слово/Word' -> 'слово Word' (только если по обе стороны буквы)
-    v = _RE_LETTER_SLASH_LETTER.sub(r"\1 \2", v)
+    # Нормализация: 'слово/Word' -> 'слово Word' только там, где slash не несёт смысл модели/совместимости
+    if norm_ws(key).casefold() not in {"совместимость", "модель", "аналог модели"}:
+        v = _RE_LETTER_SLASH_LETTER.sub(r"\1 \2", v)
     v = _sanitize_param_value(key, v)
     return v
 
@@ -191,6 +192,19 @@ _DESC_SPEC_LINE_RE = re.compile(
     r"\s*(?::|\t+|\s{2,}|[-–—])\s*(.+?)\s*$"
 )
 _DESC_COMPAT_LINE_RE = re.compile(r"(?im)^\s*Совместим(?:а|о|ы)?\s+с\s+(.+?)\s*$")
+_DESC_COMPAT_SENTENCE_RE = re.compile(
+    r"(?is)\bСовместим(?:а|о|ы)?\s+с\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)"
+)
+_DESC_FOR_DEVICES_SENTENCE_RE = re.compile(
+    r"(?is)\bдля\s+(?:устройств|принтеров(?:\s+и\s+МФУ)?|МФУ|аппаратов)\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)"
+)
+_COMPAT_BRAND_HINT_RE = re.compile(
+    r"(?i)\b(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki|"
+    r"VersaLink|AltaLink|WorkCentre|DocuCentre|imageRUNNER|i-SENSYS|ECOSYS|bizhub)\b"
+)
+_COMPAT_MODEL_HINT_RE = re.compile(
+    r"(?i)(?:\b[A-Z]{1,8}-?\d{2,5}[A-Z]{0,3}x?\b|\b\d{3,5}[A-Z]{0,3}i?\b|/\s*[A-Z]?\d{2,5}[A-Z]{0,3}x?\b)"
+)
 _DESC_SPEC_KEY_MAP = {
     "модель": "Модель",
     "аналог модели": "Аналог модели",
@@ -251,7 +265,10 @@ def _sanitize_param_value(key: str, val: str) -> str:
 
     if kcf == "совместимость":
         v = re.sub(r"(?i)^совместим(?:а|о|ы)?\s+с\s+", "", v).strip()
-        v = re.sub(r"(?i)^для\s+принтеров\s+", "", v).strip()
+        v = re.sub(r"(?i)^для\s+(?:устройств|принтеров(?:\s+и\s+мфу)?|мфу|аппаратов)\s+", "", v).strip()
+        v = re.sub(r"\s*/\s*", "/", v)
+        v = re.sub(r"\s*,\s*", ", ", v)
+        v = norm_ws(v)
 
     if kcf == "ёмкость":
         v = re.sub(r"(?i)^[её]мкость(?:\s+лотка)?\s*[-:–—]\s*", "", v).strip()
@@ -294,6 +311,38 @@ def _parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
         return ("Совместимость", norm_ws(m.group(1)))
 
     return None
+
+
+
+def _looks_like_compatibility_value(val: str) -> bool:
+    v = norm_ws(val)
+    if not v or len(v) < 6:
+        return False
+    if not _COMPAT_BRAND_HINT_RE.search(v):
+        return False
+    if not _COMPAT_MODEL_HINT_RE.search(v):
+        return False
+    return True
+
+
+def _extract_sentence_compat_pairs(text: str) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+
+    for rx in (_DESC_COMPAT_SENTENCE_RE, _DESC_FOR_DEVICES_SENTENCE_RE):
+        for m in rx.finditer(text):
+            cand = norm_ws(m.group(1))
+            if not cand:
+                continue
+            cand = re.split(
+                r"(?i)\b(Преимущества|Комплектация|Условия гарантии|Примечание|Примечания|Особенности|Описание)\b",
+                cand,
+                maxsplit=1,
+            )[0].strip(" ;,.-")
+            if not _looks_like_compatibility_value(cand):
+                continue
+            out.append(("Совместимость", cand))
+
+    return out
 
 
 def _validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str, str] | None:
@@ -342,6 +391,9 @@ def _extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tupl
         pair = _parse_desc_spec_line(ln)
         if pair:
             candidates.append(pair)
+
+    # 3) Фразы в обычных предложениях: "для устройств Xerox ...", "для принтеров и МФУ Canon ..."
+    candidates.extend(_extract_sentence_compat_pairs(text))
 
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
