@@ -3487,7 +3487,7 @@ CS_BRANDS_MAP = {
     "viewsonic": "ViewSonic",
     "philips": "Philips",
     "zebra": "Zebra",
-    "euro print": "Euro Print",
+    "euro print": "Europrint",
     "designjet": "HP",
     "mr.pixel": "Mr.Pixel",
     "hyperx": "HyperX",
@@ -3501,7 +3501,7 @@ CS_BRANDS_MAP = {
     "mikrotik": "MikroTik",
     "ubiquiti": "Ubiquiti",
     "d-link": "D-Link",
-    "europrint": "Euro Print",
+    "europrint": "Europrint",
     "brothe": "Brother",
 }
 
