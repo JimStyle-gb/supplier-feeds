@@ -31,7 +31,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v72_text_join_canon_lists_fix"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v73_monitor_guard_text_join_v2"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -285,6 +285,20 @@ def _clean_desc_text(s: str) -> str:
 
 
 
+def _is_heading_only_value(val: str) -> bool:
+    v = norm_ws(val).strip()
+    if not v:
+        return False
+    # Служебные заголовки rich-block: "/ РАЗЪЕМЫ / УПРАВЛЕНИЕ:" и подобные
+    if re.fullmatch(r"[/\\sA-ZА-ЯЁ0-9()_.:+-]{3,}", v) and ":" in v:
+        return True
+    if re.fullmatch(r"(?:[/\\s]*[A-ZА-ЯЁ][A-ZА-ЯЁ0-9()_.+-]*[/\\s]*){2,}:?", v):
+        return True
+    if re.match(r"^/\s*[A-ZА-ЯЁ]", v) and ":" in v:
+        return True
+    return False
+
+
 def _fix_common_broken_words(s: str) -> str:
     t = s or ""
     if not t:
@@ -300,6 +314,11 @@ def _fix_common_broken_words(s: str) -> str:
         (r"(?iu)\bв\s+случаи\b", "в случае"),
         (r"(?iu)\bКолличество\b", "Количество"),
         (r"(?iu)\bпитание\s+м\b", "питанием"),
+        (r"(?iu)\bконтраст\s+ност", "контрастност"),
+        (r"(?iu)\bос\s+нован", "основан"),
+        (r"(?iu)\bос\s+новани", "основани"),
+        (r"(?iu)\bОС\s+ОБЕННОСТИ\s+И\s+ПРЕИМУЩЕСТВА\b", "Особенности и преимущества"),
+        (r"(?iu)\bОС\s+ОБЕННОСТИ\b", "Особенности"),
     ]
     for pat, rep in repl:
         t = re.sub(pat, rep, t)
@@ -364,7 +383,12 @@ def _sanitize_desc_quality_text(s: str) -> str:
     t = re.sub(r"(?im)^\s*\.\s*$", "", t)
     t = re.sub(r"(?iu)Проводное\s+зеркалированиепо\b", "Проводное зеркалирование по", t)
     t = re.sub(r"(?iu)Смарт-?система(?=[A-Za-zА-Яа-яЁё0-9])", "Смарт-система ", t)
-
+    t = re.sub(r"(?iu)\bос\s+новные\s+характеристики\b", "Основные характеристики", t)
+    t = re.sub(r"(?iu)\bос\s+новные\b", "основные", t)
+    t = re.sub(r"(?iu)\bос\s+новной\b", "основной", t)
+    t = re.sub(r"(?iu)\bос\s+нова\b", "основа", t)
+    t = re.sub(r"(?iu)\bос\s+нове\b", "основе", t)
+    t = re.sub(r"(?iu)\bос\s+новании\b", "основании", t)
     t = re.sub(r"\n{3,}", "\n\n", t)
     return t.strip()
 
@@ -410,9 +434,13 @@ def _sanitize_param_value(key: str, val: str) -> str:
     kcf = norm_ws(key).casefold()
     v = _fix_common_broken_words(v)
 
+    if _is_heading_only_value(v):
+        return ""
+
     if kcf == "совместимость":
         v = re.sub(r"(?i)^совместим(?:а|о|ы)?\s+с\s+", "", v).strip()
         v = re.sub(r"(?i)^для\s+(?:устройств|принтеров(?:\s+и\s+мфу)?|мфу|аппаратов)\s+", "", v).strip()
+        v = re.sub(r"(?i)^устройства?\s*,?\s*", "", v).strip()
         v = re.sub(
             r"([A-ZА-ЯЁ0-9][A-Za-zА-Яа-яЁё0-9/.-]{1,})\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
             r"\1, ",
@@ -547,7 +575,10 @@ def _parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
 
     m = _PROJECTOR_RICH_LINE_RE.match(raw)
     if m:
-        return (_canon_desc_spec_key(m.group(1)), norm_ws(m.group(2)))
+        val = norm_ws(m.group(2))
+        if _is_heading_only_value(val):
+            return None
+        return (_canon_desc_spec_key(m.group(1)), val)
 
     return None
 
