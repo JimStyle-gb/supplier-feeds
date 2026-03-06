@@ -186,6 +186,12 @@ def _fix_common_broken_words(s: str) -> str:
     for pat, rep in repl:
         t = re.sub(pat, lambda m, rep=rep: _smart_rep(m, rep), t)
 
+    t = fix_mixed_cyr_lat(t)
+    t = re.sub(r"(?iu)\bос\s+(?=обен|обенн|обенност|обенно|обенностям|обенность)", "ос", t)
+    t = re.sub(r"(?iu)\bос\s+(?=нов|новн|новыва|нован|новани|нащ|уществ|ып|ью\b|вещ|вобожд|вобод|леп|лаб|тав|тат|тан|анки\b|ям\b|ей\b)", "ос", t)
+    t = re.sub(r"(?iu)\bконтраст\s+(?=ност)", "контраст", t)
+    t = re.sub(r"(?iu)\bпроеци\s*=\s*", "проец", t)
+
     # Склейки списков совместимости: "... C7055 Canon ..." -> "... C7055, Canon ..."
     t = re.sub(
         r"([A-ZА-ЯЁ0-9][A-Za-zА-Яа-яЁё0-9/.-]{1,})\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
@@ -205,6 +211,8 @@ def _fix_desc_quality_text(s: str) -> str:
     t = s or ""
     if not t:
         return t
+
+    t = fix_mixed_cyr_lat(t)
 
     repl = [
         (r"(?iu)\b[LЛ][CС][DD]\b", "LCD"),
@@ -243,6 +251,14 @@ def _fix_desc_quality_text(s: str) -> str:
     t = re.sub(r"(?iu)\bос\s+нова\b", "основа", t)
     t = re.sub(r"(?iu)\bос\s+нове\b", "основе", t)
     t = re.sub(r"(?iu)\bос\s+новании\b", "основании", t)
+    t = re.sub(r"(?iu)\bОс\s+обенности\b", "Особенности", t)
+    t = re.sub(r"(?iu)\bОС\s+ОБЕННОСТИ\b", "Особенности", t)
+    t = re.sub(r"(?iu)\bос\s+обенности\b", "особенности", t)
+    t = re.sub(r"(?iu)\bос\s+нащен([аоы])\b", r"оснащен\1", t)
+    t = re.sub(r"(?iu)\bос\s+вещени([еяи])\b", r"освещени\1", t)
+    t = re.sub(r"(?iu)\bКонтраст\s+ность\b", "Контрастность", t)
+    t = re.sub(r"(?iu)\bпроеци\s*=\s*ирования\b", "проецирования", t)
+    t = re.sub(r"(?iu)\bпроеци\s*=\s*рует\b", "проецирует", t)
     return t
 
 
