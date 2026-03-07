@@ -225,6 +225,7 @@ _MONITOR_RICH_LINE_RE = re.compile(
     r"\s*(?::|[-–—])\s*(.+?)\s*$"
 )
 _DESC_COMPAT_LABEL_ONLY_RE = re.compile(r"(?im)^\s*(Совместимость|Совместимые модели|Устройства)\s*:?\s*$")
+_DESC_TECH_PRINT_LABEL_ONLY_RE = re.compile(r"(?im)^\s*Технология\s+печати\s*:?\s*$")
 _DESC_COMPAT_SENTENCE_RE = re.compile(
     r"(?is)\bСовместим(?:а|о|ы)?\s+с\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)"
 )
@@ -582,6 +583,8 @@ def _sanitize_param_value(key: str, val: str) -> str:
         )
         v = re.sub(r"\s*/\s*", "/", v)
         v = re.sub(r"(?:,?\s*(?:&gt;|&amp;gt;|>))+\s*$", "", v).strip(" ,;.-")
+        # Убираем обрезанные хвосты бренда на конце вроде "... 610Can"
+        v = re.sub(r"(?iu)(\d)(?:Can|Xer|Eps|Bro|Ric|Pan|Lex|Kon|Min|Oki|Kyo|Hew)$", r"\1", v)
         v = re.sub(r"\s*,\s*", ", ", v)
         v = norm_ws(v)
 
@@ -697,6 +700,39 @@ def _extract_multiline_compat_pairs(lines: list[str]) -> list[tuple[str, str]]:
     return out
 
 
+def _extract_multiline_tech_print_pairs(lines: list[str]) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+    i = 0
+    n = len(lines)
+    while i < n:
+        cur = norm_ws(lines[i])
+        if not cur:
+            i += 1
+            continue
+        if not _DESC_TECH_PRINT_LABEL_ONLY_RE.match(cur):
+            i += 1
+            continue
+
+        j = i + 1
+        while j < n and not norm_ws(lines[j]):
+            j += 1
+        if j >= n:
+            break
+
+        nxt = norm_ws(lines[j])
+        if (
+            nxt
+            and not _DESC_SPEC_START_RE.match(nxt)
+            and not _DESC_SPEC_STOP_RE.match(nxt)
+            and not _DESC_COMPAT_LABEL_ONLY_RE.match(nxt)
+            and not _DESC_TECH_PRINT_LABEL_ONLY_RE.match(nxt)
+            and not _is_heading_only_value(nxt)
+        ):
+            out.append(("Технология", nxt))
+        i = max(j + 1, i + 1)
+    return out
+
+
 def _parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
     ln = norm_ws(raw)
     if not ln:
@@ -716,12 +752,18 @@ def _parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
     if m:
         return ("Совместимость", norm_ws(m.group(1)))
 
+    if _DESC_TECH_PRINT_LABEL_ONLY_RE.match(ln):
+        return None
+
     m = _PROJECTOR_RICH_LINE_RE.match(raw)
     if m:
+        key = _canon_desc_spec_key(m.group(1))
         val = norm_ws(m.group(2))
+        if key == "Технология" and val.casefold() == "печати":
+            return None
         if _is_heading_only_value(val):
             return None
-        return (_canon_desc_spec_key(m.group(1)), val)
+        return (key, val)
 
     m = _MONITOR_RICH_LINE_RE.match(raw)
     if m:
@@ -806,6 +848,7 @@ def _extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tupl
             pair = _parse_desc_spec_line(ln)
             if pair:
                 candidates.append(pair)
+        candidates.extend(_extract_multiline_tech_print_pairs(block_lines))
         candidates.extend(_extract_multiline_compat_pairs(block_lines))
 
     # 2) Inline-строки по всему описанию: "Модель:", "Совместимость:", "Совместим с", "Емкость лотка -"
@@ -814,6 +857,7 @@ def _extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tupl
         pair = _parse_desc_spec_line(ln)
         if pair:
             candidates.append(pair)
+    candidates.extend(_extract_multiline_tech_print_pairs(all_lines))
     candidates.extend(_extract_multiline_compat_pairs(all_lines))
 
     # 3) Фразы в обычных предложениях: "для устройств Xerox ...", "для принтеров и МФУ Canon ..."
