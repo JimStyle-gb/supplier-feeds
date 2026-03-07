@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-07 02:31:54">
+<yml_catalog date="2026-03-07 12:20:42">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-07 02:31:54
+Время сборки (Алматы)                      | 2026-03-07 12:20:42
 Ближайшая сборка (Алматы)                  | 2026-03-08 02:00:00
-Сколько товаров у поставщика до фильтра    | 1794
+Сколько товаров у поставщика до фильтра    | 1792
 Сколько товаров у поставщика после фильтра | 138
 Сколько товаров есть в наличии (true)      | 138
 Сколько товаров нет в наличии (false)      | 0
@@ -4536,7 +4536,7 @@ L4150/L4160]]></description>
 <vendorCode>ACC13T09C24A</vendorCode>
 <name>Чернила Epson C13T09C24A 108 EcoTank для L8050/18050 голубой</name>
 <price>10900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/a93/mzpzbizytnn2r0vgj1f7iksyrrre3zcc.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
