@@ -538,6 +538,36 @@ def _normalize_tech_value(s: str) -> str:
     return t
 
 
+def _drop_broken_canon_compat_tail(s: str) -> str:
+    t = norm_ws(s)
+    if not t:
+        return ""
+
+    parts = [p.strip() for p in re.split(r"\s*,\s*", t) if p.strip()]
+    if not parts:
+        return ""
+
+    last = parts[-1]
+    broken_last_patterns = [
+        r"(?iu)^Canon\s+imageRUNNE$",
+        r"(?iu)^Canon\s+imageRUNNER\s+ADV$",
+        r"(?iu)^Canon\s+imageRUNNER\s+ADVANCE$",
+        r"(?iu)^Canon\s+imagePROGRAF\s+\d{2,4}Can$",
+        r"(?iu)^Canon\s+imageFORMULA\s+[A-Z0-9-]*Can$",
+        r"(?iu)^Canon\s+imageCLASS\s+[A-Z0-9-]*Can$",
+    ]
+    if any(re.match(p, last) for p in broken_last_patterns):
+        parts.pop()
+
+    # Если source был без запятых и хвост остался в конце целой строки.
+    out = ", ".join(parts)
+    out = re.sub(r"(?iu),?\s*Canon\s+imageRUNNE\s*$", "", out).strip(" ,;.-")
+    out = re.sub(r"(?iu),?\s*Canon\s+imageRUNNER\s+ADV(?:ANCE)?\s*$", "", out).strip(" ,;.-")
+    out = re.sub(r"(?iu),?\s*Canon\s+imagePROGRAF\s+\d{2,4}Can\s*$", "", out).strip(" ,;.-")
+    return norm_ws(out)
+
+
+
 def _sanitize_param_value(key: str, val: str) -> str:
     v = norm_ws(val)
     if not v:
@@ -583,7 +613,10 @@ def _sanitize_param_value(key: str, val: str) -> str:
         )
         v = re.sub(r"\s*/\s*", "/", v)
         v = re.sub(r"(?:,?\s*(?:&gt;|&amp;gt;|>))+\s*$", "", v).strip(" ,;.-")
-        # Убираем обрезанные хвосты бренда на конце вроде "... 610Can"
+        # Убираем явный битый хвост, пришедший уже обрезанным от поставщика.
+        # Ничего не угадываем и не дописываем — فقط отбрасываем последний мусорный кусок.
+        v = _drop_broken_canon_compat_tail(v)
+        # Страховка для старого паттерна вроде "... 610Can" на конце.
         v = re.sub(r"(?iu)(\d)(?:Can|Xer|Eps|Bro|Ric|Pan|Lex|Kon|Min|Oki|Kyo|Hew)$", r"\1", v)
         v = re.sub(r"\s*,\s*", ", ", v)
         v = norm_ws(v)
