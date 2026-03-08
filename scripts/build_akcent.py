@@ -41,7 +41,7 @@ RAW_OUT_FILE = "docs/raw/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
-BUILD_AKCENT_VERSION = "build_akcent_v57_unified_contract"
+BUILD_AKCENT_VERSION = "build_akcent_v58_raw_vendor_desc_altpairs"
 
 
 # ----------------------------- Config loading -----------------------------
@@ -70,14 +70,20 @@ def load_schema_config() -> dict[str, Any]:
     return _load_yaml(p)
 
 
-def load_policy_config() -> dict[str, Any]:
-    p = os.path.join(_config_dir(), "policy.yml")
-    return _load_yaml(p)
-
-
 # ----------------------------- Helpers: text -----------------------------
 
 _LETTER_RE = re.compile(r"[A-Za-zА-Яа-яЁё]")
+_MODELISH_TOKEN_RE = re.compile(r"^(?:[A-Z]{1,4}\d[A-Z0-9-]{2,}|\d+[A-Z][A-Z0-9-]{2,}|[A-Z]{2,}\d{2,}[A-Z0-9-]*)$", re.IGNORECASE)
+
+
+def _looks_like_modelish_token(s: str) -> bool:
+    t = _norm_ws(s)
+    if not t:
+        return False
+    # один токен-код без пробелов
+    if " " in t:
+        return False
+    return bool(_MODELISH_TOKEN_RE.fullmatch(t))
 
 
 def _norm_ws(s: str) -> str:
@@ -251,6 +257,11 @@ def _clean_vendor(v: str) -> str:
     # если это просто страна — выбрасываем
     if cf2.replace("ё", "е") in _COUNTRY_WORDS:
         return ""
+
+    # у AkCent vendor иногда приходит как чистый модельный код (например C13T55KD00)
+    # Такой vendor не считаем публичным брендом: пусть дальше сработает строгий infer.
+    if _looks_like_modelish_token(s2):
+        return ""
     return s2
 
 
@@ -272,10 +283,23 @@ def _infer_vendor_from_name(name: str, lexicon: list[str]) -> str:
         # whole-word match (лат/кирилл)
         if re.search(rf"(?i)\b{re.escape(b)}\b", s):
             return b
-    # fallback: первое слово как бренд, если похоже на бренд
+    # fallback: первое слово как бренд, если это не похоже на модельный код
     w = s.strip().split()[0] if s.strip() else ""
-    if w and len(w) <= 20 and _LETTER_RE.search(w):
+    if w and len(w) <= 20 and _LETTER_RE.search(w) and not _looks_like_modelish_token(w):
         return w
+    return ""
+
+
+def _infer_vendor_from_desc(desc_html: str, lexicon: list[str]) -> str:
+    lines = _clean_html_to_lines(desc_html)
+    if not lines:
+        return ""
+    joined = " ".join(lines[:12])
+    if not joined:
+        return ""
+    for b in lexicon:
+        if re.search(rf"(?i)\b{re.escape(b)}\b", joined):
+            return b
     return ""
 def _is_picture_url(url: str) -> bool:
     # Строгая проверка, чтобы не попадали "пустые" ссылки вроде https://b2b.ak-cent.kz
@@ -346,7 +370,12 @@ def _add_param_if_missing(params_raw: list[tuple[str, str]], key: str, val: str)
 
 def _extract_desc_kv_pairs(desc_html: str, min_lines: int) -> list[tuple[str, str]]:
     lines = _clean_html_to_lines(desc_html)
-    kv = []
+    if not lines:
+        return []
+
+    kv: list[tuple[int, str, str]] = []
+
+    # 1) обычные строки "Ключ: значение"
     for i, ln in enumerate(lines):
         if ":" in ln:
             k, v = ln.split(":", 1)
@@ -355,11 +384,36 @@ def _extract_desc_kv_pairs(desc_html: str, min_lines: int) -> list[tuple[str, st
             if k and v:
                 kv.append((i, k, v))
 
-    # берём только последовательные блоки длиной >= min_lines
+    # 2) alternation-блоки вида:
+    #    Вид
+    #    струйный
+    #    Назначение
+    #    широкоформатный принтер
+    # Извлекаем только безопасные пары: короткий ключ + не слишком короткое значение.
+    alt: list[tuple[int, str, str]] = []
+    i = 0
+    while i + 1 < len(lines):
+        k = _norm_ws(lines[i])
+        v = _norm_ws(lines[i + 1])
+        if (
+            k and v
+            and ":" not in k and ":" not in v
+            and len(k) <= 60 and len(k.split()) <= 5
+            and _LETTER_RE.search(k) and _LETTER_RE.search(v)
+            and not re.fullmatch(r"[-–—]+", k)
+        ):
+            alt.append((i, k, v))
+            i += 2
+            continue
+        i += 1
+
+    # Объединяем и берём только последовательные блоки длиной >= min_lines
+    merged = sorted(kv + alt, key=lambda x: (x[0], x[1]))
+
     out: list[tuple[str, str]] = []
     run: list[tuple[int, str, str]] = []
-    for i, k, v in kv:
-        if not run or i == run[-1][0] + 1:
+    for i, k, v in merged:
+        if not run or i <= run[-1][0] + 2:
             run.append((i, k, v))
         else:
             if len(run) >= min_lines:
@@ -367,7 +421,17 @@ def _extract_desc_kv_pairs(desc_html: str, min_lines: int) -> list[tuple[str, st
             run = [(i, k, v)]
     if run and len(run) >= min_lines:
         out.extend([(kk, vv) for _, kk, vv in run])
-    return out
+
+    # dedupe, сохраняя порядок
+    seen = set()
+    deduped: list[tuple[str, str]] = []
+    for k, v in out:
+        key = (_norm_ws(k).casefold(), _norm_ws(v).casefold())
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append((_norm_ws(k), _norm_ws(v)))
+    return deduped
 
 
 def _key_valid(key: str, key_rules: dict[str, Any]) -> bool:
@@ -675,14 +739,10 @@ def _parse_xml_bytes(data: bytes) -> ET.Element:
 def build() -> None:
     fcfg = load_filter_config()
     scfg = load_schema_config()
-    pcfg = load_policy_config()
 
-    include_rules = fcfg.get("include_rules") or {}
-    exclude_rules = fcfg.get("exclude_rules") or {}
-
-    prefixes = [str(x) for x in (include_rules.get("name_prefixes") or fcfg.get("allow_name_prefixes") or [])]
-    drop_articles = {str(x) for x in (exclude_rules.get("articles") or fcfg.get("drop_articles") or [])}
-    drop_rules = exclude_rules.get("rules") or fcfg.get("drop_rules") or []
+    prefixes = [str(x) for x in (fcfg.get("allow_name_prefixes") or [])]
+    drop_articles = {str(x) for x in (fcfg.get("drop_articles") or [])}
+    drop_rules = fcfg.get("drop_rules") or []
 
     # XML source (allow override for local debugging)
     url = os.getenv("AKCENT_URL", "").strip() or SUPPLIER_URL
@@ -724,6 +784,8 @@ def build() -> None:
         if not vendor:
             vendor = _infer_vendor_from_name(name, brands)
         if not vendor:
+            vendor = _infer_vendor_from_desc(_get_text(off.find("description")), brands)
+        if not vendor:
             vendor = get_public_vendor(SUPPLIER_NAME)
 
         # pictures
@@ -733,7 +795,7 @@ def build() -> None:
             pics.append(pic)
         if not pics:
             # core сам умеет placeholder, но лучше страховка
-            pics.append(os.getenv("CS_PLACEHOLDER_PICTURE", "") or str((pcfg.get("placeholder_picture") or ((pcfg.get("core_rules") or {}).get("placeholder_picture")) or "https://placehold.co/800x800/png?text=No+Photo")))
+            pics.append(os.getenv("CS_PLACEHOLDER_PICTURE", "") or "https://placehold.co/800x800/png?text=No+Photo")
 
         # desc + params
         desc_html = _get_text(off.find("description"))
@@ -783,13 +845,12 @@ def build() -> None:
         )
 
     build_time = now_almaty()
-    schedule_hour = int((pcfg.get("next_run_hour_local") or pcfg.get("schedule_hour_almaty") or SCHEDULE_HOUR_ALMATY))
-    next_run = next_run_at_hour(build_time, hour=schedule_hour)
+    next_run = next_run_at_hour(build_time, hour=SCHEDULE_HOUR_ALMATY)
 
     # RAW + FINAL
     write_cs_feed_raw(
         out_offers,
-        supplier=str((pcfg.get("supplier") or SUPPLIER_NAME)),
+        supplier=SUPPLIER_NAME,
         supplier_url=SUPPLIER_URL,
         out_file=RAW_OUT_FILE,
         build_time=build_time,
@@ -800,7 +861,7 @@ def build() -> None:
 
     write_cs_feed(
         out_offers,
-        supplier=str((pcfg.get("supplier") or SUPPLIER_NAME)),
+        supplier=SUPPLIER_NAME,
         supplier_url=SUPPLIER_URL,
         out_file=OUT_FILE,
         build_time=build_time,
