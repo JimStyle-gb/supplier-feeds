@@ -41,7 +41,7 @@ RAW_OUT_FILE = "docs/raw/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
-BUILD_AKCENT_VERSION = "build_akcent_v61_desc_keep_prose_dedupe_full"
+BUILD_AKCENT_VERSION = "build_akcent_v62_altpairs_vendor_desc_dedupe_strict"
 
 
 # ----------------------------- Config loading -----------------------------
@@ -73,6 +73,19 @@ def load_schema_config() -> dict[str, Any]:
 # ----------------------------- Helpers: text -----------------------------
 
 _LETTER_RE = re.compile(r"[A-Za-zА-Яа-яЁё]")
+
+_VENDOR_CODE_RE = re.compile(r'^[A-Z0-9][A-Z0-9_./-]{5,}$')
+
+def _looks_like_vendor_code(s: str) -> bool:
+    t = _norm_ws(s)
+    if not t:
+        return False
+    if ' ' in t:
+        return False
+    if not _VENDOR_CODE_RE.fullmatch(t):
+        return False
+    # должен выглядеть как код: буквы+цифры, без нормального названия бренда
+    return bool(re.search(r'[A-Z]', t)) and bool(re.search(r'\d', t))
 
 
 def _norm_ws(s: str) -> str:
@@ -246,6 +259,11 @@ def _clean_vendor(v: str) -> str:
     # если это просто страна — выбрасываем
     if cf2.replace("ё", "е") in _COUNTRY_WORDS:
         return ""
+
+    # код товара не считаем брендом
+    if _looks_like_vendor_code(s2):
+        return ""
+
     return s2
 
 
@@ -267,11 +285,22 @@ def _infer_vendor_from_name(name: str, lexicon: list[str]) -> str:
         # whole-word match (лат/кирилл)
         if re.search(rf"(?i)\b{re.escape(b)}\b", s):
             return b
-    # fallback: первое слово как бренд, если похоже на бренд
+    # fallback: первое слово как бренд, если похоже на бренд, а не на код
     w = s.strip().split()[0] if s.strip() else ""
-    if w and len(w) <= 20 and _LETTER_RE.search(w):
+    if w and len(w) <= 20 and _LETTER_RE.search(w) and not _looks_like_vendor_code(w):
         return w
     return ""
+
+
+def _infer_vendor_from_text(text: str, lexicon: list[str]) -> str:
+    s = text or ""
+    if not s:
+        return ""
+    for b in lexicon:
+        if re.search(rf"(?i)\b{re.escape(b)}\b", s):
+            return b
+    return ""
+
 def _is_picture_url(url: str) -> bool:
     # Строгая проверка, чтобы не попадали "пустые" ссылки вроде https://b2b.ak-cent.kz
     if not url:
@@ -365,6 +394,59 @@ def _extract_desc_kv_pairs(desc_html: str, min_lines: int) -> list[tuple[str, st
     return out
 
 
+_AK_DESC_ALT_KEYS = {
+    "Вид": "Тип",
+    "Назначение": "Для устройства",
+    "Цвет печати": "Цвет",
+    "Поддерживаемые модели принтеров": "Совместимость",
+    "Поддерживаемые модели": "Совместимость",
+    "Поддерживаемые продукты": "Совместимость",
+    "Ресурс": "Ресурс",
+}
+
+
+def _extract_desc_alt_pairs(desc_html: str) -> list[tuple[str, str]]:
+    lines = _clean_html_to_lines(desc_html)
+    out: list[tuple[str, str]] = []
+    i = 0
+    while i < len(lines):
+        ln = _norm_ws(lines[i])
+        if not ln:
+            i += 1
+            continue
+
+        # alternating key/value pairs
+        if ln in _AK_DESC_ALT_KEYS and i + 1 < len(lines):
+            val = _norm_ws(lines[i + 1])
+            if val and val not in _AK_DESC_ALT_KEYS and ":" not in val:
+                out.append((_AK_DESC_ALT_KEYS[ln], val))
+                i += 2
+                continue
+
+        # compatibility block: heading + list of models below
+        if re.match(r"(?iu)^Совместимые\s+продукты", ln):
+            vals = []
+            j = i + 1
+            while j < len(lines):
+                cur = _norm_ws(lines[j])
+                if not cur:
+                    j += 1
+                    continue
+                if cur in _AK_DESC_ALT_KEYS or re.match(r"(?iu)^(Технические|Основные)\s+характеристики$", cur):
+                    break
+                if ':' in cur and len(cur.split(':',1)[0].split()) <= 4:
+                    break
+                vals.append(cur)
+                j += 1
+            if vals:
+                out.append(("Совместимость", ", ".join(vals)))
+                i = j
+                continue
+
+        i += 1
+    return out
+
+
 def _canonical_schema_key(key: str, schema: dict[str, Any]) -> str:
     kk = _norm_ws(key)
     aliases = {(_norm_ws(k)): str(v) for k, v in (schema.get("aliases") or {}).items()}
@@ -397,26 +479,45 @@ def _strip_lifted_desc_blocks(desc_html: str, params_clean: list[tuple[str, str]
             i += 1
             continue
 
-        if i + 1 < len(lines):
-            k0 = _canonical_schema_key(ln, schema).casefold()
-            v0 = _norm_ws(lines[i + 1]).casefold()
-            if (k0, v0) in param_pairs:
+        if ln in _AK_DESC_ALT_KEYS and i + 1 < len(lines):
+            ck = _canonical_schema_key(_AK_DESC_ALT_KEYS[ln], schema).casefold()
+            cv = _norm_ws(lines[i + 1]).casefold()
+            if (ck, cv) in param_pairs:
                 i += 2
                 continue
 
-        if ":" in ln:
-            a, b = ln.split(":", 1)
-            k1 = _canonical_schema_key(a, schema).casefold()
-            v1 = _norm_ws(b).casefold()
-            if (k1, v1) in param_pairs:
+        if ':' in ln:
+            a, b = ln.split(':', 1)
+            ck = _canonical_schema_key(a, schema).casefold()
+            cv = _norm_ws(b).casefold()
+            if (ck, cv) in param_pairs:
                 i += 1
                 continue
 
-        if re.fullmatch(r"(?i)(технические\s+характеристики|основные\s+характеристики|характеристики)", ln):
-            nxt = [_norm_ws(x) for x in lines[i + 1 : i + 6] if _norm_ws(x)]
-            if nxt and not any((":" in x or "	" in x) for x in nxt):
-                i += 1
-                continue
+        if re.match(r"(?iu)^Совместимые\s+продукты", ln):
+            vals = []
+            j = i + 1
+            while j < len(lines):
+                cur = _norm_ws(lines[j])
+                if not cur:
+                    j += 1
+                    continue
+                if cur in _AK_DESC_ALT_KEYS or re.match(r"(?iu)^(Технические|Основные)\s+характеристики$", cur):
+                    break
+                if ':' in cur and len(cur.split(':',1)[0].split()) <= 4:
+                    break
+                vals.append(cur)
+                j += 1
+            if vals:
+                joined = ", ".join(vals).casefold()
+                if (_canonical_schema_key("Совместимость", schema).casefold(), joined) in param_pairs:
+                    i = j
+                    continue
+
+        # безопасно выкидываем голый heading spec-блока
+        if re.fullmatch(r"(?iu)(технические\s+характеристики|основные\s+характеристики|характеристики)", ln):
+            i += 1
+            continue
 
         out.append(ln)
         i += 1
@@ -771,8 +872,12 @@ def build() -> None:
         available = (off.attrib.get("available") or "").strip().lower() == "true"
 
         vendor = _clean_vendor(_get_text(off.find("vendor")))
+        # description сначала нужен и для vendor fallback, и для params extraction
+        desc_html = _get_text(off.find("description"))
         if not vendor:
             vendor = _infer_vendor_from_name(name, brands)
+        if not vendor:
+            vendor = _infer_vendor_from_text(desc_html, brands)
         if not vendor:
             vendor = get_public_vendor(SUPPLIER_NAME)
 
@@ -786,7 +891,6 @@ def build() -> None:
             pics.append(os.getenv("CS_PLACEHOLDER_PICTURE", "") or "https://placehold.co/800x800/png?text=No+Photo")
 
         # desc + params
-        desc_html = _get_text(off.find("description"))
         params_raw: list[tuple[str, str]] = []
 
         # XML Param/param
@@ -802,18 +906,18 @@ def build() -> None:
         if desc_cfg.get("enabled"):
             min_lines = int(desc_cfg.get("min_kv_lines") or 5)
             params_raw.extend(_extract_desc_kv_pairs(desc_html, min_lines))
+            params_raw.extend(_extract_desc_alt_pairs(desc_html))
 
-                # Явные поля XML (строго, без гаданий):
+        # Явные поля XML (строго, без гаданий):
         # - <model> -> param 'Модель'
         # - <manufacturer_warranty> -> param 'Гарантия'
         _add_param_if_missing(params_raw, "Модель", _get_text(off.find("model")))
         _add_param_if_missing(params_raw, "Гарантия", _get_text(off.find("manufacturer_warranty")))
 
-# apply schema (clean params, strict codes/compat, extra_info -> desc)
+        # apply schema (clean params, strict codes/compat, extra_info -> desc)
         params_clean, desc_clean = _apply_schema(name, params_raw, desc_html, scfg)
 
-        # Убираем уже поднятые в params пары из prose и не даём heading
-        # "Технические характеристики" убить полезный текст ниже.
+        # вырезаем из description уже поднятые spec-пары
         desc_clean = _strip_lifted_desc_blocks(desc_clean or desc_html or "", params_clean, scfg)
 
         # читабельность описания (только форматирование)
