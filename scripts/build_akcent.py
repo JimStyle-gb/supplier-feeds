@@ -659,6 +659,11 @@ def _apply_schema(name: str, params_raw: list[tuple[str, str]], native_desc: str
         if kk in aliases:
             kk = aliases[kk]
 
+        # safety: core/validator forbids raw param "Назначение"
+        # держим семантику, но переводим в разрешённый ключ
+        if kk == "Назначение":
+            kk = "Для устройства"
+
         # key quality
         if not _key_valid(kk, key_rules):
             continue
