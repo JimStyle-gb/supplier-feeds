@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-08 15:04:18">
+<yml_catalog date="2026-03-08 15:52:54">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-08 15:04:18
+Время сборки (Алматы)                      | 2026-03-08 15:52:54
 Ближайшая сборка (Алматы)                  | 2026-03-09 02:00:00
 Сколько товаров у поставщика до фильтра    | 1792
 Сколько товаров у поставщика после фильтра | 139
@@ -19,22 +19,17 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</name>
 <price>189900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/923/0p8oyvwd4ts90r6c77nk7geyql2ycozc.jpg</picture>
-<vendor>C13T55KD00</vendor>
+<vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачественную печать для принтеров Epson.
-Вид
-струйный
-Назначение
-широкоформатный принтер
-Цвет печати
-фиолетовый
-Поддерживаемые модели принтеров
-Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000
-Ресурс
-700 мл]]></description>
+Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачественную печать для принтеров Epson.]]></description>
 <param name="Гарантия">3 мес</param>
+<param name="Тип">струйный</param>
+<param name="Для устройства">широкоформатный принтер</param>
+<param name="Цвет">фиолетовый</param>
+<param name="Ресурс">700 мл</param>
 <param name="Модель">C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</param>
+<param name="Совместимость">Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000</param>
 </offer>
 
 <offer id="ACC12C890191" available="true">
@@ -413,17 +408,13 @@ Epson WorkForce WF-7110DTW]]></description>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Черный картридж повышенной емкости (80 мл)
-Совместимые продукты
-Epson SureColor SC-T3100 C11CF11302A0 -
-Epson SureColor SC-T3100N (без стенда) C11CF11301A0 -
-Epson SureColor SC-T5100 C11CF12301A0 -
-Epson SureColor SC-T5100N (без стенда)-C11CF12302A0]]></description>
+Черный картридж повышенной емкости (80 мл)]]></description>
 <param name="Цвет">Черный</param>
 <param name="Модель">Epson Картридж C13T40D140 UltraChrome XD2 для T40D140(80ml)</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
+<param name="Совместимость">Epson SureColor SC-T3100 C11CF11302A0 -, Epson SureColor SC-T3100N (без стенда) C11CF11301A0 -, Epson SureColor SC-T5100 C11CF12301A0 -, Epson SureColor SC-T5100N (без стенда)-C11CF12302A0</param>
 </offer>
 
 <offer id="ACC13T40D240" available="true">
@@ -456,17 +447,13 @@ Epson SureColor SC-T5100N (без стенда) C11CF12302A0]]></description>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Пурпурный картридж повышенной емкости (50 мл)
-Совместимые продукты
-Epson SureColor SC-T3100 C11CF11302A0 -
-Epson SureColor SC-T3100N (без стенда) C11CF11301A0 -
-Epson SureColor SC-T5100 C11CF12301A0 -
-Epson SureColor SC-T5100N (без стенда) C11CF12302A0]]></description>
+Пурпурный картридж повышенной емкости (50 мл)]]></description>
 <param name="Цвет">пурпурный</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T40D34N UltraChrome XD2 Magenta T40D340(50ml)</param>
+<param name="Совместимость">Epson SureColor SC-T3100 C11CF11302A0 -, Epson SureColor SC-T3100N (без стенда) C11CF11301A0 -, Epson SureColor SC-T5100 C11CF12301A0 -, Epson SureColor SC-T5100N (без стенда) C11CF12302A0</param>
 </offer>
 
 <offer id="ACC13T40D440" available="true">
@@ -478,17 +465,13 @@ Epson SureColor SC-T5100N (без стенда) C11CF12302A0]]></description>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Желтый картридж повышенной емкости (50 мл) (C13T40D440)
-Совместимые продукты
-Epson SureColor SC-T3100 C11CF11302A0
-Epson SureColor SC-T3100N (без стенда) C11CF11301A0 .
-Epson SureColor SC-T5100 C11CF12301A0
-Epson SureColor SC-T5100N (без стенда) C11CF12302A0]]></description>
+Желтый картридж повышенной емкости (50 мл) (C13T40D440)]]></description>
 <param name="Модель">Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
+<param name="Совместимость">Epson SureColor SC-T3100 C11CF11302A0, Epson SureColor SC-T3100N (без стенда) C11CF11301A0 ., Epson SureColor SC-T5100 C11CF12301A0, Epson SureColor SC-T5100N (без стенда) C11CF12302A0</param>
 </offer>
 
 <offer id="ACC13T41F34N" available="true">
@@ -826,17 +809,13 @@ Epson SureColor T-7000]]></description>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с черными чернилами ресурсом 10 000 стр. (XL)
-Совместимые продукты для Контейнер с черными чернилами ресурсом 10 000 стр. (XL)
-Epson WorkForce Pro WF-M5299DW C11CG07401
-Epson WorkForce Pro WF-M5299DWSV C11CG07401
-Epson WorkForce Pro WF-M5799DWF C11CG04401
-Epson WorkForce Pro WF-M5799DWFMV]]></description>
+Контейнер с черными чернилами ресурсом 10 000 стр. (XL)]]></description>
 <param name="Цвет">Черный</param>
 <param name="Модель">Epson Картридж C13T965140 для WF-M52xx/57xx Series Ink Cartridge XL Bl.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
+<param name="Совместимость">Epson WorkForce Pro WF-M5299DW C11CG07401, Epson WorkForce Pro WF-M5299DWSV C11CG07401, Epson WorkForce Pro WF-M5799DWF C11CG04401, Epson WorkForce Pro WF-M5799DWFMV</param>
 </offer>
 
 <offer id="ACFS-45700" available="true">
@@ -2356,6 +2335,8 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 Тип расходных материалов Встроенные емкости для чернил
 Серия устройств Фабрика печати Epson
 Теxнология печати Струйная
+Область применения
+Для дома
 Для офиса
 Назначение Для печати черно-белых документов
 Функ
@@ -2411,6 +2392,8 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 Тип устройства МФУ
 Серия устройств Фабрика печати Epson
 Теxнология печати Струйная
+Область применения
+Для дома
 Для офиса
 Назначение Для печати черно-белых документов
 Функция копирования Да
@@ -2748,6 +2731,8 @@ AC 100 V - 240 V
 5,2 B (A) with Epson Premium Glossy Photo Paper / Photo RPM mode - 39 dB (A) with Epson Premium Glossy Photo Paper / Photo RPM mode
 Совместимые операционные системы
 Mac OS X 10.6.8 or later, Windows 7, Windows 7 x64, Windows 8 (32/64 bit), Windows 8.1, Windows 8.1 x64 Edition, Windows Vista, Windows Vista x64, Windows XP, Windows XP x64, XP Professional x64 Edition
+Интерфейсы
+USB
 Энергоснабжение
 220V
 Комплект поставки
@@ -2842,6 +2827,8 @@ AC 100 V - 240 V
 3,5 кг
 Совместимые операционные системы
 Mac OS X 10.6.8 or later, Windows 10 (32/64 bit), Windows 7 (32/64 bit), Windows 8 (32/64 bit), Windows 8.1 (32/64 bit), Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 (64bit), Windows Server 2012 R2, Windows Server 2016, Windows Vista (32/64 bit), Windows XP SP3 or later (32-bit), Windows Server 2003 R2, Windows Server 2003 SP2 or later, XP Professional x64 Edition SP2
+Интерфейсы
+USB
 Энергоснабжение
 100V, 110V, 220V, 240V
 Комплект поставки
@@ -3609,7 +3596,6 @@ USB Display 3-в-1 – передача изображения, звука и с
 Фронтальный вывод тепла
 Моментальное выключение
 Вес: 2,5 кг
-Технические характеристики
 Доступный яркий WXGA проектор
 Технология: LCD: 3 × 0.59" P-Si TFT
 Разрешение: WXGA (1280×800)
@@ -3848,7 +3834,6 @@ Digital Ice, непрозрачные оригиналы Нет
 Беспроводная версия сканера с Bluetooth поддерживает беспроводную связь на расстоянии до 10 метров
 Полный набор дополнительных аксессуаров
 Дополнительные аксессуары включают последовательные кабели, адаптеры, подставки и Bluetooth-модули
-ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ
 Датчик: CMOS
 Разрешение: 640*480 пикселей
 Подсветка: Белый свет
@@ -4042,18 +4027,14 @@ Epson L7180 C11CG16404]]></description>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Совместимые продукты
-Epson L3100 C11CG88401
-Epson L3101 C11CG88402 -
-Epson L3110 C11CG87405
-Epson L3150 C11CG86409
-Epson L3151 C11CG86411]]></description>
+]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Модель">Epson Чернила 103 EcoTank Cyan ink bottle</param>
 <param name="Гарантия">3 мес</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
+<param name="Совместимость">Epson L3100 C11CG88401, Epson L3101 C11CG88402 -, Epson L3110 C11CG87405, Epson L3150 C11CG86409, Epson L3151 C11CG86411</param>
 </offer>
 
 <offer id="ACC13T00S44A" available="true">
@@ -4065,18 +4046,14 @@ Epson L3151 C11CG86411]]></description>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Совместимые продукты
-Epson L3100 C11CG88401
-Epson L3101 C11CG88402 -
-Epson L3110 C11CG87405
-Epson L3150 C11CG86409
-Epson L3151 C11CG86411]]></description>
+]]></description>
 <param name="Модель">Epson Чернила 103 EcoTank Yellow ink bottle</param>
 <param name="Гарантия">3 мес</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
+<param name="Совместимость">Epson L3100 C11CG88401, Epson L3101 C11CG88402 -, Epson L3110 C11CG87405, Epson L3150 C11CG86409, Epson L3151 C11CG86411</param>
 </offer>
 
 <offer id="ACC13T01L14A" available="true">
@@ -4254,15 +4231,14 @@ L4150/L4160]]></description>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Совместимые продукты:
-Epson L8050
-Epson L18050]]></description>
+]]></description>
 <param name="Модель">Чернила Epson 108 Eco Tank</param>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
+<param name="Совместимость">Epson L8050, Epson L18050</param>
 </offer>
 
 <offer id="ACC13T09C34A" available="true">
@@ -4274,15 +4250,14 @@ Epson L18050]]></description>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Совместимые продукты:
-Epson L8050
-Epson L18050]]></description>
+]]></description>
 <param name="Модель">Чернила Epson 108 Eco Tank</param>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">струйная</param>
 <param name="Для бренда">Epson</param>
+<param name="Совместимость">Epson L8050, Epson L18050</param>
 </offer>
 
 <offer id="ACC13T66414A" available="true">
