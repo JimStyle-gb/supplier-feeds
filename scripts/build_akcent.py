@@ -41,7 +41,7 @@ RAW_OUT_FILE = "docs/raw/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
-BUILD_AKCENT_VERSION = "build_akcent_v58_raw_vendor_desc_altpairs"
+BUILD_AKCENT_VERSION = "build_akcent_v60_desc_block_dedupe"
 
 
 # ----------------------------- Config loading -----------------------------
@@ -434,6 +434,74 @@ def _extract_desc_kv_pairs(desc_html: str, min_lines: int) -> list[tuple[str, st
     return deduped
 
 
+
+def _strip_extracted_desc_blocks(desc_html: str, min_lines: int) -> str:
+    """
+    Удаляет из native description те KV/alternation-блоки, которые мы уже
+    подняли в params, чтобы не было дубля в final description.
+    Ничего не угадывает: только вырезает длинные последовательные блоки
+    вида "Ключ: значение" или "Ключ\nзначение".
+    """
+    lines = _clean_html_to_lines(desc_html)
+    if not lines:
+        return desc_html
+
+    tagged: list[tuple[int, int]] = []
+
+    # 1) последовательности строк "Ключ: значение"
+    kv_rows: list[int] = []
+    for i, ln in enumerate(lines):
+        if ":" in ln:
+            k, v = ln.split(":", 1)
+            k = _norm_ws(k)
+            v = _norm_ws(v)
+            if k and v:
+                kv_rows.append(i)
+            elif kv_rows:
+                if len(kv_rows) >= min_lines:
+                    tagged.extend([(j, j) for j in kv_rows])
+                kv_rows = []
+        elif kv_rows:
+            if len(kv_rows) >= min_lines:
+                tagged.extend([(j, j) for j in kv_rows])
+            kv_rows = []
+    if kv_rows and len(kv_rows) >= min_lines:
+        tagged.extend([(j, j) for j in kv_rows])
+
+    # 2) alternating-блоки "Ключ" / "значение"
+    run: list[tuple[int, int]] = []
+    i = 0
+    while i + 1 < len(lines):
+        k = _norm_ws(lines[i])
+        v = _norm_ws(lines[i + 1])
+        ok = (
+            k and v
+            and ":" not in k and ":" not in v
+            and len(k) <= 60 and len(k.split()) <= 5
+            and _LETTER_RE.search(k) and _LETTER_RE.search(v)
+            and not re.fullmatch(r"[-–—]+", k)
+        )
+        if ok:
+            run.append((i, i + 1))
+            i += 2
+            continue
+        if len(run) >= min_lines:
+            tagged.extend(run)
+        run = []
+        i += 1
+    if len(run) >= min_lines:
+        tagged.extend(run)
+
+    if not tagged:
+        return desc_html
+
+    drop_rows = set()
+    for a, b in tagged:
+        drop_rows.update(range(a, b + 1))
+
+    kept = [ln for idx, ln in enumerate(lines) if idx not in drop_rows and _norm_ws(ln)]
+    return "\n\n".join(kept).strip()
+
 def _key_valid(key: str, key_rules: dict[str, Any]) -> bool:
     k = _norm_ws(key)
     if not k:
@@ -819,6 +887,7 @@ def build() -> None:
         if desc_cfg.get("enabled"):
             min_lines = int(desc_cfg.get("min_kv_lines") or 5)
             params_raw.extend(_extract_desc_kv_pairs(desc_html, min_lines))
+            desc_html = _strip_extracted_desc_blocks(desc_html, min_lines)
 
                 # Явные поля XML (строго, без гаданий):
         # - <model> -> param 'Модель'
