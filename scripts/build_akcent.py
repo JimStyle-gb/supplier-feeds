@@ -41,7 +41,7 @@ RAW_OUT_FILE = "docs/raw/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
-BUILD_AKCENT_VERSION = "build_akcent_v56_xml_model_warranty_params"
+BUILD_AKCENT_VERSION = "build_akcent_v57_unified_contract"
 
 
 # ----------------------------- Config loading -----------------------------
@@ -67,6 +67,11 @@ def load_filter_config() -> dict[str, Any]:
 
 def load_schema_config() -> dict[str, Any]:
     p = os.path.join(_config_dir(), "schema.yml")
+    return _load_yaml(p)
+
+
+def load_policy_config() -> dict[str, Any]:
+    p = os.path.join(_config_dir(), "policy.yml")
     return _load_yaml(p)
 
 
@@ -670,10 +675,14 @@ def _parse_xml_bytes(data: bytes) -> ET.Element:
 def build() -> None:
     fcfg = load_filter_config()
     scfg = load_schema_config()
+    pcfg = load_policy_config()
 
-    prefixes = [str(x) for x in (fcfg.get("allow_name_prefixes") or [])]
-    drop_articles = {str(x) for x in (fcfg.get("drop_articles") or [])}
-    drop_rules = fcfg.get("drop_rules") or []
+    include_rules = fcfg.get("include_rules") or {}
+    exclude_rules = fcfg.get("exclude_rules") or {}
+
+    prefixes = [str(x) for x in (include_rules.get("name_prefixes") or fcfg.get("allow_name_prefixes") or [])]
+    drop_articles = {str(x) for x in (exclude_rules.get("articles") or fcfg.get("drop_articles") or [])}
+    drop_rules = exclude_rules.get("rules") or fcfg.get("drop_rules") or []
 
     # XML source (allow override for local debugging)
     url = os.getenv("AKCENT_URL", "").strip() or SUPPLIER_URL
@@ -724,7 +733,7 @@ def build() -> None:
             pics.append(pic)
         if not pics:
             # core сам умеет placeholder, но лучше страховка
-            pics.append(os.getenv("CS_PLACEHOLDER_PICTURE", "") or "https://placehold.co/800x800/png?text=No+Photo")
+            pics.append(os.getenv("CS_PLACEHOLDER_PICTURE", "") or str((pcfg.get("placeholder_picture") or ((pcfg.get("core_rules") or {}).get("placeholder_picture")) or "https://placehold.co/800x800/png?text=No+Photo")))
 
         # desc + params
         desc_html = _get_text(off.find("description"))
@@ -774,12 +783,13 @@ def build() -> None:
         )
 
     build_time = now_almaty()
-    next_run = next_run_at_hour(build_time, hour=SCHEDULE_HOUR_ALMATY)
+    schedule_hour = int((pcfg.get("next_run_hour_local") or pcfg.get("schedule_hour_almaty") or SCHEDULE_HOUR_ALMATY))
+    next_run = next_run_at_hour(build_time, hour=schedule_hour)
 
     # RAW + FINAL
     write_cs_feed_raw(
         out_offers,
-        supplier=SUPPLIER_NAME,
+        supplier=str((pcfg.get("supplier") or SUPPLIER_NAME)),
         supplier_url=SUPPLIER_URL,
         out_file=RAW_OUT_FILE,
         build_time=build_time,
@@ -790,7 +800,7 @@ def build() -> None:
 
     write_cs_feed(
         out_offers,
-        supplier=SUPPLIER_NAME,
+        supplier=str((pcfg.get("supplier") or SUPPLIER_NAME)),
         supplier_url=SUPPLIER_URL,
         out_file=OUT_FILE,
         build_time=build_time,
