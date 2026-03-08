@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 supplier: akcent
 key_rules:
   must_contain_letter: true
