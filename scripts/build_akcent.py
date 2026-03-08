@@ -41,7 +41,7 @@ RAW_OUT_FILE = "docs/raw/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
-BUILD_AKCENT_VERSION = "build_akcent_v60_desc_block_dedupe"
+BUILD_AKCENT_VERSION = "build_akcent_v61_desc_keep_prose_dedupe_full"
 
 
 # ----------------------------- Config loading -----------------------------
@@ -73,17 +73,6 @@ def load_schema_config() -> dict[str, Any]:
 # ----------------------------- Helpers: text -----------------------------
 
 _LETTER_RE = re.compile(r"[A-Za-zА-Яа-яЁё]")
-_MODELISH_TOKEN_RE = re.compile(r"^(?:[A-Z]{1,4}\d[A-Z0-9-]{2,}|\d+[A-Z][A-Z0-9-]{2,}|[A-Z]{2,}\d{2,}[A-Z0-9-]*)$", re.IGNORECASE)
-
-
-def _looks_like_modelish_token(s: str) -> bool:
-    t = _norm_ws(s)
-    if not t:
-        return False
-    # один токен-код без пробелов
-    if " " in t:
-        return False
-    return bool(_MODELISH_TOKEN_RE.fullmatch(t))
 
 
 def _norm_ws(s: str) -> str:
@@ -257,11 +246,6 @@ def _clean_vendor(v: str) -> str:
     # если это просто страна — выбрасываем
     if cf2.replace("ё", "е") in _COUNTRY_WORDS:
         return ""
-
-    # у AkCent vendor иногда приходит как чистый модельный код (например C13T55KD00)
-    # Такой vendor не считаем публичным брендом: пусть дальше сработает строгий infer.
-    if _looks_like_modelish_token(s2):
-        return ""
     return s2
 
 
@@ -283,23 +267,10 @@ def _infer_vendor_from_name(name: str, lexicon: list[str]) -> str:
         # whole-word match (лат/кирилл)
         if re.search(rf"(?i)\b{re.escape(b)}\b", s):
             return b
-    # fallback: первое слово как бренд, если это не похоже на модельный код
+    # fallback: первое слово как бренд, если похоже на бренд
     w = s.strip().split()[0] if s.strip() else ""
-    if w and len(w) <= 20 and _LETTER_RE.search(w) and not _looks_like_modelish_token(w):
+    if w and len(w) <= 20 and _LETTER_RE.search(w):
         return w
-    return ""
-
-
-def _infer_vendor_from_desc(desc_html: str, lexicon: list[str]) -> str:
-    lines = _clean_html_to_lines(desc_html)
-    if not lines:
-        return ""
-    joined = " ".join(lines[:12])
-    if not joined:
-        return ""
-    for b in lexicon:
-        if re.search(rf"(?i)\b{re.escape(b)}\b", joined):
-            return b
     return ""
 def _is_picture_url(url: str) -> bool:
     # Строгая проверка, чтобы не попадали "пустые" ссылки вроде https://b2b.ak-cent.kz
@@ -370,12 +341,7 @@ def _add_param_if_missing(params_raw: list[tuple[str, str]], key: str, val: str)
 
 def _extract_desc_kv_pairs(desc_html: str, min_lines: int) -> list[tuple[str, str]]:
     lines = _clean_html_to_lines(desc_html)
-    if not lines:
-        return []
-
-    kv: list[tuple[int, str, str]] = []
-
-    # 1) обычные строки "Ключ: значение"
+    kv = []
     for i, ln in enumerate(lines):
         if ":" in ln:
             k, v = ln.split(":", 1)
@@ -384,36 +350,11 @@ def _extract_desc_kv_pairs(desc_html: str, min_lines: int) -> list[tuple[str, st
             if k and v:
                 kv.append((i, k, v))
 
-    # 2) alternation-блоки вида:
-    #    Вид
-    #    струйный
-    #    Назначение
-    #    широкоформатный принтер
-    # Извлекаем только безопасные пары: короткий ключ + не слишком короткое значение.
-    alt: list[tuple[int, str, str]] = []
-    i = 0
-    while i + 1 < len(lines):
-        k = _norm_ws(lines[i])
-        v = _norm_ws(lines[i + 1])
-        if (
-            k and v
-            and ":" not in k and ":" not in v
-            and len(k) <= 60 and len(k.split()) <= 5
-            and _LETTER_RE.search(k) and _LETTER_RE.search(v)
-            and not re.fullmatch(r"[-–—]+", k)
-        ):
-            alt.append((i, k, v))
-            i += 2
-            continue
-        i += 1
-
-    # Объединяем и берём только последовательные блоки длиной >= min_lines
-    merged = sorted(kv + alt, key=lambda x: (x[0], x[1]))
-
+    # берём только последовательные блоки длиной >= min_lines
     out: list[tuple[str, str]] = []
     run: list[tuple[int, str, str]] = []
-    for i, k, v in merged:
-        if not run or i <= run[-1][0] + 2:
+    for i, k, v in kv:
+        if not run or i == run[-1][0] + 1:
             run.append((i, k, v))
         else:
             if len(run) >= min_lines:
@@ -421,86 +362,67 @@ def _extract_desc_kv_pairs(desc_html: str, min_lines: int) -> list[tuple[str, st
             run = [(i, k, v)]
     if run and len(run) >= min_lines:
         out.extend([(kk, vv) for _, kk, vv in run])
-
-    # dedupe, сохраняя порядок
-    seen = set()
-    deduped: list[tuple[str, str]] = []
-    for k, v in out:
-        key = (_norm_ws(k).casefold(), _norm_ws(v).casefold())
-        if key in seen:
-            continue
-        seen.add(key)
-        deduped.append((_norm_ws(k), _norm_ws(v)))
-    return deduped
+    return out
 
 
+def _canonical_schema_key(key: str, schema: dict[str, Any]) -> str:
+    kk = _norm_ws(key)
+    aliases = {(_norm_ws(k)): str(v) for k, v in (schema.get("aliases") or {}).items()}
+    if kk in aliases:
+        kk = aliases[kk]
+    if kk == "Назначение":
+        kk = "Для устройства"
+    return _norm_ws(kk)
 
-def _strip_extracted_desc_blocks(desc_html: str, min_lines: int) -> str:
-    """
-    Удаляет из native description те KV/alternation-блоки, которые мы уже
-    подняли в params, чтобы не было дубля в final description.
-    Ничего не угадывает: только вырезает длинные последовательные блоки
-    вида "Ключ: значение" или "Ключ\nзначение".
-    """
+
+def _strip_lifted_desc_blocks(desc_html: str, params_clean: list[tuple[str, str]], schema: dict[str, Any]) -> str:
+    if not desc_html:
+        return desc_html
     lines = _clean_html_to_lines(desc_html)
     if not lines:
         return desc_html
 
-    tagged: list[tuple[int, int]] = []
+    param_pairs = set()
+    for k, v in params_clean or []:
+        ck = _canonical_schema_key(k, schema).casefold()
+        cv = _norm_ws(v).casefold()
+        if ck and cv:
+            param_pairs.add((ck, cv))
 
-    # 1) последовательности строк "Ключ: значение"
-    kv_rows: list[int] = []
-    for i, ln in enumerate(lines):
-        if ":" in ln:
-            k, v = ln.split(":", 1)
-            k = _norm_ws(k)
-            v = _norm_ws(v)
-            if k and v:
-                kv_rows.append(i)
-            elif kv_rows:
-                if len(kv_rows) >= min_lines:
-                    tagged.extend([(j, j) for j in kv_rows])
-                kv_rows = []
-        elif kv_rows:
-            if len(kv_rows) >= min_lines:
-                tagged.extend([(j, j) for j in kv_rows])
-            kv_rows = []
-    if kv_rows and len(kv_rows) >= min_lines:
-        tagged.extend([(j, j) for j in kv_rows])
-
-    # 2) alternating-блоки "Ключ" / "значение"
-    run: list[tuple[int, int]] = []
+    out: list[str] = []
     i = 0
-    while i + 1 < len(lines):
-        k = _norm_ws(lines[i])
-        v = _norm_ws(lines[i + 1])
-        ok = (
-            k and v
-            and ":" not in k and ":" not in v
-            and len(k) <= 60 and len(k.split()) <= 5
-            and _LETTER_RE.search(k) and _LETTER_RE.search(v)
-            and not re.fullmatch(r"[-–—]+", k)
-        )
-        if ok:
-            run.append((i, i + 1))
-            i += 2
+    while i < len(lines):
+        ln = _norm_ws(lines[i])
+        if not ln:
+            i += 1
             continue
-        if len(run) >= min_lines:
-            tagged.extend(run)
-        run = []
+
+        if i + 1 < len(lines):
+            k0 = _canonical_schema_key(ln, schema).casefold()
+            v0 = _norm_ws(lines[i + 1]).casefold()
+            if (k0, v0) in param_pairs:
+                i += 2
+                continue
+
+        if ":" in ln:
+            a, b = ln.split(":", 1)
+            k1 = _canonical_schema_key(a, schema).casefold()
+            v1 = _norm_ws(b).casefold()
+            if (k1, v1) in param_pairs:
+                i += 1
+                continue
+
+        if re.fullmatch(r"(?i)(технические\s+характеристики|основные\s+характеристики|характеристики)", ln):
+            nxt = [_norm_ws(x) for x in lines[i + 1 : i + 6] if _norm_ws(x)]
+            if nxt and not any((":" in x or "	" in x) for x in nxt):
+                i += 1
+                continue
+
+        out.append(ln)
         i += 1
-    if len(run) >= min_lines:
-        tagged.extend(run)
 
-    if not tagged:
-        return desc_html
+    return "\n".join(out).strip()
 
-    drop_rows = set()
-    for a, b in tagged:
-        drop_rows.update(range(a, b + 1))
-
-    kept = [ln for idx, ln in enumerate(lines) if idx not in drop_rows and _norm_ws(ln)]
-    return "\n\n".join(kept).strip()
 
 def _key_valid(key: str, key_rules: dict[str, Any]) -> bool:
     k = _norm_ws(key)
@@ -727,11 +649,6 @@ def _apply_schema(name: str, params_raw: list[tuple[str, str]], native_desc: str
         if kk in aliases:
             kk = aliases[kk]
 
-        # safety: core/validator forbids raw param "Назначение"
-        # держим семантику, но переводим в разрешённый ключ
-        if kk == "Назначение":
-            kk = "Для устройства"
-
         # key quality
         if not _key_valid(kk, key_rules):
             continue
@@ -857,8 +774,6 @@ def build() -> None:
         if not vendor:
             vendor = _infer_vendor_from_name(name, brands)
         if not vendor:
-            vendor = _infer_vendor_from_desc(_get_text(off.find("description")), brands)
-        if not vendor:
             vendor = get_public_vendor(SUPPLIER_NAME)
 
         # pictures
@@ -887,7 +802,6 @@ def build() -> None:
         if desc_cfg.get("enabled"):
             min_lines = int(desc_cfg.get("min_kv_lines") or 5)
             params_raw.extend(_extract_desc_kv_pairs(desc_html, min_lines))
-            desc_html = _strip_extracted_desc_blocks(desc_html, min_lines)
 
                 # Явные поля XML (строго, без гаданий):
         # - <model> -> param 'Модель'
@@ -898,8 +812,12 @@ def build() -> None:
 # apply schema (clean params, strict codes/compat, extra_info -> desc)
         params_clean, desc_clean = _apply_schema(name, params_raw, desc_html, scfg)
 
+        # Убираем уже поднятые в params пары из prose и не даём heading
+        # "Технические характеристики" убить полезный текст ниже.
+        desc_clean = _strip_lifted_desc_blocks(desc_clean or desc_html or "", params_clean, scfg)
+
         # читабельность описания (только форматирование)
-        desc_clean = _sanitize_native_desc(desc_clean or desc_html or "")
+        desc_clean = _sanitize_native_desc(desc_clean or "")
 
         # price
         price_in = _pick_price_kzt(off)
