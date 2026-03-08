@@ -1,5 +1,3 @@
-schema_version: 3
-supplier: alstyle
 drop_keys_casefold:
 - артикул
 - штрихкод
@@ -13,6 +11,9 @@ drop_keys_casefold:
 - полное наименование (каз)
 - назначение
 - безопасность
+- код нкт
+- 'код нкт:'
+- код нкт/gtin
 aliases_casefold:
   мощность (bт): Мощность (Вт)
 value_normalizers:
