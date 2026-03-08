@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-08 02:23:50">
+<yml_catalog date="2026-03-08 12:50:14">
 <shop><offers>
 
 <!--FEED_META
-Поставщик                                  | AkCent
+Поставщик                                  | akcent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-08 02:23:50
+Время сборки (Алматы)                      | 2026-03-08 12:50:14
 Ближайшая сборка (Алматы)                  | 2026-03-09 02:00:00
 Сколько товаров у поставщика до фильтра    | 1792
 Сколько товаров у поставщика после фильтра | 139
@@ -3593,7 +3593,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC6008101</vendorCode>
 <name>Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр.</name>
 <price>29900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/5eb/y8e6uqiax04d5oejggm16lw2w1hdadnh.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
