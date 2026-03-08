@@ -31,7 +31,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v90_unified_contract"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v91_hard_drop_nkt"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -174,7 +174,8 @@ def _collect_params(offer_el: ET.Element, schema: dict[str, Any]) -> list[tuple[
         if not _key_quality_ok(k, require_letter=require_letter, max_len=max_len, max_words=max_words):
             continue
 
-        if k.casefold() in drop:
+        # hard-drop: в финальном baseline AlStyle коды НКТ не нужны
+        if k.casefold() in drop or k.casefold() in ("код нкт",):
             continue
 
         if k.casefold() == "назначение" and v.casefold() in ("да", "есть"):
@@ -872,7 +873,7 @@ def _validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str
     max_len = int(rules.get("max_len", 60))
     max_words = int(rules.get("max_words", 9))
 
-    if key.casefold() in drop:
+    if key.casefold() in drop or key.casefold() in ("код нкт",):
         return None
     if not _key_quality_ok(key, require_letter=require_letter, max_len=max_len, max_words=max_words):
         return None
@@ -977,8 +978,8 @@ def main() -> int:
     schema_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_SCHEMA_FILE") or SCHEMA_FILE_DEFAULT))
     policy_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_POLICY_FILE") or POLICY_FILE_DEFAULT))
 
-    # schedule hour: источник истины — unified policy.yml
-    hour = int((policy_cfg.get("next_run_hour_local") or policy_cfg.get("schedule_hour_almaty") or 1))
+    # schedule hour: источник истины — policy.yml
+    hour = int((policy_cfg.get("schedule_hour_almaty") or 1))
     if env_hour:
         try:
             eh = int(env_hour)
@@ -993,8 +994,7 @@ def main() -> int:
         or "https://placehold.co/800x800/png?text=No+Photo"
     )
 
-    include_rules = filter_cfg.get("include_rules") or {}
-    fallback_ids = {str(x) for x in (include_rules.get("category_ids") or filter_cfg.get("category_ids") or [])}
+    fallback_ids = {str(x) for x in (filter_cfg.get("category_ids") or [])}
     allowed = _parse_id_set(os.getenv("ALSTYLE_CATEGORY_IDS"), fallback_ids)
 
     build_time = now_almaty()
@@ -1011,7 +1011,6 @@ def main() -> int:
     in_false = 0
 
     supplier_name = (policy_cfg.get("supplier") or "AlStyle").strip()
-    id_prefix = (policy_cfg.get("id_prefix") or ALSTYLE_ID_PREFIX).strip() or ALSTYLE_ID_PREFIX
     vendor_blacklist = {str(x).casefold() for x in (policy_cfg.get("vendor_blacklist_casefold") or ["alstyle"])}
     watch_source: dict[str, dict[str, str]] = {}
     watch_out: set[str] = set()
@@ -1020,7 +1019,7 @@ def main() -> int:
         cat = norm_ws(_t(o.find("categoryId")))
         raw_id = norm_ws(o.get("id") or _t(o.find("vendorCode")))
         name = norm_ws(_t(o.find("name")))
-        oid_probe = raw_id if raw_id.upper().startswith(id_prefix) else f"{id_prefix}{raw_id}" if raw_id else ""
+        oid_probe = raw_id if raw_id.upper().startswith(ALSTYLE_ID_PREFIX) else f"{ALSTYLE_ID_PREFIX}{raw_id}" if raw_id else ""
         if oid_probe in ALSTYLE_WATCH_OIDS:
             watch_source[oid_probe] = {"categoryId": cat, "name": name}
         if allowed and (not cat or cat not in allowed):
@@ -1030,7 +1029,7 @@ def main() -> int:
         if not name or not raw_id:
             continue
 
-        oid = raw_id if raw_id.upper().startswith(id_prefix) else f"{id_prefix}{raw_id}"
+        oid = raw_id if raw_id.upper().startswith(ALSTYLE_ID_PREFIX) else f"{ALSTYLE_ID_PREFIX}{raw_id}"
 
         av_attr = (o.get("available") or "").strip().lower()
         if av_attr in ("true", "1", "yes"):
