@@ -1,6 +1,17 @@
+schema_version: 2
 supplier: akcent
 timezone: Asia/Almaty
 next_run_hour_local: 2
+id_prefix: AC
+placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
+vendor_blacklist_casefold: []
+param_priority: []
+core_rules:
+  mutate_params: false
+  auto_codes_from_text: false
+  auto_compat_from_text: false
+  placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
+# legacy block for backward-safe compatibility
 core_stages:
   pricing: true
   keywords: true
@@ -9,8 +20,3 @@ core_stages:
   category_assignment: false
   seo_reviews: false
   seo_faq: false
-core_rules:
-  mutate_params: false
-  auto_codes_from_text: false
-  auto_compat_from_text: false
-  placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
