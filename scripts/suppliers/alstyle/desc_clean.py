@@ -2,12 +2,8 @@
 """
 Path: scripts/suppliers/alstyle/desc_clean.py
 
-AlStyle supplier layer — narrative description cleaning (stage 3).
-
-Что изменено в этой версии:
-- из build_alstyle.py вынесен слой очистки native description;
-- поведение сохранено максимально близким к v101;
-- desc/compat extraction логика пока не менялась и будет переноситься отдельно.
+AlStyle description cleaning.
+Только narrative-cleaning, без desc->params extraction.
 """
 
 from __future__ import annotations
@@ -29,7 +25,7 @@ _CSS_SERVICE_LINE_RE = re.compile(
 )
 
 
-def _dedupe_code_series_text(text: str) -> str:
+def dedupe_code_series_text(text: str) -> str:
     s = norm_ws(text)
     if not s:
         return ""
@@ -50,7 +46,7 @@ def _dedupe_code_series_text(text: str) -> str:
     return _CODE_SERIES_RE.sub(repl, s)
 
 
-def _is_service_desc_line(line: str) -> bool:
+def is_service_desc_line(line: str) -> bool:
     s = norm_ws(unescape(re.sub(r"<[^>]+>", " ", line or "")))
     if not s:
         return True
@@ -70,15 +66,34 @@ def _is_service_desc_line(line: str) -> bool:
     return False
 
 
-def _norm_title_like_text(s: str) -> str:
+def fix_common_broken_words(s: str) -> str:
+    s = s or ""
+    fixes = {
+        "питание м": "питанием",
+        "электропитание м": "электропитанием",
+        "управление м": "управлением",
+        "резервным питание м": "резервным питанием",
+        "с системой управления питание м": "с системой управления питанием",
+        "и питание м": "и питанием",
+        "одним кабелем управляйте": "одним кабелем и управляйте",
+        "дополнтельно": "дополнительно",
+        "опцонально": "опционально",
+        "!!!": "!",
+    }
+    for a, b in fixes.items():
+        s = s.replace(a, b).replace(a.capitalize(), b.capitalize())
+    return s
+
+
+def norm_title_like_text(s: str) -> str:
     s = norm_ws(unescape(re.sub(r"<[^>]+>", " ", s or "")))
     s = re.sub(r"[()\[\],;:!?.«»\"'`]+", " ", s)
     return norm_ws(s).casefold()
 
 
-def _is_title_like_duplicate(name: str, line: str) -> bool:
-    a = _norm_title_like_text(name)
-    b = _norm_title_like_text(line)
+def is_title_like_duplicate(name: str, line: str) -> bool:
+    a = norm_title_like_text(name)
+    b = norm_title_like_text(line)
     if not a or not b:
         return False
     if a == b:
@@ -88,18 +103,17 @@ def _is_title_like_duplicate(name: str, line: str) -> bool:
         longer = max(len(a), len(b))
         if shorter >= max(12, int(longer * 0.7)):
             return True
-    ratio = SequenceMatcher(None, a, b).ratio()
-    return ratio >= 0.9
+    return SequenceMatcher(None, a, b).ratio() >= 0.9
 
 
-def _dedupe_desc_leading_title(name: str, desc: str) -> str:
+def dedupe_desc_leading_title(name: str, desc: str) -> str:
     parts = [norm_ws(x) for x in re.split(r"(?:\r?\n)+", unescape(desc or "")) if norm_ws(x)]
-    while parts and _is_title_like_duplicate(name, parts[0]):
+    while parts and is_title_like_duplicate(name, parts[0]):
         parts.pop(0)
     return "\n".join(parts)
 
 
-def _strip_desc_sections(desc: str) -> str:
+def strip_desc_sections(desc: str) -> str:
     lines = [norm_ws(x) for x in re.split(r"(?:\r?\n)+", unescape(desc or ""))]
     out: list[str] = []
     skip = False
@@ -126,7 +140,7 @@ def _strip_desc_sections(desc: str) -> str:
     return cleaned
 
 
-def _align_desc_model_from_name(name: str, desc: str) -> str:
+def align_desc_model_from_name(name: str, desc: str) -> str:
     n = norm_ws(name)
     d = norm_ws(unescape(desc or ""))
     if not n or not d:
@@ -147,59 +161,54 @@ def _align_desc_model_from_name(name: str, desc: str) -> str:
     return d
 
 
-def _clean_desc_text(s: str) -> str:
-    s = unescape(s or "")
+def clean_desc_text_for_extraction(desc: str) -> str:
+    s = unescape(desc or "")
     s = re.sub(r"<\s*br\s*/?\s*>", "\n", s, flags=re.I)
     s = re.sub(r"</p\s*>", "\n", s, flags=re.I)
     s = re.sub(r"<[^>]+>", " ", s)
     lines = [norm_ws(x) for x in re.split(r"(?:\r?\n)+", s)]
-    lines = [x for x in lines if x and not _is_service_desc_line(x)]
-    return "\n".join(lines)
+    lines = [x for x in lines if x and not is_service_desc_line(x)]
+    cleaned = "\n".join(lines)
+    cleaned = fix_common_broken_words(cleaned)
+    return norm_ws(cleaned)
 
 
-def _fix_common_broken_words(s: str) -> str:
-    s = s or ""
-    fixes = {
-        "питание м": "питанием",
-        "электропитание м": "электропитанием",
-        "управление м": "управлением",
-        "резервным питание м": "резервным питанием",
-        "с системой управления питание м": "с системой управления питанием",
-        "и питание м": "и питанием",
-        "одним кабелем управляйте": "одним кабелем и управляйте",
-        "дополнтельно": "дополнительно",
-        "опцонально": "опционально",
-        "!!!": "!",
-    }
-    for a, b in fixes.items():
-        s = s.replace(a, b).replace(a.capitalize(), b.capitalize())
-    return s
-
-
-def _sanitize_desc_quality_text(desc: str) -> str:
+def sanitize_desc_quality_text(desc: str) -> str:
     s = norm_ws(desc)
     if not s:
         return ""
-    s = _fix_common_broken_words(s)
+    s = fix_common_broken_words(s)
     s = re.sub(r"(?iu)Xerox\s+Для,\s+Xerox\s+", "Xerox ", s)
     s = re.sub(r"(?iu)Для,\s+Xerox\s+", "Xerox ", s)
     s = re.sub(r"(?iu)Для\s+принтеров\s+Xerox\s+", "Xerox ", s)
     s = re.sub(r"(?iu)Для\s+МФУ\s+Xerox\s+", "Xerox ", s)
     s = re.sub(r"\bWorkCenter\b", "WorkCentre", s, flags=re.I)
-    s = _dedupe_code_series_text(s)
+    s = dedupe_code_series_text(s)
     return norm_ws(s)
 
 
-def _sanitize_native_desc(desc: str) -> str:
-    raw = _clean_desc_text(desc)
+def sanitize_native_desc(desc: str, *, name: str = "") -> str:
+    raw = clean_desc_text_for_extraction(desc)
     if not raw:
         return ""
     before_sections = raw
-    raw = _strip_desc_sections(raw)
+    raw = strip_desc_sections(raw)
     if len(norm_ws(raw)) < max(40, int(len(norm_ws(before_sections)) * 0.35)):
         raw = before_sections
-    raw = _sanitize_desc_quality_text(raw)
+    if name:
+        raw = align_desc_model_from_name(name, raw)
+        raw = dedupe_desc_leading_title(name, raw)
+    raw = sanitize_desc_quality_text(raw)
     lines = [norm_ws(x) for x in re.split(r"(?:\r?\n)+", raw) if norm_ws(x)]
-    while lines and (lines[0][:1] in {"(", ",", ";", ":"} or _is_service_desc_line(lines[0])):
+    while lines and (lines[0][:1] in {"(", ",", ";", ":"} or is_service_desc_line(lines[0])):
         lines.pop(0)
     return "\n".join(lines)
+
+
+# Backward-compatible aliases for already split stages.
+_is_service_desc_line = is_service_desc_line
+_fix_common_broken_words = fix_common_broken_words
+_dedupe_desc_leading_title = dedupe_desc_leading_title
+_align_desc_model_from_name = align_desc_model_from_name
+_sanitize_native_desc = sanitize_native_desc
+_sanitize_desc_quality_text = sanitize_desc_quality_text
