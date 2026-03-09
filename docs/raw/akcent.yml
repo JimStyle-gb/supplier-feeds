@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-09 02:26:39">
+<yml_catalog date="2026-03-09 13:49:17">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-09 02:26:39 (не было изменений)
+Время сборки (Алматы)                      | 2026-03-09 13:49:17
 Ближайшая сборка (Алматы)                  | 2026-03-10 02:00:00
-Сколько товаров у поставщика до фильтра    | 1792
+Сколько товаров у поставщика до фильтра    | 1794
 Сколько товаров у поставщика после фильтра | 139
 Сколько товаров есть в наличии (true)      | 139
 Сколько товаров нет в наличии (false)      | 0
@@ -22,14 +22,16 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачественную печать для принтеров Epson.]]></description>
+Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачественную печать для принтеров Epson.
+Поддерживаемые модели принтеров
+Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Тип">струйный</param>
 <param name="Для устройства">широкоформатный принтер</param>
 <param name="Цвет">фиолетовый</param>
 <param name="Ресурс">700 мл</param>
 <param name="Модель">C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</param>
-<param name="Совместимость">Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000</param>
+<param name="Совместимость">Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC-P8000, Epson SureColor SC-P9000</param>
 </offer>
 
 <offer id="ACC12C890191" available="true">
@@ -43,7 +45,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <description><![CDATA[
 Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600
 Сменная емкость для отработанных чернил.
-Информация о необходимости замены появится на панели управление принтера.]]></description>
+Информация о необходимости замены появится на панели управления принтера.]]></description>
 <param name="Гарантия">3 мес</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">струйная</param>
@@ -138,7 +140,7 @@ SC-B6000]]></description>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Основные преимущества:
-Сменная емкость для отработанных чернил. Информация о необходимости замены появится на панели управление принтера.]]></description>
+Сменная емкость для отработанных чернил. Информация о необходимости замены появится на панели управления принтера.]]></description>
 <param name="Объем">0,003</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">струйная</param>
