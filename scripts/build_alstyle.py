@@ -32,7 +32,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v98_fix_pitaniem_split"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v99_restore_desc_and_pairs"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -701,7 +701,15 @@ def _sanitize_native_desc(s: str) -> str:
             continue
         lines.append(raw)
     t = "\n".join(lines)
-    t = _strip_desc_sections(t)
+    pre_sections = t
+    stripped = _strip_desc_sections(t)
+    # Если чистка секций откусила почти всё описание, откатываемся на версию до неё.
+    pre_sig = re.sub(r"\W+", "", pre_sections, flags=re.U)
+    stripped_sig = re.sub(r"\W+", "", stripped, flags=re.U)
+    if stripped_sig and (len(stripped_sig) >= max(60, int(len(pre_sig) * 0.28))):
+        t = stripped
+    else:
+        t = pre_sections
     # Убираем служебные хвосты-строки, состоящие только из '>' или '&gt;'.
     t = re.sub(r"(?im)^\s*>+\s*$", "", t)
     t = re.sub(r"(?im)^\s*&gt;\s*$", "", t)
@@ -847,13 +855,40 @@ def _split_glued_brand_models(s: str) -> str:
     return norm_ws(t)
 
 
+def _split_inline_desc_pairs(line: str) -> list[str]:
+    ln = norm_ws(line)
+    if not ln:
+        return []
+    key_pat = (
+        r"Модель|Аналог модели|Совместимость|Совместимые модели|Устройства|Для принтеров|"
+        r"Цвет|Цвет печати|Ресурс|Ресурс картриджа(?:,\s*cтр\.)?|Количество страниц|"
+        r"[ЕеЁё]мкость(?: лотка)?|Степлирование|Дополнительные опции|Применение|Количество в упаковке"
+    )
+    rx = re.compile(rf"(?iu)(?=(?:^|\s)({key_pat})\s*:)" )
+    matches = list(rx.finditer(ln))
+    if len(matches) < 2:
+        return [ln]
+    parts: list[str] = []
+    for i, m in enumerate(matches):
+        start = m.start(1)
+        end = matches[i + 1].start(1) if i + 1 < len(matches) else len(ln)
+        seg = norm_ws(ln[start:end])
+        if seg:
+            parts.append(seg)
+    return parts or [ln]
+
+
 def _extract_simple_desc_pairs(text: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
     lines = _iter_desc_lines(text)
-    if not lines or len(lines) > 6:
+    if not lines or len(lines) > 8:
         return []
 
-    candidates: list[tuple[str, str]] = []
+    expanded: list[str] = []
     for ln in lines:
+        expanded.extend(_split_inline_desc_pairs(ln))
+
+    candidates: list[tuple[str, str]] = []
+    for ln in expanded:
         pair = _parse_desc_spec_line(ln)
         if pair:
             candidates.append(pair)
