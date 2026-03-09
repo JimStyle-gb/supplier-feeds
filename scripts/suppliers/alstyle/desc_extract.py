@@ -4,10 +4,12 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-Фикс v108:
-- ужесточена валидация `Совместимость`
-- больше не пропускаем ОС/интерфейсы/порт-листы как compatibility
-- режем слишком длинные и техлистовые значения
+Фикс v109:
+- вернул подъём params из compact-inline Xerox/Canon описаний без двоеточий
+- научил splitter видеть "Колличество в упаковке"
+- улучшил парсинг одной строки вида:
+  "Характеристики Модель ... Совместимые модели ... Цвет ... Ресурс ..."
+- оставил жёсткий guard против техлистов интерактивных панелей в "Совместимость"
 """
 
 from __future__ import annotations
@@ -38,7 +40,8 @@ _DESC_SPEC_LINE_RE = re.compile(
     r"(Модель|Аналог модели|Совместимость|Совместимые модели|Устройства|Для принтеров|"
     r"Технология печати|Цвет|Цвет печати|Ресурс|Ресурс картриджа|Ресурс картриджа, cтр\.|"
     r"Количество страниц|Кол-во страниц при 5% заполнении А4|Емкость|Ёмкость|Емкость лотка|Ёмкость лотка|"
-    r"Степлирование|Дополнительные опции|Применение|Количество в упаковке|Колличество в упаковке)"
+    r"Степлирование|Дополнительные опции|Применение|Количество в упаковке|Колличество в упаковке|"
+    r"Производитель|Устройство|Объем картриджа, мл|Объём картриджа, мл)"
     r"\s*(?::|\t+|\s{2,}|[-–—])\s*(.+?)\s*$"
 )
 _DESC_COMPAT_LINE_RE = re.compile(r"(?im)^\s*Совместим(?:а|о|ы)?\s+с\s+(.+?)\s*$")
@@ -55,7 +58,7 @@ _DESC_CAPACITY_SENTENCE_RE = re.compile(
 
 _COMPAT_BRAND_HINT_RE = re.compile(
     r"(?i)\b(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki|"
-    r"VersaLink|AltaLink|WorkCentre|WorkCenter|DocuCentre|imageRUNNER|i-SENSYS|ECOSYS|bizhub|PIXMA)\b"
+    r"VersaLink|AltaLink|WorkCentre|WorkCenter|DocuCentre|imageRUNNER|i-SENSYS|ECOSYS|bizhub|PIXMA|Phaser|ColorQube)\b"
 )
 _COMPAT_MODEL_TOKEN_RE = re.compile(
     r"(?i)\b(?:[A-Z]{1,8}-?\d{2,5}[A-Z]{0,3}x?|[A-Z]?\d{3,5}[A-Z]{0,3}i?)\b"
@@ -110,6 +113,39 @@ _SAFE_DESC_PARAM_KEYS = {
     "Количество в упаковке",
 }
 
+_COMPACT_LABELS = [
+    "Модель",
+    "Аналог модели",
+    "Совместимость",
+    "Совместимые модели",
+    "Устройства",
+    "Для принтеров",
+    "Производитель",
+    "Устройство",
+    "Технология печати",
+    "Цвет печати",
+    "Цвет",
+    "Ресурс картриджа, cтр.",
+    "Ресурс картриджа",
+    "Количество страниц",
+    "Ресурс",
+    "Емкость лотка",
+    "Ёмкость лотка",
+    "Емкость",
+    "Ёмкость",
+    "Объем картриджа, мл",
+    "Объём картриджа, мл",
+    "Степлирование",
+    "Дополнительные опции",
+    "Применение",
+    "Количество в упаковке",
+    "Колличество в упаковке",
+]
+_COMPACT_LABEL_RE = re.compile(
+    r"(?iu)\b(?:Характеристики|Основные характеристики|Технические характеристики)\b\s*:?\s*|"
+    + r"(?iu)\b(" + "|".join(re.escape(x) for x in sorted(_COMPACT_LABELS, key=len, reverse=True)) + r")\b(?:\s*[:\-–—]\s*|\s+)"
+)
+
 
 def canon_desc_spec_key(k: str) -> str:
     kk = norm_ws(k).casefold()
@@ -124,9 +160,9 @@ def looks_like_compatibility_value(val: str) -> bool:
     v = norm_ws(val)
     if not v or len(v) < 6:
         return False
-    if len(v) > 160:
+    if len(v) > 320:
         return False
-    if len(v.split()) > 18:
+    if len(v.split()) > 40:
         return False
     if v.count(":") > 1:
         return False
@@ -186,12 +222,35 @@ def split_inline_desc_pairs(line: str) -> list[str]:
         return []
     key_pat = (
         r"Модель|Аналог модели|Совместимость|Совместимые модели|Устройства|Для принтеров|"
-        r"Цвет|Цвет печати|Ресурс|Ресурс картриджа(?:,\s*cтр\.)?|Количество страниц|"
-        r"[ЕеЁё]мкость(?: лотка)?|Степлирование|Дополнительные опции|Применение|Количество в упаковке"
+        r"Производитель|Устройство|Цвет|Цвет печати|Ресурс|Ресурс картриджа(?:,\s*cтр\.)?|Количество страниц|"
+        r"[ЕеЁё]мкость(?: лотка)?|Об[ъе]ем картриджа,\s*мл|Степлирование|Дополнительные опции|"
+        r"Применение|Количество в упаковке|Колличество в упаковке"
     )
     rx = re.compile(rf"(?iu)(?=\b(?:{key_pat})\b\s*(?::|[-–—]))")
     parts = [norm_ws(x) for x in rx.split(ln) if norm_ws(x)]
     return parts if len(parts) > 1 else [ln]
+
+
+def extract_compact_labeled_sequences(text: str) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+    for line in text.splitlines():
+        ln = norm_ws(line)
+        if not ln or len(ln) < 20 or len(ln) > 1200:
+            continue
+        matches = list(_COMPACT_LABEL_RE.finditer(ln))
+        if len(matches) < 2:
+            continue
+        for i, m in enumerate(matches):
+            label = m.group(1)
+            if not label:
+                continue
+            start = m.end()
+            end = matches[i + 1].start() if i + 1 < len(matches) else len(ln)
+            value = norm_ws(ln[start:end]).strip(" ;,.-")
+            if not value:
+                continue
+            out.append((canon_desc_spec_key(label), value))
+    return out
 
 
 def extract_strict_kv_block(text: str) -> list[tuple[str, str]]:
@@ -225,6 +284,8 @@ def extract_short_inline_pairs(text: str) -> list[tuple[str, str]]:
             pair = parse_desc_spec_line(part)
             if pair:
                 out.append(pair)
+
+    out.extend(extract_compact_labeled_sequences("\n".join(lines)))
     return out
 
 
@@ -318,9 +379,8 @@ def extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tuple
     strict = extract_strict_kv_block(text)
     if strict:
         candidates.extend(strict)
-    else:
-        candidates.extend(extract_short_inline_pairs(text))
 
+    candidates.extend(extract_short_inline_pairs(text))
     candidates.extend(extract_sentence_compat_pairs(text))
     candidates.extend(extract_sentence_capacity_pairs(text))
 
