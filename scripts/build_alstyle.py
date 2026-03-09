@@ -31,7 +31,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v91_hard_drop_nkt"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v92_no_desc_param_lift"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -1054,21 +1054,9 @@ def main() -> int:
             vendor_src = ""
 
         desc_src = _sanitize_native_desc(_t(o.find("description")) or "")
-        params = _merge_params(params, _extract_desc_spec_pairs(desc_src, schema_cfg))
-
-        # Стабильный порядок params: приоритетные ключи первыми, затем по алфавиту (чтобы raw ближе к final)
-        prio = [str(x) for x in (policy_cfg.get("param_priority") or [])]
-        prio_cf = [p.casefold() for p in prio]
-        def _pkey(kv):
-            k, v = kv
-            kcf = (k or "").casefold()
-            try:
-                idx = prio_cf.index(kcf)
-            except ValueError:
-                idx = 10_000
-            return (idx, kcf, (v or "").casefold())
-        if prio:
-            params = sorted(params, key=_pkey)
+        # В новой CS-архитектуре адаптер AlStyle не поднимает params из description
+        # и не меняет порядок native params. Разрешены только явные <param> поставщика
+        # после schema-cleanup (_collect_params).
 
         price_in = safe_int(_t(o.find("purchase_price")))
         if price_in is None:
@@ -1148,7 +1136,7 @@ def main() -> int:
         encoding=encoding,
         public_vendor=os.getenv("PUBLIC_VENDOR", "CS").strip() or "CS",
         currency_id="KZT",
-        param_priority=(policy_cfg.get("param_priority") or None),
+        param_priority=None,
     )
 
     print(
