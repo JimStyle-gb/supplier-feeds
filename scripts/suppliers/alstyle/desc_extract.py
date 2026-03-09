@@ -4,8 +4,10 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-Слой только для безопасного подъёма характеристик из description.
-Без narrative-cleaning и без vendor/picture logic.
+Фикс v108:
+- ужесточена валидация `Совместимость`
+- больше не пропускаем ОС/интерфейсы/порт-листы как compatibility
+- режем слишком длинные и техлистовые значения
 """
 
 from __future__ import annotations
@@ -55,8 +57,17 @@ _COMPAT_BRAND_HINT_RE = re.compile(
     r"(?i)\b(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki|"
     r"VersaLink|AltaLink|WorkCentre|WorkCenter|DocuCentre|imageRUNNER|i-SENSYS|ECOSYS|bizhub|PIXMA)\b"
 )
-_COMPAT_MODEL_HINT_RE = re.compile(
-    r"(?i)(?:\b[A-Z]{1,8}-?\d{2,5}[A-Z]{0,3}x?\b|\b\d{3,5}[A-Z]{0,3}i?\b|/\s*[A-Z]?\d{2,5}[A-Z]{0,3}x?\b)"
+_COMPAT_MODEL_TOKEN_RE = re.compile(
+    r"(?i)\b(?:[A-Z]{1,8}-?\d{2,5}[A-Z]{0,3}x?|[A-Z]?\d{3,5}[A-Z]{0,3}i?)\b"
+)
+_COMPAT_REJECT_RE = re.compile(
+    r"(?iu)\b("
+    r"Windows|Android|Mac\s*OS|Linux|Chrome|USB(?:-C| Type-C)?|HDMI|VGA|RJ45|RS232|OTG|TF\s*Card|"
+    r"Line\s*Out|SPDIF|OPS(?:-slot| Slot)?|Wi-?Fi|Bluetooth|RAM|ROM|процессор|Cortex|дисплей|панель|"
+    r"яркость|контрастность|угол\s+обзора|время\s+отклика|точность|позиционирования|аудио|динамики|"
+    r"микрофоны|звуковое\s+давление|интерфейс(?:ы)?|подключение|передняя\s+панель|задняя\s+панель|"
+    r"touch\s*out|usb\s*touch|hdmi\s+in|hdmi\s+out|dp\s+in|type-c|ops\s+slot|single\s+touch"
+    r")\b"
 )
 
 _DESC_SPEC_KEY_MAP = {
@@ -105,15 +116,31 @@ def canon_desc_spec_key(k: str) -> str:
     return _DESC_SPEC_KEY_MAP.get(kk, norm_ws(k))
 
 
+def _compat_model_token_count(v: str) -> int:
+    return len(_COMPAT_MODEL_TOKEN_RE.findall(v or ""))
+
+
 def looks_like_compatibility_value(val: str) -> bool:
     v = norm_ws(val)
     if not v or len(v) < 6:
         return False
-    if not _COMPAT_BRAND_HINT_RE.search(v):
+    if len(v) > 160:
         return False
-    if not _COMPAT_MODEL_HINT_RE.search(v):
+    if len(v.split()) > 18:
         return False
-    return True
+    if v.count(":") > 1:
+        return False
+    if _COMPAT_REJECT_RE.search(v):
+        return False
+
+    has_brand = bool(_COMPAT_BRAND_HINT_RE.search(v))
+    model_count = _compat_model_token_count(v)
+
+    if has_brand and model_count >= 1:
+        return True
+    if model_count >= 2 and ("/" in v or "," in v):
+        return True
+    return False
 
 
 def iter_desc_lines(block: str) -> list[str]:
@@ -271,6 +298,8 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
 
     if key == "Совместимость":
         val2 = clean_compatibility_text(val2)
+        if not looks_like_compatibility_value(val2):
+            return None
     elif key in {"Модель", "Аналог модели"}:
         val2 = dedupe_code_series_text(split_glued_brand_models(val2))
 
@@ -280,9 +309,6 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
 
 
 def extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
-    """
-    Главный безопасный слой description -> params.
-    """
     text = clean_desc_text_for_extraction(desc_src)
     if not text.strip():
         return []
