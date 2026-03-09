@@ -32,7 +32,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v95_final_cleanup"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v96_desc_polish_final"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -375,6 +375,64 @@ def _is_service_desc_line(raw: str) -> bool:
     return False
 
 
+def _norm_title_like_text(s: str) -> str:
+    t = norm_ws(s).casefold()
+    t = re.sub(r"[^a-zа-яё0-9]+", " ", t)
+    return norm_ws(t)
+
+
+def _is_title_like_duplicate(line: str, name: str) -> bool:
+    ln = _norm_title_like_text(line)
+    nm = _norm_title_like_text(name)
+    if not ln or not nm or len(ln) < 8:
+        return False
+    if ln == nm or ln in nm or nm in ln:
+        return True
+    lt = set(ln.split())
+    nt = set(nm.split())
+    if len(lt) >= 3 and lt and (len(lt & nt) / len(lt)) >= 0.85:
+        return True
+    return False
+
+
+def _dedupe_desc_leading_title(name: str, desc: str) -> str:
+    if not name or not desc:
+        return desc or ""
+    lines = (desc or "").splitlines()
+    out: list[str] = []
+    dropping = True
+    for raw in lines:
+        ln = norm_ws(raw)
+        if dropping:
+            if not ln:
+                continue
+            if _is_title_like_duplicate(ln, name):
+                continue
+            dropping = False
+        out.append(raw)
+    return "\n".join(out).strip()
+
+
+def _strip_desc_sections(text: str) -> str:
+    if not text:
+        return ""
+    lines = text.splitlines()
+    out: list[str] = []
+    skip_mode = False
+    for raw in lines:
+        ln = norm_ws(raw)
+        key = ln.rstrip(":").casefold()
+        if key in {"порты", "порты и подключение", "что в коробке", "в коробке"}:
+            skip_mode = True
+            continue
+        if skip_mode:
+            if not ln:
+                skip_mode = False
+            continue
+        out.append(raw)
+    return "\n".join(out)
+
+
 def _align_desc_model_from_name(name: str, desc: str) -> str:
     text = desc or ""
     if not name or not text:
@@ -454,6 +512,10 @@ def _fix_common_broken_words(s: str) -> str:
         return ""
 
     exact_repl = [
+        (r"(?iu)\bпитание\s+м\b", "питанием"),
+        (r"(?iu)\bуправление\s+м\b", "управлением"),
+        (r"(?iu)\bрезервным\s+питание\s+м\b", "резервным питанием"),
+        (r"(?iu)\bодним\s+кабелем\s+управляйте\b", "одним кабелем и управляйте"),
         (r"(?iu)\bос\s+новное\b", "основное"),
         (r"(?iu)\bос\s+новной\b", "основной"),
         (r"(?iu)\bос\s+новные\b", "основные"),
@@ -635,6 +697,7 @@ def _sanitize_native_desc(s: str) -> str:
             continue
         lines.append(raw)
     t = "\n".join(lines)
+    t = _strip_desc_sections(t)
     # Убираем служебные хвосты-строки, состоящие только из '>' или '&gt;'.
     t = re.sub(r"(?im)^\s*>+\s*$", "", t)
     t = re.sub(r"(?im)^\s*&gt;\s*$", "", t)
@@ -1229,6 +1292,8 @@ def main() -> int:
             vendor_src = ""
 
         desc_src = _sanitize_native_desc(_t(o.find("description")) or "")
+        desc_src = _align_desc_model_from_name(name, desc_src)
+        desc_src = _dedupe_desc_leading_title(name, desc_src)
         desc_src = _align_desc_model_from_name(name, desc_src)
         params = _merge_params(params, _extract_desc_spec_pairs(desc_src, schema_cfg))
 
