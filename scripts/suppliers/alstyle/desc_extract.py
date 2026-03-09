@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+Path: scripts/suppliers/alstyle/desc_extract.py
+
 AlStyle description -> params extraction.
 
 Слой только для безопасного подъёма характеристик из description.
@@ -12,12 +14,12 @@ import re
 from typing import Any
 
 from cs.util import norm_ws
-from scripts.suppliers.alstyle.desc_clean import clean_desc_text_for_extraction
-from scripts.suppliers.alstyle.params_xml import (
+from suppliers.alstyle.desc_clean import clean_desc_text_for_extraction
+from suppliers.alstyle.params_xml import (
     key_quality_ok,
     apply_value_normalizers,
 )
-from scripts.suppliers.alstyle.compat import (
+from suppliers.alstyle.compat import (
     clean_compatibility_text,
     dedupe_code_series_text,
     split_glued_brand_models,
@@ -45,7 +47,6 @@ _DESC_FOR_DEVICES_SENTENCE_RE = re.compile(
     r"(?is)\bдля\s+(?:устройств|принтеров(?:\s+и\s+МФУ)?|МФУ|аппаратов)\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)"
 )
 _DESC_TECH_PRINT_LABEL_ONLY_RE = re.compile(r"(?im)^\s*Технология\s+печати\s*:?\s*$")
-_DESC_COMPAT_LABEL_ONLY_RE = re.compile(r"(?im)^\s*(Совместимость|Совместимые модели|Устройства)\s*:?\s*$")
 _DESC_CAPACITY_SENTENCE_RE = re.compile(
     r"(?is)\b(?:Емкость|Ёмкость)\s+лотка\s*[-:]\s*(.{2,120}?)(?:(?:[.!?](?:\s|$))|\n|$)"
 )
@@ -113,19 +114,6 @@ def looks_like_compatibility_value(val: str) -> bool:
     if not _COMPAT_MODEL_HINT_RE.search(v):
         return False
     return True
-
-
-def is_heading_only_value(val: str) -> bool:
-    v = norm_ws(val).strip()
-    if not v:
-        return False
-    if re.fullmatch(r"[/\sA-ZА-ЯЁ0-9()_.:+-]{3,}", v) and ":" in v:
-        return True
-    if re.fullmatch(r"(?:[/\s]*[A-ZА-ЯЁ][A-ZА-ЯЁ0-9()_.+-]*[/\s]*){2,}:?", v):
-        return True
-    if re.match(r"^/\s*[A-ZА-ЯЁ]", v) and ":" in v:
-        return True
-    return False
 
 
 def iter_desc_lines(block: str) -> list[str]:
@@ -294,7 +282,6 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
 def extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
     """
     Главный безопасный слой description -> params.
-    Поведение максимально близко к v99, но уже живёт отдельно от build file.
     """
     text = clean_desc_text_for_extraction(desc_src)
     if not text.strip():
