@@ -31,7 +31,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v92_no_desc_param_lift"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v93_selective_desc_block"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -196,7 +196,7 @@ def _collect_params(offer_el: ET.Element, schema: dict[str, Any]) -> list[tuple[
     return out
 
 
-_DESC_SPEC_START_RE = re.compile(r"(?im)^\s*(Характеристики|Основные характеристики)\s*:?\s*$")
+_DESC_SPEC_START_RE = re.compile(r"(?im)^\s*(Характеристики|Основные характеристики|Технические характеристики)\s*:?\s*$")
 _DESC_SPEC_STOP_RE = re.compile(
     r"(?im)^\s*(Преимущества|Комплектация|Условия гарантии|Гарантия|Примечание|Примечания|Особенности|Описание|EUROPRINT)\s*:?\s*$"
 )
@@ -306,6 +306,20 @@ _DESC_SPEC_KEY_MAP = {
     "разъём для наушников": "Разъём для наушников",
     "поддержка hdcp": "Поддержка HDCP",
     "языки меню osd": "Языки меню OSD",
+}
+
+_SAFE_DESC_PARAM_KEYS = {
+    "Модель",
+    "Аналог модели",
+    "Совместимость",
+    "Технология",
+    "Цвет",
+    "Ресурс",
+    "Ёмкость",
+    "Степлирование",
+    "Дополнительные опции",
+    "Применение",
+    "Количество в упаковке",
 }
 
 
@@ -616,6 +630,8 @@ def _sanitize_param_value(key: str, val: str) -> str:
 
     if kcf == "совместимость":
         v = re.sub(r"(?i)^совместим(?:а|о|ы)?\s+с\s+", "", v).strip()
+        v = re.sub(r"(?i)^для\s*,\s*", "", v).strip()
+        v = re.sub(r"(?i)^для\s+совместимых\s+(?:устройств|принтеров(?:\s+и\s+мфу)?|мфу|аппаратов)\s+", "", v).strip()
         v = re.sub(r"(?i)^для\s+(?:устройств|принтеров(?:\s+и\s+мфу)?|мфу|аппаратов)\s+", "", v).strip()
         v = re.sub(r"(?i)^устройства?\s*,?\s*", "", v).strip()
         v = re.sub(
@@ -875,6 +891,8 @@ def _validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str
 
     if key.casefold() in drop or key.casefold() in ("код нкт",):
         return None
+    if key not in _SAFE_DESC_PARAM_KEYS:
+        return None
     if not _key_quality_ok(key, require_letter=require_letter, max_len=max_len, max_words=max_words):
         return None
 
@@ -890,34 +908,26 @@ def _extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tupl
     if not text.strip():
         return []
 
-    candidates: list[tuple[str, str]] = []
-
-    # 1) Строгий блок характеристик
+    # Для AlStyle берём только строгий блок характеристик и только безопасные ключи.
+    # Не парсим весь description целиком и не выдёргиваем совместимость из обычных фраз,
+    # чтобы не ломать проекторы/мониторы и не нарушать mutate_params=false.
     m = _DESC_SPEC_START_RE.search(text)
-    if m:
-        block = text[m.end():]
-        stop = _DESC_SPEC_STOP_RE.search(block)
-        if stop:
-            block = block[:stop.start()]
-        block_lines = _iter_desc_lines(block)
-        for ln in block_lines:
-            pair = _parse_desc_spec_line(ln)
-            if pair:
-                candidates.append(pair)
-        candidates.extend(_extract_multiline_tech_print_pairs(block_lines))
-        candidates.extend(_extract_multiline_compat_pairs(block_lines))
+    if not m:
+        return []
 
-    # 2) Inline-строки по всему описанию: "Модель:", "Совместимость:", "Совместим с", "Емкость лотка -"
-    all_lines = _iter_desc_lines(text)
-    for ln in all_lines:
+    block = text[m.end():]
+    stop = _DESC_SPEC_STOP_RE.search(block)
+    if stop:
+        block = block[:stop.start()]
+
+    block_lines = _iter_desc_lines(block)
+    candidates: list[tuple[str, str]] = []
+    for ln in block_lines:
         pair = _parse_desc_spec_line(ln)
         if pair:
             candidates.append(pair)
-    candidates.extend(_extract_multiline_tech_print_pairs(all_lines))
-    candidates.extend(_extract_multiline_compat_pairs(all_lines))
-
-    # 3) Фразы в обычных предложениях: "для устройств Xerox ...", "для принтеров и МФУ Canon ..."
-    candidates.extend(_extract_sentence_compat_pairs(text))
+    candidates.extend(_extract_multiline_tech_print_pairs(block_lines))
+    candidates.extend(_extract_multiline_compat_pairs(block_lines))
 
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
@@ -1054,9 +1064,7 @@ def main() -> int:
             vendor_src = ""
 
         desc_src = _sanitize_native_desc(_t(o.find("description")) or "")
-        # В новой CS-архитектуре адаптер AlStyle не поднимает params из description
-        # и не меняет порядок native params. Разрешены только явные <param> поставщика
-        # после schema-cleanup (_collect_params).
+        params = _merge_params(params, _extract_desc_spec_pairs(desc_src, schema_cfg))
 
         price_in = safe_int(_t(o.find("purchase_price")))
         if price_in is None:
@@ -1136,7 +1144,6 @@ def main() -> int:
         encoding=encoding,
         public_vendor=os.getenv("PUBLIC_VENDOR", "CS").strip() or "CS",
         currency_id="KZT",
-        param_priority=None,
     )
 
     print(
