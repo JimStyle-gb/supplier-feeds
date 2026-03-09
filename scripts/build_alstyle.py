@@ -32,7 +32,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v96_desc_polish_final"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v98_fix_pitaniem_split"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -512,6 +512,7 @@ def _fix_common_broken_words(s: str) -> str:
         return ""
 
     exact_repl = [
+        (r"(?iu)\bи\s+питание\s+м\b", "и питанием"),
         (r"(?iu)\bпитание\s+м\b", "питанием"),
         (r"(?iu)\bуправление\s+м\b", "управлением"),
         (r"(?iu)\bрезервным\s+питание\s+м\b", "резервным питанием"),
@@ -617,7 +618,8 @@ def _sanitize_desc_quality_text(s: str) -> str:
 
     # Нормальные пробелы после типовых spec-лейблов внутри native description.
     # Важно: добавляем пробел только когда после лейбла идёт LAT/цифра.
-    # Так не ломаем обычные русские формы вроде "разрешением"/"яркостью".
+    # Кириллицу здесь НЕ трогаем, чтобы не ломать обычные формы вроде
+    # "питанием", "разрешением", "яркостью" на "Питание м" и т.п.
     t = re.sub(
         r"(?iu)\b("
         r"(?:ОС(?=[A-Z0-9]))|Источник света|Световой источник|Оптика|Методы установки|Способы установки|Размер экрана|"
@@ -625,7 +627,7 @@ def _sanitize_desc_quality_text(s: str) -> str:
         r"Проводное зеркалирование|Интерфейсы|Акустика|Питание|Габариты проектора|Вес проектора|"
         r"Габариты упаковки|Вес упаковки|Языки интерфейса|Комплектация|Беспроводные модули|"
         r"Беспроводные интерфейсы|Беспроводные подключения|Беспроводные возможности"
-        r")(?=[A-Za-zА-Яа-яЁё0-9])",
+        r")(?=[A-Za-z0-9])",
         r"\1 ",
         t,
     )
@@ -675,6 +677,8 @@ def _sanitize_desc_quality_text(s: str) -> str:
     t = re.sub(r"(?iu)\bПоддержка\s+HDCP\.?", "Поддержка HDCP: есть.", t)
     t = re.sub(r"(?im)^\s*[.#]?[A-Za-z][A-Za-z0-9_-]*\s*\{[^{}]+\}\s*$", "", t)
     t = re.sub(r"(?iu)\bСовместимость:\s*Для\s*,\s*", "Совместимость: ", t)
+    t = re.sub(r"(?iu)\b(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\s+Для\s*,\s*(?:\1\s+)?", r"\1 ", t)
+    t = _split_glued_brand_models(t)
     t = re.sub(r"(?iu)\bдополнтельно\b", "дополнительно", t)
     t = re.sub(r"(?iu)\bопцонально\b", "опционально", t)
     t = re.sub(r"(?iu)\bсистемой\s+управления\s+питание\s*м\b", "системой управления питанием", t)
@@ -789,6 +793,7 @@ def _clean_compatibility_text(s: str) -> str:
     t = re.sub(r"(?iu)\b(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\s+Для\s*,?\s*(?:\1\s+)?", r"\1 ", t)
     t = re.sub(r"(?iu)^Для\s*,?\s*(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b", r"\1", t)
     t = re.sub(r"(?iu)^Для\s+(?:принтеров(?:\s+и\s+МФУ)?|МФУ|аппаратов|устройств)\s+(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b", r"\1", t)
+    t = _split_glued_brand_models(t)
     t = re.sub(r"(?iu)\bWorkCenter\b", "WorkCentre", t)
     t = _drop_broken_canon_compat_tail(t)
     t = _dedupe_code_series_text(t)
@@ -823,6 +828,68 @@ def _dedupe_slash_tail_models(s: str) -> str:
         uniq.append(part)
 
     return prefix + '/'.join(uniq)
+
+
+def _split_glued_brand_models(s: str) -> str:
+    t = norm_ws(s)
+    if not t:
+        return ""
+    t = re.sub(
+        r"(?<=[A-Za-zА-Яа-яЁё0-9])(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
+        ", ",
+        t,
+    )
+    t = re.sub(
+        r"(?<=[A-Za-zА-Яа-яЁё0-9])(?=(VersaLink|AltaLink|WorkCentre|WorkCenter|DocuCentre|imageRUNNER|imagePROGRAF|PIXMA|ECOSYS|bizhub)\b)",
+        ", ",
+        t,
+    )
+    return norm_ws(t)
+
+
+def _extract_simple_desc_pairs(text: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
+    lines = _iter_desc_lines(text)
+    if not lines or len(lines) > 6:
+        return []
+
+    candidates: list[tuple[str, str]] = []
+    for ln in lines:
+        pair = _parse_desc_spec_line(ln)
+        if pair:
+            candidates.append(pair)
+
+    if len(candidates) < 2:
+        return []
+
+    out: list[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for key, val in candidates:
+        checked = _validate_desc_pair(key, val, schema)
+        if not checked:
+            continue
+        sig = (checked[0].casefold(), checked[1].casefold())
+        if sig in seen:
+            continue
+        seen.add(sig)
+        out.append(checked)
+    return out
+
+
+def _extract_sentence_capacity_pairs(text: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+    for rx in [
+        re.compile(r"(?is)\b[ЕеЁё]мк(?:ость|ость\s+лотка)\s*[-:–—]\s*(.{2,120}?)(?:(?:[.!?](?:\s|$))|\n|$)"),
+        re.compile(r"(?is)\bлоток[^.!?\n]{0,80}?\bдо\s+(.{2,80}?лист[^.!?\n]*)(?:(?:[.!?](?:\s|$))|\n|$)"),
+    ]:
+        for m in rx.finditer(text):
+            cand = norm_ws(m.group(1))
+            if not cand:
+                continue
+            cand = re.sub(r"(?iu)^до\s+", "до ", cand)
+            checked = _validate_desc_pair("Ёмкость", cand, schema)
+            if checked and checked not in out:
+                out.append(checked)
+    return out
 
 
 
@@ -947,6 +1014,7 @@ def _join_compat_lines(lines: list[str]) -> str:
     if not parts:
         return ""
     s = ", ".join(parts)
+    s = _split_glued_brand_models(s)
     s = re.sub(
         r"([A-ZА-ЯЁ0-9][A-Za-zА-Яа-яЁё0-9/.-]{1,})\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
         r"\1, ",
@@ -1135,26 +1203,31 @@ def _extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tupl
     if not text.strip():
         return []
 
-    # Для AlStyle берём только строгий блок характеристик и только безопасные ключи.
-    # Не парсим весь description целиком и не выдёргиваем совместимость из обычных фраз,
-    # чтобы не ломать проекторы/мониторы и не нарушать mutate_params=false.
-    m = _DESC_SPEC_START_RE.search(text)
-    if not m:
-        return []
-
-    block = text[m.end():]
-    stop = _DESC_SPEC_STOP_RE.search(block)
-    if stop:
-        block = block[:stop.start()]
-
-    block_lines = _iter_desc_lines(block)
     candidates: list[tuple[str, str]] = []
-    for ln in block_lines:
-        pair = _parse_desc_spec_line(ln)
-        if pair:
-            candidates.append(pair)
-    candidates.extend(_extract_multiline_tech_print_pairs(block_lines))
-    candidates.extend(_extract_multiline_compat_pairs(block_lines))
+
+    # Основной путь: строгий блок характеристик.
+    m = _DESC_SPEC_START_RE.search(text)
+    if m:
+        block = text[m.end():]
+        stop = _DESC_SPEC_STOP_RE.search(block)
+        if stop:
+            block = block[:stop.start()]
+
+        block_lines = _iter_desc_lines(block)
+        for ln in block_lines:
+            pair = _parse_desc_spec_line(ln)
+            if pair:
+                candidates.append(pair)
+        candidates.extend(_extract_multiline_tech_print_pairs(block_lines))
+        candidates.extend(_extract_multiline_compat_pairs(block_lines))
+    else:
+        # Фолбэк только для очень коротких description вида
+        # "Модель: ... / Совместимость: ..." без заголовка.
+        candidates.extend(_extract_simple_desc_pairs(text, schema))
+
+    # Безопасные sentence-пары для аксессуаров/лотков/комплектов обслуживания.
+    candidates.extend(_extract_sentence_compat_pairs(text))
+    candidates.extend(_extract_sentence_capacity_pairs(text, schema))
 
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
