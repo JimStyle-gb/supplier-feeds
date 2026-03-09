@@ -41,7 +41,7 @@ RAW_OUT_FILE = "docs/raw/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
-BUILD_AKCENT_VERSION = "build_akcent_v62_altpairs_vendor_desc_dedupe_strict"
+BUILD_AKCENT_VERSION = "build_akcent_v63_desc_compat_cleanup"
 
 
 # ----------------------------- Config loading -----------------------------
@@ -113,6 +113,9 @@ def _apply_desc_typos(s: str) -> str:
         "приентера": "принтера",
         "коeffицент": "коэффициент",
         "коэффицент": "коэффициент",
+        "дополнтельно": "дополнительно",
+        "опцонально": "опционально",
+        "на панели управление принтера": "на панели управления принтера",
     }
     out = s
     for a, b in fixes.items():
@@ -608,6 +611,31 @@ def _dedupe_params(params: list[tuple[str, str]], dedupe_rules: dict[str, str]) 
     return out
 
 
+def _normalize_compat_text(v: str) -> str:
+    s = _norm_ws(v)
+    if not s:
+        return ""
+    s = re.sub(r"([A-Z]{1,5})-\s+([A-Z0-9]{2,})", r"\1-\2", s)
+    s = re.sub(r"\s*/\s*", "/", s)
+    s = re.sub(r"\s*,\s*", ", ", s)
+
+    m = re.match(r"^(.*?\s)([^\s,]+(?:/[^\s,]+)+)$", s)
+    if m:
+        prefix = m.group(1)
+        tail = m.group(2)
+        uniq: list[str] = []
+        seen: set[str] = set()
+        for part in [x.strip() for x in tail.split('/') if x.strip()]:
+            key = part.casefold()
+            if key in seen:
+                continue
+            seen.add(key)
+            uniq.append(part)
+        s = prefix + '/'.join(uniq)
+
+    return _norm_ws(s)
+
+
 def _apply_codes_compat(params: list[tuple[str, str]], kind: str, schema: dict[str, Any]) -> tuple[list[tuple[str, str]], list[tuple[str, str]]]:
     """
     Возвращает:
@@ -666,14 +694,14 @@ def _apply_codes_compat(params: list[tuple[str, str]], kind: str, schema: dict[s
                 if not _LETTER_RE.search(rest) and not re.search(r"\d", rest):
                     codes.extend(toks)
                     continue
-            compat.append(_norm_ws(v))
+            compat.append(_normalize_compat_text(v))
             continue
 
         # KV вида "Epson L7160 = C11..." (явный сигнал)
         if cc.get("allow_model_equals_code_pairs") and _looks_like_model_key(k):
             toks = extract_tokens(v)
             if toks:
-                compat.append(_norm_ws(k))
+                compat.append(_normalize_compat_text(k))
                 codes.extend(toks)
                 continue
 
