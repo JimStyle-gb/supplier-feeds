@@ -30,6 +30,7 @@ from suppliers.alstyle.diagnostics import build_watch_source_map, make_watch_mes
 from suppliers.alstyle.filtering import filter_source_offers, parse_id_set
 from suppliers.alstyle.normalize import build_offer_oid, normalize_available, normalize_name, normalize_price_in, normalize_vendor
 from suppliers.alstyle.params_xml import collect_xml_params
+from suppliers.alstyle.compat import dedupe_code_series_text, sanitize_param_value
 from suppliers.alstyle.desc_clean import (
     _align_desc_model_from_name,
     _dedupe_desc_leading_title,
@@ -41,7 +42,7 @@ from suppliers.alstyle.pictures import collect_picture_urls
 from suppliers.alstyle.source import load_source_offers
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v102_stage3_desc_clean_split"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v103_stage4_compat_split"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -203,105 +204,6 @@ def _normalize_tech_value(v: str) -> str:
     s = re.sub(r"(?iu)\bFull\s*HD\b", "Full HD", s)
     s = re.sub(r"(?iu)\bANSI\s*люмен\b", "ANSI люмен", s)
     return norm_ws(s)
-
-
-def _drop_broken_canon_compat_tail(v: str) -> str:
-    s = norm_ws(v)
-    if not s:
-        return ""
-    s = re.sub(r"(?iu)^CANON\s+PIXMA\s+", "Canon PIXMA ", s)
-    return s
-
-
-def _clean_compatibility_text(v: str) -> str:
-    s = _drop_broken_canon_compat_tail(v)
-    s = re.sub(r"(?iu)^Xerox\s+Для,\s+Xerox\s+", "Xerox ", s)
-    s = re.sub(r"(?iu)^Для,\s+Xerox\s+", "Xerox ", s)
-    s = re.sub(r"(?iu)^Для\s+принтеров\s+Xerox\s+", "Xerox ", s)
-    s = re.sub(r"(?iu)^Для\s+МФУ\s+Xerox\s+", "Xerox ", s)
-    s = re.sub(r"\bWorkCenter\b", "WorkCentre", s, flags=re.I)
-    s = _split_glued_brand_models(s)
-    s = _dedupe_slash_tail_models(s)
-    return norm_ws(s)
-
-
-def _dedupe_slash_tail_models(v: str) -> str:
-    parts = [norm_ws(x) for x in re.split(r"\s*/\s*", v or "") if norm_ws(x)]
-    if len(parts) < 2:
-        return norm_ws(v)
-    out: list[str] = []
-    seen: set[str] = set()
-    for p in parts:
-        sig = p.casefold()
-        if sig in seen:
-            continue
-        seen.add(sig)
-        out.append(p)
-    return " / ".join(out)
-
-
-def _split_glued_brand_models(v: str) -> str:
-    s = norm_ws(v)
-    if not s:
-        return ""
-    s = re.sub(r"(?i)(Canon\s+PIXMA\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=Canon\s+PIXMA)", r"\1 / ", s)
-    s = re.sub(r"(?i)(Xerox\s+[A-Za-z-]*\d+[A-Za-z0-9/-]*)(?=Xerox\s+)", r"\1 / ", s)
-    return norm_ws(s)
-
-
-def _split_inline_desc_pairs(desc: str) -> list[tuple[str, str]]:
-    text = norm_ws(desc)
-    if not text:
-        return []
-    keys = [
-        "Модель", "Аналог модели", "Совместимость", "Совместимые модели", "Устройства",
-        "Цвет", "Ресурс", "Ресурс картриджа", "Емкость", "Ёмкость", "Емкость лотка", "Ёмкость лотка",
-        "Технология печати", "Количество в упаковке", "Колличество в упаковке",
-    ]
-    key_pat = r"(?:" + "|".join(re.escape(k) for k in keys) + r")"
-    rx = re.compile(rf"(?iu)\b({key_pat})\s*:\s*(.+?)(?=(?:\s+\b{key_pat}\s*:)|$)")
-    return [(norm_ws(m.group(1)), norm_ws(m.group(2))) for m in rx.finditer(text) if norm_ws(m.group(2))]
-
-
-def _extract_simple_desc_pairs(desc: str) -> list[tuple[str, str]]:
-    text = norm_ws(desc)
-    if not text:
-        return []
-    pairs: list[tuple[str, str]] = []
-    for ln in _iter_desc_lines(text)[:8]:
-        for k, v in _split_inline_desc_pairs(ln):
-            ck = _canon_desc_spec_key(k)
-            if ck in _SAFE_DESC_PARAM_KEYS and not _is_heading_only_value(v):
-                pairs.append((ck, v))
-    return pairs
-
-
-def _extract_sentence_capacity_pairs(desc: str) -> list[tuple[str, str]]:
-    text = norm_ws(desc)
-    if not text:
-        return []
-    out: list[tuple[str, str]] = []
-    m = re.search(r"(?iu)\b(?:Емкость|Ёмкость)\s+лотка\s*[-–—:]\s*(.{3,120}?)(?:(?:[.!?](?:\s|$))|$)", text)
-    if m:
-        out.append(("Ёмкость", norm_ws(m.group(1))))
-    m = re.search(r"(?iu)\bдо\s+\d+[+\d\s]*лист[ао]в?\s+А4\b", text)
-    if m and not any(k == "Ёмкость" for k, _ in out):
-        out.append(("Ёмкость", norm_ws(m.group(0))))
-    return out
-
-
-def _sanitize_param_value(key: str, val: str) -> str:
-    v = norm_ws(val)
-    if not v:
-        return ""
-    kcf = norm_ws(key).casefold()
-    if kcf == "совместимость":
-        v = _clean_compatibility_text(v)
-    elif kcf in {"модель", "аналог модели"}:
-        v = _dedupe_code_series_text(v)
-    else:
-        v = _fix_common_broken_words(v)
-    return norm_ws(v)
 
 
 def _iter_desc_lines(text: str) -> list[str]:
@@ -515,7 +417,7 @@ def main() -> int:
     watch_out: set[str] = set()
 
     for src in filtered_offers:
-        name = _dedupe_code_series_text(normalize_name(src.name))
+        name = dedupe_code_series_text(normalize_name(src.name))
         if not name or not src.raw_id:
             continue
 
