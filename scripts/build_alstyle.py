@@ -18,6 +18,7 @@ from __future__ import annotations
 import os
 import re
 import xml.etree.ElementTree as ET
+from difflib import SequenceMatcher
 from html import unescape
 from pathlib import Path
 from typing import Any
@@ -31,7 +32,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v94_selective_desc_block_desc_cleanup"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v95_final_cleanup"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -49,6 +50,14 @@ WATCH_REPORT_DEFAULT = "docs/raw/alstyle_watch.txt"
 
 _RE_HAS_LETTER = re.compile(r"[A-Za-zА-Яа-яЁё]")
 _RE_LETTER_SLASH_LETTER = re.compile(r"([A-Za-zА-Яа-яЁё])\s*/\s*([A-Za-zА-Яа-яЁё])")
+_CODE_SERIES_RE = re.compile(
+    r"(?<![\w/])(?:(?=[A-Z0-9._-]*\d)[A-Z0-9._-]{3,}(?:\s*/\s*(?=[A-Z0-9._-]*\d)[A-Z0-9._-]{3,})+)"
+)
+_SKU_TOKEN_RE = re.compile(r"\b[A-Z]{2,}[A-Z0-9-]{4,}\b")
+_CSS_SERVICE_LINE_RE = re.compile(
+    r"(?iu)(?:^|\s)(?:body\s*\{|font-family\s*:|display\s*:|margin\s*:|padding\s*:|border\s*:|color\s*:|background\s*:|"
+    r"\.?chip\s*\{|\.?badge\s*\{|\.?spec\s*\{|h[1-6]\s*\{)"
+)
 
 
 def _read_yaml(path: Path) -> dict[str, Any]:
@@ -323,6 +332,95 @@ _SAFE_DESC_PARAM_KEYS = {
 }
 
 
+def _dedupe_code_series_text(s: str) -> str:
+    t = s or ""
+    if not t:
+        return ""
+
+    def repl(m: re.Match[str]) -> str:
+        parts = [norm_ws(p) for p in re.split(r"\s*/\s*", m.group(0)) if norm_ws(p)]
+        if len(parts) < 2:
+            return m.group(0)
+        uniq: list[str] = []
+        seen: set[str] = set()
+        for part in parts:
+            key = part.casefold()
+            if key in seen:
+                continue
+            seen.add(key)
+            uniq.append(part)
+        return " / ".join(uniq)
+
+    return _CODE_SERIES_RE.sub(repl, t)
+
+
+def _is_service_desc_line(raw: str) -> bool:
+    ln = (raw or "").strip()
+    if not ln:
+        return False
+    if ln in {">", "&gt;", "&amp;gt;"}:
+        return True
+    if _CSS_SERVICE_LINE_RE.search(ln):
+        return True
+    low = norm_ws(ln).casefold()
+    if low in {
+        "print / scan / copy",
+        "wi-fi wireless printing",
+        "mi home app support",
+        "high-resolution color print",
+        "compact design",
+        "white",
+    }:
+        return True
+    return False
+
+
+def _align_desc_model_from_name(name: str, desc: str) -> str:
+    text = desc or ""
+    if not name or not text:
+        return text
+
+    name_tokens: list[str] = []
+    seen_name: set[str] = set()
+    for tok in _SKU_TOKEN_RE.findall(name):
+        if not any(ch.isdigit() for ch in tok):
+            continue
+        key = tok.casefold()
+        if key in seen_name:
+            continue
+        seen_name.add(key)
+        name_tokens.append(tok)
+    if not name_tokens:
+        return text
+
+    head = text[:600]
+    tail = text[600:]
+    desc_tokens: list[str] = []
+    seen_desc: set[str] = set()
+    for tok in _SKU_TOKEN_RE.findall(head):
+        if not any(ch.isdigit() for ch in tok):
+            continue
+        key = tok.casefold()
+        if key in seen_desc:
+            continue
+        seen_desc.add(key)
+        desc_tokens.append(tok)
+
+    for dt in desc_tokens:
+        for nt in name_tokens:
+            if dt == nt:
+                continue
+            sig_dt = re.sub(r"\d+", "", dt)
+            sig_nt = re.sub(r"\d+", "", nt)
+            if len(sig_nt) < 5 or sig_dt != sig_nt:
+                continue
+            if SequenceMatcher(None, dt, nt).ratio() < 0.82:
+                continue
+            head = re.sub(rf"\b{re.escape(dt)}\b", nt, head, count=1)
+            return head + tail
+    return text
+
+
 def _clean_desc_text(s: str) -> str:
     t = s or ""
     t = t.replace("\r", "\n")
@@ -531,6 +629,12 @@ def _sanitize_native_desc(s: str) -> str:
     # Двойные HTML-энтити от поставщика вроде &amp;gt; / &gt; не должны попадать в raw/final.
     t = t.replace("&amp;gt;", "&gt;")
     t = unescape(t)
+    lines: list[str] = []
+    for raw in t.split("\n"):
+        if _is_service_desc_line(raw):
+            continue
+        lines.append(raw)
+    t = "\n".join(lines)
     # Убираем служебные хвосты-строки, состоящие только из '>' или '&gt;'.
     t = re.sub(r"(?im)^\s*>+\s*$", "", t)
     t = re.sub(r"(?im)^\s*&gt;\s*$", "", t)
@@ -540,6 +644,11 @@ def _sanitize_native_desc(s: str) -> str:
     t = re.sub(r"\(\s+", "(", t)
     t = re.sub(r"\s+\)", ")", t)
     t = _sanitize_desc_quality_text(t)
+    t = _dedupe_code_series_text(t)
+    # Если после чистки описание начинается с обломка — режем его до первой нормальной фразы.
+    t = t.lstrip()
+    if re.match(r"^[(:;,\-–—]", t):
+        t = re.sub(r"^[^А-ЯЁA-Z0-9<]{0,120}", "", t).lstrip()
     t = re.sub(r"\n{3,}", "\n\n", t)
     return t.strip()
 
@@ -607,6 +716,25 @@ def _drop_broken_canon_compat_tail(s: str) -> str:
 
 
 
+def _clean_compatibility_text(s: str) -> str:
+    t = norm_ws(s)
+    if not t:
+        return ""
+    t = re.sub(r"(?iu)^совместимость\s*:\s*", "", t).strip()
+    t = re.sub(r"(?iu)^для\s*,\s*", "", t).strip()
+    t = re.sub(r"(?iu)^для\s+(?:принтеров(?:\s+и\s+мфу)?|мфу|аппаратов|устройств)\s+", "", t).strip()
+    t = re.sub(r"(?iu)\b(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\s+Для\s*,?\s*(?:\1\s+)?", r"\1 ", t)
+    t = re.sub(r"(?iu)^Для\s*,?\s*(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b", r"\1", t)
+    t = re.sub(r"(?iu)^Для\s+(?:принтеров(?:\s+и\s+МФУ)?|МФУ|аппаратов|устройств)\s+(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b", r"\1", t)
+    t = re.sub(r"(?iu)\bWorkCenter\b", "WorkCentre", t)
+    t = _drop_broken_canon_compat_tail(t)
+    t = _dedupe_code_series_text(t)
+    t = _dedupe_slash_tail_models(t)
+    t = re.sub(r"\s*,\s*", ", ", t)
+    t = re.sub(r"(?iu)(^|,\s*)([^,]+?)\s*/\s*\2(?=,|$)", r"\1\2", t)
+    return norm_ws(t).strip(" ,;.-")
+
+
 def _dedupe_slash_tail_models(s: str) -> str:
     t = norm_ws(s)
     if not t or "/" not in t:
@@ -666,10 +794,7 @@ def _sanitize_param_value(key: str, val: str) -> str:
 
     if kcf == "совместимость":
         v = re.sub(r"(?i)^совместим(?:а|о|ы)?\s+с\s+", "", v).strip()
-        v = re.sub(r"(?i)^для\s*,\s*", "", v).strip()
         v = re.sub(r"(?i)^для\s+совместимых\s+(?:устройств|принтеров(?:\s+и\s+мфу)?|мфу|аппаратов)\s+", "", v).strip()
-        v = re.sub(r"(?i)^для\s+(?:устройств|принтеров(?:\s+и\s+мфу)?|мфу|аппаратов)\s+", "", v).strip()
-        v = re.sub(r"(?i)^для\s*,\s*", "", v).strip()
         v = re.sub(r"(?i)^устройства?\s*,?\s*", "", v).strip()
         v = re.sub(
             r"([A-ZА-ЯЁ0-9][A-Za-zА-Яа-яЁё0-9/.-]{1,})\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
@@ -684,13 +809,14 @@ def _sanitize_param_value(key: str, val: str) -> str:
         v = re.sub(r"\s*/\s*", "/", v)
         v = re.sub(r"(?:,?\s*(?:&gt;|&amp;gt;|>))+\s*$", "", v).strip(" ,;.-")
         # Убираем явный битый хвост, пришедший уже обрезанным от поставщика.
-        # Ничего не угадываем и не дописываем — فقط отбрасываем последний мусорный кусок.
-        v = _drop_broken_canon_compat_tail(v)
+        # Ничего не угадываем и не дописываем — только отбрасываем последний мусорный кусок.
+        v = _clean_compatibility_text(v)
         # Страховка для старого паттерна вроде "... 610Can" на конце.
         v = re.sub(r"(?iu)(\d)(?:Can|Xer|Eps|Bro|Ric|Pan|Lex|Kon|Min|Oki|Kyo|Hew)$", r"\1", v)
-        v = re.sub(r"\s*,\s*", ", ", v)
-        v = _dedupe_slash_tail_models(v)
-        v = norm_ws(v)
+        v = _clean_compatibility_text(v)
+
+    if kcf in {"модель", "аналог модели"}:
+        v = _dedupe_code_series_text(v)
 
     if kcf == "ёмкость":
         v = re.sub(r"(?i)^[её]мкость(?:\s+лотка)?\s*[-:–—]\s*", "", v).strip()
@@ -1074,6 +1200,7 @@ def main() -> int:
             continue
         name = re.sub(r"\(\s+", "(", name)
         name = re.sub(r"\s+\)", ")", name)
+        name = _dedupe_code_series_text(name)
         if not name or not raw_id:
             continue
 
@@ -1102,6 +1229,7 @@ def main() -> int:
             vendor_src = ""
 
         desc_src = _sanitize_native_desc(_t(o.find("description")) or "")
+        desc_src = _align_desc_model_from_name(name, desc_src)
         params = _merge_params(params, _extract_desc_spec_pairs(desc_src, schema_cfg))
 
         price_in = safe_int(_t(o.find("purchase_price")))
