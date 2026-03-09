@@ -4,12 +4,9 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-Фикс v109:
-- вернул подъём params из compact-inline Xerox/Canon описаний без двоеточий
-- научил splitter видеть "Колличество в упаковке"
-- улучшил парсинг одной строки вида:
-  "Характеристики Модель ... Совместимые модели ... Цвет ... Ресурс ..."
-- оставил жёсткий guard против техлистов интерактивных панелей в "Совместимость"
+Фикс v110:
+- исправлен regex compile error в _COMPACT_LABEL_RE
+- сохранён v109 restore_xerox_pairs
 """
 
 from __future__ import annotations
@@ -30,47 +27,62 @@ from suppliers.alstyle.compat import (
 )
 
 _DESC_SPEC_START_RE = re.compile(
-    r"(?im)^\s*(Характеристики|Основные характеристики|Технические характеристики)\s*:?\s*$"
+    r"^\s*(Характеристики|Основные характеристики|Технические характеристики)\s*:?\s*$",
+    re.IGNORECASE | re.MULTILINE,
 )
 _DESC_SPEC_STOP_RE = re.compile(
-    r"(?im)^\s*(Преимущества|Комплектация|Условия гарантии|Гарантия|Примечание|Примечания|Особенности|Описание|EUROPRINT)\s*:?\s*$"
+    r"^\s*(Преимущества|Комплектация|Условия гарантии|Гарантия|Примечание|Примечания|Особенности|Описание|EUROPRINT)\s*:?\s*$",
+    re.IGNORECASE | re.MULTILINE,
 )
 _DESC_SPEC_LINE_RE = re.compile(
-    r"(?im)^\s*"
+    r"^\s*"
     r"(Модель|Аналог модели|Совместимость|Совместимые модели|Устройства|Для принтеров|"
     r"Технология печати|Цвет|Цвет печати|Ресурс|Ресурс картриджа|Ресурс картриджа, cтр\.|"
     r"Количество страниц|Кол-во страниц при 5% заполнении А4|Емкость|Ёмкость|Емкость лотка|Ёмкость лотка|"
     r"Степлирование|Дополнительные опции|Применение|Количество в упаковке|Колличество в упаковке|"
     r"Производитель|Устройство|Объем картриджа, мл|Объём картриджа, мл)"
-    r"\s*(?::|\t+|\s{2,}|[-–—])\s*(.+?)\s*$"
+    r"\s*(?::|\t+|\s{2,}|[-–—])\s*(.+?)\s*$",
+    re.IGNORECASE | re.MULTILINE,
 )
-_DESC_COMPAT_LINE_RE = re.compile(r"(?im)^\s*Совместим(?:а|о|ы)?\s+с\s+(.+?)\s*$")
+_DESC_COMPAT_LINE_RE = re.compile(
+    r"^\s*Совместим(?:а|о|ы)?\s+с\s+(.+?)\s*$",
+    re.IGNORECASE | re.MULTILINE,
+)
 _DESC_COMPAT_SENTENCE_RE = re.compile(
-    r"(?is)\bСовместим(?:а|о|ы)?\s+с\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)"
+    r"\bСовместим(?:а|о|ы)?\s+с\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)",
+    re.IGNORECASE | re.DOTALL,
 )
 _DESC_FOR_DEVICES_SENTENCE_RE = re.compile(
-    r"(?is)\bдля\s+(?:устройств|принтеров(?:\s+и\s+МФУ)?|МФУ|аппаратов)\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)"
+    r"\bдля\s+(?:устройств|принтеров(?:\s+и\s+МФУ)?|МФУ|аппаратов)\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)",
+    re.IGNORECASE | re.DOTALL,
 )
-_DESC_TECH_PRINT_LABEL_ONLY_RE = re.compile(r"(?im)^\s*Технология\s+печати\s*:?\s*$")
+_DESC_TECH_PRINT_LABEL_ONLY_RE = re.compile(
+    r"^\s*Технология\s+печати\s*:?\s*$",
+    re.IGNORECASE | re.MULTILINE,
+)
 _DESC_CAPACITY_SENTENCE_RE = re.compile(
-    r"(?is)\b(?:Емкость|Ёмкость)\s+лотка\s*[-:]\s*(.{2,120}?)(?:(?:[.!?](?:\s|$))|\n|$)"
+    r"\b(?:Емкость|Ёмкость)\s+лотка\s*[-:]\s*(.{2,120}?)(?:(?:[.!?](?:\s|$))|\n|$)",
+    re.IGNORECASE | re.DOTALL,
 )
 
 _COMPAT_BRAND_HINT_RE = re.compile(
-    r"(?i)\b(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki|"
-    r"VersaLink|AltaLink|WorkCentre|WorkCenter|DocuCentre|imageRUNNER|i-SENSYS|ECOSYS|bizhub|PIXMA|Phaser|ColorQube)\b"
+    r"\b(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki|"
+    r"VersaLink|AltaLink|WorkCentre|WorkCenter|DocuCentre|imageRUNNER|i-SENSYS|ECOSYS|bizhub|PIXMA|Phaser|ColorQube)\b",
+    re.IGNORECASE,
 )
 _COMPAT_MODEL_TOKEN_RE = re.compile(
-    r"(?i)\b(?:[A-Z]{1,8}-?\d{2,5}[A-Z]{0,3}x?|[A-Z]?\d{3,5}[A-Z]{0,3}i?)\b"
+    r"\b(?:[A-Z]{1,8}-?\d{2,5}[A-Z]{0,3}x?|[A-Z]?\d{3,5}[A-Z]{0,3}i?)\b",
+    re.IGNORECASE,
 )
 _COMPAT_REJECT_RE = re.compile(
-    r"(?iu)\b("
+    r"\b("
     r"Windows|Android|Mac\s*OS|Linux|Chrome|USB(?:-C| Type-C)?|HDMI|VGA|RJ45|RS232|OTG|TF\s*Card|"
     r"Line\s*Out|SPDIF|OPS(?:-slot| Slot)?|Wi-?Fi|Bluetooth|RAM|ROM|процессор|Cortex|дисплей|панель|"
     r"яркость|контрастность|угол\s+обзора|время\s+отклика|точность|позиционирования|аудио|динамики|"
     r"микрофоны|звуковое\s+давление|интерфейс(?:ы)?|подключение|передняя\s+панель|задняя\s+панель|"
     r"touch\s*out|usb\s*touch|hdmi\s+in|hdmi\s+out|dp\s+in|type-c|ops\s+slot|single\s+touch"
-    r")\b"
+    r")\b",
+    re.IGNORECASE,
 )
 
 _DESC_SPEC_KEY_MAP = {
@@ -142,8 +154,9 @@ _COMPACT_LABELS = [
     "Колличество в упаковке",
 ]
 _COMPACT_LABEL_RE = re.compile(
-    r"(?iu)\b(?:Характеристики|Основные характеристики|Технические характеристики)\b\s*:?\s*|"
-    + r"(?iu)\b(" + "|".join(re.escape(x) for x in sorted(_COMPACT_LABELS, key=len, reverse=True)) + r")\b(?:\s*[:\-–—]\s*|\s+)"
+    r"\b(?:Характеристики|Основные характеристики|Технические характеристики)\b\s*:?\s*|"
+    r"\b(" + "|".join(re.escape(x) for x in sorted(_COMPACT_LABELS, key=len, reverse=True)) + r")\b(?:\s*[:\-–—]\s*|\s+)",
+    re.IGNORECASE,
 )
 
 
@@ -193,8 +206,9 @@ def parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
     if not ln:
         return None
     if re.fullmatch(
-        r"(?iu)(Интерфейсы\s*/\s*разъ[её]мы\s*/\s*управление|Аксессуары|Порты\s+и\s+подключение|Задняя\s+панель|Передняя\s+панель):?",
+        r"(Интерфейсы\s*/\s*разъ[её]мы\s*/\s*управление|Аксессуары|Порты\s+и\s+подключение|Задняя\s+панель|Передняя\s+панель):?",
         ln,
+        flags=re.IGNORECASE,
     ):
         return None
 
@@ -298,9 +312,10 @@ def extract_sentence_compat_pairs(text: str) -> list[tuple[str, str]]:
             if not cand:
                 continue
             cand = re.split(
-                r"(?i)\b(Преимущества|Комплектация|Условия гарантии|Примечание|Примечания|Особенности|Описание)\b",
+                r"\b(Преимущества|Комплектация|Условия гарантии|Примечание|Примечания|Особенности|Описание)\b",
                 cand,
                 maxsplit=1,
+                flags=re.IGNORECASE,
             )[0].strip(" ;,.-")
             if not looks_like_compatibility_value(cand):
                 continue
@@ -322,12 +337,12 @@ def extract_sentence_capacity_pairs(text: str) -> list[tuple[str, str]]:
         ln = norm_ws(line)
         if not ln:
             continue
-        m = re.search(r"(?iu)\bСовместим\s+с\s+(.+?)\s*$", ln)
+        m = re.search(r"\bСовместим\s+с\s+(.+?)\s*$", ln, flags=re.IGNORECASE)
         if m:
             cand = norm_ws(m.group(1))
             if looks_like_compatibility_value(cand):
                 out.append(("Совместимость", cand))
-        m = re.search(r"(?iu)\b(?:Емкость|Ёмкость)\s+лотка\s*[-:]\s*(.+?)\s*$", ln)
+        m = re.search(r"\b(?:Емкость|Ёмкость)\s+лотка\s*[-:]\s*(.+?)\s*$", ln, flags=re.IGNORECASE)
         if m:
             cand = norm_ws(m.group(1))
             if cand:
