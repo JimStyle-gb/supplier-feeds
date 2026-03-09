@@ -4,11 +4,12 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-Фикс v111:
-- для Xerox/Canon расходников приоритетно вытягивается короткий Ресурс,
-  а не общий вводный абзац про "максимальное количество отпечатков";
-- для степлерных/буклетных картриджей разрешена более длинная Совместимость;
-- добит cleaner "Xerox Для Xerox ..." -> "Xerox ...".
+Фикс v112:
+- возвращает длинную Совместимость для кейсов типа AS113735;
+- умеет поднимать multiline label/value блоки, включая:
+  Совместимость -> Устройства -> ...
+  Ресурс картриджа, cтр. -> 220
+- не возвращает назад техлистовые "Совместимость" у интерактивных панелей.
 """
 
 from __future__ import annotations
@@ -18,10 +19,7 @@ from typing import Any
 
 from cs.util import norm_ws
 from suppliers.alstyle.desc_clean import clean_desc_text_for_extraction
-from suppliers.alstyle.params_xml import (
-    key_quality_ok,
-    apply_value_normalizers,
-)
+from suppliers.alstyle.params_xml import key_quality_ok, apply_value_normalizers
 from suppliers.alstyle.compat import (
     clean_compatibility_text,
     dedupe_code_series_text,
@@ -75,11 +73,11 @@ _RESOURCE_INLINE_RE = re.compile(
 _RESOURCE_VALUE_RE = re.compile(
     r"(?iu)\b\d[\d\s.,]*\s*(?:стандартн(?:ых|ые)?\s+страниц(?:ы)?(?:\s+в\s+среднем)?|стр\.?|страниц|copies|pages)\b"
 )
-_RESOURCE_NUMBER_ONLY_RE = re.compile(r"(?iu)^\d[\d\s.,]*\s*(?:стр\.?|страниц)$")
+_RESOURCE_NUMBER_ONLY_RE = re.compile(r"(?iu)^\d[\d\s.,]*\s*(?:стр\.?|страниц)?$")
 
 _COMPAT_BRAND_HINT_RE = re.compile(
     r"\b(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki|"
-    r"VersaLink|AltaLink|WorkCentre|WorkCenter|DocuCentre|imageRUNNER|i-SENSYS|ECOSYS|bizhub|PIXMA|Phaser|ColorQube)\b",
+    r"VersaLink|AltaLink|WorkCentre|WorkCenter|DocuCentre|imageRUNNER|i-SENSYS|ECOSYS|bizhub|PIXMA|Phaser|ColorQube|CopyCentre)\b",
     re.IGNORECASE,
 )
 _COMPAT_MODEL_TOKEN_RE = re.compile(
@@ -103,6 +101,7 @@ _DESC_SPEC_KEY_MAP = {
     "совместимость": "Совместимость",
     "совместимые модели": "Совместимость",
     "устройства": "Совместимость",
+    "устройство": "Совместимость",
     "для принтеров": "Совместимость",
     "цвет": "Цвет",
     "цвет печати": "Цвет",
@@ -138,8 +137,8 @@ _SAFE_DESC_PARAM_KEYS = {
 }
 
 _COMPACT_LABELS = [
-    "Модель", "Аналог модели", "Совместимость", "Совместимые модели", "Устройства", "Для принтеров",
-    "Производитель", "Устройство", "Технология печати", "Цвет печати", "Цвет",
+    "Модель", "Аналог модели", "Совместимость", "Совместимые модели", "Устройства", "Устройство",
+    "Для принтеров", "Производитель", "Технология печати", "Цвет печати", "Цвет",
     "Ресурс картриджа, cтр.", "Ресурс картриджа", "Количество страниц", "Ресурс",
     "Емкость лотка", "Ёмкость лотка", "Емкость", "Ёмкость", "Объем картриджа, мл", "Объём картриджа, мл",
     "Степлирование", "Дополнительные опции", "Применение", "Количество в упаковке", "Колличество в упаковке",
@@ -147,6 +146,12 @@ _COMPACT_LABELS = [
 _COMPACT_LABEL_RE = re.compile(
     r"\b(?:Характеристики|Основные характеристики|Технические характеристики)\b\s*:?\s*|"
     r"\b(" + "|".join(re.escape(x) for x in sorted(_COMPACT_LABELS, key=len, reverse=True)) + r")\b(?:\s*[:\-–—]\s*|\s+)",
+    re.IGNORECASE,
+)
+_LABEL_ONLY_RE = re.compile(
+    r"^(?:"
+    + "|".join(re.escape(x) for x in sorted(_COMPACT_LABELS + ["Характеристики", "Основные характеристики", "Технические характеристики"], key=len, reverse=True))
+    + r")\s*:?$",
     re.IGNORECASE,
 )
 
@@ -176,22 +181,25 @@ def looks_like_compatibility_value(val: str) -> bool:
     v = _normalize_compat_candidate(val)
     if not v or len(v) < 6:
         return False
-    if len(v) > 520:
-        return False
-    if len(v.split()) > 90:
-        return False
-    if v.count(":") > 1:
-        return False
     if _COMPAT_REJECT_RE.search(v):
         return False
 
     has_brand = bool(_COMPAT_BRAND_HINT_RE.search(v))
     model_count = _compat_model_token_count(v)
+    word_count = len(v.split())
 
-    if has_brand and model_count >= 1:
-        return True
-    if model_count >= 2 and ("/" in v or "," in v):
-        return True
+    # обычные кейсы
+    if len(v) <= 520 and word_count <= 90:
+        if has_brand and model_count >= 1:
+            return True
+        if model_count >= 2 and ("/" in v or "," in v):
+            return True
+
+    # длинные compat для степлерных/буклетных картриджей и больших Xerox/Canon списков
+    if len(v) <= 1800 and word_count <= 260:
+        if has_brand and model_count >= 8:
+            return True
+
     return False
 
 
@@ -199,7 +207,7 @@ def looks_like_resource_value(val: str) -> bool:
     v = norm_ws(val)
     if not v:
         return False
-    if len(v) > 120:
+    if len(v) > 140:
         return False
     low = v.casefold()
     if "максимальное количество отпечатков" in low:
@@ -216,7 +224,7 @@ def looks_like_resource_value(val: str) -> bool:
 
 
 def iter_desc_lines(block: str) -> list[str]:
-    lines = []
+    lines: list[str] = []
     for raw in (block or "").splitlines():
         ln = norm_ws(raw)
         if ln:
@@ -258,8 +266,8 @@ def split_inline_desc_pairs(line: str) -> list[str]:
     if not ln:
         return []
     key_pat = (
-        r"Модель|Аналог модели|Совместимость|Совместимые модели|Устройства|Для принтеров|"
-        r"Производитель|Устройство|Цвет|Цвет печати|Ресурс|Ресурс картриджа(?:,\s*cтр\.)?|Количество страниц|"
+        r"Модель|Аналог модели|Совместимость|Совместимые модели|Устройства|Устройство|Для принтеров|"
+        r"Производитель|Цвет|Цвет печати|Ресурс|Ресурс картриджа(?:,\s*cтр\.)?|Количество страниц|"
         r"[ЕеЁё]мкость(?: лотка)?|Об[ъе]ем картриджа,\s*мл|Степлирование|Дополнительные опции|"
         r"Применение|Количество в упаковке|Колличество в упаковке"
     )
@@ -272,7 +280,7 @@ def extract_compact_labeled_sequences(text: str) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
     for line in text.splitlines():
         ln = norm_ws(line)
-        if not ln or len(ln) < 20 or len(ln) > 1200:
+        if not ln or len(ln) < 20 or len(ln) > 1600:
             continue
         matches = list(_COMPACT_LABEL_RE.finditer(ln))
         real_labels = [m for m in matches if m.group(1)]
@@ -286,6 +294,51 @@ def extract_compact_labeled_sequences(text: str) -> list[tuple[str, str]]:
             if not value:
                 continue
             out.append((canon_desc_spec_key(label), value))
+    return out
+
+
+def extract_multiline_label_value_pairs(text: str) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+    lines = iter_desc_lines(text)
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if not _LABEL_ONLY_RE.match(line):
+            i += 1
+            continue
+
+        label_raw = re.sub(r"\s*:\s*$", "", line)
+        label = canon_desc_spec_key(label_raw)
+
+        # служебный старт блока
+        if label_raw.casefold() in {"характеристики", "основные характеристики", "технические характеристики"}:
+            i += 1
+            continue
+
+        j = i + 1
+
+        # частный кейс: "Совместимость" -> "Устройства" -> значения
+        if label == "Совместимость" and j < len(lines):
+            next_cf = lines[j].casefold().rstrip(":")
+            if next_cf in {"устройства", "устройство", "совместимые модели", "для принтеров"}:
+                j += 1
+
+        value_parts: list[str] = []
+        while j < len(lines):
+            nxt = lines[j]
+            if _LABEL_ONLY_RE.match(nxt):
+                break
+            value_parts.append(nxt)
+            j += 1
+
+        value = norm_ws(" ".join(value_parts)).strip(" ;,.-")
+        if value:
+            if label == "Ресурс" and re.fullmatch(r"\d[\d\s.,]*", value):
+                value = f"{value} стр."
+            out.append((label, value))
+
+        i = max(j, i + 1)
+
     return out
 
 
@@ -305,14 +358,17 @@ def extract_strict_kv_block(text: str) -> list[tuple[str, str]]:
         pair = parse_desc_spec_line(ln)
         if pair:
             out.append(pair)
+
+    # multiline fallback inside strict block
+    out.extend(extract_multiline_label_value_pairs(block))
     return out
 
 
 def extract_short_inline_pairs(text: str) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
     lines = [norm_ws(x) for x in text.splitlines() if norm_ws(x)]
-    if len(lines) > 10:
-        lines = lines[:10]
+    if len(lines) > 12:
+        lines = lines[:12]
 
     for ln in lines:
         parts = split_inline_desc_pairs(ln)
@@ -322,6 +378,7 @@ def extract_short_inline_pairs(text: str) -> list[tuple[str, str]]:
                 out.append(pair)
 
     out.extend(extract_compact_labeled_sequences("\n".join(lines)))
+    out.extend(extract_multiline_label_value_pairs("\n".join(lines)))
     return out
 
 
@@ -419,6 +476,10 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
     elif key == "Ресурс":
         if not looks_like_resource_value(val2):
             return None
+        # канонизируем короткое значение
+        m = _RESOURCE_VALUE_RE.search(val2)
+        if m:
+            val2 = norm_ws(m.group(0))
 
     if not val2:
         return None
