@@ -4,10 +4,10 @@ Path: scripts/build_alstyle.py
 
 AlStyle adapter (AS) — CS-шаблон (config-driven).
 
-Этап 6 рефакторинга:
-- сборка одного supplier offer вынесена в scripts/suppliers/alstyle/builder.py;
-- build_alstyle.py теперь почти полностью orchestrator;
-- source/filter/normalize/pictures/params_xml/desc_clean/compat/desc_extract уже живут отдельно.
+Этап 7:
+- подчистил contracts/imports между supplier-модулями;
+- build_alstyle.py остаётся тонким orchestrator'ом;
+- desc_clean / params_xml / compat / desc_extract / builder используют публичные функции, без private-import spaghetti.
 """
 
 from __future__ import annotations
@@ -26,7 +26,7 @@ from suppliers.alstyle.filtering import filter_source_offers, parse_id_set
 from suppliers.alstyle.source import load_source_offers
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v105_stage6_builder_split"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v106_stage7_contract_cleanup"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -41,12 +41,10 @@ POLICY_FILE_DEFAULT = "policy.yml"
 WATCH_REPORT_DEFAULT = "docs/raw/alstyle_watch.txt"
 
 
-
 def _read_yaml(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-
 
 
 def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
@@ -54,7 +52,6 @@ def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any]
     schema_cfg = _read_yaml(cfg_dir / SCHEMA_FILE_DEFAULT)
     policy_cfg = _read_yaml(cfg_dir / POLICY_FILE_DEFAULT)
     return filter_cfg, schema_cfg, policy_cfg
-
 
 
 def main() -> int:
