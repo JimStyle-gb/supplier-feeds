@@ -31,7 +31,7 @@ from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v93_selective_desc_block"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v94_selective_desc_block_desc_cleanup"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -513,6 +513,12 @@ def _sanitize_desc_quality_text(s: str) -> str:
     t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гигабит/сек\b", r"\1 Гбит/с", t)
     t = re.sub(r"(?iu)\bЕсть\s+разъ[её]м\s+для\s+наушников\.?", "Разъём для наушников: есть.", t)
     t = re.sub(r"(?iu)\bПоддержка\s+HDCP\.?", "Поддержка HDCP: есть.", t)
+    t = re.sub(r"(?im)^\s*[.#]?[A-Za-z][A-Za-z0-9_-]*\s*\{[^{}]+\}\s*$", "", t)
+    t = re.sub(r"(?iu)\bСовместимость:\s*Для\s*,\s*", "Совместимость: ", t)
+    t = re.sub(r"(?iu)\bдополнтельно\b", "дополнительно", t)
+    t = re.sub(r"(?iu)\bопцонально\b", "опционально", t)
+    t = re.sub(r"(?iu)\bсистемой\s+управления\s+питание\s*м\b", "системой управления питанием", t)
+    t = re.sub(r"!{2,}", "!", t)
     t = re.sub(r"\n{3,}", "\n\n", t)
     return t.strip()
 
@@ -528,6 +534,8 @@ def _sanitize_native_desc(s: str) -> str:
     # Убираем служебные хвосты-строки, состоящие только из '>' или '&gt;'.
     t = re.sub(r"(?im)^\s*>+\s*$", "", t)
     t = re.sub(r"(?im)^\s*&gt;\s*$", "", t)
+    # CSS/служебные строки поставщика не должны попадать в raw/final.
+    t = re.sub(r"(?im)^\s*[.#]?[A-Za-z][A-Za-z0-9_-]*\s*\{[^{}]+\}\s*$", "", t)
     # Косметика для raw: лишние пробелы внутри скобок.
     t = re.sub(r"\(\s+", "(", t)
     t = re.sub(r"\s+\)", ")", t)
@@ -599,6 +607,34 @@ def _drop_broken_canon_compat_tail(s: str) -> str:
 
 
 
+def _dedupe_slash_tail_models(s: str) -> str:
+    t = norm_ws(s)
+    if not t or "/" not in t:
+        return t
+
+    m = re.match(r"^(.*?\s)([^\s,]+(?:/[^\s,]+)+)$", t)
+    if not m:
+        return t
+
+    prefix = m.group(1)
+    tail = m.group(2)
+    parts = [x.strip() for x in tail.split('/') if x.strip()]
+    if len(parts) < 2:
+        return t
+
+    uniq: list[str] = []
+    seen: set[str] = set()
+    for part in parts:
+        key = part.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        uniq.append(part)
+
+    return prefix + '/'.join(uniq)
+
+
+
 def _sanitize_param_value(key: str, val: str) -> str:
     v = norm_ws(val)
     if not v:
@@ -633,6 +669,7 @@ def _sanitize_param_value(key: str, val: str) -> str:
         v = re.sub(r"(?i)^для\s*,\s*", "", v).strip()
         v = re.sub(r"(?i)^для\s+совместимых\s+(?:устройств|принтеров(?:\s+и\s+мфу)?|мфу|аппаратов)\s+", "", v).strip()
         v = re.sub(r"(?i)^для\s+(?:устройств|принтеров(?:\s+и\s+мфу)?|мфу|аппаратов)\s+", "", v).strip()
+        v = re.sub(r"(?i)^для\s*,\s*", "", v).strip()
         v = re.sub(r"(?i)^устройства?\s*,?\s*", "", v).strip()
         v = re.sub(
             r"([A-ZА-ЯЁ0-9][A-Za-zА-Яа-яЁё0-9/.-]{1,})\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
@@ -652,6 +689,7 @@ def _sanitize_param_value(key: str, val: str) -> str:
         # Страховка для старого паттерна вроде "... 610Can" на конце.
         v = re.sub(r"(?iu)(\d)(?:Can|Xer|Eps|Bro|Ric|Pan|Lex|Kon|Min|Oki|Kyo|Hew)$", r"\1", v)
         v = re.sub(r"\s*,\s*", ", ", v)
+        v = _dedupe_slash_tail_models(v)
         v = norm_ws(v)
 
     if kcf == "ёмкость":
