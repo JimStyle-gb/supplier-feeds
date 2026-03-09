@@ -4,10 +4,10 @@ Path: scripts/suppliers/alstyle/params_xml.py
 
 XML params pipeline для AlStyle.
 
-Этап 2 split:
-- вынесены schema-cleanup и normalizers для родных XML param;
-- поведение сохранено максимально близко к v100/v99;
-- desc/compat логика пока ещё не переносится сюда.
+Этап 4 split:
+- cleanup `Модель` / `Аналог модели` / `Совместимость` вынесен в compat.py;
+- schema-cleanup и normalizers для родных XML param остаются здесь;
+- поведение сохранено максимально близко к v102/v101.
 """
 
 from __future__ import annotations
@@ -17,91 +17,11 @@ import xml.etree.ElementTree as ET
 from typing import Any
 
 from cs.util import norm_ws
+from suppliers.alstyle.compat import sanitize_param_value
 
 
 _RE_HAS_LETTER = re.compile(r"[A-Za-zА-Яа-яЁё]")
 _RE_LETTER_SLASH_LETTER = re.compile(r"([A-Za-zА-Яа-яЁё])\s*/\s*([A-Za-zА-Яа-яЁё])")
-_CODE_SERIES_RE = re.compile(
-    r"(?<![\w/])(?:(?=[A-Z0-9._-]*\d)[A-Z0-9._-]{3,}(?:\s*/\s*(?=[A-Z0-9._-]*\d)[A-Z0-9._-]{3,})+)"
-)
-
-
-def _key_quality_ok(k: str, *, require_letter: bool, max_len: int, max_words: int) -> bool:
-    kk = norm_ws(k)
-    if not kk:
-        return False
-    if require_letter and not _RE_HAS_LETTER.search(kk):
-        return False
-    if max_len and len(kk) > int(max_len):
-        return False
-    if max_words and len(kk.split()) > int(max_words):
-        return False
-    return True
-
-
-
-def _normalize_warranty_to_months(v: str) -> str:
-    vv = norm_ws(v)
-    if not vv:
-        return ""
-    low = vv.casefold()
-    if low in ("нет", "no", "-", "—"):
-        return ""
-    m = re.search(r"(\d{1,2})\s*(год|года|лет)\b", low)
-    if m:
-        n = int(m.group(1))
-        return f"{n*12} мес"
-    if re.fullmatch(r"\d{1,3}", low):
-        return f"{int(low)} мес"
-    m = re.search(r"\b(\d{1,3})\b", low)
-    if m and ("мес" in low or "month" in low):
-        return f"{int(m.group(1))} мес"
-    return vv
-
-
-
-def _dedupe_code_series_text(text: str) -> str:
-    s = norm_ws(text)
-    if not s:
-        return ""
-
-    def repl(m: re.Match[str]) -> str:
-        raw = m.group(0)
-        parts = [norm_ws(x) for x in re.split(r"\s*/\s*", raw) if norm_ws(x)]
-        out: list[str] = []
-        seen: set[str] = set()
-        for p in parts:
-            sig = p.casefold()
-            if sig in seen:
-                continue
-            seen.add(sig)
-            out.append(p)
-        return " / ".join(out)
-
-    return _CODE_SERIES_RE.sub(repl, s)
-
-
-
-def _fix_common_broken_words(s: str) -> str:
-    s = s or ""
-    fixes = {
-        "питание м": "питанием",
-        "электропитание м": "электропитанием",
-        "управление м": "управлением",
-        "резервным питание м": "резервным питанием",
-        "с системой управления питание м": "с системой управления питанием",
-        "и питание м": "и питанием",
-        "одним кабелем управляйте": "одним кабелем и управляйте",
-        "дополнтельно": "дополнительно",
-        "опцонально": "опционально",
-        "!!!": "!",
-    }
-    for a, b in fixes.items():
-        s = s.replace(a, b).replace(a.capitalize(), b.capitalize())
-    return s
-
-
-
 def _normalize_tech_value(v: str) -> str:
     s = norm_ws(v)
     if not s:
