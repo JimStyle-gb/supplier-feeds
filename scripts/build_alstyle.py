@@ -1,22 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Path: scripts/build_alstyle.py
+AlStyle adapter (AS) — CS-шаблон (config-driven).
 
-AlStyle adapter (AS) — CS-шаблон (stage-based supplier split, stage 1).
-
-Что изменено в этой версии:
-- entrypoint стал тоньше;
-- source/filter/normalize/pictures/diagnostics вынесены в scripts/suppliers/alstyle/;
-- supplier-specific desc/params логика пока оставлена в этом файле без смены поведения,
-  чтобы безопасно пройти первый этап переноса.
+Этап 5 рефакторинга:
+- вынесен desc->params слой в scripts/suppliers/alstyle/desc_extract.py
+- build_alstyle.py остаётся orchestrator'ом и точкой сборки raw/final
+- desc_clean / params_xml / compat уже живут отдельно
 """
 
 from __future__ import annotations
 
 import os
-import re
-from difflib import SequenceMatcher
-from html import unescape
 from pathlib import Path
 from typing import Any
 
@@ -26,35 +20,40 @@ from cs.core import OfferOut, write_cs_feed, write_cs_feed_raw
 from cs.meta import now_almaty, next_run_at_hour
 from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
-from suppliers.alstyle.diagnostics import build_watch_source_map, make_watch_messages, write_watch_report
-from suppliers.alstyle.filtering import filter_source_offers, parse_id_set
-from suppliers.alstyle.normalize import build_offer_oid, normalize_available, normalize_name, normalize_price_in, normalize_vendor
-from suppliers.alstyle.params_xml import collect_xml_params
-from suppliers.alstyle.compat import dedupe_code_series_text, sanitize_param_value
-from suppliers.alstyle.desc_clean import (
-    _align_desc_model_from_name,
-    _dedupe_desc_leading_title,
-    _fix_common_broken_words,
-    _is_service_desc_line,
-    _sanitize_native_desc,
+
+from scripts.suppliers.alstyle.source import load_source_offers
+from scripts.suppliers.alstyle.filtering import parse_allowed_category_ids, filter_source_offers
+from scripts.suppliers.alstyle.normalize import (
+    make_offer_oid,
+    normalize_available,
+    normalize_name,
+    normalize_price_in,
+    normalize_vendor,
 )
-from suppliers.alstyle.pictures import collect_picture_urls
-from suppliers.alstyle.source import load_source_offers
+from scripts.suppliers.alstyle.pictures import collect_picture_urls
+from scripts.suppliers.alstyle.params_xml import collect_xml_params
+from scripts.suppliers.alstyle.desc_clean import sanitize_native_desc
+from scripts.suppliers.alstyle.desc_extract import extract_desc_spec_pairs
+from scripts.suppliers.alstyle.diagnostics import (
+    build_watch_source,
+    collect_watch_messages,
+    write_watch_report,
+)
 
-
-BUILD_ALSTYLE_VERSION = "build_alstyle_v103_stage4_compat_split"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v104_stage5_desc_extract_split"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
 ALSTYLE_RAW_OUT_DEFAULT = "docs/raw/alstyle.yml"
 ALSTYLE_ID_PREFIX = "AS"
-ALSTYLE_WATCH_OIDS = {"AS257478"}
 
 CFG_DIR_DEFAULT = "scripts/suppliers/alstyle/config"
 FILTER_FILE_DEFAULT = "filter.yml"
 SCHEMA_FILE_DEFAULT = "schema.yml"
 POLICY_FILE_DEFAULT = "policy.yml"
 WATCH_REPORT_DEFAULT = "docs/raw/alstyle_watch.txt"
+
+ALSTYLE_WATCH_OIDS = {"AS257478"}
 
 
 def _read_yaml(path: Path) -> dict[str, Any]:
@@ -63,335 +62,67 @@ def _read_yaml(path: Path) -> dict[str, Any]:
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
-_DESC_SPEC_START_RE = re.compile(r"(?im)^\s*(Характеристики|Основные характеристики|Технические характеристики)\s*:?\s*$")
-_DESC_SPEC_STOP_RE = re.compile(
-    r"(?im)^\s*(Преимущества|Комплектация|Условия гарантии|Гарантия|Примечание|Примечания|Особенности|Описание|EUROPRINT)\s*:?\s*$"
-)
-_DESC_SPEC_LINE_RE = re.compile(
-    r"(?im)^\s*"
-    r"(Модель|Аналог модели|Совместимость|Совместимые модели|Устройства|Для принтеров|"
-    r"Технология печати|Цвет|Цвет печати|Ресурс|Ресурс картриджа|Ресурс картриджа, cтр\.|"
-    r"Количество страниц|Кол-во страниц при 5% заполнении А4|Емкость|Ёмкость|Емкость лотка|Ёмкость лотка|"
-    r"Степлирование|Дополнительные опции|Применение|Количество в упаковке|Колличество в упаковке)"
-    r"\s*(?::|\t+|\s{2,}|[-–—])\s*(.+?)\s*$"
-)
-_DESC_COMPAT_LINE_RE = re.compile(r"(?im)^\s*Совместим(?:а|о|ы)?\s+с\s+(.+?)\s*$")
-_PROJECTOR_RICH_LINE_RE = re.compile(
-    r"(?im)^\s*"
-    r"(Технология касания|Технология|Разрешение|Яркость|Контраст|Источник света|Световой источник|Оптика|"
-    r"Методы установки|Способы установки|Размер экрана|Дистанция|Коэффициент проекции|"
-    r"Форматы сторон|Смарт-?система|Беспроводной дисплей|Проводное зеркалирование|"
-    r"Интерфейсы|Акустика|Питание|Габариты проектора|Вес проектора|Габариты упаковки|"
-    r"Вес упаковки|Языки интерфейса|Комплектация|Беспроводные модули|Беспроводные интерфейсы|"
-    r"Беспроводные подключения|Беспроводные возможности)"
-    r"\s*(?::|[-–—])?\s*(.+?)\s*$"
-)
-_MONITOR_RICH_LINE_RE = re.compile(
-    r"(?im)^\s*"
-    r"(Управление|Пользовательские настройки|Встроенные колонки|Защита замком|HDMI|DisplayPort|USB-?хаб|"
-    r"Разъ[её]м для наушников|Поддержка HDCP|Языки меню OSD)"
-    r"\s*(?::|[-–—])\s*(.+?)\s*$"
-)
-_DESC_COMPAT_LABEL_ONLY_RE = re.compile(r"(?im)^\s*(Совместимость|Совместимые модели|Устройства)\s*:?\s*$")
-_DESC_TECH_PRINT_LABEL_ONLY_RE = re.compile(r"(?im)^\s*Технология\s+печати\s*:?\s*$")
-_DESC_COMPAT_SENTENCE_RE = re.compile(r"(?is)\bСовместим(?:а|о|ы)?\s+с\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)")
-_DESC_FOR_DEVICES_SENTENCE_RE = re.compile(
-    r"(?is)\bдля\s+(?:устройств|принтеров(?:\s+и\s+МФУ)?|МФУ|аппаратов)\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)"
-)
-_COMPAT_BRAND_HINT_RE = re.compile(
-    r"(?i)\b(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki|"
-    r"VersaLink|AltaLink|WorkCentre|DocuCentre|imageRUNNER|i-SENSYS|ECOSYS|bizhub)\b"
-)
-_COMPAT_MODEL_HINT_RE = re.compile(
-    r"(?i)(?:\b[A-Z]{1,8}-?\d{2,5}[A-Z]{0,3}x?\b|\b\d{3,5}[A-Z]{0,3}i?\b|/\s*[A-Z]?\d{2,5}[A-Z]{0,3}x?\b)"
-)
-_DESC_SPEC_KEY_MAP = {
-    "модель": "Модель",
-    "аналог модели": "Аналог модели",
-    "совместимость": "Совместимость",
-    "совместимые модели": "Совместимость",
-    "устройства": "Совместимость",
-    "для принтеров": "Совместимость",
-    "цвет": "Цвет",
-    "цвет печати": "Цвет",
-    "ресурс": "Ресурс",
-    "ресурс картриджа": "Ресурс",
-    "ресурс картриджа, cтр.": "Ресурс",
-    "количество страниц": "Ресурс",
-    "кол-во страниц при 5% заполнении а4": "Ресурс",
-    "емкость": "Ёмкость",
-    "ёмкость": "Ёмкость",
-    "емкость лотка": "Ёмкость",
-    "ёмкость лотка": "Ёмкость",
-    "степлирование": "Степлирование",
-    "дополнительные опции": "Дополнительные опции",
-    "применение": "Применение",
-    "количество в упаковке": "Количество в упаковке",
-    "колличество в упаковке": "Количество в упаковке",
-    "технология касания": "Технология касания",
-    "технология": "Технология",
-    "технология печати": "Технология",
-    "разрешение": "Разрешение",
-    "яркость": "Яркость",
-    "контраст": "Контраст",
-    "источник света": "Источник света",
-    "световой источник": "Источник света",
-    "оптика": "Оптика",
-    "методы установки": "Методы установки",
-    "способы установки": "Методы установки",
-    "размер экрана": "Размер экрана",
-    "дистанция": "Дистанция",
-    "коэффициент проекции": "Коэффициент проекции",
-    "форматы сторон": "Форматы сторон",
-    "смарт-система": "Смарт-система",
-    "беспроводной дисплей": "Беспроводной дисплей",
-    "проводное зеркалирование": "Проводное зеркалирование",
-    "интерфейсы": "Интерфейсы",
-    "акустика": "Акустика",
-    "питание": "Питание",
-    "габариты проектора": "Габариты проектора",
-    "вес проектора": "Вес проектора",
-    "габариты упаковки": "Габариты упаковки",
-    "вес упаковки": "Вес упаковки",
-    "языки интерфейса": "Языки интерфейса",
-    "комплектация": "Комплектация",
-    "беспроводные модули": "Беспроводные модули",
-    "беспроводные интерфейсы": "Беспроводные интерфейсы",
-    "беспроводные подключения": "Беспроводные подключения",
-    "беспроводные возможности": "Беспроводные возможности",
-    "управление": "Управление",
-    "пользовательские настройки": "Пользовательские настройки",
-    "встроенные колонки": "Встроенные колонки",
-    "защита замком": "Защита замком",
-    "hdmi": "HDMI",
-    "displayport": "DisplayPort",
-    "usb-хаб": "USB-хаб",
-    "usb хаб": "USB-хаб",
-    "разъём для наушников": "Разъём для наушников",
-    "поддержка hdcp": "Поддержка HDCP",
-    "языки меню osd": "Языки меню OSD",
-}
-
-_SAFE_DESC_PARAM_KEYS = {
-    "Модель", "Аналог модели", "Совместимость", "Технология", "Цвет", "Ресурс", "Ёмкость",
-    "Степлирование", "Дополнительные опции", "Применение", "Количество в упаковке",
-}
-
-
-def _is_heading_only_value(v: str) -> bool:
-    vv = norm_ws(v)
-    if not vv:
-        return True
-    low = vv.casefold()
-    if low in {"характеристики", "описание", "особенности", "преимущества", "комплектация", "гарантия"}:
-        return True
-    if re.fullmatch(r"(?iu)(порты|что\s+в\s+коробке|комплектация)\s*:?", vv):
-        return True
-    return False
-
-
-def _canon_desc_spec_key(k: str) -> str:
-    return _DESC_SPEC_KEY_MAP.get(norm_ws(k).casefold(), norm_ws(k))
-
-
-def _normalize_tech_value(v: str) -> str:
-    s = norm_ws(v)
-    if not s:
-        return ""
-    s = re.sub(r"(?iu)\bUSB\s+C\b", "USB-C", s)
-    s = re.sub(r"(?iu)\bWi\s*Fi\b", "Wi‑Fi", s)
-    s = re.sub(r"(?iu)\bBluetooth\s*([0-9.]+)\b", r"Bluetooth \1", s)
-    s = re.sub(r"(?iu)\bFull\s*HD\b", "Full HD", s)
-    s = re.sub(r"(?iu)\bANSI\s*люмен\b", "ANSI люмен", s)
-    return norm_ws(s)
-
-
-def _iter_desc_lines(text: str) -> list[str]:
-    return [norm_ws(x) for x in re.split(r"(?:\r?\n)+", text or "") if norm_ws(x)]
-
-
-def _is_label_only_line(line: str, rx: re.Pattern[str]) -> bool:
-    return bool(rx.match(norm_ws(line)))
-
-
-def _join_compat_lines(lines: list[str]) -> str:
-    out: list[str] = []
-    for ln in lines:
-        s = norm_ws(ln)
-        if not s:
-            continue
-        if _is_service_desc_line(s):
-            continue
-        out.append(s)
-    return norm_ws(" ".join(out))
-
-
-def _extract_multiline_compat_pairs(lines: list[str]) -> list[tuple[str, str]]:
-    out: list[tuple[str, str]] = []
-    for i, ln in enumerate(lines):
-        if _is_label_only_line(ln, _DESC_COMPAT_LABEL_ONLY_RE):
-            chunk = _join_compat_lines(lines[i + 1:i + 4])
-            if chunk and _looks_like_compatibility_value(chunk):
-                out.append(("Совместимость", chunk))
-    return out
-
-
-def _extract_multiline_tech_print_pairs(lines: list[str]) -> list[tuple[str, str]]:
-    out: list[tuple[str, str]] = []
-    for i, ln in enumerate(lines):
-        if _is_label_only_line(ln, _DESC_TECH_PRINT_LABEL_ONLY_RE):
-            chunk = _join_compat_lines(lines[i + 1:i + 3])
-            if chunk and len(chunk) <= 80:
-                out.append(("Технология", chunk))
-    return out
-
-
-def _parse_desc_spec_line(line: str) -> tuple[str, str] | None:
-    s = norm_ws(line)
-    if not s:
-        return None
-    m = _DESC_SPEC_LINE_RE.match(s)
-    if m:
-        return _canon_desc_spec_key(m.group(1)), norm_ws(m.group(2))
-    m = _DESC_COMPAT_LINE_RE.match(s)
-    if m:
-        return "Совместимость", norm_ws(m.group(1))
-    m = _PROJECTOR_RICH_LINE_RE.match(s)
-    if m:
-        return _canon_desc_spec_key(m.group(1)), norm_ws(m.group(2))
-    m = _MONITOR_RICH_LINE_RE.match(s)
-    if m:
-        return _canon_desc_spec_key(m.group(1)), norm_ws(m.group(2))
-    return None
-
-
-def _looks_like_compatibility_value(v: str) -> bool:
-    s = norm_ws(v)
-    if len(s) < 6:
-        return False
-    return bool(_COMPAT_BRAND_HINT_RE.search(s) or _COMPAT_MODEL_HINT_RE.search(s))
-
-
-def _extract_sentence_compat_pairs(desc: str) -> list[tuple[str, str]]:
-    text = norm_ws(desc)
-    if not text:
-        return []
-    out: list[tuple[str, str]] = []
-    for rx in (_DESC_COMPAT_SENTENCE_RE, _DESC_FOR_DEVICES_SENTENCE_RE):
-        for m in rx.finditer(text):
-            candidate = norm_ws(m.group(1))
-            candidate = re.sub(r"(?iu)^(?:для\s+)?(?:принтеров(?:\s+и\s+МФУ)?|МФУ|устройств|аппаратов)\s+", "", candidate)
-            candidate = candidate.strip(" .,:;-")
-            if _looks_like_compatibility_value(candidate):
-                out.append(("Совместимость", candidate))
-    return out
-
-
-def _validate_desc_pair(k: str, v: str, schema: dict[str, Any]) -> tuple[str, str] | None:
-    kk = _canon_desc_spec_key(k)
-    if kk not in _SAFE_DESC_PARAM_KEYS:
-        return None
-    vv = _apply_value_normalizers(kk, v, schema)
-    if not vv or _is_heading_only_value(vv):
-        return None
-    return kk, vv
-
-
-def _extract_desc_spec_pairs(desc: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
-    text = norm_ws(desc)
-    if not text:
-        return []
-
-    out: list[tuple[str, str]] = []
-    seen: set[tuple[str, str]] = set()
-
-    def add_pair(k: str, v: str) -> None:
-        pair = _validate_desc_pair(k, v, schema)
-        if not pair:
-            return
-        sig = (pair[0].casefold(), pair[1].casefold())
-        if sig in seen:
-            return
-        seen.add(sig)
-        out.append(pair)
-
-    lines = _iter_desc_lines(text)
-    in_block = False
-    block_lines: list[str] = []
-    for ln in lines:
-        if _DESC_SPEC_START_RE.match(ln):
-            in_block = True
-            continue
-        if in_block and _DESC_SPEC_STOP_RE.match(ln):
-            in_block = False
-            continue
-        if in_block:
-            block_lines.append(ln)
-
-    for ln in block_lines:
-        pair = _parse_desc_spec_line(ln)
-        if pair:
-            add_pair(*pair)
-
-    if not out:
-        for k, v in _extract_simple_desc_pairs(text):
-            add_pair(k, v)
-        for k, v in _extract_multiline_compat_pairs(lines):
-            add_pair(k, v)
-        for k, v in _extract_multiline_tech_print_pairs(lines):
-            add_pair(k, v)
-        for k, v in _extract_sentence_compat_pairs(text):
-            add_pair(k, v)
-        for k, v in _extract_sentence_capacity_pairs(text):
-            add_pair(k, v)
-
-    return out
-
-
-def _merge_params(base_params: list[tuple[str, str]], extra_params: list[tuple[str, str]]) -> list[tuple[str, str]]:
-    out: list[tuple[str, str]] = list(base_params)
-    seen = {(norm_ws(k).casefold(), norm_ws(v).casefold()) for k, v in base_params}
-    seen_keys = {norm_ws(k).casefold() for k, _ in base_params}
-    for k, v in extra_params:
-        kcf = norm_ws(k).casefold()
-        sig = (kcf, norm_ws(v).casefold())
-        if sig in seen or kcf in seen_keys:
-            continue
-        out.append((k, v))
-        seen.add(sig)
-        seen_keys.add(kcf)
-    return out
-
-
 def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
-    filter_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_FILTER_FILE") or FILTER_FILE_DEFAULT))
-    schema_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_SCHEMA_FILE") or SCHEMA_FILE_DEFAULT))
-    policy_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_POLICY_FILE") or POLICY_FILE_DEFAULT))
+    filter_cfg = _read_yaml(cfg_dir / FILTER_FILE_DEFAULT)
+    schema_cfg = _read_yaml(cfg_dir / SCHEMA_FILE_DEFAULT)
+    policy_cfg = _read_yaml(cfg_dir / POLICY_FILE_DEFAULT)
     return filter_cfg, schema_cfg, policy_cfg
 
 
+def _merge_params(
+    xml_params: list[tuple[str, str]],
+    desc_params: list[tuple[str, str]],
+) -> list[tuple[str, str]]:
+    """
+    XML params всегда приоритетнее.
+    Description-derived params только дополняют.
+    """
+    out: list[tuple[str, str]] = []
+    seen_key = set()
+    seen_pair = set()
+
+    for k, v in xml_params:
+        k2 = norm_ws(k)
+        v2 = norm_ws(v)
+        if not k2 or not v2:
+            continue
+        out.append((k2, v2))
+        seen_key.add(k2.casefold())
+        seen_pair.add((k2.casefold(), v2.casefold()))
+
+    for k, v in desc_params:
+        k2 = norm_ws(k)
+        v2 = norm_ws(v)
+        if not k2 or not v2:
+            continue
+        if k2.casefold() in seen_key:
+            continue
+        sig = (k2.casefold(), v2.casefold())
+        if sig in seen_pair:
+            continue
+        out.append((k2, v2))
+        seen_key.add(k2.casefold())
+        seen_pair.add(sig)
+
+    return out
+
+
 def main() -> int:
-    url = (os.getenv("ALSTYLE_URL") or ALSTYLE_URL_DEFAULT).strip()
-    out_file = (os.getenv("OUT_FILE") or ALSTYLE_OUT_DEFAULT).strip()
-    raw_out = (os.getenv("RAW_OUT_FILE") or ALSTYLE_RAW_OUT_DEFAULT).strip()
-    watch_report = (os.getenv("WATCH_REPORT_FILE") or WATCH_REPORT_DEFAULT).strip()
-    encoding = (os.getenv("OUTPUT_ENCODING") or "utf-8").strip() or "utf-8"
-    timeout = int(os.getenv("HTTP_TIMEOUT", "90"))
-    login = os.getenv("ALSTYLE_LOGIN")
-    password = os.getenv("ALSTYLE_PASSWORD")
+    url = os.getenv("ALSTYLE_URL", ALSTYLE_URL_DEFAULT)
+    out_file = os.getenv("ALSTYLE_OUT", ALSTYLE_OUT_DEFAULT)
+    raw_out = os.getenv("ALSTYLE_RAW_OUT", ALSTYLE_RAW_OUT_DEFAULT)
+    watch_report = os.getenv("ALSTYLE_WATCH_REPORT", WATCH_REPORT_DEFAULT)
 
     cfg_dir = Path(os.getenv("ALSTYLE_CFG_DIR", CFG_DIR_DEFAULT))
     filter_cfg, schema_cfg, policy_cfg = _load_supplier_config(cfg_dir)
 
-    env_hour = (os.getenv("SCHEDULE_HOUR_ALMATY") or "").strip()
-    hour = int((policy_cfg.get("schedule_hour_almaty") or 1))
-    if env_hour:
-        try:
-            eh = int(env_hour)
-            if eh != hour:
-                print(f"[build_alstyle] WARN: ignoring SCHEDULE_HOUR_ALMATY={eh}; policy.yml schedule_hour_almaty={hour}")
-        except Exception:
-            print(f"[build_alstyle] WARN: bad SCHEDULE_HOUR_ALMATY={env_hour!r}; using policy.yml schedule_hour_almaty={hour}")
+    timeout = int(os.getenv("ALSTYLE_TIMEOUT", "120"))
+    login = os.getenv("ALSTYLE_LOGIN", "").strip()
+    password = os.getenv("ALSTYLE_PASSWORD", "").strip()
+
+    hour = int(policy_cfg.get("schedule_hour_almaty") or 1)
+    build_time = now_almaty()
+    next_run = next_run_at_hour(build_time, hour=hour)
 
     placeholder_picture = (
         os.getenv("PLACEHOLDER_PICTURE")
@@ -399,46 +130,46 @@ def main() -> int:
         or "https://placehold.co/800x800/png?text=No+Photo"
     )
     supplier_name = (policy_cfg.get("supplier") or "AlStyle").strip()
-    vendor_blacklist = {str(x).casefold() for x in (policy_cfg.get("vendor_blacklist_casefold") or ["alstyle"])}
-    fallback_ids = {str(x) for x in (filter_cfg.get("category_ids") or [])}
-    allowed = parse_id_set(os.getenv("ALSTYLE_CATEGORY_IDS"), fallback_ids)
+    vendor_blacklist = {
+        str(x).casefold()
+        for x in (policy_cfg.get("vendor_blacklist_casefold") or ["alstyle"])
+    }
 
-    build_time = now_almaty()
-    next_run = next_run_at_hour(build_time, hour=hour)
+    fallback_ids = {str(x) for x in (filter_cfg.get("category_ids") or [])}
+    allowed = parse_allowed_category_ids(os.getenv("ALSTYLE_CATEGORY_IDS"), fallback_ids)
 
     source_offers = load_source_offers(url=url, timeout=timeout, login=login, password=password)
     before = len(source_offers)
-    watch_source = build_watch_source_map(source_offers, prefix=ALSTYLE_ID_PREFIX, watch_ids=ALSTYLE_WATCH_OIDS)
     filtered_offers = filter_source_offers(source_offers, allowed)
+    watch_source = build_watch_source(source_offers, ALSTYLE_WATCH_OIDS, id_prefix=ALSTYLE_ID_PREFIX)
 
     out_offers: list[OfferOut] = []
+    watch_out: set[str] = set()
     in_true = 0
     in_false = 0
-    watch_out: set[str] = set()
 
     for src in filtered_offers:
-        name = dedupe_code_series_text(normalize_name(src.name))
-        if not name or not src.raw_id:
+        raw_id = norm_ws(src.get("id") or src.get("vendorCode"))
+        name = normalize_name(src.get("name") or "")
+        if not raw_id or not name:
             continue
 
-        oid = build_offer_oid(src.raw_id, prefix=ALSTYLE_ID_PREFIX)
-        available = normalize_available(src.available_attr, src.available_tag)
+        oid = make_offer_oid(raw_id, prefix=ALSTYLE_ID_PREFIX)
+        available = normalize_available(src)
         if available:
             in_true += 1
         else:
             in_false += 1
 
-        pics = collect_picture_urls(src.picture_urls, placeholder_picture=placeholder_picture)
-        params = collect_xml_params(src.offer_el, schema_cfg)
-        vendor_src = normalize_vendor(src.vendor, vendor_blacklist=vendor_blacklist)
+        pictures = collect_picture_urls(src, placeholder_picture=placeholder_picture)
+        vendor = normalize_vendor(src.get("vendor") or "", vendor_blacklist=vendor_blacklist)
 
-        desc_src = _sanitize_native_desc(src.description or "")
-        desc_src = _align_desc_model_from_name(name, desc_src)
-        desc_src = _dedupe_desc_leading_title(name, desc_src)
-        desc_src = _align_desc_model_from_name(name, desc_src)
-        params = _merge_params(params, _extract_desc_spec_pairs(desc_src, schema_cfg))
+        desc_src = sanitize_native_desc(src.get("description") or "", name=name)
+        xml_params = collect_xml_params(src, schema_cfg)
+        desc_params = extract_desc_spec_pairs(desc_src, schema_cfg)
+        params = _merge_params(xml_params, desc_params)
 
-        price_in = normalize_price_in(src.purchase_price_text, src.price_text)
+        price_in = normalize_price_in(src)
         price = compute_price(price_in)
 
         watch_out.add(oid)
@@ -448,25 +179,24 @@ def main() -> int:
                 available=available,
                 name=name,
                 price=price,
-                pictures=pics,
-                vendor=vendor_src,
+                pictures=pictures,
+                vendor=vendor,
                 params=params,
                 native_desc=desc_src,
             )
         )
 
+    out_offers.sort(key=lambda x: x.oid)
     after = len(out_offers)
-    watch_messages = make_watch_messages(
+
+    watch_messages = collect_watch_messages(
         watch_ids=ALSTYLE_WATCH_OIDS,
         watch_source=watch_source,
         watch_out=watch_out,
         allowed=allowed,
+        id_prefix=ALSTYLE_ID_PREFIX,
     )
-    for msg in watch_messages:
-        print(msg)
     write_watch_report(watch_report, watch_messages)
-
-    out_offers.sort(key=lambda x: x.oid)
 
     write_cs_feed_raw(
         out_offers,
@@ -476,7 +206,7 @@ def main() -> int:
         build_time=build_time,
         next_run=next_run,
         before=before,
-        encoding=encoding,
+        encoding="utf-8",
         currency_id="KZT",
     )
 
@@ -488,14 +218,16 @@ def main() -> int:
         build_time=build_time,
         next_run=next_run,
         before=before,
-        encoding=encoding,
+        encoding="utf-8",
         public_vendor=os.getenv("PUBLIC_VENDOR", "CS").strip() or "CS",
         currency_id="KZT",
     )
 
     print(
-        f"[build_alstyle] OK | version={BUILD_ALSTYLE_VERSION} | offers_in={before} | offers_out={after} | "
-        f"in_true={in_true} | in_false={in_false} | changed={'yes' if changed else 'no'} | file={out_file}"
+        f"[build_alstyle] OK | version={BUILD_ALSTYLE_VERSION} | "
+        f"offers_in={before} | offers_out={after} | "
+        f"in_true={in_true} | in_false={in_false} | "
+        f"changed={'yes' if changed else 'no'} | file={out_file}"
     )
     return 0
 
