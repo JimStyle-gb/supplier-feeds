@@ -178,8 +178,11 @@ def sanitize_desc_quality_text(desc: str) -> str:
     if not s:
         return ""
     s = fix_common_broken_words(s)
+    s = re.sub(r"(?iu)Совместимые\s+модели\s+Xerox\s+Для\s+Xerox\s+", "Совместимые модели Xerox ", s)
     s = re.sub(r"(?iu)Xerox\s+Для,\s+Xerox\s+", "Xerox ", s)
+    s = re.sub(r"(?iu)Xerox\s+Для\s+Xerox\s+", "Xerox ", s)
     s = re.sub(r"(?iu)Для,\s+Xerox\s+", "Xerox ", s)
+    s = re.sub(r"(?iu)Для\s+Xerox\s+", "Xerox ", s)
     s = re.sub(r"(?iu)Для\s+принтеров\s+Xerox\s+", "Xerox ", s)
     s = re.sub(r"(?iu)Для\s+МФУ\s+Xerox\s+", "Xerox ", s)
     s = re.sub(r"\bWorkCenter\b", "WorkCentre", s, flags=re.I)
