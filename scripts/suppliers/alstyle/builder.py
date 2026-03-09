@@ -2,13 +2,7 @@
 """
 Path: scripts/suppliers/alstyle/builder.py
 
-AlStyle supplier layer — сборка raw offer (stage 6).
-
-Что делает:
-- собирает один OfferOut из SourceOffer;
-- держит последовательность supplier-stage pipeline в одном месте;
-- XML params имеют приоритет над desc-derived params;
-- build_alstyle.py остаётся только orchestrator'ом.
+AlStyle supplier layer — сборка raw offer.
 """
 
 from __future__ import annotations
@@ -17,9 +11,9 @@ from cs.core import OfferOut
 from cs.pricing import compute_price
 from cs.util import norm_ws
 from suppliers.alstyle.desc_clean import (
-    _align_desc_model_from_name,
-    _dedupe_desc_leading_title,
-    _sanitize_native_desc,
+    align_desc_model_from_name,
+    dedupe_desc_leading_title,
+    sanitize_native_desc,
 )
 from suppliers.alstyle.desc_extract import extract_desc_spec_pairs
 from suppliers.alstyle.models import SourceOffer
@@ -32,7 +26,6 @@ from suppliers.alstyle.normalize import (
 )
 from suppliers.alstyle.params_xml import collect_xml_params
 from suppliers.alstyle.pictures import collect_picture_urls
-
 
 
 def merge_params(
@@ -73,7 +66,6 @@ def merge_params(
     return out
 
 
-
 def build_offer(
     src: SourceOffer,
     *,
@@ -92,9 +84,9 @@ def build_offer(
     pictures = collect_picture_urls(src.picture_urls, placeholder_picture=placeholder_picture)
     vendor = normalize_vendor(src.vendor, vendor_blacklist=vendor_blacklist)
 
-    desc_src = _sanitize_native_desc(src.description or "")
-    desc_src = _align_desc_model_from_name(name, desc_src)
-    desc_src = _dedupe_desc_leading_title(name, desc_src)
+    desc_src = sanitize_native_desc(src.description or "", name=name)
+    desc_src = align_desc_model_from_name(name, desc_src)
+    desc_src = dedupe_desc_leading_title(name, desc_src)
 
     xml_params = collect_xml_params(src.offer_el, schema_cfg) if src.offer_el is not None else []
     desc_params = extract_desc_spec_pairs(desc_src, schema_cfg)
@@ -114,7 +106,6 @@ def build_offer(
         native_desc=desc_src,
     )
     return offer, available
-
 
 
 def build_offers(
