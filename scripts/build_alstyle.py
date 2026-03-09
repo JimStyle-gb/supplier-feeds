@@ -1,50 +1,50 @@
 # -*- coding: utf-8 -*-
 """
-AlStyle adapter (AS) — CS-шаблон (config-driven).
+Path: scripts/build_alstyle.py
 
-Адаптер делает ИДЕАЛЬНЫЙ raw:
-- фильтр товаров по categoryId (include) из config/filter.yml
-- schema чистит params (drop/aliases/normalizers), без гаданий по совместимости/кодам
-- стабильный id/vendorCode с префиксом AS
-- pictures: если нет — placeholder
-- vendor не должен содержать имя поставщика
+AlStyle adapter (AS) — CS-шаблон (stage-based supplier split, stage 1).
 
-Core делает только общее (keywords/description/FEED_META/writer). Для AS в scripts/cs/policy.py
-должно быть отключено вмешательство core в params (enable_clean_params=False и т.п.).
+Что изменено в этой версии:
+- entrypoint стал тоньше;
+- source/filter/normalize/pictures/diagnostics вынесены в scripts/suppliers/alstyle/;
+- supplier-specific desc/params логика пока оставлена в этом файле без смены поведения,
+  чтобы безопасно пройти первый этап переноса.
 """
 
 from __future__ import annotations
 
 import os
 import re
-import xml.etree.ElementTree as ET
 from difflib import SequenceMatcher
 from html import unescape
 from pathlib import Path
 from typing import Any
 
-import requests
 import yaml
 
 from cs.core import OfferOut, write_cs_feed, write_cs_feed_raw
 from cs.meta import now_almaty, next_run_at_hour
 from cs.pricing import compute_price
 from cs.util import norm_ws, safe_int
+from suppliers.alstyle.diagnostics import build_watch_source_map, make_watch_messages, write_watch_report
+from suppliers.alstyle.filtering import filter_source_offers, parse_id_set
+from suppliers.alstyle.normalize import build_offer_oid, normalize_available, normalize_name, normalize_price_in, normalize_vendor
+from suppliers.alstyle.pictures import collect_picture_urls
+from suppliers.alstyle.source import load_source_offers
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v99_restore_desc_and_pairs"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v100_stage1_supplier_split"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
 ALSTYLE_RAW_OUT_DEFAULT = "docs/raw/alstyle.yml"
 ALSTYLE_ID_PREFIX = "AS"
-# Исторически выпавшие офферы не дорисовываем, только диагностируем причину пропажи.
 ALSTYLE_WATCH_OIDS = {"AS257478"}
 
 CFG_DIR_DEFAULT = "scripts/suppliers/alstyle/config"
 FILTER_FILE_DEFAULT = "filter.yml"
 SCHEMA_FILE_DEFAULT = "schema.yml"
-POLICY_FILE_DEFAULT = "policy.yml"  # опционально
+POLICY_FILE_DEFAULT = "policy.yml"
 WATCH_REPORT_DEFAULT = "docs/raw/alstyle_watch.txt"
 
 
@@ -64,23 +64,6 @@ def _read_yaml(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-
-
-def _t(el: ET.Element | None) -> str:
-    if el is None:
-        return ""
-    return "".join(el.itertext()).strip()
-
-
-def _parse_id_set(env: str | None, fallback: set[str]) -> set[str]:
-    if not env:
-        return set(fallback)
-    s = env.strip()
-    if not s:
-        return set(fallback)
-    parts = re.split(r"[\s,;]+", s)
-    out = {p.strip() for p in parts if p and p.strip()}
-    return out or set(fallback)
 
 
 def _key_quality_ok(k: str, *, require_letter: bool, max_len: int, max_words: int) -> bool:
@@ -126,15 +109,12 @@ def _apply_value_normalizers(key: str, val: str, schema: dict[str, Any]) -> str:
             v = _normalize_warranty_to_months(v)
         elif op == "trim_ws":
             v = norm_ws(v)
-    # Нормализация: 'слово/Word' -> 'слово Word' только там, где slash не несёт смысл модели/совместимости
     kcf = norm_ws(key).casefold()
     if kcf not in {"совместимость", "модель", "аналог модели"}:
         v = _RE_LETTER_SLASH_LETTER.sub(r"\1 \2", v)
     v = _sanitize_param_value(key, v)
     if not v:
         return ""
-    # Безопасная техно-нормализация только после основной очистки значений.
-    # Не трогаем модель/совместимость, чтобы не ломать vendor/model tokens и слэши.
     if kcf not in {"совместимость", "модель", "аналог модели"}:
         v = _normalize_tech_value(v)
         v = re.sub(r"(?<=\d),\s+(?=\d)", ",", v)
@@ -145,18 +125,7 @@ def _apply_value_normalizers(key: str, val: str, schema: dict[str, Any]) -> str:
     return v
 
 
-def _collect_pictures(offer_el: ET.Element, placeholder: str) -> list[str]:
-    pics: list[str] = []
-    for p in offer_el.findall("picture"):
-        u = norm_ws(_t(p))
-        if u:
-            pics.append(u)
-    if not pics:
-        pics = [placeholder]
-    return pics
-
-
-def _collect_params(offer_el: ET.Element, schema: dict[str, Any]) -> list[tuple[str, str]]:
+def _collect_params(offer_el, schema: dict[str, Any]) -> list[tuple[str, str]]:
     drop = {str(x).casefold() for x in (schema.get("drop_keys_casefold") or [])}
     aliases = {str(k).casefold(): str(v) for k, v in (schema.get("aliases_casefold") or {}).items()}
     rules = schema.get("key_rules") or {}
@@ -169,7 +138,7 @@ def _collect_params(offer_el: ET.Element, schema: dict[str, Any]) -> list[tuple[
 
     for p in offer_el.findall("param"):
         k0 = p.get("name") or ""
-        v0 = _t(p)
+        v0 = "".join(p.itertext()).strip()
 
         k = norm_ws(k0)
         v = norm_ws(v0)
@@ -183,10 +152,8 @@ def _collect_params(offer_el: ET.Element, schema: dict[str, Any]) -> list[tuple[
         if not _key_quality_ok(k, require_letter=require_letter, max_len=max_len, max_words=max_words):
             continue
 
-        # hard-drop: в финальном baseline AlStyle коды НКТ не нужны
         if k.casefold() in drop or k.casefold() in ("код нкт",):
             continue
-
         if k.casefold() == "назначение" and v.casefold() in ("да", "есть"):
             continue
         if k.casefold() == "безопасность" and v.casefold() == "есть":
@@ -236,9 +203,7 @@ _MONITOR_RICH_LINE_RE = re.compile(
 )
 _DESC_COMPAT_LABEL_ONLY_RE = re.compile(r"(?im)^\s*(Совместимость|Совместимые модели|Устройства)\s*:?\s*$")
 _DESC_TECH_PRINT_LABEL_ONLY_RE = re.compile(r"(?im)^\s*Технология\s+печати\s*:?\s*$")
-_DESC_COMPAT_SENTENCE_RE = re.compile(
-    r"(?is)\bСовместим(?:а|о|ы)?\s+с\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)"
-)
+_DESC_COMPAT_SENTENCE_RE = re.compile(r"(?is)\bСовместим(?:а|о|ы)?\s+с\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)")
 _DESC_FOR_DEVICES_SENTENCE_RE = re.compile(
     r"(?is)\bдля\s+(?:устройств|принтеров(?:\s+и\s+МФУ)?|МФУ|аппаратов)\s+(.{6,220}?)(?:(?:[.!?](?:\s|$))|\n|$)"
 )
@@ -272,7 +237,6 @@ _DESC_SPEC_KEY_MAP = {
     "применение": "Применение",
     "количество в упаковке": "Количество в упаковке",
     "колличество в упаковке": "Количество в упаковке",
-
     "технология касания": "Технология касания",
     "технология": "Технология",
     "технология печати": "Технология",
@@ -318,963 +282,451 @@ _DESC_SPEC_KEY_MAP = {
 }
 
 _SAFE_DESC_PARAM_KEYS = {
-    "Модель",
-    "Аналог модели",
-    "Совместимость",
-    "Технология",
-    "Цвет",
-    "Ресурс",
-    "Ёмкость",
-    "Степлирование",
-    "Дополнительные опции",
-    "Применение",
-    "Количество в упаковке",
+    "Модель", "Аналог модели", "Совместимость", "Технология", "Цвет", "Ресурс", "Ёмкость",
+    "Степлирование", "Дополнительные опции", "Применение", "Количество в упаковке",
 }
 
 
-def _dedupe_code_series_text(s: str) -> str:
-    t = s or ""
-    if not t:
+def _dedupe_code_series_text(text: str) -> str:
+    s = norm_ws(text)
+    if not s:
         return ""
-
     def repl(m: re.Match[str]) -> str:
-        parts = [norm_ws(p) for p in re.split(r"\s*/\s*", m.group(0)) if norm_ws(p)]
-        if len(parts) < 2:
-            return m.group(0)
-        uniq: list[str] = []
+        raw = m.group(0)
+        parts = [norm_ws(x) for x in re.split(r"\s*/\s*", raw) if norm_ws(x)]
+        out: list[str] = []
         seen: set[str] = set()
-        for part in parts:
-            key = part.casefold()
-            if key in seen:
+        for p in parts:
+            sig = p.casefold()
+            if sig in seen:
                 continue
-            seen.add(key)
-            uniq.append(part)
-        return " / ".join(uniq)
+            seen.add(sig)
+            out.append(p)
+        return " / ".join(out)
+    return _CODE_SERIES_RE.sub(repl, s)
 
-    return _CODE_SERIES_RE.sub(repl, t)
 
-
-def _is_service_desc_line(raw: str) -> bool:
-    ln = (raw or "").strip()
-    if not ln:
-        return False
-    if ln in {">", "&gt;", "&amp;gt;"}:
+def _is_service_desc_line(line: str) -> bool:
+    s = norm_ws(unescape(re.sub(r"<[^>]+>", " ", line or "")))
+    if not s:
         return True
-    if _CSS_SERVICE_LINE_RE.search(ln):
+    low = s.casefold()
+    if _CSS_SERVICE_LINE_RE.search(s):
         return True
-    low = norm_ws(ln).casefold()
-    if low in {
-        "print / scan / copy",
-        "wi-fi wireless printing",
-        "mi home app support",
-        "high-resolution color print",
-        "compact design",
-        "white",
-    }:
+    if low.startswith(("body {", "font-family:", "display:", "margin:", "padding:", "border:", "color:", "background:")):
+        return True
+    if re.fullmatch(r"(?i)(print\s*/\s*scan\s*/\s*copy|wi-?fi\s+wireless\s+printing|mi\s+home\s+app\s+support)", s):
+        return True
+    if re.fullmatch(r"(?i)(window\s+hello|windows\s+hello)", s):
+        return True
+    if re.fullmatch(r"(?i)[A-Z0-9][A-Z0-9\-+/ ]{1,18}\s*x\d+", s):
+        return True
+    if re.fullmatch(r"(?i)(hdmi|displayport|usb-?c|usb|rj45|lan|vga|audio)\s*x\d+", s):
         return True
     return False
 
 
 def _norm_title_like_text(s: str) -> str:
-    t = norm_ws(s).casefold()
-    t = re.sub(r"[^a-zа-яё0-9]+", " ", t)
-    return norm_ws(t)
+    s = norm_ws(unescape(re.sub(r"<[^>]+>", " ", s or "")))
+    s = re.sub(r"[()\[\],;:!?.«»\"'`]+", " ", s)
+    return norm_ws(s).casefold()
 
 
-def _is_title_like_duplicate(line: str, name: str) -> bool:
-    ln = _norm_title_like_text(line)
-    nm = _norm_title_like_text(name)
-    if not ln or not nm or len(ln) < 8:
+def _is_title_like_duplicate(name: str, line: str) -> bool:
+    a = _norm_title_like_text(name)
+    b = _norm_title_like_text(line)
+    if not a or not b:
         return False
-    if ln == nm or ln in nm or nm in ln:
+    if a == b:
         return True
-    lt = set(ln.split())
-    nt = set(nm.split())
-    if len(lt) >= 3 and lt and (len(lt & nt) / len(lt)) >= 0.85:
-        return True
-    return False
+    if a in b or b in a:
+        shorter = min(len(a), len(b))
+        longer = max(len(a), len(b))
+        if shorter >= max(12, int(longer * 0.7)):
+            return True
+    ratio = SequenceMatcher(None, a, b).ratio()
+    return ratio >= 0.9
 
 
 def _dedupe_desc_leading_title(name: str, desc: str) -> str:
-    if not name or not desc:
-        return desc or ""
-    lines = (desc or "").splitlines()
-    out: list[str] = []
-    dropping = True
-    for raw in lines:
-        ln = norm_ws(raw)
-        if dropping:
-            if not ln:
-                continue
-            if _is_title_like_duplicate(ln, name):
-                continue
-            dropping = False
-        out.append(raw)
-    return "\n".join(out).strip()
+    parts = [norm_ws(x) for x in re.split(r"(?:\r?\n)+", unescape(desc or "")) if norm_ws(x)]
+    while parts and _is_title_like_duplicate(name, parts[0]):
+        parts.pop(0)
+    return "\n".join(parts)
 
 
-def _strip_desc_sections(text: str) -> str:
-    if not text:
-        return ""
-    lines = text.splitlines()
+def _strip_desc_sections(desc: str) -> str:
+    lines = [norm_ws(x) for x in re.split(r"(?:\r?\n)+", unescape(desc or ""))]
     out: list[str] = []
-    skip_mode = False
-    for raw in lines:
-        ln = norm_ws(raw)
-        key = ln.rstrip(":").casefold()
-        if key in {"порты", "порты и подключение", "что в коробке", "в коробке"}:
-            skip_mode = True
+    skip = False
+    skipped_any = False
+    for ln in lines:
+        if not ln:
             continue
-        if skip_mode:
-            if not ln:
-                skip_mode = False
+        low = ln.casefold()
+        if re.match(r"(?iu)^(порты|что\s+в\s+коробке|комплектация)\s*:?$", ln):
+            skip = True
+            skipped_any = True
             continue
-        out.append(raw)
-    return "\n".join(out)
+        if skip:
+            if re.match(r"(?iu)^(описание|особенности|преимущества|характеристики|технические характеристики|гарантия)\s*:?$", ln):
+                skip = False
+            else:
+                continue
+        out.append(ln)
+    cleaned = "\n".join(out)
+    if skipped_any:
+        before = len(norm_ws(unescape(desc or "")))
+        after = len(norm_ws(cleaned))
+        if before and after < max(40, int(before * 0.35)):
+            return norm_ws(unescape(desc or ""))
+    return cleaned
 
 
 def _align_desc_model_from_name(name: str, desc: str) -> str:
-    text = desc or ""
-    if not name or not text:
-        return text
-
-    name_tokens: list[str] = []
-    seen_name: set[str] = set()
-    for tok in _SKU_TOKEN_RE.findall(name):
-        if not any(ch.isdigit() for ch in tok):
-            continue
-        key = tok.casefold()
-        if key in seen_name:
-            continue
-        seen_name.add(key)
-        name_tokens.append(tok)
-    if not name_tokens:
-        return text
-
-    head = text[:600]
-    tail = text[600:]
-    desc_tokens: list[str] = []
-    seen_desc: set[str] = set()
-    for tok in _SKU_TOKEN_RE.findall(head):
-        if not any(ch.isdigit() for ch in tok):
-            continue
-        key = tok.casefold()
-        if key in seen_desc:
-            continue
-        seen_desc.add(key)
-        desc_tokens.append(tok)
-
-    for dt in desc_tokens:
-        for nt in name_tokens:
-            if dt == nt:
-                continue
-            sig_dt = re.sub(r"\d+", "", dt)
-            sig_nt = re.sub(r"\d+", "", nt)
-            if len(sig_nt) < 5 or sig_dt != sig_nt:
-                continue
-            if SequenceMatcher(None, dt, nt).ratio() < 0.82:
-                continue
-            head = re.sub(rf"\b{re.escape(dt)}\b", nt, head, count=1)
-            return head + tail
-    return text
+    n = norm_ws(name)
+    d = norm_ws(unescape(desc or ""))
+    if not n or not d:
+        return d
+    m_name = _SKU_TOKEN_RE.search(n)
+    if not m_name:
+        return d
+    sku_name = m_name.group(0)
+    first_sent = re.split(r"(?<=[.!?])\s+|\n+", d, maxsplit=1)[0]
+    m_desc = _SKU_TOKEN_RE.search(first_sent)
+    if not m_desc:
+        return d
+    sku_desc = m_desc.group(0)
+    if sku_desc == sku_name:
+        return d
+    if len(sku_desc) >= 6 and len(sku_name) >= 6 and SequenceMatcher(None, sku_desc, sku_name).ratio() >= 0.82:
+        return d.replace(sku_desc, sku_name, 1)
+    return d
 
 
 def _clean_desc_text(s: str) -> str:
-    t = s or ""
-    t = t.replace("\r", "\n")
-    t = re.sub(r"(?i)<\s*br\s*/?>", "\n", t)
-    t = re.sub(r"(?i)</\s*p\s*>", "\n", t)
-    t = re.sub(r"(?i)<\s*p[^>]*>", "", t)
-    t = re.sub(r"<[^>]+>", " ", t)
-    t = t.replace("\xa0", " ")
-    t = unescape(t)
-    t = _sanitize_desc_quality_text(t)
-    return t
+    s = unescape(s or "")
+    s = re.sub(r"<\s*br\s*/?\s*>", "\n", s, flags=re.I)
+    s = re.sub(r"</p\s*>", "\n", s, flags=re.I)
+    s = re.sub(r"<[^>]+>", " ", s)
+    lines = [norm_ws(x) for x in re.split(r"(?:\r?\n)+", s)]
+    lines = [x for x in lines if x and not _is_service_desc_line(x)]
+    return "\n".join(lines)
 
 
-def _is_heading_only_value(val: str) -> bool:
-    v = norm_ws(val).strip()
-    if not v:
-        return False
-    # Служебные заголовки rich-block: "/ РАЗЪЕМЫ / УПРАВЛЕНИЕ:" и подобные
-    if re.fullmatch(r"[/\\sA-ZА-ЯЁ0-9()_.:+-]{3,}", v) and ":" in v:
+def _is_heading_only_value(v: str) -> bool:
+    vv = norm_ws(v)
+    if not vv:
         return True
-    if re.fullmatch(r"(?:[/\\s]*[A-ZА-ЯЁ][A-ZА-ЯЁ0-9()_.+-]*[/\\s]*){2,}:?", v):
+    low = vv.casefold()
+    if low in {"характеристики", "описание", "особенности", "преимущества", "комплектация", "гарантия"}:
         return True
-    if re.match(r"^/\s*[A-ZА-ЯЁ]", v) and ":" in v:
+    if re.fullmatch(r"(?iu)(порты|что\s+в\s+коробке|комплектация)\s*:?", vv):
         return True
     return False
 
 
 def _fix_common_broken_words(s: str) -> str:
-    t = s or ""
-    if not t:
+    s = s or ""
+    fixes = {
+        "питание м": "питанием",
+        "электропитание м": "электропитанием",
+        "управление м": "управлением",
+        "резервным питание м": "резервным питанием",
+        "с системой управления питание м": "с системой управления питанием",
+        "и питание м": "и питанием",
+        "одним кабелем управляйте": "одним кабелем и управляйте",
+        "дополнтельно": "дополнительно",
+        "опцонально": "опционально",
+        "!!!": "!",
+    }
+    for a, b in fixes.items():
+        s = s.replace(a, b).replace(a.capitalize(), b.capitalize())
+    return s
+
+
+def _sanitize_desc_quality_text(desc: str) -> str:
+    s = norm_ws(desc)
+    if not s:
         return ""
-
-    exact_repl = [
-        (r"(?iu)\bи\s+питание\s+м\b", "и питанием"),
-        (r"(?iu)\bпитание\s+м\b", "питанием"),
-        (r"(?iu)\bуправление\s+м\b", "управлением"),
-        (r"(?iu)\bрезервным\s+питание\s+м\b", "резервным питанием"),
-        (r"(?iu)\bодним\s+кабелем\s+управляйте\b", "одним кабелем и управляйте"),
-        (r"(?iu)\bос\s+новное\b", "основное"),
-        (r"(?iu)\bос\s+новной\b", "основной"),
-        (r"(?iu)\bос\s+новные\b", "основные"),
-        (r"(?iu)\bос\s+новного\b", "основного"),
-        (r"(?iu)\bос\s+новным\b", "основным"),
-        (r"(?iu)\bос\s+нове\b", "основе"),
-        (r"(?iu)\bос\s+нова\b", "основа"),
-        (r"(?iu)\bос\s+новываясь\b", "основываясь"),
-        (r"(?iu)\bос\s+новании\b", "основании"),
-        (r"(?iu)\bос\s+нован\b", "основан"),
-        (r"(?iu)\bос\s+ью\b", "осью"),
-        (r"(?iu)\bос\s+ыпался\b", "осыпался"),
-        (r"(?iu)\bос\s+ып\b", "осып"),
-        (r"(?iu)\bос\s+нащена\b", "оснащена"),
-        (r"(?iu)\bос\s+нащен\b", "оснащен"),
-        (r"(?iu)\bОс\s+обенности\b", "Особенности"),
-        (r"(?iu)\bОС\s+ОБЕННОСТИ\s+И\s+ПРЕИМУЩЕСТВА\b", "Особенности и преимущества"),
-        (r"(?iu)\bОС\s+ОБЕННОСТИ\b", "Особенности"),
-        (r"(?iu)\bос\s+обенности\b", "особенности"),
-        (r"(?iu)\bос\s+обенно\b", "особенно"),
-        (r"(?iu)\bКонтраст\s+ность\b", "Контрастность"),
-        (r"(?iu)\bконтраст\s+ность\b", "контрастность"),
-        (r"(?iu)\bяркость\s+ю\b", "яркостью"),
-        (r"(?iu)\bразрешение\s+м\b", "разрешением"),
-        (r"(?iu)\bв\s+случаи\b", "в случае"),
-        (r"(?iu)\bКолличество\b", "Количество"),
-        (r"(?iu)\bпроеци=ирования\b", "проецирования"),
-        (r"(?iu)\bпроеци=рует\b", "проецирует"),
-    ]
-    for pat, rep in exact_repl:
-        t = re.sub(pat, rep, t)
-
-    stem_repl = [
-        (r"(?iu)\bос\s+уществ", "осуществ"),
-        (r"(?iu)\bос\s+вещ", "освещ"),
-        (r"(?iu)\bос\s+тав", "остав"),
-        (r"(?iu)\bос\s+тат", "остат"),
-        (r"(?iu)\bос\s+тан", "остан"),
-        (r"(?iu)\bос\s+вобожд", "освобожд"),
-        (r"(?iu)\bос\s+вобод", "освобод"),
-        (r"(?iu)\bос\s+леп", "ослеп"),
-        (r"(?iu)\bос\s+лаб", "ослаб"),
-    ]
-    for pat, rep in stem_repl:
-        t = re.sub(pat, rep, t)
-
-    t = re.sub(
-        r"([A-ZА-ЯЁ0-9][A-Za-zА-Яа-яЁё0-9/.-]{1,})\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-        r"\1, ",
-        t,
-    )
-    t = re.sub(
-        r"([A-Z0-9][A-Za-z0-9/-]{2,})(?=(Протяжный сканер|Сканер|Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-        r"\1, ",
-        t,
-    )
-    t = re.sub(r"(?<=\d),\s+(?=\d)", ",", t)
-    t = re.sub(r"\s*,\s*", ", ", t)
-    return t
+    s = _fix_common_broken_words(s)
+    s = re.sub(r"(?iu)Xerox\s+Для,\s+Xerox\s+", "Xerox ", s)
+    s = re.sub(r"(?iu)Для,\s+Xerox\s+", "Xerox ", s)
+    s = re.sub(r"(?iu)Для\s+принтеров\s+Xerox\s+", "Xerox ", s)
+    s = re.sub(r"(?iu)Для\s+МФУ\s+Xerox\s+", "Xerox ", s)
+    s = re.sub(r"\bWorkCenter\b", "WorkCentre", s, flags=re.I)
+    s = _dedupe_code_series_text(s)
+    return norm_ws(s)
 
 
-
-def _sanitize_desc_quality_text(s: str) -> str:
-    t = s or ""
-    if not t:
+def _sanitize_native_desc(desc: str) -> str:
+    raw = _clean_desc_text(desc)
+    if not raw:
         return ""
-
-    # Частые смешанные лат/кир техно-токены от поставщика.
-    repl = [
-        (r"(?iu)\b[LЛ][CС][DD]\b", "LCD"),
-        (r"(?iu)\b[LЛ][EЕ][DD]\b", "LED"),
-        (r"(?iu)\b[SЅ][NN][MМ][PР]\b", "SNMP"),
-        (r"(?iu)\b[HН][DD][MМ][IІ]\b", "HDMI"),
-        (r"(?iu)\b[Ff][RrГг][Oо0][Nп][Tт]\b", "Front"),
-        (r"(?iu)\bc[иi]c[tт]e[mм]a\b", "система"),
-        (r"(?iu)\bд[иi][cс]пл[eе]й\b", "дисплей"),
-    ]
-    for pat, rep in repl:
-        t = re.sub(pat, rep, t)
-
-    t = _fix_common_broken_words(t)
-
-    # Повторяющиеся supplier-prose правки для AlStyle-кабелей/сетевых товаров.
-    t = re.sub(r"(?iu)\bВ\s+отличии\s+от\b", "В отличие от", t)
-    t = re.sub(r"(?iu)\bпри\s+прокладки\b", "при прокладке", t)
-    t = re.sub(r"(?iu)\b(\d+)\s*-\s*х\b", r"\1-х", t)
-    t = re.sub(r"(?iu)\b(\d+)\s*-\s*ех\b", r"\1-ех", t)
-    t = re.sub(r"(?iu)([а-яё\)])\.Также\b", r"\1. Также", t)
-    t = re.sub(r"(?iu)\bМГц\s+\.", "МГц.", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+(\d+(?:,\d+)?)\s*(м|мм|см|дюйм(?:ов|а)?)\b", r"\1–\2 \3", t)
-    t = re.sub(r"(?iu)\bAuyo[- ]?фокус\b", "Автофокус", t)
-    t = re.sub(r"(?iu)\b(\d)\.(\d+)\s*(мм|см|м|кг|г|Вт|Гц|мс|ГБ|ТБ)\b", r"\1,\2 \3", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+(Мбит/с|Гбит/с)\.\s+или\s+(\d+(?:,\d+)?)\s+(Мбит/с|Гбит/с)\.", r"\1 \2 или \3 \4", t)
-    t = re.sub(r"(?iu)\b(Кабель\s+сетевой\s+SHIP\s+[A-Z0-9-]+)\s+Это\b", r"\1. Это", t)
-    t = re.sub(r"(?iu)\b((?:\d+(?:,\d+)?)\s*мм)\.(?=\s|$)", r"\1", t)
-    t = re.sub(r"(?iu)\b((?:\d+(?:,\d+)?)\s*МГц)\.(?=\s|$)", r"\1", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+(Мбит/с|Гбит/с)\.\s+или\s+(\d+(?:,\d+)?)\s+(Мбит/с|Гбит/с)\b", r"\1 \2 или \3 \4", t)
-    t = re.sub(r"(?<=[A-Za-zА-Яа-яЁё0-9%])\.(?=[А-ЯЁA-Z])", ". ", t)
-
-    # Нормальные пробелы после типовых spec-лейблов внутри native description.
-    # Важно: добавляем пробел только когда после лейбла идёт LAT/цифра.
-    # Кириллицу здесь НЕ трогаем, чтобы не ломать обычные формы вроде
-    # "питанием", "разрешением", "яркостью" на "Питание м" и т.п.
-    t = re.sub(
-        r"(?iu)\b("
-        r"(?:ОС(?=[A-Z0-9]))|Источник света|Световой источник|Оптика|Методы установки|Способы установки|Размер экрана|"
-        r"Дистанция|Коэффициент проекции|Форматы сторон|Смарт-?система|Беспроводной дисплей|"
-        r"Проводное зеркалирование|Интерфейсы|Акустика|Питание|Габариты проектора|Вес проектора|"
-        r"Габариты упаковки|Вес упаковки|Языки интерфейса|Комплектация|Беспроводные модули|"
-        r"Беспроводные интерфейсы|Беспроводные подключения|Беспроводные возможности"
-        r")(?=[A-Za-z0-9])",
-        r"\1 ",
-        t,
-    )
-
-    # Для этих лейблов пробел вставляем только в безопасных случаях, чтобы не ломать
-    # обычные русские формы вроде "яркостью", "контрастность", "разрешением".
-    t = re.sub(r"(?iu)\bТехнология(?=(?:касания\b|печати\b|[A-Z0-9]))", "Технология ", t)
-    t = re.sub(r"(?iu)\bРазрешение(?=\d)", "Разрешение ", t)
-    t = re.sub(r"(?iu)\bЯркость(?=\d)", "Яркость ", t)
-    t = re.sub(r"(?iu)\bКонтраст(?=\d)", "Контраст ", t)
-
-    # Страховка для уже сломанных форм, если такое пришло от прошлой чистки.
-    t = re.sub(r"(?iu)\bразрешение\s+м(?=\s+\d)", "разрешением", t)
-    t = re.sub(r"(?iu)\bяркость\s+ю(?=\s+\d)", "яркостью", t)
-
-    # Локальные quality-правки.
-    t = re.sub(r"(?iu)\bplenum\s+полост", "plenum-полост", t)
-    t = re.sub(r"(?im)^\s*\.\s*$", "", t)
-    t = re.sub(r"(?im)^\s*Ап\s*$", "", t)
-    t = re.sub(r"(?iu)Проводное\s+зеркалированиепо\b", "Проводное зеркалирование по", t)
-    t = re.sub(r"(?iu)Смарт-?система(?=[A-Za-zА-Яа-яЁё0-9])", "Смарт-система ", t)
-    t = re.sub(r"(?iu)^\s*ОСОБЕННОСТИ\s+И\s+ПРЕИМУЩЕСТВА:?\s*$", "Особенности и преимущества", t, flags=re.M)
-    t = re.sub(r"(?iu)^\s*ИНТЕРФЕЙСЫ\s*/\s*РАЗЪ[ЕЁ]МЫ\s*/\s*УПРАВЛЕНИЕ:?\s*$", "Интерфейсы / разъёмы / управление", t, flags=re.M)
-    t = re.sub(r"(?iu)^\s*АКСЕССУАРЫ:?\s*$", "Аксессуары", t, flags=re.M)
-    t = re.sub(r"(?iu)^\s*ПОРТЫ\s+И\s+ПОДКЛЮЧЕНИЕ:?\s*$", "Порты и подключение", t, flags=re.M)
-    t = re.sub(r"(?iu)^\s*ЗАДНЯЯ\s+ПАНЕЛЬ:?\s*$", "Задняя панель", t, flags=re.M)
-    t = re.sub(r"(?iu)^\s*ПЕРЕДНЯЯ\s+ПАНЕЛЬ:?\s*$", "Передняя панель", t, flags=re.M)
-    t = re.sub(r"(?iu)\bос\s+новные\s+характеристики\b", "Основные характеристики", t)
-    t = re.sub(r"(?iu)\bос\s+новные\b", "основные", t)
-    t = re.sub(r"(?iu)\bос\s+новной\b", "основной", t)
-    t = re.sub(r"(?iu)\bос\s+нова\b", "основа", t)
-    t = re.sub(r"(?iu)\bос\s+нове\b", "основе", t)
-    t = re.sub(r"(?iu)\bос\s+новании\b", "основании", t)
-    t = re.sub(r"(?<=\d),\s+(?=\d)", ",", t)
-    t = re.sub(r"(?iu)\b(\d{3,4})\s+(\d{3,4})(?=(?:\s*@|\s*(?:пикс|dpi|px|Гц|кд(?:/м²|\s*м2)?|\)|$)))", r"\1×\2", t)
-    t = re.sub(r"(?iu)\b(\d+)\s{1,}(\d+)\s*Вт\b", r"\1 × \2 Вт", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гбит\s+с\b", r"\1 Гбит/с", t)
-    t = re.sub(r"(?iu)\bкд\s*м2\b", "кд/м²", t)
-    t = re.sub(r"(?iu)\b(\d+)\s+порта?\s+(\d+)\s+Type-([AC])\b", r"\1 порта: \2 × Type-\3", t)
-    t = re.sub(r"(?iu)\b(\d+)\s+Type-([AC])\b", r"\1 × Type-\2", t)
-    t = re.sub(r"(?iu)\b(\d),\s+(\d{1,3})\s+(мм|см|м|кг|г|Вт|Гц|мс|ГБ|ТБ)\b", r"\1,\2 \3", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Мбит\s+сек\b", r"\1 Мбит/с", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гбит\s+сек\b", r"\1 Гбит/с", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Мегабит/сек\b", r"\1 Мбит/с", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гигабит/сек\b", r"\1 Гбит/с", t)
-    t = re.sub(r"(?iu)\bЕсть\s+разъ[её]м\s+для\s+наушников\.?", "Разъём для наушников: есть.", t)
-    t = re.sub(r"(?iu)\bПоддержка\s+HDCP\.?", "Поддержка HDCP: есть.", t)
-    t = re.sub(r"(?im)^\s*[.#]?[A-Za-z][A-Za-z0-9_-]*\s*\{[^{}]+\}\s*$", "", t)
-    t = re.sub(r"(?iu)\bСовместимость:\s*Для\s*,\s*", "Совместимость: ", t)
-    t = re.sub(r"(?iu)\b(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\s+Для\s*,\s*(?:\1\s+)?", r"\1 ", t)
-    t = _split_glued_brand_models(t)
-    t = re.sub(r"(?iu)\bдополнтельно\b", "дополнительно", t)
-    t = re.sub(r"(?iu)\bопцонально\b", "опционально", t)
-    t = re.sub(r"(?iu)\bсистемой\s+управления\s+питание\s*м\b", "системой управления питанием", t)
-    t = re.sub(r"!{2,}", "!", t)
-    t = re.sub(r"\n{3,}", "\n\n", t)
-    return t.strip()
-
-
-def _sanitize_native_desc(s: str) -> str:
-    t = s or ""
-    if not t:
-        return ""
-    t = t.replace("\r\n", "\n").replace("\r", "\n")
-    # Двойные HTML-энтити от поставщика вроде &amp;gt; / &gt; не должны попадать в raw/final.
-    t = t.replace("&amp;gt;", "&gt;")
-    t = unescape(t)
-    lines: list[str] = []
-    for raw in t.split("\n"):
-        if _is_service_desc_line(raw):
-            continue
-        lines.append(raw)
-    t = "\n".join(lines)
-    pre_sections = t
-    stripped = _strip_desc_sections(t)
-    # Если чистка секций откусила почти всё описание, откатываемся на версию до неё.
-    pre_sig = re.sub(r"\W+", "", pre_sections, flags=re.U)
-    stripped_sig = re.sub(r"\W+", "", stripped, flags=re.U)
-    if stripped_sig and (len(stripped_sig) >= max(60, int(len(pre_sig) * 0.28))):
-        t = stripped
-    else:
-        t = pre_sections
-    # Убираем служебные хвосты-строки, состоящие только из '>' или '&gt;'.
-    t = re.sub(r"(?im)^\s*>+\s*$", "", t)
-    t = re.sub(r"(?im)^\s*&gt;\s*$", "", t)
-    # CSS/служебные строки поставщика не должны попадать в raw/final.
-    t = re.sub(r"(?im)^\s*[.#]?[A-Za-z][A-Za-z0-9_-]*\s*\{[^{}]+\}\s*$", "", t)
-    # Косметика для raw: лишние пробелы внутри скобок.
-    t = re.sub(r"\(\s+", "(", t)
-    t = re.sub(r"\s+\)", ")", t)
-    t = _sanitize_desc_quality_text(t)
-    t = _dedupe_code_series_text(t)
-    # Если после чистки описание начинается с обломка — режем его до первой нормальной фразы.
-    t = t.lstrip()
-    if re.match(r"^[(:;,\-–—]", t):
-        t = re.sub(r"^[^А-ЯЁA-Z0-9<]{0,120}", "", t).lstrip()
-    t = re.sub(r"\n{3,}", "\n\n", t)
-    return t.strip()
+    before_sections = raw
+    raw = _strip_desc_sections(raw)
+    if len(norm_ws(raw)) < max(40, int(len(norm_ws(before_sections)) * 0.35)):
+        raw = before_sections
+    raw = _sanitize_desc_quality_text(raw)
+    lines = [norm_ws(x) for x in re.split(r"(?:\r?\n)+", raw) if norm_ws(x)]
+    while lines and (lines[0][:1] in {"(", ",", ";", ":"} or _is_service_desc_line(lines[0])):
+        lines.pop(0)
+    return "\n".join(lines)
 
 
 def _canon_desc_spec_key(k: str) -> str:
-    kk = norm_ws(k).casefold()
-    return _DESC_SPEC_KEY_MAP.get(kk, norm_ws(k))
+    return _DESC_SPEC_KEY_MAP.get(norm_ws(k).casefold(), norm_ws(k))
 
 
-def _normalize_tech_value(s: str) -> str:
-    t = norm_ws(s)
-    if not t:
+def _normalize_tech_value(v: str) -> str:
+    s = norm_ws(v)
+    if not s:
         return ""
-    # Безопасная техно-нормализация только для значений, не для всего description.
-    t = re.sub(r"(?<=\d),\s+(?=\d)", ",", t)
-    t = re.sub(r"(?iu)\b(\d{3,4})\s*[xх*×]\s*(\d{3,4})(?=(?:\s*@|\s*(?:пикс|dpi|px|Гц|кд(?:/м²|\s*м2)?|$)))", r"\1×\2", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+(\d+(?:,\d+)?)\s*(м|мм|см|дюйм(?:ов|а)?)\b", r"\1–\2 \3", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гбит\s+с\b", r"\1 Гбит/с", t)
-    t = re.sub(r"(?iu)\bAuyo[- ]?фокус\b", "Автофокус", t)
-    t = re.sub(r"(?iu)\b(\d)\.(\d+)\s*(мм|см|м|кг|г|Вт|Гц|мс|ГБ|ТБ)\b", r"\1,\2 \3", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+(Мбит/с|Гбит/с)\.\s+или\s+(\d+(?:,\d+)?)\s+(Мбит/с|Гбит/с)\.", r"\1 \2 или \3 \4", t)
-    t = re.sub(r"(?iu)\b(Кабель\s+сетевой\s+SHIP\s+[A-Z0-9-]+)\s+Это\b", r"\1. Это", t)
-    t = re.sub(r"(?iu)\b((?:\d+(?:,\d+)?)\s*мм)\.(?=\s|$)", r"\1", t)
-    t = re.sub(r"(?iu)\b((?:\d+(?:,\d+)?)\s*МГц)\.(?=\s|$)", r"\1", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+(Мбит/с|Гбит/с)\.\s+или\s+(\d+(?:,\d+)?)\s+(Мбит/с|Гбит/с)\b", r"\1 \2 или \3 \4", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Мбит\s+сек\b", r"\1 Мбит/с", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гбит\s+сек\b", r"\1 Гбит/с", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Мегабит/сек\b", r"\1 Мбит/с", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гигабит/сек\b", r"\1 Гбит/с", t)
-    t = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+кд\s*(?:/\s*м²|м2)\b", r"\1 кд/м²", t)
-    t = re.sub(r"(?iu)\b(\d+)\s*[xх×]\s*(\d+)\s*Вт\b", r"\1 × \2 Вт", t)
-    t = re.sub(r"(?iu)\b(\d+)\s+Type-([AC])\b", r"\1 × Type-\2", t)
-    t = re.sub(r"(?iu)\b(\d+)\s+порта?\s+(\d+)\s*×?\s*Type-([AC])\b", r"\1 порта: \2 × Type-\3", t)
-    t = re.sub(r"(?iu)\b(\d),\s+(\d{1,3})\s+(мм|см|м|кг|г|Вт|Гц|мс|ГБ|ТБ)\b", r"\1,\2 \3", t)
-    return t
+    s = re.sub(r"(?iu)\bUSB\s+C\b", "USB-C", s)
+    s = re.sub(r"(?iu)\bWi\s*Fi\b", "Wi‑Fi", s)
+    s = re.sub(r"(?iu)\bBluetooth\s*([0-9.]+)\b", r"Bluetooth \1", s)
+    s = re.sub(r"(?iu)\bFull\s*HD\b", "Full HD", s)
+    s = re.sub(r"(?iu)\bANSI\s*люмен\b", "ANSI люмен", s)
+    return norm_ws(s)
 
 
-def _drop_broken_canon_compat_tail(s: str) -> str:
-    t = norm_ws(s)
-    if not t:
+def _drop_broken_canon_compat_tail(v: str) -> str:
+    s = norm_ws(v)
+    if not s:
         return ""
-
-    parts = [p.strip() for p in re.split(r"\s*,\s*", t) if p.strip()]
-    if not parts:
-        return ""
-
-    last = parts[-1]
-    broken_last_patterns = [
-        r"(?iu)^Canon\s+imageRUNNE$",
-        r"(?iu)^Canon\s+imageRUNNER\s+ADV$",
-        r"(?iu)^Canon\s+imageRUNNER\s+ADVANCE$",
-        r"(?iu)^Canon\s+imagePROGRAF\s+\d{2,4}Can$",
-        r"(?iu)^Canon\s+imageFORMULA\s+[A-Z0-9-]*Can$",
-        r"(?iu)^Canon\s+imageCLASS\s+[A-Z0-9-]*Can$",
-    ]
-    if any(re.match(p, last) for p in broken_last_patterns):
-        parts.pop()
-
-    # Если source был без запятых и хвост остался в конце целой строки.
-    out = ", ".join(parts)
-    out = re.sub(r"(?iu),?\s*Canon\s+imageRUNNE\s*$", "", out).strip(" ,;.-")
-    out = re.sub(r"(?iu),?\s*Canon\s+imageRUNNER\s+ADV(?:ANCE)?\s*$", "", out).strip(" ,;.-")
-    out = re.sub(r"(?iu),?\s*Canon\s+imagePROGRAF\s+\d{2,4}Can\s*$", "", out).strip(" ,;.-")
-    return norm_ws(out)
+    s = re.sub(r"(?iu)^CANON\s+PIXMA\s+", "Canon PIXMA ", s)
+    return s
 
 
-
-def _clean_compatibility_text(s: str) -> str:
-    t = norm_ws(s)
-    if not t:
-        return ""
-    t = re.sub(r"(?iu)^совместимость\s*:\s*", "", t).strip()
-    t = re.sub(r"(?iu)^для\s*,\s*", "", t).strip()
-    t = re.sub(r"(?iu)^для\s+(?:принтеров(?:\s+и\s+мфу)?|мфу|аппаратов|устройств)\s+", "", t).strip()
-    t = re.sub(r"(?iu)\b(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\s+Для\s*,?\s*(?:\1\s+)?", r"\1 ", t)
-    t = re.sub(r"(?iu)^Для\s*,?\s*(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b", r"\1", t)
-    t = re.sub(r"(?iu)^Для\s+(?:принтеров(?:\s+и\s+МФУ)?|МФУ|аппаратов|устройств)\s+(Xerox|Canon|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b", r"\1", t)
-    t = _split_glued_brand_models(t)
-    t = re.sub(r"(?iu)\bWorkCenter\b", "WorkCentre", t)
-    t = _drop_broken_canon_compat_tail(t)
-    t = _dedupe_code_series_text(t)
-    t = _dedupe_slash_tail_models(t)
-    t = re.sub(r"\s*,\s*", ", ", t)
-    t = re.sub(r"(?iu)(^|,\s*)([^,]+?)\s*/\s*\2(?=,|$)", r"\1\2", t)
-    return norm_ws(t).strip(" ,;.-")
+def _clean_compatibility_text(v: str) -> str:
+    s = _drop_broken_canon_compat_tail(v)
+    s = re.sub(r"(?iu)^Xerox\s+Для,\s+Xerox\s+", "Xerox ", s)
+    s = re.sub(r"(?iu)^Для,\s+Xerox\s+", "Xerox ", s)
+    s = re.sub(r"(?iu)^Для\s+принтеров\s+Xerox\s+", "Xerox ", s)
+    s = re.sub(r"(?iu)^Для\s+МФУ\s+Xerox\s+", "Xerox ", s)
+    s = re.sub(r"\bWorkCenter\b", "WorkCentre", s, flags=re.I)
+    s = _split_glued_brand_models(s)
+    s = _dedupe_slash_tail_models(s)
+    return norm_ws(s)
 
 
-def _dedupe_slash_tail_models(s: str) -> str:
-    t = norm_ws(s)
-    if not t or "/" not in t:
-        return t
-
-    m = re.match(r"^(.*?\s)([^\s,]+(?:/[^\s,]+)+)$", t)
-    if not m:
-        return t
-
-    prefix = m.group(1)
-    tail = m.group(2)
-    parts = [x.strip() for x in tail.split('/') if x.strip()]
+def _dedupe_slash_tail_models(v: str) -> str:
+    parts = [norm_ws(x) for x in re.split(r"\s*/\s*", v or "") if norm_ws(x)]
     if len(parts) < 2:
-        return t
-
-    uniq: list[str] = []
+        return norm_ws(v)
+    out: list[str] = []
     seen: set[str] = set()
-    for part in parts:
-        key = part.casefold()
-        if key in seen:
-            continue
-        seen.add(key)
-        uniq.append(part)
-
-    return prefix + '/'.join(uniq)
-
-
-def _split_glued_brand_models(s: str) -> str:
-    t = norm_ws(s)
-    if not t:
-        return ""
-    t = re.sub(
-        r"(?<=[A-Za-zА-Яа-яЁё0-9])(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-        ", ",
-        t,
-    )
-    t = re.sub(
-        r"(?<=[A-Za-zА-Яа-яЁё0-9])(?=(VersaLink|AltaLink|WorkCentre|WorkCenter|DocuCentre|imageRUNNER|imagePROGRAF|PIXMA|ECOSYS|bizhub)\b)",
-        ", ",
-        t,
-    )
-    return norm_ws(t)
-
-
-def _split_inline_desc_pairs(line: str) -> list[str]:
-    ln = norm_ws(line)
-    if not ln:
-        return []
-    key_pat = (
-        r"Модель|Аналог модели|Совместимость|Совместимые модели|Устройства|Для принтеров|"
-        r"Цвет|Цвет печати|Ресурс|Ресурс картриджа(?:,\s*cтр\.)?|Количество страниц|"
-        r"[ЕеЁё]мкость(?: лотка)?|Степлирование|Дополнительные опции|Применение|Количество в упаковке"
-    )
-    rx = re.compile(rf"(?iu)(?=(?:^|\s)({key_pat})\s*:)" )
-    matches = list(rx.finditer(ln))
-    if len(matches) < 2:
-        return [ln]
-    parts: list[str] = []
-    for i, m in enumerate(matches):
-        start = m.start(1)
-        end = matches[i + 1].start(1) if i + 1 < len(matches) else len(ln)
-        seg = norm_ws(ln[start:end])
-        if seg:
-            parts.append(seg)
-    return parts or [ln]
-
-
-def _extract_simple_desc_pairs(text: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
-    lines = _iter_desc_lines(text)
-    if not lines or len(lines) > 8:
-        return []
-
-    expanded: list[str] = []
-    for ln in lines:
-        expanded.extend(_split_inline_desc_pairs(ln))
-
-    candidates: list[tuple[str, str]] = []
-    for ln in expanded:
-        pair = _parse_desc_spec_line(ln)
-        if pair:
-            candidates.append(pair)
-
-    if len(candidates) < 2:
-        return []
-
-    out: list[tuple[str, str]] = []
-    seen: set[tuple[str, str]] = set()
-    for key, val in candidates:
-        checked = _validate_desc_pair(key, val, schema)
-        if not checked:
-            continue
-        sig = (checked[0].casefold(), checked[1].casefold())
+    for p in parts:
+        sig = p.casefold()
         if sig in seen:
             continue
         seen.add(sig)
-        out.append(checked)
-    return out
+        out.append(p)
+    return " / ".join(out)
 
 
-def _extract_sentence_capacity_pairs(text: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
+def _split_glued_brand_models(v: str) -> str:
+    s = norm_ws(v)
+    if not s:
+        return ""
+    s = re.sub(r"(?i)(Canon\s+PIXMA\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=Canon\s+PIXMA)", r"\1 / ", s)
+    s = re.sub(r"(?i)(Xerox\s+[A-Za-z-]*\d+[A-Za-z0-9/-]*)(?=Xerox\s+)", r"\1 / ", s)
+    return norm_ws(s)
+
+
+def _split_inline_desc_pairs(desc: str) -> list[tuple[str, str]]:
+    text = norm_ws(desc)
+    if not text:
+        return []
+    keys = [
+        "Модель", "Аналог модели", "Совместимость", "Совместимые модели", "Устройства",
+        "Цвет", "Ресурс", "Ресурс картриджа", "Емкость", "Ёмкость", "Емкость лотка", "Ёмкость лотка",
+        "Технология печати", "Количество в упаковке", "Колличество в упаковке",
+    ]
+    key_pat = r"(?:" + "|".join(re.escape(k) for k in keys) + r")"
+    rx = re.compile(rf"(?iu)\b({key_pat})\s*:\s*(.+?)(?=(?:\s+\b{key_pat}\s*:)|$)")
+    return [(norm_ws(m.group(1)), norm_ws(m.group(2))) for m in rx.finditer(text) if norm_ws(m.group(2))]
+
+
+def _extract_simple_desc_pairs(desc: str) -> list[tuple[str, str]]:
+    text = norm_ws(desc)
+    if not text:
+        return []
+    pairs: list[tuple[str, str]] = []
+    for ln in _iter_desc_lines(text)[:8]:
+        for k, v in _split_inline_desc_pairs(ln):
+            ck = _canon_desc_spec_key(k)
+            if ck in _SAFE_DESC_PARAM_KEYS and not _is_heading_only_value(v):
+                pairs.append((ck, v))
+    return pairs
+
+
+def _extract_sentence_capacity_pairs(desc: str) -> list[tuple[str, str]]:
+    text = norm_ws(desc)
+    if not text:
+        return []
     out: list[tuple[str, str]] = []
-    for rx in [
-        re.compile(r"(?is)\b[ЕеЁё]мк(?:ость|ость\s+лотка)\s*[-:–—]\s*(.{2,120}?)(?:(?:[.!?](?:\s|$))|\n|$)"),
-        re.compile(r"(?is)\bлоток[^.!?\n]{0,80}?\bдо\s+(.{2,80}?лист[^.!?\n]*)(?:(?:[.!?](?:\s|$))|\n|$)"),
-    ]:
-        for m in rx.finditer(text):
-            cand = norm_ws(m.group(1))
-            if not cand:
-                continue
-            cand = re.sub(r"(?iu)^до\s+", "до ", cand)
-            checked = _validate_desc_pair("Ёмкость", cand, schema)
-            if checked and checked not in out:
-                out.append(checked)
+    m = re.search(r"(?iu)\b(?:Емкость|Ёмкость)\s+лотка\s*[-–—:]\s*(.{3,120}?)(?:(?:[.!?](?:\s|$))|$)", text)
+    if m:
+        out.append(("Ёмкость", norm_ws(m.group(1))))
+    m = re.search(r"(?iu)\bдо\s+\d+[+\d\s]*лист[ао]в?\s+А4\b", text)
+    if m and not any(k == "Ёмкость" for k, _ in out):
+        out.append(("Ёмкость", norm_ws(m.group(0))))
     return out
-
 
 
 def _sanitize_param_value(key: str, val: str) -> str:
     v = norm_ws(val)
     if not v:
         return ""
-
-    v = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Мбит\s+сек\b", r"\1 Мбит/с", v)
-    v = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гбит\s+сек\b", r"\1 Гбит/с", v)
-    v = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Мегабит/сек\b", r"\1 Мбит/с", v)
-    v = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гигабит/сек\b", r"\1 Гбит/с", v)
-
-    # Обрезаем случайно склеенные секции
-    v = re.split(
-        r"(?i)\b(Преимущества|Комплектация|Условия гарантии|Примечание|Примечания|Особенности|Описание)\b",
-        v,
-        maxsplit=1,
-    )[0].strip(" ;,.-")
-    if not v:
-        return ""
-
     kcf = norm_ws(key).casefold()
-    v = _fix_common_broken_words(v)
-    if kcf == "технология":
-        v = re.sub(r"(?iu)^печати\s*:\s*", "", v)
-    if kcf == "контраст":
-        v = re.sub(r"(?iu)^ность\s*:\s*", "", v)
-
-    if _is_heading_only_value(v):
-        return ""
-
     if kcf == "совместимость":
-        v = re.sub(r"(?i)^совместим(?:а|о|ы)?\s+с\s+", "", v).strip()
-        v = re.sub(r"(?i)^для\s+совместимых\s+(?:устройств|принтеров(?:\s+и\s+мфу)?|мфу|аппаратов)\s+", "", v).strip()
-        v = re.sub(r"(?i)^устройства?\s*,?\s*", "", v).strip()
-        v = re.sub(
-            r"([A-ZА-ЯЁ0-9][A-Za-zА-Яа-яЁё0-9/.-]{1,})\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-            r"\1, ",
-            v,
-        )
-        v = re.sub(
-            r"([A-Z0-9][A-Za-z0-9/-]{2,})(?=(Протяжный сканер|Сканер|Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-            r"\1, ",
-            v,
-        )
-        v = re.sub(r"\s*/\s*", "/", v)
-        v = re.sub(r"(?:,?\s*(?:&gt;|&amp;gt;|>))+\s*$", "", v).strip(" ,;.-")
-        # Убираем явный битый хвост, пришедший уже обрезанным от поставщика.
-        # Ничего не угадываем и не дописываем — только отбрасываем последний мусорный кусок.
         v = _clean_compatibility_text(v)
-        # Страховка для старого паттерна вроде "... 610Can" на конце.
-        v = re.sub(r"(?iu)(\d)(?:Can|Xer|Eps|Bro|Ric|Pan|Lex|Kon|Min|Oki|Kyo|Hew)$", r"\1", v)
-        v = _clean_compatibility_text(v)
-
-    if kcf in {"модель", "аналог модели"}:
+    elif kcf in {"модель", "аналог модели"}:
         v = _dedupe_code_series_text(v)
-
-    if kcf == "ёмкость":
-        v = re.sub(r"(?i)^[её]мкость(?:\s+лотка)?\s*[-:–—]\s*", "", v).strip()
-
-    if kcf in {"встроенные колонки", "hdmi", "displayport", "usb-хаб", "управление", "пользовательские настройки", "разъём для наушников", "поддержка hdcp", "языки меню osd", "интерфейсы"}:
-        v = re.sub(r"(?<=\d),\s+(?=\d)", ",", v)
-        v = re.sub(r"(?iu)\b(\d+)\s+(\d+)\s*Вт\b", r"\1 × \2 Вт", v)
-        v = _normalize_tech_value(v)
-        if _is_heading_only_value(v):
-            return ""
-
-    if kcf == "разъём для наушников":
-        if re.search(r"(?iu)\bесть\b", v):
-            v = "есть"
-        else:
-            v = re.sub(r"(?iu)^есть\.?$", "есть", v)
-    if kcf == "поддержка hdcp":
-        if re.search(r"(?iu)\bесть\b", v):
-            v = "есть"
-        else:
-            v = re.sub(r"(?iu)^есть\.?$", "есть", v)
-
-    if kcf == "ресурс":
-        # Убираем обрезанные хвосты из source, чтобы не тащить мусор в final
-        v = re.sub(r"(?i)\.\s*Ресурс указан в соответствии.*$", "", v).strip(" ;,.-")
-        v = re.sub(r"(?i)Ресурс указан в соответствии.*$", "", v).strip(" ;,.-")
-        v = re.sub(r"(?i)\.\s*ISO\s*/?\s*IEC\s*\d{4,6}\.?\s*[A-Za-zА-Яа-яЁё]?$", "", v).strip(" ;,.-")
-        v = re.sub(r"(?<=[A-Za-zА-Яа-яЁё])\s+[A-Za-zА-Яа-яЁё]$", "", v)
-
+    else:
+        v = _fix_common_broken_words(v)
     return norm_ws(v)
 
 
 def _iter_desc_lines(text: str) -> list[str]:
-    out: list[str] = []
-    for raw in text.splitlines():
-        ln = raw.strip(" 	-–—•")
-        if not norm_ws(ln):
-            continue
-        if ln in {">", "&gt;", "&amp;gt;"}:
-            continue
-        out.append(ln)
-    return out
+    return [norm_ws(x) for x in re.split(r"(?:\r?\n)+", text or "") if norm_ws(x)]
 
 
-def _is_label_only_line(raw: str) -> bool:
-    ln = norm_ws(raw)
-    if not ln:
-        return False
-    if _DESC_COMPAT_LABEL_ONLY_RE.match(ln):
-        return True
-    if _DESC_SPEC_START_RE.match(ln) or _DESC_SPEC_STOP_RE.match(ln):
-        return True
-    return False
+def _is_label_only_line(line: str, rx: re.Pattern[str]) -> bool:
+    return bool(rx.match(norm_ws(line)))
 
 
 def _join_compat_lines(lines: list[str]) -> str:
-    parts: list[str] = []
-    for raw in lines:
-        ln = norm_ws(raw)
-        if not ln:
+    out: list[str] = []
+    for ln in lines:
+        s = norm_ws(ln)
+        if not s:
             continue
-        if _DESC_COMPAT_LABEL_ONLY_RE.match(ln):
+        if _is_service_desc_line(s):
             continue
-        parts.append(ln)
-    if not parts:
-        return ""
-    s = ", ".join(parts)
-    s = _split_glued_brand_models(s)
-    s = re.sub(
-        r"([A-ZА-ЯЁ0-9][A-Za-zА-Яа-яЁё0-9/.-]{1,})\s+(?=(Canon|Xerox|HP|Hewlett|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-        r"\1, ",
-        s,
-    )
-    s = re.sub(
-        r"([A-Z0-9][A-Za-z0-9/-]{2,})(?=(Протяжный сканер|Сканер|Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Konica|Minolta|OKI|Oki)\b)",
-        r"\1, ",
-        s,
-    )
-    return norm_ws(s)
+        out.append(s)
+    return norm_ws(" ".join(out))
 
 
 def _extract_multiline_compat_pairs(lines: list[str]) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
-    i = 0
-    n = len(lines)
-    while i < n:
-        cur = norm_ws(lines[i])
-        if not cur:
-            i += 1
-            continue
-        if not _DESC_COMPAT_LABEL_ONLY_RE.match(cur):
-            i += 1
-            continue
-
-        j = i + 1
-        buf: list[str] = []
-        while j < n:
-            nxt = norm_ws(lines[j])
-            if not nxt:
-                break
-            if _DESC_SPEC_STOP_RE.match(nxt) or _DESC_SPEC_START_RE.match(nxt):
-                break
-            parsed = _parse_desc_spec_line(nxt)
-            if parsed and parsed[0] != "Совместимость":
-                break
-            if _DESC_COMPAT_LABEL_ONLY_RE.match(nxt):
-                j += 1
-                continue
-            if re.match(r"(?i)^(Производитель|Устройство|Секция аппарата|Технология печати|Гарантия)\s*$", nxt):
-                break
-            buf.append(nxt)
-            j += 1
-
-        cand = _join_compat_lines(buf)
-        if cand and _looks_like_compatibility_value(cand):
-            out.append(("Совместимость", cand))
-        i = max(j, i + 1)
+    for i, ln in enumerate(lines):
+        if _is_label_only_line(ln, _DESC_COMPAT_LABEL_ONLY_RE):
+            chunk = _join_compat_lines(lines[i + 1:i + 4])
+            if chunk and _looks_like_compatibility_value(chunk):
+                out.append(("Совместимость", chunk))
     return out
 
 
 def _extract_multiline_tech_print_pairs(lines: list[str]) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
-    i = 0
-    n = len(lines)
-    while i < n:
-        cur = norm_ws(lines[i])
-        if not cur:
-            i += 1
-            continue
-        if not _DESC_TECH_PRINT_LABEL_ONLY_RE.match(cur):
-            i += 1
-            continue
-
-        j = i + 1
-        while j < n and not norm_ws(lines[j]):
-            j += 1
-        if j >= n:
-            break
-
-        nxt = norm_ws(lines[j])
-        if (
-            nxt
-            and not _DESC_SPEC_START_RE.match(nxt)
-            and not _DESC_SPEC_STOP_RE.match(nxt)
-            and not _DESC_COMPAT_LABEL_ONLY_RE.match(nxt)
-            and not _DESC_TECH_PRINT_LABEL_ONLY_RE.match(nxt)
-            and not _is_heading_only_value(nxt)
-        ):
-            out.append(("Технология", nxt))
-        i = max(j + 1, i + 1)
+    for i, ln in enumerate(lines):
+        if _is_label_only_line(ln, _DESC_TECH_PRINT_LABEL_ONLY_RE):
+            chunk = _join_compat_lines(lines[i + 1:i + 3])
+            if chunk and len(chunk) <= 80:
+                out.append(("Технология", chunk))
     return out
 
 
-def _parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
-    ln = norm_ws(raw)
-    if not ln:
+def _parse_desc_spec_line(line: str) -> tuple[str, str] | None:
+    s = norm_ws(line)
+    if not s:
         return None
-    if re.fullmatch(r"(?iu)(Интерфейсы\s*/\s*разъ[её]мы\s*/\s*управление|Аксессуары|Порты\s+и\s+подключение|Задняя\s+панель|Передняя\s+панель):?", ln):
-        return None
-
-    m = _DESC_SPEC_LINE_RE.match(raw)
-    if not m:
-        compact = re.sub(r"\t+", "  ", raw)
-        compact = re.sub(r"\s{3,}", "  ", compact)
-        m = _DESC_SPEC_LINE_RE.match(compact)
+    m = _DESC_SPEC_LINE_RE.match(s)
     if m:
-        return (_canon_desc_spec_key(m.group(1)), norm_ws(m.group(2)))
-
-    m = _DESC_COMPAT_LINE_RE.match(raw)
+        return _canon_desc_spec_key(m.group(1)), norm_ws(m.group(2))
+    m = _DESC_COMPAT_LINE_RE.match(s)
     if m:
-        return ("Совместимость", norm_ws(m.group(1)))
-
-    if _DESC_TECH_PRINT_LABEL_ONLY_RE.match(ln):
-        return None
-
-    m = _PROJECTOR_RICH_LINE_RE.match(raw)
+        return "Совместимость", norm_ws(m.group(1))
+    m = _PROJECTOR_RICH_LINE_RE.match(s)
     if m:
-        key = _canon_desc_spec_key(m.group(1))
-        val = norm_ws(m.group(2))
-        if key == "Технология" and val.casefold() == "печати":
-            return None
-        if _is_heading_only_value(val):
-            return None
-        return (key, val)
-
-    m = _MONITOR_RICH_LINE_RE.match(raw)
+        return _canon_desc_spec_key(m.group(1)), norm_ws(m.group(2))
+    m = _MONITOR_RICH_LINE_RE.match(s)
     if m:
-        val = norm_ws(m.group(2))
-        if _is_heading_only_value(val):
-            return None
-        return (_canon_desc_spec_key(m.group(1)), val)
-
+        return _canon_desc_spec_key(m.group(1)), norm_ws(m.group(2))
     return None
 
 
-
-def _looks_like_compatibility_value(val: str) -> bool:
-    v = norm_ws(val)
-    if not v or len(v) < 6:
+def _looks_like_compatibility_value(v: str) -> bool:
+    s = norm_ws(v)
+    if len(s) < 6:
         return False
-    if not _COMPAT_BRAND_HINT_RE.search(v):
-        return False
-    if not _COMPAT_MODEL_HINT_RE.search(v):
-        return False
-    return True
+    return bool(_COMPAT_BRAND_HINT_RE.search(s) or _COMPAT_MODEL_HINT_RE.search(s))
 
 
-def _extract_sentence_compat_pairs(text: str) -> list[tuple[str, str]]:
+def _extract_sentence_compat_pairs(desc: str) -> list[tuple[str, str]]:
+    text = norm_ws(desc)
+    if not text:
+        return []
     out: list[tuple[str, str]] = []
-
     for rx in (_DESC_COMPAT_SENTENCE_RE, _DESC_FOR_DEVICES_SENTENCE_RE):
         for m in rx.finditer(text):
-            cand = norm_ws(m.group(1))
-            if not cand:
-                continue
-            cand = re.split(
-                r"(?i)\b(Преимущества|Комплектация|Условия гарантии|Примечание|Примечания|Особенности|Описание)\b",
-                cand,
-                maxsplit=1,
-            )[0].strip(" ;,.-")
-            if not _looks_like_compatibility_value(cand):
-                continue
-            out.append(("Совместимость", cand))
-
+            candidate = norm_ws(m.group(1))
+            candidate = re.sub(r"(?iu)^(?:для\s+)?(?:принтеров(?:\s+и\s+МФУ)?|МФУ|устройств|аппаратов)\s+", "", candidate)
+            candidate = candidate.strip(" .,:;-")
+            if _looks_like_compatibility_value(candidate):
+                out.append(("Совместимость", candidate))
     return out
 
 
-def _validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str, str] | None:
-    if not key or not val:
+def _validate_desc_pair(k: str, v: str, schema: dict[str, Any]) -> tuple[str, str] | None:
+    kk = _canon_desc_spec_key(k)
+    if kk not in _SAFE_DESC_PARAM_KEYS:
         return None
-
-    drop = {str(x).casefold() for x in (schema.get("drop_keys_casefold") or [])}
-    rules = schema.get("key_rules") or {}
-    require_letter = bool(rules.get("require_letter", True))
-    max_len = int(rules.get("max_len", 60))
-    max_words = int(rules.get("max_words", 9))
-
-    if key.casefold() in drop or key.casefold() in ("код нкт",):
+    vv = _apply_value_normalizers(kk, v, schema)
+    if not vv or _is_heading_only_value(vv):
         return None
-    if key not in _SAFE_DESC_PARAM_KEYS:
-        return None
-    if not _key_quality_ok(key, require_letter=require_letter, max_len=max_len, max_words=max_words):
-        return None
-
-    val2 = _apply_value_normalizers(key, val, schema)
-    if not val2:
-        return None
-
-    return (key, val2)
+    return kk, vv
 
 
-def _extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
-    text = _clean_desc_text(desc_src)
-    if not text.strip():
+def _extract_desc_spec_pairs(desc: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
+    text = norm_ws(desc)
+    if not text:
         return []
-
-    candidates: list[tuple[str, str]] = []
-
-    # Основной путь: строгий блок характеристик.
-    m = _DESC_SPEC_START_RE.search(text)
-    if m:
-        block = text[m.end():]
-        stop = _DESC_SPEC_STOP_RE.search(block)
-        if stop:
-            block = block[:stop.start()]
-
-        block_lines = _iter_desc_lines(block)
-        for ln in block_lines:
-            pair = _parse_desc_spec_line(ln)
-            if pair:
-                candidates.append(pair)
-        candidates.extend(_extract_multiline_tech_print_pairs(block_lines))
-        candidates.extend(_extract_multiline_compat_pairs(block_lines))
-    else:
-        # Фолбэк только для очень коротких description вида
-        # "Модель: ... / Совместимость: ..." без заголовка.
-        candidates.extend(_extract_simple_desc_pairs(text, schema))
-
-    # Безопасные sentence-пары для аксессуаров/лотков/комплектов обслуживания.
-    candidates.extend(_extract_sentence_compat_pairs(text))
-    candidates.extend(_extract_sentence_capacity_pairs(text, schema))
 
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
-    for key, val in candidates:
-        checked = _validate_desc_pair(key, val, schema)
-        if not checked:
-            continue
-        sig = (checked[0].casefold(), checked[1].casefold())
+
+    def add_pair(k: str, v: str) -> None:
+        pair = _validate_desc_pair(k, v, schema)
+        if not pair:
+            return
+        sig = (pair[0].casefold(), pair[1].casefold())
         if sig in seen:
-            continue
+            return
         seen.add(sig)
-        out.append(checked)
+        out.append(pair)
+
+    lines = _iter_desc_lines(text)
+    in_block = False
+    block_lines: list[str] = []
+    for ln in lines:
+        if _DESC_SPEC_START_RE.match(ln):
+            in_block = True
+            continue
+        if in_block and _DESC_SPEC_STOP_RE.match(ln):
+            in_block = False
+            continue
+        if in_block:
+            block_lines.append(ln)
+
+    for ln in block_lines:
+        pair = _parse_desc_spec_line(ln)
+        if pair:
+            add_pair(*pair)
+
+    if not out:
+        for k, v in _extract_simple_desc_pairs(text):
+            add_pair(k, v)
+        for k, v in _extract_multiline_compat_pairs(lines):
+            add_pair(k, v)
+        for k, v in _extract_multiline_tech_print_pairs(lines):
+            add_pair(k, v)
+        for k, v in _extract_sentence_compat_pairs(text):
+            add_pair(k, v)
+        for k, v in _extract_sentence_capacity_pairs(text):
+            add_pair(k, v)
 
     return out
 
@@ -1283,26 +735,22 @@ def _merge_params(base_params: list[tuple[str, str]], extra_params: list[tuple[s
     out: list[tuple[str, str]] = list(base_params)
     seen = {(norm_ws(k).casefold(), norm_ws(v).casefold()) for k, v in base_params}
     seen_keys = {norm_ws(k).casefold() for k, _ in base_params}
-
     for k, v in extra_params:
         kcf = norm_ws(k).casefold()
         sig = (kcf, norm_ws(v).casefold())
-        if sig in seen:
-            continue
-        if kcf in seen_keys:
+        if sig in seen or kcf in seen_keys:
             continue
         out.append((k, v))
         seen.add(sig)
         seen_keys.add(kcf)
-
     return out
 
 
-def _fetch_xml(url: str, *, timeout: int, login: str | None, password: str | None) -> str:
-    auth = (login, password) if (login and password) else None
-    r = requests.get(url, timeout=timeout, auth=auth)
-    r.raise_for_status()
-    return r.text
+def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    filter_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_FILTER_FILE") or FILTER_FILE_DEFAULT))
+    schema_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_SCHEMA_FILE") or SCHEMA_FILE_DEFAULT))
+    policy_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_POLICY_FILE") or POLICY_FILE_DEFAULT))
+    return filter_cfg, schema_cfg, policy_cfg
 
 
 def main() -> int:
@@ -1311,19 +759,14 @@ def main() -> int:
     raw_out = (os.getenv("RAW_OUT_FILE") or ALSTYLE_RAW_OUT_DEFAULT).strip()
     watch_report = (os.getenv("WATCH_REPORT_FILE") or WATCH_REPORT_DEFAULT).strip()
     encoding = (os.getenv("OUTPUT_ENCODING") or "utf-8").strip() or "utf-8"
-
-    env_hour = (os.getenv("SCHEDULE_HOUR_ALMATY") or "").strip()  # legacy env, будет сравнение после чтения policy.yml
     timeout = int(os.getenv("HTTP_TIMEOUT", "90"))
-
     login = os.getenv("ALSTYLE_LOGIN")
     password = os.getenv("ALSTYLE_PASSWORD")
 
     cfg_dir = Path(os.getenv("ALSTYLE_CFG_DIR", CFG_DIR_DEFAULT))
-    filter_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_FILTER_FILE") or FILTER_FILE_DEFAULT))
-    schema_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_SCHEMA_FILE") or SCHEMA_FILE_DEFAULT))
-    policy_cfg = _read_yaml(cfg_dir / (os.getenv("ALSTYLE_POLICY_FILE") or POLICY_FILE_DEFAULT))
+    filter_cfg, schema_cfg, policy_cfg = _load_supplier_config(cfg_dir)
 
-    # schedule hour: источник истины — policy.yml
+    env_hour = (os.getenv("SCHEDULE_HOUR_ALMATY") or "").strip()
     hour = int((policy_cfg.get("schedule_hour_almaty") or 1))
     if env_hour:
         try:
@@ -1338,76 +781,47 @@ def main() -> int:
         or policy_cfg.get("placeholder_picture")
         or "https://placehold.co/800x800/png?text=No+Photo"
     )
-
+    supplier_name = (policy_cfg.get("supplier") or "AlStyle").strip()
+    vendor_blacklist = {str(x).casefold() for x in (policy_cfg.get("vendor_blacklist_casefold") or ["alstyle"])}
     fallback_ids = {str(x) for x in (filter_cfg.get("category_ids") or [])}
-    allowed = _parse_id_set(os.getenv("ALSTYLE_CATEGORY_IDS"), fallback_ids)
+    allowed = parse_id_set(os.getenv("ALSTYLE_CATEGORY_IDS"), fallback_ids)
 
     build_time = now_almaty()
     next_run = next_run_at_hour(build_time, hour=hour)
 
-    xml_text = _fetch_xml(url, timeout=timeout, login=login, password=password)
-    root = ET.fromstring(xml_text)
-
-    offers_in = root.findall(".//offer")
-    before = len(offers_in)
+    source_offers = load_source_offers(url=url, timeout=timeout, login=login, password=password)
+    before = len(source_offers)
+    watch_source = build_watch_source_map(source_offers, prefix=ALSTYLE_ID_PREFIX, watch_ids=ALSTYLE_WATCH_OIDS)
+    filtered_offers = filter_source_offers(source_offers, allowed)
 
     out_offers: list[OfferOut] = []
     in_true = 0
     in_false = 0
-
-    supplier_name = (policy_cfg.get("supplier") or "AlStyle").strip()
-    vendor_blacklist = {str(x).casefold() for x in (policy_cfg.get("vendor_blacklist_casefold") or ["alstyle"])}
-    watch_source: dict[str, dict[str, str]] = {}
     watch_out: set[str] = set()
 
-    for o in offers_in:
-        cat = norm_ws(_t(o.find("categoryId")))
-        raw_id = norm_ws(o.get("id") or _t(o.find("vendorCode")))
-        name = norm_ws(_t(o.find("name")))
-        oid_probe = raw_id if raw_id.upper().startswith(ALSTYLE_ID_PREFIX) else f"{ALSTYLE_ID_PREFIX}{raw_id}" if raw_id else ""
-        if oid_probe in ALSTYLE_WATCH_OIDS:
-            watch_source[oid_probe] = {"categoryId": cat, "name": name}
-        if allowed and (not cat or cat not in allowed):
-            continue
-        name = re.sub(r"\(\s+", "(", name)
-        name = re.sub(r"\s+\)", ")", name)
-        name = _dedupe_code_series_text(name)
-        if not name or not raw_id:
+    for src in filtered_offers:
+        name = _dedupe_code_series_text(normalize_name(src.name))
+        if not name or not src.raw_id:
             continue
 
-        oid = raw_id if raw_id.upper().startswith(ALSTYLE_ID_PREFIX) else f"{ALSTYLE_ID_PREFIX}{raw_id}"
-
-        av_attr = (o.get("available") or "").strip().lower()
-        if av_attr in ("true", "1", "yes"):
-            available = True
-        elif av_attr in ("false", "0", "no"):
-            available = False
-        else:
-            av_tag = _t(o.find("available")).strip().lower()
-            available = av_tag in ("true", "1", "yes")
-
+        oid = build_offer_oid(src.raw_id, prefix=ALSTYLE_ID_PREFIX)
+        available = normalize_available(src.available_attr, src.available_tag)
         if available:
             in_true += 1
         else:
             in_false += 1
 
-        pics = _collect_pictures(o, placeholder_picture)
+        pics = collect_picture_urls(src.picture_urls, placeholder_picture=placeholder_picture)
+        params = _collect_params(src.offer_el, schema_cfg)
+        vendor_src = normalize_vendor(src.vendor, vendor_blacklist=vendor_blacklist)
 
-        params = _collect_params(o, schema_cfg)
-
-        vendor_src = norm_ws(_t(o.find("vendor")))
-        if vendor_src and vendor_src.casefold() in vendor_blacklist:
-            vendor_src = ""
-
-        desc_src = _sanitize_native_desc(_t(o.find("description")) or "")
+        desc_src = _sanitize_native_desc(src.description or "")
         desc_src = _align_desc_model_from_name(name, desc_src)
         desc_src = _dedupe_desc_leading_title(name, desc_src)
         desc_src = _align_desc_model_from_name(name, desc_src)
         params = _merge_params(params, _extract_desc_spec_pairs(desc_src, schema_cfg))
 
-        price_in = safe_int(_t(o.find("purchase_price")))
-        if price_in is None:
-            price_in = safe_int(_t(o.find("price")))
+        price_in = normalize_price_in(src.purchase_price_text, src.price_text)
         price = compute_price(price_in)
 
         watch_out.add(oid)
@@ -1425,38 +839,15 @@ def main() -> int:
         )
 
     after = len(out_offers)
-    watch_messages: list[str] = []
-    for wid in sorted(ALSTYLE_WATCH_OIDS):
-        if wid not in watch_source:
-            msg = f"[build_alstyle] ROOT_CAUSE: watched offer not present in supplier XML: {wid}"
-            print(msg)
-            watch_messages.append(msg)
-        elif wid not in watch_out:
-            info = watch_source[wid]
-            cat = info.get('categoryId', '')
-            reason = "filtered_by_category" if (allowed and (not cat or cat not in allowed)) else "skipped_after_parse"
-            msg = (
-                f"[build_alstyle] ROOT_CAUSE: watched offer missing in output: {wid}; reason={reason}; "
-                f"categoryId={cat!r}; name={info.get('name', '')!r}"
-            )
-            print(msg)
-            watch_messages.append(msg)
-        else:
-            info = watch_source[wid]
-            msg = (
-                f"[build_alstyle] WATCH_OK: {wid}; categoryId={info.get('categoryId', '')!r}; "
-                f"name={info.get('name', '')!r}"
-            )
-            print(msg)
-            watch_messages.append(msg)
-
-    try:
-        if watch_report:
-            rp = Path(watch_report)
-            rp.parent.mkdir(parents=True, exist_ok=True)
-            rp.write_text("\n".join(watch_messages) + ("\n" if watch_messages else ""), encoding="utf-8")
-    except Exception as e:
-        print(f"[build_alstyle] WARN: failed to write watch report {watch_report!r}: {e}")
+    watch_messages = make_watch_messages(
+        watch_ids=ALSTYLE_WATCH_OIDS,
+        watch_source=watch_source,
+        watch_out=watch_out,
+        allowed=allowed,
+    )
+    for msg in watch_messages:
+        print(msg)
+    write_watch_report(watch_report, watch_messages)
 
     out_offers.sort(key=lambda x: x.oid)
 
