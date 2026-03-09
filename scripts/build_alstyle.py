@@ -29,11 +29,12 @@ from cs.util import norm_ws, safe_int
 from suppliers.alstyle.diagnostics import build_watch_source_map, make_watch_messages, write_watch_report
 from suppliers.alstyle.filtering import filter_source_offers, parse_id_set
 from suppliers.alstyle.normalize import build_offer_oid, normalize_available, normalize_name, normalize_price_in, normalize_vendor
+from suppliers.alstyle.params_xml import collect_xml_params
 from suppliers.alstyle.pictures import collect_picture_urls
 from suppliers.alstyle.source import load_source_offers
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v100_stage1_supplier_split"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v101_stage2_params_xml_split"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -48,8 +49,6 @@ POLICY_FILE_DEFAULT = "policy.yml"
 WATCH_REPORT_DEFAULT = "docs/raw/alstyle_watch.txt"
 
 
-_RE_HAS_LETTER = re.compile(r"[A-Za-zА-Яа-яЁё]")
-_RE_LETTER_SLASH_LETTER = re.compile(r"([A-Za-zА-Яа-яЁё])\s*/\s*([A-Za-zА-Яа-яЁё])")
 _CODE_SERIES_RE = re.compile(
     r"(?<![\w/])(?:(?=[A-Z0-9._-]*\d)[A-Z0-9._-]{3,}(?:\s*/\s*(?=[A-Z0-9._-]*\d)[A-Z0-9._-]{3,})+)"
 )
@@ -64,112 +63,6 @@ def _read_yaml(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-
-
-def _key_quality_ok(k: str, *, require_letter: bool, max_len: int, max_words: int) -> bool:
-    kk = norm_ws(k)
-    if not kk:
-        return False
-    if require_letter and not _RE_HAS_LETTER.search(kk):
-        return False
-    if max_len and len(kk) > int(max_len):
-        return False
-    if max_words and len(kk.split()) > int(max_words):
-        return False
-    return True
-
-
-def _normalize_warranty_to_months(v: str) -> str:
-    vv = norm_ws(v)
-    if not vv:
-        return ""
-    low = vv.casefold()
-    if low in ("нет", "no", "-", "—"):
-        return ""
-    m = re.search(r"(\d{1,2})\s*(год|года|лет)\b", low)
-    if m:
-        n = int(m.group(1))
-        return f"{n*12} мес"
-    if re.fullmatch(r"\d{1,3}", low):
-        return f"{int(low)} мес"
-    m = re.search(r"\b(\d{1,3})\b", low)
-    if m and ("мес" in low or "month" in low):
-        return f"{int(m.group(1))} мес"
-    return vv
-
-
-def _apply_value_normalizers(key: str, val: str, schema: dict[str, Any]) -> str:
-    v = norm_ws(val)
-    if not v:
-        return ""
-    vn = (schema.get("value_normalizers") or {})
-    ops = vn.get(key) or vn.get(key.casefold()) or []
-    for op in ops:
-        if op == "warranty_months":
-            v = _normalize_warranty_to_months(v)
-        elif op == "trim_ws":
-            v = norm_ws(v)
-    kcf = norm_ws(key).casefold()
-    if kcf not in {"совместимость", "модель", "аналог модели"}:
-        v = _RE_LETTER_SLASH_LETTER.sub(r"\1 \2", v)
-    v = _sanitize_param_value(key, v)
-    if not v:
-        return ""
-    if kcf not in {"совместимость", "модель", "аналог модели"}:
-        v = _normalize_tech_value(v)
-        v = re.sub(r"(?<=\d),\s+(?=\d)", ",", v)
-        v = re.sub(r"(?iu)\b(\d),(\d{1,3})\s+(мм|см|м|кг|г|Вт|Гц|мс|дюйм(?:а|ов)?|дюйма|дюймов|ГБ|ТБ)\b", r"\1,\2 \3", v)
-        v = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+кд\s*(?:/\s*м²|м2)\b", r"\1 кд/м²", v)
-        v = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гбит\s*/?\s*с\b", r"\1 Гбит/с", v)
-        v = re.sub(r"(?iu)\b(\d+)\s*[xх×]\s*(\d+)\s*Вт\b", r"\1 × \2 Вт", v)
-    return v
-
-
-def _collect_params(offer_el, schema: dict[str, Any]) -> list[tuple[str, str]]:
-    drop = {str(x).casefold() for x in (schema.get("drop_keys_casefold") or [])}
-    aliases = {str(k).casefold(): str(v) for k, v in (schema.get("aliases_casefold") or {}).items()}
-    rules = schema.get("key_rules") or {}
-    require_letter = bool(rules.get("require_letter", True))
-    max_len = int(rules.get("max_len", 60))
-    max_words = int(rules.get("max_words", 9))
-
-    out: list[tuple[str, str]] = []
-    seen: set[tuple[str, str]] = set()
-
-    for p in offer_el.findall("param"):
-        k0 = p.get("name") or ""
-        v0 = "".join(p.itertext()).strip()
-
-        k = norm_ws(k0)
-        v = norm_ws(v0)
-        if not k or not v:
-            continue
-
-        kcf = k.casefold()
-        if kcf in aliases:
-            k = aliases[kcf]
-
-        if not _key_quality_ok(k, require_letter=require_letter, max_len=max_len, max_words=max_words):
-            continue
-
-        if k.casefold() in drop or k.casefold() in ("код нкт",):
-            continue
-        if k.casefold() == "назначение" and v.casefold() in ("да", "есть"):
-            continue
-        if k.casefold() == "безопасность" and v.casefold() == "есть":
-            continue
-
-        v2 = _apply_value_normalizers(k, v, schema)
-        if not v2:
-            continue
-
-        sig = (k.casefold(), v2.casefold())
-        if sig in seen:
-            continue
-        seen.add(sig)
-        out.append((k, v2))
-
-    return out
 
 
 _DESC_SPEC_START_RE = re.compile(r"(?im)^\s*(Характеристики|Основные характеристики|Технические характеристики)\s*:?\s*$")
@@ -812,7 +705,7 @@ def main() -> int:
             in_false += 1
 
         pics = collect_picture_urls(src.picture_urls, placeholder_picture=placeholder_picture)
-        params = _collect_params(src.offer_el, schema_cfg)
+        params = collect_xml_params(src.offer_el, schema_cfg)
         vendor_src = normalize_vendor(src.vendor, vendor_blacklist=vendor_blacklist)
 
         desc_src = _sanitize_native_desc(src.description or "")
