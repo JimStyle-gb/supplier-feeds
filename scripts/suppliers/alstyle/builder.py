@@ -1,69 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-Path: scripts/suppliers/alstyle/builder.py
-
-AlStyle supplier layer — сборка raw offer.
-"""
-
-from __future__ import annotations
-
-from cs.core import OfferOut
-from cs.pricing import compute_price
-from cs.util import norm_ws
-from suppliers.alstyle.desc_clean import (
-    align_desc_model_from_name,
-    dedupe_desc_leading_title,
-    sanitize_native_desc,
-)
-from suppliers.alstyle.desc_extract import extract_desc_spec_pairs
-from suppliers.alstyle.models import SourceOffer
-from suppliers.alstyle.normalize import (
-    build_offer_oid,
-    normalize_available,
-    normalize_name,
-    normalize_price_in,
-    normalize_vendor,
-)
-from suppliers.alstyle.params_xml import collect_xml_params
-from suppliers.alstyle.pictures import collect_picture_urls
-
-
-def merge_params(
-    xml_params: list[tuple[str, str]],
-    desc_params: list[tuple[str, str]],
-) -> list[tuple[str, str]]:
-    """
-    XML params всегда приоритетнее.
-    Description-derived params только дополняют.
-    """
-    out: list[tuple[str, str]] = []
-    seen_key: set[str] = set()
-    seen_pair: set[tuple[str, str]] = set()
-
-    for k, v in xml_params:
-        k2 = norm_ws(k)
-        v2 = norm_ws(v)
-        if not k2 or not v2:
-            continue
-        out.append((k2, v2))
-        seen_key.add(k2.casefold())
-        seen_pair.add((k2.casefold(), v2.casefold()))
-
-    for k, v in desc_params:
-        k2 = norm_ws(k)
-        v2 = norm_ws(v)
-        if not k2 or not v2:
-            continue
-        if k2.casefold() in seen_key:
-            continue
-        sig = (k2.casefold(), v2.casefold())
-        if sig in seen_pair:
-            continue
-        out.append((k2, v2))
-        seen_key.add(k2.casefold())
-        seen_pair.add(sig)
-
-    return out
+    hits = [m.group(0).upper() for m in _NAME_MODEL_RE.finditer(n)]
+    if not hits:
+        return ""
+    return hits[-1]
 
 
 def build_offer(
@@ -85,12 +24,15 @@ def build_offer(
     vendor = normalize_vendor(src.vendor, vendor_blacklist=vendor_blacklist)
 
     desc_src = sanitize_native_desc(src.description or "", name=name)
-    desc_src = align_desc_model_from_name(name, desc_src)
-    desc_src = dedupe_desc_leading_title(name, desc_src)
 
     xml_params = collect_xml_params(src.offer_el, schema_cfg) if src.offer_el is not None else []
     desc_params = extract_desc_spec_pairs(desc_src, schema_cfg)
     params = merge_params(xml_params, desc_params)
+
+    if not _has_param(params, "Модель"):
+        inferred_model = _infer_model_from_name(name)
+        if inferred_model:
+            params.append(("Модель", inferred_model))
 
     price_in = normalize_price_in(src.purchase_price_text, src.price_text)
     price = compute_price(price_in)
