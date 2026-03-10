@@ -4,12 +4,11 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-Фикс v112:
-- возвращает длинную Совместимость для кейсов типа AS113735;
-- умеет поднимать multiline label/value блоки, включая:
-  Совместимость -> Устройства -> ...
-  Ресурс картриджа, cтр. -> 220
-- не возвращает назад техлистовые "Совместимость" у интерактивных панелей.
+Фикс v115:
+- чинит compact-label extraction для ресурса и совместимости;
+- не считает singular "Устройство" совместимостью;
+- лучше вытаскивает короткий ресурс 220 / 244 / 300;
+- сохраняет длинную совместимость и multiline label/value кейсы.
 """
 
 from __future__ import annotations
@@ -101,7 +100,6 @@ _DESC_SPEC_KEY_MAP = {
     "совместимость": "Совместимость",
     "совместимые модели": "Совместимость",
     "устройства": "Совместимость",
-    "устройство": "Совместимость",
     "для принтеров": "Совместимость",
     "цвет": "Цвет",
     "цвет печати": "Цвет",
@@ -170,6 +168,7 @@ def _normalize_compat_candidate(v: str) -> str:
     s = norm_ws(v)
     if not s:
         return ""
+    s = re.sub(r"(?iu)^(Устройства|Устройство|Совместимые\s+модели|Для\s+принтеров)\s+", "", s)
     s = clean_compatibility_text(s)
     s = re.sub(r"(?iu)\bXerox\s+Для\s+Xerox\b", "Xerox", s)
     s = re.sub(r"(?iu)\bДля\s+Xerox\b", "Xerox", s)
@@ -189,14 +188,12 @@ def looks_like_compatibility_value(val: str) -> bool:
     model_count = _compat_model_token_count(v)
     word_count = len(v.split())
 
-    # обычные кейсы
     if len(v) <= 520 and word_count <= 90:
         if has_brand and model_count >= 1:
             return True
         if model_count >= 2 and ("/" in v or "," in v):
             return True
 
-    # длинные compat для степлерных/буклетных картриджей и больших Xerox/Canon списков
     if len(v) <= 1800 and word_count <= 260:
         if has_brand and model_count >= 8:
             return True
@@ -256,90 +253,91 @@ def parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
     if m:
         return ("Совместимость", norm_ws(m.group(1)))
 
+    labels = sorted(_COMPACT_LABELS, key=len, reverse=True)
+    for label_raw in labels:
+        rx = re.match(rf"(?iu)^({re.escape(label_raw)})\s+(.+?)$", ln)
+        if not rx:
+            continue
+        if norm_ws(label_raw).casefold() == "устройство":
+            return None
+        return (canon_desc_spec_key(rx.group(1)), norm_ws(rx.group(2)))
+
     if _DESC_TECH_PRINT_LABEL_ONLY_RE.match(ln):
         return None
 
     return None
 
 
+def _inline_label_pattern() -> str:
+    labels = sorted(_COMPACT_LABELS, key=len, reverse=True)
+    return "|".join(re.escape(x) for x in labels)
+
+
 def split_inline_desc_pairs(line: str) -> list[str]:
     ln = norm_ws(line)
     if not ln:
         return []
-    key_pat = (
-        r"Модель|Аналог модели|Совместимость|Совместимые модели|Устройства|Устройство|Для принтеров|"
-        r"Производитель|Цвет|Цвет печати|Ресурс|Ресурс картриджа(?:,\s*cтр\.)?|Количество страниц|"
-        r"[ЕеЁё]мкость(?: лотка)?|Об[ъе]ем картриджа,\s*мл|Степлирование|Дополнительные опции|"
-        r"Применение|Количество в упаковке|Колличество в упаковке"
-    )
-    rx = re.compile(rf"(?iu)(?=\b(?:{key_pat})\b\s*(?::|[-–—]))")
+    key_pat = _inline_label_pattern()
+    rx = re.compile(rf"(?iu)(?=\b(?:{key_pat})\b\s*(?::|[-–—]|\s+))")
     parts = [norm_ws(x) for x in rx.split(ln) if norm_ws(x)]
     return parts if len(parts) > 1 else [ln]
 
 
 def extract_compact_labeled_sequences(text: str) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
-    for line in text.splitlines():
-        ln = norm_ws(line)
-        if not ln or len(ln) < 20 or len(ln) > 1600:
+    matches = list(_COMPACT_LABEL_RE.finditer(text))
+    if not matches:
+        return out
+
+    for i, m in enumerate(matches):
+        label = norm_ws(m.group(1) or "")
+        if not label or label.casefold() in {
+            "характеристики",
+            "основные характеристики",
+            "технические характеристики",
+            "устройство",
+        }:
             continue
-        matches = list(_COMPACT_LABEL_RE.finditer(ln))
-        real_labels = [m for m in matches if m.group(1)]
-        if len(real_labels) < 2:
+        start = m.end()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        value = norm_ws(text[start:end])
+        value = re.sub(r"(?iu)^[:\-–—]\s*", "", value)
+        value = value.strip(" ;,.-")
+        if not value or _LABEL_ONLY_RE.match(value):
             continue
-        for i, m in enumerate(real_labels):
-            label = m.group(1)
-            start = m.end()
-            end = real_labels[i + 1].start() if i + 1 < len(real_labels) else len(ln)
-            value = norm_ws(ln[start:end]).strip(" ;,.-")
-            if not value:
-                continue
-            out.append((canon_desc_spec_key(label), value))
+        out.append((canon_desc_spec_key(label), value))
+
     return out
 
 
 def extract_multiline_label_value_pairs(text: str) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
-    lines = iter_desc_lines(text)
+    lines = [norm_ws(x) for x in text.splitlines() if norm_ws(x)]
+    if not lines:
+        return out
+
+    labels_cf = {x.casefold() for x in _COMPACT_LABELS}
     i = 0
     while i < len(lines):
-        line = lines[i]
-        if not _LABEL_ONLY_RE.match(line):
-            i += 1
-            continue
-
-        label_raw = re.sub(r"\s*:\s*$", "", line)
-        label = canon_desc_spec_key(label_raw)
-
-        # служебный старт блока
-        if label_raw.casefold() in {"характеристики", "основные характеристики", "технические характеристики"}:
-            i += 1
-            continue
-
-        j = i + 1
-
-        # частный кейс: "Совместимость" -> "Устройства" -> значения
-        if label == "Совместимость" and j < len(lines):
-            next_cf = lines[j].casefold().rstrip(":")
-            if next_cf in {"устройства", "устройство", "совместимые модели", "для принтеров"}:
+        ln = lines[i]
+        ln_cf = ln.casefold().rstrip(":")
+        if ln_cf in labels_cf and ln_cf != "устройство":
+            key = canon_desc_spec_key(ln.rstrip(":"))
+            vals: list[str] = []
+            j = i + 1
+            while j < len(lines):
+                nxt = lines[j]
+                nxt_cf = nxt.casefold().rstrip(":")
+                if nxt_cf in labels_cf or _DESC_SPEC_STOP_RE.match(nxt):
+                    break
+                vals.append(nxt)
                 j += 1
-
-        value_parts: list[str] = []
-        while j < len(lines):
-            nxt = lines[j]
-            if _LABEL_ONLY_RE.match(nxt):
-                break
-            value_parts.append(nxt)
-            j += 1
-
-        value = norm_ws(" ".join(value_parts)).strip(" ;,.-")
-        if value:
-            if label == "Ресурс" and re.fullmatch(r"\d[\d\s.,]*", value):
-                value = f"{value} стр."
-            out.append((label, value))
-
-        i = max(j, i + 1)
-
+            value = norm_ws(" ".join(vals)).strip(" ;,.-")
+            if value:
+                out.append((key, value))
+            i = j
+            continue
+        i += 1
     return out
 
 
@@ -360,7 +358,6 @@ def extract_strict_kv_block(text: str) -> list[tuple[str, str]]:
         if pair:
             out.append(pair)
 
-    # multiline fallback inside strict block
     out.extend(extract_multiline_label_value_pairs(block))
     return out
 
@@ -473,11 +470,10 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
         if not looks_like_compatibility_value(val2):
             return None
     elif key in {"Модель", "Аналог модели"}:
-        val2 = dedupe_code_series_text(split_glued_brand_models(val2))
+        val2 = dedupe_code_series_text(val2)
     elif key == "Ресурс":
         if not looks_like_resource_value(val2):
             return None
-        # канонизируем короткое значение
         m = _RESOURCE_VALUE_RE.search(val2)
         if m:
             val2 = norm_ws(m.group(0))
@@ -506,6 +502,7 @@ def extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tuple
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     best_resource: tuple[str, str] | None = None
+    best_compat: tuple[str, str] | None = None
 
     for key, val in candidates:
         checked = validate_desc_pair(key, val, schema)
@@ -517,11 +514,20 @@ def extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tuple
                 best_resource = checked
             continue
 
+        if checked[0] == "Совместимость":
+            if best_compat is None or len(checked[1]) > len(best_compat[1]):
+                best_compat = checked
+            continue
+
         sig = (checked[0].casefold(), checked[1].casefold())
         if sig in seen:
             continue
         seen.add(sig)
         out.append(checked)
+
+    if best_compat is not None:
+        out = [x for x in out if x[0] != "Совместимость"]
+        out.append(best_compat)
 
     if best_resource is not None:
         out = [x for x in out if x[0] != "Ресурс"]
