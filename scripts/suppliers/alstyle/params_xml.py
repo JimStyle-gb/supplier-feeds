@@ -13,11 +13,34 @@ import xml.etree.ElementTree as ET
 from typing import Any
 
 from cs.util import norm_ws
-from suppliers.alstyle.compat import sanitize_param_value
+from suppliers.alstyle.compat import clean_compatibility_text, dedupe_code_series_text, sanitize_param_value
 
 
 _RE_HAS_LETTER = re.compile(r"[A-Za-zА-Яа-яЁё]")
 _RE_LETTER_SLASH_LETTER = re.compile(r"([A-Za-zА-Яа-яЁё])\s*/\s*([A-Za-zА-Яа-яЁё])")
+
+_COLOR_STOP_RE = re.compile(
+    r"(?iu)(?:\b(?:Тип\s+чернил|Ресурс(?:\s+картриджа)?|Количество\s+страниц|Секция\s+аппарата|"
+    r"Совместимость|Устройства|Количество\s+цветов|серия)\b|,\s*серия\b|,\s*(?:Vivobook|Vector|Gaming|Go)\b)"
+)
+_TECH_VALUE_RE = re.compile(
+    r"(?iu)\b("
+    r"Лазерная(?:\s+монохромная|\s+цветная)?|"
+    r"Светодиодная(?:\s+монохромная|\s+цветная)?|"
+    r"Струйная|Термоструйная|Матричная|Термосублимационная"
+    r")\b"
+)
+_TECH_STOP_RE = re.compile(
+    r"(?iu)\b(?:Количество\s+цветов|Тип\s+чернил|Ресурс(?:\s+картриджа)?|Совместимость|"
+    r"Устройства|Об(?:ъ|ь)ем\s+картриджа|Секция\s+аппарата|серия)\b"
+)
+_RESOURCE_VALUE_RE = re.compile(
+    r"(?iu)\b\d[\d\s.,]*(?:\s*(?:стандартн(?:ых|ые)?\s+страниц(?:ы)?(?:\s+в\s+среднем)?|стр\.?|страниц|copies|pages))\b"
+)
+_RESOURCE_NUMBER_ONLY_RE = re.compile(r"(?iu)^\d[\d\s.,]*(?:\s*(?:стр\.?|страниц))?$")
+_MODEL_GARBAGE_RE = re.compile(
+    r"(?iu)\b(?:зависит\s+от\s+конфигурации|модель\s+зависит\s+от\s+конфигурации|определяется\s+конфигурацией)\b"
+)
 
 
 def key_quality_ok(k: str, *, require_letter: bool, max_len: int, max_words: int) -> bool:
@@ -56,18 +79,134 @@ def normalize_tech_value(v: str) -> str:
     if not s:
         return ""
     s = re.sub(r"(?iu)\bUSB\s+C\b", "USB-C", s)
-    s = re.sub(r"(?iu)\bWi\s*Fi\b", "Wi‑Fi", s)
+    s = re.sub(r"(?iu)\bWi\s*Fi\b", "Wi-Fi", s)
     s = re.sub(r"(?iu)\bBluetooth\s*([0-9.]+)\b", r"Bluetooth \1", s)
     s = re.sub(r"(?iu)\bFull\s*HD\b", "Full HD", s)
     s = re.sub(r"(?iu)\bANSI\s*люмен\b", "ANSI люмен", s)
     return norm_ws(s)
 
 
+def _normalize_color_word(word: str) -> str:
+    low = norm_ws(word).casefold().replace("ё", "е")
+    mapping = {
+        "матовый черн": "Матовый чёрный",
+        "фоточерн": "Фоточёрный",
+        "черн": "Чёрный",
+        "бел": "Белый",
+        "сер": "Серый",
+        "син": "Синий",
+        "голуб": "Голубой",
+        "красн": "Красный",
+        "малинов": "Малиновый",
+        "пурпурн": "Пурпурный",
+        "желт": "Жёлтый",
+        "зелен": "Зелёный",
+        "оранжев": "Оранжевый",
+        "фиолетов": "Фиолетовый",
+        "коричнев": "Коричневый",
+        "розов": "Розовый",
+        "бежев": "Бежевый",
+        "прозрачн": "Прозрачный",
+        "серебрист": "Серебристый",
+        "золотист": "Золотистый",
+    }
+    for pref, clean in mapping.items():
+        if low.startswith(pref):
+            return clean
+    return norm_ws(word)
+
+
+def _post_clean_color_xml_value(v: str) -> str:
+    s = norm_ws(v).strip(" ;,.-")
+    if not s:
+        return ""
+    m = _COLOR_STOP_RE.search(s)
+    if m and m.start() >= 1:
+        s = s[:m.start()].strip(" ;,.-")
+    if not s:
+        return ""
+    parts = [norm_ws(x) for x in re.split(r"\s*[,/;]\s*", s) if norm_ws(x)]
+    if parts and len(parts) <= 3 and all(
+        re.fullmatch(r"(?iu)(?:матовый\s+черн(?:ый|ая|ое|ые)?|фоточерн(?:ый|ая|ое|ые)?|[А-Яа-яЁё-]+)", p)
+        for p in parts
+    ):
+        return ", ".join(_normalize_color_word(p) for p in parts)
+    if len(s.split()) > 4:
+        return ""
+    return s
+
+
+def _post_clean_technology_xml_value(v: str) -> str:
+    s = norm_ws(v).strip(" ;,.-")
+    if not s:
+        return ""
+    m = _TECH_STOP_RE.search(s)
+    if m and m.start() >= 1:
+        s = s[:m.start()].strip(" ;,.-")
+    low = s.casefold().replace("ё", "е")
+    if low in {"стр", "струйная печать"}:
+        return "Струйная"
+    m = _TECH_VALUE_RE.search(s)
+    if m:
+        return norm_ws(m.group(1))
+    return ""
+
+
+def _post_clean_resource_xml_value(v: str) -> str:
+    s = norm_ws(v).strip(" ;,.-")
+    if not s:
+        return ""
+    m = _RESOURCE_VALUE_RE.search(s)
+    if m:
+        return norm_ws(m.group(0))
+    if _RESOURCE_NUMBER_ONLY_RE.fullmatch(s):
+        return s
+    return ""
+
+
+def _post_clean_compat_xml_value(v: str) -> str:
+    s = norm_ws(v)
+    if not s:
+        return ""
+    s = re.sub(r"(?iu)^Модель\s+[A-Z0-9-]+\s+", "", s)
+    s = re.sub(r"(?iu)^Совместимые\s+модели\s+", "", s)
+    s = re.sub(r"(?iu)^Устройства\s+", "", s)
+    s = clean_compatibility_text(s)
+    s = dedupe_code_series_text(s)
+    return norm_ws(s.strip(" ;,.-"))
+
+
+def _post_clean_model_xml_value(v: str) -> str:
+    s = dedupe_code_series_text(norm_ws(v).strip(" ;,.-"))
+    if not s:
+        return ""
+    if _MODEL_GARBAGE_RE.search(s):
+        return ""
+    if s.endswith(")") and not re.search(r"\([A-Za-z0-9/-]{2,}\)$", s):
+        s = s.rstrip(") ")
+    return norm_ws(s)
+
+
+def _post_clean_xml_value(key: str, val: str) -> str:
+    kcf = norm_ws(key).casefold()
+    if kcf == "цвет":
+        return _post_clean_color_xml_value(val)
+    if kcf == "технология":
+        return _post_clean_technology_xml_value(val)
+    if kcf == "ресурс":
+        return _post_clean_resource_xml_value(val)
+    if kcf == "совместимость":
+        return _post_clean_compat_xml_value(val)
+    if kcf == "модель":
+        return _post_clean_model_xml_value(val)
+    return norm_ws(val)
+
+
 def apply_value_normalizers(key: str, val: str, schema: dict[str, Any]) -> str:
     v = norm_ws(val)
     if not v:
         return ""
-    vn = (schema.get("value_normalizers") or {})
+    vn = schema.get("value_normalizers") or {}
     ops = vn.get(key) or vn.get(key.casefold()) or []
 
     for op in ops:
@@ -84,10 +223,18 @@ def apply_value_normalizers(key: str, val: str, schema: dict[str, Any]) -> str:
     if not v:
         return ""
 
+    v = _post_clean_xml_value(key, v)
+    if not v:
+        return ""
+
     if kcf not in {"совместимость", "модель", "аналог модели"}:
         v = normalize_tech_value(v)
         v = re.sub(r"(?<=\d),\s+(?=\d)", ",", v)
-        v = re.sub(r"(?iu)\b(\d),(\d{1,3})\s+(мм|см|м|кг|г|Вт|Гц|мс|дюйм(?:а|ов)?|дюйма|дюймов|ГБ|ТБ)\b", r"\1,\2 \3", v)
+        v = re.sub(
+            r"(?iu)\b(\d),(\d{1,3})\s+(мм|см|м|кг|г|Вт|Гц|мс|дюйм(?:а|ов)?|дюйма|дюймов|ГБ|ТБ)\b",
+            r"\1,\2 \3",
+            v,
+        )
         v = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+кд\s*(?:/\s*м²|м2)\b", r"\1 кд/м²", v)
         v = re.sub(r"(?iu)\b(\d+(?:,\d+)?)\s+Гбит\s*/?\s*с\b", r"\1 Гбит/с", v)
         v = re.sub(r"(?iu)\b(\d+)\s*[xх×]\s*(\d+)\s*Вт\b", r"\1 × \2 Вт", v)
