@@ -4,8 +4,10 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-v116:
+v117:
 - чинит ложный парсинг "Цвет печати" -> ("Цвет", "печати");
+- режет кабельные хвосты у цвета, например:
+  "внешней оболочки серый, коробка 305 м..." -> "Серый";
 - не считает singular "Устройство" совместимостью;
 - лучше вытаскивает короткий ресурс 220 / 244 / 300;
 - сохраняет длинную совместимость и multiline label/value кейсы.
@@ -17,9 +19,9 @@ import re
 from typing import Any
 
 from cs.util import norm_ws
+from suppliers.alstyle.compat import clean_compatibility_text, dedupe_code_series_text
 from suppliers.alstyle.desc_clean import clean_desc_text_for_extraction
 from suppliers.alstyle.params_xml import apply_value_normalizers, key_quality_ok
-from suppliers.alstyle.compat import clean_compatibility_text, dedupe_code_series_text
 
 
 _DESC_SPEC_START_RE = re.compile(
@@ -191,6 +193,42 @@ _BAD_COLOR_VALUES = {
     "печати:",
 }
 
+_COLOR_TECH_TAIL_RE = re.compile(
+    r"(?iu)\b("
+    r"коробка|бухта|метр(?:а|ов)?|305\s*м|100\s*м|500\s*м|"
+    r"для\s+групповой|внутри\s+помещений|внешняя\s+оболочка|полиолефин|"
+    r"lszh|pvc|u/utp|f/utp|s/ftp|cat5e|cat6|cat6a|"
+    r"кабель|кабеля|провод|lan|витая\s+пара"
+    r")\b"
+)
+
+_COLOR_WORD_RE = re.compile(
+    r"(?iu)\b("
+    r"ч[её]рн(?:ый|ая|ое|ые)?|"
+    r"бел(?:ый|ая|ое|ые)?|"
+    r"сер(?:ый|ая|ое|ые)?|"
+    r"син(?:ий|яя|ее|ие)?|"
+    r"голуб(?:ой|ая|ое|ые)?|"
+    r"красн(?:ый|ая|ое|ые)?|"
+    r"малинов(?:ый|ая|ое|ые)?|"
+    r"пурпурн(?:ый|ая|ое|ые)?|"
+    r"ж[её]лт(?:ый|ая|ое|ые)?|"
+    r"зел[её]н(?:ый|ая|ое|ые)?|"
+    r"оранжев(?:ый|ая|ое|ые)?|"
+    r"фиолетов(?:ый|ая|ое|ые)?|"
+    r"коричнев(?:ый|ая|ое|ые)?|"
+    r"розов(?:ый|ая|ое|ые)?|"
+    r"бежев(?:ый|ая|ое|ые)?|"
+    r"прозрачн(?:ый|ая|ое|ые)?|"
+    r"серебрист(?:ый|ая|ое|ые)?|"
+    r"золотист(?:ый|ая|ое|ые)?|"
+    r"многоцветн(?:ый|ая|ое|ые)?"
+    r")\b"
+)
+_COLOR_PREFIX_RE = re.compile(
+    r"(?iu)^(?:цвет\s+печати|печати|цвет\s+внешней\s+оболочки|внешней\s+оболочки|цвет\s+оболочки|оболочки|цвет\s+корпуса|корпуса)\s+"
+)
+
 
 def canon_desc_spec_key(k: str) -> str:
     kk = norm_ws(k).casefold()
@@ -256,6 +294,75 @@ def looks_like_resource_value(val: str) -> bool:
     if _RESOURCE_NUMBER_ONLY_RE.match(v):
         return True
     return False
+
+
+def _canon_color_word(word: str) -> str:
+    low = norm_ws(word).casefold().replace("ё", "е")
+    if low.startswith("черн"):
+        return "Чёрный"
+    if low.startswith("бел"):
+        return "Белый"
+    if low.startswith("сер"):
+        return "Серый"
+    if low.startswith("син"):
+        return "Синий"
+    if low.startswith("голуб"):
+        return "Голубой"
+    if low.startswith("красн"):
+        return "Красный"
+    if low.startswith("малинов"):
+        return "Малиновый"
+    if low.startswith("пурпурн"):
+        return "Пурпурный"
+    if low.startswith("желт"):
+        return "Жёлтый"
+    if low.startswith("зелен"):
+        return "Зелёный"
+    if low.startswith("оранжев"):
+        return "Оранжевый"
+    if low.startswith("фиолетов"):
+        return "Фиолетовый"
+    if low.startswith("коричнев"):
+        return "Коричневый"
+    if low.startswith("розов"):
+        return "Розовый"
+    if low.startswith("бежев"):
+        return "Бежевый"
+    if low.startswith("прозрачн"):
+        return "Прозрачный"
+    if low.startswith("серебрист"):
+        return "Серебристый"
+    if low.startswith("золотист"):
+        return "Золотистый"
+    if low.startswith("многоцветн"):
+        return "Многоцветный"
+    return word
+
+
+def _normalize_color_candidate(val: str) -> str:
+    s = norm_ws(val).strip(" ;,.-")
+    if not s:
+        return ""
+    s = _COLOR_PREFIX_RE.sub("", s).strip(" ;,.-")
+    if not s:
+        return ""
+    if s.casefold() in _BAD_COLOR_VALUES:
+        return ""
+
+    pure_parts = [norm_ws(x) for x in re.split(r"\s*[,/;]\s*", s) if norm_ws(x)]
+    if pure_parts and all(_COLOR_WORD_RE.fullmatch(x) for x in pure_parts):
+        return ", ".join(_canon_color_word(x) for x in pure_parts)
+
+    if _COLOR_TECH_TAIL_RE.search(s):
+        m = _COLOR_WORD_RE.search(s)
+        if not m:
+            return ""
+        return _canon_color_word(m.group(1))
+
+    if _COLOR_WORD_RE.fullmatch(s):
+        return _canon_color_word(s)
+
+    return s
 
 
 def iter_desc_lines(block: str) -> list[str]:
@@ -530,8 +637,10 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
     if not val2:
         return None
 
-    if key == "Цвет" and val2.casefold() in _BAD_COLOR_VALUES:
-        return None
+    if key == "Цвет":
+        val2 = _normalize_color_candidate(val2)
+        if not val2 or val2.casefold() in _BAD_COLOR_VALUES:
+            return None
 
     if key == "Совместимость":
         val2 = _normalize_compat_candidate(val2)
