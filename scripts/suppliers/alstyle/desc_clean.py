@@ -5,13 +5,16 @@ Path: scripts/suppliers/alstyle/desc_clean.py
 AlStyle description cleaning.
 Только narrative-cleaning, без desc->params extraction.
 
-v118:
+v119:
 - сохраняет границы строк для multiline extraction;
 - мягко разрезает плотные one-line тех-описания на label-friendly строки;
 - чище дочищает Xerox/Canon narrative-хвосты;
 - не схлопывает extraction-текст обратно в одну строку;
-- убирает дубли бренда в narrative: Xerox Xerox -> Xerox;
-- точечно чинит сломанный Xerox-хвост CopyCentre 245/25 -> CopyCentre 245 / 255.
+- убирает дубли бренда в narrative;
+- чинит Canon imagePROGRAF glue и обрезанный хвост "...610Can";
+- режет хвосты совместимости в narrative:
+  Цвет / Ресурс / Наличие чипа / Принт-картриджи / Комплект поставки;
+- сохраняет уже сделанный фикс CopyCentre 245 / 255.
 """
 
 from __future__ import annotations
@@ -33,6 +36,32 @@ _CSS_SERVICE_LINE_RE = re.compile(
 )
 _REPEATED_BRAND_RE = re.compile(
     r"(?iu)\b(Xerox|Canon|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark)\s+\1\b"
+)
+_COMPAT_STOP_LABEL_RE = re.compile(
+    r"(?iu)\b(?:"
+    r"Цвет(?:\s+печати)?|"
+    r"Ресурс(?:\s+картриджа| фотобарабана)?|"
+    r"Количество\s+страниц|"
+    r"Наличие\s+чипа|"
+    r"Принт-?картриджи(?:\s+EUROPRINT)?|"
+    r"Комплект\s+поставки|"
+    r"Преимущества|Описание|Особенности|"
+    r"Гарантия|"
+    r"Условия\s+гарантии"
+    r")\b"
+)
+_COMPAT_NOISE_PHRASE_RE = re.compile(
+    r"(?iu)\b(?:"
+    r"формата\s+A4\s+можно\s+аккуратно\s+разместить|"
+    r"можно\s+аккуратно\s+разместить\s+на\s+рабочих\s+столах|"
+    r"что\s+идеально\s+подходит\s+для\s+небольших\s+офисов"
+    r")\b"
+)
+_COMPAT_NARRATIVE_HINT_RE = re.compile(
+    r"(?iu)\b(?:Canon|Xerox)\b.*\b(?:"
+    r"ImagePROGRAF|imageRUNNER|PIXMA|i-SENSYS|LBP|MF\d|"
+    r"WorkCentre|WorkCenter|Versant|DocuColor|CopyCentre|ColorQube|Phaser"
+    r")\b"
 )
 
 _LABEL_BREAK_PATTERNS = [
@@ -72,7 +101,7 @@ _LABEL_BREAK_RE = re.compile(
 )
 _BRAND_GLUE_RE = re.compile(
     r"(?<=[A-Za-zА-Яа-я0-9])(?=(?:CANON|Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark)\s+"
-    r"(?:PIXMA|WorkCentre|WorkCenter|VersaLink|AltaLink|Phaser|ColorQube|CopyCentre|imageRUNNER|i-SENSYS|ECOSYS|LaserJet|DeskJet|OfficeJet)\b)"
+    r"(?:PIXMA|ImagePROGRAF|imageRUNNER|WorkCentre|WorkCenter|VersaLink|AltaLink|Phaser|ColorQube|CopyCentre|imageRUNNER|i-SENSYS|ECOSYS|LaserJet|DeskJet|OfficeJet)\b)"
 )
 
 
@@ -264,7 +293,48 @@ def _fix_known_xerox_compat_typos(s: str) -> str:
     return out
 
 
-def _clean_xerox_narrative_line(s: str) -> str:
+def _fix_known_canon_compat_typos(s: str) -> str:
+    out = s or ""
+    out = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+)(?=Canon\s+ImagePROGRAF\s+\d+\b)", r"\1 / ", out)
+    out = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+)\s*Can\b", r"\1", out)
+    out = re.sub(
+        r"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=Canon\s+imageRUNNER\s+ADVANCE)",
+        r"\1 / ",
+        out,
+    )
+    return out
+
+
+def _trim_compat_narrative_noise(s: str) -> str:
+    out = norm_ws(s)
+    if not out:
+        return ""
+
+    cut_positions: list[int] = []
+
+    m = _COMPAT_STOP_LABEL_RE.search(out)
+    if m and m.start() >= 8:
+        cut_positions.append(m.start())
+
+    m = _COMPAT_NOISE_PHRASE_RE.search(out)
+    if m and m.start() >= 8:
+        cut_positions.append(m.start())
+
+    if cut_positions:
+        out = out[: min(cut_positions)]
+
+    return norm_ws(out.strip(" ;,.-"))
+
+
+def _looks_like_compat_narrative_line(s: str) -> bool:
+    if not s:
+        return False
+    if re.match(r"(?iu)^(Совместимость|Совместимые\s+модели|Устройства|Для\s+принтеров)\b", s):
+        return True
+    return bool(_COMPAT_NARRATIVE_HINT_RE.search(s))
+
+
+def _clean_compat_narrative_line(s: str) -> str:
     out = fix_common_broken_words(s)
     out = _dedupe_repeated_brands(out)
 
@@ -277,9 +347,18 @@ def _clean_xerox_narrative_line(s: str) -> str:
     out = re.sub(r"(?iu)Для\s+МФУ\s+Xerox\s+", "Xerox ", out)
 
     out = re.sub(r"\bWorkCenter\b", "WorkCentre", out, flags=re.I)
+    out = re.sub(r"(?iu)\bCANON\s+PIXMA\b", "Canon PIXMA", out)
+    out = re.sub(r"(?iu)\bCanon\s+Pixma\b", "Canon PIXMA", out)
+    out = re.sub(r"(?iu)\bCanon\s+imageprograf\b", "Canon ImagePROGRAF", out)
+    out = re.sub(r"(?iu)\bCANON\s+IMAGEPROGRAF\b", "Canon ImagePROGRAF", out)
+    out = re.sub(r"(?iu)\bCanon\s+imagerunner\b", "Canon imageRUNNER", out)
+    out = re.sub(r"(?iu)\bCANON\s+IMAGERUNNER\b", "Canon imageRUNNER", out)
+
     out = _fix_known_xerox_compat_typos(out)
+    out = _fix_known_canon_compat_typos(out)
     out = dedupe_code_series_text(out)
     out = _dedupe_repeated_brands(out)
+    out = _trim_compat_narrative_noise(out)
 
     return norm_ws(out)
 
@@ -300,7 +379,14 @@ def sanitize_desc_quality_text(desc: str) -> str:
     lines = [norm_ws(x) for x in re.split(r"(?:\r?\n)+", desc or "") if norm_ws(x)]
     out: list[str] = []
     for ln in lines:
-        s = _clean_xerox_narrative_line(ln)
+        if _looks_like_compat_narrative_line(ln):
+            s = _clean_compat_narrative_line(ln)
+        else:
+            s = fix_common_broken_words(ln)
+            s = re.sub(r"\bWorkCenter\b", "WorkCentre", s, flags=re.I)
+            s = _dedupe_repeated_brands(s)
+            s = _fix_known_canon_compat_typos(s)
+            s = norm_ws(s)
         if s:
             out.append(s)
     return _preserve_clean_lines(out)
