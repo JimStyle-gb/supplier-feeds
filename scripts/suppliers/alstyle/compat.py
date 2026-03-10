@@ -4,10 +4,12 @@ Path: scripts/suppliers/alstyle/compat.py
 
 AlStyle supplier layer — cleanup моделей / совместимости / кодовых серий.
 
-v120:
-- дочищает Canon imagePROGRAF glue: 605Canon -> 605 / Canon;
-- дочищает Canon imageRUNNER ADVANCE glue и автоматически добавляет Canon к series-блокам;
-- дочищает Canon imagePRESS / imagePRESS Lite glue;
+v121:
+- дочищает Canon imagePRESS Lite glue:
+  C165Canon imagePRESS Lite C170 -> C165 / Canon imagePRESS Lite C170;
+- дочищает Canon imageRUNNER ADVANCE glue и автоматически добавляет Canon
+  к brandless series-блокам;
+- дочищает Canon imagePROGRAF glue;
 - режет narrative-хвосты в совместимости:
   Цвет / Ресурс / Наличие чипа / Принт-картриджи / Комплект поставки / и т.п.;
 - убирает повторы бренда Xerox Xerox -> Xerox;
@@ -68,12 +70,7 @@ _COMPAT_NOISE_PHRASE_RE = re.compile(
     r")\b"
 )
 _LEADING_COMPAT_NOISE_RE = re.compile(
-    r"(?iu)^(?:"
-    r"Комплект\s+поставки|"
-    r"Описание|"
-    r"Особенности|"
-    r"Преимущества"
-    r")\s+"
+    r"(?iu)^(?:Комплект\s+поставки|Описание|Особенности|Преимущества)\s+"
 )
 
 
@@ -184,6 +181,7 @@ def _fix_known_compat_typos(v: str) -> str:
 
     s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+[A-Za-z0-9-]*)(?=Canon\s+ImagePROGRAF\b)", r"\1 / ", s)
     s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+[A-Za-z0-9-]*)\s*Can\b", r"\1", s)
+    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+[A-Za-z0-9-]*)Canon\b", r"\1 / Canon", s)
 
     s = re.sub(
         r"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=Canon\s+imageRUNNER\s+ADVANCE)",
@@ -191,10 +189,28 @@ def _fix_known_compat_typos(v: str) -> str:
         s,
     )
     s = re.sub(
+        r"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)Canon\b",
+        r"\1 / Canon",
+        s,
+    )
+
+    s = re.sub(
         r"(?iu)\b(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=Canon\s+imagePRESS)",
         r"\1 / ",
         s,
     )
+    s = re.sub(
+        r"(?iu)\b(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)Canon\b",
+        r"\1 / Canon",
+        s,
+    )
+
+    s = re.sub(
+        r"(?iu)\b(Canon\s+i-SENSYS\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=Canon\s+i-SENSYS)",
+        r"\1 / ",
+        s,
+    )
+
     s = re.sub(r"(?iu)\bCopyCentre\s+245\s*/\s*25\b", "CopyCentre 245 / 255", s)
 
     return norm_ws(s)
