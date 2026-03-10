@@ -4,16 +4,15 @@ Path: scripts/suppliers/alstyle/compat.py
 
 AlStyle supplier layer — cleanup моделей / совместимости / кодовых серий.
 
-v122:
+v123:
 - дочищает Canon imagePRESS Lite glue:
   C165Canon imagePRESS Lite C170 -> C165 / Canon imagePRESS Lite C170;
-- дочищает Canon imageRUNNER ADVANCE glue и автоматически добавляет Canon
-  к brandless series-блокам;
-- дочищает Canon imagePROGRAF glue;
+- дочищает Canon imageRUNNER ADVANCE glue, включая длинные цепочки с II / III / IV / V;
+- дочищает Canon ImagePROGRAF glue;
 - режет narrative-хвосты в совместимости:
-  Цвет / Ресурс / Наличие чипа / Принт-картриджи / Комплект поставки / и т.п.;
+  Цвет / Ресурс / Наличие чипа / Комплект поставки / и т.п.;
 - убирает повторы бренда Xerox Xerox -> Xerox;
-- сохраняет уже сделанные Xerox/Canon cleanup-правки.
+- срезает мусорные хвосты типа &gt; и dangling '/ Canon' в конце совместимости.
 """
 
 from __future__ import annotations
@@ -27,18 +26,39 @@ from suppliers.alstyle.desc_clean import fix_common_broken_words
 _CODE_SERIES_RE = re.compile(
     r"(?<![\w/])(?:(?=[A-Z0-9._-]*\d)[A-Z0-9._-]{3,}(?:\s*/\s*(?=[A-Z0-9._-]*\d)[A-Z0-9._-]{3,})+)"
 )
+_REPEATED_BRAND_RE = re.compile(
+    r"(?iu)\b(Xerox|Canon|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark)\s+\1\b"
+)
+_ROMAN_SUFFIX = r"(?:\s+(?:I|II|III|IV|V))?"
+_HTML_ENTITY_GARBAGE_RE = re.compile(r"(?iu)(?:&gt;|&amp;gt;|&lt;|&amp;lt;|>)+\s*$")
+_DANGLING_BRAND_TAIL_RE = re.compile(
+    r"(?iu)(?:\s*/\s*|\s+)(Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark)\s*$"
+)
+_DANGLING_CONNECTOR_RE = re.compile(r"(?iu)(?:\s*/\s*|\s*,\s*|-+\s*)$")
+
 _BRAND_GLUE_PATTERNS = [
     (re.compile(r"(?i)(Canon\s+PIXMA\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+PIXMA)"), r"\1 / "),
-    (re.compile(r"(?i)(Canon\s+ImagePROGRAF\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+ImagePROGRAF)"), r"\1 / "),
     (
         re.compile(
-            r"(?i)(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+imageRUNNER\s+ADVANCE)"
+            r"(?i)(Canon\s+ImagePROGRAF\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+ImagePROGRAF)"
         ),
         r"\1 / ",
     ),
     (
         re.compile(
-            r"(?i)(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+imagePRESS)"
+            rf"(?i)(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*{_ROMAN_SUFFIX})(?=\s*Canon\s+imageRUNNER\s+ADVANCE)"
+        ),
+        r"\1 / ",
+    ),
+    (
+        re.compile(
+            rf"(?i)(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*{_ROMAN_SUFFIX})(?=\s*Canon\s+imagePRESS)"
+        ),
+        r"\1 / ",
+    ),
+    (
+        re.compile(
+            rf"(?i)(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*{_ROMAN_SUFFIX})(?=\s*Canon\s+imageRUNNER\s+ADVANCE)"
         ),
         r"\1 / ",
     ),
@@ -46,9 +66,7 @@ _BRAND_GLUE_PATTERNS = [
     (re.compile(r"(?i)(Xerox\s+[A-Za-z-]*\d+[A-Za-z0-9/-]*)(?=\s*Xerox\s+)"), r"\1 / "),
     (re.compile(r"(?i)(WorkCentre\s+[A-Za-z-]*\d+[A-Za-z0-9/-]*)(?=\s*WorkCentre\s+)"), r"\1 / "),
 ]
-_REPEATED_BRAND_RE = re.compile(
-    r"(?iu)\b(Xerox|Canon|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark)\s+\1\b"
-)
+
 _COMPAT_STOP_LABEL_RE = re.compile(
     r"(?iu)\b(?:"
     r"Цвет(?:\s+печати)?|"
@@ -125,12 +143,29 @@ def dedupe_slash_tail_models(v: str) -> str:
     return " / ".join(out)
 
 
+def _strip_trailing_compat_garbage(v: str) -> str:
+    s = norm_ws(v)
+    if not s:
+        return ""
+
+    prev = None
+    while prev != s:
+        prev = s
+        s = _HTML_ENTITY_GARBAGE_RE.sub("", s).strip()
+        s = _DANGLING_BRAND_TAIL_RE.sub("", s).strip()
+        s = _DANGLING_CONNECTOR_RE.sub("", s).strip()
+
+    return norm_ws(s.strip(" ;,.-"))
+
+
 def split_glued_brand_models(v: str) -> str:
     s = norm_ws(v)
     if not s:
         return ""
+
     for rx, repl in _BRAND_GLUE_PATTERNS:
         s = rx.sub(repl, s)
+
     s = re.sub(
         r"(?<=[A-Za-zА-Яа-я0-9])(?=(?:"
         r"Canon|CANON|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark"
@@ -140,6 +175,13 @@ def split_glued_brand_models(v: str) -> str:
         " / ",
         s,
     )
+
+    s = re.sub(
+        rf"(?iu)\b(I|II|III|IV|V)\s+(?=Canon\s+(?:imageRUNNER\s+ADVANCE|imagePRESS|ImagePROGRAF|i-SENSYS)\b)",
+        r"\1 / ",
+        s,
+    )
+
     return norm_ws(s)
 
 
@@ -178,8 +220,8 @@ def _prefix_missing_canon_brand(v: str) -> str:
 
     series_patterns = [
         r"ImagePROGRAF\s+[A-Za-z]*\d+[A-Za-z0-9-]*",
-        r"imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*",
-        r"imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*",
+        rf"imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*{_ROMAN_SUFFIX}",
+        rf"imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*{_ROMAN_SUFFIX}",
         r"i-SENSYS\s+[A-Za-z]*\d+[A-Za-z0-9-]*",
     ]
     for pat in series_patterns:
@@ -194,33 +236,37 @@ def _fix_known_compat_typos(v: str) -> str:
     if not s:
         return ""
 
-    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+ImagePROGRAF\b)", r"\1 / ", s)
+    s = re.sub(
+        r"(?iu)\b(Canon\s+ImagePROGRAF\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+ImagePROGRAF\b)",
+        r"\1 / ",
+        s,
+    )
     s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+[A-Za-z]*\d+[A-Za-z0-9-]*)\s*Can\b", r"\1", s)
     s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+[A-Za-z]*\d+[A-Za-z0-9-]*)Canon\b", r"\1 / Canon", s)
 
     s = re.sub(
-        r"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*(?:\s+III)?)(?=\s*Canon\s+imageRUNNER\s+ADVANCE)",
+        rf"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*{_ROMAN_SUFFIX})(?=\s*Canon\s+imageRUNNER\s+ADVANCE)",
         r"\1 / ",
         s,
     )
     s = re.sub(
-        r"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*(?:\s+III)?)Canon\b",
+        rf"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*{_ROMAN_SUFFIX})Canon\b",
         r"\1 / Canon",
         s,
     )
 
     s = re.sub(
-        r"(?iu)\b(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+imagePRESS)",
+        rf"(?iu)\b(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*{_ROMAN_SUFFIX})(?=\s*Canon\s+imagePRESS)",
         r"\1 / ",
         s,
     )
     s = re.sub(
-        r"(?iu)\b(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+imageRUNNER\s+ADVANCE)",
+        rf"(?iu)\b(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*{_ROMAN_SUFFIX})(?=\s*Canon\s+imageRUNNER\s+ADVANCE)",
         r"\1 / ",
         s,
     )
     s = re.sub(
-        r"(?iu)\b(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)Canon\b",
+        rf"(?iu)\b(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*{_ROMAN_SUFFIX})Canon\b",
         r"\1 / Canon",
         s,
     )
@@ -260,6 +306,7 @@ def _trim_compat_noise_tail(v: str) -> str:
     if cut_positions:
         s = s[: min(cut_positions)]
 
+    s = _strip_trailing_compat_garbage(s)
     return norm_ws(s.strip(" ;,.-"))
 
 
@@ -271,6 +318,7 @@ def clean_compatibility_text(v: str) -> str:
     s = re.sub(r"(?iu)^Модель\s+[A-Z0-9-]+\s+", "", s)
     s = re.sub(r"(?iu)^Совместимые\s+модели\s+", "", s)
     s = re.sub(r"(?iu)^Устройства\s+", "", s)
+    s = re.sub(r"(?iu)^Устройство\s+", "", s)
     s = fix_common_broken_words(s)
     s = _canonize_brand_case(s)
     s = split_glued_brand_models(s)
@@ -299,6 +347,7 @@ def clean_compatibility_text(v: str) -> str:
     s = dedupe_slash_tail_models(s)
     s = _dedupe_repeated_brand_prefixes(s)
     s = _trim_compat_noise_tail(s)
+    s = _strip_trailing_compat_garbage(s)
     return norm_ws(s.strip(" ;,.-"))
 
 
