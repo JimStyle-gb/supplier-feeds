@@ -4,7 +4,7 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-v121:
+v122:
 - чинит ложный парсинг "Цвет печати" -> ("Цвет", "печати");
 - режет кабельные хвосты у цвета;
 - режет хвосты цвета вида "Черный Ресурс картриджа, стр 3100" -> "Чёрный";
@@ -102,7 +102,7 @@ _LEADING_COMPAT_NOISE_RE = re.compile(
     r"(?iu)^(?:Комплект\s+поставки|Описание|Особенности|Преимущества)\s+"
 )
 _TECH_STOP_RE = re.compile(
-    r"(?iu)\b(?:Количество\s+цветов|Цвет(?:\s+печати)?|Совместимость|Устройства|Ресурс|Ресурс\s+картриджа|Количество\s+страниц)\b"
+    r"(?iu)\b(?:Количество\s+цветов|Цвет(?:\s+печати)?|Совместимость|Устройства|Ресурс|Ресурс\s+картриджа|Количество\s+страниц|Тип\s+чернил|Об(?:ъ|ь)ем\s+картриджа|Секция\s+аппарата|серия)\b"
 )
 _TECH_VALUE_RE = re.compile(
     r"(?iu)\b("
@@ -210,6 +210,15 @@ _BAD_COLOR_VALUES = {
     "печати.",
     "печати:",
 }
+_MODEL_GARBAGE_RE = re.compile(
+    r"(?iu)\b(?:зависит\s+от\s+конфигурации|модель\s+зависит\s+от\s+конфигурации|определяется\s+конфигурацией)\b"
+)
+_COLOR_REJECT_RE = re.compile(r"(?iu)\b(?:серия|Vivobook|Vector|Gaming|игровой|игровая|дизайн|корпус)\b")
+_COMPAT_SENTENCE_NOISE_SPLIT_RE = re.compile(
+    r"(?iu)\b(?:Преимущества|Комплектация|Условия\s+гарантии|Примечание|Примечания|Особенности|Описание|"
+    r"Гарантированн(?:ый|ого)\s+об(?:ъ|ь)ем\s+отпечатков|при\s+5%\s+заполнении|формата\s+A4|"
+    r"только\s+для\s+продажи\s+на\s+территории)\b"
+)
 
 _COLOR_RESOURCE_STOP_RE = re.compile(
     r"(?iu)\b(?:Ресурс(?:\s+картриджа)?|Количество\s+страниц|стр\.?)\b"
@@ -630,12 +639,7 @@ def extract_sentence_compat_pairs(text: str) -> list[tuple[str, str]]:
             cand = norm_ws(m.group(1))
             if not cand:
                 continue
-            cand = re.split(
-                r"\b(Преимущества|Комплектация|Условия гарантии|Примечание|Примечания|Особенности|Описание)\b",
-                cand,
-                maxsplit=1,
-                flags=re.IGNORECASE,
-            )[0].strip(" ;,.-")
+            cand = _COMPAT_SENTENCE_NOISE_SPLIT_RE.split(cand, maxsplit=1)[0].strip(" ;,.-")
             cand = _normalize_compat_candidate(cand)
             if not looks_like_compatibility_value(cand):
                 continue
@@ -713,6 +717,8 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
         val2 = _normalize_color_candidate(val2)
         if not val2 or val2.casefold() in _BAD_COLOR_VALUES:
             return None
+        if _COLOR_REJECT_RE.search(val2) and not _COLOR_WORD_RE.search(val2):
+            return None
 
     if key == "Технология":
         val2 = _normalize_technology_candidate(val2)
@@ -723,6 +729,10 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
             return None
     elif key in {"Модель", "Аналог модели"}:
         val2 = dedupe_code_series_text(val2)
+        if _MODEL_GARBAGE_RE.search(val2):
+            return None
+        if val2.endswith(")"):
+            return None
     elif key == "Ресурс":
         if not looks_like_resource_value(val2):
             return None
