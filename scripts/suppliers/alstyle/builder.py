@@ -4,9 +4,11 @@ Path: scripts/suppliers/alstyle/builder.py
 
 AlStyle supplier layer — сборка raw offer.
 
-v107:
+v108:
 - убран лишний повторный проход align/dedupe после sanitize_native_desc();
-- добавлен безопасный fallback Модель из name для картриджных Canon-паттернов типа PG-510 / CL-511 / CLI-65.
+- добавлен безопасный fallback Модель из name для картриджных Canon-паттернов типа PG-510 / CL-511 / CLI-65;
+- добавлен selective override: чистые desc params могут заменить только грязные XML значения
+  для Совместимость / Цвет / Технология / Ресурс.
 """
 
 from __future__ import annotations
@@ -36,39 +38,132 @@ _NAME_MODEL_RE = re.compile(
 )
 
 
+_SAFE_DESC_OVERRIDE_KEYS = {"Совместимость", "Цвет", "Технология", "Ресурс"}
+_DIRTY_COMPAT_RE = re.compile(
+    r"(?iu)\b(?:Гарантированн(?:ый|ого)\s+об(?:ъ|ь)ем\s+отпечатков|"
+    r"при\s+5%\s+заполнении|формата\s+A4|только\s+для\s+продажи\s+на\s+территории|"
+    r"Форматы\s+бумаги|Плотность|Емкость|Ёмкость|Скорость\s+печати|Интерфейс|Процессор|Память)\b"
+)
+_DIRTY_COLOR_RE = re.compile(
+    r"(?iu)\b(?:Тип\s+чернил|Ресурс(?:\s+картриджа)?|Количество\s+страниц|Секция\s+аппарата|"
+    r"Совместимость|Устройства|Количество\s+цветов|серия|Vivobook|Vector|Gaming|игров)\b"
+)
+_DIRTY_TECH_RE = re.compile(
+    r"(?iu)\b(?:Количество\s+цветов|Тип\s+чернил|Ресурс(?:\s+картриджа)?|Совместимость|"
+    r"Устройства|Об(?:ъ|ь)ем\s+картриджа|Секция\s+аппарата|серия)\b"
+)
+_CLEAN_TECH_RE = re.compile(
+    r"(?iu)^(?:Лазерная(?:\s+монохромная|\s+цветная)?|Светодиодная(?:\s+монохромная|\s+цветная)?|"
+    r"Струйная|Термоструйная|Матричная|Термосублимационная)$"
+)
+_CLEAN_RESOURCE_RE = re.compile(r"(?iu)^\d[\d\s.,]*(?:\s*(?:стр\.?|страниц|pages|copies))?$")
+
+
+def _is_dirty_value(key: str, value: str) -> bool:
+    k = norm_ws(key)
+    v = norm_ws(value)
+    if not k or not v:
+        return True
+
+    if k == "Совместимость":
+        if _DIRTY_COMPAT_RE.search(v):
+            return True
+        if "/" not in v and "," not in v and len(v.split()) > 10:
+            return True
+        if re.search(r"(?iu)Canon\s+imagePRESS(?:\s+Lite)?\s+[^/]+\s+Canon\s+imageRUNNER", v):
+            return True
+        return False
+
+    if k == "Цвет":
+        if _DIRTY_COLOR_RE.search(v):
+            return True
+        if len(v.split()) > 4:
+            return True
+        return False
+
+    if k == "Технология":
+        if _DIRTY_TECH_RE.search(v):
+            return True
+        if not _CLEAN_TECH_RE.fullmatch(v):
+            return True
+        return False
+
+    if k == "Ресурс":
+        if len(v) > 40:
+            return True
+        if not _CLEAN_RESOURCE_RE.fullmatch(v):
+            return True
+        return False
+
+    return False
+
+
+def _prefer_desc_value(key: str, xml_val: str, desc_val: str) -> bool:
+    if key not in _SAFE_DESC_OVERRIDE_KEYS:
+        return False
+    if not desc_val:
+        return False
+
+    xml_dirty = _is_dirty_value(key, xml_val)
+    desc_dirty = _is_dirty_value(key, desc_val)
+    if desc_dirty:
+        return False
+    if xml_dirty:
+        return True
+
+    if key == "Ресурс" and len(desc_val) < len(xml_val):
+        return True
+    return False
+
+
 def merge_params(
     xml_params: list[tuple[str, str]],
     desc_params: list[tuple[str, str]],
 ) -> list[tuple[str, str]]:
     """
-    XML params всегда приоритетнее.
-    Description-derived params только дополняют.
+    XML params по умолчанию приоритетнее.
+    Description-derived params только дополняют,
+    но могут точечно заменить грязные XML значения
+    для безопасного набора ключей.
     """
     out: list[tuple[str, str]] = []
-    seen_key: set[str] = set()
     seen_pair: set[tuple[str, str]] = set()
+    index_by_key: dict[str, int] = {}
 
     for k, v in xml_params:
         k2 = norm_ws(k)
         v2 = norm_ws(v)
         if not k2 or not v2:
             continue
+        sig = (k2.casefold(), v2.casefold())
+        if sig in seen_pair:
+            continue
+        index_by_key.setdefault(k2.casefold(), len(out))
         out.append((k2, v2))
-        seen_key.add(k2.casefold())
-        seen_pair.add((k2.casefold(), v2.casefold()))
+        seen_pair.add(sig)
 
     for k, v in desc_params:
         k2 = norm_ws(k)
         v2 = norm_ws(v)
         if not k2 or not v2:
             continue
-        if k2.casefold() in seen_key:
-            continue
-        sig = (k2.casefold(), v2.casefold())
+
+        key_cf = k2.casefold()
+        sig = (key_cf, v2.casefold())
         if sig in seen_pair:
             continue
+
+        if key_cf in index_by_key:
+            idx = index_by_key[key_cf]
+            xml_k, xml_v = out[idx]
+            if _prefer_desc_value(xml_k, xml_v, v2):
+                seen_pair.discard((xml_k.casefold(), xml_v.casefold()))
+                out[idx] = (xml_k, v2)
+                seen_pair.add((xml_k.casefold(), v2.casefold()))
+            continue
+
         out.append((k2, v2))
-        seen_key.add(k2.casefold())
+        index_by_key[key_cf] = len(out) - 1
         seen_pair.add(sig)
 
     return out
