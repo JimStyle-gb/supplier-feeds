@@ -4,12 +4,14 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-v120:
+v121:
 - чинит ложный парсинг "Цвет печати" -> ("Цвет", "печати");
 - режет кабельные хвосты у цвета;
+- режет хвосты цвета вида "Черный Ресурс картриджа, стр 3100" -> "Чёрный";
 - режет хвосты цвета вида "Пурпурный Секция аппарата Фотопроводник" -> "Пурпурный";
-- не считает singular "Устройство" совместимостью;
+- нормализует технологию: "Термоструйная Количество цветов 5" -> "Термоструйная";
 - дочищает compatibility-кандидаты от "Комплект поставки / Описание / Особенности";
+- не считает singular "Устройство" совместимостью;
 - сохраняет длинную совместимость и multiline label/value кейсы.
 """
 
@@ -98,6 +100,19 @@ _COMPAT_REJECT_RE = re.compile(
 )
 _LEADING_COMPAT_NOISE_RE = re.compile(
     r"(?iu)^(?:Комплект\s+поставки|Описание|Особенности|Преимущества)\s+"
+)
+_TECH_STOP_RE = re.compile(
+    r"(?iu)\b(?:Количество\s+цветов|Цвет(?:\s+печати)?|Совместимость|Устройства|Ресурс|Ресурс\s+картриджа|Количество\s+страниц)\b"
+)
+_TECH_VALUE_RE = re.compile(
+    r"(?iu)\b("
+    r"Лазерная(?:\s+монохромная|\s+цветная)?|"
+    r"Светодиодная(?:\s+монохромная|\s+цветная)?|"
+    r"Термоструйная|"
+    r"Струйная|"
+    r"Матричная|"
+    r"Термосублимационная"
+    r")\b"
 )
 
 _DESC_SPEC_KEY_MAP = {
@@ -196,6 +211,9 @@ _BAD_COLOR_VALUES = {
     "печати:",
 }
 
+_COLOR_RESOURCE_STOP_RE = re.compile(
+    r"(?iu)\b(?:Ресурс(?:\s+картриджа)?|Количество\s+страниц|стр\.?)\b"
+)
 _COLOR_TECH_TAIL_RE = re.compile(
     r"(?iu)\b("
     r"коробка|бухта|метр(?:а|ов)?|305\s*м|100\s*м|500\s*м|"
@@ -226,7 +244,13 @@ _COLOR_WORD_RE = re.compile(
     r"прозрачн(?:ый|ая|ое|ые)?|"
     r"серебрист(?:ый|ая|ое|ые)?|"
     r"золотист(?:ый|ая|ое|ые)?|"
-    r"многоцветн(?:ый|ая|ое|ые)?"
+    r"многоцветн(?:ый|ая|ое|ые)?|"
+    r"фоточерн(?:ый|ая|ое|ые)?|"
+    r"матовый\s+черный|"
+    r"светло-?пурпурн(?:ый|ая|ое|ые)?|"
+    r"фотоголуб(?:ой|ая|ое|ые)?|"
+    r"фотопурпурн(?:ый|ая|ое|ые)?|"
+    r"фотосер(?:ый|ая|ое|ые)?"
     r")\b"
 )
 _COLOR_PREFIX_RE = re.compile(
@@ -355,6 +379,18 @@ def _canon_color_word(word: str) -> str:
         return "Золотистый"
     if low.startswith("многоцветн"):
         return "Многоцветный"
+    if low.startswith("фоточерн"):
+        return "Фоточёрный"
+    if low.startswith("матовый черн"):
+        return "Матовый чёрный"
+    if low.startswith("светло-пурпур"):
+        return "Светло-пурпурный"
+    if low.startswith("фотоголуб"):
+        return "Фотоголубой"
+    if low.startswith("фотопурпур"):
+        return "Фотопурпурный"
+    if low.startswith("фотосер"):
+        return "Фотосерый"
     return word
 
 
@@ -367,6 +403,10 @@ def _normalize_color_candidate(val: str) -> str:
         return ""
     if s.casefold() in _BAD_COLOR_VALUES:
         return ""
+
+    m = _COLOR_RESOURCE_STOP_RE.search(s)
+    if m and m.start() >= 1:
+        s = s[:m.start()].strip(" ;,.-")
 
     pure_parts = [norm_ws(x) for x in re.split(r"\s*[,/;]\s*", s) if norm_ws(x)]
     if pure_parts and all(_COLOR_WORD_RE.fullmatch(x) for x in pure_parts):
@@ -381,6 +421,19 @@ def _normalize_color_candidate(val: str) -> str:
     if _COLOR_WORD_RE.fullmatch(s):
         return _canon_color_word(s)
 
+    return s
+
+
+def _normalize_technology_candidate(val: str) -> str:
+    s = norm_ws(val).strip(" ;,.-")
+    if not s:
+        return ""
+    m = _TECH_STOP_RE.search(s)
+    if m and m.start() >= 1:
+        s = s[:m.start()].strip(" ;,.-")
+    m = _TECH_VALUE_RE.search(s)
+    if m:
+        return norm_ws(m.group(1))
     return s
 
 
@@ -660,6 +713,9 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
         val2 = _normalize_color_candidate(val2)
         if not val2 or val2.casefold() in _BAD_COLOR_VALUES:
             return None
+
+    if key == "Технология":
+        val2 = _normalize_technology_candidate(val2)
 
     if key == "Совместимость":
         val2 = _normalize_compat_candidate(val2)
