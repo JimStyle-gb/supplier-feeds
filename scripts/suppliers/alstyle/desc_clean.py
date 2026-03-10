@@ -5,11 +5,13 @@ Path: scripts/suppliers/alstyle/desc_clean.py
 AlStyle description cleaning.
 Только narrative-cleaning, без desc->params extraction.
 
-v115:
+v118:
 - сохраняет границы строк для multiline extraction;
 - мягко разрезает плотные one-line тех-описания на label-friendly строки;
 - чище дочищает Xerox/Canon narrative-хвосты;
-- не схлопывает extraction-текст обратно в одну строку.
+- не схлопывает extraction-текст обратно в одну строку;
+- убирает дубли бренда в narrative: Xerox Xerox -> Xerox;
+- точечно чинит сломанный Xerox-хвост CopyCentre 245/25 -> CopyCentre 245 / 255.
 """
 
 from __future__ import annotations
@@ -28,6 +30,9 @@ _SKU_TOKEN_RE = re.compile(r"\b[A-Z]{1,6}-\d{2,6}[A-Z]{0,4}\b|\b[A-Z]{2,}[A-Z0-9
 _CSS_SERVICE_LINE_RE = re.compile(
     r"(?iu)(?:^|\s)(?:body\s*\{|font-family\s*:|display\s*:|margin\s*:|padding\s*:|border\s*:|color\s*:|background\s*:|"
     r"\.?chip\s*\{|\.?badge\s*\{|\.?spec\s*\{|h[1-6]\s*\{)"
+)
+_REPEATED_BRAND_RE = re.compile(
+    r"(?iu)\b(Xerox|Canon|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark)\s+\1\b"
 )
 
 _LABEL_BREAK_PATTERNS = [
@@ -239,6 +244,46 @@ def _inject_label_breaks(text: str) -> str:
     return s.strip()
 
 
+def _dedupe_repeated_brands(s: str) -> str:
+    out = norm_ws(s)
+    if not out:
+        return ""
+    while True:
+        nxt = _REPEATED_BRAND_RE.sub(lambda m: m.group(1), out)
+        if nxt == out:
+            break
+        out = nxt
+    return norm_ws(out)
+
+
+def _fix_known_xerox_compat_typos(s: str) -> str:
+    out = s or ""
+    out = re.sub(r"(?iu)\bCopyCentre\s+245\s*/\s*25\b", "CopyCentre 245 / 255", out)
+    out = re.sub(r"(?iu)\bWorkCentre\s+7220i\s*/\s*7225i\b", "WorkCentre 7220i / 7225i", out)
+    out = re.sub(r"(?iu)\bWorkCentre\s+5865i\s*/\s*5875i\s*/\s*5890i\b", "WorkCentre 5865i / 5875i / 5890i", out)
+    return out
+
+
+def _clean_xerox_narrative_line(s: str) -> str:
+    out = fix_common_broken_words(s)
+    out = _dedupe_repeated_brands(out)
+
+    out = re.sub(r"(?iu)Совместимые\s+модели\s+Xerox\s+Для\s+Xerox\s+", "Совместимые модели Xerox ", out)
+    out = re.sub(r"(?iu)Xerox\s+Для,\s+Xerox\s+", "Xerox ", out)
+    out = re.sub(r"(?iu)Xerox\s+Для\s+Xerox\s+", "Xerox ", out)
+    out = re.sub(r"(?iu)Для,\s+Xerox\s+", "Xerox ", out)
+    out = re.sub(r"(?iu)Для\s+Xerox\s+", "Xerox ", out)
+    out = re.sub(r"(?iu)Для\s+принтеров\s+Xerox\s+", "Xerox ", out)
+    out = re.sub(r"(?iu)Для\s+МФУ\s+Xerox\s+", "Xerox ", out)
+
+    out = re.sub(r"\bWorkCenter\b", "WorkCentre", out, flags=re.I)
+    out = _fix_known_xerox_compat_typos(out)
+    out = dedupe_code_series_text(out)
+    out = _dedupe_repeated_brands(out)
+
+    return norm_ws(out)
+
+
 def clean_desc_text_for_extraction(desc: str) -> str:
     s = unescape(desc or "")
     s = re.sub(r"<\s*br\s*/?\s*>", "\n", s, flags=re.I)
@@ -255,17 +300,7 @@ def sanitize_desc_quality_text(desc: str) -> str:
     lines = [norm_ws(x) for x in re.split(r"(?:\r?\n)+", desc or "") if norm_ws(x)]
     out: list[str] = []
     for ln in lines:
-        s = fix_common_broken_words(ln)
-        s = re.sub(r"(?iu)Совместимые\s+модели\s+Xerox\s+Для\s+Xerox\s+", "Совместимые модели Xerox ", s)
-        s = re.sub(r"(?iu)Xerox\s+Для,\s+Xerox\s+", "Xerox ", s)
-        s = re.sub(r"(?iu)Xerox\s+Для\s+Xerox\s+", "Xerox ", s)
-        s = re.sub(r"(?iu)Для,\s+Xerox\s+", "Xerox ", s)
-        s = re.sub(r"(?iu)Для\s+Xerox\s+", "Xerox ", s)
-        s = re.sub(r"(?iu)Для\s+принтеров\s+Xerox\s+", "Xerox ", s)
-        s = re.sub(r"(?iu)Для\s+МФУ\s+Xerox\s+", "Xerox ", s)
-        s = re.sub(r"\bWorkCenter\b", "WorkCentre", s, flags=re.I)
-        s = dedupe_code_series_text(s)
-        s = norm_ws(s)
+        s = _clean_xerox_narrative_line(ln)
         if s:
             out.append(s)
     return _preserve_clean_lines(out)
