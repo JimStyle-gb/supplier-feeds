@@ -4,7 +4,7 @@ Path: scripts/suppliers/alstyle/compat.py
 
 AlStyle supplier layer — cleanup моделей / совместимости / кодовых серий.
 
-v121:
+v122:
 - дочищает Canon imagePRESS Lite glue:
   C165Canon imagePRESS Lite C170 -> C165 / Canon imagePRESS Lite C170;
 - дочищает Canon imageRUNNER ADVANCE glue и автоматически добавляет Canon
@@ -55,6 +55,16 @@ _COMPAT_STOP_LABEL_RE = re.compile(
     r"Ресурс(?:\s+картриджа| фотобарабана)?|"
     r"Количество\s+страниц|"
     r"Наличие\s+чипа|"
+    r"Тип\s+чернил|"
+    r"Количество\s+цветов|"
+    r"Секция\s+аппарата|"
+    r"Гарантированн(?:ый|ого)\s+об(?:ъ|ь)ем\s+отпечатков|"
+    r"Форматы\s+бумаги|"
+    r"Плотность|"
+    r"Емкость|Ёмкость|"
+    r"Скорость\s+печати|"
+    r"Поддержка\s+двусторонней\s+печати|"
+    r"Интерфейс|Процессор|Память|"
     r"Принт-?картриджи(?:\s+EUROPRINT)?|"
     r"Комплект\s+поставки|"
     r"Преимущества|Описание|Особенности|"
@@ -66,7 +76,12 @@ _COMPAT_NOISE_PHRASE_RE = re.compile(
     r"(?iu)\b(?:"
     r"формата\s+A4\s+можно\s+аккуратно\s+разместить|"
     r"можно\s+аккуратно\s+разместить\s+на\s+рабочих\s+столах|"
-    r"что\s+идеально\s+подходит\s+для\s+небольших\s+офисов"
+    r"что\s+идеально\s+подходит\s+для\s+небольших\s+офисов|"
+    r"при\s+5%\s+заполнении|"
+    r"только\s+для\s+продажи\s+на\s+территории|"
+    r"для\s+быстрой\s+и\s+надежной\s+печати|"
+    r"для\s+быстрой\s+и\s+над(?:е|ё)жной\s+печати|"
+    r"позволяют\s+оптимизировать\s+рабочий\s+процесс"
     r")\b"
 )
 _LEADING_COMPAT_NOISE_RE = re.compile(
@@ -179,23 +194,28 @@ def _fix_known_compat_typos(v: str) -> str:
     if not s:
         return ""
 
-    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+[A-Za-z0-9-]*)(?=Canon\s+ImagePROGRAF\b)", r"\1 / ", s)
-    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+[A-Za-z0-9-]*)\s*Can\b", r"\1", s)
-    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+[A-Za-z0-9-]*)Canon\b", r"\1 / Canon", s)
+    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+ImagePROGRAF\b)", r"\1 / ", s)
+    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+[A-Za-z]*\d+[A-Za-z0-9-]*)\s*Can\b", r"\1", s)
+    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+[A-Za-z]*\d+[A-Za-z0-9-]*)Canon\b", r"\1 / Canon", s)
 
     s = re.sub(
-        r"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=Canon\s+imageRUNNER\s+ADVANCE)",
+        r"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*(?:\s+III)?)(?=\s*Canon\s+imageRUNNER\s+ADVANCE)",
         r"\1 / ",
         s,
     )
     s = re.sub(
-        r"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)Canon\b",
+        r"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*(?:\s+III)?)Canon\b",
         r"\1 / Canon",
         s,
     )
 
     s = re.sub(
-        r"(?iu)\b(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=Canon\s+imagePRESS)",
+        r"(?iu)\b(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+imagePRESS)",
+        r"\1 / ",
+        s,
+    )
+    s = re.sub(
+        r"(?iu)\b(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+imageRUNNER\s+ADVANCE)",
         r"\1 / ",
         s,
     )
@@ -206,7 +226,7 @@ def _fix_known_compat_typos(v: str) -> str:
     )
 
     s = re.sub(
-        r"(?iu)\b(Canon\s+i-SENSYS\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=Canon\s+i-SENSYS)",
+        r"(?iu)\b(Canon\s+i-SENSYS\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+i-SENSYS)",
         r"\1 / ",
         s,
     )
@@ -248,8 +268,12 @@ def clean_compatibility_text(v: str) -> str:
     if not s:
         return ""
 
+    s = re.sub(r"(?iu)^Модель\s+[A-Z0-9-]+\s+", "", s)
+    s = re.sub(r"(?iu)^Совместимые\s+модели\s+", "", s)
+    s = re.sub(r"(?iu)^Устройства\s+", "", s)
     s = fix_common_broken_words(s)
     s = _canonize_brand_case(s)
+    s = split_glued_brand_models(s)
     s = _prefix_missing_canon_brand(s)
     s = _dedupe_repeated_brand_prefixes(s)
     s = _fix_known_compat_typos(s)
