@@ -4,8 +4,8 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-Фикс v115:
-- чинит compact-label extraction для ресурса и совместимости;
+v116:
+- чинит ложный парсинг "Цвет печати" -> ("Цвет", "печати");
 - не считает singular "Устройство" совместимостью;
 - лучше вытаскивает короткий ресурс 220 / 244 / 300;
 - сохраняет длинную совместимость и multiline label/value кейсы.
@@ -18,12 +18,9 @@ from typing import Any
 
 from cs.util import norm_ws
 from suppliers.alstyle.desc_clean import clean_desc_text_for_extraction
-from suppliers.alstyle.params_xml import key_quality_ok, apply_value_normalizers
-from suppliers.alstyle.compat import (
-    clean_compatibility_text,
-    dedupe_code_series_text,
-    split_glued_brand_models,
-)
+from suppliers.alstyle.params_xml import apply_value_normalizers, key_quality_ok
+from suppliers.alstyle.compat import clean_compatibility_text, dedupe_code_series_text
+
 
 _DESC_SPEC_START_RE = re.compile(
     r"^\s*(Характеристики|Основные характеристики|Технические характеристики)\s*:?\s*$",
@@ -57,6 +54,10 @@ _DESC_FOR_DEVICES_SENTENCE_RE = re.compile(
 )
 _DESC_TECH_PRINT_LABEL_ONLY_RE = re.compile(
     r"^\s*Технология\s+печати\s*:?\s*$",
+    re.IGNORECASE | re.MULTILINE,
+)
+_DESC_COLOR_PRINT_LABEL_ONLY_RE = re.compile(
+    r"^\s*Цвет\s+печати\s*:?\s*$",
     re.IGNORECASE | re.MULTILINE,
 )
 _DESC_CAPACITY_SENTENCE_RE = re.compile(
@@ -136,11 +137,33 @@ _SAFE_DESC_PARAM_KEYS = {
 }
 
 _COMPACT_LABELS = [
-    "Модель", "Аналог модели", "Совместимость", "Совместимые модели", "Устройства", "Устройство",
-    "Для принтеров", "Производитель", "Технология печати", "Цвет печати", "Цвет",
-    "Ресурс картриджа, cтр.", "Ресурс картриджа, стр.", "Ресурс картриджа", "Количество страниц", "Ресурс",
-    "Емкость лотка", "Ёмкость лотка", "Емкость", "Ёмкость", "Объем картриджа, мл", "Объём картриджа, мл",
-    "Степлирование", "Дополнительные опции", "Применение", "Количество в упаковке", "Колличество в упаковке",
+    "Модель",
+    "Аналог модели",
+    "Совместимость",
+    "Совместимые модели",
+    "Устройства",
+    "Устройство",
+    "Для принтеров",
+    "Производитель",
+    "Технология печати",
+    "Цвет печати",
+    "Цвет",
+    "Ресурс картриджа, cтр.",
+    "Ресурс картриджа, стр.",
+    "Ресурс картриджа",
+    "Количество страниц",
+    "Ресурс",
+    "Емкость лотка",
+    "Ёмкость лотка",
+    "Емкость",
+    "Ёмкость",
+    "Объем картриджа, мл",
+    "Объём картриджа, мл",
+    "Степлирование",
+    "Дополнительные опции",
+    "Применение",
+    "Количество в упаковке",
+    "Колличество в упаковке",
 ]
 _COMPACT_LABEL_RE = re.compile(
     r"\b(?:Характеристики|Основные характеристики|Технические характеристики)\b\s*:?\s*|"
@@ -149,10 +172,24 @@ _COMPACT_LABEL_RE = re.compile(
 )
 _LABEL_ONLY_RE = re.compile(
     r"^(?:"
-    + "|".join(re.escape(x) for x in sorted(_COMPACT_LABELS + ["Характеристики", "Основные характеристики", "Технические характеристики"], key=len, reverse=True))
+    + "|".join(
+        re.escape(x)
+        for x in sorted(
+            _COMPACT_LABELS + ["Характеристики", "Основные характеристики", "Технические характеристики"],
+            key=len,
+            reverse=True,
+        )
+    )
     + r")\s*:?$",
     re.IGNORECASE,
 )
+
+_BAD_COLOR_VALUES = {
+    "печати",
+    "цвет печати",
+    "печати.",
+    "печати:",
+}
 
 
 def canon_desc_spec_key(k: str) -> str:
@@ -234,6 +271,7 @@ def parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
     ln = norm_ws(raw)
     if not ln:
         return None
+
     if re.fullmatch(
         r"(Интерфейсы\s*/\s*разъ[её]мы\s*/\s*управление|Аксессуары|Порты\s+и\s+подключение|Задняя\s+панель|Передняя\s+панель):?",
         ln,
@@ -247,23 +285,40 @@ def parse_desc_spec_line(raw: str) -> tuple[str, str] | None:
         compact = re.sub(r"\s{3,}", "  ", compact)
         m = _DESC_SPEC_LINE_RE.match(compact)
     if m:
-        return (canon_desc_spec_key(m.group(1)), norm_ws(m.group(2)))
+        key = canon_desc_spec_key(m.group(1))
+        val = norm_ws(m.group(2))
+
+        if key == "Цвет" and val.casefold() in _BAD_COLOR_VALUES:
+            return None
+
+        return (key, val)
 
     m = _DESC_COMPAT_LINE_RE.match(raw)
     if m:
         return ("Совместимость", norm_ws(m.group(1)))
+
+    if _DESC_TECH_PRINT_LABEL_ONLY_RE.match(ln):
+        return None
+
+    if _DESC_COLOR_PRINT_LABEL_ONLY_RE.match(ln):
+        return None
 
     labels = sorted(_COMPACT_LABELS, key=len, reverse=True)
     for label_raw in labels:
         rx = re.match(rf"(?iu)^({re.escape(label_raw)})\s+(.+?)$", ln)
         if not rx:
             continue
+
         if norm_ws(label_raw).casefold() == "устройство":
             return None
-        return (canon_desc_spec_key(rx.group(1)), norm_ws(rx.group(2)))
 
-    if _DESC_TECH_PRINT_LABEL_ONLY_RE.match(ln):
-        return None
+        key = canon_desc_spec_key(rx.group(1))
+        val = norm_ws(rx.group(2))
+
+        if key == "Цвет" and val.casefold() in _BAD_COLOR_VALUES:
+            return None
+
+        return (key, val)
 
     return None
 
@@ -298,14 +353,21 @@ def extract_compact_labeled_sequences(text: str) -> list[tuple[str, str]]:
             "устройство",
         }:
             continue
+
         start = m.end()
         end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        key = canon_desc_spec_key(label)
         value = norm_ws(text[start:end])
         value = re.sub(r"(?iu)^[:\-–—]\s*", "", value)
         value = value.strip(" ;,.-")
+
         if not value or _LABEL_ONLY_RE.match(value):
             continue
-        out.append((canon_desc_spec_key(label), value))
+
+        if key == "Цвет" and value.casefold() in _BAD_COLOR_VALUES:
+            continue
+
+        out.append((key, value))
 
     return out
 
@@ -333,7 +395,7 @@ def extract_multiline_label_value_pairs(text: str) -> list[tuple[str, str]]:
                 vals.append(nxt)
                 j += 1
             value = norm_ws(" ".join(vals)).strip(" ;,.-")
-            if value:
+            if value and not (key == "Цвет" and value.casefold() in _BAD_COLOR_VALUES):
                 out.append((key, value))
             i = j
             continue
@@ -375,8 +437,9 @@ def extract_short_inline_pairs(text: str) -> list[tuple[str, str]]:
             if pair:
                 out.append(pair)
 
-    out.extend(extract_compact_labeled_sequences("\n".join(lines)))
-    out.extend(extract_multiline_label_value_pairs("\n".join(lines)))
+    joined = "\n".join(lines)
+    out.extend(extract_compact_labeled_sequences(joined))
+    out.extend(extract_multiline_label_value_pairs(joined))
     return out
 
 
@@ -415,11 +478,13 @@ def extract_sentence_capacity_pairs(text: str) -> list[tuple[str, str]]:
         ln = norm_ws(line)
         if not ln:
             continue
+
         m = re.search(r"\bСовместим\s+с\s+(.+?)\s*$", ln, flags=re.IGNORECASE)
         if m:
             cand = _normalize_compat_candidate(m.group(1))
             if looks_like_compatibility_value(cand):
                 out.append(("Совместимость", cand))
+
         m = re.search(r"\b(?:Емкость|Ёмкость)\s+лотка\s*[-:]\s*(.+?)\s*$", ln, flags=re.IGNORECASE)
         if m:
             cand = norm_ws(m.group(1))
@@ -463,6 +528,9 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
 
     val2 = apply_value_normalizers(key, val, schema)
     if not val2:
+        return None
+
+    if key == "Цвет" and val2.casefold() in _BAD_COLOR_VALUES:
         return None
 
     if key == "Совместимость":
