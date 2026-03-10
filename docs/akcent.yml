@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-10 02:35:40">
+<yml_catalog date="2026-03-11 02:31:21">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-10 02:35:40 (не было изменений)
-Ближайшая сборка (Алматы)                  | 2026-03-11 02:00:00
-Сколько товаров у поставщика до фильтра    | 1794
-Сколько товаров у поставщика после фильтра | 139
-Сколько товаров есть в наличии (true)      | 139
+Время сборки (Алматы)                      | 2026-03-11 02:31:21
+Ближайшая сборка (Алматы)                  | 2026-03-12 02:00:00
+Сколько товаров у поставщика до фильтра    | 1807
+Сколько товаров у поставщика после фильтра | 158
+Сколько товаров есть в наличии (true)      | 158
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -911,6 +911,36 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Картридж Epson C13T61480N SP-4450 220ml черный матовый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="ACC13T692500" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T692500</vendorCode>
+<name>Картридж Epson C13T692500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
+<price>56900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Картридж Epson C13T692500 T3000/5000/7000, Т3200/5200/7200 матовый черный</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Матовый черный картридж 110ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T692500 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Ресурс:</strong> 110 мл</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Черный</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">3 мес</param>
+<param name="Для бренда">Epson</param>
+<param name="Модель">Epson Картридж C13T692500 для T3000/5000/7000, Т3200/5200/7200</param>
+<param name="Ресурс">110 мл</param>
+<param name="Тип">Картридж EPSON</param>
+<param name="Тип печати">струйная</param>
+<param name="Цвет">Черный</param>
+<keywords>Epson, Картридж Epson C13T692500 T3000/5000/7000 Т3200/5200/7200 матовый черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="ACC13T694100" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T694100</vendorCode>
@@ -1030,6 +1060,32 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl., доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="AC100016948" available="true">
+<categoryId></categoryId>
+<vendorCode>AC100016948</vendorCode>
+<name>Ламинатор Fellowes Arc A3, 75/125 мкм, 30см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</name>
+<price>24900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Ламинатор Fellowes Arc A3, 75/125 мкм, 30см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Ламинатор Arc А3<br>Диапазон плёнок 75 – 125 мкм<br>Скорость ламинирования 30 см/мин.<br>Время нагрева 4 мин.<br>Гарантия 1 год<br>Артикул FS-10001<br>Макс. формат A3<br>Рекомендуемое количество ламинирований в день 25 листов, неинтенсивное использование<br>Максимальная толщина ламинирования (лист+пленка), мм 0,4<br>Толщина пленки, мкм 75/125<br>Ширина входа, мм 230<br>Система нагрева нагреваемые валы<br>Кол-во валов 2<br>Время нагрева, мин 4<br>Регулировка температуры нет<br>Макс. скорость, см/мин 30<br>Регулировка скорости нет<br>AutoSense нет<br>InstaHeat нет<br>HeatGuard™ нет<br>Easi-Access механизм нет<br>Освобождение да<br>Реверс нет<br>Auto Shut Off (Автоотключение) да (после 30 минут простоя)<br>Сигнал готовности свет<br>Персональные настройки нет<br>Холодное ламинирование нет<br>Съемный сетевой кабель нет<br>Выходной лоток нет<br>Гарантия, лет 1<br>Стартовый набор для 10 документов да<br>Габаритные размеры, мм (ВхШхГ) 62 x 459 x 113<br>Вес, кг 1<br>Размеры розничной упаковки, мм (ВхШхГ) 157 x 405 x 101<br>Вес розничной упаковки, кг 1,5<br>Размеры транспортной упаковки, мм (ВхШхГ) 171 x 390 x 412<br>Вес транспортной упаковки, кг 6,7<br>Количество в транспортной упаковке 4</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Модель:</strong> Ламинатор Fellowes Arc A3, 75/125 мкм, 30см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</li><li><strong>Тип:</strong> Ламинатор А3</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">12 мес</param>
+<param name="Модель">Ламинатор Fellowes Arc A3, 75/125 мкм, 30см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</param>
+<param name="Тип">Ламинатор А3</param>
+<keywords>Fellowes, Ламинатор Fellowes Arc A3 75/125 мкм 30см/мин AutoShutOff механизм освобожд. старт.набор пленок, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="ACFS-45700" available="true">
 <categoryId></categoryId>
 <vendorCode>ACFS-45700</vendorCode>
@@ -1056,6 +1112,60 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Fellowes, Ламинатор Fellowes Arc A4 75/80 мкм 30 см/мин AutoShutOff механизм освобожд. старт.набор пленок, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="AC4560201" available="true">
+<categoryId></categoryId>
+<vendorCode>AC4560201</vendorCode>
+<name>Ламинатор Fellowes Ion A3, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</name>
+<price>54900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Ламинатор Fellowes Ion A3, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Артикул fs-45602<br>Макс. формат A3<br>Рекомендуемое количество ламинирований в день 25 листов, неинтенсивное использование<br>Максимальная толщина ламинирования (лист+пленка), мм 0,4<br>Толщина пленки, мкм 75/80, 100, 125<br>Ширина входа, мм 320<br>Система нагрева нагреваемые валы<br>Кол-во валов 2<br>Время нагрева, мин 4<br>Регулировка температуры нет<br>Макс. скорость, см/мин 30<br>Регулировка скорости нет<br>AutoSense нет<br>InstaHeat нет<br>HeatGuard™ нет<br>Easi-Access механизм нет<br>Освобождение да<br>Реверс нет<br>Auto Shut Off (Автоотключение) да (30 мин после включения)<br>Сигнал готовности свет<br>Персональные настройки нет<br>Холодное ламинирование нет<br>Съемный сетевой кабель нет<br>Выходной лоток нет<br>Гарантия, лет 1<br>Стартовый набор для 10 документов да<br>Габаритные размеры, мм (ВхШхГ) 66 x 450 x 158<br>Вес, кг 2<br>Размеры розничной упаковки, мм (ВхШхГ) 91 x 480 x 185<br>Вес розничной упаковки, кг 2,4<br>Размеры транспортной упаковки, мм (ВхШхГ) 375 x 210 x 495<br>Вес транспортной упаковки, кг 9,6<br>Количество в транспортной упаковке 4</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Модель:</strong> Ламинатор Fellowes Ion A3, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</li><li><strong>Тип:</strong> Ламинатор А3</li><li><strong>Цвет:</strong> Белый</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">12 мес</param>
+<param name="Модель">Ламинатор Fellowes Ion A3, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</param>
+<param name="Тип">Ламинатор А3</param>
+<param name="Цвет">Белый</param>
+<keywords>Fellowes, Ламинатор Fellowes Ion A3 75-125 мкм 30 см/мин AutoShutOff механизм освобождения стар, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC4560001" available="true">
+<categoryId></categoryId>
+<vendorCode>AC4560001</vendorCode>
+<name>Ламинатор Fellowes Ion A4, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</name>
+<price>22900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Ламинатор Fellowes Ion A4, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Ламинатор Ion А4<br>Диапазон плёнок 75 – 125 мкм<br>Скорость ламинирования 30 см/мин.<br>Время нагрева 4 мин.<br>Гарантия 1 год<br>Артикул fs-45600<br>Макс. формат A4<br>Рекомендуемое количество ламинирований в день 25 листов, неинтенсивное использование<br>Максимальная толщина ламинирования (лист+пленка), мм 0,4<br>Толщина пленки, мкм 75/80, 100, 125<br>Ширина входа, мм 230<br>Система нагрева нагреваемые валы<br>Кол-во валов 2<br>Время нагрева, мин 4<br>Регулировка температуры нет<br>Макс. скорость, см/мин 30<br>Регулировка скорости нет<br>AutoSense нет<br>InstaHeat нет<br>HeatGuard™ нет<br>Easi-Access механизм нет<br>Освобождение да<br>Реверс нет<br>Auto Shut Off (Автоотключение) да (30 мин после включения)<br>Сигнал готовности свет<br>Персональные настройки нет<br>Холодное ламинирование нет<br>Съемный сетевой кабель нет<br>Выходной лоток нет<br>Гарантия, лет 1<br>Стартовый набор для 10 документов да<br>Габаритные размеры, мм (ВхШхГ) 62 x 359 x 113<br>Вес, кг 1<br>Размеры розничной упаковки, мм (ВхШхГ) 157 x 405 x 101<br>Вес розничной упаковки, кг 1,5<br>Размеры транспортной упаковки, мм (ВхШхГ) 171 x 390 x 412<br>Вес транспортной упаковки, кг 6,7<br>Количество в транспортной упаковке 4</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Модель:</strong> Ламинатор Fellowes Ion A4, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</li><li><strong>Тип:</strong> Ламинатор А4</li><li><strong>Цвет:</strong> Белый</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">12 мес</param>
+<param name="Модель">Ламинатор Fellowes Ion A4, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</param>
+<param name="Тип">Ламинатор А4</param>
+<param name="Цвет">Белый</param>
+<keywords>Fellowes, Ламинатор Fellowes Ion A4 75-125 мкм 30 см/мин AutoShutOff механизм освобождения стар, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="AC5716701" available="true">
 <categoryId></categoryId>
 <vendorCode>AC5716701</vendorCode>
@@ -1080,6 +1190,32 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Ламинатор Fellowes Lunar A3, 2х80 мкм, 30 см/мин</param>
 <param name="Тип">Ламинатор А3</param>
 <keywords>Fellowes, Ламинатор Fellowes Lunar A3 2х80 мкм 30 см/мин, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC5715601" available="true">
+<categoryId></categoryId>
+<vendorCode>AC5715601</vendorCode>
+<name>Ламинатор Fellowes Lunar A4, 2х80 мкм, 30 см/мин</name>
+<price>25900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Ламинатор Fellowes Lunar A4, 2х80 мкм, 30 см/мин</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Lunar A4 – ламинатор начального уровня для домашнего офиса и использования время от времени.<br>Ламинатор Lunar A4 предназначен для работы с пленкой 75/80 мкм. Максимальный формат документа – А4. Ламинатор прост в управлении и не требует дополнительных настроек. Зеленый световой сигнал подскажет о готовности к работе через 6 минут после включения.<br>Рычаг освобождения поможет изъять неправильно поданный документ в ламинатор. Корпус ламинатора не перегревается и безопасен при прикосновении. Ламинатор Lunar A4 позволяет надежно заламинировать документы, презентационные и рекламные материалы, фотографии, грамоты, рисунки, открытки, визитки, инструкции и многое другое.</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Модель:</strong> Ламинатор Fellowes Lunar A4, 2х80 мкм, 30 см/мин</li><li><strong>Тип:</strong> Ламинатор А4</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">12 мес</param>
+<param name="Модель">Ламинатор Fellowes Lunar A4, 2х80 мкм, 30 см/мин</param>
+<param name="Тип">Ламинатор А4</param>
+<keywords>Fellowes, Ламинатор Fellowes Lunar A4 2х80 мкм 30 см/мин, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC5742801" available="true">
@@ -1854,6 +1990,32 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">МФУ Дом</param>
 <param name="Тип печати">струйная</param>
 <keywords>Canon, МФУ струйное Canon Pixma G3430 Wi-Fi черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC5627501" available="true">
+<categoryId></categoryId>
+<vendorCode>AC5627501</vendorCode>
+<name>Переплетчик Fellowes STAR+ 150 COMB BINDER</name>
+<price>52900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Переплетчик Fellowes STAR+ 150 COMB BINDER</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Переплетчик STAR+ на пластиковую пружину<br>Оптимальный брошюровщик для небольшого офиса<br>Механическая перфорация<br>Кол-во сшиваемых листов: 150<br>Кол-во пробиваемых листов: 15<br>Диапазон диаметров пружин: 6-19 мм.<br>Гарантия: 2 года.<br>Артикул fs-56275<br>Кол-во перфорируемых листов (80г/м²) 15<br>Максимальный диаметр пружины, мм 19<br>Хранилище для пружин да<br>Съемный блок для сшивания (Satellite system) нет<br>Доступ к лотку для отходов с одной стороны<br>Окошко лотка для отходов да<br>Раздельные механизмы перфорации и сшивания да<br>Эргономичное расположение зубцов да<br>Изменение глубины перфорации нет<br>Селектор диаметра пружин и толщины документа да<br>Вертикальная загрузка документа да<br>Ручка перфорации широкая<br>Отключаемые пуансоны нет<br>Селектор формата А4-А5 сдвижной<br>Гарантия, лет 2<br>Габаритные размеры, мм (ВхШхГ) 80 x 448 x 280<br>Вес, кг 4,26<br>Размеры розничной упаковки, мм (ВхШхГ) 350 x 512 x 144<br>Вес розничной упаковки, кг 5,1<br>Размеры транспортной упаковки, мм (ВхШхГ) 374 x 298 x 528<br>Вес транспортной упаковки, кг 10,88<br>Количество в транспортной упаковке 2<br>Сетевой кабель нет</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Модель:</strong> Переплетчик Fellowes STAR+ 150 COMB BINDER</li><li><strong>Тип:</strong> переплетные машины на пластиковую пружину</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">24 мес</param>
+<param name="Модель">Переплетчик Fellowes STAR+ 150 COMB BINDER</param>
+<param name="Тип">переплетные машины на пластиковую пружину</param>
+<keywords>Fellowes, Переплетчик Fellowes STAR+ 150 COMB BINDER, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACFS-53061" available="true">
@@ -3101,6 +3263,36 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="ACC13T06C14A" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T06C14A</vendorCode>
+<name>Чернила Epson C13T06C14A для L15150 чёрный</name>
+<price>16900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Чернила Epson C13T06C14A для L15150 чёрный</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Контейнер с черными чернилами</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила для L65**/L15***</li><li><strong>Объем:</strong> 0,001</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">3 мес</param>
+<param name="Для бренда">Epson</param>
+<param name="Модель">Epson Чернила для L65**/L15***</param>
+<param name="Объем">0,001</param>
+<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип печати">струйная</param>
+<param name="Цвет">Чёрный</param>
+<keywords>Epson, Чернила Epson C13T06C14A для L15150 чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="ACC13T06C24A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T06C24A</vendorCode>
@@ -3553,6 +3745,119 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="AC4680101" available="true">
+<categoryId></categoryId>
+<vendorCode>AC4680101</vendorCode>
+<name>Шредер Fellowes® AUTOMAX 150C SHREDDER (CROSS CUT) 230V EU</name>
+<price>100</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes® AUTOMAX 150C SHREDDER (CROSS CUT) 230V EU</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Модель: Шредер Fellowes® AUTOMAX 150C SHREDDER (CROSS CUT) 230V EU</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 месяцев</li><li><strong>Модель:</strong> Шредер Fellowes® AUTOMAX 150C SHREDDER (CROSS CUT) 230V EU</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">12 месяцев</param>
+<param name="Модель">Шредер Fellowes® AUTOMAX 150C SHREDDER (CROSS CUT) 230V EU</param>
+<keywords>Fellowes, Шредер Fellowes® AUTOMAX 150C SHREDDER (CROSS CUT) 230V EU, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC4629201" available="true">
+<categoryId></categoryId>
+<vendorCode>AC4629201</vendorCode>
+<name>Шредер Fellowes® AutoMax® 100M, минирезка, DIN P-4, 4х10 мм, автоподача 100 лст., 23 лтр., автореверс</name>
+<price>148900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes® AutoMax® 100M, минирезка, DIN P-4, 4х10 мм, автоподача 100 лст., 23 лтр., автореверс</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Шредер с автоподачей AutoMax™ 100M<br>Гибридная модель с автоматической/ручной подачей<br>Ультра тихий механизм уничтожения с плавающим режущим блоком<br>Загрузка лотка до 100 листов, быстрая подача бумаги благодаря 8 прорезиненным роликам<br>Перекрестная минирезка - 4х10 мм, лист А4 разрезается на 1500 фрагментов<br>Удобная выдвижная корзина 23 литра ≈ 175 листов А4<br>Гарантия 2 года на устройство и 7 лет на ножи<br>Возможности уничтожения - скобы, карты, скрепки<br>AutoFeed. Автоматическая подача документов на уничтожение. Просто загрузите стопку документов в лоток и включите шредер – все остальное он сделает за вас.<br>Auto Reverse Auto Reverse. В случае образования затора автоматически запускается обратный ход, чтобы расправить на ножах бумагу. Уничтожение продолжится в обычном режиме.<br>SilentShred SilentShred®. Тихая и комфортная работа уничтожителя документов. Особая конструкция двигателя и механизма привода минимизирует уровень шума при работе шредера.<br>Sleep Mode Sleep Mode™. автоматическое отключение питания шредера</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Емкость корзины, литров:</strong> 23 л</li><li><strong>Модель:</strong> Шредер Fellowes® AutoMax® 100M, минирезка, DIN P-4, 4х10 мм,автоподача 100 лст., 23 лтр., автореверс</li><li><strong>Производительность уничтожителя:</strong> 100 (10 вручную)</li><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Тип резки:</strong> перекрестная</li><li><strong>Уничтожение:</strong> скобы, карты, скрепки</li><li><strong>Уровень секретности:</strong> P-4</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">24 мес</param>
+<param name="Емкость корзины, литров">23 л</param>
+<param name="Модель">Шредер Fellowes® AutoMax® 100M, минирезка, DIN P-4, 4х10 мм,автоподача 100 лст., 23 лтр., автореверс</param>
+<param name="Производительность уничтожителя">100 (10 вручную)</param>
+<param name="Тип">шредеры офисные</param>
+<param name="Тип резки">перекрестная</param>
+<param name="Уничтожение">скобы, карты, скрепки</param>
+<param name="Уровень секретности">P-4</param>
+<keywords>Fellowes, Шредер Fellowes® AutoMax® 100M минирезка DIN P-4 4х10 мм автоподача 100 лст. 23 лтр. автореверс, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC4633601" available="true">
+<categoryId></categoryId>
+<vendorCode>AC4633601</vendorCode>
+<name>Шредер Fellowes® AutoMax® 90M, минирезка, DIN P-4, 4х12 мм, автоподача 80 лст., 17 лтр., автореверс</name>
+<price>100</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes® AutoMax® 90M, минирезка, DIN P-4, 4х12 мм, автоподача 80 лст., 17 лтр., автореверс</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Автоподатчик: да</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Емкость корзины, литров:</strong> 17 л</li><li><strong>Модель:</strong> Шредер Fellowes® AutoMax® 90M, минирезка, DIN P-4, 4х12 мм,автоподача 80 лст., 17 лтр., автореверс</li><li><strong>Производительность уничтожителя:</strong> 80 листов</li><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Тип резки:</strong> перекрестная</li><li><strong>Уничтожение:</strong> скобы, карты, скрепки</li><li><strong>Уровень секретности:</strong> P-4</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">24 мес</param>
+<param name="Емкость корзины, литров">17 л</param>
+<param name="Модель">Шредер Fellowes® AutoMax® 90M, минирезка, DIN P-4, 4х12 мм,автоподача 80 лст., 17 лтр., автореверс</param>
+<param name="Производительность уничтожителя">80 листов</param>
+<param name="Тип">шредеры офисные</param>
+<param name="Тип резки">перекрестная</param>
+<param name="Уничтожение">скобы, карты, скрепки</param>
+<param name="Уровень секретности">P-4</param>
+<keywords>Fellowes, Шредер Fellowes® AutoMax® 90M минирезка DIN P-4 4х12 мм автоподача 80 лст. 17 лтр. автореверс, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC100017466" available="true">
+<categoryId></categoryId>
+<vendorCode>AC100017466</vendorCode>
+<name>Шредер Fellowes® Powershred® 15C shredder (cross cut) 230V EU</name>
+<price>100</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes® Powershred® 15C shredder (cross cut) 230V EU</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Уровень секретности (DIN 66399): P-4; степлерные скобы; канцелярские скрепки; пластиковые карты; Тип резки: перекрестная; Размеры фрагментов (мм): 4x40; Скорость уничтожения (мм/с): 40; Листов одна загрузка (шт): 12; Рабочий цикл (мин): 10; Емкость корзины (л): 19; Функции и возможности: Габариты (мм): 470x340x247</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Модель:</strong> Шредер Fellowes® Powershred® 15C shredder (cross cut) 230V EU</li><li><strong>Тип:</strong> шредеры офисные</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">12 мес</param>
+<param name="Модель">Шредер Fellowes® Powershred® 15C shredder (cross cut) 230V EU</param>
+<param name="Тип">шредеры офисные</param>
+<keywords>Fellowes, Шредер Fellowes® Powershred® 15C shredder (cross cut) 230V EU, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="AC4653101" available="true">
 <categoryId></categoryId>
 <vendorCode>AC4653101</vendorCode>
@@ -3582,6 +3887,186 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Fellowes, Шредер Fellowes® Powershred® 53C DIN P-4, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="AC5502201" available="true">
+<categoryId></categoryId>
+<vendorCode>AC5502201</vendorCode>
+<name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™</name>
+<price>172900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Шредер Powershred® LX200<br>Шредер нового поколения с непревзойденным удобством и эффективностью<br>Уничтожает до 12 листов одновременно<br>Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов<br>Вместительная корзина 22 литра ≈ 350 листов А4<br>Гарантия 2 года на устройство и 5 лет на ножи<br>Возможности уничтожения - скобы, карты, скрепки<br>Артикул fs-55022<br>Количество пользователей 1-3 Пользователя<br>Рекомендуемое количество листов в день 1000<br>Рекомендуемое количество кредитных карт в день 25<br>Рекомендуемое количество CD дисков в день нет<br>Загрузка, листов (A4, 70гр/м²) 12<br>Тип Резки Перекрест.<br>Размер резки, мм 4 x 12<br>Уровень секретности, DIN 66399 P-4<br>Количество фрагментов при резке листа А4, шт. ≥1300<br>Уровень секретности для кредитных карт, DIN 66399 T-4<br>Уровень секретности для CD дисков, DIN 66399 нет<br>Ширина входа, мм 230<br>Скорость резки, м/мин 2<br>Рабочий цикл, мин 10 / 15<br>Уничтожение степлерных скоб да<br>Уничтожение скрепок да<br>Уничтожение кредитных карт да<br>Уничтожение CD или Blu-Ray DVD (1,</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Модель:</strong> Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</li><li><strong>Тип:</strong> шредеры офисные</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">24 мес</param>
+<param name="Модель">Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</param>
+<param name="Тип">шредеры офисные</param>
+<keywords>Fellowes, Шредер Fellowes® Powershred® LX200 черный DIN P-4 4х12 мм 12 лст. 22 лтр. Jam Proof™, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC5502501" available="true">
+<categoryId></categoryId>
+<vendorCode>AC5502501</vendorCode>
+<name>Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</name>
+<price>177900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Шредер Powershred® LX210<br>Шредер нового поколения с непревзойденным удобством и эффективностью<br>Уничтожает до 16 листов одновременно<br>Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов<br>Вместительная корзина 23 литра ≈ 425 листов А4<br>Гарантия 2 года на устройство и 5 лет на ножи<br>Возможности уничтожения - скобы, карты, скрепки<br>Артикул fs-55025<br>Количество пользователей 1-3 Пользователя<br>Рекомендуемое количество листов в день 1000<br>Рекомендуемое количество кредитных карт в день 25<br>Рекомендуемое количество CD дисков в день нет<br>Загрузка, листов (A4, 70гр/м²) 16<br>Тип Резки Перекрест.<br>Размер резки, мм 4 x 12<br>Уровень секретности, DIN 66399 P-4<br>Количество фрагментов при резке листа А4, шт. &gt;1300<br>Уровень секретности для кредитных карт, DIN 66399 T-4<br>Уровень секретности для CD дисков, DIN 66399 нет<br>Ширина входа, мм 230<br>Скорость резки, м/мин 2<br>Рабочий цикл, мин 20 / 15<br>Уничтожение степлерных скоб да<br>Уничтожение скрепок да<br>Уничтожение кредитных карт да<br>Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет<br>100% Jam-Proof Технология предотвращения заторов да<br>SafeSense® Технология да<br>Sleep Mode (автоотключение) да<br>Тип корзины выдвижная<br>Емкость корзины, л 23…</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Модель:</strong> Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</li><li><strong>Тип:</strong> шредеры офисные</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">24 мес</param>
+<param name="Модель">Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</param>
+<param name="Тип">шредеры офисные</param>
+<keywords>Fellowes, Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC5050301" available="true">
+<categoryId></categoryId>
+<vendorCode>AC5050301</vendorCode>
+<name>Шредер Fellowes® Powershred® LX211 WHITE SHREDDER EU/UK</name>
+<price>209900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes® Powershred® LX211 WHITE SHREDDER EU/UK</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Шредер Powershred® LX211 белый<br>Шредер нового поколения с непревзойденным удобством и эффективностью<br>P-5 уровень секретности, резка листа А4 на 2200+ фрагментов<br>Уничтожает до 15 листов одновременно<br>Перекрестная резка - 2х12 мм<br>Вместительная корзина 23 литров ≈ 425 листов А4<br>Гарантия 2 года на устройство и 5 лет на ножи<br>Возможности уничтожения - скобы, карты, скрепки<br>Артикул fs-50503<br>Количество пользователей 1-3 Пользователя<br>Рекомендуемое количество листов в день 1000<br>Рекомендуемое количество кредитных карт в день 25<br>Рекомендуемое количество CD дисков в день нет<br>Загрузка, листов (A4, 70гр/м²) 15<br>Тип Резки Перекрест.<br>Размер резки, мм 2 x 12<br>Уровень секретности, DIN 66399 P-5<br>Количество фрагментов при резке листа А4, шт. &gt;2200<br>Уровень секретности для кредитных карт, DIN 66399 T-5<br>Уровень секретности для CD дисков, DIN 66399 нет<br>Ширина входа, мм 230<br>Скорость резки, м/мин 2<br>Рабочий цикл, мин 20 / 15<br>Уничтожение степлерных скоб да<br>Уничтожение скрепок да<br>Уничтожение кредитных карт да<br>Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет<br>100% Jam-Proof Технология предотвращения заторов да<br>SafeSense® Технология да<br>Sleep Mode (автоотключение) да<br>Тип корзины выдвижная<br>Емкость корзины, л 23…</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Модель:</strong> Шредер Fellowes® Powershred® LX211 WHITE SHREDDER EU/UK</li><li><strong>Тип:</strong> шредеры офисные</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">24 мес</param>
+<param name="Модель">Шредер Fellowes® Powershred® LX211 WHITE SHREDDER EU/UK</param>
+<param name="Тип">шредеры офисные</param>
+<keywords>Fellowes, Шредер Fellowes® Powershred® LX211 WHITE SHREDDER EU/UK, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC5502601" available="true">
+<categoryId></categoryId>
+<vendorCode>AC5502601</vendorCode>
+<name>Шредер Fellowes® Powershred®LX220 BLACK SHREDDER EU/UK</name>
+<price>100</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes® Powershred®LX220 BLACK SHREDDER EU/UK</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Шредер Powershred® LX220<br>Шредер нового поколения с непревзойденным удобством и эффективностью<br>Уничтожает до 20 листов одновременно, рабочий цикл 30 мин<br>Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов<br>Вместительная корзина 30 литров ≈ 750 листов А4<br>Гарантия 2 года на устройство и 5 лет на ножи<br>Возможности уничтожения - скобы, карты, скрепки<br>Артикул fs-55026<br>Количество пользователей 1-3 Пользователя<br>Рекомендуемое количество листов в день 1000<br>Рекомендуемое количество кредитных карт в день 25<br>Рекомендуемое количество CD дисков в день нет<br>Загрузка, листов (A4, 70гр/м²) 20<br>Тип Резки Перекрест.<br>Размер резки, мм 4 x 12<br>Уровень секретности, DIN 66399 P-4<br>Количество фрагментов при резке листа А4, шт. &gt;1300<br>Уровень секретности для кредитных карт, DIN 66399 T-4<br>Уровень секретности для CD дисков, DIN 66399 нет<br>Ширина входа, мм 230<br>Скорость резки, м/мин 2<br>Рабочий цикл, мин 30 / 15<br>Уничтожение степлерных скоб да<br>Уничтожение скрепок да<br>Уничтожение кредитных карт да<br>Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет<br>100% Jam-Proof Технология предотвращения заторов да<br>SafeSense® Технология да<br>Sleep Mode (автоотключение) да<br>Тип корзины выдвижная<br>Емкость корзины, л 30…</p>
+<h3>Характеристики</h3><ul><li><strong>Модель:</strong> Шредер Fellowes® Powershred®LX220 BLACK SHREDDER EU/UK</li><li><strong>Тип:</strong> шредеры офисные</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Модель">Шредер Fellowes® Powershred®LX220 BLACK SHREDDER EU/UK</param>
+<param name="Тип">шредеры офисные</param>
+<keywords>Fellowes, Шредер Fellowes® Powershred®LX220 BLACK SHREDDER EU/UK, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC5050501" available="true">
+<categoryId></categoryId>
+<vendorCode>AC5050501</vendorCode>
+<name>Шредер Fellowes® Powershred®LX221 WHITE SHREDDER EU/UK</name>
+<price>259900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes® Powershred®LX221 WHITE SHREDDER EU/UK</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Шредер Powershred® LX221 белый<br>Шредер нового поколения с непревзойденным удобством и эффективностью<br>P-5 уровень секретности, резка листа А4 на 2200+ фрагментов<br>Уничтожает до 20 листов одновременно<br>Перекрестная резка - 2х12 мм<br>Вместительная корзина 30 литров ≈ 750 листов А4<br>Гарантия 2 года на устройство и 5 лет на ножи<br>Возможности уничтожения - скобы, карты, скрепки<br>Артикул fs-50505<br>Количество пользователей 1-3 Пользователя<br>Рекомендуемое количество листов в день 1000<br>Рекомендуемое количество кредитных карт в день 25<br>Рекомендуемое количество CD дисков в день нет<br>Загрузка, листов (A4, 70гр/м²) 20<br>Тип Резки Перекрест.<br>Размер резки, мм 2 x 12<br>Уровень секретности, DIN 66399 P-5<br>Количество фрагментов при резке листа А4, шт. &gt;2200<br>Уровень секретности для кредитных карт, DIN 66399 T-5<br>Уровень секретности для CD дисков, DIN 66399 нет<br>Ширина входа, мм 230<br>Скорость резки, м/мин 2<br>Рабочий цикл, мин 25 / 15<br>Уничтожение степлерных скоб да<br>Уничтожение скрепок да<br>Уничтожение кредитных карт да<br>Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет<br>100% Jam-Proof Технология предотвращения заторов да<br>SafeSense® Технология да<br>Sleep Mode (автоотключение) да<br>Тип корзины выдвижная<br>Емкость корзины, л 30…</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Модель:</strong> Шредер Fellowes® Powershred®LX221 WHITE SHREDDER EU/UK</li><li><strong>Тип:</strong> шредеры офисные</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">24 мес</param>
+<param name="Модель">Шредер Fellowes® Powershred®LX221 WHITE SHREDDER EU/UK</param>
+<param name="Тип">шредеры офисные</param>
+<keywords>Fellowes, Шредер Fellowes® Powershred®LX221 WHITE SHREDDER EU/UK, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC4170501" available="true">
+<categoryId></categoryId>
+<vendorCode>AC4170501</vendorCode>
+<name>Шредер Fellowes® Powershred®LX25 SHREDDER (CROSS CUT) 230V EU</name>
+<price>39900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes® Powershred®LX25 SHREDDER (CROSS CUT) 230V EU</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Шредер Powershred® LX25<br>Привлекательный дизайн с окном для контроля наполняемости<br>Перекрестная резка - 4 х 37 мм, P-4 уровень секретности<br>Корзина 11,5 литров ≈ 60 листов А4<br>Гарантия 2 года на устройство и 3 года на ножи<br>Возможности уничтожения - скобы, карты, скрепки<br>Артикул fs-41705<br>Количество пользователей 1 пользователь<br>Рекомендуемое количество листов в день 30<br>Рекомендуемое количество кредитных карт в день 5<br>Рекомендуемое количество CD дисков в день нет<br>Загрузка, листов (A4, 70гр/м²) 6<br>Тип Резки Перекрест.<br>Размер резки, мм 4 x 37<br>Уровень секретности, DIN 66399 P-4<br>Количество фрагментов при резке листа А4, шт. ≥421<br>Уровень секретности для кредитных карт, DIN 66399 T-4<br>Ширина входа, мм 220<br>Скорость резки, м/мин 2<br>Рабочий цикл, мин 3 / 30<br>Уничтожение степлерных скоб да<br>Уничтожение скрепок да<br>Уничтожение кредитных карт да<br>Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет<br>100% Jam-Proof Технология предотвращения заторов нет<br>Другие технологии предотвращения заторов Реверс<br>SafeSense® Технология нет<br>Safety Lock да<br>SilentShred® нет<br>Energy Savings System нет<br>Sleep Mode (автоотключение) нет<br>Auto-Oil™ нет<br>Селектор количества листов нет<br>Тип корзины стандартная (съемный режущий блок)…</p>
+<h3>Характеристики</h3><ul><li><strong>Модель:</strong> Шредер Fellowes® Powershred®LX25 SHREDDER (CROSS CUT) 230V EU</li><li><strong>Тип:</strong> шредеры офисные</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Модель">Шредер Fellowes® Powershred®LX25 SHREDDER (CROSS CUT) 230V EU</param>
+<param name="Тип">шредеры офисные</param>
+<keywords>Fellowes, Шредер Fellowes® Powershred®LX25 SHREDDER (CROSS CUT) 230V EU, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC4170601" available="true">
+<categoryId></categoryId>
+<vendorCode>AC4170601</vendorCode>
+<name>Шредер Fellowes® Powershred®LX25M SHREDDER (CROSS CUT) 230V EU</name>
+<price>46900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes® Powershred®LX25M SHREDDER (CROSS CUT) 230V EU</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Шредер Fellowes LX25M - персональный шредер в новом фирменном стиле с повышенной секретностью. Шредер уничтожает лист A4 на более чем 1300 фрагментов размером 4х12мм. Оптимальная производительность для персонального использования – 6 листов, рекомендуемая нагрузка до 30 листов в день.<br>Модель является уникальной на рынке и наиболее доступной по цене среди шредеров Fellowes, которые предназначены для уничтожения конфиденциальных документов повышенного уровня секретности.<br>Процесс измельчения запускается автоматически при подаче бумаги в слот. Функция реверса может эффективно предотвращать бумажные заторы.<br>Шредер Powershred LX25M обеспечивается увеличенной гарантией на 2 года на устройство и 3 года на ножи.</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Модель:</strong> Шредер Fellowes® Powershred®LX25M SHREDDER (CROSS CUT) 230V EU</li><li><strong>Тип:</strong> шредеры офисные</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">24 мес</param>
+<param name="Модель">Шредер Fellowes® Powershred®LX25M SHREDDER (CROSS CUT) 230V EU</param>
+<param name="Тип">шредеры офисные</param>
+<keywords>Fellowes, Шредер Fellowes® Powershred®LX25M SHREDDER (CROSS CUT) 230V EU, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="AC4400501" available="true">
 <categoryId></categoryId>
 <vendorCode>AC4400501</vendorCode>
@@ -3605,6 +4090,32 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU</param>
 <param name="Тип">шредеры офисные</param>
 <keywords>Fellowes, Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="AC4400701" available="true">
+<categoryId></categoryId>
+<vendorCode>AC4400701</vendorCode>
+<name>Шредер Fellowes® Powershred®LX65 SHREDDER (CROSS CUT) 230V EU</name>
+<price>71900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Шредер Fellowes® Powershred®LX65 SHREDDER (CROSS CUT) 230V EU</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Шредер Powershred® LX65<br>Самый доступный уничтожитель с технологией безопасности SafeSense<br>Высокая скорость уничтожения 4 м/мин, одновременное уничтожение до 10 листов<br>Перекрестная резка - 4х40 мм, P-4 уровень секретности<br>Корзина 22 литра ≈ 300 листов А4<br>Гарантия 2 года на устройство и 5 лет на ножи<br>Возможности уничтожения - скобы, карты, скрепки<br>Артикул fs-44007<br>Количество пользователей 1-3 Пользователя<br>Рекомендуемое количество листов в день 100<br>Рекомендуемое количество кредитных карт в день 5<br>Рекомендуемое количество CD дисков в день нет<br>Загрузка, листов (A4, 70гр/м²) 10<br>Тип Резки Перекрест.<br>Размер резки, мм 4 x 40<br>Уровень секретности, DIN 66399 P-4<br>Количество фрагментов при резке листа А4, шт. ≥380<br>Уровень секретности для кредитных карт, DIN 66399 T-4<br>Ширина входа, мм 222<br>Скорость резки, м/мин 4<br>Рабочий цикл, мин 6 / 20<br>Уничтожение степлерных скоб да<br>Уничтожение скрепок да<br>Уничтожение кредитных карт да<br>Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет<br>100% Jam-Proof Технология предотвращения заторов нет<br>Другие технологии предотвращения заторов Реверс<br>SafeSense® Технология да<br>Safety Lock нет<br>SilentShred® нет<br>Energy Savings System нет<br>Sleep Mode (автоотключение) нет<br>Auto-Oil™ нет…</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Модель:</strong> Шредер Fellowes® Powershred®LX65 SHREDDER (CROSS CUT) 230V EU</li><li><strong>Тип:</strong> шредеры офисные</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">24 мес</param>
+<param name="Модель">Шредер Fellowes® Powershred®LX65 SHREDDER (CROSS CUT) 230V EU</param>
+<param name="Тип">шредеры офисные</param>
+<keywords>Fellowes, Шредер Fellowes® Powershred®LX65 SHREDDER (CROSS CUT) 230V EU, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC6008101" available="true">
