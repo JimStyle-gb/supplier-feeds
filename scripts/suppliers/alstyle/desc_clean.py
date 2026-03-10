@@ -5,7 +5,7 @@ Path: scripts/suppliers/alstyle/desc_clean.py
 AlStyle description cleaning.
 Только narrative-cleaning, без desc->params extraction.
 
-v119:
+v120:
 - сохраняет границы строк для multiline extraction;
 - мягко разрезает плотные one-line тех-описания на label-friendly строки;
 - чище дочищает Xerox/Canon narrative-хвосты;
@@ -99,6 +99,7 @@ _LABEL_BREAK_RE = re.compile(
     r"(?<!^)(?<!\n)(?=\b(?:" + "|".join(_LABEL_BREAK_PATTERNS) + r")\b)",
     re.IGNORECASE,
 )
+_OAICITE_RE = re.compile(r"(?is):{0,2}contentReference\[[^\]]*oaicite[^\]]*\](?:\{[^{}]*\})?")
 _BRAND_GLUE_RE = re.compile(
     r"(?<=[A-Za-zА-Яа-я0-9])(?=(?:CANON|Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark)\s+"
     r"(?:PIXMA|ImagePROGRAF|imageRUNNER|WorkCentre|WorkCenter|VersaLink|AltaLink|Phaser|ColorQube|CopyCentre|imageRUNNER|i-SENSYS|ECOSYS|LaserJet|DeskJet|OfficeJet)\b)"
@@ -365,6 +366,7 @@ def _clean_compat_narrative_line(s: str) -> str:
 
 def clean_desc_text_for_extraction(desc: str) -> str:
     s = unescape(desc or "")
+    s = _OAICITE_RE.sub(" ", s)
     s = re.sub(r"<\s*br\s*/?\s*>", "\n", s, flags=re.I)
     s = re.sub(r"</p\s*>", "\n", s, flags=re.I)
     s = re.sub(r"<\s*/?(?:div|li|ul|ol|table|tr|td|th|h[1-6])\b[^>]*>", "\n", s, flags=re.I)
