@@ -4,12 +4,13 @@ Path: scripts/suppliers/alstyle/compat.py
 
 AlStyle supplier layer — cleanup моделей / совместимости / кодовых серий.
 
-v117:
-- убран дубль бренда в начале совместимости: Xerox Xerox -> Xerox;
-- дочищается Xerox Для Xerox ... и похожие хвосты;
-- Canon PIXMA канонизируется по всей строке;
-- WorkCenter -> WorkCentre;
-- лучше режутся склеенные brand-model цепочки.
+v119:
+- дочищает Canon imagePROGRAF glue: 605Canon -> 605 / Canon;
+- дочищает Canon imageRUNNER ADVANCE glue;
+- режет narrative-хвосты в совместимости:
+  Цвет / Ресурс / Наличие чипа / Принт-картриджи / Комплект поставки / и т.п.;
+- убирает повторы бренда Xerox Xerox -> Xerox;
+- сохраняет уже сделанные Xerox/Canon cleanup-правки.
 """
 
 from __future__ import annotations
@@ -25,11 +26,38 @@ _CODE_SERIES_RE = re.compile(
 )
 _BRAND_GLUE_PATTERNS = [
     (re.compile(r"(?i)(Canon\s+PIXMA\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+PIXMA)"), r"\1 / "),
+    (re.compile(r"(?i)(Canon\s+ImagePROGRAF\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+ImagePROGRAF)"), r"\1 / "),
+    (
+        re.compile(
+            r"(?i)(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+imageRUNNER\s+ADVANCE)"
+        ),
+        r"\1 / ",
+    ),
     (re.compile(r"(?i)(Xerox\s+[A-Za-z-]*\d+[A-Za-z0-9/-]*)(?=\s*Xerox\s+)"), r"\1 / "),
     (re.compile(r"(?i)(WorkCentre\s+[A-Za-z-]*\d+[A-Za-z0-9/-]*)(?=\s*WorkCentre\s+)"), r"\1 / "),
 ]
 _REPEATED_BRAND_RE = re.compile(
     r"(?iu)\b(Xerox|Canon|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark)\s+\1\b"
+)
+_COMPAT_STOP_LABEL_RE = re.compile(
+    r"(?iu)\b(?:"
+    r"Цвет(?:\s+печати)?|"
+    r"Ресурс(?:\s+картриджа| фотобарабана)?|"
+    r"Количество\s+страниц|"
+    r"Наличие\s+чипа|"
+    r"Принт-?картриджи(?:\s+EUROPRINT)?|"
+    r"Комплект\s+поставки|"
+    r"Преимущества|Описание|Особенности|"
+    r"Гарантия|"
+    r"Условия\s+гарантии"
+    r")\b"
+)
+_COMPAT_NOISE_PHRASE_RE = re.compile(
+    r"(?iu)\b(?:"
+    r"формата\s+A4\s+можно\s+аккуратно\s+разместить|"
+    r"можно\s+аккуратно\s+разместить\s+на\s+рабочих\s+столах|"
+    r"что\s+идеально\s+подходит\s+для\s+небольших\s+офисов"
+    r")\b"
 )
 
 
@@ -76,8 +104,11 @@ def split_glued_brand_models(v: str) -> str:
     for rx, repl in _BRAND_GLUE_PATTERNS:
         s = rx.sub(repl, s)
     s = re.sub(
-        r"(?<=[A-Za-zА-Яа-я0-9])(?=(?:Canon|CANON|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark)\s+"
-        r"(?:PIXMA|WorkCentre|WorkCenter|VersaLink|AltaLink|Phaser|ColorQube|CopyCentre|imageRUNNER|i-SENSYS|ECOSYS|LaserJet|DeskJet|OfficeJet)\b)",
+        r"(?<=[A-Za-zА-Яа-я0-9])(?=(?:"
+        r"Canon|CANON|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark"
+        r")\s+(?:"
+        r"PIXMA|ImagePROGRAF|imageRUNNER|WorkCentre|WorkCenter|VersaLink|AltaLink|Phaser|ColorQube|CopyCentre|i-SENSYS|ECOSYS|LaserJet|DeskJet|OfficeJet"
+        r")\b)",
         " / ",
         s,
     )
@@ -90,6 +121,10 @@ def _canonize_brand_case(v: str) -> str:
         return ""
     s = re.sub(r"(?iu)\bCANON\s+PIXMA\b", "Canon PIXMA", s)
     s = re.sub(r"(?iu)\bCanon\s+Pixma\b", "Canon PIXMA", s)
+    s = re.sub(r"(?iu)\bCanon\s+imageprograf\b", "Canon ImagePROGRAF", s)
+    s = re.sub(r"(?iu)\bCANON\s+IMAGEPROGRAF\b", "Canon ImagePROGRAF", s)
+    s = re.sub(r"(?iu)\bCanon\s+imagerunner\b", "Canon imageRUNNER", s)
+    s = re.sub(r"(?iu)\bCANON\s+IMAGERUNNER\b", "Canon imageRUNNER", s)
     s = re.sub(r"(?iu)\bWorkCenter\b", "WorkCentre", s)
     return norm_ws(s)
 
@@ -106,13 +141,51 @@ def _dedupe_repeated_brand_prefixes(v: str) -> str:
     return norm_ws(s)
 
 
+def _fix_known_compat_typos(v: str) -> str:
+    s = norm_ws(v)
+    if not s:
+        return ""
+    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+)(?=Canon\s+ImagePROGRAF\s+\d+\b)", r"\1 / ", s)
+    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+)\s*Can\b", r"\1", s)
+    s = re.sub(
+        r"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=Canon\s+imageRUNNER\s+ADVANCE)",
+        r"\1 / ",
+        s,
+    )
+    s = re.sub(r"(?iu)\bCopyCentre\s+245\s*/\s*25\b", "CopyCentre 245 / 255", s)
+    return norm_ws(s)
+
+
+def _trim_compat_noise_tail(v: str) -> str:
+    s = norm_ws(v)
+    if not s:
+        return ""
+
+    cut_positions: list[int] = []
+
+    m = _COMPAT_STOP_LABEL_RE.search(s)
+    if m and m.start() >= 8:
+        cut_positions.append(m.start())
+
+    m = _COMPAT_NOISE_PHRASE_RE.search(s)
+    if m and m.start() >= 8:
+        cut_positions.append(m.start())
+
+    if cut_positions:
+        s = s[: min(cut_positions)]
+
+    return norm_ws(s.strip(" ;,.-"))
+
+
 def clean_compatibility_text(v: str) -> str:
     s = norm_ws(v)
     if not s:
         return ""
+
     s = fix_common_broken_words(s)
     s = _canonize_brand_case(s)
     s = _dedupe_repeated_brand_prefixes(s)
+    s = _fix_known_compat_typos(s)
 
     s = re.sub(r"(?iu)\bXerox\s+Для,\s+Xerox\s+", "Xerox ", s)
     s = re.sub(r"(?iu)\bXerox\s+Для\s+Xerox\s+", "Xerox ", s)
@@ -124,6 +197,8 @@ def clean_compatibility_text(v: str) -> str:
     s = split_glued_brand_models(s)
     s = _canonize_brand_case(s)
     s = _dedupe_repeated_brand_prefixes(s)
+    s = _fix_known_compat_typos(s)
+    s = _trim_compat_noise_tail(s)
 
     s = re.sub(r"\s*,\s*/\s*", " / ", s)
     s = re.sub(r"\s*/\s*,\s*", " / ", s)
@@ -131,6 +206,7 @@ def clean_compatibility_text(v: str) -> str:
 
     s = dedupe_slash_tail_models(s)
     s = _dedupe_repeated_brand_prefixes(s)
+    s = _trim_compat_noise_tail(s)
     return norm_ws(s.strip(" ;,.-"))
 
 
