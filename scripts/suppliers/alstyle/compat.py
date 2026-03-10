@@ -4,9 +4,10 @@ Path: scripts/suppliers/alstyle/compat.py
 
 AlStyle supplier layer — cleanup моделей / совместимости / кодовых серий.
 
-v119:
+v120:
 - дочищает Canon imagePROGRAF glue: 605Canon -> 605 / Canon;
-- дочищает Canon imageRUNNER ADVANCE glue;
+- дочищает Canon imageRUNNER ADVANCE glue и автоматически добавляет Canon к series-блокам;
+- дочищает Canon imagePRESS / imagePRESS Lite glue;
 - режет narrative-хвосты в совместимости:
   Цвет / Ресурс / Наличие чипа / Принт-картриджи / Комплект поставки / и т.п.;
 - убирает повторы бренда Xerox Xerox -> Xerox;
@@ -33,6 +34,13 @@ _BRAND_GLUE_PATTERNS = [
         ),
         r"\1 / ",
     ),
+    (
+        re.compile(
+            r"(?i)(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+imagePRESS)"
+        ),
+        r"\1 / ",
+    ),
+    (re.compile(r"(?i)(Canon\s+i-SENSYS\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=\s*Canon\s+i-SENSYS)"), r"\1 / "),
     (re.compile(r"(?i)(Xerox\s+[A-Za-z-]*\d+[A-Za-z0-9/-]*)(?=\s*Xerox\s+)"), r"\1 / "),
     (re.compile(r"(?i)(WorkCentre\s+[A-Za-z-]*\d+[A-Za-z0-9/-]*)(?=\s*WorkCentre\s+)"), r"\1 / "),
 ]
@@ -58,6 +66,14 @@ _COMPAT_NOISE_PHRASE_RE = re.compile(
     r"можно\s+аккуратно\s+разместить\s+на\s+рабочих\s+столах|"
     r"что\s+идеально\s+подходит\s+для\s+небольших\s+офисов"
     r")\b"
+)
+_LEADING_COMPAT_NOISE_RE = re.compile(
+    r"(?iu)^(?:"
+    r"Комплект\s+поставки|"
+    r"Описание|"
+    r"Особенности|"
+    r"Преимущества"
+    r")\s+"
 )
 
 
@@ -107,7 +123,7 @@ def split_glued_brand_models(v: str) -> str:
         r"(?<=[A-Za-zА-Яа-я0-9])(?=(?:"
         r"Canon|CANON|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark"
         r")\s+(?:"
-        r"PIXMA|ImagePROGRAF|imageRUNNER|WorkCentre|WorkCenter|VersaLink|AltaLink|Phaser|ColorQube|CopyCentre|i-SENSYS|ECOSYS|LaserJet|DeskJet|OfficeJet"
+        r"PIXMA|ImagePROGRAF|imageRUNNER|imagePRESS|WorkCentre|WorkCenter|VersaLink|AltaLink|Phaser|ColorQube|CopyCentre|i-SENSYS|ECOSYS|LaserJet|DeskJet|OfficeJet"
         r")\b)",
         " / ",
         s,
@@ -125,6 +141,8 @@ def _canonize_brand_case(v: str) -> str:
     s = re.sub(r"(?iu)\bCANON\s+IMAGEPROGRAF\b", "Canon ImagePROGRAF", s)
     s = re.sub(r"(?iu)\bCanon\s+imagerunner\b", "Canon imageRUNNER", s)
     s = re.sub(r"(?iu)\bCANON\s+IMAGERUNNER\b", "Canon imageRUNNER", s)
+    s = re.sub(r"(?iu)\bCanon\s+imagepress\b", "Canon imagePRESS", s)
+    s = re.sub(r"(?iu)\bCANON\s+IMAGEPRESS\b", "Canon imagePRESS", s)
     s = re.sub(r"(?iu)\bWorkCenter\b", "WorkCentre", s)
     return norm_ws(s)
 
@@ -141,18 +159,44 @@ def _dedupe_repeated_brand_prefixes(v: str) -> str:
     return norm_ws(s)
 
 
+def _prefix_missing_canon_brand(v: str) -> str:
+    s = norm_ws(v)
+    if not s:
+        return ""
+
+    series_patterns = [
+        r"ImagePROGRAF\s+[A-Za-z]*\d+[A-Za-z0-9-]*",
+        r"imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*",
+        r"imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*",
+        r"i-SENSYS\s+[A-Za-z]*\d+[A-Za-z0-9-]*",
+    ]
+    for pat in series_patterns:
+        s = re.sub(rf"(?iu)\b({pat})\b", r"Canon \1", s)
+        s = re.sub(r"(?iu)\bCanon\s+Canon\b", "Canon", s)
+
+    return norm_ws(s)
+
+
 def _fix_known_compat_typos(v: str) -> str:
     s = norm_ws(v)
     if not s:
         return ""
-    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+)(?=Canon\s+ImagePROGRAF\s+\d+\b)", r"\1 / ", s)
-    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+)\s*Can\b", r"\1", s)
+
+    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+[A-Za-z0-9-]*)(?=Canon\s+ImagePROGRAF\b)", r"\1 / ", s)
+    s = re.sub(r"(?iu)\b(Canon\s+ImagePROGRAF\s+\d+[A-Za-z0-9-]*)\s*Can\b", r"\1", s)
+
     s = re.sub(
         r"(?iu)\b(Canon\s+imageRUNNER\s+ADVANCE(?:\s+DX)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=Canon\s+imageRUNNER\s+ADVANCE)",
         r"\1 / ",
         s,
     )
+    s = re.sub(
+        r"(?iu)\b(Canon\s+imagePRESS(?:\s+Lite)?\s+[A-Za-z]*\d+[A-Za-z0-9-]*)(?=Canon\s+imagePRESS)",
+        r"\1 / ",
+        s,
+    )
     s = re.sub(r"(?iu)\bCopyCentre\s+245\s*/\s*25\b", "CopyCentre 245 / 255", s)
+
     return norm_ws(s)
 
 
@@ -160,6 +204,12 @@ def _trim_compat_noise_tail(v: str) -> str:
     s = norm_ws(v)
     if not s:
         return ""
+
+    while True:
+        nxt = _LEADING_COMPAT_NOISE_RE.sub("", s).strip()
+        if nxt == s:
+            break
+        s = nxt
 
     cut_positions: list[int] = []
 
@@ -184,6 +234,7 @@ def clean_compatibility_text(v: str) -> str:
 
     s = fix_common_broken_words(s)
     s = _canonize_brand_case(s)
+    s = _prefix_missing_canon_brand(s)
     s = _dedupe_repeated_brand_prefixes(s)
     s = _fix_known_compat_typos(s)
 
@@ -196,6 +247,7 @@ def clean_compatibility_text(v: str) -> str:
 
     s = split_glued_brand_models(s)
     s = _canonize_brand_case(s)
+    s = _prefix_missing_canon_brand(s)
     s = _dedupe_repeated_brand_prefixes(s)
     s = _fix_known_compat_typos(s)
     s = _trim_compat_noise_tail(s)
