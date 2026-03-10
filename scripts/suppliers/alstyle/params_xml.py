@@ -4,6 +4,13 @@ Path: scripts/suppliers/alstyle/params_xml.py
 
 XML params pipeline для AlStyle.
 Только cleanup родных XML <param>.
+
+v123:
+- усиливает post-clean для Совместимость;
+- вырезает мусорные хвосты типа '&gt;' и dangling brand tail;
+- отбрасывает ложные значения Ёмкость/Ёмкость лотка вида
+  'для подачи бумаги', 'для бумаги', 'для документов';
+- сохраняет текущую модель selective-clean без изменения core.
 """
 
 from __future__ import annotations
@@ -41,6 +48,20 @@ _RESOURCE_NUMBER_ONLY_RE = re.compile(r"(?iu)^\d[\d\s.,]*(?:\s*(?:стр\.?|ст
 _MODEL_GARBAGE_RE = re.compile(
     r"(?iu)\b(?:зависит\s+от\s+конфигурации|модель\s+зависит\s+от\s+конфигурации|определяется\s+конфигурацией)\b"
 )
+_CAPACITY_GARBAGE_RE = re.compile(
+    r"(?iu)^(?:для\s+подачи\s+бумаги|для\s+бумаги|для\s+документов|для\s+оригиналов|бумаги|документов|оригиналов)$"
+)
+_CAPACITY_VALID_RE = re.compile(
+    r"(?iu)(?:\b\d[\d\s.,]*\s*(?:лист(?:а|ов)?|стр\.?|страниц|л)\b|\b\d[\d\s.,]*\b)"
+)
+_COMPAT_LEADING_NOISE_RE = re.compile(
+    r"(?iu)^(?:Модель\s+[A-Z0-9-]+\s+|Совместимые\s+модели\s+|Устройства\s+|Устройство\s+)"
+)
+_TRAILING_HTML_GARBAGE_RE = re.compile(r"(?iu)(?:&gt;|&amp;gt;|&lt;|&amp;lt;|>)+\s*$")
+_DANGLING_BRAND_TAIL_RE = re.compile(
+    r"(?iu)(?:\s*/\s*|\s+)(Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark)\s*$"
+)
+_DANGLING_CONNECTOR_RE = re.compile(r"(?iu)(?:\s*/\s*|\s*,\s*|-+\s*)$")
 
 
 def key_quality_ok(k: str, *, require_letter: bool, max_len: int, max_words: int) -> bool:
@@ -84,6 +105,19 @@ def normalize_tech_value(v: str) -> str:
     s = re.sub(r"(?iu)\bFull\s*HD\b", "Full HD", s)
     s = re.sub(r"(?iu)\bANSI\s*люмен\b", "ANSI люмен", s)
     return norm_ws(s)
+
+
+def _strip_trailing_compat_garbage(s: str) -> str:
+    out = norm_ws(s)
+    if not out:
+        return ""
+    prev = None
+    while prev != out:
+        prev = out
+        out = _TRAILING_HTML_GARBAGE_RE.sub("", out).strip()
+        out = _DANGLING_BRAND_TAIL_RE.sub("", out).strip()
+        out = _DANGLING_CONNECTOR_RE.sub("", out).strip()
+    return norm_ws(out.strip(" ;,.-"))
 
 
 def _normalize_color_word(word: str) -> str:
@@ -168,11 +202,12 @@ def _post_clean_compat_xml_value(v: str) -> str:
     s = norm_ws(v)
     if not s:
         return ""
-    s = re.sub(r"(?iu)^Модель\s+[A-Z0-9-]+\s+", "", s)
-    s = re.sub(r"(?iu)^Совместимые\s+модели\s+", "", s)
-    s = re.sub(r"(?iu)^Устройства\s+", "", s)
+
+    s = _COMPAT_LEADING_NOISE_RE.sub("", s)
     s = clean_compatibility_text(s)
     s = dedupe_code_series_text(s)
+    s = _strip_trailing_compat_garbage(s)
+
     return norm_ws(s.strip(" ;,.-"))
 
 
@@ -187,6 +222,17 @@ def _post_clean_model_xml_value(v: str) -> str:
     return norm_ws(s)
 
 
+def _post_clean_capacity_xml_value(v: str) -> str:
+    s = norm_ws(v).strip(" ;,.-")
+    if not s:
+        return ""
+    if _CAPACITY_GARBAGE_RE.fullmatch(s):
+        return ""
+    if not _CAPACITY_VALID_RE.search(s):
+        return ""
+    return s
+
+
 def _post_clean_xml_value(key: str, val: str) -> str:
     kcf = norm_ws(key).casefold()
     if kcf == "цвет":
@@ -199,6 +245,8 @@ def _post_clean_xml_value(key: str, val: str) -> str:
         return _post_clean_compat_xml_value(val)
     if kcf == "модель":
         return _post_clean_model_xml_value(val)
+    if kcf in {"ёмкость", "емкость", "ёмкость лотка", "емкость лотка"}:
+        return _post_clean_capacity_xml_value(val)
     return norm_ws(val)
 
 
