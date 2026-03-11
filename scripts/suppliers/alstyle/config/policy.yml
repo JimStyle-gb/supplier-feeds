@@ -19,5 +19,15 @@ core_rules:
   mutate_params: false
   auto_codes_from_text: false
   auto_compat_from_text: false
+
+quality_gate:
+  enabled: true
+  enforce: true
+  baseline_file: scripts/suppliers/alstyle/config/quality_baseline.yml
+  report_file: docs/raw/alstyle_quality_gate.txt
+  max_new_cosmetic_offers: 5
+  max_new_cosmetic_issues: 5
+  freeze_current_as_baseline: false
+
 # legacy keys for backward-safe compatibility
 schedule_hour_almaty: 1
