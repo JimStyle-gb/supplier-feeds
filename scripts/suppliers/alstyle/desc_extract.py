@@ -4,16 +4,17 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-v124:
+v125:
 - сохраняет прошлые фиксы по Цвет / Технология / Совместимость / Ресурс;
-- откатывает слишком жёсткий фильтр generic Модель;
-- по-прежнему режет narrative-фразы вида
-  "не является исключением. Она предлагает ...";
-- снова пропускает валидные кодовые модели:
+- режет грязные compatibility-candidates, если в value протекли label-блоки
+  типа "Характеристики / Модель / Ресурс / Цвет / Технология";
+- больше не выбирает самую длинную Совместимость как "лучшую":
+  для compatibility теперь предпочитается более короткая и чистая версия;
+- сохраняет поддержку валидных кодовых моделей:
   604K85850
   022N02905
   607K15371 / 607K15370 / 624S00165
-  и короткие mixed-case model phrases вроде "Crystal Desk GT40".
+  и коротких mixed-case model phrases вроде "Crystal Desk GT40".
 """
 
 from __future__ import annotations
@@ -98,6 +99,16 @@ _COMPAT_REJECT_RE = re.compile(
     r"touch\s*out|usb\s*touch|hdmi\s+in|hdmi\s+out|dp\s+in|type-c|ops\s+slot|single\s+touch"
     r")\b",
     re.IGNORECASE,
+)
+_COMPAT_DIRTY_LABEL_RE = re.compile(
+    r"(?iu)\b(?:"
+    r"Характеристики|Основные\s+характеристики|Технические\s+характеристики|"
+    r"Модель|Аналог\s+модели|Технология\s+печати|Цвет(?:\s+печати)?|"
+    r"Ресурс(?:\s+картриджа)?|Количество\s+страниц|Кол-во\s+страниц\s+при\s+5%\s+заполнении\s+А4|"
+    r"Емкость|Ёмкость|Емкость\s+лотка|Ёмкость\s+лотка|"
+    r"Объем\s+картриджа,\s*мл|Объём\s+картриджа,\s*мл|"
+    r"Степлирование|Дополнительные\s+опции|Применение|Количество\s+в\s+упаковке|Колличество\s+в\s+упаковке"
+    r")\b"
 )
 _LEADING_COMPAT_NOISE_RE = re.compile(
     r"(?iu)^(?:Комплект\s+поставки|Описание|Особенности|Преимущества)\s+"
@@ -398,7 +409,6 @@ def _looks_like_model_value(val: str) -> bool:
     if all(_looks_like_model_part(p) for p in parts):
         return True
 
-    # fallback for single short mixed-case model phrase like "Crystal Desk GT40"
     if len(parts) == 1 and len(s.split()) <= 4 and re.search(r"\d", s):
         if _MODEL_CODE_PHRASE_RE.fullmatch(s):
             return True
@@ -783,6 +793,8 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
 
     if key == "Совместимость":
         val2 = _normalize_compat_candidate(val2)
+        if _COMPAT_DIRTY_LABEL_RE.search(val2):
+            return None
         if not looks_like_compatibility_value(val2):
             return None
     elif key in {"Модель", "Аналог модели"}:
@@ -833,7 +845,7 @@ def extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tuple
             continue
 
         if checked[0] == "Совместимость":
-            if best_compat is None or len(checked[1]) > len(best_compat[1]):
+            if best_compat is None or len(checked[1]) < len(best_compat[1]):
                 best_compat = checked
             continue
 
