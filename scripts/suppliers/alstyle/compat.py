@@ -4,16 +4,14 @@ Path: scripts/suppliers/alstyle/compat.py
 
 AlStyle supplier layer — cleanup моделей / совместимости / кодовых серий.
 
-v124:
-- дочищает Canon imagePRESS Lite glue:
-  C165Canon imagePRESS Lite C170 -> C165 / Canon imagePRESS Lite C170;
-- дочищает Canon imageRUNNER ADVANCE glue, включая длинные цепочки с II / III / IV / V / PRO;
-- дочищает классические Canon imageRUNNER chains:
-  Canon imageRUNNER 2016 Canon imageRUNNER 3035 -> через " / ";
-- дочищает Canon ImagePROGRAF glue;
-- режет narrative-хвосты в совместимости:
-  Цвет / Ресурс / Наличие чипа / Комплект поставки / и т.п.;
-- убирает повторы бренда Xerox Xerox -> Xerox;
+v125:
+- сохраняет все текущие Canon/Xerox cleanup-фиксы;
+- дочищает Xerox staple/finisher compatibility:
+  убирает accessory-prefix до "для ...";
+- нормализует семейства Xerox:
+  VersaLink / AltaLink / WorkCentre / WorkCentre Pro / CopyCentre / ColorQube / Phaser;
+- дедуплицирует повторяющиеся Xerox family chunks;
+- сохраняет разрезание Canon imageRUNNER / imagePRESS / ImagePROGRAF chains;
 - срезает мусорные хвосты типа &gt; и dangling '/ Canon' в конце совместимости.
 """
 
@@ -117,6 +115,17 @@ _COMPAT_NOISE_PHRASE_RE = re.compile(
 _LEADING_COMPAT_NOISE_RE = re.compile(
     r"(?iu)^(?:Комплект\s+поставки|Описание|Особенности|Преимущества)\s+"
 )
+
+_XEROX_ACCESSORY_PREFIX_RE = re.compile(
+    r"(?iu)^.*?\bдля\s+(?=(?:Xerox\s+)?(?:VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\b)"
+)
+_XEROX_FAMILY_HEAD_RE = re.compile(
+    r"(?iu)^(?:Xerox\s+)?(VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\s+(.+)$"
+)
+_XEROX_DIGITAL_COPIER_RE = re.compile(r"(?iu)\bDigital\s+Copier\b")
+_XEROX_MULTI_SEP_RE = re.compile(r"\s*,\s*")
+_XEROX_MODEL_SPLIT_RE = re.compile(r"\s*/\s*")
+_XEROX_SPACE_RE = re.compile(r"\s{2,}")
 
 
 def dedupe_code_series_text(text: str) -> str:
@@ -306,6 +315,84 @@ def _fix_known_compat_typos(v: str) -> str:
     return norm_ws(s)
 
 
+def _normalize_xerox_chunk(family: str, rest: str) -> str:
+    fam = norm_ws(family)
+    body = norm_ws(_XEROX_DIGITAL_COPIER_RE.sub("", rest or ""))
+    body = body.strip(" ;,.-")
+    if not fam or not body:
+        return ""
+
+    tokens = [norm_ws(x) for x in _XEROX_MODEL_SPLIT_RE.split(body) if norm_ws(x)]
+    if not tokens:
+        return ""
+
+    out_tokens: list[str] = []
+    seen_tokens: set[str] = set()
+    for tok in tokens:
+        t = norm_ws(tok).strip(" ;,.-")
+        if not t:
+            continue
+        sig = t.casefold()
+        if sig in seen_tokens:
+            continue
+        seen_tokens.add(sig)
+        out_tokens.append(t)
+
+    if not out_tokens:
+        return ""
+
+    return f"Xerox {fam} " + " / ".join(out_tokens)
+
+
+def _cleanup_xerox_finisher_compat(v: str) -> str:
+    s = norm_ws(v)
+    if not s:
+        return ""
+
+    # Срезаем accessory-prefix до первого реального блока "для VersaLink/AltaLink/..."
+    s = _XEROX_ACCESSORY_PREFIX_RE.sub("", s).strip()
+    s = re.sub(r"(?iu)^для\s+", "", s).strip()
+
+    # Нормализуем Xerox family chunks и убираем повторы
+    raw_chunks = [norm_ws(x) for x in _XEROX_MULTI_SEP_RE.split(s) if norm_ws(x)]
+    if not raw_chunks:
+        return s
+
+    out_chunks: list[str] = []
+    seen_chunks: set[str] = set()
+    current_family = ""
+
+    for chunk in raw_chunks:
+        part = norm_ws(chunk)
+        if not part:
+            continue
+
+        m = _XEROX_FAMILY_HEAD_RE.match(part)
+        if m:
+            current_family = norm_ws(m.group(1))
+            rest = norm_ws(m.group(2))
+            cleaned = _normalize_xerox_chunk(current_family, rest)
+        elif current_family:
+            cleaned = _normalize_xerox_chunk(current_family, part)
+        else:
+            cleaned = part
+
+        cleaned = norm_ws(cleaned).strip(" ;,.-")
+        if not cleaned:
+            continue
+
+        sig = cleaned.casefold()
+        if sig in seen_chunks:
+            continue
+        seen_chunks.add(sig)
+        out_chunks.append(cleaned)
+
+    if not out_chunks:
+        return s
+
+    return " / ".join(out_chunks)
+
+
 def _trim_compat_noise_tail(v: str) -> str:
     s = norm_ws(v)
     if not s:
@@ -363,11 +450,18 @@ def clean_compatibility_text(v: str) -> str:
     s = _prefix_missing_canon_brand(s)
     s = _dedupe_repeated_brand_prefixes(s)
     s = _fix_known_compat_typos(s)
+
+    # Xerox staple/finisher cleanup
+    if re.search(r"(?iu)\b(?:VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\b", s) and re.search(
+        r"(?iu)\b(?:финишер|буклетмейкер|степлер)\b", s
+    ):
+        s = _cleanup_xerox_finisher_compat(s)
+
     s = _trim_compat_noise_tail(s)
 
     s = re.sub(r"\s*,\s*/\s*", " / ", s)
     s = re.sub(r"\s*/\s*,\s*", " / ", s)
-    s = re.sub(r"\s{2,}", " ", s)
+    s = _XEROX_SPACE_RE.sub(" ", s)
 
     s = dedupe_slash_tail_models(s)
     s = _dedupe_repeated_brand_prefixes(s)
