@@ -4,8 +4,10 @@ timezone: Asia/Almaty
 next_run_hour_local: 1
 id_prefix: AS
 placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
+
 vendor_blacklist_casefold:
   - alstyle
+
 param_priority:
   - Бренд
   - Модель
@@ -15,6 +17,7 @@ param_priority:
   - Размер
   - Материал
   - Гарантия
+
 core_rules:
   mutate_params: false
   auto_codes_from_text: false
@@ -25,8 +28,25 @@ quality_gate:
   enforce: true
   baseline_file: scripts/suppliers/alstyle/config/quality_baseline.yml
   report_file: docs/raw/alstyle_quality_gate.txt
+
+  # ВАЖНО:
+  # build_alstyle.py пока передаёт старые имена аргументов:
+  # max_new_cosmetic_offers / max_new_cosmetic_issues
+  #
+  # Но в новой логике quality_gate они трактуются как:
+  # ОБЩИЙ лимит cosmetic-товаров / ОБЩИЙ лимит cosmetic-срабатываний,
+  # а не только новых относительно baseline.
+  #
+  # То есть:
+  # - critical > 0 -> FAIL
+  # - cosmetic_offer_count <= 5 и cosmetic_issue_count <= 5 -> PASS
+  # - если любой из порогов превышен -> FAIL
   max_new_cosmetic_offers: 5
   max_new_cosmetic_issues: 5
+
+  # Если true, текущие cosmetic-хвосты сохраняются в baseline-файл
+  # только как справочный снимок.
+  # Они НЕ исключаются из будущего подсчёта.
   freeze_current_as_baseline: false
 
 # legacy keys for backward-safe compatibility
