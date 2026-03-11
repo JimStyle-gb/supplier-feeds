@@ -4,12 +4,13 @@ Path: scripts/suppliers/alstyle/builder.py
 
 AlStyle supplier layer — сборка raw offer.
 
-v110:
+v111:
 - сохранён selective override: чистые desc params могут заменить только грязные XML значения
   для Совместимость / Цвет / Технология / Ресурс;
 - сохранён безопасный fallback Модель из name:
   PG/CLI/CF..., 097S05250, 604K85850, 022N02905, FK2-7884-000, FB1-8581-000 и т.п.;
-- добавлен безопасный fallback Совместимость из name только для Xerox init kits:
+- добавлен Canon accessory pattern формата FM1-R470-000 / FM1-D131-000;
+- сохранён безопасный fallback Совместимость из name только для Xerox init kits:
   "Комплект инициализации Xerox AltaLink B8245 (097S05250)"
   -> "Xerox AltaLink B8245";
 - умеет разворачивать slash-цепочки в имени:
@@ -43,7 +44,8 @@ _NAME_MODEL_RE = re.compile(
     r"\b(?:"
     r"(?:PG|CL|CLI|BCI|GI|PFI|CF|CE|CB|CC|CH|BH)-[A-Z0-9]{2,10}|"
     r"\d{3}[A-Z]\d{5}|"
-    r"[A-Z]{1,4}\d-\d{4}-\d{3,4}"
+    r"[A-Z]{1,4}\d-\d{4}-\d{3,4}|"
+    r"[A-Z]{1,4}\d-[A-Z]\d{3,4}-\d{3,4}"
     r")\b",
     re.IGNORECASE,
 )
