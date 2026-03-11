@@ -4,14 +4,16 @@ Path: scripts/suppliers/alstyle/compat.py
 
 AlStyle supplier layer — cleanup моделей / совместимости / кодовых серий.
 
-v128:
+v129:
 - сохраняет текущие Canon/Xerox cleanup-фиксы;
 - дочищает Xerox staple/finisher compatibility;
 - отдельно добивает Canon ImagePROGRAF TX / iPF TX / MFP T36 / T36-AiO glue:
   Canon ImagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000
   -> Canon ImagePROGRAF iPF TX-2000 / Canon ImagePROGRAF iPF TX-3000;
 - сохраняет разрезание Canon imageRUNNER / imagePRESS / ImagePROGRAF chains;
-- срезает мусорные хвосты типа &gt; и dangling '/ Canon' в конце совместимости.
+- срезает мусорные хвосты типа &gt; и dangling '/ Canon' в конце совместимости;
+- меняет финальную сборку Xerox finisher/stapler families:
+  внутри family остаются слеши, между family теперь запятые.
 """
 
 from __future__ import annotations
@@ -438,7 +440,7 @@ def _cleanup_xerox_finisher_compat(v: str) -> str:
     if not out_chunks:
         return s
 
-    return " / ".join(out_chunks)
+    return ", ".join(out_chunks)
 
 
 def _trim_compat_noise_tail(v: str) -> str:
