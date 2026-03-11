@@ -5,10 +5,12 @@ Path: scripts/suppliers/alstyle/desc_clean.py
 AlStyle description cleaning.
 Только narrative-cleaning, без desc->params extraction.
 
-v122:
+v123:
 - расширяет словарь typо/narrative-fixes (в случае / в отличие / при прокладке и т.п.);
 - добавляет regex-дочистку 4-х / или 1 / 100-метровый и похожих хвостов;
 - срезает прилипший title-prefix в первой строке native description;
+- режет не только полное имя, но и короткий supplier-title по SKU;
+- удаляет мусорные одиночные строки "." / "," / ";" / ":";
 - сохраняет границы строк для multiline extraction;
 - мягко разрезает плотные one-line тех-описания на label-friendly строки;
 - чище дочищает Xerox/Canon narrative-хвосты;
@@ -375,9 +377,8 @@ def align_desc_model_from_name(name: str, desc: str) -> str:
 
 
 def _strip_name_prefix_from_first_line(name: str, desc: str) -> str:
-    n = norm_ws(name)
     raw = unescape(desc or "")
-    if not n or not raw:
+    if not raw:
         return raw
 
     lines = [x for x in re.split(r"(?:\r?\n)+", raw)]
@@ -388,14 +389,45 @@ def _strip_name_prefix_from_first_line(name: str, desc: str) -> str:
     if not first:
         return raw
 
-    n_cf = n.casefold()
-    first_cf = first.casefold()
+    m_name = _SKU_TOKEN_RE.search(norm_ws(name))
+    m_first = _SKU_TOKEN_RE.search(first)
+    if not m_name or not m_first:
+        return raw
 
-    if first_cf.startswith(n_cf):
-        tail = norm_ws(first[len(n):]).lstrip(" -—:;,.")
-        if tail and re.search(r"[A-Za-zА-Яа-яЁё]", tail):
-            lines[0] = tail
-            return "\n".join(lines)
+    sku_name = norm_ws(m_name.group(0)).upper()
+    sku_first = norm_ws(m_first.group(0)).upper()
+    if sku_name != sku_first:
+        return raw
+
+    # 1) Первая строка = короткий title до SKU, а смысл начинается со 2-й строки
+    head_to_sku = norm_ws(first[: m_first.end()])
+    tail_after_sku = norm_ws(first[m_first.end():]).lstrip(" -—:;,.")
+    if head_to_sku and not tail_after_sku:
+        if len(lines) > 1:
+            second = norm_ws(lines[1])
+            if re.match(
+                r"(?iu)^(?:это|данн(?:ый|ая|ое)|предназначен|предназначена|предназначено|"
+                r"используется|используется\s+для|подходит|обеспечивает|позволяет|"
+                r"применяется|отличается|имеет)\b",
+                second,
+            ):
+                return "\n".join(lines[1:])
+        return raw
+
+    # 2) Первая строка начинается с короткого supplier-title по SKU
+    #    и дальше уже идёт нормальный narrative-хвост
+    generic_prefix_ok = re.match(
+        r"(?iu)^(?:"
+        r"кабель(?:\s+сетевой)?(?:\s+самонесущий)?|"
+        r"картридж|тонер(?:-картридж)?|фотобарабан|драм|"
+        r"комплект|ролик|резинка|модуль|блок|автоподатчик|"
+        r"устройство|источник|проектор"
+        r")\b",
+        first,
+    )
+    if generic_prefix_ok and tail_after_sku and re.search(r"[A-Za-zА-Яа-яЁё]", tail_after_sku):
+        lines[0] = tail_after_sku
+        return "\n".join(lines)
 
     return raw
 
@@ -565,6 +597,8 @@ def sanitize_native_desc(desc: str, *, name: str = "") -> str:
     lines = [norm_ws(x) for x in re.split(r"(?:\r?\n)+", raw) if norm_ws(x)]
     while lines and (lines[0][:1] in {"(", ",", ";", ":"} or is_service_desc_line(lines[0])):
         lines.pop(0)
+
+    lines = [x for x in lines if x not in {".", ",", ";", ":"}]
     return "\n".join(lines)
 
 
