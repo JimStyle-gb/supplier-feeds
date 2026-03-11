@@ -4,7 +4,7 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-v122:
+v123:
 - чинит ложный парсинг "Цвет печати" -> ("Цвет", "печати");
 - режет кабельные хвосты у цвета;
 - режет хвосты цвета вида "Черный Ресурс картриджа, стр 3100" -> "Чёрный";
@@ -12,7 +12,9 @@ v122:
 - нормализует технологию: "Термоструйная Количество цветов 5" -> "Термоструйная";
 - дочищает compatibility-кандидаты от "Комплект поставки / Описание / Особенности";
 - не считает singular "Устройство" совместимостью;
-- сохраняет длинную совместимость и multiline label/value кейсы.
+- сохраняет длинную совместимость и multiline label/value кейсы;
+- добивает generic Модель: не пропускает narrative-фразы вида
+  "Crystal Desk GT40 не является исключением. Она предлагает ...".
 """
 
 from __future__ import annotations
@@ -213,6 +215,14 @@ _BAD_COLOR_VALUES = {
 _MODEL_GARBAGE_RE = re.compile(
     r"(?iu)\b(?:зависит\s+от\s+конфигурации|модель\s+зависит\s+от\s+конфигурации|определяется\s+конфигурацией)\b"
 )
+_MODEL_NARRATIVE_RE = re.compile(
+    r"(?iu)\b(?:не\s+является\s+исключением|она\s+предлагает|он\s+предлагает|поддерживает|"
+    r"позволяет|подходит|используется|включает|оснащен|оснащена|имеет|"
+    r"можно|необходимо|для\s+удобства|для\s+работы|интерфейс|порт(?:ы)?|слот(?:ы)?|RJ-45|DVD)\b"
+)
+_MODELISH_TOKEN_RE = re.compile(
+    r"(?iu)\b(?:[A-Z]{1,8}-[A-Z0-9]{1,12}|[A-Z]{1,8}\d[A-Z0-9-]{0,20}|\d{2,5}[A-Z]{0,4}|[A-Z]{2,}(?:\s+[A-Z0-9-]{2,}){0,4})\b"
+)
 _COLOR_REJECT_RE = re.compile(r"(?iu)\b(?:серия|Vivobook|Vector|Gaming|игровой|игровая|дизайн|корпус)\b")
 _COMPAT_SENTENCE_NOISE_SPLIT_RE = re.compile(
     r"(?iu)\b(?:Преимущества|Комплектация|Условия\s+гарантии|Примечание|Примечания|Особенности|Описание|"
@@ -346,6 +356,32 @@ def looks_like_resource_value(val: str) -> bool:
     if _RESOURCE_NUMBER_ONLY_RE.match(v):
         return True
     return False
+
+
+def _looks_like_model_value(val: str) -> bool:
+    s = norm_ws(val).strip(" ;,.-")
+    if not s:
+        return False
+    if len(s) > 90:
+        return False
+    if len(s.split()) > 8:
+        return False
+    if _MODEL_GARBAGE_RE.search(s):
+        return False
+    if _MODEL_NARRATIVE_RE.search(s):
+        return False
+    if any(ch in s for ch in ".!?"):
+        return False
+
+    modelish_hits = _MODELISH_TOKEN_RE.findall(s)
+    if not modelish_hits:
+        return False
+
+    plain_cyr_words = re.findall(r"[А-Яа-яЁё]{3,}", s)
+    if len(plain_cyr_words) >= 3:
+        return False
+
+    return True
 
 
 def _canon_color_word(word: str) -> str:
@@ -729,9 +765,7 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
             return None
     elif key in {"Модель", "Аналог модели"}:
         val2 = dedupe_code_series_text(val2)
-        if _MODEL_GARBAGE_RE.search(val2):
-            return None
-        if val2.endswith(")"):
+        if not _looks_like_model_value(val2):
             return None
     elif key == "Ресурс":
         if not looks_like_resource_value(val2):
