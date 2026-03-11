@@ -3,12 +3,14 @@
 Path: scripts/suppliers/alstyle/quality_gate.py
 
 AlStyle quality gate:
-- не даёт бесконечно полировать поставщика;
-- различает critical и cosmetic issues;
-- cosmetic issues можно зафиксировать в baseline;
-- сборка падает только если:
-  * есть critical issues;
-  * появились новые cosmetic issues сверх порога.
+- critical issues всегда валят сборку;
+- cosmetic issues НЕ исключаются из подсчёта;
+- baseline используется только для отчёта:
+  какие cosmetic уже известны, а какие новые;
+- сборка проходит, пока ОБЩЕЕ количество cosmetic
+  не превышает порог;
+- freeze_current_as_baseline сохраняет текущее состояние
+  как справочный baseline, но не выключает будущий контроль.
 """
 
 from __future__ import annotations
@@ -163,10 +165,11 @@ def _detect_issues(feed_path: str) -> list[QualityIssue]:
     deduped: dict[tuple[str, str, str], QualityIssue] = {}
     for issue in issues:
         deduped[(issue.severity, issue.rule, issue.oid)] = issue
+
     return sorted(deduped.values(), key=lambda x: (x.severity, x.rule, x.oid))
 
 
-def _load_accepted_cosmetic(baseline_path: str) -> dict[str, set[str]]:
+def _load_cosmetic_baseline(baseline_path: str) -> dict[str, set[str]]:
     data = _read_yaml(baseline_path)
     raw = data.get("accepted_cosmetic") or {}
     out: dict[str, set[str]] = {}
@@ -175,11 +178,9 @@ def _load_accepted_cosmetic(baseline_path: str) -> dict[str, set[str]]:
     return out
 
 
-def _make_baseline_payload(issues: list[QualityIssue]) -> dict:
+def _make_baseline_payload(cosmetic: list[QualityIssue]) -> dict:
     grouped: dict[str, list[str]] = defaultdict(list)
-    for issue in issues:
-        if issue.severity != "cosmetic":
-            continue
+    for issue in cosmetic:
         grouped[issue.rule].append(issue.oid)
 
     payload = {
@@ -196,10 +197,11 @@ def _write_report(
     *,
     critical: list[QualityIssue],
     cosmetic: list[QualityIssue],
+    known_cosmetic: list[QualityIssue],
     new_cosmetic: list[QualityIssue],
     accepted_cosmetic: dict[str, set[str]],
-    max_new_cosmetic_offers: int,
-    max_new_cosmetic_issues: int,
+    max_cosmetic_offers: int,
+    max_cosmetic_issues: int,
     passed: bool,
     baseline_path: str,
     frozen: bool,
@@ -207,6 +209,8 @@ def _write_report(
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
 
+    cosmetic_offer_count = len({x.oid for x in cosmetic})
+    known_offer_count = len({x.oid for x in known_cosmetic})
     new_offer_count = len({x.oid for x in new_cosmetic})
 
     lines: list[str] = []
@@ -215,14 +219,17 @@ def _write_report(
     lines.append(f"freeze_current_as_baseline: {'yes' if frozen else 'no'}")
     lines.append(f"critical_count: {len(critical)}")
     lines.append(f"cosmetic_total_count: {len(cosmetic)}")
-    lines.append(f"new_cosmetic_issue_count: {len(new_cosmetic)}")
+    lines.append(f"cosmetic_offer_count: {cosmetic_offer_count}")
+    lines.append(f"known_cosmetic_count: {len(known_cosmetic)}")
+    lines.append(f"known_cosmetic_offer_count: {known_offer_count}")
+    lines.append(f"new_cosmetic_count: {len(new_cosmetic)}")
     lines.append(f"new_cosmetic_offer_count: {new_offer_count}")
-    lines.append(f"max_new_cosmetic_offers: {max_new_cosmetic_offers}")
-    lines.append(f"max_new_cosmetic_issues: {max_new_cosmetic_issues}")
+    lines.append(f"max_cosmetic_offers: {max_cosmetic_offers}")
+    lines.append(f"max_cosmetic_issues: {max_cosmetic_issues}")
     lines.append("")
 
     if accepted_cosmetic:
-        lines.append("ACCEPTED COSMETIC BASELINE:")
+        lines.append("BASELINE COSMETIC SNAPSHOT:")
         for rule in sorted(accepted_cosmetic):
             oids = sorted(accepted_cosmetic[rule])
             lines.append(f"- {rule}: {len(oids)} offer(s)")
@@ -238,19 +245,21 @@ def _write_report(
             lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name} | {issue.details}")
         lines.append("")
 
+    if cosmetic:
+        lines.append("COSMETIC TOTAL:")
+        for issue in cosmetic:
+            lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name} | {issue.details}")
+        lines.append("")
+
     if new_cosmetic:
-        lines.append("NEW COSMETIC:")
+        lines.append("NEW COSMETIC VS BASELINE:")
         for issue in new_cosmetic:
             lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name} | {issue.details}")
         lines.append("")
 
-    old_cosmetic = [
-        x for x in cosmetic
-        if x.oid in accepted_cosmetic.get(x.rule, set())
-    ]
-    if old_cosmetic:
-        lines.append("ACCEPTED COSMETIC (matched current build):")
-        for issue in old_cosmetic:
+    if known_cosmetic:
+        lines.append("KNOWN COSMETIC FROM BASELINE:")
+        for issue in known_cosmetic:
             lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name}")
         lines.append("")
 
@@ -267,6 +276,19 @@ def run_quality_gate(
     enforce: bool = True,
     freeze_current_as_baseline: bool = False,
 ) -> tuple[bool, str]:
+    """
+    ВАЖНО:
+    Для совместимости с уже существующим build_alstyle.py
+    сохраняем старые имена аргументов:
+      max_new_cosmetic_offers / max_new_cosmetic_issues
+
+    Но теперь они трактуются как:
+      max_cosmetic_offers / max_cosmetic_issues
+
+    То есть baseline НЕ исключает issues из подсчёта.
+    Baseline нужен только для справки в отчёте.
+    """
+
     issues = _detect_issues(feed_path)
     critical = [x for x in issues if x.severity == "critical"]
     cosmetic = [x for x in issues if x.severity == "cosmetic"]
@@ -274,44 +296,57 @@ def run_quality_gate(
     if freeze_current_as_baseline:
         payload = _make_baseline_payload(cosmetic)
         _write_yaml(baseline_path, payload)
+        accepted_cosmetic = _load_cosmetic_baseline(baseline_path)
         _write_report(
             report_path,
             critical=critical,
             cosmetic=cosmetic,
+            known_cosmetic=cosmetic,
             new_cosmetic=[],
-            accepted_cosmetic=_load_accepted_cosmetic(baseline_path),
-            max_new_cosmetic_offers=max_new_cosmetic_offers,
-            max_new_cosmetic_issues=max_new_cosmetic_issues,
-            passed=True,
+            accepted_cosmetic=accepted_cosmetic,
+            max_cosmetic_offers=int(max_new_cosmetic_offers),
+            max_cosmetic_issues=int(max_new_cosmetic_issues),
+            passed=(len(critical) == 0),
             baseline_path=baseline_path,
             frozen=True,
         )
-        return True, (
-            f"[quality_gate] BASELINE_FROZEN | critical={len(critical)} | "
-            f"cosmetic={len(cosmetic)} | baseline={baseline_path}"
+        return (len(critical) == 0), (
+            f"[quality_gate] BASELINE_FROZEN | "
+            f"critical={len(critical)} | "
+            f"cosmetic_total={len(cosmetic)} | "
+            f"cosmetic_offers={len({x.oid for x in cosmetic})} | "
+            f"baseline={baseline_path}"
         )
 
-    accepted_cosmetic = _load_accepted_cosmetic(baseline_path)
+    accepted_cosmetic = _load_cosmetic_baseline(baseline_path)
+
+    known_cosmetic = [
+        x for x in cosmetic
+        if x.oid in accepted_cosmetic.get(x.rule, set())
+    ]
     new_cosmetic = [
         x for x in cosmetic
         if x.oid not in accepted_cosmetic.get(x.rule, set())
     ]
-    new_offer_count = len({x.oid for x in new_cosmetic})
+
+    cosmetic_offer_count = len({x.oid for x in cosmetic})
+    cosmetic_issue_count = len(cosmetic)
 
     passed = (
         len(critical) == 0
-        and len(new_cosmetic) <= int(max_new_cosmetic_issues)
-        and new_offer_count <= int(max_new_cosmetic_offers)
+        and cosmetic_offer_count <= int(max_new_cosmetic_offers)
+        and cosmetic_issue_count <= int(max_new_cosmetic_issues)
     )
 
     _write_report(
         report_path,
         critical=critical,
         cosmetic=cosmetic,
+        known_cosmetic=known_cosmetic,
         new_cosmetic=new_cosmetic,
         accepted_cosmetic=accepted_cosmetic,
-        max_new_cosmetic_offers=max_new_cosmetic_offers,
-        max_new_cosmetic_issues=max_new_cosmetic_issues,
+        max_cosmetic_offers=int(max_new_cosmetic_offers),
+        max_cosmetic_issues=int(max_new_cosmetic_issues),
         passed=(passed or not enforce),
         baseline_path=baseline_path,
         frozen=False,
@@ -320,8 +355,10 @@ def run_quality_gate(
     summary = (
         f"[quality_gate] {'PASS' if (passed or not enforce) else 'FAIL'} | "
         f"critical={len(critical)} | "
-        f"new_cosmetic_issues={len(new_cosmetic)} | "
-        f"new_cosmetic_offers={new_offer_count} | "
+        f"cosmetic_total={cosmetic_issue_count} | "
+        f"cosmetic_offers={cosmetic_offer_count} | "
+        f"known_cosmetic={len(known_cosmetic)} | "
+        f"new_cosmetic={len(new_cosmetic)} | "
         f"baseline={baseline_path} | report={report_path}"
     )
 
