@@ -4,7 +4,10 @@ Path: scripts/suppliers/alstyle/compat.py
 
 AlStyle supplier layer — cleanup моделей / совместимости / кодовых серий.
 
-v130:
+v131:
+- фиксит регресс AS143070: больше не теряется Xerox Versant 80 / 180
+  в mixed family-lists вида:
+  Xerox Versant 80/180, WorkCentre 4110 / 4112 / 4127 / 4590 / 4595;
 - сохраняет текущие Canon/Xerox cleanup-фиксы;
 - усиливает cleanup Xerox family-lists даже без слов финишер/степлер;
 - разворачивает сокращённые Xerox модели:
@@ -131,8 +134,12 @@ _LEADING_COMPAT_NOISE_RE = re.compile(
 _XEROX_ACCESSORY_PREFIX_RE = re.compile(
     r"(?iu)^.*?\bдля\s+(?=(?:Xerox\s+)?(?:VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\b)"
 )
+# ВАЖНО:
+# сюда добавлен только Versant.
+# В _XEROX_FAMILY_ANY_RE его специально не добавляем, чтобы не тянуть в этот cleanup
+# DocuColor/Versant-only кейсы вроде AS143071 и не ломать их.
 _XEROX_FAMILY_HEAD_RE = re.compile(
-    r"(?iu)^(?:Xerox\s+)?(VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\s+(.+)$"
+    r"(?iu)^(?:Xerox\s+)?(VersaLink|AltaLink|Versant|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\s+(.+)$"
 )
 _XEROX_FAMILY_ANY_RE = re.compile(r"(?iu)\b(?:VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\b")
 _XEROX_DIGITAL_COPIER_RE = re.compile(r"(?iu)\bDigital\s+Copier\b")
@@ -263,7 +270,7 @@ def _prefix_missing_canon_brand(v: str) -> str:
     series_patterns = [
         rf"ImagePROGRAF\s+{_IMAGEPROGRAF_MODEL}",
         rf"imagePROGRAF\s+{_IMAGEPROGRAF_MODEL}",
-        rf"imageRUNNER\s+ADVANCE(?:\s+DX)?\s+{_IR_ADV_MODEL}",
+        rf"imageRUNNER\s+ADVANCE(?:imageRUNNER\s+ADVANCE(?:\s+DX)?\s+{_IR_ADV_MODEL}",
         rf"imageRUNNER\s+{_IR_CLASSIC_MODEL}",
         rf"imagePRESS(?:\s+Lite)?\s+{_IMAGEPRESS_MODEL}",
         rf"i-SENSYS\s+{_PIXMA_MODEL}",
@@ -367,11 +374,9 @@ def _expand_xerox_short_model(prev_model: str, token: str) -> str:
     digits_cur = norm_ws(m_cur_short.group(1) or "")
     suffix_cur = norm_ws(m_cur_short.group(2) or "").upper()
 
-    # Уже полная модель той же длины — просто добавим возможный префикс по текущему family-паттерну.
     if len(digits_cur) >= len(digits_prev):
         return f"{pref_prev}{digits_cur}{suffix_cur}" if pref_prev and not re.match(r"^[A-Z]+", cur) else cur
 
-    # Для B7125 / 30 / 35 и C7120 / 25 / 30 меняем только хвост цифр.
     merged_digits = digits_prev[:-len(digits_cur)] + digits_cur
     merged_suffix = suffix_cur or suffix_prev
     return f"{pref_prev}{merged_digits}{merged_suffix}" if pref_prev else f"{merged_digits}{merged_suffix}"
