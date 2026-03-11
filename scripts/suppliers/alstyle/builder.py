@@ -4,11 +4,14 @@ Path: scripts/suppliers/alstyle/builder.py
 
 AlStyle supplier layer — сборка raw offer.
 
-v108:
-- убран лишний повторный проход align/dedupe после sanitize_native_desc();
-- добавлен безопасный fallback Модель из name для картриджных Canon-паттернов типа PG-510 / CL-511 / CLI-65;
-- добавлен selective override: чистые desc params могут заменить только грязные XML значения
-  для Совместимость / Цвет / Технология / Ресурс.
+v109:
+- сохранён selective override: чистые desc params могут заменить только грязные XML значения
+  для Совместимость / Цвет / Технология / Ресурс;
+- расширен безопасный fallback Модель из name:
+  теперь поднимает не только PG/CLI/CF..., но и аксессуарные/сервисные коды вроде
+  097S05250, 604K85850, 022N02905, FK2-7884-000, FB1-8581-000;
+- умеет разворачивать сокращённые slash-цепочки из имени:
+  097S05247/48/49/50/51 -> 097S05247 / 097S05248 / 097S05249 / 097S05250 / 097S05251.
 """
 
 from __future__ import annotations
@@ -33,9 +36,14 @@ from suppliers.alstyle.pictures import collect_picture_urls
 
 
 _NAME_MODEL_RE = re.compile(
-    r"\b(?:PG|CL|CLI|BCI|GI|PFI|CF|CE|CB|CC|CH|BH)-[A-Z0-9]{2,10}\b",
+    r"\b(?:"
+    r"(?:PG|CL|CLI|BCI|GI|PFI|CF|CE|CB|CC|CH|BH)-[A-Z0-9]{2,10}|"
+    r"\d{3}[A-Z]\d{5}|"
+    r"[A-Z]{1,4}\d-\d{4}-\d{3,4}"
+    r")\b",
     re.IGNORECASE,
 )
+_SHORT_DIGIT_SUFFIX_RE = re.compile(r"^\d{1,4}$", re.IGNORECASE)
 
 
 _SAFE_DESC_OVERRIDE_KEYS = {"Совместимость", "Цвет", "Технология", "Ресурс"}
@@ -174,14 +182,48 @@ def _has_param(params: list[tuple[str, str]], key: str) -> bool:
     return any(norm_ws(k).casefold() == kcf and norm_ws(v) for k, v in params)
 
 
+def _append_unique_model_code(out: list[str], seen: set[str], code: str) -> None:
+    c = norm_ws(code).upper()
+    if not c:
+        return
+    sig = c.casefold()
+    if sig in seen:
+        return
+    seen.add(sig)
+    out.append(c)
+
+
 def _infer_model_from_name(name: str) -> str:
     n = norm_ws(name)
     if not n:
         return ""
-    hits = [m.group(0).upper() for m in _NAME_MODEL_RE.finditer(n)]
-    if not hits:
-        return ""
-    return hits[-1]
+
+    prepared = re.sub(r"[\(\)\[\],;]+", " / ", n)
+    prepared = re.sub(r"\s*/\s*", " / ", prepared)
+    parts = [norm_ws(x) for x in prepared.split("/") if norm_ws(x)]
+
+    out: list[str] = []
+    seen: set[str] = set()
+    last_full: str = ""
+
+    for part in parts:
+        full_hits = [m.group(0).upper() for m in _NAME_MODEL_RE.finditer(part)]
+        if full_hits:
+            for hit in full_hits:
+                _append_unique_model_code(out, seen, hit)
+                last_full = hit
+            continue
+
+        token = norm_ws(part).upper()
+        if last_full and _SHORT_DIGIT_SUFFIX_RE.fullmatch(token):
+            candidate = (last_full[:-len(token)] + token).upper()
+            if _NAME_MODEL_RE.fullmatch(candidate):
+                _append_unique_model_code(out, seen, candidate)
+                continue
+
+    if out:
+        return " / ".join(out)
+    return ""
 
 
 def build_offer(
