@@ -175,7 +175,6 @@ def dedupe_slash_tail_models(v: str) -> str:
     s = norm_ws(v)
     if not s:
         return ""
-    # Для сложных Xerox family-листов глобальный slash-dedupe разрушает структуру.
     if "," in s and _XEROX_FAMILY_ANY_RE.search(s):
         return s
     parts = [norm_ws(x) for x in re.split(r"\s*/\s*", s) if norm_ws(x)]
@@ -267,18 +266,38 @@ def _prefix_missing_canon_brand(v: str) -> str:
     if not s:
         return ""
 
-    series_patterns = [
-        rf"ImagePROGRAF\s+{_IMAGEPROGRAF_MODEL}",
-        rf"imagePROGRAF\s+{_IMAGEPROGRAF_MODEL}",
-        rf"imageRUNNER\s+ADVANCE(?:imageRUNNER\s+ADVANCE(?:\s+DX)?\s+{_IR_ADV_MODEL}",
-        rf"imageRUNNER\s+{_IR_CLASSIC_MODEL}",
-        rf"imagePRESS(?:\s+Lite)?\s+{_IMAGEPRESS_MODEL}",
-        rf"i-SENSYS\s+{_PIXMA_MODEL}",
-    ]
-    for pat in series_patterns:
-        s = re.sub(rf"(?iu)\b({pat})\b", r"Canon \1", s)
-        s = re.sub(r"(?iu)\bCanon\s+Canon\b", "Canon", s)
+    s = re.sub(
+        rf"(?iu)\b(ImagePROGRAF\s+{_IMAGEPROGRAF_MODEL})\b",
+        r"Canon \1",
+        s,
+    )
+    s = re.sub(
+        rf"(?iu)\b(imagePROGRAF\s+{_IMAGEPROGRAF_MODEL})\b",
+        r"Canon \1",
+        s,
+    )
+    s = re.sub(
+        rf"(?iu)\b(imageRUNNER\s+ADVANCE(?:\s+DX)?\s+{_IR_ADV_MODEL})\b",
+        r"Canon \1",
+        s,
+    )
+    s = re.sub(
+        rf"(?iu)\b(imageRUNNER\s+{_IR_CLASSIC_MODEL})\b",
+        r"Canon \1",
+        s,
+    )
+    s = re.sub(
+        rf"(?iu)\b(imagePRESS(?:\s+Lite)?\s+{_IMAGEPRESS_MODEL})\b",
+        r"Canon \1",
+        s,
+    )
+    s = re.sub(
+        rf"(?iu)\b(i-SENSYS\s+{_PIXMA_MODEL})\b",
+        r"Canon \1",
+        s,
+    )
 
+    s = re.sub(r"(?iu)\bCanon\s+Canon\b", "Canon", s)
     return norm_ws(s)
 
 
