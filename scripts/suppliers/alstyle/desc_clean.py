@@ -5,7 +5,10 @@ Path: scripts/suppliers/alstyle/desc_clean.py
 AlStyle description cleaning.
 Только narrative-cleaning, без desc->params extraction.
 
-v121:
+v122:
+- расширяет словарь typо/narrative-fixes (в случае / в отличие / при прокладке и т.п.);
+- добавляет regex-дочистку 4-х / или 1 / 100-метровый и похожих хвостов;
+- срезает прилипший title-prefix в первой строке native description;
 - сохраняет границы строк для multiline extraction;
 - мягко разрезает плотные one-line тех-описания на label-friendly строки;
 - чище дочищает Xerox/Canon narrative-хвосты;
@@ -178,10 +181,23 @@ def fix_common_broken_words(s: str) -> str:
         "одним кабелем управляйте": "одним кабелем и управляйте",
         "дополнтельно": "дополнительно",
         "опцонально": "опционально",
+        "в случаи": "в случае",
+        "В случаи": "В случае",
+        "в отличии": "в отличие",
+        "В отличии": "В отличие",
+        "при прокладки": "при прокладке",
+        "при прокладки внутри помещения": "при прокладке внутри помещений",
+        "при прокладки внутри помещений": "при прокладке внутри помещений",
         "!!!": "!",
     }
     for a, b in fixes.items():
         s = s.replace(a, b).replace(a.capitalize(), b.capitalize())
+
+    s = re.sub(r"(?iu)\b(\d)\s*-\s*х\b", r"\1-х", s)
+    s = re.sub(r"(?iu)\bили(?=\d)", "или ", s)
+    s = re.sub(r"(?iu)\b(\d+)\s+метровый\b", r"\1-метровый", s)
+    s = re.sub(r"(?iu)(?<=\d)(Гигабит/сек|Мегабит/сек)\b", r" \1", s)
+    s = re.sub(r"(?iu)\.\s*Также\b", ". Также", s)
     return s
 
 
@@ -358,6 +374,32 @@ def align_desc_model_from_name(name: str, desc: str) -> str:
     return raw
 
 
+def _strip_name_prefix_from_first_line(name: str, desc: str) -> str:
+    n = norm_ws(name)
+    raw = unescape(desc or "")
+    if not n or not raw:
+        return raw
+
+    lines = [x for x in re.split(r"(?:\r?\n)+", raw)]
+    if not lines:
+        return raw
+
+    first = norm_ws(lines[0])
+    if not first:
+        return raw
+
+    n_cf = n.casefold()
+    first_cf = first.casefold()
+
+    if first_cf.startswith(n_cf):
+        tail = norm_ws(first[len(n):]).lstrip(" -—:;,.")
+        if tail and re.search(r"[A-Za-zА-Яа-яЁё]", tail):
+            lines[0] = tail
+            return "\n".join(lines)
+
+    return raw
+
+
 def _preserve_clean_lines(lines: list[str]) -> str:
     out: list[str] = []
     prev = ""
@@ -515,6 +557,7 @@ def sanitize_native_desc(desc: str, *, name: str = "") -> str:
     if name:
         raw = align_desc_model_from_name(name, raw)
         raw = dedupe_desc_leading_title(name, raw)
+        raw = _strip_name_prefix_from_first_line(name, raw)
         raw = _drop_conflicting_named_blocks(name, raw)
     raw = sanitize_desc_quality_text(raw)
     if name:
