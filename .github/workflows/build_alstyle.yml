@@ -71,6 +71,7 @@ jobs:
               "scripts/suppliers/alstyle/compat.py",
               "scripts/suppliers/alstyle/builder.py",
               "scripts/suppliers/alstyle/diagnostics.py",
+              "scripts/suppliers/alstyle/quality_gate.py",
           ]
 
           failed = False
@@ -109,6 +110,8 @@ jobs:
           git diff --stat || true
           ls -la docs docs/raw || true
           wc -c docs/alstyle.yml docs/raw/alstyle.yml 2>/dev/null || true
+          [ -f docs/raw/alstyle_watch.txt ] && sed -n '1,200p' docs/raw/alstyle_watch.txt || true
+          [ -f docs/raw/alstyle_quality_gate.txt ] && sed -n '1,260p' docs/raw/alstyle_quality_gate.txt || true
 
       - name: Update FEED_META build time + next run
         run: |
@@ -181,10 +184,18 @@ jobs:
       - name: Commit & push docs/alstyle.yml
         run: |
           git add docs/alstyle.yml docs/raw/alstyle.yml
+          if [ -f docs/raw/alstyle_watch.txt ]; then
+            git add docs/raw/alstyle_watch.txt
+          fi
+          if [ -f docs/raw/alstyle_quality_gate.txt ]; then
+            git add docs/raw/alstyle_quality_gate.txt
+          fi
+
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
+
           git commit -m "build: alstyle feed"
           git pull --rebase --autostash
           git push
