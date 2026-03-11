@@ -5,12 +5,10 @@ Path: scripts/suppliers/alstyle/params_xml.py
 XML params pipeline для AlStyle.
 Только cleanup родных XML <param>.
 
-v123:
-- усиливает post-clean для Совместимость;
-- вырезает мусорные хвосты типа '&gt;' и dangling brand tail;
-- отбрасывает ложные значения Ёмкость/Ёмкость лотка вида
-  'для подачи бумаги', 'для бумаги', 'для документов';
-- сохраняет текущую модель selective-clean без изменения core.
+v124:
+- сохраняет текущий post-clean для Совместимость / Модель / Ёмкость;
+- добавляет страховку для мусорных вариантов ключа Мощность (Bt/Bт/Вt);
+- не меняет core и не меняет общую selective-clean логику.
 """
 
 from __future__ import annotations
@@ -310,24 +308,29 @@ def collect_xml_params(offer_el: ET.Element, schema: dict[str, Any]) -> list[tup
             continue
 
         kcf = k.casefold()
+        if kcf in {"мощность (bt)", "мощность (bт)", "мощность (вt)"}:
+            k = "Мощность (Вт)"
+            kcf = k.casefold()
+
         if kcf in aliases:
             k = aliases[kcf]
+            kcf = k.casefold()
 
         if not key_quality_ok(k, require_letter=require_letter, max_len=max_len, max_words=max_words):
             continue
 
-        if k.casefold() in drop or k.casefold() == "код нкт":
+        if kcf in drop or kcf == "код нкт":
             continue
-        if k.casefold() == "назначение" and v.casefold() in {"да", "есть"}:
+        if kcf == "назначение" and v.casefold() in {"да", "есть"}:
             continue
-        if k.casefold() == "безопасность" and v.casefold() == "есть":
+        if kcf == "безопасность" and v.casefold() == "есть":
             continue
 
         v2 = apply_value_normalizers(k, v, schema)
         if not v2:
             continue
 
-        sig = (k.casefold(), v2.casefold())
+        sig = (kcf, v2.casefold())
         if sig in seen:
             continue
         seen.add(sig)
