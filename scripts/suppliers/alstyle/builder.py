@@ -4,19 +4,19 @@ Path: scripts/suppliers/alstyle/builder.py
 
 AlStyle supplier layer — сборка raw offer.
 
-v111:
-- сохранён selective override: чистые desc params могут заменить только грязные XML значения
-  для Совместимость / Цвет / Технология / Ресурс;
-- сохранён безопасный fallback Модель из name:
-  PG/CLI/CF..., 097S05250, 604K85850, 022N02905, FK2-7884-000, FB1-8581-000 и т.п.;
-- добавлен Canon accessory pattern формата FM1-R470-000 / FM1-D131-000;
-- сохранён безопасный fallback Совместимость из name только для Xerox init kits:
-  "Комплект инициализации Xerox AltaLink B8245 (097S05250)"
-  -> "Xerox AltaLink B8245";
-- умеет разворачивать slash-цепочки в имени:
-  097S05247/48/49/50/51 -> 097S05247 / 097S05248 / 097S05249 / 097S05250 / 097S05251
-  C8235/C8245/C8255/C8270/B8245/B8255 ->
-  Xerox AltaLink C8235 / Xerox AltaLink C8245 / ... / Xerox AltaLink B8255.
+v112:
+- усиливает selective override для Совместимость:
+  dirty XML value с протёкшими label-блоками типа
+  "Характеристики / Модель / Совместимые модели"
+  теперь безопасно заменяется чистым desc-derived значением;
+- сохраняет текущий safe-override только для:
+  Совместимость / Цвет / Технология / Ресурс;
+- добавляет мягкое правило: для Совместимость можно предпочесть
+  более короткое и чистое desc-derived значение, если XML не грязный,
+  но заметно тяжелее;
+- сохраняет безопасный fallback Модель из name;
+- сохраняет fallback Совместимость из name только для Xerox init kits;
+- не трогает core и не меняет orchestration.
 """
 
 from __future__ import annotations
@@ -57,10 +57,19 @@ _XEROX_INIT_KIT_RE = re.compile(
 _DEVICE_TOKEN_RE = re.compile(r"^[A-Z]?\d{4,5}$", re.IGNORECASE)
 
 _SAFE_DESC_OVERRIDE_KEYS = {"Совместимость", "Цвет", "Технология", "Ресурс"}
+
 _DIRTY_COMPAT_RE = re.compile(
-    r"(?iu)\b(?:Гарантированн(?:ый|ого)\s+об(?:ъ|ь)ем\s+отпечатков|"
-    r"при\s+5%\s+заполнении|формата\s+A4|только\s+для\s+продажи\s+на\s+территории|"
-    r"Форматы\s+бумаги|Плотность|Емкость|Ёмкость|Скорость\s+печати|Интерфейс|Процессор|Память)\b"
+    r"(?iu)\b(?:"
+    r"Гарантированн(?:ый|ого)\s+об(?:ъ|ь)ем\s+отпечатков|"
+    r"при\s+5%\s+заполнении|"
+    r"формата\s+A4|"
+    r"только\s+для\s+продажи\s+на\s+территории|"
+    r"Форматы\s+бумаги|Плотность|Емкость|Ёмкость|"
+    r"Скорость\s+печати|Интерфейс|Процессор|Память|"
+    r"Характеристики|Модель|Совместимые\s+модели|Совместимость|"
+    r"Устройства|Устройство|Применение|"
+    r"Количество\s+в\s+упаковке|Колличество\s+в\s+упаковке"
+    r")\b"
 )
 _DIRTY_COLOR_RE = re.compile(
     r"(?iu)\b(?:Тип\s+чернил|Ресурс(?:\s+картриджа)?|Количество\s+страниц|Секция\s+аппарата|"
@@ -76,6 +85,14 @@ _CLEAN_TECH_RE = re.compile(
 )
 _CLEAN_RESOURCE_RE = re.compile(r"(?iu)^\d[\d\s.,]*(?:\s*(?:стр\.?|страниц|pages|copies))?$")
 
+_COMPAT_BRAND_HINT_RE = re.compile(
+    r"(?iu)\b(?:"
+    r"Xerox|Canon|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|"
+    r"VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser|"
+    r"DocuColor|Versant|PrimeLink|DocuCentre|ImagePROGRAF|imageRUNNER|imagePRESS|PIXMA"
+    r")\b"
+)
+
 
 def _is_dirty_value(key: str, value: str) -> bool:
     k = norm_ws(key)
@@ -85,6 +102,10 @@ def _is_dirty_value(key: str, value: str) -> bool:
 
     if k == "Совместимость":
         if _DIRTY_COMPAT_RE.search(v):
+            return True
+        if ":" in v and re.search(r"(?iu)\b(?:характеристики|модель|совместим(?:ость|ые\s+модели)|устройства?)\b", v):
+            return True
+        if not _COMPAT_BRAND_HINT_RE.search(v) and len(v.split()) > 8:
             return True
         if "/" not in v and "," not in v and len(v.split()) > 10:
             return True
@@ -131,6 +152,22 @@ def _prefer_desc_value(key: str, xml_val: str, desc_val: str) -> bool:
 
     if key == "Ресурс" and len(desc_val) < len(xml_val):
         return True
+
+    if key == "Совместимость":
+        xml_len = len(norm_ws(xml_val))
+        desc_len = len(norm_ws(desc_val))
+
+        # Если desc-версия заметно компактнее, но при этом выглядит как нормальная совместимость,
+        # можно предпочесть её даже при формально "чистом" XML.
+        if (
+            desc_len >= 8
+            and xml_len >= 8
+            and desc_len + 40 < xml_len
+            and _COMPAT_BRAND_HINT_RE.search(desc_val)
+            and desc_val.count(",") <= xml_val.count(",") + 1
+        ):
+            return True
+
     return False
 
 
