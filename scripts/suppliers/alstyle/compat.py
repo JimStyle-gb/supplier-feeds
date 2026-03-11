@@ -4,15 +4,12 @@ Path: scripts/suppliers/alstyle/compat.py
 
 AlStyle supplier layer — cleanup моделей / совместимости / кодовых серий.
 
-v127:
+v128:
 - сохраняет текущие Canon/Xerox cleanup-фиксы;
-- дочищает Xerox staple/finisher compatibility:
-  убирает accessory-prefix до "для ...";
-- нормализует семейства Xerox:
-  VersaLink / AltaLink / WorkCentre / WorkCentre Pro / CopyCentre / ColorQube / Phaser;
-- собирает повторяющиеся Xerox family blocks в один блок;
-- сохраняет все модели после "/" внутри одного family;
-- дедуплицирует модели внутри каждого Xerox family;
+- дочищает Xerox staple/finisher compatibility;
+- отдельно добивает Canon ImagePROGRAF TX / iPF TX / MFP T36 / T36-AiO glue:
+  Canon ImagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000
+  -> Canon ImagePROGRAF iPF TX-2000 / Canon ImagePROGRAF iPF TX-3000;
 - сохраняет разрезание Canon imageRUNNER / imagePRESS / ImagePROGRAF chains;
 - срезает мусорные хвосты типа &gt; и dangling '/ Canon' в конце совместимости.
 """
@@ -32,7 +29,15 @@ _REPEATED_BRAND_RE = re.compile(
     r"(?iu)\b(Xerox|Canon|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark)\s+\1\b"
 )
 
-_IMAGEPROGRAF_MODEL = r"[A-Za-z]*\d+[A-Za-z0-9-]*"
+# Canon model patterns
+_PIXMA_MODEL = r"[A-Za-z]*\d+[A-Za-z0-9-]*"
+_IMAGEPROGRAF_MODEL = (
+    r"(?:iPF\s+)?"
+    r"(?:TX|GP|TM|TZ|PRO|PROGRAF|IPF)?"
+    r"[\s-]*"
+    r"[A-Za-z-]*\d+[A-Za-z0-9-]*"
+    r"(?:\s+MFP\s+T\d{2}(?:-AiO)?)?"
+)
 _IMAGEPRESS_MODEL = r"[A-Za-z]*\d+[A-Za-z0-9-]*(?:\s+(?:I|II|III|IV|V|PRO))?"
 _IR_ADV_MODEL = r"[A-Za-z]*\d+[A-Za-z0-9-]*(?:\s+(?:I|II|III|IV|V|PRO))?"
 _IR_CLASSIC_MODEL = r"[A-Za-z]*\d+[A-Za-z0-9-]*(?:\s+(?:I|II|III|IV|V|PRO))?"
@@ -45,7 +50,11 @@ _DANGLING_BRAND_TAIL_RE = re.compile(
 _DANGLING_CONNECTOR_RE = re.compile(r"(?iu)(?:\s*/\s*|\s*,\s*|-+\s*)$")
 
 _BRAND_GLUE_PATTERNS = [
-    (re.compile(rf"(?i)(Canon\s+PIXMA\s+{_IMAGEPROGRAF_MODEL})(?=\s*Canon\s+PIXMA)"), r"\1 / "),
+    (re.compile(rf"(?i)(Canon\s+PIXMA\s+{_PIXMA_MODEL})(?=\s*Canon\s+PIXMA)"), r"\1 / "),
+    (
+        re.compile(rf"(?i)(Canon\s+ImagePROGRAF\s+{_IMAGEPROGRAF_MODEL})(?=\s*Canon\s+imagePROGRAF)"),
+        r"\1 / ",
+    ),
     (
         re.compile(rf"(?i)(Canon\s+ImagePROGRAF\s+{_IMAGEPROGRAF_MODEL})(?=\s*Canon\s+ImagePROGRAF)"),
         r"\1 / ",
@@ -74,7 +83,7 @@ _BRAND_GLUE_PATTERNS = [
         ),
         r"\1 / ",
     ),
-    (re.compile(rf"(?i)(Canon\s+i-SENSYS\s+{_IMAGEPROGRAF_MODEL})(?=\s*Canon\s+i-SENSYS)"), r"\1 / "),
+    (re.compile(rf"(?i)(Canon\s+i-SENSYS\s+{_PIXMA_MODEL})(?=\s*Canon\s+i-SENSYS)"), r"\1 / "),
     (re.compile(r"(?i)(Xerox\s+[A-Za-z-]*\d+[A-Za-z0-9/-]*)(?=\s*Xerox\s+)"), r"\1 / "),
     (re.compile(r"(?i)(WorkCentre\s+[A-Za-z-]*\d+[A-Za-z0-9/-]*)(?=\s*WorkCentre\s+)"), r"\1 / "),
 ]
@@ -194,14 +203,14 @@ def split_glued_brand_models(v: str) -> str:
         r"(?<=[A-Za-zА-Яа-я0-9])(?=(?:"
         r"Canon|CANON|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark"
         r")\s+(?:"
-        r"PIXMA|ImagePROGRAF|imageRUNNER|imagePRESS|WorkCentre|WorkCenter|VersaLink|AltaLink|Phaser|ColorQube|CopyCentre|i-SENSYS|ECOSYS|LaserJet|DeskJet|OfficeJet"
+        r"PIXMA|ImagePROGRAF|imagePROGRAF|imageRUNNER|imagePRESS|WorkCentre|WorkCenter|VersaLink|AltaLink|Phaser|ColorQube|CopyCentre|i-SENSYS|ECOSYS|LaserJet|DeskJet|OfficeJet"
         r")\b)",
         " / ",
         s,
     )
 
     s = re.sub(
-        rf"(?iu)\b({_ROMAN_ONLY}|PRO)\s+(?=Canon\s+(?:imageRUNNER\s+ADVANCE|imageRUNNER|imagePRESS|ImagePROGRAF|i-SENSYS)\b)",
+        rf"(?iu)\b({_ROMAN_ONLY}|PRO)\s+(?=Canon\s+(?:imageRUNNER\s+ADVANCE|imageRUNNER|imagePRESS|ImagePROGRAF|imagePROGRAF|i-SENSYS)\b)",
         r"\1 / ",
         s,
     )
@@ -244,10 +253,11 @@ def _prefix_missing_canon_brand(v: str) -> str:
 
     series_patterns = [
         rf"ImagePROGRAF\s+{_IMAGEPROGRAF_MODEL}",
+        rf"imagePROGRAF\s+{_IMAGEPROGRAF_MODEL}",
         rf"imageRUNNER\s+ADVANCE(?:\s+DX)?\s+{_IR_ADV_MODEL}",
         rf"imageRUNNER\s+{_IR_CLASSIC_MODEL}",
         rf"imagePRESS(?:\s+Lite)?\s+{_IMAGEPRESS_MODEL}",
-        rf"i-SENSYS\s+{_IMAGEPROGRAF_MODEL}",
+        rf"i-SENSYS\s+{_PIXMA_MODEL}",
     ]
     for pat in series_patterns:
         s = re.sub(rf"(?iu)\b({pat})\b", r"Canon \1", s)
@@ -261,6 +271,11 @@ def _fix_known_compat_typos(v: str) -> str:
     if not s:
         return ""
 
+    s = re.sub(
+        rf"(?iu)\b(Canon\s+ImagePROGRAF\s+{_IMAGEPROGRAF_MODEL})(?=\s*Canon\s+imagePROGRAF\b)",
+        r"\1 / ",
+        s,
+    )
     s = re.sub(
         rf"(?iu)\b(Canon\s+ImagePROGRAF\s+{_IMAGEPROGRAF_MODEL})(?=\s*Canon\s+ImagePROGRAF\b)",
         r"\1 / ",
@@ -308,7 +323,7 @@ def _fix_known_compat_typos(v: str) -> str:
     )
 
     s = re.sub(
-        rf"(?iu)\b(Canon\s+i-SENSYS\s+{_IMAGEPROGRAF_MODEL})(?=\s*Canon\s+i-SENSYS)",
+        rf"(?iu)\b(Canon\s+i-SENSYS\s+{_PIXMA_MODEL})(?=\s*Canon\s+i-SENSYS)",
         r"\1 / ",
         s,
     )
