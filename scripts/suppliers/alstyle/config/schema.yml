@@ -12,14 +12,19 @@ drop_keys_casefold:
 - полное наименование (каз)
 - назначение
 - безопасность
+
 aliases_casefold:
+  мощность (bt): Мощность (Вт)
   мощность (bт): Мощность (Вт)
+  мощность (вt): Мощность (Вт)
+
 value_normalizers:
   Гарантия:
   - warranty_months
+
 key_rules:
   require_letter: true
   max_len: 60
   max_words: 9
-notes: 'Schema is strict: adapter cleans params; core policy for AS should disable
-  clean/split/enrich.'
+
+notes: 'Schema is strict: adapter cleans params; core policy for AS should disable clean/split/enrich.'
