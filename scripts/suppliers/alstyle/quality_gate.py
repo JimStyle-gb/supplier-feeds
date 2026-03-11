@@ -9,8 +9,7 @@ AlStyle quality gate:
   какие cosmetic уже известны, а какие новые;
 - сборка проходит, пока ОБЩЕЕ количество cosmetic
   не превышает порог;
-- freeze_current_as_baseline сохраняет текущее состояние
-  как справочный baseline, но не выключает будущий контроль.
+- ship_title_prefix полностью убран как лишнее и неуниверсальное правило.
 """
 
 from __future__ import annotations
@@ -25,7 +24,6 @@ import xml.etree.ElementTree as ET
 import yaml
 
 
-_SHIP_TITLE_PREFIX_RE = re.compile(r"(?iu)^Кабель\s+сетевой(?:\s+самонесущий)?\s+SHIP\b")
 _COMPAT_LABEL_LEAK_RE = re.compile(
     r"(?iu)\b(?:Характеристики|Модель|Совместимые\s+модели|Технология\s+печати|Цвет(?:\s+печати)?)\b"
 )
@@ -100,7 +98,7 @@ def _detect_issues(feed_path: str) -> list[QualityIssue]:
         oid = _norm_ws(offer.get("id") or "")
         name = _norm_ws(offer.findtext("name") or "")
         desc_html = offer.findtext("description") or ""
-        first_p = _first_paragraph_text(desc_html)
+        _ = _first_paragraph_text(desc_html)  # intentionally kept for future generic checks
         params = _offer_params(offer)
 
         compat_values = params.get("Совместимость", [])
@@ -148,17 +146,6 @@ def _detect_issues(feed_path: str) -> list[QualityIssue]:
                     oid=oid,
                     name=name,
                     details="oaicite/contentReference",
-                )
-            )
-
-        if _SHIP_TITLE_PREFIX_RE.match(first_p):
-            issues.append(
-                QualityIssue(
-                    severity="cosmetic",
-                    rule="ship_title_prefix",
-                    oid=oid,
-                    name=name,
-                    details=first_p[:200],
                 )
             )
 
