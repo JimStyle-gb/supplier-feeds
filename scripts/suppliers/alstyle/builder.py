@@ -4,19 +4,18 @@ Path: scripts/suppliers/alstyle/builder.py
 
 AlStyle supplier layer — сборка raw offer.
 
-v112:
-- усиливает selective override для Совместимость:
-  dirty XML value с протёкшими label-блоками типа
-  "Характеристики / Модель / Совместимые модели"
-  теперь безопасно заменяется чистым desc-derived значением;
-- сохраняет текущий safe-override только для:
+v113:
+- усиливает selective override для Совместимость;
+- грязная XML/merged Совместимость с протёкшими label-блоками
+  ("Характеристики / Модель / Совместимые модели") теперь
+  заменяется чистой desc-derived версией на финальном reconcile-pass;
+- для тяжёлых Xerox compatibility chains можно предпочесть
+  более короткую и чистую desc-derived версию;
+- сохраняет safe-override только для:
   Совместимость / Цвет / Технология / Ресурс;
-- добавляет мягкое правило: для Совместимость можно предпочесть
-  более короткое и чистое desc-derived значение, если XML не грязный,
-  но заметно тяжелее;
-- сохраняет безопасный fallback Модель из name;
+- сохраняет fallback Модель из name;
 - сохраняет fallback Совместимость из name только для Xerox init kits;
-- не трогает core и не меняет orchestration.
+- core не трогает.
 """
 
 from __future__ import annotations
@@ -89,8 +88,12 @@ _COMPAT_BRAND_HINT_RE = re.compile(
     r"(?iu)\b(?:"
     r"Xerox|Canon|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|"
     r"VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser|"
-    r"DocuColor|Versant|PrimeLink|DocuCentre|ImagePROGRAF|imageRUNNER|imagePRESS|PIXMA"
+    r"DocuColor|Versant|PrimeLink|DocuCentre|ImagePROGRAF|imageRUNNER|imagePRESS|PIXMA|"
+    r"J75|C75|D95|D110|D125"
     r")\b"
+)
+_XEROX_HEAVY_COMPAT_RE = re.compile(
+    r"(?iu)\b(?:VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser|DocuColor|Versant)\b"
 )
 
 
@@ -137,6 +140,17 @@ def _is_dirty_value(key: str, value: str) -> bool:
     return False
 
 
+def _compat_looks_clean(v: str) -> bool:
+    s = norm_ws(v)
+    if not s:
+        return False
+    if _is_dirty_value("Совместимость", s):
+        return False
+    if not _COMPAT_BRAND_HINT_RE.search(s):
+        return False
+    return True
+
+
 def _prefer_desc_value(key: str, xml_val: str, desc_val: str) -> bool:
     if key not in _SAFE_DESC_OVERRIDE_KEYS:
         return False
@@ -157,18 +171,93 @@ def _prefer_desc_value(key: str, xml_val: str, desc_val: str) -> bool:
         xml_len = len(norm_ws(xml_val))
         desc_len = len(norm_ws(desc_val))
 
-        # Если desc-версия заметно компактнее, но при этом выглядит как нормальная совместимость,
-        # можно предпочесть её даже при формально "чистом" XML.
         if (
             desc_len >= 8
             and xml_len >= 8
             and desc_len + 40 < xml_len
-            and _COMPAT_BRAND_HINT_RE.search(desc_val)
+            and _compat_looks_clean(desc_val)
             and desc_val.count(",") <= xml_val.count(",") + 1
         ):
             return True
 
     return False
+
+
+def _best_desc_values(desc_params: list[tuple[str, str]]) -> dict[str, tuple[str, str]]:
+    best: dict[str, tuple[str, str]] = {}
+
+    for k, v in desc_params:
+        k2 = norm_ws(k)
+        v2 = norm_ws(v)
+        if not k2 or not v2:
+            continue
+
+        key_cf = k2.casefold()
+        prev = best.get(key_cf)
+
+        if key_cf == "совместимость":
+            if not _compat_looks_clean(v2):
+                continue
+            if prev is None:
+                best[key_cf] = (k2, v2)
+                continue
+
+            prev_v = prev[1]
+            # для Совместимость предпочитаем более короткую и не менее "богатую" по брендовым хинтам
+            if len(v2) < len(prev_v):
+                best[key_cf] = (k2, v2)
+            continue
+
+        if key_cf in {"цвет", "технология", "ресурс"}:
+            if _is_dirty_value(k2, v2):
+                continue
+            if prev is None or len(v2) < len(prev[1]):
+                best[key_cf] = (k2, v2)
+
+    return best
+
+
+def _final_reconcile_params(
+    params: list[tuple[str, str]],
+    desc_params: list[tuple[str, str]],
+) -> list[tuple[str, str]]:
+    """
+    Последний reconcile-pass после merge:
+    - если merged Совместимость всё ещё грязная, а clean desc Совместимость есть -> заменить;
+    - если merged Xerox Совместимость слишком тяжёлая, а clean desc версия заметно компактнее -> заменить.
+    """
+    if not params:
+        return params
+
+    best_desc = _best_desc_values(desc_params)
+    compat_desc = best_desc.get("совместимость")
+    if not compat_desc:
+        return params
+
+    desc_k, desc_v = compat_desc
+    out: list[tuple[str, str]] = []
+
+    for k, v in params:
+        k2 = norm_ws(k)
+        v2 = norm_ws(v)
+
+        if k2.casefold() == "совместимость":
+            if _is_dirty_value("Совместимость", v2):
+                out.append((k2, desc_v))
+                continue
+
+            if (
+                _XEROX_HEAVY_COMPAT_RE.search(v2)
+                and _XEROX_HEAVY_COMPAT_RE.search(desc_v)
+                and len(desc_v) + 50 < len(v2)
+                and _compat_looks_clean(desc_v)
+            ):
+                out.append((k2, desc_v))
+                continue
+
+        out.append((k2, v2))
+
+    return out
 
 
 def merge_params(
@@ -221,6 +310,7 @@ def merge_params(
         index_by_key[key_cf] = len(out) - 1
         seen_pair.add(sig)
 
+    out = _final_reconcile_params(out, desc_params)
     return out
 
 
