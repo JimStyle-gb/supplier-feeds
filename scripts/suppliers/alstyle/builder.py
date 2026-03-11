@@ -203,7 +203,6 @@ def _best_desc_values(desc_params: list[tuple[str, str]]) -> dict[str, tuple[str
                 continue
 
             prev_v = prev[1]
-            # для Совместимость предпочитаем более короткую и не менее "богатую" по брендовым хинтам
             if len(v2) < len(prev_v):
                 best[key_cf] = (k2, v2)
             continue
@@ -234,7 +233,7 @@ def _final_reconcile_params(
     if not compat_desc:
         return params
 
-    desc_k, desc_v = compat_desc
+    desc_v = compat_desc[1]
     out: list[tuple[str, str]] = []
 
     for k, v in params:
