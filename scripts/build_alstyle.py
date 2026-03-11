@@ -1,331 +1,226 @@
 # -*- coding: utf-8 -*-
 """
-Path: scripts/suppliers/alstyle/quality_gate.py
+Path: scripts/build_alstyle.py
 
-AlStyle quality gate:
-- не даёт бесконечно полировать поставщика;
-- различает critical и cosmetic issues;
-- cosmetic issues можно зафиксировать в baseline;
+AlStyle adapter (AS) — CS-шаблон (config-driven).
+
+v107:
+- build_alstyle.py остаётся тонким orchestrator'ом;
+- после сборки final feed запускается supplier-side quality gate;
+- quality gate различает critical и cosmetic issues;
+- cosmetic issues не исключаются из подсчёта, baseline нужен только для отчёта;
 - сборка падает только если:
   * есть critical issues;
-  * появились новые cosmetic issues сверх порога.
+  * общее количество cosmetic-issues / cosmetic-offers выше порога.
 """
 
 from __future__ import annotations
 
-from collections import defaultdict
-from dataclasses import dataclass
-from html import unescape
+import os
 from pathlib import Path
-import re
-import xml.etree.ElementTree as ET
+from typing import Any
 
 import yaml
 
-
-_SHIP_TITLE_PREFIX_RE = re.compile(r"(?iu)^Кабель\s+сетевой(?:\s+самонесущий)?\s+SHIP\b")
-_COMPAT_LABEL_LEAK_RE = re.compile(
-    r"(?iu)\b(?:Характеристики|Модель|Совместимые\s+модели|Технология\s+печати|Цвет(?:\s+печати)?)\b"
+from cs.core import write_cs_feed, write_cs_feed_raw
+from cs.meta import next_run_at_hour, now_almaty
+from suppliers.alstyle.builder import build_offers
+from suppliers.alstyle.diagnostics import (
+    build_watch_source_map,
+    make_watch_messages,
+    write_watch_report,
 )
-_BAD_POWER_KEY_RE = re.compile(r"(?iu)^Мощность\s*\((?:bt|bт|вt)\)$")
-_XEROX_FAMILY_RE = re.compile(
-    r"(?iu)\b(?:VersaLink|AltaLink|Versant|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\b"
-)
-_HTML_TAG_RE = re.compile(r"<[^>]+>")
-_HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
-_WS_RE = re.compile(r"\s+")
+from suppliers.alstyle.filtering import filter_source_offers, parse_id_set
+from suppliers.alstyle.quality_gate import run_quality_gate
+from suppliers.alstyle.source import load_source_offers
 
 
-@dataclass(frozen=True)
-class QualityIssue:
-    severity: str
-    rule: str
-    oid: str
-    name: str
-    details: str
+BUILD_ALSTYLE_VERSION = "build_alstyle_v107_quality_gate"
+
+ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
+ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
+ALSTYLE_RAW_OUT_DEFAULT = "docs/raw/alstyle.yml"
+ALSTYLE_ID_PREFIX = "AS"
+ALSTYLE_WATCH_OIDS = {"AS257478"}
+
+CFG_DIR_DEFAULT = "scripts/suppliers/alstyle/config"
+FILTER_FILE_DEFAULT = "filter.yml"
+SCHEMA_FILE_DEFAULT = "schema.yml"
+POLICY_FILE_DEFAULT = "policy.yml"
+
+WATCH_REPORT_DEFAULT = "docs/raw/alstyle_watch.txt"
+QUALITY_BASELINE_DEFAULT = "scripts/suppliers/alstyle/config/quality_baseline.yml"
+QUALITY_REPORT_DEFAULT = "docs/raw/alstyle_quality_gate.txt"
 
 
-def _norm_ws(s: str) -> str:
-    s2 = unescape(s or "")
-    s2 = s2.replace("\u00a0", " ").strip()
-    s2 = _WS_RE.sub(" ", s2).strip()
-    return s2
-
-
-def _read_yaml(path: str) -> dict:
-    p = Path(path)
-    if not p.exists():
+def _read_yaml(path: Path) -> dict[str, Any]:
+    if not path.exists():
         return {}
-    return yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
-def _write_yaml(path: str, data: dict) -> None:
-    p = Path(path)
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(
-        yaml.safe_dump(data, allow_unicode=True, sort_keys=False),
-        encoding="utf-8",
+def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    filter_cfg = _read_yaml(cfg_dir / FILTER_FILE_DEFAULT)
+    schema_cfg = _read_yaml(cfg_dir / SCHEMA_FILE_DEFAULT)
+    policy_cfg = _read_yaml(cfg_dir / POLICY_FILE_DEFAULT)
+    return filter_cfg, schema_cfg, policy_cfg
+
+
+def _env_truthy(name: str) -> bool:
+    val = os.getenv(name, "").strip().casefold()
+    return val in {"1", "true", "yes", "y", "on"}
+
+
+def main() -> int:
+    url = os.getenv("ALSTYLE_URL", ALSTYLE_URL_DEFAULT)
+    out_file = os.getenv("ALSTYLE_OUT", ALSTYLE_OUT_DEFAULT)
+    raw_out = os.getenv("ALSTYLE_RAW_OUT", ALSTYLE_RAW_OUT_DEFAULT)
+    watch_report = os.getenv("ALSTYLE_WATCH_REPORT", WATCH_REPORT_DEFAULT)
+
+    cfg_dir = Path(os.getenv("ALSTYLE_CFG_DIR", CFG_DIR_DEFAULT))
+    filter_cfg, schema_cfg, policy_cfg = _load_supplier_config(cfg_dir)
+
+    timeout = int(os.getenv("ALSTYLE_TIMEOUT", "120"))
+    login = os.getenv("ALSTYLE_LOGIN", "").strip()
+    password = os.getenv("ALSTYLE_PASSWORD", "").strip()
+
+    hour = int(
+        policy_cfg.get("schedule_hour_almaty")
+        or policy_cfg.get("next_run_hour_local")
+        or 1
     )
+    build_time = now_almaty()
+    next_run = next_run_at_hour(build_time, hour=hour)
 
-
-def _first_paragraph_text(desc_html: str) -> str:
-    raw = desc_html or ""
-    m = re.search(r"(?is)<p>(.*?)</p>", raw)
-    if m:
-        raw = m.group(1)
-    raw = _HTML_COMMENT_RE.sub(" ", raw)
-    raw = _HTML_TAG_RE.sub(" ", raw)
-    return _norm_ws(raw)
-
-
-def _offer_params(offer_el: ET.Element) -> dict[str, list[str]]:
-    out: dict[str, list[str]] = defaultdict(list)
-    for p in offer_el.findall("param"):
-        k = _norm_ws(p.get("name") or "")
-        v = _norm_ws("".join(p.itertext()))
-        if k and v:
-            out[k].append(v)
-    return dict(out)
-
-
-def _detect_issues(feed_path: str) -> list[QualityIssue]:
-    xml_text = Path(feed_path).read_text(encoding="utf-8", errors="ignore")
-    root = ET.fromstring(xml_text)
-
-    issues: list[QualityIssue] = []
-
-    for offer in root.findall(".//offer"):
-        oid = _norm_ws(offer.get("id") or "")
-        name = _norm_ws(offer.findtext("name") or "")
-        desc_html = offer.findtext("description") or ""
-        first_p = _first_paragraph_text(desc_html)
-        params = _offer_params(offer)
-
-        compat_values = params.get("Совместимость", [])
-        for compat in compat_values:
-            if _COMPAT_LABEL_LEAK_RE.search(compat):
-                issues.append(
-                    QualityIssue(
-                        severity="critical",
-                        rule="compat_label_leak",
-                        oid=oid,
-                        name=name,
-                        details=compat[:200],
-                    )
-                )
-
-            families = {x.casefold() for x in _XEROX_FAMILY_RE.findall(compat)}
-            if len(families) >= 3 and len(compat) >= 180:
-                issues.append(
-                    QualityIssue(
-                        severity="cosmetic",
-                        rule="heavy_xerox_compat",
-                        oid=oid,
-                        name=name,
-                        details=compat[:200],
-                    )
-                )
-
-        for key in params:
-            if _BAD_POWER_KEY_RE.match(key):
-                issues.append(
-                    QualityIssue(
-                        severity="critical",
-                        rule="bad_power_key",
-                        oid=oid,
-                        name=name,
-                        details=key,
-                    )
-                )
-
-        if "oaicite" in desc_html or "contentReference" in desc_html:
-            issues.append(
-                QualityIssue(
-                    severity="critical",
-                    rule="desc_oaicite_leak",
-                    oid=oid,
-                    name=name,
-                    details="oaicite/contentReference",
-                )
-            )
-
-        if _SHIP_TITLE_PREFIX_RE.match(first_p):
-            issues.append(
-                QualityIssue(
-                    severity="cosmetic",
-                    rule="ship_title_prefix",
-                    oid=oid,
-                    name=name,
-                    details=first_p[:200],
-                )
-            )
-
-    deduped: dict[tuple[str, str, str], QualityIssue] = {}
-    for issue in issues:
-        deduped[(issue.severity, issue.rule, issue.oid)] = issue
-    return sorted(deduped.values(), key=lambda x: (x.severity, x.rule, x.oid))
-
-
-def _load_accepted_cosmetic(baseline_path: str) -> dict[str, set[str]]:
-    data = _read_yaml(baseline_path)
-    raw = data.get("accepted_cosmetic") or {}
-    out: dict[str, set[str]] = {}
-    for rule, oids in raw.items():
-        out[str(rule)] = {str(x).strip() for x in (oids or []) if str(x).strip()}
-    return out
-
-
-def _make_baseline_payload(issues: list[QualityIssue]) -> dict:
-    grouped: dict[str, list[str]] = defaultdict(list)
-    for issue in issues:
-        if issue.severity != "cosmetic":
-            continue
-        grouped[issue.rule].append(issue.oid)
-
-    payload = {
-        "schema_version": 1,
-        "accepted_cosmetic": {},
+    placeholder_picture = (
+        os.getenv("PLACEHOLDER_PICTURE")
+        or policy_cfg.get("placeholder_picture")
+        or "https://placehold.co/800x800/png?text=No+Photo"
+    )
+    supplier_name = (policy_cfg.get("supplier") or "AlStyle").strip()
+    vendor_blacklist = {
+        str(x).casefold()
+        for x in (policy_cfg.get("vendor_blacklist_casefold") or ["alstyle"])
     }
-    for rule in sorted(grouped):
-        payload["accepted_cosmetic"][rule] = sorted(set(grouped[rule]))
-    return payload
 
-
-def _write_report(
-    path: str,
-    *,
-    critical: list[QualityIssue],
-    cosmetic: list[QualityIssue],
-    new_cosmetic: list[QualityIssue],
-    accepted_cosmetic: dict[str, set[str]],
-    max_new_cosmetic_offers: int,
-    max_new_cosmetic_issues: int,
-    passed: bool,
-    baseline_path: str,
-    frozen: bool,
-) -> None:
-    p = Path(path)
-    p.parent.mkdir(parents=True, exist_ok=True)
-
-    new_offer_count = len({x.oid for x in new_cosmetic})
-
-    lines: list[str] = []
-    lines.append(f"QUALITY_GATE: {'PASS' if passed else 'FAIL'}")
-    lines.append(f"baseline_file: {baseline_path}")
-    lines.append(f"freeze_current_as_baseline: {'yes' if frozen else 'no'}")
-    lines.append(f"critical_count: {len(critical)}")
-    lines.append(f"cosmetic_total_count: {len(cosmetic)}")
-    lines.append(f"new_cosmetic_issue_count: {len(new_cosmetic)}")
-    lines.append(f"new_cosmetic_offer_count: {new_offer_count}")
-    lines.append(f"max_new_cosmetic_offers: {max_new_cosmetic_offers}")
-    lines.append(f"max_new_cosmetic_issues: {max_new_cosmetic_issues}")
-    lines.append("")
-
-    if accepted_cosmetic:
-        lines.append("ACCEPTED COSMETIC BASELINE:")
-        for rule in sorted(accepted_cosmetic):
-            oids = sorted(accepted_cosmetic[rule])
-            lines.append(f"- {rule}: {len(oids)} offer(s)")
-            for oid in oids[:50]:
-                lines.append(f"  - {oid}")
-            if len(oids) > 50:
-                lines.append(f"  - ... +{len(oids) - 50}")
-        lines.append("")
-
-    if critical:
-        lines.append("CRITICAL:")
-        for issue in critical:
-            lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name} | {issue.details}")
-        lines.append("")
-
-    if new_cosmetic:
-        lines.append("NEW COSMETIC:")
-        for issue in new_cosmetic:
-            lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name} | {issue.details}")
-        lines.append("")
-
-    old_cosmetic = [
-        x for x in cosmetic
-        if x.oid in accepted_cosmetic.get(x.rule, set())
-    ]
-    if old_cosmetic:
-        lines.append("ACCEPTED COSMETIC (matched current build):")
-        for issue in old_cosmetic:
-            lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name}")
-        lines.append("")
-
-    p.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
-
-def run_quality_gate(
-    *,
-    feed_path: str,
-    baseline_path: str,
-    report_path: str,
-    max_new_cosmetic_offers: int = 5,
-    max_new_cosmetic_issues: int = 5,
-    enforce: bool = True,
-    freeze_current_as_baseline: bool = False,
-) -> tuple[bool, str]:
-    issues = _detect_issues(feed_path)
-    critical = [x for x in issues if x.severity == "critical"]
-    cosmetic = [x for x in issues if x.severity == "cosmetic"]
-
-    if freeze_current_as_baseline:
-        payload = _make_baseline_payload(cosmetic)
-        _write_yaml(baseline_path, payload)
-        _write_report(
-            report_path,
-            critical=critical,
-            cosmetic=cosmetic,
-            new_cosmetic=[],
-            accepted_cosmetic=_load_accepted_cosmetic(baseline_path),
-            max_new_cosmetic_offers=max_new_cosmetic_offers,
-            max_new_cosmetic_issues=max_new_cosmetic_issues,
-            passed=True,
-            baseline_path=baseline_path,
-            frozen=True,
+    qg_cfg = policy_cfg.get("quality_gate") or {}
+    quality_enabled = bool(qg_cfg.get("enabled", True))
+    quality_enforce = bool(qg_cfg.get("enforce", True))
+    quality_baseline = (
+        os.getenv("ALSTYLE_QUALITY_BASELINE")
+        or qg_cfg.get("baseline_file")
+        or QUALITY_BASELINE_DEFAULT
+    )
+    quality_report = (
+        os.getenv("ALSTYLE_QUALITY_REPORT")
+        or qg_cfg.get("report_file")
+        or QUALITY_REPORT_DEFAULT
+    )
+    quality_max_cosmetic_offers = int(
+        os.getenv(
+            "ALSTYLE_QUALITY_MAX_COSMETIC_OFFERS",
+            os.getenv(
+                "ALSTYLE_QUALITY_MAX_NEW_COSMETIC_OFFERS",
+                str(qg_cfg.get("max_new_cosmetic_offers", 5)),
+            ),
         )
-        return True, (
-            f"[quality_gate] BASELINE_FROZEN | critical={len(critical)} | "
-            f"cosmetic={len(cosmetic)} | baseline={baseline_path}"
+    )
+    quality_max_cosmetic_issues = int(
+        os.getenv(
+            "ALSTYLE_QUALITY_MAX_COSMETIC_ISSUES",
+            os.getenv(
+                "ALSTYLE_QUALITY_MAX_NEW_COSMETIC_ISSUES",
+                str(qg_cfg.get("max_new_cosmetic_issues", 5)),
+            ),
         )
-
-    accepted_cosmetic = _load_accepted_cosmetic(baseline_path)
-    new_cosmetic = [
-        x for x in cosmetic
-        if x.oid not in accepted_cosmetic.get(x.rule, set())
-    ]
-    new_offer_count = len({x.oid for x in new_cosmetic})
-
-    passed = (
-        len(critical) == 0
-        and len(new_cosmetic) <= int(max_new_cosmetic_issues)
-        and new_offer_count <= int(max_new_cosmetic_offers)
+    )
+    quality_freeze_baseline = bool(qg_cfg.get("freeze_current_as_baseline", False)) or _env_truthy(
+        "ALSTYLE_QUALITY_FREEZE_BASELINE"
     )
 
-    _write_report(
-        report_path,
-        critical=critical,
-        cosmetic=cosmetic,
-        new_cosmetic=new_cosmetic,
-        accepted_cosmetic=accepted_cosmetic,
-        max_new_cosmetic_offers=max_new_cosmetic_offers,
-        max_new_cosmetic_issues=max_new_cosmetic_issues,
-        passed=(passed or not enforce),
-        baseline_path=baseline_path,
-        frozen=False,
+    fallback_ids = {str(x) for x in (filter_cfg.get("category_ids") or [])}
+    allowed = parse_id_set(os.getenv("ALSTYLE_CATEGORY_IDS"), fallback_ids)
+
+    source_offers = load_source_offers(
+        url=url,
+        timeout=timeout,
+        login=login,
+        password=password,
+    )
+    before = len(source_offers)
+    filtered_offers = filter_source_offers(source_offers, allowed)
+
+    watch_source = build_watch_source_map(
+        source_offers,
+        prefix=ALSTYLE_ID_PREFIX,
+        watch_ids=ALSTYLE_WATCH_OIDS,
     )
 
-    summary = (
-        f"[quality_gate] {'PASS' if (passed or not enforce) else 'FAIL'} | "
-        f"critical={len(critical)} | "
-        f"new_cosmetic_issues={len(new_cosmetic)} | "
-        f"new_cosmetic_offers={new_offer_count} | "
-        f"baseline={baseline_path} | report={report_path}"
+    out_offers, in_true, in_false = build_offers(
+        filtered_offers,
+        schema_cfg=schema_cfg,
+        vendor_blacklist=vendor_blacklist,
+        placeholder_picture=placeholder_picture,
+        id_prefix=ALSTYLE_ID_PREFIX,
+    )
+    after = len(out_offers)
+    watch_out = {x.oid for x in out_offers}
+
+    watch_messages = make_watch_messages(
+        watch_ids=ALSTYLE_WATCH_OIDS,
+        watch_source=watch_source,
+        watch_out=watch_out,
+        allowed=allowed,
+    )
+    write_watch_report(watch_report, watch_messages)
+
+    write_cs_feed_raw(
+        out_offers,
+        supplier=supplier_name,
+        supplier_url=url,
+        out_file=raw_out,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        encoding="utf-8",
+        currency_id="KZT",
     )
 
-    if not enforce:
-        return True, summary + " | enforce=no"
+    changed = write_cs_feed(
+        out_offers,
+        supplier=supplier_name,
+        supplier_url=url,
+        out_file=out_file,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        encoding="utf-8",
+        public_vendor=os.getenv("PUBLIC_VENDOR", "CS").strip() or "CS",
+        currency_id="KZT",
+    )
 
-    return passed, summary
+    if quality_enabled:
+        qg_ok, qg_summary = run_quality_gate(
+            feed_path=out_file,
+            baseline_path=quality_baseline,
+            report_path=quality_report,
+            max_new_cosmetic_offers=quality_max_cosmetic_offers,
+            max_new_cosmetic_issues=quality_max_cosmetic_issues,
+            enforce=quality_enforce,
+            freeze_current_as_baseline=quality_freeze_baseline,
+        )
+        print(qg_summary)
+        if not qg_ok:
+            return 1
+
+    print(
+        f"[build_alstyle] OK | version={BUILD_ALSTYLE_VERSION} | "
+        f"offers_in={before} | offers_out={after} | "
+        f"in_true={in_true} | in_false={in_false} | "
+        f"changed={'yes' if changed else 'no'} | file={out_file}"
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
