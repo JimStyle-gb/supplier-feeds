@@ -4,17 +4,16 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-v123:
-- чинит ложный парсинг "Цвет печати" -> ("Цвет", "печати");
-- режет кабельные хвосты у цвета;
-- режет хвосты цвета вида "Черный Ресурс картриджа, стр 3100" -> "Чёрный";
-- режет хвосты цвета вида "Пурпурный Секция аппарата Фотопроводник" -> "Пурпурный";
-- нормализует технологию: "Термоструйная Количество цветов 5" -> "Термоструйная";
-- дочищает compatibility-кандидаты от "Комплект поставки / Описание / Особенности";
-- не считает singular "Устройство" совместимостью;
-- сохраняет длинную совместимость и multiline label/value кейсы;
-- добивает generic Модель: не пропускает narrative-фразы вида
-  "Crystal Desk GT40 не является исключением. Она предлагает ...".
+v124:
+- сохраняет прошлые фиксы по Цвет / Технология / Совместимость / Ресурс;
+- откатывает слишком жёсткий фильтр generic Модель;
+- по-прежнему режет narrative-фразы вида
+  "не является исключением. Она предлагает ...";
+- снова пропускает валидные кодовые модели:
+  604K85850
+  022N02905
+  607K15371 / 607K15370 / 624S00165
+  и короткие mixed-case model phrases вроде "Crystal Desk GT40".
 """
 
 from __future__ import annotations
@@ -220,8 +219,11 @@ _MODEL_NARRATIVE_RE = re.compile(
     r"позволяет|подходит|используется|включает|оснащен|оснащена|имеет|"
     r"можно|необходимо|для\s+удобства|для\s+работы|интерфейс|порт(?:ы)?|слот(?:ы)?|RJ-45|DVD)\b"
 )
-_MODELISH_TOKEN_RE = re.compile(
-    r"(?iu)\b(?:[A-Z]{1,8}-[A-Z0-9]{1,12}|[A-Z]{1,8}\d[A-Z0-9-]{0,20}|\d{2,5}[A-Z]{0,4}|[A-Z]{2,}(?:\s+[A-Z0-9-]{2,}){0,4})\b"
+_MODEL_CODE_PART_RE = re.compile(
+    r"(?iu)^(?=.*\d)[A-Z0-9][A-Z0-9._+-]{3,24}$"
+)
+_MODEL_CODE_PHRASE_RE = re.compile(
+    r"(?iu)^(?=.*\d)(?:[A-Za-z0-9][A-Za-z0-9._+-]{1,24})(?:\s+[A-Za-z0-9][A-Za-z0-9._+-]{1,24}){0,3}$"
 )
 _COLOR_REJECT_RE = re.compile(r"(?iu)\b(?:серия|Vivobook|Vector|Gaming|игровой|игровая|дизайн|корпус)\b")
 _COMPAT_SENTENCE_NOISE_SPLIT_RE = re.compile(
@@ -358,30 +360,50 @@ def looks_like_resource_value(val: str) -> bool:
     return False
 
 
+def _looks_like_model_part(part: str) -> bool:
+    p = norm_ws(part).strip(" ;,.-")
+    if not p:
+        return False
+    if len(p) > 40:
+        return False
+    if any(ch in p for ch in ".!?"):
+        return False
+    if _MODEL_NARRATIVE_RE.search(p):
+        return False
+
+    if _MODEL_CODE_PART_RE.fullmatch(p):
+        return True
+    if _MODEL_CODE_PHRASE_RE.fullmatch(p) and re.search(r"\d", p):
+        return True
+    return False
+
+
 def _looks_like_model_value(val: str) -> bool:
     s = norm_ws(val).strip(" ;,.-")
     if not s:
         return False
-    if len(s) > 90:
-        return False
-    if len(s.split()) > 8:
+    if len(s) > 120:
         return False
     if _MODEL_GARBAGE_RE.search(s):
         return False
     if _MODEL_NARRATIVE_RE.search(s):
         return False
-    if any(ch in s for ch in ".!?"):
+
+    parts = [norm_ws(x) for x in re.split(r"\s*/\s*|\s*,\s*|\s*;\s*", s) if norm_ws(x)]
+    if not parts:
+        return False
+    if len(parts) > 8:
         return False
 
-    modelish_hits = _MODELISH_TOKEN_RE.findall(s)
-    if not modelish_hits:
-        return False
+    if all(_looks_like_model_part(p) for p in parts):
+        return True
 
-    plain_cyr_words = re.findall(r"[А-Яа-яЁё]{3,}", s)
-    if len(plain_cyr_words) >= 3:
-        return False
+    # fallback for single short mixed-case model phrase like "Crystal Desk GT40"
+    if len(parts) == 1 and len(s.split()) <= 4 and re.search(r"\d", s):
+        if _MODEL_CODE_PHRASE_RE.fullmatch(s):
+            return True
 
-    return True
+    return False
 
 
 def _canon_color_word(word: str) -> str:
