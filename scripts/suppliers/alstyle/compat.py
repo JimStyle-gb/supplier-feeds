@@ -4,16 +4,15 @@ Path: scripts/suppliers/alstyle/compat.py
 
 AlStyle supplier layer — cleanup моделей / совместимости / кодовых серий.
 
-v129:
+v130:
 - сохраняет текущие Canon/Xerox cleanup-фиксы;
-- дочищает Xerox staple/finisher compatibility;
-- отдельно добивает Canon ImagePROGRAF TX / iPF TX / MFP T36 / T36-AiO glue:
-  Canon ImagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000
-  -> Canon ImagePROGRAF iPF TX-2000 / Canon ImagePROGRAF iPF TX-3000;
-- сохраняет разрезание Canon imageRUNNER / imagePRESS / ImagePROGRAF chains;
-- срезает мусорные хвосты типа &gt; и dangling '/ Canon' в конце совместимости;
-- меняет финальную сборку Xerox finisher/stapler families:
-  внутри family остаются слеши, между family теперь запятые.
+- усиливает cleanup Xerox family-lists даже без слов финишер/степлер;
+- разворачивает сокращённые Xerox модели:
+  B7125 / 30 / 35 -> B7125 / B7130 / B7135
+  C7120 / 25 / 30 -> C7120 / C7125 / C7130;
+- не ломает сложные Xerox family-цепочки глобальным slash-dedupe;
+- сохраняет Canon ImagePROGRAF / imageRUNNER / imagePRESS glue-fixes;
+- срезает мусорные хвосты типа &gt; и dangling '/ Canon' в конце совместимости.
 """
 
 from __future__ import annotations
@@ -135,11 +134,13 @@ _XEROX_ACCESSORY_PREFIX_RE = re.compile(
 _XEROX_FAMILY_HEAD_RE = re.compile(
     r"(?iu)^(?:Xerox\s+)?(VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\s+(.+)$"
 )
+_XEROX_FAMILY_ANY_RE = re.compile(r"(?iu)\b(?:VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\b")
 _XEROX_DIGITAL_COPIER_RE = re.compile(r"(?iu)\bDigital\s+Copier\b")
 _XEROX_COMMA_SPLIT_RE = re.compile(r"\s*,\s*")
 _XEROX_SLASH_SPLIT_RE = re.compile(r"\s*/\s*")
 _XEROX_SPACE_RE = re.compile(r"\s{2,}")
-_XEROX_MODEL_PART_RE = re.compile(r"(?iu)^([A-Z]+)?(\d{2,5}[A-Z]{0,4}(?:i|DNI|DN|DT)?)$")
+_XEROX_MODEL_FULL_RE = re.compile(r"(?iu)^([A-Z]+)?(\d{2,5})([A-Z]{0,4}(?:I|DNI|DN|DT)?)$")
+_XEROX_MODEL_SHORT_RE = re.compile(r"(?iu)^(\d{2,4})([A-Z]{0,4}(?:I|DNI|DN|DT)?)$")
 
 
 def dedupe_code_series_text(text: str) -> str:
@@ -164,9 +165,15 @@ def dedupe_code_series_text(text: str) -> str:
 
 
 def dedupe_slash_tail_models(v: str) -> str:
-    parts = [norm_ws(x) for x in re.split(r"\s*/\s*", v or "") if norm_ws(x)]
+    s = norm_ws(v)
+    if not s:
+        return ""
+    # Для сложных Xerox family-листов глобальный slash-dedupe разрушает структуру.
+    if "," in s and _XEROX_FAMILY_ANY_RE.search(s):
+        return s
+    parts = [norm_ws(x) for x in re.split(r"\s*/\s*", s) if norm_ws(x)]
     if len(parts) < 2:
-        return norm_ws(v)
+        return s
     out: list[str] = []
     seen: set[str] = set()
     for p in parts:
@@ -342,6 +349,34 @@ def _normalize_xerox_family_name(family: str) -> str:
     return fam
 
 
+def _expand_xerox_short_model(prev_model: str, token: str) -> str:
+    prev = norm_ws(prev_model).upper()
+    cur = norm_ws(token).upper()
+    if not prev or not cur:
+        return cur
+
+    m_prev = _XEROX_MODEL_FULL_RE.fullmatch(prev)
+    m_cur_short = _XEROX_MODEL_SHORT_RE.fullmatch(cur)
+    if not m_prev or not m_cur_short:
+        return cur
+
+    pref_prev = norm_ws(m_prev.group(1) or "").upper()
+    digits_prev = norm_ws(m_prev.group(2) or "")
+    suffix_prev = norm_ws(m_prev.group(3) or "").upper()
+
+    digits_cur = norm_ws(m_cur_short.group(1) or "")
+    suffix_cur = norm_ws(m_cur_short.group(2) or "").upper()
+
+    # Уже полная модель той же длины — просто добавим возможный префикс по текущему family-паттерну.
+    if len(digits_cur) >= len(digits_prev):
+        return f"{pref_prev}{digits_cur}{suffix_cur}" if pref_prev and not re.match(r"^[A-Z]+", cur) else cur
+
+    # Для B7125 / 30 / 35 и C7120 / 25 / 30 меняем только хвост цифр.
+    merged_digits = digits_prev[:-len(digits_cur)] + digits_cur
+    merged_suffix = suffix_cur or suffix_prev
+    return f"{pref_prev}{merged_digits}{merged_suffix}" if pref_prev else f"{merged_digits}{merged_suffix}"
+
+
 def _extract_xerox_models(body: str) -> list[str]:
     s = norm_ws(_XEROX_DIGITAL_COPIER_RE.sub("", body or ""))
     if not s:
@@ -353,34 +388,46 @@ def _extract_xerox_models(body: str) -> list[str]:
 
     out: list[str] = []
     seen: set[str] = set()
-    current_prefix = ""
+    prev_model = ""
 
     for raw in raw_parts:
         p = norm_ws(raw).strip(" ;,.-")
         if not p:
             continue
 
-        m = _XEROX_MODEL_PART_RE.fullmatch(p)
-        if m:
-            pref = norm_ws(m.group(1) or "").upper()
-            tail = norm_ws(m.group(2) or "").upper()
-            if pref:
-                current_prefix = pref
-                model = f"{pref}{tail}"
-            elif current_prefix:
-                model = f"{current_prefix}{tail}"
-            else:
-                model = tail
+        m_full = _XEROX_MODEL_FULL_RE.fullmatch(p.upper())
+        if m_full:
+            pref = norm_ws(m_full.group(1) or "").upper()
+            digits = norm_ws(m_full.group(2) or "")
+            suffix = norm_ws(m_full.group(3) or "").upper()
+            model = f"{pref}{digits}{suffix}" if pref else f"{digits}{suffix}"
         else:
-            model = p
+            model = _expand_xerox_short_model(prev_model, p)
 
         sig = model.casefold()
         if sig in seen:
+            prev_model = model
             continue
         seen.add(sig)
         out.append(model)
+        prev_model = model
 
     return out
+
+
+def _looks_like_xerox_family_list(v: str) -> bool:
+    s = norm_ws(v)
+    if not s or not _XEROX_FAMILY_ANY_RE.search(s):
+        return False
+    if re.search(r"(?iu)\b(?:финишер|буклетмейкер|степлер)\b", s):
+        return True
+    if re.search(r"(?iu)\b(?:VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\b.*?,", s):
+        return True
+    if re.search(r"(?iu)/\s*\d{2,4}(?:[A-Z]{0,4}(?:I|DNI|DN|DT)?)?\b", s):
+        return True
+    if len(re.findall(r"(?iu)\b(?:VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\b", s)) >= 2:
+        return True
+    return False
 
 
 def _cleanup_xerox_finisher_compat(v: str) -> str:
@@ -501,9 +548,7 @@ def clean_compatibility_text(v: str) -> str:
     s = _dedupe_repeated_brand_prefixes(s)
     s = _fix_known_compat_typos(s)
 
-    if re.search(r"(?iu)\b(?:VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\b", s) and re.search(
-        r"(?iu)\b(?:финишер|буклетмейкер|степлер)\b", s
-    ):
+    if _looks_like_xerox_family_list(s):
         s = _cleanup_xerox_finisher_compat(s)
 
     s = _trim_compat_noise_tail(s)
