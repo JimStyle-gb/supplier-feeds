@@ -4,14 +4,18 @@ Path: scripts/suppliers/alstyle/builder.py
 
 AlStyle supplier layer — сборка raw offer.
 
-v109:
+v110:
 - сохранён selective override: чистые desc params могут заменить только грязные XML значения
   для Совместимость / Цвет / Технология / Ресурс;
-- расширен безопасный fallback Модель из name:
-  теперь поднимает не только PG/CLI/CF..., но и аксессуарные/сервисные коды вроде
-  097S05250, 604K85850, 022N02905, FK2-7884-000, FB1-8581-000;
-- умеет разворачивать сокращённые slash-цепочки из имени:
-  097S05247/48/49/50/51 -> 097S05247 / 097S05248 / 097S05249 / 097S05250 / 097S05251.
+- сохранён безопасный fallback Модель из name:
+  PG/CLI/CF..., 097S05250, 604K85850, 022N02905, FK2-7884-000, FB1-8581-000 и т.п.;
+- добавлен безопасный fallback Совместимость из name только для Xerox init kits:
+  "Комплект инициализации Xerox AltaLink B8245 (097S05250)"
+  -> "Xerox AltaLink B8245";
+- умеет разворачивать slash-цепочки в имени:
+  097S05247/48/49/50/51 -> 097S05247 / 097S05248 / 097S05249 / 097S05250 / 097S05251
+  C8235/C8245/C8255/C8270/B8245/B8255 ->
+  Xerox AltaLink C8235 / Xerox AltaLink C8245 / ... / Xerox AltaLink B8255.
 """
 
 from __future__ import annotations
@@ -45,6 +49,10 @@ _NAME_MODEL_RE = re.compile(
 )
 _SHORT_DIGIT_SUFFIX_RE = re.compile(r"^\d{1,4}$", re.IGNORECASE)
 
+_XEROX_INIT_KIT_RE = re.compile(
+    r"(?iu)\bКомплект\s+инициализации\b.*?\b(Xerox)\s+(AltaLink|VersaLink)\s+([A-Z]?\d{4,5}(?:\s*/\s*[A-Z]?\d{4,5})*)\b"
+)
+_DEVICE_TOKEN_RE = re.compile(r"^[A-Z]?\d{4,5}$", re.IGNORECASE)
 
 _SAFE_DESC_OVERRIDE_KEYS = {"Совместимость", "Цвет", "Технология", "Ресурс"}
 _DIRTY_COMPAT_RE = re.compile(
@@ -182,6 +190,17 @@ def _has_param(params: list[tuple[str, str]], key: str) -> bool:
     return any(norm_ws(k).casefold() == kcf and norm_ws(v) for k, v in params)
 
 
+def _append_unique(out: list[str], seen: set[str], value: str) -> None:
+    v = norm_ws(value)
+    if not v:
+        return
+    sig = v.casefold()
+    if sig in seen:
+        return
+    seen.add(sig)
+    out.append(v)
+
+
 def _append_unique_model_code(out: list[str], seen: set[str], code: str) -> None:
     c = norm_ws(code).upper()
     if not c:
@@ -226,6 +245,62 @@ def _infer_model_from_name(name: str) -> str:
     return ""
 
 
+def _expand_device_chain(seq: str) -> list[str]:
+    raw_parts = [norm_ws(x).upper() for x in re.split(r"\s*/\s*", seq or "") if norm_ws(x)]
+    if not raw_parts:
+        return []
+
+    out: list[str] = []
+    last_prefix = ""
+
+    for part in raw_parts:
+        token = part.strip()
+        if not token:
+            continue
+
+        m = re.fullmatch(r"([A-Z]?)(\d{4,5})", token)
+        if not m:
+            continue
+
+        pref, digits = m.groups()
+        if pref:
+            last_prefix = pref
+            out.append(f"{pref}{digits}")
+        elif last_prefix:
+            out.append(f"{last_prefix}{digits}")
+        else:
+            out.append(digits)
+
+    return out
+
+
+def _infer_compat_from_name(name: str) -> str:
+    n = norm_ws(name)
+    if not n:
+        return ""
+
+    m = _XEROX_INIT_KIT_RE.search(n)
+    if not m:
+        return ""
+
+    brand = norm_ws(m.group(1))
+    family = norm_ws(m.group(2))
+    seq = norm_ws(m.group(3))
+
+    models = _expand_device_chain(seq)
+    if not models:
+        return ""
+
+    out: list[str] = []
+    seen: set[str] = set()
+    for model in models:
+        if not _DEVICE_TOKEN_RE.fullmatch(model):
+            continue
+        _append_unique(out, seen, f"{brand} {family} {model}")
+
+    return " / ".join(out)
+
+
 def build_offer(
     src: SourceOffer,
     *,
@@ -254,6 +329,11 @@ def build_offer(
         inferred_model = _infer_model_from_name(name)
         if inferred_model:
             params.append(("Модель", inferred_model))
+
+    if not _has_param(params, "Совместимость"):
+        inferred_compat = _infer_compat_from_name(name)
+        if inferred_compat:
+            params.append(("Совместимость", inferred_compat))
 
     price_in = normalize_price_in(src.purchase_price_text, src.price_text)
     price = compute_price(price_in)
