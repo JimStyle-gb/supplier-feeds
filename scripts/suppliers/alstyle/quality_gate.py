@@ -9,6 +9,8 @@ AlStyle quality gate:
   какие cosmetic уже известны, а какие новые;
 - сборка проходит, пока ОБЩЕЕ количество cosmetic
   не превышает порог;
+- freeze_current_as_baseline сохраняет текущее состояние
+  как справочный baseline, но не выключает будущий контроль;
 - ship_title_prefix полностью убран как лишнее и неуниверсальное правило.
 """
 
@@ -31,8 +33,6 @@ _BAD_POWER_KEY_RE = re.compile(r"(?iu)^Мощность\s*\((?:bt|bт|вt)\)$")
 _XEROX_FAMILY_RE = re.compile(
     r"(?iu)\b(?:VersaLink|AltaLink|Versant|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\b"
 )
-_HTML_TAG_RE = re.compile(r"<[^>]+>")
-_HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
 _WS_RE = re.compile(r"\s+")
 
 
@@ -68,16 +68,6 @@ def _write_yaml(path: str, data: dict) -> None:
     )
 
 
-def _first_paragraph_text(desc_html: str) -> str:
-    raw = desc_html or ""
-    m = re.search(r"(?is)<p>(.*?)</p>", raw)
-    if m:
-        raw = m.group(1)
-    raw = _HTML_COMMENT_RE.sub(" ", raw)
-    raw = _HTML_TAG_RE.sub(" ", raw)
-    return _norm_ws(raw)
-
-
 def _offer_params(offer_el: ET.Element) -> dict[str, list[str]]:
     out: dict[str, list[str]] = defaultdict(list)
     for p in offer_el.findall("param"):
@@ -98,7 +88,6 @@ def _detect_issues(feed_path: str) -> list[QualityIssue]:
         oid = _norm_ws(offer.get("id") or "")
         name = _norm_ws(offer.findtext("name") or "")
         desc_html = offer.findtext("description") or ""
-        _ = _first_paragraph_text(desc_html)  # intentionally kept for future generic checks
         params = _offer_params(offer)
 
         compat_values = params.get("Совместимость", [])
