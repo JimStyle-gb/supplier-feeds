@@ -1,165 +1,222 @@
 # -*- coding: utf-8 -*-
 """
-AkCent supplier source layer.
+Path: scripts/suppliers/akcent/source.py
 
-Что делает:
-- читает XML поставщика
-- даёт единый SourceOffer для downstream-модулей
-- ничего не "угадывает" и не чинит supplier-логику
+AkCent supplier layer — source reader.
+
+Задача модуля:
+- скачать XML поставщика;
+- распарсить offer-элементы без business-логики;
+- вернуть чистые SourceOffer для supplier-layer.
+
+Важно:
+- тут нет фильтрации ассортимента;
+- тут нет нормализации vendor/model/price;
+- тут нет supplier-specific эвристик;
+- source.py только честно читает исходник.
 """
 
 from __future__ import annotations
 
-import os
-import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
-from typing import Iterator
-from urllib.request import Request, urlopen
+from typing import Any, Iterable
+import xml.etree.ElementTree as ET
+
+import requests
 
 
+DEFAULT_TIMEOUT = 90
+
+
+# Внутренняя модель source-layer
 @dataclass(slots=True)
 class SourceOffer:
-    # Базовые поля исходника
-    oid: str
-    article: str
-    type_name: str
-    available: bool
-
-    # Теги XML
-    name: str
-    url: str
+    raw_id: str
     offer_id: str
+    article: str
     category_id: str
+    name: str
+    type_text: str
+    available_attr: str
+    available_tag: str
     vendor: str
     model: str
     description: str
     manufacturer_warranty: str
     stock_text: str
-
-    # Коллекции
-    pictures: list[str] = field(default_factory=list)
-    xml_params: list[tuple[str, str]] = field(default_factory=list)
-    prices: list[dict[str, str]] = field(default_factory=list)
-
-    # Сырой узел для supplier-layer
-    raw_offer: ET.Element | None = None
-
-
-def _text(node: ET.Element | None) -> str:
-    return (node.text or "").strip() if node is not None else ""
+    dealer_price_text: str
+    rrp_price_text: str
+    price_text: str
+    url: str
+    picture_urls: list[str] = field(default_factory=list)
+    raw_params: list[tuple[str, str]] = field(default_factory=list)
+    offer_el: Any | None = None
 
 
-def _bool_attr(value: str | None) -> bool:
-    return str(value or "").strip().lower() == "true"
+# Безопасная нормализация текста
+
+def norm_ws(value: Any) -> str:
+    if value is None:
+        return ""
+    return " ".join(str(value).replace("\xa0", " ").split()).strip()
 
 
-def _read_bytes_from_url(url: str) -> bytes:
-    req = Request(
-        url,
-        headers={
-            "User-Agent": "Mozilla/5.0",
-            "Accept": "application/xml,text/xml,*/*",
-        },
-    )
-    with urlopen(req, timeout=120) as resp:
-        return resp.read()
+# Текст дочернего элемента
+
+def child_text(parent: ET.Element | None, tag: str) -> str:
+    if parent is None:
+        return ""
+    el = parent.find(tag)
+    if el is None:
+        return ""
+    return norm_ws(el.text or "")
 
 
-def _read_bytes(source: str) -> bytes:
-    # Локальный файл
-    if os.path.isfile(source):
-        with open(source, "rb") as f:
-            return f.read()
+# Все непустые тексты дочерних элементов
 
-    # URL
-    if source.startswith("http://") or source.startswith("https://"):
-        return _read_bytes_from_url(source)
-
-    raise FileNotFoundError(f"AkCent source not found: {source}")
-
-
-def fetch_source_root(source: str) -> ET.Element:
-    data = _read_bytes(source)
-    root = ET.fromstring(data)
-
-    # Нормальный кейс AkCent: yml_catalog/shop/offers/offer
-    if root.find("./shop/offers") is not None:
-        return root
-
-    # Иногда могут дать уже shop
-    if root.tag == "shop" and root.find("./offers") is not None:
-        wrapper = ET.Element("yml_catalog")
-        wrapper.append(root)
-        return wrapper
-
-    raise ValueError("AkCent XML format is not recognized")
+def iter_child_texts(parent: ET.Element | None, tag: str) -> Iterable[str]:
+    if parent is None:
+        return []
+    out: list[str] = []
+    for el in parent.findall(tag):
+        val = norm_ws(el.text or "")
+        if val:
+            out.append(val)
+    return out
 
 
-def _extract_pictures(offer_el: ET.Element) -> list[str]:
-    pics: list[str] = []
-    for pic in offer_el.findall("picture"):
-        val = _text(pic)
-        if val and val not in pics:
-            pics.append(val)
-    return pics
+# Картинки без дублей
+
+def collect_picture_urls(offer_el: ET.Element) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for raw in iter_child_texts(offer_el, "picture"):
+        url = raw.strip()
+        if not url:
+            continue
+        if url in seen:
+            continue
+        seen.add(url)
+        out.append(url)
+    return out
 
 
-def _extract_params(offer_el: ET.Element) -> list[tuple[str, str]]:
-    params: list[tuple[str, str]] = []
+# Родные Param поставщика как есть
+
+def collect_raw_params(offer_el: ET.Element) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
     for p in offer_el.findall("Param"):
-        name = (p.attrib.get("name") or "").strip()
-        value = _text(p)
-        if name:
-            params.append((name, value))
-    return params
+        key = norm_ws(p.get("name") or "")
+        val = norm_ws("".join(p.itertext()))
+        if not key or not val:
+            continue
+        out.append((key, val))
+    return out
 
 
-def _extract_prices(offer_el: ET.Element) -> list[dict[str, str]]:
-    rows: list[dict[str, str]] = []
+# Цены из блока prices
+
+def collect_prices(offer_el: ET.Element) -> tuple[str, str, str]:
+    dealer = ""
+    rrp = ""
+    fallback = ""
+
     prices_el = offer_el.find("prices")
     if prices_el is None:
-        return rows
+        return dealer, rrp, fallback
 
-    for p in prices_el.findall("price"):
-        rows.append(
-            {
-                "type": (p.attrib.get("type") or "").strip(),
-                "currencyId": (p.attrib.get("currencyId") or "").strip(),
-                "value": _text(p),
-            }
-        )
-    return rows
+    for price_el in prices_el.findall("price"):
+        ptype = norm_ws(price_el.get("type") or "").casefold()
+        value = norm_ws(price_el.text or "")
+        if not value:
+            continue
+
+        if not fallback:
+            fallback = value
+
+        if "дилер" in ptype or "dealer" in ptype:
+            if not dealer:
+                dealer = value
+            continue
+
+        if ptype == "rrp" or "rrp" in ptype:
+            if not rrp:
+                rrp = value
+            continue
+
+    return dealer, rrp, fallback
 
 
-def _iter_offer_elements(root: ET.Element) -> Iterator[ET.Element]:
-    shop = root.find("./shop")
-    if shop is None:
-        return
-    offers = shop.find("./offers")
-    if offers is None:
-        return
-    for offer_el in offers.findall("offer"):
-        yield offer_el
+# Один offer -> SourceOffer
+
+def parse_offer(offer_el: ET.Element) -> SourceOffer:
+    raw_id = norm_ws(offer_el.get("id") or "")
+    offer_id = child_text(offer_el, "Offer_ID") or raw_id
+    article = norm_ws(offer_el.get("article") or "")
+    category_id = norm_ws((offer_el.find("categoryId").text if offer_el.find("categoryId") is not None and offer_el.find("categoryId").text is not None else ""))
+
+    name = child_text(offer_el, "name")
+    type_text = norm_ws(offer_el.get("type") or child_text(offer_el, "type"))
+    available_attr = norm_ws(offer_el.get("available") or "")
+    available_tag = child_text(offer_el, "available")
+
+    vendor = child_text(offer_el, "vendor")
+    model = child_text(offer_el, "model")
+    description = child_text(offer_el, "description")
+    manufacturer_warranty = child_text(offer_el, "manufacturer_warranty")
+    stock_text = child_text(offer_el, "Stock")
+    url = child_text(offer_el, "url")
+
+    dealer_price_text, rrp_price_text, price_text = collect_prices(offer_el)
+
+    return SourceOffer(
+        raw_id=raw_id,
+        offer_id=offer_id,
+        article=article,
+        category_id=category_id,
+        name=name,
+        type_text=type_text,
+        available_attr=available_attr,
+        available_tag=available_tag,
+        vendor=vendor,
+        model=model,
+        description=description,
+        manufacturer_warranty=manufacturer_warranty,
+        stock_text=stock_text,
+        dealer_price_text=dealer_price_text,
+        rrp_price_text=rrp_price_text,
+        price_text=price_text,
+        url=url,
+        picture_urls=collect_picture_urls(offer_el),
+        raw_params=collect_raw_params(offer_el),
+        offer_el=offer_el,
+    )
 
 
-def iter_source_offers(root: ET.Element) -> Iterator[SourceOffer]:
-    for offer_el in _iter_offer_elements(root):
-        yield SourceOffer(
-            oid=(offer_el.attrib.get("id") or "").strip(),
-            article=(offer_el.attrib.get("article") or "").strip(),
-            type_name=(offer_el.attrib.get("type") or "").strip(),
-            available=_bool_attr(offer_el.attrib.get("available")),
-            name=_text(offer_el.find("name")),
-            url=_text(offer_el.find("url")),
-            offer_id=_text(offer_el.find("Offer_ID")),
-            category_id=_text(offer_el.find("categoryId")),
-            vendor=_text(offer_el.find("vendor")),
-            model=_text(offer_el.find("model")),
-            description=_text(offer_el.find("description")),
-            manufacturer_warranty=_text(offer_el.find("manufacturer_warranty")),
-            stock_text=_text(offer_el.find("Stock")),
-            pictures=_extract_pictures(offer_el),
-            xml_params=_extract_params(offer_el),
-            prices=_extract_prices(offer_el),
-            raw_offer=offer_el,
-        )
+# Скачать и распарсить XML
+
+def fetch_source_root(url: str, *, timeout: int = DEFAULT_TIMEOUT) -> ET.Element:
+    resp = requests.get(url, timeout=timeout)
+    resp.raise_for_status()
+    content = resp.content
+    if not content:
+        raise ValueError("AkCent source XML is empty")
+    return ET.fromstring(content)
+
+
+# Итератор по всем offer
+
+def iter_source_offers(root: ET.Element) -> Iterable[SourceOffer]:
+    for offer_el in root.findall(".//offer"):
+        try:
+            yield parse_offer(offer_el)
+        except Exception:
+            # supplier-layer не должен падать на одном кривом offer
+            continue
+
+
+# Удобный helper для локальных проверок
+
+def read_source_offers(url: str, *, timeout: int = DEFAULT_TIMEOUT) -> list[SourceOffer]:
+    root = fetch_source_root(url, timeout=timeout)
+    return list(iter_source_offers(root))
