@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-12 22:33:14">
+<yml_catalog date="2026-03-12 22:52:41">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-12 22:33:14
+Время сборки (Алматы)                      | 2026-03-12 22:52:41
 Ближайшая сборка (Алматы)                  | 2026-03-13 02:00:00
 Сколько товаров у поставщика до фильтра    | 1804
 Сколько товаров у поставщика после фильтра | 162
@@ -333,7 +333,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Цвет">Голубой, Пурпурный, Жёлтый</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T26704010 Tri-colour Ink for WorkForce WF-100W</param>
 </offer>
@@ -352,7 +351,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">Около 2200 стр</param>
 <param name="Модель">Картридж Epson C13T27914022 для WF-7620DTWF черный new</param>
@@ -371,7 +369,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Цвет">Пурпурный</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">350 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный</param>
@@ -389,7 +386,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 Фото черный картридж 110ml, для: Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000]]></description>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">350 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
@@ -409,7 +405,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">Без гарантии</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T54LA00 UltraChrome DG2 (800 мл) белый</param>
 </offer>
@@ -428,7 +423,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T606100 SP-4880 фото черный</param>
@@ -449,7 +443,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T606300 SP-4880 пурпурный</param>
@@ -469,7 +462,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
@@ -491,7 +483,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T606500 SP-4880 светло-голубой</param>
@@ -512,7 +503,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T606600 SP-4880 светло-пурпурный</param>
@@ -533,7 +523,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T606700 SP-4880 серый</param>
@@ -569,7 +558,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Цвет">Пурпурный</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T606C00 SP-4800 пурпурный светлый</param>
 </offer>
@@ -588,7 +576,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T614200 SP-4450 голубой</param>
@@ -609,7 +596,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T614300 SP-4450 пурпурный</param>
@@ -629,7 +615,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
@@ -651,7 +636,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T61480N SP-4450 220ml черный матовый</param>
@@ -672,7 +656,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">110 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T692500 T3000/5000/7000, Т3200/5200/7200 матовый черный</param>
@@ -693,7 +676,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">700 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный</param>
@@ -714,7 +696,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">700 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T69430N T3000/5000/7000, Т3200/5200/7200 пурпурный</param>
@@ -734,7 +715,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Ресурс">700 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
@@ -755,7 +735,6 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Цвет">Чёрный</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Картридж</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl.</param>
 <param name="Коды">C13T965140</param>
@@ -1894,7 +1873,6 @@ LS500WH — это первый безламповый LASER WXGA-проекто
 <param name="S-Video">Нет</param>
 <param name="Уровень шума (норм./эконом.) Дб">27</param>
 <param name="VGA">Нет</param>
-<param name="Тип">Проектор</param>
 <param name="Тип источника света">Ламповый источник света</param>
 <param name="Разрешение">4K Ultra HD (3840x2160)</param>
 <param name="Контрастность">12 000 : 1</param>
@@ -1919,7 +1897,6 @@ LS500WH — это первый безламповый LASER WXGA-проекто
 Создать впечатление от большого экрана дома легко, если у вас есть проектор Epson CO-FD01, он также идеально подходит для офиса или класса. Вы можете получить впечатляющий 391-дюймовый дисплей и иметь Android TV. Он прост в настройке и имеет яркость 3000 люменов для четкого и яркого изображения. Долговечное решение со сроком службы лампы, обеспечивающим 18 лет развлечений. Источник света: лампа Тип лампы: UHE Типы проекции: фронтальная Тип матрицы: 3LCD Разрешение матрицы: 1920 × 1080 (FHD) Максимальное поддерживаемое разрешение: 1920 × 1080 (FHD) Яркость, ANSI: 3000 лм Контрастность: 350:1 Количество отображаемых цветов: 16.7 млн. Поддержка форматов изображения: 16:9 Проекционное отношение: 1.19..1.61:1 Коррекция трапецеидальных искажений (°): вертикальная ±30, горизонтальная ±30 Минимальное проекционное расстояние: 0.9 м Максимальное проекционное расстояние: 10.4 м Минимальная диагональ изображения: 0.66 м Максимальная диагональ изображения: 9.93 м Фокусировка: ручная Вертикальная развёртка: 100..120 Гц Интерфейсы и порты: 1 × HDMI 1 × USB-A 2.0 1 × USB-B 2.0 Функциональные особенности: поддержка MHL встроенный динамик Характеристики встроенных динамиков: 1 × 5 Вт Безопасность: разъём Kensington Lock Мощность лампы: 188 Вт Энергопотребление в экономичном режиме: 214 Вт Ресурс лампы: 6000 часов (стандартный режим), 12000 часов (экономичный режим) Вентиляционный шум: 38 дБ Диапазон рабочих температур: 5..40 °C Питание: сеть 220 В Размеры: 295 × 211 × 87 мм Вес: 2.4 кг Цвет: белый]]></description>
 <param name="Тип">Проектор для дома</param>
 <param name="Гарантия">12 мес.</param>
-<param name="Тип">Проектор</param>
 <param name="Яркость">3000 люменов для четкого и яркого изображения. Долговечное решение со сроком службы лампы</param>
 <param name="Источник света">лампа</param>
 <param name="Разрешение">1920 × 1080 (FHD) Яркость</param>
@@ -1941,7 +1918,6 @@ LS500WH — это первый безламповый LASER WXGA-проекто
 <description><![CDATA[
 Проектор с разрешением Full HD Воспроизведение на большом экране Любимые фильмы, игры и спорт на большом экране у вас дома Простота настройки Коррекция искажений, разъем HDMI Долговечность До 18 лет¹ работы Доступное высокотехнологичное оборудование Насладитесь качеством изображения на проекторе с разрешением Full HD 1080p Впечатляюще яркий экран Одинаково высокая цветовая яркость и яркость по белому цвету 3 000 люмен Техника Projection System 3LCD Technology, RGB liquid crystal shutter LCD Panel 0,59 inch with MLA (D10) Image Насыщенность цвета 3.000 Люмен- 2.000 Люмен (экономичный) In accordance with ISO 21118:2020 Насыщенность белого 3.000 Люмен - 2.000 Люмен (экономичный) In accordance with ISO 21118:2020 Разрешение 1080p Высокая четкость (HD) Full HD Aspect Ratio 16:9 Light source Lamp Лампа UHE, 188 Вт, 6.000 в Срок службы, 12.000 в Срок службы (в экономном режиме) Коррекция трапеции Вручную vertical: ± 30 °, Вручную horizontal ± 30 ° Обработка видеоизображения 8 биты 2D Vertical Refresh Rate 100 Гц - 120 Гц Colour Reproduction 16.77 million colours Оптика Соотношение сторон проецируемого изображения 1,19 - 1,61:1 Изменение фокусного расстояния Digital, Factor: 1 - 1,35 Объектив Оптика Размер проекции 26 inches - 391 inches Дистанция проекции широкоугольной 0,9 м - 10,4 м Дистанция проекции Tele 0,9 м - 10,4 м Projection Distance Wide/Tele 1,58 м (60 inch screen Projection Lens F Number 1,44 Фокус Вручную Offset 7: 1]]></description>
 <param name="Тип">Проектор для дома</param>
-<param name="Тип">Проектор</param>
 <param name="Гарантия">12 мес.</param>
 <param name="HDMI">Долговечность До 18 лет¹ работы Доступное высокотехнологичное оборудование Насладитесь качеством изображения на проекторе с разрешением Full HD 1080p Впечатляюще яркий экран Одинаково высокая</param>
 <param name="Яркость">и</param>
@@ -1965,7 +1941,6 @@ LS500WH — это первый безламповый LASER WXGA-проекто
 Основные характеристики ViewSonic M2: Параметр Значение Тип Портативный, короткофокусный Источник света LED (RGBB), срок службы до 30 000 часов Яркость ~1200 LED люмен Разрешение Full HD 1920×1080 Контрастность 3 000 000:1 (динамическая) Проекционное расстояние 0.7–3.2 м Размер изображения 24"–100"+ (оптимально 60"–100") Фокусировка Автофокус Коррекция трапецеидальных искажений Автоматическая (вертикальная и горизонтальная) Операционная система Aptoide TV (аналог Android TV, без Google Play) Встроенный звук Harman Kardon (2×3 Вт) Память 16 ГБ (встроенная) Подключения HDMI 2.0, USB-C, USB-A, microSD, Bluetooth, Wi-Fi, аудиовыход Вес ~1 кг ________________________________________ ✅ Преимущества ViewSonic M2: • Разрешение Full HD (1920×1080) — чёткое и яркое изображение • LED-источник света на 30 000 часов — экономия на лампах • Акустика Harman/Kardon — насыщенный и объёмный звук без внешних колонок • Беспроводное подключение — стриминг с телефона, ноутбука или планшета • Множество портов: HDMI, USB-C, USB-A, microSD, Wi-Fi, Bluetooth • Работает от внешнего аккумулятора (PD 45W) — идеально для путешествий • Автофокус и коррекция трапеции — изображение всегда ровное • Быстрый запуск (LED-источник без прогрева) • Беспроводная передача с мобильных устройств • Автофокус и автоматическая коррекция трапеции — удобно в любых условиях • Тихая работа, почти без шума вентилятора • Питание возможно от Power Delivery (USB-C 45W и выше) Портативный проектор ViewSonic M2 — кинотеатр в вашей сумке! Погрузитесь в мир яркого Full HD изображения с проектором ViewSonic M2 — стильным, компактным и мощным устройством для дома, офиса или путешествий. Благодаря короткофокусной оптике, вы получаете до 100 дюймов экрана уже с расстояния в 2,5 метра! ________________________________________ Компактность и удобство Вес проектора — всего 1 кг. Он легко помещается в сумку или рюкзак и не требует сложной настройки. Просто включите — и наслаждайтесь!]]></description>
 <param name="HDMI">Есть</param>
 <param name="Тип">Проектор короткофокусный</param>
-<param name="Тип">Проектор</param>
 <param name="Яркость (ANSI) лмн">1 200</param>
 <param name="Уровень шума (норм./эконом.) Дб">26</param>
 <param name="Срок службы лампы (норм./ эконом.) ч">30000</param>
@@ -1993,7 +1968,6 @@ LS500WH — это первый безламповый LASER WXGA-проекто
 <description><![CDATA[
 Создавайте впечатления с большим экраном с помощью этого высококачественного, долговечного и универсального проектора для дома и офиса с разрешением WXGA. Вот проектор, которым может наслаждаться вся семья; от просмотра бокс-сетов до создания ярких презентаций — этот WXGA-проектор имеет все необходимое для работы. Не нужно беспокоиться об окружающем освещении; он создаёт яркий и четкий дисплей с 3000 люмен и технологией 3LCD. Проектор легко транспортировать и устанавливать. Невероятно долгий срок службы лампы означает отличное соотношение цены и качества. Чем больше, тем лучше Независимо от того, смотрите ли вы свой любимый фильм или проводите презентацию, этот проектор может создать впечатляющий 378-дюймовый дисплей. CO-W01 предлагает великолепное качество благодаря технологии 3LCD, которая делает дисплей в три раза ярче, чем продукты конкурентов¹, благодаря ярким и живым цветам. От семьи и друзей до коллег по бизнесу и клиентов, он обязательно привлечет внимание каждого. Качественные, яркие изображени]]></description>
 <param name="Тип">Проектор универсальный</param>
-<param name="Тип">Проектор</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Модель">Проектор универсальный Epson CO-W01</param>
 </offer>
@@ -2009,7 +1983,6 @@ LS500WH — это первый безламповый LASER WXGA-проекто
 <description><![CDATA[
 Доступный яркий WXGA проектор Технология: LCD: 3 х 0.59" P-Si TFT Разрешение: WXGA (1280х800) Яркость: 3000 ANSI lm Цветовая яркость: 3000 ANSI lm Зум 1,35х (цифровой) Передача изображения по беспроводной сети Wi-fi (опционально) Функция Quick Corner Возможность просмотра изображений напрямую с USB носителей USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю Встроенный динамик 5 Вт Моментальное выключение Вес: 2,2 кг Технические характеристики Epson CO-WX02 Состав поставки Проектор Кабель питания 1,8 м Пульт ДУ Руководство пользователя Основные свойства Категория Для офиса и мобильных презентаций Для образования Варианты проекции крепление к потолку обратная фронтальная Используемая технология LCD:3 P-Si TFT ЖК дисплей, дюймы 0.59 Оригинальное разрешение WXGA (1280x800) Поддерживаемые разрешения VGA (640x480) SVGA (800x600) XGA (1024x768) SXGA1 (1152x864) WXGA (1280x800) SXGA2 (1280x960) SXGA3 (1280x1024) WXGA2 (1280x768) WXGA3 (1366x7]]></description>
 <param name="Тип">Проектор универсальный</param>
-<param name="Тип">Проектор</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Технология">LCD: 3 х 0.59" P-Si TFT</param>
 <param name="Разрешение">WXGA (1280х800)</param>
@@ -2032,7 +2005,6 @@ LS500WH — это первый безламповый LASER WXGA-проекто
 <description><![CDATA[
 Epson EB-E24 — это компактный и надёжный 3LCD-проектор, созданный для проведения ярких презентаций, обучающих сессий и семинаров. Благодаря сочетанию высокой яркости и контрастности, устройство обеспечивает чёткое изображение даже при дневном освещении. Основные характеристики: Параметр Значение Разрешение XGA (1024×768) Яркость 3600 люмен Контрастность 16 000:1 Технология 3LCD Ресурс лампы до 12 000 ч (в экономичном режиме) Вес ~2,4 кг Интерфейсы HDMI, USB-A, USB-B, VGA, аудио Встроенный динамик 5 Вт Коррекция трапеции Вертикальная и горизонтальная Проекционное расстояние 1,77 – 2,4 м (на 80") ✅ Преимущества: Отлично подходит для офисных задач и учебных аудиторий Высокая яркость — работает даже при свете Простое подключение через HDMI и USB Встроенный динамик позволяет обойтись без внешней акустики Лёгкий и портативный — удобно носить с собой]]></description>
 <param name="Тип">Проектор универсальный</param>
-<param name="Тип">Проектор</param>
 <param name="Гарантия">24 мес.</param>
 <param name="Разрешение">XGA (1024×768)</param>
 <param name="Яркость">3600 люмен</param>
@@ -2072,7 +2044,6 @@ Epson EB-E24 — это компактный и надёжный 3LCD-проек
 <param name="USB">Тип A и B</param>
 <param name="DisplayPort">Нет</param>
 <param name="S-Video">Нет</param>
-<param name="Тип">Проектор</param>
 <param name="Уровень шума (норм./эконом.) Дб">28</param>
 <param name="Разрешение">1280 x 800</param>
 <param name="Разрешение">Оригинальное</param>
@@ -2121,7 +2092,6 @@ pson EB-W51 — высококачественный, яркий, мобильн
 <param name="USB">Тип A и B</param>
 <param name="DisplayPort">Нет</param>
 <param name="S-Video">Нет</param>
-<param name="Тип">Проектор</param>
 <param name="Уровень шума (норм./эконом.) Дб">28</param>
 <param name="Разрешение">1280 x 800</param>
 <param name="Разрешение">Оригинальное</param>
@@ -2151,7 +2121,6 @@ pson EB-W51 — высококачественный, яркий, мобильн
 <description><![CDATA[
 EF-21R стильный и компактный с размером экрана до 150 дюймов Мини умный лазерный проекционный телевизор Увеличьте изображение любимых фильмов, игр и спортивных событий у себя дома с диагональю экрана до 150 дюймов Развлечения для умного дома Смотрите 400 000+* фильмов и эпизодов телепередач в одном месте. Google TV собирает ваш любимый контент из всех ваших приложений и подписок и упорядочивает его специально для вас Долговечное решение Благодаря долговечному лазерному источнику света этой модели вы сможете наслаждаться развлечениями до 10 лет* Превосходное качество изображения Благодаря технологии 3LCD от Epson изображения выглядят более яркими и яркими, цвета в три раза ярче по сравнению с аналогичными 1-чиповыми DLP-проекторами* Освежающе прост в использовании Подключайтесь, включайте, подключайтесь и играйте. Получите доступ к мгновенным развлечениям дома или в дороге. Технологии Проекционная система Технология 3LCD, жидкокристаллический затвор RGB ЖК-панель 0,62 дюйма Образ Цветной световой поток 1.000 люмен - 500 люмен (эконом) В соответствии с IDMS15.4 Выход белого света 1.000 люмен - 500 люмен (эконом) В соответствии с ISO 21118:2020 Повышение разрешения Full HD]]></description>
 <param name="Тип">Проектор универсальный</param>
-<param name="Тип">Проектор</param>
 <param name="Гарантия">24 мес.</param>
 <param name="Технология">3LCD</param>
 <param name="Модель">Проектор универсальный Epson EF-21R розовый кварц</param>
@@ -2168,7 +2137,6 @@ EF-21R стильный и компактный с размером экрана
 <description><![CDATA[
 Технологии Проекционная система Технология 3LCD, жидкокристаллический затвор RGB ЖК-панель 0,62 дюйма Образ Цветной световой поток 1.000 люмен - 500 люмен (эконом) В соответствии с IDMS15.4 Выход белого света 1.000 люмен - 500 люмен (эконом) В соответствии с ISO 21118:2020 Повышение разрешения Full HD Aspect Ratio 16:9 Contrast Ratio 5.000.000: 1 Light source Laser Laser Light source 20.000 hours Durability High, 20.000 hours Durability Medium, 20.000 hours Durability Eco Keystone Correction Auto Colour Video Processing 8 Bits 2D Vertical Refresh Rate 200 Hz - 240 Hz Colour Reproduction 16.77 million colours HDR support HDR10 Optical Throw Ratio 1,00 - 1,82:1 Lens Optical Screen Size 30 inches - 150 inches Projection Distance Wide/Tele 1,33 m (60 inch screen Projection Lens F Number 2 Projection Lens Focal Length 13,9 mm Projection Lens Focus Motorized Offset 10: 1 Connectivity Interfaces USB 2.0-A, USB 2.0 Mini-B, Jack plug out, HDMI ARC, HDMI (HDCP 2.3) Google TV Yes Advanced Features 2D Colour Modes Dynamic, Natural, Cinema, Vivid Other features Automatic keystone correction, Built-in speaker, Chromecast, Google Search, Horizontal and vertical keystone correction, Instant on/off, Quick Corner Video Color Modes Cinema, Dynamic, Natural, Vivid General Power consumption 108 Watt (Normal Peak-mode), 78 Watt (Eco Peak-Mode), Supply Voltage AC 100 V - 240 V, 50 Hz - 60 Hz Product dimensions 236 x 191 x 193 mm (Width x Depth x Height) Product weight 3 kg Noise Level Normal: 22 dB (A) - Economy: 18 dB (A) Supported Temperature Operation 5° C - 35° C, Storage -10° C - 60° C Supported Humidity Operation 20% - 80%, Storage -10% - 60% Loudspeaker 5 Watt, Stereo: Stereo Room Type / Application Gaming, Home Cinema, Home Office, Home Photo, Sports, Streaming, TV & Box sets Positioning Desktop, Floor, TV Cabinet Colour Black Other Warranty 60 months Carry in or 12.000 h]]></description>
 <param name="Тип">Проектор универсальный</param>
-<param name="Тип">Проектор</param>
 <param name="Гарантия">24 мес.</param>
 <param name="Технология">3LCD</param>
 <param name="Источник света">Laser</param>
@@ -2263,7 +2231,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T00Q140 для L7160/L7180 черный пигмент</param>
 </offer>
@@ -2286,7 +2253,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T00R140 для L7160/L7180 чёрный</param>
 </offer>
@@ -2309,7 +2275,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T00R240 для L7160/L7180 голубой</param>
 </offer>
@@ -2332,7 +2297,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T00R340 для L7160/L7180 пурпурный</param>
 </offer>
@@ -2354,7 +2318,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
 <param name="Модель">Чернила Epson C13T00R440 для L7160/L7180 жёлтый</param>
@@ -2385,7 +2348,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T00S24A для 103 EcoTank L3100/L3101/L3110/L3150 голубой</param>
 </offer>
@@ -2415,7 +2377,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T00S34A 103 EcoTank для L3100/L3101/L3110/L3150 пурпурный</param>
 </offer>
@@ -2444,7 +2405,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
 <param name="Модель">Чернила Epson C13T00S44A 103 EcoTank для L3100/L3101/L3110/L3150 жёлтый</param>
@@ -2473,7 +2433,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Ресурс">2000 стр</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T01L14A EcoTank MX1XX Series Black Bottle L 40 ml</param>
@@ -2498,7 +2457,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T03V14A 101 EcoTank 127ml для L4150/L4160 черный</param>
 </offer>
@@ -2522,7 +2480,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой</param>
 </offer>
@@ -2546,7 +2503,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный</param>
 </offer>
@@ -2569,7 +2525,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T06C14A для L15150 чёрный</param>
 </offer>
@@ -2592,7 +2547,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T06C24A для L15150 голубой</param>
 </offer>
@@ -2615,7 +2569,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T06C34A для L15150 пурпурный</param>
 </offer>
@@ -2637,7 +2590,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
 <param name="Модель">Чернила Epson C13T06C44A для L15150 жёлтый</param>
@@ -2661,7 +2613,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T07D24A для L8160/L8180 голубые</param>
 </offer>
@@ -2684,7 +2635,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T07D34A для L8160/L8180 пурпурные</param>
 </offer>
@@ -2706,7 +2656,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
 <param name="Модель">Чернила Epson C13T07D44A для L8160/L8180 жёлтые</param>
@@ -2730,7 +2679,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T07D54A для L8160/L8180 серые</param>
 </offer>
@@ -2749,7 +2697,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный</param>
 </offer>
@@ -2776,7 +2723,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Ресурс">4000 – 7100 страниц формата A4*</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 ч</param>
@@ -2805,7 +2751,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Ресурс">5700 – 6500 страниц формата A4*</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T66434A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 п</param>
@@ -2833,7 +2778,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Ресурс">5700 – 6500 страниц формата A4*</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
@@ -2863,7 +2807,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T67314A L800/1800/810/850 черный</param>
@@ -2892,7 +2835,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T67324A L800/1800/810/850 голубой</param>
@@ -2921,7 +2863,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T67334A L800/1800/810/850 пурпурный</param>
@@ -2949,7 +2890,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
@@ -2979,7 +2919,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T67354A L800/1800/810/850 светло-голубой</param>
@@ -3008,7 +2947,6 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
-<param name="Тип">Чернила</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный</param>
@@ -3299,7 +3237,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Экономичный комплект из четырех контейнеров с оригинальными чернилами Epson 101 объемом 127 мл (черные пигментные) и 70 мл (цветные водорастворимые) для струйных принтеров и МФУ Epson L4150, L4160, L4167 Подробнее:]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Тип">Чернила</param>
 <param name="Модель">Экономичный набор из четырех контейнеров с чернилами, серия 101</param>
 <param name="Для бренда">Epson</param>
 </offer>
@@ -3316,7 +3253,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 ]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Тип">Чернила</param>
 <param name="Модель">Экономичный набор из четырех контейнеров с чернилами, серия 103</param>
 </offer>
 
@@ -3332,7 +3268,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Чернила Epson серии 664 Сведите затраты на печать к минимуму с чернилами EcoTank. Ресурса комплекта чернил хватит на печать 4 500 черно-белых и 7 500 цветных страниц¹ – отличное решение для тех, кто привык много печатать. Четырехцветные водорастворимые чернила обеспечивают качественный результат и рекордно низкую себестоимость печати. Для повседневной печати Линейка чернил четырех цветов прекрасно подходит для повседневной печати документов. Радикальное снижение затрат на чернила Ищете самое выгодное решение для печати? Уже со стартовым набором чернил в комплекте с устройством Epson вы сократите средние расходы на чернила до 90 %². Доступная цена и высокий ресурс чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных¹. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Тип">Чернила</param>
 <param name="Ресурс">чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных¹. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию</param>
 <param name="Модель">Экономичный набор из четырех контейнеров с чернилами, серия 664</param>
 </offer>
@@ -3359,7 +3294,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор универсальный Epson EB-U05
 Сопутствующие товары: Проектор универсальный Epson EB-U42
 Сопутствующие товары: Проектор инсталяционный ViewSonic PRO8800WUL]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран моторизированный</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">1X1</param>
@@ -3389,7 +3323,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор универсальный Epson EB-U05
 Сопутствующие товары: Проектор универсальный Epson EB-U42
 Сопутствующие товары: Проектор инсталяционный ViewSonic PRO8800WUL]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран моторизированный</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">4X3</param>
@@ -3414,7 +3347,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор универсальный Epson EB-U05
 Сопутствующие товары: Проектор универсальный Epson EB-U42
 Сопутствующие товары: Проектор инсталяционный ViewSonic PRO8800WUL]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран моторизированный</param>
 <param name="Цвет">Белый</param>
 <param name="Гарантия">12 мес.</param>
@@ -3445,7 +3377,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор универсальный Epson EB-U05
 Сопутствующие товары: Проектор универсальный Epson EB-U42
 Сопутствующие товары: Проектор инсталяционный ViewSonic PRO8800WUL]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран моторизированный</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">1X1</param>
@@ -3475,7 +3406,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор универсальный Epson EB-U05
 Сопутствующие товары: Проектор универсальный Epson EB-U42
 Сопутствующие товары: Проектор инсталяционный ViewSonic PRO8800WUL]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран моторизированный</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">4X3</param>
@@ -3506,7 +3436,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор универсальный Epson EB-U42
 Сопутствующие товары: Проектор инсталяционный ViewSonic PRO8800WUL]]></description>
 <param name="Размер">80" X 80" (2,03 x 2,03)</param>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран моторизированный</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">1X1</param>
@@ -3535,7 +3464,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор универсальный Epson EB-U05
 Сопутствующие товары: Проектор универсальный Epson EB-U42
 Сопутствующие товары: Проектор инсталяционный ViewSonic PRO8800WUL]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран моторизированный</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">1X1</param>
@@ -3564,7 +3492,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор универсальный Epson EB-S41
 Сопутствующие товары: Проектор универсальный ViewSonic PJD5255
 Сопутствующие товары: Проектор портативный Epson EB-1780W]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран на треноге</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">1X1</param>
@@ -3594,7 +3521,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор универсальный Epson EB-S41
 Сопутствующие товары: Проектор универсальный ViewSonic PJD5255
 Сопутствующие товары: Проектор портативный Epson EB-1780W]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран на треноге</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">1X1</param>
@@ -3625,7 +3551,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор универсальный ViewSonic PJD5255
 Сопутствующие товары: Проектор портативный Epson EB-1780W]]></description>
 <param name="Размер">80" X 80" (2,03 x 2,03)</param>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран на треноге</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">1X1</param>
@@ -3654,7 +3579,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор универсальный Epson EB-S41
 Сопутствующие товары: Проектор универсальный ViewSonic PJD5255
 Сопутствующие товары: Проектор портативный Epson EB-1780W]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран на треноге</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">1X1</param>
@@ -3685,7 +3609,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор инсталяционный Panasonic PT-EX620E
 Сопутствующие товары: Проектор для дом. кино ViewSonic PX702HD
 Сопутствующие товары: Проектор для дом. кино ViewSonic PJD7720HD]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран настенный</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">1X1</param>
@@ -3715,7 +3638,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор инсталяционный Panasonic PT-EX620E
 Сопутствующие товары: Проектор для дом. кино ViewSonic PX702HD
 Сопутствующие товары: Проектор для дом. кино ViewSonic PJD7720HD]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран настенный</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">4X3</param>
@@ -3745,7 +3667,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор инсталяционный Panasonic PT-EX620E
 Сопутствующие товары: Проектор для дом. кино ViewSonic PX702HD
 Сопутствующие товары: Проектор для дом. кино ViewSonic PJD7720HD]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран настенный</param>
 <param name="Цвет">Белый</param>
 <param name="Гарантия">12 мес.</param>
@@ -3764,7 +3685,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Настенный экран Mr.Pixel 90" x 120" (MSPSBC150V2) Высота: 2.29 м Ширина: 3.05 м Соотношение сторон: 4:3 Основные преимущества: - Широко применяется в отелях, школах, бизнес центрах, комнатах переговоров, домашних кинотеатрах - Глянцевый стальной корпус белого цвета - При изготовлении полотна используются только ЭКО материалы. - Чёрные границы по краям экрана для лучшего отображения изображения - Уникальная самофиксирующаяся конструкция для удобства использования - Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке]]></description>
-<param name="Тип">Экран</param>
 <param name="Тип">Экран настенный</param>
 <param name="Гарантия">12 мес.</param>
 <param name="Соотношение сторон">4X3</param>
@@ -3794,7 +3714,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор инсталяционный Panasonic PT-EX620E
 Сопутствующие товары: Проектор для дом. кино ViewSonic PX702HD
 Сопутствующие товары: Проектор для дом. кино ViewSonic PJD7720HD]]></description>
-<param name="Тип">Экран</param>
 <param name="Размер">96" X 96" (2.44 X 2.44)</param>
 <param name="Тип">Экран настенный</param>
 <param name="Гарантия">12 мес.</param>
@@ -3824,7 +3743,6 @@ Fellowes P-25S - Шредер предназначен для персональ
 Сопутствующие товары: Проектор инсталяционный Panasonic PT-EX620E
 Сопутствующие товары: Проектор для дом. кино ViewSonic PX702HD
 Сопутствующие товары: Проектор для дом. кино ViewSonic PJD7720HD]]></description>
-<param name="Тип">Экран</param>
 <param name="Размер">96" X 96" (2.44 X 2.44)</param>
 <param name="Тип">Экран настенный</param>
 <param name="Гарантия">12 мес.</param>
