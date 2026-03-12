@@ -311,6 +311,77 @@ def _ensure_default_params(
     return out
 
 
+
+
+def _dedupe_type_params(params: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    """
+    Чистит конфликтующие дубли по ключу "Тип".
+
+    Логика:
+    - если есть два значения "Тип", где одно содержится в другом
+      ("Проектор" / "Проектор универсальный",
+       "Экран" / "Экран настенный",
+       "Картридж" / "Картридж EPSON"),
+      оставляем более конкретное / длинное;
+    - несвязанные значения не склеиваем;
+    - порядок остальных параметров не трогаем.
+    """
+    if not params:
+        return []
+
+    type_values: list[str] = []
+    for key, value in params:
+        if _cf(key) == "тип":
+            v = _clean_text(value)
+            if v:
+                type_values.append(v)
+
+    if len(type_values) <= 1:
+        return list(params)
+
+    keep_values: set[str] = set(type_values)
+
+    def _norm_type(v: str) -> str:
+        return _RE_WS.sub(" ", _cf(v)).strip()
+
+    norm_map = {v: _norm_type(v) for v in type_values}
+
+    for left in type_values:
+        nl = norm_map[left]
+        if not nl:
+            continue
+        for right in type_values:
+            if left == right:
+                continue
+            nr = norm_map[right]
+            if not nr:
+                continue
+            if nl == nr:
+                # если по смыслу одинаковые, оставляем более длинный / конкретный
+                if len(right) > len(left):
+                    keep_values.discard(left)
+                continue
+            if nl in nr and len(nr) > len(nl):
+                keep_values.discard(left)
+                continue
+
+    out: list[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for key, value in params:
+        k = _clean_text(key)
+        v = _clean_text(value)
+        if not k or not v:
+            continue
+        if _cf(k) == "тип" and v not in keep_values:
+            continue
+        item = (k, v)
+        if item in seen:
+            continue
+        seen.add(item)
+        out.append(item)
+    return out
+
+
 def _filter_allowed(params: list[tuple[str, str]], allow_keys: set[str]) -> list[tuple[str, str]]:
     if not allow_keys:
         return params
@@ -437,6 +508,7 @@ def _build_single_offer(
         model=model,
         kind=kind,
     )
+    merged_params = _dedupe_type_params(merged_params)
     merged_params = _filter_allowed(merged_params, allow_keys)
 
     pictures = _collect_pictures(_iter_picture_urls(src), placeholder_picture=placeholder_picture)
