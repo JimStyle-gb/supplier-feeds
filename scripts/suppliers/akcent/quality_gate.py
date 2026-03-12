@@ -2,25 +2,13 @@
 """
 Path: scripts/suppliers/akcent/quality_gate.py
 
-AkCent supplier layer — quality gate первого контура.
+AkCent supplier layer — quality gate второго прохода.
 
-Что делает:
-- проверяет final feed после core-render;
-- critical всегда валят сборку;
-- cosmetic считаются полностью, baseline нужен только для отчёта;
-- freeze_current_as_baseline сохраняет текущее cosmetic-состояние как snapshot;
-- логика пока маленькая и предметная, без шума.
-
-Текущие правила:
-critical:
-- invalid_price
-- banned_param_key
-- desc_oaicite_leak
-
-cosmetic:
-- suspicious_vendor
-- compat_label_leak
-- placeholder_picture_only
+Что изменено относительно v1:
+- убран шумный false-positive по desc_header_leak на CS-шаблоне description;
+- проверки идут по plain-text description после удаления HTML comments и template-заголовков;
+- rule desc_header_leak теперь ловит именно supplier-мусорные заголовки,
+  а не наши собственные <h3> и comment-маркеры.
 """
 
 from __future__ import annotations
@@ -42,7 +30,16 @@ _COMPAT_LABEL_LEAK_RE = re.compile(
     r"(?iu)\b(?:Характеристики|Модель|Совместимые\s+модели|Поддерживаемые\s+модели|"
     r"Поддерживаемые\s+продукты|Тип\s+печати|Цвет(?:\s+печати)?)\b"
 )
-_DESC_HEADER_LEAK_RE = re.compile(r"(?iu)(?:^|>|\n)\s*(?:Описание|Характеристики|Комплектация)\s*(?:<|:|$)")
+_RE_HTML_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL | re.IGNORECASE)
+_RE_HTML_TAG = re.compile(r"<[^>]+>")
+_RE_TEMPLATE_H3 = re.compile(
+    r"(?is)<h3>\s*(?:Характеристики|Оплата\s+и\s+доставка|Оплата|Доставка)\s*</h3>"
+)
+_DESC_SUPPLIER_HEADER_RE = re.compile(
+    r"(?iu)(?:^|\n)\s*(?:Описание|Комплектация|Технические\s+характеристики|"
+    r"Общие\s+характеристики|Общие\s+характерстики|Общие\s+параметры|"
+    r"Основные\s+преимущества|Технические\s+параметры)\s*(?::|$)"
+)
 
 _BANNED_PARAM_KEYS = {
     "normal",
@@ -94,17 +91,14 @@ class QualityIssue:
     details: str
 
 
-
 def _norm_ws(value: Any) -> str:
-    s = unescape(str(value or "")).replace("\xa0", " ").strip()
+    s = unescape(str(value or "")).replace(" ", " ").strip()
     s = _WS_RE.sub(" ", s)
     return s.strip()
 
 
-
 def _cf(value: Any) -> str:
     return _norm_ws(value).casefold().replace("ё", "е")
-
 
 
 def _read_yaml(path: str) -> dict[str, Any]:
@@ -114,7 +108,6 @@ def _read_yaml(path: str) -> dict[str, Any]:
     return yaml.safe_load(p.read_text(encoding="utf-8")) or {}
 
 
-
 def _write_yaml(path: str, data: dict[str, Any]) -> None:
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -122,7 +115,6 @@ def _write_yaml(path: str, data: dict[str, Any]) -> None:
         yaml.safe_dump(data, allow_unicode=True, sort_keys=False),
         encoding="utf-8",
     )
-
 
 
 def _offer_params(offer_el: ET.Element) -> dict[str, list[str]]:
@@ -135,7 +127,6 @@ def _offer_params(offer_el: ET.Element) -> dict[str, list[str]]:
     return dict(out)
 
 
-
 def _text_list(offer_el: ET.Element, tag: str) -> list[str]:
     out: list[str] = []
     for el in offer_el.findall(tag):
@@ -143,7 +134,6 @@ def _text_list(offer_el: ET.Element, tag: str) -> list[str]:
         if txt:
             out.append(txt)
     return out
-
 
 
 def _safe_price_int(text: str) -> int | None:
@@ -154,7 +144,6 @@ def _safe_price_int(text: str) -> int | None:
         return int(m.group(0))
     except Exception:
         return None
-
 
 
 def _is_suspicious_vendor(vendor: str, name: str) -> bool:
@@ -168,17 +157,30 @@ def _is_suspicious_vendor(vendor: str, name: str) -> bool:
     if not name_cf:
         return False
 
-    # vendor совпал с первым generic словом из названия
     first_token = name_cf.split(" ", 1)[0]
     if first_token in _GENERIC_VENDOR_TOKENS and v == first_token:
         return True
 
-    # vendor = обрезанный префикс типа "экономичный"
     if v in {"интерактивная", "интерактивный", "экономичный"}:
         return True
 
     return False
 
+
+def _description_plain_for_gate(desc_html: str) -> str:
+    html = desc_html or ""
+    html = _RE_HTML_COMMENT.sub(" ", html)
+    html = _RE_TEMPLATE_H3.sub(" ", html)
+    html = _RE_HTML_TAG.sub("
+", html)
+    text = unescape(html).replace(" ", " ")
+    lines = []
+    for raw in text.splitlines():
+        line = _WS_RE.sub(" ", raw).strip()
+        if line:
+            lines.append(line)
+    return "
+".join(lines)
 
 
 def _detect_issues(feed_path: str) -> list[QualityIssue]:
@@ -198,92 +200,36 @@ def _detect_issues(feed_path: str) -> list[QualityIssue]:
 
         price_int = _safe_price_int(price_text)
         if price_int is None or price_int <= 0:
-            issues.append(
-                QualityIssue(
-                    severity="critical",
-                    rule="invalid_price",
-                    oid=oid,
-                    name=name,
-                    details=price_text or "empty",
-                )
-            )
+            issues.append(QualityIssue("critical", "invalid_price", oid, name, price_text or "empty"))
 
         for key in params:
             if _cf(key) in _BANNED_PARAM_KEYS:
-                issues.append(
-                    QualityIssue(
-                        severity="critical",
-                        rule="banned_param_key",
-                        oid=oid,
-                        name=name,
-                        details=key,
-                    )
-                )
+                issues.append(QualityIssue("critical", "banned_param_key", oid, name, key))
 
-        desc_blob = _norm_ws(desc_html)
         if "oaicite" in desc_html or "contentReference" in desc_html:
-            issues.append(
-                QualityIssue(
-                    severity="critical",
-                    rule="desc_oaicite_leak",
-                    oid=oid,
-                    name=name,
-                    details="oaicite/contentReference",
-                )
-            )
-        elif _DESC_HEADER_LEAK_RE.search(desc_blob):
-            issues.append(
-                QualityIssue(
-                    severity="cosmetic",
-                    rule="desc_header_leak",
-                    oid=oid,
-                    name=name,
-                    details="Описание/Характеристики/Комплектация",
-                )
-            )
+            issues.append(QualityIssue("critical", "desc_oaicite_leak", oid, name, "oaicite/contentReference"))
+        else:
+            desc_plain = _description_plain_for_gate(desc_html)
+            if _DESC_SUPPLIER_HEADER_RE.search(desc_plain):
+                issues.append(QualityIssue("cosmetic", "desc_header_leak", oid, name, "supplier header in description"))
 
         if _is_suspicious_vendor(vendor, name):
-            issues.append(
-                QualityIssue(
-                    severity="cosmetic",
-                    rule="suspicious_vendor",
-                    oid=oid,
-                    name=name,
-                    details=vendor or "empty",
-                )
-            )
+            issues.append(QualityIssue("cosmetic", "suspicious_vendor", oid, name, vendor or "empty"))
 
         compat_values = params.get("Совместимость", []) + params.get("Для устройства", [])
         for compat in compat_values:
             if _COMPAT_LABEL_LEAK_RE.search(compat):
-                issues.append(
-                    QualityIssue(
-                        severity="cosmetic",
-                        rule="compat_label_leak",
-                        oid=oid,
-                        name=name,
-                        details=compat[:200],
-                    )
-                )
+                issues.append(QualityIssue("cosmetic", "compat_label_leak", oid, name, compat[:200]))
                 break
 
         if pictures and len(pictures) == 1 and _norm_ws(pictures[0]) == _PLACEHOLDER_URL:
-            issues.append(
-                QualityIssue(
-                    severity="cosmetic",
-                    rule="placeholder_picture_only",
-                    oid=oid,
-                    name=name,
-                    details="placeholder only",
-                )
-            )
+            issues.append(QualityIssue("cosmetic", "placeholder_picture_only", oid, name, "placeholder only"))
 
     deduped: dict[tuple[str, str, str], QualityIssue] = {}
     for issue in issues:
         deduped[(issue.severity, issue.rule, issue.oid)] = issue
 
     return sorted(deduped.values(), key=lambda x: (x.severity, x.rule, x.oid))
-
 
 
 def _load_cosmetic_baseline(baseline_path: str) -> dict[str, set[str]]:
@@ -295,20 +241,14 @@ def _load_cosmetic_baseline(baseline_path: str) -> dict[str, set[str]]:
     return out
 
 
-
 def _make_baseline_payload(cosmetic: list[QualityIssue]) -> dict[str, Any]:
     grouped: dict[str, list[str]] = defaultdict(list)
     for issue in cosmetic:
         grouped[issue.rule].append(issue.oid)
-
-    payload = {
-        "schema_version": 1,
-        "accepted_cosmetic": {},
-    }
+    payload = {"schema_version": 1, "accepted_cosmetic": {}}
     for rule in sorted(grouped):
         payload["accepted_cosmetic"][rule] = sorted(set(grouped[rule]))
     return payload
-
 
 
 def _write_report(
@@ -382,8 +322,9 @@ def _write_report(
             lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name}")
         lines.append("")
 
-    p.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
+    p.write_text("
+".join(lines) + "
+", encoding="utf-8")
 
 
 def run_quality_gate(
@@ -396,13 +337,6 @@ def run_quality_gate(
     enforce: bool = True,
     freeze_current_as_baseline: bool = False,
 ) -> tuple[bool, str]:
-    """
-    Совместимо с alstyle-like orchestrator API.
-
-    ВАЖНО:
-    Имена max_new_cosmetic_* оставлены ради совместимости с build_akcent.py,
-    но фактически это лимиты на ОБЩЕЕ число cosmetic, а не только на новые.
-    """
     issues = _detect_issues(feed_path)
     critical = [x for x in issues if x.severity == "critical"]
     cosmetic = [x for x in issues if x.severity == "cosmetic"]
