@@ -1,414 +1,350 @@
 # -*- coding: utf-8 -*-
 """
+Path: scripts/suppliers/akcent/quality_gate.py
+
 AkCent supplier-side quality gate.
 
-Что делает:
-- проверяет уже собранный финальный feed
-- делит проблемы на critical / cosmetic
-- валит сборку только по правилу stop-rule
-
-Правило прохождения по умолчанию:
-- critical_count == 0
-- cosmetic_offer_count <= 5
-- cosmetic_issue_count <= 5
+Логика выровнена под AlStyle:
+- API: feed_path / baseline_path / report_path
+- baseline нужен только для справочного отчёта
+- cosmetic НЕ исключаются из подсчёта
+- PASS только если:
+  * critical == 0
+  * cosmetic_offer_count <= limit
+  * cosmetic_issue_count <= limit
 
 Важно:
-- baseline не выключает контроль
-- cosmetic не игнорируются
-- supplier-specific логика остаётся внутри supplier-layer
+- placeholder_picture здесь НЕ является fail-rule
+- supplier-specific логика остаётся в adapter/builder, а quality gate
+  проверяет только уже собранный финальный feed
 """
 
 from __future__ import annotations
 
-import os
 import re
-import sys
 import xml.etree.ElementTree as ET
-from collections import Counter, defaultdict
-from typing import Any
+from collections import defaultdict
+from dataclasses import dataclass
+from html import unescape
+from pathlib import Path
 
 import yaml
 
 
-_BAD_VENDOR_VALUES = {
-    "",
-    "мфу",
-    "интерактивная",
-    "интерактивные",
-    "интерактивный",
-    "ноутбук",
-    "ноутбуки",
-    "монитор",
-    "мониторы",
-    "принтер",
-    "принтеры",
-    "сканер",
-    "сканеры",
-    "компьютер",
-    "компьютеры",
-    "планшет",
-    "планшеты",
-    "телевизор",
-    "телевизоры",
-    "сервер",
-    "серверы",
-    "pc",
-    "пк",
-}
-
-_COMPAT_LABEL_RE = re.compile(
+_WS_RE = re.compile(r"\s+")
+_COMPAT_LABEL_LEAK_RE = re.compile(
     r"(?i)\b(?:совместимые?\s+модели|поддерживаемые?\s+модели(?:\s+принтеров)?|"
     r"поддерживаемые?\s+продукты|совместимость)\b"
 )
-_CODES_LABEL_RE = re.compile(
-    r"(?i)\b(?:коды?\s+расходников|код(?:ы)?\s+картриджа|расходный\s+материал|"
-    r"расходные\s+материалы)\b"
+_BAD_POWER_KEY_RE = re.compile(r"(?i)^мощность\s*\((?:bt|w)\)$")
+_XEROX_FAMILY_RE = re.compile(
+    r"(?i)\b(?:versalink|workcentre|prime(?:link)?|altalink|docucentre|phaser|versant|dc|wc)\b"
 )
-_MODEL_LABEL_RE = re.compile(r"(?i)^\s*(?:модель|model)\s*[:\-]")
-_BAD_POWER_KEY_RE = re.compile(r"(?i)\bмощность\s*\((?:bt|w)\)")
-_OAICITE_RE = re.compile(r"(?i)(?:oaicite|contentreference|turn\d+\w+\d+|【\d+†)")
-_XML_DECL_RE = re.compile(r"^\s*<\?xml\b", re.I)
 
 
-def _config_dir() -> str:
-    here = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(here, "config")
+@dataclass(frozen=True)
+class QualityIssue:
+    severity: str  # critical | cosmetic
+    rule: str
+    oid: str
+    name: str
+    details: str
 
 
-def _load_yaml(path: str) -> dict[str, Any]:
-    with open(path, "r", encoding="utf-8") as f:
-        obj = yaml.safe_load(f) or {}
-    if not isinstance(obj, dict):
-        raise ValueError(f"Bad YAML root in {path}: expected mapping")
-    return obj
+def _norm_ws(s: str) -> str:
+    s2 = unescape(s or "")
+    s2 = s2.replace("\u00a0", " ").strip()
+    s2 = _WS_RE.sub(" ", s2).strip()
+    return s2
 
 
-def _load_policy_cfg() -> dict[str, Any]:
-    return _load_yaml(os.path.join(_config_dir(), "policy.yml"))
+def _read_yaml(path: str) -> dict:
+    p = Path(path)
+    if not p.exists():
+        return {}
+    return yaml.safe_load(p.read_text(encoding="utf-8")) or {}
 
 
-def _norm_space(s: str) -> str:
-    return " ".join((s or "").strip().split())
+def _write_yaml(path: str, data: dict) -> None:
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(
+        yaml.safe_dump(data, allow_unicode=True, sort_keys=False),
+        encoding="utf-8",
+    )
 
 
-def _ci(s: str) -> str:
-    return _norm_space(s).casefold()
-
-
-def _read_text(path: str) -> str:
-    with open(path, "r", encoding="utf-8", errors="ignore") as f:
-        return f.read()
-
-
-def _parse_xml(path: str) -> ET.Element:
-    text = _read_text(path)
-    text = text.lstrip("\ufeff").strip()
-
-    if not text:
-        raise ValueError(f"Empty XML file: {path}")
-
-    if not _XML_DECL_RE.search(text):
-        # XML declaration не обязательна, но пусть будет мягкая обработка
-        pass
-
-    try:
-        return ET.fromstring(text)
-    except ET.ParseError as e:
-        raise ValueError(f"XML parse error in {path}: {e}") from e
-
-
-def _iter_offer_elements(root: ET.Element) -> list[ET.Element]:
-    offers = root.findall(".//offer")
-    return list(offers)
-
-
-def _offer_id(offer_el: ET.Element) -> str:
-    return _norm_space(offer_el.attrib.get("id") or "")
-
-
-def _offer_available(offer_el: ET.Element) -> str:
-    return _norm_space(offer_el.attrib.get("available") or "")
-
-
-def _find_text(offer_el: ET.Element, tag: str) -> str:
-    el = offer_el.find(tag)
-    return _norm_space(el.text if el is not None else "")
-
-
-def _find_all_texts(offer_el: ET.Element, tag: str) -> list[str]:
-    out: list[str] = []
-    for el in offer_el.findall(tag):
-        val = _norm_space(el.text or "")
-        if val:
-            out.append(val)
-    return out
-
-
-def _find_params(offer_el: ET.Element) -> list[tuple[str, str]]:
-    out: list[tuple[str, str]] = []
+def _offer_params(offer_el: ET.Element) -> dict[str, list[str]]:
+    out: dict[str, list[str]] = defaultdict(list)
     for p in offer_el.findall("param"):
-        name = _norm_space(p.attrib.get("name") or "")
-        value = _norm_space(p.text or "")
-        out.append((name, value))
+        k = _norm_ws(p.get("name") or "")
+        v = _norm_ws("".join(p.itertext()))
+        if k and v:
+            out[k].append(v)
+    return dict(out)
+
+
+def _detect_issues(feed_path: str) -> list[QualityIssue]:
+    xml_text = Path(feed_path).read_text(encoding="utf-8", errors="ignore")
+    root = ET.fromstring(xml_text)
+
+    issues: list[QualityIssue] = []
+
+    for offer in root.findall(".//offer"):
+        oid = _norm_ws(offer.get("id") or "")
+        name = _norm_ws(offer.findtext("name") or "")
+        desc_html = offer.findtext("description") or ""
+        params = _offer_params(offer)
+
+        compat_values = params.get("Совместимость", [])
+        for compat in compat_values:
+            if _COMPAT_LABEL_LEAK_RE.search(compat):
+                issues.append(
+                    QualityIssue(
+                        severity="critical",
+                        rule="compat_label_leak",
+                        oid=oid,
+                        name=name,
+                        details=compat[:200],
+                    )
+                )
+
+            families = {x.casefold() for x in _XEROX_FAMILY_RE.findall(compat)}
+            if len(families) >= 3 and len(compat) >= 180:
+                issues.append(
+                    QualityIssue(
+                        severity="cosmetic",
+                        rule="heavy_xerox_compat",
+                        oid=oid,
+                        name=name,
+                        details=compat[:200],
+                    )
+                )
+
+        for key in params:
+            if _BAD_POWER_KEY_RE.match(key):
+                issues.append(
+                    QualityIssue(
+                        severity="critical",
+                        rule="bad_power_key",
+                        oid=oid,
+                        name=name,
+                        details=key,
+                    )
+                )
+
+        if "oaicite" in desc_html or "contentReference" in desc_html:
+            issues.append(
+                QualityIssue(
+                    severity="critical",
+                    rule="desc_oaicite_leak",
+                    oid=oid,
+                    name=name,
+                    details="oaicite/contentReference",
+                )
+            )
+
+    deduped: dict[tuple[str, str, str], QualityIssue] = {}
+    for issue in issues:
+        deduped[(issue.severity, issue.rule, issue.oid)] = issue
+
+    return sorted(deduped.values(), key=lambda x: (x.severity, x.rule, x.oid))
+
+
+def _load_cosmetic_baseline(baseline_path: str) -> dict[str, set[str]]:
+    data = _read_yaml(baseline_path)
+    raw = data.get("accepted_cosmetic") or {}
+    out: dict[str, set[str]] = {}
+    for rule, oids in raw.items():
+        out[str(rule)] = {str(x).strip() for x in (oids or []) if str(x).strip()}
     return out
 
 
-def _price_ok(price_text: str) -> bool:
-    if not price_text:
-        return False
-    try:
-        return float(price_text.replace(",", ".")) > 0
-    except Exception:
-        return False
+def _make_baseline_payload(cosmetic: list[QualityIssue]) -> dict:
+    grouped: dict[str, list[str]] = defaultdict(list)
+    for issue in cosmetic:
+        grouped[issue.rule].append(issue.oid)
+
+    payload = {
+        "schema_version": 1,
+        "accepted_cosmetic": {},
+    }
+    for rule in sorted(grouped):
+        payload["accepted_cosmetic"][rule] = sorted(set(grouped[rule]))
+    return payload
 
 
-def _quality_cfg(policy_cfg: dict[str, Any]) -> dict[str, Any]:
-    q = policy_cfg.get("quality_gate") or {}
-    if not isinstance(q, dict):
-        q = {}
-    return q
+def _write_report(
+    path: str,
+    *,
+    critical: list[QualityIssue],
+    cosmetic: list[QualityIssue],
+    known_cosmetic: list[QualityIssue],
+    new_cosmetic: list[QualityIssue],
+    accepted_cosmetic: dict[str, set[str]],
+    max_cosmetic_offers: int,
+    max_cosmetic_issues: int,
+    passed: bool,
+    baseline_path: str,
+    frozen: bool,
+) -> None:
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
 
+    cosmetic_offer_count = len({x.oid for x in cosmetic})
+    known_offer_count = len({x.oid for x in known_cosmetic})
+    new_offer_count = len({x.oid for x in new_cosmetic})
 
-def _max_cosmetic_offers(policy_cfg: dict[str, Any]) -> int:
-    q = _quality_cfg(policy_cfg)
-    try:
-        return int(
-            q.get(
-                "max_cosmetic_offers",
-                policy_cfg.get("max_cosmetic_offers", 5),
-            )
-        )
-    except Exception:
-        return 5
+    lines: list[str] = []
+    lines.append(f"QUALITY_GATE: {'PASS' if passed else 'FAIL'}")
+    lines.append(f"baseline_file: {baseline_path}")
+    lines.append(f"freeze_current_as_baseline: {'yes' if frozen else 'no'}")
+    lines.append(f"critical_count: {len(critical)}")
+    lines.append(f"cosmetic_total_count: {len(cosmetic)}")
+    lines.append(f"cosmetic_offer_count: {cosmetic_offer_count}")
+    lines.append(f"known_cosmetic_count: {len(known_cosmetic)}")
+    lines.append(f"known_cosmetic_offer_count: {known_offer_count}")
+    lines.append(f"new_cosmetic_count: {len(new_cosmetic)}")
+    lines.append(f"new_cosmetic_offer_count: {new_offer_count}")
+    lines.append(f"max_cosmetic_offers: {max_cosmetic_offers}")
+    lines.append(f"max_cosmetic_issues: {max_cosmetic_issues}")
+    lines.append("")
 
+    if accepted_cosmetic:
+        lines.append("BASELINE COSMETIC SNAPSHOT:")
+        for rule in sorted(accepted_cosmetic):
+            oids = sorted(accepted_cosmetic[rule])
+            lines.append(f"- {rule}: {len(oids)} offer(s)")
+            for oid in oids[:50]:
+                lines.append(f"  - {oid}")
+            if len(oids) > 50:
+                lines.append(f"  - ... +{len(oids) - 50}")
+        lines.append("")
 
-def _max_cosmetic_issues(policy_cfg: dict[str, Any]) -> int:
-    q = _quality_cfg(policy_cfg)
-    try:
-        return int(
-            q.get(
-                "max_cosmetic_issues",
-                policy_cfg.get("max_cosmetic_issues", 5),
-            )
-        )
-    except Exception:
-        return 5
+    if critical:
+        lines.append("CRITICAL:")
+        for issue in critical:
+            lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name} | {issue.details}")
+        lines.append("")
 
+    if cosmetic:
+        lines.append("COSMETIC TOTAL:")
+        for issue in cosmetic:
+            lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name} | {issue.details}")
+        lines.append("")
 
-def _check_global_critical(offers: list[ET.Element]) -> list[tuple[str, str, str]]:
-    issues: list[tuple[str, str, str]] = []
+    if new_cosmetic:
+        lines.append("NEW COSMETIC VS BASELINE:")
+        for issue in new_cosmetic:
+            lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name} | {issue.details}")
+        lines.append("")
 
-    if not offers:
-        issues.append(("GLOBAL", "no_offers", "В итоговом feed нет ни одного offer"))
-        return issues
+    if known_cosmetic:
+        lines.append("KNOWN COSMETIC FROM BASELINE:")
+        for issue in known_cosmetic:
+            lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name}")
+        lines.append("")
 
-    seen: set[str] = set()
-    duplicates: set[str] = set()
-
-    for offer_el in offers:
-        oid = _offer_id(offer_el)
-        if not oid:
-            issues.append(("GLOBAL", "missing_offer_id", "Найден offer без id"))
-            continue
-        if oid in seen:
-            duplicates.add(oid)
-        seen.add(oid)
-
-    for oid in sorted(duplicates):
-        issues.append((oid, "duplicate_offer_id", "Дублируется offer/@id"))
-
-    return issues
-
-
-def _check_offer_critical(offer_el: ET.Element) -> list[tuple[str, str, str]]:
-    oid = _offer_id(offer_el) or "UNKNOWN"
-    issues: list[tuple[str, str, str]] = []
-
-    name = _find_text(offer_el, "name")
-    price = _find_text(offer_el, "price")
-    pictures = _find_all_texts(offer_el, "picture")
-
-    if not name:
-        issues.append((oid, "empty_name", "Пустой <name>"))
-
-    if not _price_ok(price):
-        issues.append((oid, "bad_price", f"Некорректный <price>: {price or '<empty>'}"))
-
-    if not pictures:
-        issues.append((oid, "no_picture", "Нет ни одного <picture>"))
-
-    return issues
-
-
-def _check_offer_cosmetic(offer_el: ET.Element) -> list[tuple[str, str, str]]:
-    oid = _offer_id(offer_el) or "UNKNOWN"
-    issues: list[tuple[str, str, str]] = []
-
-    name = _find_text(offer_el, "name")
-    desc = _find_text(offer_el, "description")
-    vendor = _find_text(offer_el, "vendor")
-    available = _offer_available(offer_el)
-    params = _find_params(offer_el)
-
-    if _ci(vendor) in _BAD_VENDOR_VALUES:
-        issues.append((oid, "bad_vendor_value", f"Подозрительный vendor: {vendor or '<empty>'}"))
-
-    if available not in {"true", "false"}:
-        issues.append((oid, "bad_available_attr", f"Подозрительный available: {available or '<empty>'}"))
-
-    if _OAICITE_RE.search(name) or _OAICITE_RE.search(desc):
-        issues.append((oid, "desc_oaicite_leak", "В name/description найден след от цитат/oaicite"))
-
-    pictures = _find_all_texts(offer_el, "picture")
-    if pictures == ["https://placehold.co/800x800/png?text=No+Photo"]:
-        issues.append((oid, "placeholder_picture", "У товара только placeholder-картинка"))
-
-    seen_param_names: set[str] = set()
-    for param_name, param_value in params:
-        low_name = _ci(param_name)
-
-        if not param_name:
-            issues.append((oid, "empty_param_name", "Найден <param> без name"))
-            continue
-        if not param_value:
-            issues.append((oid, "empty_param_value", f"Пустой value у param: {param_name}"))
-            continue
-
-        if low_name in seen_param_names:
-            issues.append((oid, "duplicate_param_key", f"Повторяется ключ param: {param_name}"))
-        else:
-            seen_param_names.add(low_name)
-
-        if _BAD_POWER_KEY_RE.search(param_name):
-            issues.append((oid, "bad_power_key", f"Ненормализованный ключ мощности: {param_name}"))
-
-        if low_name == "совместимость" and _COMPAT_LABEL_RE.search(param_value):
-            issues.append((oid, "compat_label_leak", "В значении Совместимость остался label/text-leak"))
-
-        if low_name == "коды расходников" and _CODES_LABEL_RE.search(param_value):
-            issues.append((oid, "codes_label_leak", "В значении Коды расходников остался label/text-leak"))
-
-        if low_name == "модель" and _MODEL_LABEL_RE.search(param_value):
-            issues.append((oid, "model_label_leak", "В значении Модель остался label/text-leak"))
-
-        if low_name == "мощность (bt)":
-            issues.append((oid, "bad_power_key", "Ключ Мощность (Bt) должен быть нормализован"))
-
-    return issues
-
-
-def _print_issue_block(title: str, issues: list[tuple[str, str, str]], limit: int = 30) -> None:
-    print(title)
-    if not issues:
-        print("  - none")
-        return
-
-    for oid, code, msg in issues[:limit]:
-        print(f"  - [{oid}] {code}: {msg}")
-
-    if len(issues) > limit:
-        print(f"  ... and {len(issues) - limit} more")
+    p.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def run_quality_gate(
     *,
-    out_file: str,
-    raw_out_file: str,
-    supplier: str,
-    version: str,
-) -> None:
-    policy_cfg = _load_policy_cfg()
-    max_cosmetic_offers = _max_cosmetic_offers(policy_cfg)
-    max_cosmetic_issues = _max_cosmetic_issues(policy_cfg)
+    feed_path: str,
+    baseline_path: str,
+    report_path: str,
+    max_new_cosmetic_offers: int = 5,
+    max_new_cosmetic_issues: int = 5,
+    enforce: bool = True,
+    freeze_current_as_baseline: bool = False,
+) -> tuple[bool, str]:
+    """
+    ВАЖНО:
+    Для совместимости со стилем build_alstyle.py
+    сохраняем старые имена аргументов:
+      max_new_cosmetic_offers / max_new_cosmetic_issues
 
-    if not os.path.isfile(out_file):
-        raise SystemExit(f"[{supplier}] quality gate failed: out_file not found: {out_file}")
+    Но трактуем их как:
+      общий лимит cosmetic-offers / общий лимит cosmetic-issues
 
-    try:
-        root = _parse_xml(out_file)
-    except Exception as e:
-        raise SystemExit(f"[{supplier}] quality gate failed: {e}") from e
+    Baseline нужен только для справки в отчёте.
+    Он НЕ исключает issues из подсчёта.
+    """
 
-    offers = _iter_offer_elements(root)
+    issues = _detect_issues(feed_path)
+    critical = [x for x in issues if x.severity == "critical"]
+    cosmetic = [x for x in issues if x.severity == "cosmetic"]
 
-    critical_issues: list[tuple[str, str, str]] = []
-    cosmetic_issues: list[tuple[str, str, str]] = []
-
-    critical_issues.extend(_check_global_critical(offers))
-
-    for offer_el in offers:
-        critical_issues.extend(_check_offer_critical(offer_el))
-        cosmetic_issues.extend(_check_offer_cosmetic(offer_el))
-
-    cosmetic_offer_ids = {oid for oid, _, _ in cosmetic_issues if oid != "GLOBAL"}
-
-    critical_counter = Counter(code for _, code, _ in critical_issues)
-    cosmetic_counter = Counter(code for _, code, _ in cosmetic_issues)
-
-    print("=" * 72)
-    print(f"[{supplier}] quality gate")
-    print("=" * 72)
-    print(f"version: {version}")
-    print(f"out_file: {out_file}")
-    print(f"raw_out_file: {raw_out_file}")
-    print(f"offers_total: {len(offers)}")
-    print(f"critical_count: {len(critical_issues)}")
-    print(f"cosmetic_issue_count: {len(cosmetic_issues)}")
-    print(f"cosmetic_offer_count: {len(cosmetic_offer_ids)}")
-    print(f"max_cosmetic_issues: {max_cosmetic_issues}")
-    print(f"max_cosmetic_offers: {max_cosmetic_offers}")
-
-    print("-" * 72)
-    print("critical_breakdown:")
-    if critical_counter:
-        for code in sorted(critical_counter):
-            print(f"  {code}: {critical_counter[code]}")
-    else:
-        print("  none")
-
-    print("-" * 72)
-    print("cosmetic_breakdown:")
-    if cosmetic_counter:
-        for code in sorted(cosmetic_counter):
-            print(f"  {code}: {cosmetic_counter[code]}")
-    else:
-        print("  none")
-
-    print("-" * 72)
-    _print_issue_block("critical_issues:", critical_issues, limit=30)
-
-    print("-" * 72)
-    _print_issue_block("cosmetic_issues:", cosmetic_issues, limit=30)
-
-    passed = (
-        len(critical_issues) == 0
-        and len(cosmetic_offer_ids) <= max_cosmetic_offers
-        and len(cosmetic_issues) <= max_cosmetic_issues
-    )
-
-    print("-" * 72)
-    print(f"result: {'PASS' if passed else 'FAIL'}")
-    print("=" * 72)
-
-    if not passed:
-        raise SystemExit(1)
-
-
-def main(argv: list[str] | None = None) -> None:
-    argv = argv or sys.argv[1:]
-    if len(argv) < 4:
-        raise SystemExit(
-            "Usage: python -m suppliers.akcent.quality_gate <out_file> <raw_out_file> <supplier> <version>"
+    if freeze_current_as_baseline:
+        payload = _make_baseline_payload(cosmetic)
+        _write_yaml(baseline_path, payload)
+        accepted_cosmetic = _load_cosmetic_baseline(baseline_path)
+        _write_report(
+            report_path,
+            critical=critical,
+            cosmetic=cosmetic,
+            known_cosmetic=cosmetic,
+            new_cosmetic=[],
+            accepted_cosmetic=accepted_cosmetic,
+            max_cosmetic_offers=int(max_new_cosmetic_offers),
+            max_cosmetic_issues=int(max_new_cosmetic_issues),
+            passed=(len(critical) == 0),
+            baseline_path=baseline_path,
+            frozen=True,
+        )
+        return (len(critical) == 0), (
+            f"[quality_gate] BASELINE_FROZEN | "
+            f"critical={len(critical)} | "
+            f"cosmetic_total={len(cosmetic)} | "
+            f"cosmetic_offers={len({x.oid for x in cosmetic})} | "
+            f"baseline={baseline_path}"
         )
 
-    out_file, raw_out_file, supplier, version = argv[:4]
-    run_quality_gate(
-        out_file=out_file,
-        raw_out_file=raw_out_file,
-        supplier=supplier,
-        version=version,
+    accepted_cosmetic = _load_cosmetic_baseline(baseline_path)
+
+    known_cosmetic = [
+        x for x in cosmetic
+        if x.oid in accepted_cosmetic.get(x.rule, set())
+    ]
+    new_cosmetic = [
+        x for x in cosmetic
+        if x.oid not in accepted_cosmetic.get(x.rule, set())
+    ]
+
+    cosmetic_offer_count = len({x.oid for x in cosmetic})
+    cosmetic_issue_count = len(cosmetic)
+
+    passed = (
+        len(critical) == 0
+        and cosmetic_offer_count <= int(max_new_cosmetic_offers)
+        and cosmetic_issue_count <= int(max_new_cosmetic_issues)
     )
 
+    _write_report(
+        report_path,
+        critical=critical,
+        cosmetic=cosmetic,
+        known_cosmetic=known_cosmetic,
+        new_cosmetic=new_cosmetic,
+        accepted_cosmetic=accepted_cosmetic,
+        max_cosmetic_offers=int(max_new_cosmetic_offers),
+        max_cosmetic_issues=int(max_new_cosmetic_issues),
+        passed=(passed or not enforce),
+        baseline_path=baseline_path,
+        frozen=False,
+    )
 
-if __name__ == "__main__":
-    main()
+    summary = (
+        f"[quality_gate] {'PASS' if (passed or not enforce) else 'FAIL'} | "
+        f"critical={len(critical)} | "
+        f"cosmetic_total={cosmetic_issue_count} | "
+        f"cosmetic_offers={cosmetic_offer_count} | "
+        f"known_cosmetic={len(known_cosmetic)} | "
+        f"new_cosmetic={len(new_cosmetic)} | "
+        f"baseline={baseline_path} | report={report_path}"
+    )
+
+    if not enforce:
+        return True, summary + " | enforce=no"
+
+    return passed, summary
