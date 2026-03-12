@@ -1,48 +1,86 @@
-# AkCent supplier filter config
-# Задача:
-# - не резать ассортимент слишком агрессивно
-# - отсекать только явный мусор / неподходящие группы
-# - supplier-layer должен сначала собрать максимально полный raw
+# AkCent narrow assortment filter for CS-template supplier-layer
+# v1: strict prefix-based include gate
 
+supplier: akcent
+mode: include
+
+# Базовые требования входа
 require_name: true
 require_price: false
 
-# Если пусто — не ограничиваем по categoryId
-include_category_ids: []
-exclude_category_ids: []
+# Основной ассортиментный шлюз:
+# товар должен начинаться ровно с одного из этих префиксов
+include_rules:
+  name_prefixes:
+    - C13T55
+    - Ёмкость для отработанных чернил
+    - Интерактивная доска
+    - Интерактивная панель
+    - Интерактивный дисплей
+    - Картридж
+    - Ламинатор
+    - Монитор
+    - МФУ
+    - Переплетчик
+    - Пленка для ламинирования
+    - Плоттер
+    - Принтер
+    - Проектор
+    - Сканер
+    - Чернила
+    - Шредер
+    - Экономичный набор
+    - Экран
 
-# Если пусто — не ограничиваем по vendor
-include_vendors: []
+# Legacy-compatible alias for older filtering implementations
+allow_name_prefixes:
+  - C13T55
+  - Ёмкость для отработанных чернил
+  - Интерактивная доска
+  - Интерактивная панель
+  - Интерактивный дисплей
+  - Картридж
+  - Ламинатор
+  - Монитор
+  - МФУ
+  - Переплетчик
+  - Пленка для ламинирования
+  - Плоттер
+  - Принтер
+  - Проектор
+  - Сканер
+  - Чернила
+  - Шредер
+  - Экономичный набор
+  - Экран
 
-# Явные исключения по vendor/name/model text
-exclude_vendors: []
+exclude_rules:
+  # Точечные article-исключения
+  articles:
+    - AWP201/10
+    - AWP286/10
 
-# Ключевые стоп-слова для отсечения мусора
-exclude_vendor_keywords:
-  - уценка
-  - витринный образец
-  - б/у
-  - бу
-  - used
-  - refurb
-  - refurbished
-  - demo
-  - sample
-  - тестовый
-  - сервисный
-  - damaged
-  - поврежден
-  - повреждена
+  # Исключаем "картриджи" для фильтров воды Philips/AWP
+  grouped_name_conditions:
+    - id: philips_awp_water_filter_cartridge
+      all_of_any:
+        - ["картридж", "cartridge"]
+        - ["фильтр", "filter", "бутылк", "bottle"]
+        - ["philips", "awp"]
 
-# Если пусто — не требуем наличие каких-то include-слов
-include_keywords: []
+# Legacy-compatible aliases
+drop_articles:
+  - AWP201/10
+  - AWP286/10
 
-# Явные стоп-слова по общему тексту товара
-exclude_keywords:
-  - уценка
-  - витринный образец
-  - б/у
-  - бу
-  - refurbished
-  - used
-  - demo sample
+water_filter_cartridge_exclusion:
+  enabled: true
+  groups:
+    - ["картридж", "cartridge"]
+    - ["фильтр", "filter", "бутылк", "bottle"]
+    - ["philips", "awp"]
+
+# Отчётность причин отсева должна сохраняться в filter_report
+reporting:
+  track_reasons: true
+  top_reasons_limit: 20
