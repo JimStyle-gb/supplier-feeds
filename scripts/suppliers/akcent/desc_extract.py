@@ -20,9 +20,9 @@ from typing import Any
 
 from cs.util import norm_ws
 from suppliers.akcent.params_xml import (
-    apply_value_normalizers,
     detect_kind_by_name,
     key_quality_ok,
+    normalize_param_value,
 )
 
 
@@ -327,18 +327,14 @@ def validate_desc_pair(key: str, val: str, schema_cfg: dict[str, Any], kind: str
     if key not in _SAFE_DESC_PARAM_KEYS:
         return None
 
-    rules = schema_cfg.get("key_rules") or {}
-    must_contain_letter = bool(rules.get("must_contain_letter", True))
-    max_len = int(rules.get("max_len", 60))
-    max_words = int(rules.get("max_words", 9))
-    if not key_quality_ok(key, require_letter=must_contain_letter, max_len=max_len, max_words=max_words):
+    if not key_quality_ok(key, schema_cfg):
         return None
 
     allowed = _allowed_keys(schema_cfg, kind)
     if allowed and key not in allowed:
         return None
 
-    val2 = apply_value_normalizers(key, val, schema_cfg)
+    val2 = normalize_param_value(key, val, schema_cfg)
     val2 = norm_ws(val2)
     if not val2:
         return None
