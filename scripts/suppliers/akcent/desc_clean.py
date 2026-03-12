@@ -9,6 +9,7 @@ AkCent supplier layer — очистка supplier description.
 - сохраняет границы строк для будущего desc_extract.py;
 - режет дубли title/model/vendor в начале описания;
 - убирает пустые и шумные строки;
+- удаляет supplier-хвосты "Дополнительно" / "Сопутствующие товары";
 - мягко разрезает плотные тех-строки на label-friendly блоки.
 
 Важно:
@@ -59,6 +60,9 @@ _RE_MODEL_LINE = re.compile(r"(?iu)^(?:модель|model)\s*:?\s*.+$")
 _RE_SECTION_HEADING = re.compile(
     r"(?iu)^(?:описание|характеристики|основные\s+характеристики|технические\s+характеристики|"
     r"комплектация|преимущества|особенности|назначение|условия\s+гарантии|гарантия)\s*:?$"
+)
+_RE_EXTRA_SECTION_LINE = re.compile(
+    r"(?iu)^(?:дополнительно|сопутствующие\s+товары)\s*:?(?:\s*.+)?$"
 )
 _RE_BULLET_LEAD = re.compile(r"^[•·▪◦*\-–—]+\s*")
 
@@ -165,6 +169,9 @@ def _cleanup_lines(lines: Iterable[str], *, name: str, vendor: str = "", model: 
         if _is_service_line(line):
             continue
         if _RE_SECTION_HEADING.fullmatch(line):
+            continue
+        # Убираем supplier-блоки "Дополнительно" / "Сопутствующие товары" целиком.
+        if _RE_EXTRA_SECTION_LINE.match(line):
             continue
         if _is_title_duplicate(name, line):
             continue
