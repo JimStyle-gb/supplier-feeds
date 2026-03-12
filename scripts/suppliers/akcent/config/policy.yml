@@ -1,44 +1,91 @@
-# AkCent supplier policy config
-# Главный смысл:
-# - supplier-layer сам должен отдавать максимально чистый raw
-# - core не должен угадывать supplier-specific данные
-# - stop-rule такой же, как у AlStyle: critical всегда чиним, cosmetic допускаем в лимите
-
+schema_version: 2
 supplier: AkCent
-supplier_code: AC
-
-# Префикс для итоговых offer id
-id_prefix: AC
-
-# Расписание следующего запуска по Алматы
+timezone: Asia/Almaty
 next_run_hour_local: 2
+schedule_hour_almaty: 2
+id_prefix: AC
+placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
 
-# Supplier-layer policy
-mutate_params: false
-auto_codes_from_text: false
-auto_compat_from_text: false
+vendor_blacklist_casefold:
+  - akcent
+  - ak-cent
+  - ak-cent.kz
 
-# Данные и вывод
-output_encoding: utf-8
-raw_out_file: docs/raw/akcent.yml
-out_file: docs/akcent.yml
+param_priority:
+  - Бренд
+  - Модель
+  - Тип
+  - Для устройства
+  - Для бренда
+  - Совместимость
+  - Коды
+  - Цвет
+  - Разрешение
+  - Диагональ
+  - Яркость
+  - Интерфейсы
+  - Гарантия
 
-# Картинки
-placeholder_picture: "https://placehold.co/800x800/png?text=No+Photo"
+core_rules:
+  mutate_params: false
+  auto_codes_from_text: false
+  auto_compat_from_text: false
+  placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
 
-# Качество / stop-rule
+core_stages:
+  pricing: true
+  keywords: true
+  description_template: true
+  feed_meta_heartbeat: true
+  category_assignment: false
+  seo_reviews: false
+  seo_faq: false
+
+supplier_layer:
+  filtering_mode: strict_prefix_include
+  source_of_truth_for_params: xml_params_first
+  desc_extract_mode: only_fill_missing
+  compat_mode: consumable_only
+  unknown_keys: to_extra_info
+  raw_must_be_clean: true
+
+assortment_scope:
+  fixed_prefix_only: true
+  allow_name_prefixes:
+    - C13T55
+    - Ёмкость для отработанных чернил
+    - Интерактивная доска
+    - Интерактивная панель
+    - Интерактивный дисплей
+    - Картридж
+    - Ламинатор
+    - Монитор
+    - МФУ
+    - Переплетчик
+    - Пленка для ламинирования
+    - Плоттер
+    - Принтер
+    - Проектор
+    - Сканер
+    - Чернила
+    - Шредер
+    - Экономичный набор
+    - Экран
+  reject_articles:
+    - AWP201/10
+    - AWP286/10
+  reject_water_filter_cartridges: true
+
 quality_gate:
   enabled: true
-  baseline_enabled: false
-  max_cosmetic_offers: 5
-  max_cosmetic_issues: 5
+  enforce: true
+  baseline_file: scripts/suppliers/akcent/config/quality_baseline.yml
+  report_file: docs/raw/akcent_quality_gate.txt
+  max_new_cosmetic_offers: 5
+  max_new_cosmetic_issues: 5
+  freeze_current_as_baseline: false
 
-# Supplier-side behaviour
-builder:
-  keep_unknown_keys_in_extra_info: true
-  max_extra_info_pairs: 20
-
-# Диагностика
-diagnostics:
-  print_summary: true
-  print_quality_gate: true
+notes:
+  - AkCent в этом пайплайне не является широким mixed-catalog supplier.
+  - Пропускаются только товары, имя которых начинается с разрешённого префикса.
+  - Supplier-layer должен сам отдавать чистый raw без supplier-specific логики в core.
