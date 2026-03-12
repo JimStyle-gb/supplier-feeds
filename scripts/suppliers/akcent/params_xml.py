@@ -126,7 +126,7 @@ _VALUE_TITLE_CASE_KEYS = {
 
 def _clean_text(value: Any) -> str:
     s = str(value or "").replace("\xa0", " ")
-    s = _HTML_TAG.sub(" ", s)
+    s = _RE_HTML_TAG.sub(" ", s)
     s = fix_mixed_cyr_lat(s)
     s = norm_ws(s)
     s = _RE_BRACKETS.sub(lambda m: "(" if m.group(0).startswith("(") else ")", s)
