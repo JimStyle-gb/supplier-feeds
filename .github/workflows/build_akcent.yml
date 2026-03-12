@@ -3,139 +3,90 @@ name: Build_AkCent
 on:
   workflow_dispatch:
   schedule:
-    # 21:00 UTC == 02:00 Asia/Almaty (UTC+5)
-    - cron: '0 21 * * *'
-
-permissions:
-  contents: write
+    # Алматы UTC+5 → 02:00 local = 21:00 UTC предыдущего дня
+    - cron: "0 21 * * *"
 
 jobs:
-  build_akcent:
+  build-akcent:
     runs-on: ubuntu-latest
-    concurrency:
-      group: build_akcent
-      cancel-in-progress: true
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          else
-            pip install requests beautifulsoup4 lxml pyyaml python-dateutil openpyxl
-          fi
+          pip install pyyaml
 
-      - name: Configure git identity (GitHub Actions bot)
+      - name: Prepare folders
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p docs
+          mkdir -p docs/raw
+          mkdir -p scripts/suppliers/akcent/config
 
-      - name: Smoke test (py_compile)
+      - name: Smoke test / py_compile
         run: |
-          python -m py_compile scripts/cs/core.py scripts/build_akcent.py
+          python -m py_compile \
+            scripts/cs/core.py \
+            scripts/cs/writer.py \
+            scripts/cs/validators.py \
+            scripts/cs/util.py \
+            scripts/cs/pricing.py \
+            scripts/cs/meta.py \
+            scripts/cs/policy.py \
+            scripts/cs/description.py \
+            scripts/cs/keywords.py \
+            scripts/build_akcent.py \
+            scripts/suppliers/akcent/source.py \
+            scripts/suppliers/akcent/filtering.py \
+            scripts/suppliers/akcent/normalize.py \
+            scripts/suppliers/akcent/pictures.py \
+            scripts/suppliers/akcent/params_xml.py \
+            scripts/suppliers/akcent/desc_clean.py \
+            scripts/suppliers/akcent/desc_extract.py \
+            scripts/suppliers/akcent/compat.py \
+            scripts/suppliers/akcent/builder.py \
+            scripts/suppliers/akcent/diagnostics.py \
+            scripts/suppliers/akcent/quality_gate.py
 
-      - name: Snapshot previous feed (for no-changes note)
+      - name: Show build version
         run: |
-          mkdir -p /tmp/feed_prev
-          if [ -f docs/akcent.yml ]; then cp -f docs/akcent.yml /tmp/feed_prev/akcent.yml; fi
+          python -c "import pathlib,re; t=pathlib.Path('scripts/build_akcent.py').read_text(encoding='utf-8', errors='ignore'); m=re.search(r'BUILD_AKCENT_VERSION\s*=\s*[\"\']([^\"\']+)[\"\']', t); print('AKCENT_VERSION', m.group(1) if m else 'UNKNOWN')"
 
-      - name: Build feed (akcent) + identity
+      - name: Run build
+        env:
+          TZ: Asia/Almaty
         run: |
-          python -c "import hashlib,pathlib,re; p=pathlib.Path('scripts/build_akcent.py'); t=p.read_text(encoding='utf-8', errors='ignore'); print('AKCENT_PY_MD5', hashlib.md5(p.read_bytes()).hexdigest()); print('AKCENT_PY_BYTES', p.stat().st_size); m=re.search(r'BUILD_AKCENT_VERSION\s*=\s*[\"\']([^\"\']+)[\"\']', t); print('AKCENT_VERSION', m.group(1) if m else 'UNKNOWN'); print('CALLS_ENRICH', 'params = _ac_enrich_codes_and_compat' in t)"
           python scripts/build_akcent.py
 
-      - name: Update FEED_META + yml_catalog date (docs + raw) and force next run 02:00
+      - name: Validate output files exist
         run: |
-          python - <<'PY'
-          from __future__ import annotations
+          test -f docs/akcent.yml
+          test -f docs/raw/akcent.yml
+          echo "OK: output files created"
 
-          import re
-          from datetime import datetime, timedelta
-          from pathlib import Path
-          from zoneinfo import ZoneInfo
-
-          TZ = ZoneInfo("Asia/Almaty")
-
-          def now_and_next_run(hour: int) -> tuple[str, str]:
-              now = datetime.now(TZ).replace(microsecond=0)
-              cand = now.replace(hour=hour, minute=0, second=0)
-              if cand <= now:
-                  cand = cand + timedelta(days=1)
-              return now.strftime("%Y-%m-%d %H:%M:%S"), cand.strftime("%Y-%m-%d %H:%M:%S")
-
-          def strip_for_compare(s: str) -> str:
-              s = re.sub(r'(<yml_catalog\s+date=")[^"]+(">)', r'\1IGN\2', s, count=1)
-              s = re.sub(r'^\s*Время сборки \(Алматы\)\s*\|\s*.*$', 'IGN', s, flags=re.M)
-              s = re.sub(r'^\s*Ближайшая сборка \(Алматы\)\s*\|\s*.*$', 'IGN', s, flags=re.M)
-              return s
-
-          def update_meta(path: Path, build_time: str, next_run: str, note_no_changes: bool) -> None:
-              if not path.exists():
-                  return
-              txt = path.read_text(encoding="utf-8", errors="replace")
-
-              # yml_catalog date
-              txt = re.sub(
-                  r'(<yml_catalog\s+date=")[^"]+(">)',
-                  lambda m: m.group(1) + build_time + m.group(2),
-                  txt,
-                  count=1,
-              )
-
-              # FEED_META: build time
-              note = " (не было изменений)" if note_no_changes else ""
-              txt = re.sub(
-                  r'^(\s*Время сборки \(Алматы\)\s*\|\s*).*$',
-                  lambda m: m.group(1) + build_time + note,
-                  txt,
-                  flags=re.M,
-              )
-
-              # FEED_META: next run
-              txt = re.sub(
-                  r'^(\s*Ближайшая сборка \(Алматы\)\s*\|\s*).*$',
-                  lambda m: m.group(1) + next_run,
-                  txt,
-                  flags=re.M,
-              )
-
-              path.write_text(txt, encoding="utf-8")
-
-          prev_path = Path("/tmp/feed_prev/akcent.yml")
-          cur_path = Path("docs/akcent.yml")
-
-          no_changes = False
-          if prev_path.exists() and cur_path.exists():
-              prev = strip_for_compare(prev_path.read_text(encoding="utf-8", errors="replace"))
-              cur0 = strip_for_compare(cur_path.read_text(encoding="utf-8", errors="replace"))
-              no_changes = (prev == cur0)
-
-          build_time, next_run = now_and_next_run(2)
-
-          update_meta(Path("docs/akcent.yml"), build_time, next_run, no_changes)
-          update_meta(Path("docs/raw/akcent.yml"), build_time, next_run, no_changes)
-
-          print("META_UPDATED", build_time, "NEXT_RUN", next_run, "NO_CHANGES" if no_changes else "CHANGED")
+      - name: Print output stats
+        run: |
+          python - << 'PY'
+          import pathlib, hashlib
+          for p in ['docs/akcent.yml', 'docs/raw/akcent.yml']:
+              fp = pathlib.Path(p)
+              data = fp.read_bytes()
+              print(p, 'bytes=', len(data), 'md5=', hashlib.md5(data).hexdigest())
           PY
 
-      - name: Commit & push docs/akcent.yml + docs/raw/akcent.yml
-        run: |
-          git add docs/akcent.yml docs/raw/akcent.yml
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git commit -m "build: akcent feed"
-          git pull --rebase --autostash
-          git push
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: akcent-feed
+          path: |
+            docs/akcent.yml
+            docs/raw/akcent.yml
+          if-no-files-found: error
