@@ -196,7 +196,9 @@ def key_quality_ok(key: str, schema_cfg: dict[str, Any]) -> bool:
     if not k:
         return False
 
-    banned = _cf_set(rules.get("banned_exact") or [])
+    banned = set()
+    banned |= _cf_set(schema_cfg.get("banned_exact") or [])
+    banned |= _cf_set(rules.get("banned_exact") or [])
     if k.casefold() in banned:
         return False
 
@@ -486,6 +488,8 @@ def extract_xml_params(
     kind_name = kind or detect_kind_by_name(str(_get_field(src, "name") or ""), schema)
 
     discard_exact = _cf_set(schema.get("discard_exact") or [])
+    banned_exact = _cf_set(schema.get("banned_exact") or [])
+    drop_exact = discard_exact | banned_exact
     allow_keys = resolve_allowed_keys(schema, kind_name)
 
     kept: list[tuple[str, str]] = []
@@ -513,7 +517,7 @@ def extract_xml_params(
             stats["dropped_bad_key"] += 1
             continue
 
-        if key.casefold() in discard_exact:
+        if key.casefold() in drop_exact:
             stats["dropped_discard_key"] += 1
             continue
 
