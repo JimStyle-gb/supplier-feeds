@@ -2,580 +2,393 @@
 """
 Path: scripts/suppliers/akcent/desc_extract.py
 
-AkCent description extract layer.
+AkCent supplier layer — extraction характеристик из supplier description.
 
 Что делает:
-- поднимает из cleaned description только ЯВНЫЕ spec-пары;
-- понимает:
-  1) strict "Ключ: значение"
-  2) alternating key/value блоки
-  3) compatibility block ("Поддерживаемые модели", "Совместимые продукты")
-- не генерирует auto compat / auto codes из narrative текста;
-- отдельно возвращает body_text без уже поднятых spec-линий.
+- работает только после desc_clean.py;
+- поднимает из description только безопасные пары key/value;
+- сначала пытается читать явные key:value строки;
+- потом читает compact/alt-pairs вида "Ключ" -> следующая строка;
+- потом добирает часть тех-строк без двоеточия, если они начинаются с известного label;
+- не гадает compat/codes из narrative free-text;
+- уважает schema.yml: aliases / key_rules / allow_by_kind / normalizers.
 """
 
 from __future__ import annotations
 
 import re
-from collections import Counter
-from typing import Any
+from typing import Any, Iterable
 
-from suppliers.akcent.normalize import NormalizedOffer
+from cs.util import fix_mixed_cyr_lat, norm_ws
+from suppliers.akcent.desc_clean import clean_description_text, description_lines
+from suppliers.akcent.params_xml import (
+    detect_kind_by_name,
+    key_quality_ok,
+    normalize_param_key,
+    normalize_param_value,
+    resolve_allowed_keys,
+)
 
 
-_WS_RE = re.compile(r"\s+")
-_KV_RE = re.compile(r"^\s*([^:]{1,120})\s*:\s*(.+?)\s*$")
-_RANGE_DASH_RE = re.compile(r"\s*[-–—]+\s*")
-_MULTI_SEP_RE = re.compile(r"\s*(?:;|\||•|·|●|▪|▫|■)\s*")
-_SPLIT_ENUM_RE = re.compile(r"\s*;\s*")
-_WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9]+")
+_RE_WS = re.compile(r"\s+")
+_RE_KV = re.compile(r"^\s*([^:]{1,80})\s*:\s*(.+?)\s*$")
+_RE_COMPACT_SPLIT = re.compile(r"\s{2,}|\t+|\s+[\-–—]\s+")
+_RE_HTML = re.compile(r"<[^>]+>")
+_RE_ONLY_PUNCT = re.compile(r"^[\s\-–—:;,.|/\\•·*()\[\]]+$")
+_RE_CODEY = re.compile(r"(?iu)\b(?:C13T\d{5,6}[A-Z]?|C12C\d{6,9}|C11[A-Z0-9]{6,10}|V1[123]H[A-Z0-9]{5,10}|W\d{4}[A-Z])\b")
+_RE_WARRANTY_INLINE = re.compile(r"(?iu)^гарантия\s+(.*)$")
+_RE_YN_TAIL = re.compile(r"(?iu)\b(?:да|нет|yes|no|true|false)\b(?:\s*\(.+\))?$")
 
-# Заголовки/секции, которые не надо превращать в обычные body-lines
-_HEADINGS = {
-    "характеристики",
-    "основные характеристики",
-    "технические характеристики",
-    "спецификация",
-    "спецификации",
-    "описание",
-    "комплектация",
-    "особенности",
+# Стартовые label для строк без двоеточия.
+_LABEL_PREFIX_MAP = {
+    "тип": "Тип",
+    "тип печати": "Тип печати",
+    "тип матрицы": "Тип матрицы",
+    "тип управления": "Тип управления",
+    "тип чернил": "Тип чернил",
+    "тип расходных материалов": "Тип расходных материалов",
+    "для устройства": "Для устройства",
+    "для бренда": "Для бренда",
+    "цвет": "Цвет",
+    "цвета": "Цвета",
+    "цветность": "Цветность",
+    "ресурс": "Ресурс",
+    "объем": "Объем",
+    "объём": "Объем",
+    "коды": "Коды",
+    "совместимость": "Совместимость",
+    "гарантия": "Гарантия",
+    "яркость": "Яркость",
+    "цветовая яркость": "Цветовая яркость",
+    "контрастность": "Контрастность",
+    "разрешение": "Разрешение",
+    "технология": "Технология",
+    "источник света": "Источник света",
+    "тип источника света": "Тип источника света",
+    "срок службы лампы": "Срок службы лампы (норм./ эконом.) ч.",
+    "срок службы источника света": "Срок службы источника света",
+    "уровень шума": "Уровень шума (норм./эконом.) Дб",
+    "проекционный коэффициент": "Проекционный коэффициент (Throw ratio)",
+    "проекционный коэффицент": "Проекционный коэффициент (Throw ratio)",
+    "проекционное отношение": "Проекционное отношение (мин)",
+    "проекционное расстояние": "Проекционное расстояние",
+    "диагональ": "Диагональ",
+    "подсветка": "Подсветка",
+    "углы обзора": "Углы обзора",
+    "соотношение сторон": "Соотношение сторон",
+    "время отклика": "Время отклика",
+    "частота обновления": "Частота обновления",
+    "глубина цвета": "Глубина цвета",
+    "размер пикселя": "Размер пикселя",
+    "интерфейсы": "Интерфейсы",
+    "формат": "Формат",
+    "двусторонняя печать": "Двусторонняя печать",
+    "жк дисплей": "ЖК дисплей",
+    "автоподатчик": "Автоподатчик",
+    "разрешение печати": "Разрешение печати, dpi",
+    "разрешение сканера": "Разрешение сканера, dpi",
+    "скорость печати": "Скорость печати (A4)",
+    "печать фото": "Печать фото",
+    "область применения": "Область применения",
+    "минимальная плотность бумаги": "Минимальная плотность бумаги, г/м²",
+    "максимальная плотность бумаги": "Максимальная плотность бумаги, г/м²",
+    "ширина печати": "Ширина печати, мм",
+    "количество слотов для картриджей": "Количество слотов для картриджей",
+    "тип резки": "Тип резки",
+    "уровень секретности": "Уровень секретности",
+    "уничтожение": "Уничтожение",
+    "производительность уничтожителя": "Производительность уничтожителя",
+    "емкость корзины": "Емкость корзины, л",
+    "ёмкость корзины": "Емкость корзины, л",
+    "размер": "Размер",
+    "ширина": "Ширина",
+    "высота": "Высота",
+    "габариты": "Габариты",
+    "размеры": "Размеры",
+    "внешние размеры": "Внешние Размеры",
+    "активная область": "Активная область",
+    "метод ввода": "Метод ввода",
+    "скорость отклика": "Скорость отклика",
+    "вес": "Вес",
+    "вес нетто": "Вес нетто",
+    "вес брутто": "Вес брутто",
+    "размер упаковки": "Размер упаковки",
 }
 
-# AkCent-specific alternate keys
-# ВАЖНО: "Назначение" переводим в "Для устройства", чтобы не тащить запрещённый param "Назначение"
-# в общий CS-core/validator.
-_ALT_KEYS = {
-    "вид": "Тип",
-    "назначение": "Для устройства",
-    "цвет печати": "Цвет",
-    "поддерживаемые модели принтеров": "Совместимость",
-    "поддерживаемые модели": "Совместимость",
-    "поддерживаемые продукты": "Совместимость",
-    "совместимые продукты": "Совместимость",
-    "совместимые модели": "Совместимость",
+# Точные и безопасные label-only строки, где value ожидается на следующей строке.
+_LABEL_ONLY_MAP = {
+    "тип": "Тип",
+    "тип печати": "Тип печати",
+    "цвет": "Цвет",
     "ресурс": "Ресурс",
-    "диагональ": "Диагональ",
-    "разрешение": "Разрешение",
+    "объем": "Объем",
+    "объём": "Объем",
+    "коды": "Коды",
+    "совместимость": "Совместимость",
+    "гарантия": "Гарантия",
     "яркость": "Яркость",
     "контрастность": "Контрастность",
-    "время отклика": "Время отклика",
-    "гарантийный период": "Гарантия",
-    "гарантия": "Гарантия",
+    "разрешение": "Разрешение",
+    "интерфейсы": "Интерфейсы",
+    "формат": "Формат",
+    "диагональ": "Диагональ",
+    "тип чернил": "Тип чернил",
+    "тип расходных материалов": "Тип расходных материалов",
 }
 
-# Ключи, которые не поднимаем из description в params
-_BANNED_KEYS = {
-    "описание",
-    "подробное описание",
-    "дополнительно",
-    "особенности",
-    "комментарий",
-    "примечание",
-    "важно",
-    "внимание",
-    "условия эксплуатации",
-    "условия хранения",
-    "информация",
-    "артикул",
-    "код товара",
-    "id",
-    "url",
-    "ссылка",
-    "наличие",
-    "остаток",
-}
-
-# Narrative phrases: если value выглядит как рекламный абзац, не поднимаем как param
-_NARRATIVE_PARTS = [
-    "идеально подходит",
-    "обеспечивает",
-    "предназначен",
-    "предназначена",
-    "предназначены",
-    "позволяет",
-    "используется для",
-    "подходит для",
-    "отличается",
-    "благодаря",
-    "в комплекте",
-    "в комплект поставки",
-    "может использоваться",
-    "рекомендуется",
-    "высокое качество",
-    "высококачественную печать",
-]
-
-# Явные compatibility headings
-_COMPAT_HEADINGS_RE = re.compile(
-    r"(?iu)^(?:"
-    r"Поддерживаемые\s+модели(?:\s+принтеров)?|"
-    r"Поддерживаемые\s+продукты|"
-    r"Совместимые\s+продукты|"
-    r"Совместимые\s+модели|"
-    r"Совместимость"
-    r")$"
-)
-
-# Бренд/модельный хинт для чистой совместимости
-_COMPAT_BRAND_HINT_RE = re.compile(
-    r"(?iu)\b(?:"
-    r"Xerox|Canon|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|Samsung|Sharp|Konica|SMART|ViewSonic|"
-    r"VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser|DocuColor|Versant|"
-    r"PrimeLink|DocuCentre|SureColor|WorkForce|LaserJet|Color\s+LaserJet|PIXMA|imageRUNNER|imagePRESS|"
-    r"SC-[A-Z0-9]+|WF-[A-Z0-9]+|M\d{3,4}"
-    r")\b"
-)
-
-# Для strip body: короткие ключи без двоеточия
-_SHORT_LABEL_RE = re.compile(r"^[A-Za-zА-Яа-яЁё0-9 /+\-().,%\"№]{2,90}$")
+# Для narrow-flow AkCent совместимость/коды берём только из явных label-pairs.
+_STRICT_TEXT_KEYS = {"Коды", "Совместимость", "Для устройства"}
 
 
-def _norm_ws(s: str) -> str:
-    return _WS_RE.sub(" ", (s or "").strip())
+def _clean_text(value: Any) -> str:
+    s = str(value or "")
+    s = _RE_HTML.sub(" ", s)
+    s = s.replace("\xa0", " ")
+    s = fix_mixed_cyr_lat(s)
+    s = norm_ws(s)
+    s = _RE_WS.sub(" ", s)
+    return s.strip(" ;,.-")
 
 
-def _ci(s: str) -> str:
-    return _norm_ws(s).casefold()
+def _cf(s: str) -> str:
+    return _clean_text(s).casefold().replace("ё", "е")
 
 
-def _clean_value(value: str) -> str:
-    s = _norm_ws(value).strip(" ;|")
-    s = _RANGE_DASH_RE.sub(" - ", s)
-    s = _MULTI_SEP_RE.sub("; ", s)
-    s = re.sub(r"\s*,\s*", ", ", s)
-    s = re.sub(r"\s*;\s*", "; ", s)
-    s = re.sub(r"\s{2,}", " ", s)
-    return s.strip(" ;|")
+def _append_unique(
+    out: list[tuple[str, str]],
+    seen: set[tuple[str, str]],
+    key: str,
+    value: str,
+) -> None:
+    k = _clean_text(key)
+    v = _clean_text(value)
+    if not k or not v:
+        return
+    sig = (_cf(k), _cf(v))
+    if sig in seen:
+        return
+    seen.add(sig)
+    out.append((k, v))
 
 
-def _canonical_key(key: str) -> str:
-    s = _norm_ws(key).strip(" :;|,-")
+def _get_field(obj: Any, *names: str) -> Any:
+    for name in names:
+        if isinstance(obj, dict) and name in obj:
+            return obj.get(name)
+        if hasattr(obj, name):
+            return getattr(obj, name)
+    return None
+
+
+def _line_noise(line: str) -> bool:
+    s = _clean_text(line)
     if not s:
-        return ""
-
-    low = _ci(s)
-    if low in _ALT_KEYS:
-        return _ALT_KEYS[low]
-
-    if low == "nfc":
-        return "NFC"
-    if low == "ean":
-        return "EAN"
-
-    # Частые нормализации
-    s = re.sub(r"\(\s*bt\s*\)", "(Вт)", s, flags=re.I)
-    s = re.sub(r"\(\s*w\s*\)", "(Вт)", s, flags=re.I)
-    s = re.sub(r"\bbt\b", "Вт", s, flags=re.I)
-
-    if s:
-        return s[:1].upper() + s[1:]
-    return ""
-
-
-def _is_heading(line: str) -> bool:
-    return _ci(line).strip(":") in _HEADINGS
-
-
-def _word_count(s: str) -> int:
-    return len(_WORD_RE.findall(s or ""))
-
-
-def _looks_like_narrative(text: str) -> bool:
-    low = _ci(text)
-    if not low:
         return True
-    if _word_count(low) > 18 and ":" not in low:
+    if _RE_ONLY_PUNCT.fullmatch(s):
         return True
-    return any(part in low for part in _NARRATIVE_PARTS)
-
-
-def _bad_key(key: str) -> bool:
-    low = _ci(key)
-    if not low:
-        return True
-    if low in _BANNED_KEYS:
-        return True
-    if _word_count(low) > 8:
-        return True
-    if len(low) > 80:
+    low = _cf(s)
+    if low in {"описание", "характеристики", "основные характеристики", "технические характеристики", "комплектация"}:
         return True
     return False
 
 
-def _bad_value(value: str) -> bool:
-    low = _ci(value)
-    if not low:
-        return True
-    if low in {"-", "—", "--", "...", "n/a", "na", "нет данных", "не указано"}:
-        return True
-    if len(low) == 1 and low not in {'"', "0", "1"}:
-        return True
-    return False
+def _allowed_keys(schema_cfg: dict[str, Any], kind: str) -> set[str]:
+    return resolve_allowed_keys(schema_cfg, kind=kind)
 
 
-def _compat_looks_clean(value: str) -> bool:
-    s = _clean_value(value)
-    if not s:
-        return False
-    if ":" in s and _word_count(s.split(":", 1)[0]) <= 4:
-        return False
-    if len(s) > 350:
-        return False
-    return bool(_COMPAT_BRAND_HINT_RE.search(s))
-
-
-def _split_lines(cleaned_desc: str) -> list[str]:
-    lines = []
-    for raw in (cleaned_desc or "").split("\n"):
-        ln = _norm_ws(raw)
-        if ln:
-            lines.append(ln)
-        else:
-            lines.append("")
-    return lines
-
-
-def _maybe_pair_from_line(line: str) -> tuple[str, str] | None:
-    m = _KV_RE.match(line)
-    if not m:
+def _normalize_pair(key: str, value: str, schema_cfg: dict[str, Any], kind: str) -> tuple[str, str] | None:
+    k = normalize_param_key(key, schema_cfg)
+    if not k or not key_quality_ok(k, schema_cfg):
         return None
 
-    raw_key = m.group(1).strip()
-    raw_value = m.group(2).strip()
-
-    key = _canonical_key(raw_key)
-    value = _clean_value(raw_value)
-
-    if _bad_key(key) or _bad_value(value):
+    # Только allowed_by_kind/default.
+    if k not in _allowed_keys(schema_cfg, kind):
         return None
 
-    # Если это явно narrative-значение — не поднимаем
-    if _looks_like_narrative(value):
-        if key != "Совместимость":
+    v = normalize_param_value(k, value, schema_cfg)
+    if not v:
+        return None
+
+    # Для строгих ключей из текста никаких narrative guesses.
+    if k in _STRICT_TEXT_KEYS:
+        raw_v = _clean_text(value)
+        if not raw_v:
             return None
-        if not _compat_looks_clean(value):
+        # Должно быть явно похоже на список/кодовую строку, а не narrative-предложение.
+        if len(raw_v) > 220:
             return None
+        if k == "Коды" and not _RE_CODEY.search(raw_v):
+            return None
+    return (k, v)
 
-    return key, value
 
-
-def _extract_colon_pairs(lines: list[str]) -> tuple[list[tuple[int, str, str]], set[int]]:
-    out: list[tuple[int, str, str]] = []
-    consumed: set[int] = set()
-
-    for i, line in enumerate(lines):
-        if not line:
+def _iter_explicit_kv_lines(lines: Iterable[str]) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+    for line in lines:
+        s = _clean_text(line)
+        if _line_noise(s):
             continue
-        if _is_heading(line):
-            continue
-
-        pair = _maybe_pair_from_line(line)
-        if not pair:
+        m = _RE_KV.match(s)
+        if m:
+            out.append((_clean_text(m.group(1)), _clean_text(m.group(2))))
             continue
 
-        key, value = pair
-        out.append((i, key, value))
-        consumed.add(i)
+        # Compact format: "Ключ    значение" или "Ключ - значение"
+        parts = [x for x in _RE_COMPACT_SPLIT.split(s, maxsplit=1) if _clean_text(x)]
+        if len(parts) == 2:
+            left, right = _clean_text(parts[0]), _clean_text(parts[1])
+            if left and right and len(left) <= 60:
+                out.append((left, right))
+    return out
 
-    return out, consumed
 
-
-def _extract_alt_pairs(lines: list[str]) -> tuple[list[tuple[int, str, str]], set[int]]:
-    """
-    Ловит блоки вида:
-    Вид
-    струйный
-    Назначение
-    широкоформатный принтер
-    """
-    out: list[tuple[int, str, str]] = []
-    consumed: set[int] = set()
-    i = 0
-
-    while i + 1 < len(lines):
-        left = _norm_ws(lines[i]).strip(":")
-        right = _clean_value(lines[i + 1])
-
-        if not left or not right:
-            i += 1
+def _iter_label_only_pairs(lines: list[str]) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+    for i, raw in enumerate(lines[:-1]):
+        cur = _clean_text(raw)
+        nxt = _clean_text(lines[i + 1])
+        if _line_noise(cur) or _line_noise(nxt):
             continue
-
-        if _is_heading(left):
-            i += 1
+        key = _LABEL_ONLY_MAP.get(_cf(cur))
+        if not key:
             continue
-
-        low_left = _ci(left)
-        if low_left not in _ALT_KEYS:
-            i += 1
+        if _cf(nxt) in _LABEL_ONLY_MAP:
             continue
-
-        if ":" in right:
-            i += 1
+        if len(nxt) > 240:
             continue
+        out.append((key, nxt))
+    return out
 
-        key = _canonical_key(left)
-        value = _clean_value(right)
 
-        if _bad_key(key) or _bad_value(value):
-            i += 1
+def _iter_label_prefix_lines(lines: Iterable[str]) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+    for raw in lines:
+        s = _clean_text(raw)
+        if _line_noise(s):
             continue
-
-        # Совместимость из alt-пары должна быть реально похожа на список моделей/брендов
-        if key == "Совместимость" and not _compat_looks_clean(value):
-            i += 1
-            continue
-
-        # narrative-строки не поднимаем
-        if _looks_like_narrative(value) and key != "Совместимость":
-            i += 1
-            continue
-
-        out.append((i, key, value))
-        consumed.add(i)
-        consumed.add(i + 1)
-        i += 2
-
-    return out, consumed
-
-
-def _extract_compat_blocks(lines: list[str]) -> tuple[list[tuple[int, str, str]], set[int]]:
-    """
-    Ловит блоки вида:
-
-    Поддерживаемые модели
-    Epson A, Epson B, Epson C
-
-    или
-
-    Совместимые продукты
-    Xerox ....
-    Xerox ....
-    """
-    out: list[tuple[int, str, str]] = []
-    consumed: set[int] = set()
-
-    i = 0
-    while i < len(lines):
-        line = _norm_ws(lines[i]).strip(":")
-        if not line:
-            i += 1
-            continue
-
-        if not _COMPAT_HEADINGS_RE.match(line):
-            i += 1
-            continue
-
-        values: list[str] = []
-        j = i + 1
-
-        while j < len(lines):
-            cur = _norm_ws(lines[j])
-            if not cur:
-                j += 1
+        s_cf = _cf(s)
+        for prefix_cf, key in sorted(_LABEL_PREFIX_MAP.items(), key=lambda x: len(x[0]), reverse=True):
+            if not s_cf.startswith(prefix_cf + " "):
                 continue
-
-            # новый heading -> стоп
-            if _is_heading(cur):
+            value = s[len(s.split()[0]):].strip()  # fallback
+            # Более аккуратно: режем реальный префикс по длине нормализованного текста.
+            orig = s
+            pref_words = len(prefix_cf.split())
+            value = " ".join(orig.split()[pref_words:]).strip()
+            if not value:
                 break
-            if _COMPAT_HEADINGS_RE.match(cur):
+            # Не тащим явный narrative tail на сотни символов.
+            if len(value) > 220:
                 break
-
-            # если начался новый короткий label или strict kv -> стоп
-            if ":" in cur and _maybe_pair_from_line(cur) is not None:
+            # Совместимость/коды не берём из префиксных narrative-строк.
+            if key in _STRICT_TEXT_KEYS:
                 break
-            if _SHORT_LABEL_RE.fullmatch(cur) and _ci(cur) in _ALT_KEYS:
-                break
+            out.append((key, value))
+            break
 
-            values.append(cur)
-            j += 1
-
-        merged = _clean_value("; ".join(values))
-        if merged and _compat_looks_clean(merged):
-            out.append((i, "Совместимость", merged))
-            consumed.add(i)
-            for idx in range(i + 1, j):
-                consumed.add(idx)
-
-        i = max(i + 1, j)
-
-    return out, consumed
+        # Спецкейс: "Гарантия 1 год".
+        m = _RE_WARRANTY_INLINE.match(s)
+        if m:
+            val = _clean_text(m.group(1))
+            if val:
+                out.append(("Гарантия", val))
+    return out
 
 
-def _prefer_pair(existing: tuple[str, str] | None, new_key: str, new_value: str) -> tuple[str, str]:
-    if existing is None:
-        return new_key, new_value
-
-    old_key, old_value = existing
-
-    key_cf = _ci(new_key)
-
-    # Для Совместимости берём более чистую и обычно более компактную версию
-    if key_cf == "совместимость":
-        old_clean = _compat_looks_clean(old_value)
-        new_clean = _compat_looks_clean(new_value)
-
-        if new_clean and not old_clean:
-            return new_key, new_value
-        if old_clean and not new_clean:
-            return old_key, old_value
-
-        if new_clean and old_clean:
-            if len(new_value) < len(old_value):
-                return new_key, new_value
-            return old_key, old_value
-
-    # Для коротких характеристик предпочитаем более короткое явное значение
-    if key_cf in {"цвет", "тип", "ресурс", "технология", "гарантия"}:
-        if len(new_value) < len(old_value):
-            return new_key, new_value
-
-    return old_key, old_value
+def _post_rank_pairs(pairs: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    # Приоритет: явные key:value > label-only > prefix-lines.
+    # Здесь просто режем дубли по ключу+значению с сохранением порядка.
+    out: list[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for k, v in pairs:
+        _append_unique(out, seen, k, v)
+    return out
 
 
-def _dedupe_pairs(pairs: list[tuple[int, str, str]]) -> list[tuple[str, str]]:
-    best: dict[str, tuple[str, str]] = {}
-    order: list[str] = []
-
-    for _, key, value in pairs:
-        key_cf = _ci(key)
-        prev = best.get(key_cf)
-        chosen = _prefer_pair(prev, key, value)
-
-        if key_cf not in best:
-            order.append(key_cf)
-        best[key_cf] = chosen
-
-    return [best[k] for k in order if k in best]
-
-
-def _strip_consumed_lines(lines: list[str], consumed: set[int]) -> str:
-    out: list[str] = []
-    prev_blank = True
-
-    for i, line in enumerate(lines):
-        if i in consumed:
-            continue
-
-        ln = _norm_ws(line)
-        if not ln:
-            if not prev_blank:
-                out.append("")
-            prev_blank = True
-            continue
-
-        if _is_heading(ln):
-            continue
-
-        out.append(ln)
-        prev_blank = False
-
-    return "\n".join(out).strip()
-
-
-def extract_desc_parts(
-    offer: NormalizedOffer,
-    cleaned_desc: str,
-) -> tuple[str, list[tuple[str, str]], dict[str, Any]]:
-    """
-    Возвращает:
-    - body_text (описание без поднятых spec-пар)
-    - desc_params
-    - report
-    """
-    lines = _split_lines(cleaned_desc)
-
-    colon_pairs, colon_consumed = _extract_colon_pairs(lines)
-    alt_pairs, alt_consumed = _extract_alt_pairs(lines)
-    compat_pairs, compat_consumed = _extract_compat_blocks(lines)
-
-    all_pairs = colon_pairs + alt_pairs + compat_pairs
-    params = _dedupe_pairs(all_pairs)
-
-    consumed = set()
-    consumed.update(colon_consumed)
-    consumed.update(alt_consumed)
-    consumed.update(compat_consumed)
-
-    body_text = _strip_consumed_lines(lines, consumed)
-
-    report: dict[str, Any] = {
-        "lines_total": len([x for x in lines if _norm_ws(x)]),
-        "params_from_colon": len(colon_pairs),
-        "params_from_alternating": len(alt_pairs),
-        "params_from_compat_blocks": len(compat_pairs),
-        "params_total": len(params),
-        "body_len": len(body_text),
-    }
-    return body_text, params, report
-
-
-def extract_desc_spec_pairs(
-    cleaned_desc: str,
+def extract_desc_params(
+    description: str,
+    *,
+    name: str = "",
+    kind: str = "",
+    vendor: str = "",
+    model: str = "",
     schema_cfg: dict[str, Any] | None = None,
-) -> list[tuple[str, str]]:
-    """
-    Backward-safe helper в стиле AlStyle:
-    возвращает только извлечённые spec-pairs без body_text.
-    """
-    dummy_offer = NormalizedOffer(
-        raw_oid="",
-        oid="",
-        article="",
-        offer_id="",
-        source_type="",
-        name="",
-        vendor="",
-        model="",
-        url="",
-        category_id="",
-        available=False,
-        price_in=None,
-        description="",
-        manufacturer_warranty="",
-        stock_text="",
-        pictures=[],
-        xml_params=[],
-        prices=[],
-        raw_vendor="",
-        raw_name="",
-        raw_model="",
+) -> tuple[list[tuple[str, str]], dict[str, Any]]:
+    schema_cfg = dict(schema_cfg or {})
+    kind = kind or detect_kind_by_name(name, schema_cfg)
+
+    cleaned = clean_description_text(
+        description,
+        name=name,
+        kind=kind,
+        vendor=vendor,
+        model=model,
     )
-    _, params, _ = extract_desc_parts(dummy_offer, cleaned_desc)
-    return params
+    lines = [x for x in description_lines(cleaned, name=name, kind=kind, vendor=vendor, model=model) if x]
 
+    sources_cfg = (schema_cfg.get("sources") or {})
+    use_alt_pairs = bool(((sources_cfg.get("desc_alt_pairs") or {}).get("enabled", True)))
+    kv_cfg = sources_cfg.get("desc_kv_block") or {}
+    use_kv_block = bool(kv_cfg.get("enabled", True))
+    min_kv_lines = int(kv_cfg.get("min_kv_lines") or 5)
 
-def extract_desc_bulk(
-    offers: list[NormalizedOffer],
-    cleaned_map: dict[str, str],
-) -> tuple[dict[str, str], dict[str, list[tuple[str, str]]], dict[str, Any]]:
-    body_map: dict[str, str] = {}
-    params_map: dict[str, list[tuple[str, str]]] = {}
+    raw_pairs: list[tuple[str, str]] = []
 
-    total_body_len = 0
-    total_params = 0
-    counters = Counter()
+    explicit_kv = _iter_explicit_kv_lines(lines) if use_kv_block else []
+    if explicit_kv and len(explicit_kv) >= min_kv_lines:
+        raw_pairs.extend(explicit_kv)
+    else:
+        # Даже если kv-блок короткий, всё равно берём часть явных пар — но аккуратно.
+        raw_pairs.extend(explicit_kv)
 
-    for offer in offers:
-        cleaned_desc = cleaned_map.get(offer.oid) or cleaned_map.get(offer.raw_oid) or ""
-        body_text, params, rep = extract_desc_parts(offer, cleaned_desc)
+    if use_alt_pairs:
+        raw_pairs.extend(_iter_label_only_pairs(lines))
+        raw_pairs.extend(_iter_label_prefix_lines(lines))
 
-        body_map[offer.oid] = body_text
-        params_map[offer.oid] = params
+    raw_pairs = _post_rank_pairs(raw_pairs)
 
-        total_body_len += len(body_text)
-        total_params += len(params)
-        counters["offers"] += 1
-        counters["params_from_colon"] += int(rep["params_from_colon"])
-        counters["params_from_alternating"] += int(rep["params_from_alternating"])
-        counters["params_from_compat_blocks"] += int(rep["params_from_compat_blocks"])
+    params: list[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    rejected: list[dict[str, str]] = []
 
-    report: dict[str, Any] = {
-        "offers": int(counters["offers"]),
-        "params_total": total_params,
-        "body_len_total": total_body_len,
-        "params_from_colon": int(counters["params_from_colon"]),
-        "params_from_alternating": int(counters["params_from_alternating"]),
-        "params_from_compat_blocks": int(counters["params_from_compat_blocks"]),
+    for raw_key, raw_val in raw_pairs:
+        normalized = _normalize_pair(raw_key, raw_val, schema_cfg, kind)
+        if not normalized:
+            rejected.append({"key": _clean_text(raw_key), "value": _clean_text(raw_val), "reason": "not_allowed_or_bad"})
+            continue
+        key, val = normalized
+        _append_unique(params, seen, key, val)
+
+    report = {
+        "kind": kind,
+        "cleaned_lines": len(lines),
+        "raw_pairs": len(raw_pairs),
+        "accepted_pairs": len(params),
+        "rejected_pairs": len(rejected),
+        "rejected_preview": rejected[:20],
+        "cleaned_description": cleaned,
     }
-    return body_map, params_map, report
+    return params, report
+
+
+def collect_desc_params(
+    src: Any,
+    *,
+    schema_cfg: dict[str, Any] | None = None,
+) -> tuple[list[tuple[str, str]], dict[str, Any]]:
+    schema_cfg = dict(schema_cfg or {})
+
+    name = _clean_text(_get_field(src, "name"))
+    description = _clean_text(_get_field(src, "description", "desc"))
+    vendor = _clean_text(_get_field(src, "vendor"))
+    model = _clean_text(_get_field(src, "model"))
+    kind = _clean_text(_get_field(src, "kind")) or detect_kind_by_name(name, schema_cfg)
+
+    return extract_desc_params(
+        description,
+        name=name,
+        kind=kind,
+        vendor=vendor,
+        model=model,
+        schema_cfg=schema_cfg,
+    )
