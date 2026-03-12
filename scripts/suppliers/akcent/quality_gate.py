@@ -171,16 +171,14 @@ def _description_plain_for_gate(desc_html: str) -> str:
     html = desc_html or ""
     html = _RE_HTML_COMMENT.sub(" ", html)
     html = _RE_TEMPLATE_H3.sub(" ", html)
-    html = _RE_HTML_TAG.sub("
-", html)
+    html = _RE_HTML_TAG.sub("\n", html)
     text = unescape(html).replace(" ", " ")
     lines = []
     for raw in text.splitlines():
         line = _WS_RE.sub(" ", raw).strip()
         if line:
             lines.append(line)
-    return "
-".join(lines)
+    return "\n".join(lines)
 
 
 def _detect_issues(feed_path: str) -> list[QualityIssue]:
