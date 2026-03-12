@@ -1,22 +1,44 @@
-schema_version: 2
-supplier: akcent
-timezone: Asia/Almaty
-next_run_hour_local: 2
+# AkCent supplier policy config
+# Главный смысл:
+# - supplier-layer сам должен отдавать максимально чистый raw
+# - core не должен угадывать supplier-specific данные
+# - stop-rule такой же, как у AlStyle: critical всегда чиним, cosmetic допускаем в лимите
+
+supplier: AkCent
+supplier_code: AC
+
+# Префикс для итоговых offer id
 id_prefix: AC
-placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
-vendor_blacklist_casefold: []
-param_priority: []
-core_rules:
-  mutate_params: false
-  auto_codes_from_text: false
-  auto_compat_from_text: false
-  placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
-# legacy block for backward-safe compatibility
-core_stages:
-  pricing: true
-  keywords: true
-  description_template: true
-  feed_meta_heartbeat: true
-  category_assignment: false
-  seo_reviews: false
-  seo_faq: false
+
+# Расписание следующего запуска по Алматы
+next_run_hour_local: 2
+
+# Supplier-layer policy
+mutate_params: false
+auto_codes_from_text: false
+auto_compat_from_text: false
+
+# Данные и вывод
+output_encoding: utf-8
+raw_out_file: docs/raw/akcent.yml
+out_file: docs/akcent.yml
+
+# Картинки
+placeholder_picture: "https://placehold.co/800x800/png?text=No+Photo"
+
+# Качество / stop-rule
+quality_gate:
+  enabled: true
+  baseline_enabled: false
+  max_cosmetic_offers: 5
+  max_cosmetic_issues: 5
+
+# Supplier-side behaviour
+builder:
+  keep_unknown_keys_in_extra_info: true
+  max_extra_info_pairs: 20
+
+# Диагностика
+diagnostics:
+  print_summary: true
+  print_quality_gate: true
