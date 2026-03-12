@@ -11,6 +11,7 @@ AkCent builder layer.
 Важно:
 - auto compat / auto codes из free text НЕ генерируются
 - берём только родные XML params и явно поднятые desc params
+- дополнительно жёстко выкидываем params, которые запрещены самим CS-core/validator
 """
 
 from __future__ import annotations
@@ -36,7 +37,28 @@ from suppliers.akcent.source import SourceOffer
 _WS_RE = re.compile(r"\s+")
 _NUM_RE = re.compile(r"(\d+)")
 _RANGE_DASH_RE = re.compile(r"\s*[-–—]+\s*")
-_PREFIX_CI_SPLIT_RE = re.compile(r"\s+")
+
+# Жёсткий drop-list под текущий core/validator
+# Эти параметры не должны попадать в финальный feed вообще.
+_HARD_DROP_PARAM_KEYS = {
+    "Штрихкод",
+    "Штрих-код",
+    "Штрих код",
+    "EAN",
+    "EAN-13",
+    "EAN13",
+    "Barcode",
+    "GTIN",
+    "UPC",
+    "Артикул",
+    "Новинка",
+    "Снижена цена",
+    "Благотворительность",
+    "Код товара Kaspi",
+    "Код ТН ВЭД",
+    "Назначение",
+}
+_HARD_DROP_PARAM_KEYS_CF = {str(x).strip().casefold() for x in _HARD_DROP_PARAM_KEYS}
 
 
 def _config_dir() -> str:
@@ -134,7 +156,6 @@ def _canonical_key(key: str, schema: dict[str, Any]) -> str:
 
     mapped = aliases.get(raw, raw)
 
-    # AkCent: унифицируем ключ кодов к одному виду для supplier-layer
     if _ci(mapped) in {"коды", "codes", "oem", "part number", "partnumber", "part number(s)"}:
         return "Коды расходников"
 
@@ -351,7 +372,6 @@ def _prepare_base_pairs(offer: NormalizedOffer, xml_pairs: list[tuple[str, str]]
     for k, v in desc_pairs:
         pairs.append((k, v))
 
-    # Явные поля из XML-структуры поднимаем как supplier-native данные
     if offer.model:
         pairs.append(("Модель", offer.model))
     if offer.manufacturer_warranty:
@@ -394,23 +414,36 @@ def _apply_schema_to_offer(
             stats["empty_after_normalize"] += 1
             continue
 
+        # ЖЁСТКИЙ DROP под текущий core/validator
+        if _ci(key) in _HARD_DROP_PARAM_KEYS_CF:
+            stats["hard_drop_forbidden"] += 1
+            continue
+
         if _allow_key_for_kind(key, kind, schema):
             cleaned_pairs.append((key, value))
             stats["allowed"] += 1
         else:
             if unknown_action == "to_extra_info" and len(extra_pairs) < unknown_max_pairs:
+                # И в extra-info тоже не тащим запрещённые core-ключи
+                if _ci(key) in _HARD_DROP_PARAM_KEYS_CF:
+                    stats["hard_drop_forbidden_extra"] += 1
+                    continue
                 extra_pairs.append((key, value))
                 stats["extra_info"] += 1
             elif unknown_action == "drop":
                 stats["dropped_unknown"] += 1
             else:
+                if _ci(key) in _HARD_DROP_PARAM_KEYS_CF:
+                    stats["hard_drop_forbidden_keep_unknown"] += 1
+                    continue
                 cleaned_pairs.append((key, value))
                 stats["kept_unknown"] += 1
 
     cleaned_pairs = _merge_pairs_keep_key_order(cleaned_pairs, schema)
-
-    # supplier-specific cleanup только для уже существующих model/compat/codes
     cleaned_pairs, compat_report = reconcile_compat_related_params(cleaned_pairs)
+
+    # Финальная страховка после reconcile/merge
+    cleaned_pairs = [(k, v) for (k, v) in cleaned_pairs if _ci(k) not in _HARD_DROP_PARAM_KEYS_CF]
 
     final_body = _append_extra_info(body_text, extra_pairs)
 
