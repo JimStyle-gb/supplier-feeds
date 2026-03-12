@@ -1,62 +1,48 @@
-schema_version: 2
-supplier: akcent
-mode: include
-include_rules:
-  name_prefixes:
-    - C13T55
-    - Ёмкость для отработанных чернил
-    - Интерактивная доска
-    - Интерактивная панель
-    - Интерактивный дисплей
-    - Картридж
-    - Ламинатор
-    - Монитор
-    - МФУ
-    - Переплетчик
-    - Пленка для ламинирования
-    - Плоттер
-    - Принтер
-    - Проектор
-    - Сканер
-    - Чернила
-    - Шредер
-    - Экономичный набор
-    - Экран
-exclude_rules:
-  articles:
-    - AWP201/10
-    - AWP286/10
-  rules:
-    - all_groups:
-        - any_of: [картридж, cartridge]
-        - any_of: [фильтр, filter, бутылк, bottle]
-        - any_of: [philips, awp]
-# legacy keys for backward-safe compatibility
-allow_name_prefixes:
-  - C13T55
-  - Ёмкость для отработанных чернил
-  - Интерактивная доска
-  - Интерактивная панель
-  - Интерактивный дисплей
-  - Картридж
-  - Ламинатор
-  - Монитор
-  - МФУ
-  - Переплетчик
-  - Пленка для ламинирования
-  - Плоттер
-  - Принтер
-  - Проектор
-  - Сканер
-  - Чернила
-  - Шредер
-  - Экономичный набор
-  - Экран
-drop_articles:
-  - AWP201/10
-  - AWP286/10
-drop_rules:
-  - all_groups:
-      - any_of: [картридж, cartridge]
-      - any_of: [фильтр, filter, бутылк, bottle]
-      - any_of: [philips, awp]
+# AkCent supplier filter config
+# Задача:
+# - не резать ассортимент слишком агрессивно
+# - отсекать только явный мусор / неподходящие группы
+# - supplier-layer должен сначала собрать максимально полный raw
+
+require_name: true
+require_price: false
+
+# Если пусто — не ограничиваем по categoryId
+include_category_ids: []
+exclude_category_ids: []
+
+# Если пусто — не ограничиваем по vendor
+include_vendors: []
+
+# Явные исключения по vendor/name/model text
+exclude_vendors: []
+
+# Ключевые стоп-слова для отсечения мусора
+exclude_vendor_keywords:
+  - уценка
+  - витринный образец
+  - б/у
+  - бу
+  - used
+  - refurb
+  - refurbished
+  - demo
+  - sample
+  - тестовый
+  - сервисный
+  - damaged
+  - поврежден
+  - повреждена
+
+# Если пусто — не требуем наличие каких-то include-слов
+include_keywords: []
+
+# Явные стоп-слова по общему тексту товара
+exclude_keywords:
+  - уценка
+  - витринный образец
+  - б/у
+  - бу
+  - refurbished
+  - used
+  - demo sample
