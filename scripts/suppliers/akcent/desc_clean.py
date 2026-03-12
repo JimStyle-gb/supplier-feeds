@@ -1,235 +1,288 @@
 # -*- coding: utf-8 -*-
 """
-AkCent description clean layer.
+Path: scripts/suppliers/akcent/desc_clean.py
+
+AkCent supplier layer — очистка supplier description.
 
 Что делает:
-- чистит supplier description
-- сохраняет полезный текст
-- подготавливает описание для desc_extract.py
-- не генерирует новые факты, а только приводит текст в стабильный вид
+- чистит HTML/служебный мусор;
+- сохраняет границы строк для будущего desc_extract.py;
+- режет дубли title/model/vendor в начале описания;
+- убирает пустые и шумные строки;
+- мягко разрезает плотные тех-строки на label-friendly блоки.
+
+Важно:
+- модуль НЕ строит финальное HTML-описание;
+- модуль НЕ вытаскивает params сам по себе;
+- задача только одна: сделать description безопасным и пригодным для extraction.
 """
 
 from __future__ import annotations
 
 import html
 import re
-from typing import Any
+from difflib import SequenceMatcher
+from typing import Iterable
 
-from suppliers.akcent.normalize import NormalizedOffer
+from cs.util import fix_mixed_cyr_lat, norm_ws
 
 
-_HTML_TAG_RE = re.compile(r"<[^>]+>")
-_BR_RE = re.compile(r"(?i)<\s*br\s*/?\s*>")
-_P_RE = re.compile(r"(?i)</\s*p\s*>")
-_UL_END_RE = re.compile(r"(?i)</\s*(ul|ol)\s*>")
-_LI_RE = re.compile(r"(?i)<\s*li[^>]*>")
-_ENTITY_WS_RE = re.compile(r"[\xa0\u200b\ufeff]+")
-_MULTI_NL_RE = re.compile(r"\n{3,}")
-_MULTI_WS_RE = re.compile(r"[ \t]{2,}")
-_TAB_SPLIT_RE = re.compile(r"\t+")
-_BULLET_PREFIX_RE = re.compile(r"^\s*[•·●▪▫■\-–—]+\s*")
-_LABEL_VALUE_INLINE_RE = re.compile(
-    r"^\s*([A-Za-zА-Яа-яЁё0-9 /+\-().,%\"№]{2,80})\s*[:\-]\s*(.{1,1000})\s*$"
+# ----------------------------- regex / const -----------------------------
+
+_RE_HTML_COMMENT = re.compile(r"(?is)<!--.*?-->")
+_RE_SCRIPT_STYLE = re.compile(r"(?is)<(script|style)\b[^>]*>.*?</\1>")
+_RE_TAG_BR = re.compile(r"(?is)<\s*br\s*/?\s*>")
+_RE_TAG_BLOCK = re.compile(r"(?is)</?\s*(?:p|div|section|article|tr|table|thead|tbody|tfoot|h[1-6]|ul|ol)\b[^>]*>")
+_RE_TAG_LI_OPEN = re.compile(r"(?is)<\s*li\b[^>]*>")
+_RE_TAG_LI_CLOSE = re.compile(r"(?is)</\s*li\s*>")
+_RE_TAG_ANY = re.compile(r"(?is)<[^>]+>")
+_RE_WS = re.compile(r"[ \t\x0b\x0c\r]+")
+_RE_MULTI_NL = re.compile(r"\n{3,}")
+_RE_LABEL_BREAK = re.compile(
+    r"(?<!^)(?<!\n)(?=\b(?:"
+    r"Тип|Назначение|Для устройства|Для бренда|Цвет|Ресурс|Объем|Объ[её]м|"
+    r"Совместимость|Коды|Гарантия|Диагональ|Разрешение|Яркость|Контрастность|"
+    r"Интерфейсы|Формат|Скорость|Время отклика|Тип печати|Тип расходных материалов|"
+    r"Технология|Источник света|Уровень шума|Размер(?:ы)?|Вес(?: \(.*?\))?|"
+    r"Соотношение сторон|Ширина|Высота|Активная область|Тип управления"
+    r")\s*:)"
 )
+_RE_URL = re.compile(r"https?://\S+|www\.\S+", re.IGNORECASE)
+_RE_PHONE = re.compile(r"\+?\d[\d\s()\-]{7,}\d")
+_RE_EMAIL = re.compile(r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}", re.IGNORECASE)
+_RE_ONLY_PUNCT = re.compile(r"^[\s\-–—:;,.|/\\•·*]+$")
+_RE_CSS_GARBAGE = re.compile(r"(?iu)(?:^|\s)(?:font-family\s*:|display\s*:|margin\s*:|padding\s*:|border\s*:|color\s*:|background\s*:)")
+_RE_OAICITE = re.compile(r"(?is):{0,2}contentReference\[[^\]]*oaicite[^\]]*\](?:\{[^{}]*\})?")
+_RE_ARTICLE_LINE = re.compile(r"(?iu)^(?:артикул|код\s+товара|sku|offer_id|штрихкод)\s*:?\s*.+$")
+_RE_VENDOR_LINE = re.compile(r"(?iu)^(?:производитель|brand|vendor)\s*:?\s*.+$")
+_RE_MODEL_LINE = re.compile(r"(?iu)^(?:модель|model)\s*:?\s*.+$")
+_RE_SECTION_HEADING = re.compile(
+    r"(?iu)^(?:описание|характеристики|основные\s+характеристики|технические\s+характеристики|"
+    r"комплектация|преимущества|особенности|назначение|условия\s+гарантии|гарантия)\s*:?$"
+)
+_RE_BULLET_LEAD = re.compile(r"^[•·▪◦*\-–—]+\s*")
 
-# Явные мусорные куски, которые часто не нужны в clean-text
-_NOISE_LINE_PARTS = [
-    "подробное описание на сайте производителя",
-    "уточняйте у менеджера",
-    "цена может отличаться",
-    "изображение может отличаться",
-    "характеристики могут быть изменены",
-    "характеристики товара могут быть изменены",
-    "комплектация может отличаться",
-    "внешний вид товара может отличаться",
-]
+
+# ----------------------------- small helpers -----------------------------
 
 
-def _norm_space(s: str) -> str:
+# Чистим plain-текст.
+def _clean_text(value: object) -> str:
+    s = str(value or "")
+    s = html.unescape(s)
+    s = s.replace("\u00a0", " ")
+    s = fix_mixed_cyr_lat(s)
+    s = _RE_WS.sub(" ", s)
+    return s.strip(" \t\n\r;|")
+
+
+# Достаём текст из HTML, сохраняя логические переносы.
+def _html_to_text(value: str) -> str:
+    s = str(value or "")
+    if not s:
+        return ""
+    s = _RE_HTML_COMMENT.sub(" ", s)
+    s = _RE_SCRIPT_STYLE.sub(" ", s)
+    s = _RE_OAICITE.sub(" ", s)
+    s = _RE_TAG_BR.sub("\n", s)
+    s = _RE_TAG_LI_OPEN.sub("\n• ", s)
+    s = _RE_TAG_LI_CLOSE.sub("\n", s)
+    s = _RE_TAG_BLOCK.sub("\n", s)
+    s = _RE_TAG_ANY.sub(" ", s)
+    s = html.unescape(s)
     s = s.replace("\r\n", "\n").replace("\r", "\n")
-    s = _ENTITY_WS_RE.sub(" ", s)
-    s = _MULTI_WS_RE.sub(" ", s)
     s = re.sub(r"[ \t]+\n", "\n", s)
     s = re.sub(r"\n[ \t]+", "\n", s)
-    s = _MULTI_NL_RE.sub("\n\n", s)
+    s = _RE_MULTI_NL.sub("\n\n", s)
     return s.strip()
 
 
-def _html_to_text(raw: str) -> str:
-    s = raw or ""
-    s = html.unescape(s)
-
-    # Сначала переводим структурные HTML-теги в переносы
-    s = _BR_RE.sub("\n", s)
-    s = _P_RE.sub("\n", s)
-    s = _UL_END_RE.sub("\n", s)
-    s = _LI_RE.sub("\n• ", s)
-
-    # Потом режем остальные теги
-    s = _HTML_TAG_RE.sub(" ", s)
-    return _norm_space(s)
+# Нормализуем строку для сравнения с title.
+def _title_like(s: str) -> str:
+    s = _clean_text(s)
+    s = re.sub(r"[()\[\],;:!?.«»\"'`]+", " ", s)
+    return norm_ws(s).casefold().replace("ё", "е")
 
 
-def _split_tab_lines(line: str) -> list[str]:
-    parts = [x.strip(" ;|") for x in _TAB_SPLIT_RE.split(line) if x.strip(" ;|")]
-    if len(parts) <= 1:
-        return [line.strip()]
-
-    out: list[str] = []
-    if len(parts) % 2 == 0:
-        for i in range(0, len(parts), 2):
-            k = parts[i].strip()
-            v = parts[i + 1].strip()
-            if k and v:
-                out.append(f"{k}: {v}")
-            elif k:
-                out.append(k)
-    else:
-        out.extend(parts)
-
-    return [x for x in out if x]
-
-
-def _cleanup_line(line: str) -> str:
-    line = html.unescape(line or "")
-    line = line.replace("\xa0", " ").replace("\ufeff", " ").replace("\u200b", " ")
-    line = line.strip()
-
-    # Убираем bullet-prefix в начале, но не ломаем смысл
-    line = _BULLET_PREFIX_RE.sub("", line).strip()
-
-    # Частые некрасивые хвосты
-    line = line.strip(" ;|")
-    line = re.sub(r"\s{2,}", " ", line)
-
-    return line
-
-
-def _looks_like_noise(line: str) -> bool:
-    lc = line.casefold()
-    if not lc:
+# Проверяем, что строка почти дублирует name.
+def _is_title_duplicate(name: str, line: str) -> bool:
+    a = _title_like(name)
+    b = _title_like(line)
+    if not a or not b:
+        return False
+    if a == b:
         return True
-
-    for part in _NOISE_LINE_PARTS:
-        if part in lc:
+    if a in b or b in a:
+        shorter = min(len(a), len(b))
+        longer = max(len(a), len(b))
+        if shorter >= max(12, int(longer * 0.7)):
             return True
+    return SequenceMatcher(None, a, b).ratio() >= 0.90
 
+
+# Считаем строку явным служебным мусором.
+def _is_service_line(line: str) -> bool:
+    s = _clean_text(line)
+    if not s:
+        return True
+    if _RE_ONLY_PUNCT.fullmatch(s):
+        return True
+    low = s.casefold()
+    if _RE_CSS_GARBAGE.search(s):
+        return True
+    if low in {"html", "body", "div", "span", "nbsp"}:
+        return True
+    if _RE_URL.fullmatch(s) or _RE_PHONE.fullmatch(s) or _RE_EMAIL.fullmatch(s):
+        return True
     return False
 
 
-def _normalize_inline_label_value(line: str) -> str:
-    m = _LABEL_VALUE_INLINE_RE.match(line)
-    if not m:
-        return line
-
-    left = m.group(1).strip(" :;-")
-    right = m.group(2).strip(" :;-")
-    if not left or not right:
-        return line
-
-    # Отсекаем слишком narrative-строки, чтобы не превращать абзацы в фейковые params
-    if len(left.split()) > 8:
-        return line
-
-    return f"{left}: {right}"
+# Разбиваем плотные тех-строки на блоки по типовым label.
+def _split_dense_labels(text: str) -> str:
+    s = str(text or "")
+    if not s:
+        return ""
+    return _RE_LABEL_BREAK.sub("\n", s)
 
 
-def _dedupe_keep_order(lines: list[str]) -> list[str]:
+# Чистим отдельные строки.
+def _cleanup_lines(lines: Iterable[str], *, name: str, vendor: str = "", model: str = "") -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
 
-    for line in lines:
-        key = re.sub(r"\s+", " ", line.strip()).casefold()
-        if not key:
-            continue
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(line)
+    vendor_cf = _clean_text(vendor).casefold()
+    model_cf = _clean_text(model).casefold()
 
+    for raw in lines:
+        line = _clean_text(raw)
+        if not line:
+            continue
+        line = _RE_BULLET_LEAD.sub("", line)
+        line = line.strip("-–—| ")
+        line = _clean_text(line)
+        if not line:
+            continue
+        if _is_service_line(line):
+            continue
+        if _RE_SECTION_HEADING.fullmatch(line):
+            continue
+        if _is_title_duplicate(name, line):
+            continue
+        # Убираем дубли vendor/model как отдельные строки в начале narrative.
+        if vendor_cf and _title_like(line) == vendor_cf:
+            continue
+        if model_cf and _title_like(line) == model_cf:
+            continue
+        # Убираем чисто служебные supplier-линии.
+        if _RE_ARTICLE_LINE.match(line):
+            continue
+        if _RE_VENDOR_LINE.match(line):
+            continue
+        if _RE_MODEL_LINE.match(line) and _is_title_duplicate(name, line.split(":", 1)[-1]):
+            continue
+
+        sig = line.casefold().replace("ё", "е")
+        if sig in seen:
+            continue
+        seen.add(sig)
+        out.append(line)
     return out
 
 
-def clean_description_text(offer: NormalizedOffer) -> tuple[str, dict[str, Any]]:
-    raw = offer.description or ""
+# Мягко режем очень длинные строки без потери ':' блоков.
+def _soft_wrap_lines(lines: Iterable[str]) -> list[str]:
+    out: list[str] = []
+    for line in lines:
+        s = _clean_text(line)
+        if not s:
+            continue
+        if len(s) > 220 and ":" in s:
+            parts = [norm_ws(x) for x in s.split(";") if norm_ws(x)]
+            if len(parts) >= 2:
+                out.extend(parts)
+                continue
+        out.append(s)
+    return out
+
+
+# Главная очистка description в multiline plain-text.
+def clean_description_text(
+    description: str,
+    *,
+    name: str = "",
+    kind: str = "",
+    vendor: str = "",
+    model: str = "",
+) -> str:
+    """
+    Возвращает очищенный plain-text с сохранёнными переводами строк.
+
+    kind пока используется только как резерв под будущие точечные правила.
+    """
+    raw = str(description or "")
+    if not raw:
+        return ""
+
     text = _html_to_text(raw)
+    text = _split_dense_labels(text)
+    text = text.replace("\t", " ")
+    text = _RE_MULTI_NL.sub("\n\n", text)
 
-    if not text:
-        return "", {
-            "raw_len": len(raw),
-            "clean_len": 0,
-            "lines_before": 0,
-            "lines_after": 0,
-        }
+    # Сохраняем multiline-структуру для desc_extract.
+    lines = [_clean_text(x) for x in text.split("\n")]
+    lines = _cleanup_lines(lines, name=name, vendor=vendor, model=model)
+    lines = _soft_wrap_lines(lines)
 
-    raw_lines = [x for x in text.split("\n")]
-    lines_out: list[str] = []
-
-    for raw_line in raw_lines:
-        raw_line = raw_line.strip()
-        if not raw_line:
-            lines_out.append("")
+    # Точечные safe-правки под AkCent narrow-flow.
+    cleaned: list[str] = []
+    for line in lines:
+        s = line
+        s = s.replace(" ,", ",").replace(" .", ".")
+        s = s.replace(" ;", ";").replace(" :", ":")
+        s = s.replace("..", ".")
+        s = s.replace("( ", "(").replace(" )", ")")
+        s = norm_ws(s)
+        if not s:
             continue
+        cleaned.append(s)
 
-        for part in _split_tab_lines(raw_line):
-            line = _cleanup_line(part)
-            line = _normalize_inline_label_value(line)
-
-            if not line:
-                continue
-            if _looks_like_noise(line):
-                continue
-
-            lines_out.append(line)
-
-    # Схлопываем пустые блоки
-    compact: list[str] = []
-    prev_blank = True
-    for line in lines_out:
-        if not line.strip():
-            if not prev_blank:
-                compact.append("")
-            prev_blank = True
-            continue
-        compact.append(line)
-        prev_blank = False
-
-    compact = _dedupe_keep_order(compact)
-    cleaned = "\n".join(compact).strip()
-    cleaned = _norm_space(cleaned)
-
-    report: dict[str, Any] = {
-        "raw_len": len(raw),
-        "clean_len": len(cleaned),
-        "lines_before": len([x for x in raw_lines if x.strip()]),
-        "lines_after": len([x for x in cleaned.split("\n") if x.strip()]),
-    }
-    return cleaned, report
+    result = "\n".join(cleaned).strip()
+    result = _RE_MULTI_NL.sub("\n\n", result)
+    return result
 
 
-def clean_description_bulk(
-    offers: list[NormalizedOffer],
-) -> tuple[dict[str, str], dict[str, Any]]:
-    mapping: dict[str, str] = {}
-    total_raw_len = 0
-    total_clean_len = 0
-    lines_before = 0
-    lines_after = 0
+# Alias: краткое имя для builder.
+def clean_description(
+    description: str,
+    *,
+    name: str = "",
+    kind: str = "",
+    vendor: str = "",
+    model: str = "",
+) -> str:
+    return clean_description_text(
+        description,
+        name=name,
+        kind=kind,
+        vendor=vendor,
+        model=model,
+    )
 
-    for offer in offers:
-        cleaned, rep = clean_description_text(offer)
-        mapping[offer.oid] = cleaned
 
-        total_raw_len += int(rep["raw_len"])
-        total_clean_len += int(rep["clean_len"])
-        lines_before += int(rep["lines_before"])
-        lines_after += int(rep["lines_after"])
-
-    report: dict[str, Any] = {
-        "offers": len(offers),
-        "raw_len_total": total_raw_len,
-        "clean_len_total": total_clean_len,
-        "lines_before_total": lines_before,
-        "lines_after_total": lines_after,
-    }
-    return mapping, report
+# Возвращает готовые строки для desc_extract.py.
+def description_lines(
+    description: str,
+    *,
+    name: str = "",
+    kind: str = "",
+    vendor: str = "",
+    model: str = "",
+) -> list[str]:
+    text = clean_description_text(
+        description,
+        name=name,
+        kind=kind,
+        vendor=vendor,
+        model=model,
+    )
+    return [norm_ws(x) for x in text.split("\n") if norm_ws(x)]
