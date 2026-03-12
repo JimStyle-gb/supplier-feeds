@@ -1,147 +1,199 @@
 # -*- coding: utf-8 -*-
 """
-AkCent pictures layer.
+Path: scripts/suppliers/akcent/pictures.py
+
+AkCent supplier layer — сборка и нормализация картинок.
 
 Что делает:
-- нормализует список картинок
-- убирает дубли / пустые / кривые ссылки
-- подставляет placeholder, если фото нет
+- собирает картинки из source-offer и/или из XML offer_el;
+- убирает дубли;
+- чистит пробелы и битые ссылки;
+- поддерживает supplier-specific замену no-photo ссылок;
+- если фото нет — ставит placeholder.
 
 Важно:
-- supplier-layer готовит нормальный raw
-- core потом уже просто использует готовые pictures
+- модуль не решает business-логику;
+- модуль только возвращает чистый список picture URL для builder.py.
 """
 
 from __future__ import annotations
 
+from typing import Any, Iterable
 import re
-from typing import Any
+import xml.etree.ElementTree as ET
 
-from suppliers.akcent.normalize import NormalizedOffer
 
-PLACEHOLDER_IMAGE = "https://placehold.co/800x800/png?text=No+Photo"
+_RE_WS = re.compile(r"\s+")
+_RE_HTTP = re.compile(r"^https?://", re.IGNORECASE)
 
-_BAD_IMAGE_EXACT = {
-    "",
-    "https://nvprint.ru/promo/photo/nophoto.jpg",
-    "http://nvprint.ru/promo/photo/nophoto.jpg",
-}
-
-_BAD_IMAGE_PARTS = [
-    "nophoto.jpg",
-    "no_photo",
+# Явные supplier/no-photo заглушки, которые не должны ехать в финал как реальные фото
+_NO_PHOTO_SUBSTRINGS = (
+    "nophoto",
     "no-photo",
-    "/placeholder/",
+    "no_photo",
+    "noimage",
+    "no-image",
+    "no_image",
+    "placeholder",
     "placehold.it",
-]
-
-_WS_RE = re.compile(r"\s+")
-
-
-def _norm_space(s: str) -> str:
-    return _WS_RE.sub(" ", (s or "").strip())
+    "placehold.co",
+    "/notfound/",
+)
 
 
-def _cleanup_url(url: str) -> str:
-    url = _norm_space(url)
-    if not url:
+# Базовая чистка текста
+
+def _clean_text(value: Any) -> str:
+    if value is None:
+        return ""
+    return _RE_WS.sub(" ", str(value).replace("\xa0", " ")).strip()
+
+
+# Безопасное получение поля
+
+def _get_field(obj: Any, *names: str) -> Any:
+    for name in names:
+        if isinstance(obj, dict) and name in obj:
+            return obj.get(name)
+        if hasattr(obj, name):
+            return getattr(obj, name)
+    return None
+
+
+# Нормализация URL
+
+def _normalize_url(value: Any) -> str:
+    s = _clean_text(value)
+    if not s:
         return ""
 
-    # Частые мусорные пробелы
-    url = url.replace(" ", "%20")
+    s = s.replace("\\", "/")
+    s = s.replace(" ", "%20")
 
-    # Схему и хвосты приводим к читабельному виду
-    url = url.replace("http://", "https://", 1)
+    if s.startswith("//"):
+        s = "https:" + s
 
-    # Убираем очевидные хвосты после URL
-    for sep in ["\n", "\r", "\t"]:
-        if sep in url:
-            url = url.split(sep, 1)[0].strip()
+    # Оставляем только web-ссылки
+    if not _RE_HTTP.match(s):
+        return ""
 
-    return url
+    return s
 
 
-def _looks_like_image_url(url: str) -> bool:
-    u = url.lower()
-    if not (u.startswith("https://") or u.startswith("http://")):
-        return False
+# Проверка на техническую no-photo картинку
 
-    if any(part in u for part in _BAD_IMAGE_PARTS):
-        return False
-
-    if u in _BAD_IMAGE_EXACT:
-        return False
-
-    # Разрешаем обычные image url и url без расширения
-    if re.search(r"\.(jpg|jpeg|png|webp|gif)(\?.*)?$", u):
+def _is_no_photo_url(url: str) -> bool:
+    cf = _clean_text(url).casefold()
+    if not cf:
         return True
-    if "/images/" in u or "/image/" in u or "/upload/" in u or "/uploads/" in u:
-        return True
-    if "?" in u and ("image" in u or "img" in u or "photo" in u):
-        return True
-
-    # Вообще AkCent часто даёт нормальные прямые URL — не режем слишком агрессивно
-    return True
+    return any(token in cf for token in _NO_PHOTO_SUBSTRINGS)
 
 
-def _dedupe_keep_order(values: list[str]) -> list[str]:
+# Дедуп без потери порядка
+
+def _dedupe(urls: Iterable[str]) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
-
-    for raw in values:
-        val = _cleanup_url(raw)
-        if not val:
+    for raw in urls:
+        url = _normalize_url(raw)
+        if not url:
             continue
-        key = val.casefold()
+        key = url.casefold()
         if key in seen:
             continue
         seen.add(key)
-        out.append(val)
+        out.append(url)
+    return out
+
+
+# Картинки из XML offer
+
+def _iter_offer_el_pictures(offer_el: ET.Element | None) -> Iterable[str]:
+    if offer_el is None:
+        return []
+    out: list[str] = []
+    for pic_el in offer_el.findall("picture"):
+        url = _clean_text("".join(pic_el.itertext()))
+        if url:
+            out.append(url)
+    return out
+
+
+# Картинки из source-offer
+
+def _iter_source_pictures(src: Any) -> Iterable[str]:
+    out: list[str] = []
+
+    direct_list = _get_field(src, "picture_urls", "pictures", "picture_list")
+    if isinstance(direct_list, (list, tuple)):
+        for raw in direct_list:
+            val = _clean_text(raw)
+            if val:
+                out.append(val)
+
+    for raw in (
+        _get_field(src, "picture_url"),
+        _get_field(src, "picture"),
+        _get_field(src, "image"),
+    ):
+        val = _clean_text(raw)
+        if val:
+            out.append(val)
+
+    offer_el = _get_field(src, "offer_el", "el", "xml_offer")
+    if isinstance(offer_el, ET.Element):
+        out.extend(_iter_offer_el_pictures(offer_el))
 
     return out
 
 
-def normalize_pictures(pictures: list[str]) -> list[str]:
-    cleaned = _dedupe_keep_order(pictures)
-    good = [p for p in cleaned if _looks_like_image_url(p)]
+# Главная сборка картинок
 
-    if not good:
-        return [PLACEHOLDER_IMAGE]
+def collect_picture_urls(
+    src_or_urls: Any,
+    *,
+    placeholder_picture: str = "https://placehold.co/800x800/png?text=No+Photo",
+    drop_no_photo: bool = True,
+) -> list[str]:
+    """
+    Возвращает чистый список картинок для builder.py.
 
-    return good
+    Поддерживает два режима:
+    - передали source-offer / dict / dataclass;
+    - передали уже готовый список URL.
+    """
+    if isinstance(src_or_urls, (list, tuple)):
+        raw_urls = [str(x) for x in src_or_urls]
+    else:
+        raw_urls = list(_iter_source_pictures(src_or_urls))
+
+    urls = _dedupe(raw_urls)
+
+    if drop_no_photo:
+        urls = [u for u in urls if not _is_no_photo_url(u)]
+
+    placeholder = _normalize_url(placeholder_picture)
+    if not urls and placeholder:
+        return [placeholder]
+    return urls
 
 
-def apply_pictures(offer: NormalizedOffer) -> tuple[list[str], dict[str, Any]]:
-    before = len(offer.pictures)
-    pictures = normalize_pictures(offer.pictures)
-    after = len(pictures)
+# Короткая диагностика по картинкам
 
-    report: dict[str, Any] = {
-        "before": before,
-        "after": after,
-        "used_placeholder": pictures == [PLACEHOLDER_IMAGE],
+def analyze_pictures(
+    src_or_urls: Any,
+    *,
+    placeholder_picture: str = "https://placehold.co/800x800/png?text=No+Photo",
+) -> dict[str, Any]:
+    raw_urls = list(src_or_urls) if isinstance(src_or_urls, (list, tuple)) else list(_iter_source_pictures(src_or_urls))
+    normalized = _dedupe(raw_urls)
+    real_urls = [u for u in normalized if not _is_no_photo_url(u)]
+    final_urls = collect_picture_urls(src_or_urls, placeholder_picture=placeholder_picture)
+
+    return {
+        "raw_count": len(list(raw_urls)),
+        "normalized_count": len(normalized),
+        "real_count": len(real_urls),
+        "final_count": len(final_urls),
+        "used_placeholder": bool(final_urls and len(final_urls) == 1 and final_urls[0] == _normalize_url(placeholder_picture)),
     }
-    return pictures, report
-
-
-def apply_pictures_bulk(offers: list[NormalizedOffer]) -> tuple[dict[str, list[str]], dict[str, Any]]:
-    mapping: dict[str, list[str]] = {}
-    placeholder_count = 0
-    total_before = 0
-    total_after = 0
-
-    for offer in offers:
-        pictures, rep = apply_pictures(offer)
-        mapping[offer.oid] = pictures
-        total_before += int(rep["before"])
-        total_after += int(rep["after"])
-        if rep["used_placeholder"]:
-            placeholder_count += 1
-
-    report: dict[str, Any] = {
-        "offers": len(offers),
-        "pictures_before": total_before,
-        "pictures_after": total_after,
-        "placeholder_count": placeholder_count,
-    }
-    return mapping, report
