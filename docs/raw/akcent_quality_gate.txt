@@ -2,17 +2,18 @@ QUALITY_GATE: FAIL
 baseline_file: scripts/suppliers/akcent/config/quality_baseline.yml
 freeze_current_as_baseline: no
 critical_count: 0
-cosmetic_total_count: 17
-cosmetic_offer_count: 17
+cosmetic_total_count: 18
+cosmetic_offer_count: 18
 known_cosmetic_count: 0
 known_cosmetic_offer_count: 0
-new_cosmetic_count: 17
-new_cosmetic_offer_count: 17
+new_cosmetic_count: 18
+new_cosmetic_offer_count: 18
 max_cosmetic_offers: 5
 max_cosmetic_issues: 5
 
 COSMETIC TOTAL:
 - [desc_header_leak] ACC13T699700 | Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000 | supplier header in description
+- [desc_header_leak] ACS102ABK43 | Интерактивная доска Mr.Pixel S102 BLACK | supplier header in description
 - [desc_header_leak] ACS82ABK43 | Интерактивная доска Mr.Pixel S82 BLACK | supplier header in description
 - [placeholder_picture_only] AC4680101 | Шредер Fellowes® AUTOMAX 150C SHREDDER (CROSS CUT) 230V EU | placeholder only
 - [placeholder_picture_only] AC4701001 | Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр. | placeholder only
@@ -32,6 +33,7 @@ COSMETIC TOTAL:
 
 NEW COSMETIC VS BASELINE:
 - [desc_header_leak] ACC13T699700 | Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000 | supplier header in description
+- [desc_header_leak] ACS102ABK43 | Интерактивная доска Mr.Pixel S102 BLACK | supplier header in description
 - [desc_header_leak] ACS82ABK43 | Интерактивная доска Mr.Pixel S82 BLACK | supplier header in description
 - [placeholder_picture_only] AC4680101 | Шредер Fellowes® AUTOMAX 150C SHREDDER (CROSS CUT) 230V EU | placeholder only
 - [placeholder_picture_only] AC4701001 | Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр. | placeholder only
