@@ -194,6 +194,74 @@ def _extract_models_from_text(text: str) -> str:
     return " / ".join(_dedupe_text_items([x for x in items if x]))
 
 
+def _extract_explicit_epson_devices(text: str) -> str:
+    src = _clean_text(text)
+    if not src:
+        return ""
+
+    items: list[str] = []
+    for rx in (
+        re.compile(r"(?iu)(?:Epson\s+)?WorkForce\s+WF-[A-Z0-9-]+"),
+        re.compile(r"(?iu)(?:Epson\s+)?SureColor\s+SC-[A-Z0-9-]+"),
+        re.compile(r"(?iu)(?:Epson\s+)?EcoTank\s+ET-[A-Z0-9-]+"),
+        re.compile(r"(?iu)(?:Epson\s+)?Stylus(?:\s+Pro)?\s+[A-Z0-9-]+"),
+    ):
+        items.extend([_title_eps_family(m.group(0)) for m in rx.finditer(src)])
+
+    if not items:
+        for m in re.finditer(r"(?iu)(?:WF|SC|ET)-?[A-Z0-9]{2,}", src):
+            token = _clean_text(m.group(0)).upper().replace('SC ', 'SC-').replace('WF ', 'WF-').replace('ET ', 'ET-')
+            token = token.replace('SC- ', 'SC-').replace('WF- ', 'WF-').replace('ET- ', 'ET-')
+            if token.startswith('WF-'):
+                items.append(f"Epson WorkForce {token}")
+            elif token.startswith('SC-'):
+                items.append(f"Epson SureColor {token}")
+            elif token.startswith('ET-'):
+                items.append(f"Epson EcoTank {token}")
+
+    return " / ".join(_dedupe_text_items([x for x in items if x]))
+
+
+def _extract_direct_epson_device_list(text: str) -> str:
+    src = _clean_text(text)
+    if not src:
+        return ""
+
+    items: list[str] = []
+    patterns = (
+        re.compile(r"(?iu)(?:Epson\s+)?WorkForce\s+WF-[A-Z0-9-]+"),
+        re.compile(r"(?iu)(?:Epson\s+)?SureColor\s+SC-[A-Z0-9-]+"),
+        re.compile(r"(?iu)(?:Epson\s+)?EcoTank\s+ET-[A-Z0-9-]+"),
+        re.compile(r"(?iu)(?:Epson\s+)?Stylus(?:\s+Pro)?\s+[A-Z0-9-]+"),
+    )
+    for rx in patterns:
+        for m in rx.finditer(src):
+            items.append(_title_eps_family(m.group(0)))
+
+    # fallback for compact lists like "WF-7620DTWF WF-7610DWF WF-7110DTW"
+    if not items:
+        last_family = ""
+        for token in re.findall(r"(?iu)(?:WF|SC|ET)-?[A-Z0-9-]{2,}", src):
+            t = _clean_text(token).upper().replace('SC ', 'SC-').replace('WF ', 'WF-').replace('ET ', 'ET-')
+            if t.startswith('WF-'):
+                items.append(f"Epson WorkForce {t}")
+                last_family = 'WF'
+            elif t.startswith('SC-'):
+                items.append(f"Epson SureColor {t}")
+                last_family = 'SC'
+            elif t.startswith('ET-'):
+                items.append(f"Epson EcoTank {t}")
+                last_family = 'ET'
+            elif last_family == 'WF' and re.match(r"^[A-Z0-9-]{4,}$", t):
+                items.append(f"Epson WorkForce WF-{t}")
+            elif last_family == 'SC' and re.match(r"^[A-Z0-9-]{4,}$", t):
+                items.append(f"Epson SureColor SC-{t}")
+            elif last_family == 'ET' and re.match(r"^[A-Z0-9-]{4,}$", t):
+                items.append(f"Epson EcoTank ET-{t}")
+
+    return " / ".join(_dedupe_text_items([x for x in items if x]))
+
+
 def _extract_consumable_device_candidate(name: str, desc: str) -> str:
     text = _clean_text(desc)
     for line in text.split("\n"):
@@ -377,6 +445,10 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
     current_device = _first_value(out, "Для устройства") or _first_value(out, "Совместимость")
     better_device = _extract_consumable_device_candidate(name, desc)
     if not better_device:
+        better_device = _extract_direct_epson_device_list(" ".join([desc or "", name or ""]))
+    if not better_device:
+        better_device = _extract_explicit_epson_devices(" ".join([desc or "", name or ""]))
+    if not better_device:
         better_device = _extract_models_from_text(" ".join([name or "", desc or ""]))
     better_device = _normalize_epson_device_list(better_device)
     if better_device and (_looks_generic_device_value(current_device) or len(better_device) >= len(current_device)):
@@ -415,13 +487,21 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
 
     # some descriptions are just pure model lists; preserve them as device list
     if not _has_key(out, "Для устройства"):
-        models = _normalize_epson_device_list(_extract_models_from_text(desc))
+        models = _normalize_epson_device_list(
+            _extract_direct_epson_device_list(desc)
+            or _extract_explicit_epson_devices(desc)
+            or _extract_models_from_text(desc)
+        )
         if models:
             out = _set_single_param(out, "Для устройства", models)
 
-    # if device list was still missed, try simpler "for/для + model" extraction from body
+    # if device list was still missed, try simpler extraction from body/name again
     if not _has_key(out, "Для устройства"):
-        desc_models = _normalize_epson_device_list(_extract_models_from_text(desc or name))
+        desc_models = _normalize_epson_device_list(
+            _extract_direct_epson_device_list(desc or name)
+            or _extract_explicit_epson_devices(desc or name)
+            or _extract_models_from_text(desc or name)
+        )
         if desc_models:
             out = _set_single_param(out, "Для устройства", desc_models)
 
