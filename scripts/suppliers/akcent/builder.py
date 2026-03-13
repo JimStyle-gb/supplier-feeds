@@ -135,6 +135,118 @@ def _normalize_consumable_device_params(params: list[tuple[str, str]], *, kind: 
     return out
 
 
+_RE_CONSUMABLE_MODEL_TAIL = re.compile(
+    r"(?iu)(?:поддерживаемые\s+модели(?:\s+принтеров|\s+устройств|\s+техники)?|совместимые\s+модели(?:\s+техники)?|совместимые\s+продукты(?:\s+для)?)\s*:?[ \t]*(.+)$"
+)
+_RE_L_SERIES_PACK = re.compile(r"(?iu)\bL(\d{3,5}(?:/\d{3,5})+)\b")
+_RE_CODE_TOKEN = re.compile(r"(?iu)\bC13T\d{5,6}[A-Z]?\b|\bT\d{2}[A-Z]?\d{2,5}[A-Z]?\b")
+
+
+def _extract_consumable_device_candidate(name: str, desc: str) -> str:
+    text = _clean_text(desc)
+    for line in text.split("\n"):
+        line = _clean_text(line)
+        if not line:
+            continue
+        m = _RE_CONSUMABLE_MODEL_TAIL.search(line)
+        if m:
+            cand = _normalize_consumable_device_value(m.group(1))
+            if cand:
+                return cand
+
+    # fallback for Epson L-series inks from name like L800/1800/810/850
+    m2 = _RE_L_SERIES_PACK.search(_clean_text(name))
+    if m2:
+        nums = [x for x in m2.group(1).split('/') if _clean_text(x)]
+        items = [f"Epson L{n}" for n in nums]
+        return " / ".join(_dedupe_text_items(items))
+
+    return ""
+
+
+def _looks_generic_device_value(value: str) -> bool:
+    low = _cf(value)
+    if not low:
+        return True
+    if any(x in low for x in ["широкоформатный принтер", "принтер", "мфу", "фотопечать", "устройств epson"]):
+        return True
+    return not bool(_RE_DEVICE_MODEL.search(value))
+
+
+def _infer_consumable_type(name: str, desc: str, current_type: str) -> str:
+    low = _cf(" ".join([name, desc, current_type]))
+    if "емкость для отработанных чернил" in low or "ёмкость для отработанных чернил" in low:
+        return "Ёмкость для отработанных чернил"
+    if "экономичный набор" in low:
+        return "Экономичный набор"
+    if "чернил" in low or _cf(name).startswith("чернила"):
+        return "Чернила"
+    if "картридж" in low:
+        return "Картридж"
+    return _clean_text(current_type)
+
+
+def _normalize_print_type_value(value: str) -> str:
+    low = _cf(value)
+    mapping = {
+        "струйный": "Струйная",
+        "лазерный": "Лазерная",
+        "матричный": "Матричная",
+        "сублимационный": "Сублимационная",
+        "термосублимационный": "Термосублимационная",
+    }
+    return mapping.get(low, _clean_text(value))
+
+
+def _set_single_param(params: list[tuple[str, str]], key: str, value: str) -> list[tuple[str, str]]:
+    kcf = _cf(key)
+    v = _clean_text(value)
+    out: list[tuple[str, str]] = []
+    placed = False
+    for k, old in params:
+        if _cf(k) == kcf:
+            if not placed and v:
+                out.append((key, v))
+                placed = True
+            continue
+        out.append((k, old))
+    if not placed and v:
+        out.append((key, v))
+    return out
+
+
+def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc: str, kind: str) -> list[tuple[str, str]]:
+    if kind != "consumable":
+        return list(params or [])
+
+    out = list(params or [])
+    current_type = _first_value(out, "Тип")
+    inferred_type = _infer_consumable_type(name, desc, current_type)
+
+    if _cf(current_type) in {"струйный", "лазерный", "матричный", "сублимационный", "термосублимационный"}:
+        if not _has_key(out, "Тип печати"):
+            out = _set_single_param(out, "Тип печати", _normalize_print_type_value(current_type))
+        out = _set_single_param(out, "Тип", inferred_type or current_type)
+    elif inferred_type and current_type and ("фабрика печати" in _cf(current_type) or "чернила" in _cf(current_type)):
+        out = _set_single_param(out, "Тип", inferred_type)
+    elif inferred_type and not current_type:
+        out = _set_single_param(out, "Тип", inferred_type)
+
+    current_device = _first_value(out, "Для устройства") or _first_value(out, "Совместимость")
+    better_device = _extract_consumable_device_candidate(name, desc)
+    if better_device and (_looks_generic_device_value(current_device) or len(better_device) > len(current_device)):
+        out = _set_single_param(out, "Для устройства", better_device)
+
+    model = _first_value(out, "Модель")
+    if model and (" " in model or len(model) > 18):
+        code_src = _first_value(out, "Коды") or name or desc or model
+        m = _RE_CODE_TOKEN.search(code_src)
+        if m:
+            out = _set_single_param(out, "Модель", _clean_text(m.group(0)).upper())
+
+    return out
+
+
 def _build_consumable_short_desc(params: list[tuple[str, str]]) -> str:
     type_value = _first_value(params, "Тип") or "Расходный материал"
     brand_value = (
@@ -675,6 +787,7 @@ def _build_single_offer(
         kind=kind,
     )
     merged_params = _normalize_consumable_device_params(merged_params, kind=kind)
+    merged_params = _repair_consumable_params(merged_params, name=name, desc=cleaned_desc, kind=kind)
     merged_params = _dedupe_type_params(merged_params)
     merged_params = _filter_allowed(merged_params, allow_keys)
 
