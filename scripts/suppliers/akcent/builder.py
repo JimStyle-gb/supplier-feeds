@@ -185,6 +185,30 @@ def _drop_consumable_device_narrative(clean_desc: str, params: list[tuple[str, s
     return _build_consumable_short_desc(params).strip()
 
 
+_RE_INLINE_SUPPLIER_HEADER = re.compile(
+    r"(?iu)\b(?:технические\s+характеристики|основные\s+характеристики|общие\s+характеристики|общие\s+характерстики)\b\s*:?"
+)
+
+
+def _soften_consumable_body(clean_desc: str, params: list[tuple[str, str]], *, kind: str) -> str:
+    text = _drop_consumable_device_narrative(clean_desc, params, kind=kind)
+    text = _clean_text(text)
+    if not text:
+        return text
+
+    if kind != "consumable":
+        return text
+
+    text = _RE_INLINE_SUPPLIER_HEADER.sub(" ", text)
+    text = re.sub(r"(?iu)\s*[;|]\s*", ". ", text)
+    text = _clean_text(text)
+
+    if not text:
+        return _build_consumable_short_desc(params).strip()
+
+    return text
+
+
 def _clean_text(value: Any) -> str:
     return norm_ws(str(value or ""))
 
@@ -654,7 +678,7 @@ def _build_single_offer(
     merged_params = _filter_allowed(merged_params, allow_keys)
 
     pictures = _collect_pictures(_iter_picture_urls(src), placeholder_picture=placeholder_picture)
-    cleaned_desc = _drop_consumable_device_narrative(cleaned_desc, merged_params, kind=kind)
+    cleaned_desc = _soften_consumable_body(cleaned_desc, merged_params, kind=kind)
     native_desc = _merge_native_desc(cleaned_desc, extra_info)
     final_price = compute_price(price_in if isinstance(price_in, int) else None)
 
