@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-13 16:21:24">
+<yml_catalog date="2026-03-13 16:43:57">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-13 16:21:24
+Время сборки (Алматы)                      | 2026-03-13 16:43:57
 Ближайшая сборка (Алматы)                  | 2026-03-14 02:00:00
 Сколько товаров у поставщика до фильтра    | 1798
 Сколько товаров у поставщика после фильтра | 161
@@ -25,12 +25,13 @@ URL поставщика                             | https://ak-cent.kz/export
 Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачетсвенную печать для приентеров Epson. Вид струйный Назначение широкоформатный принтер Цвет печати фиолетовый Поддерживаемые модели принтеров Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000 Ресурс 700 мл]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
-<param name="Для устройства">SureColor SC-P6000 / SureColor SC-P7000 / SureColor SC-P8000 / SureColor SC-P9000</param>
+<param name="Для устройства">Epson SureColor SC-P6000 / Epson SureColor SC-P7000 / Epson SureColor SC-P8000 / Epson SureColor SC-P9000</param>
 <param name="Цвет">Фиолетовый</param>
 <param name="Ресурс">700 мл</param>
-<param name="Модель">C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</param>
+<param name="Модель">C13T55KD00</param>
 <param name="Для бренда">Epson</param>
 <param name="Тип печати">Струйная</param>
+<param name="Коды">C13T55KD00</param>
 </offer>
 
 <offer id="ACC12C890191" available="true">
@@ -48,6 +49,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C12C890191</param>
+<param name="Коды">C12C890191</param>
 </offer>
 
 <offer id="ACC12C934591" available="true">
@@ -60,7 +62,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Емкость для отработанных чернил L15150]]></description>
-<param name="Коды">C11CJ04404, C11CH72404, C11CH71404, C11CJ30404, C11CJ41404, C11CJ28404, C11CJ20404, C11CJ21403</param>
+<param name="Коды">C12C934591</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
@@ -82,7 +84,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Ёмкость для отработанных чернил Epson C13T04D000 EcoTank Maintenance Box (5clr)</param>
+<param name="Модель">C13T04D000</param>
+<param name="Коды">C13T04D000</param>
 </offer>
 
 <offer id="ACC13T04D100" available="true">
@@ -95,12 +98,12 @@ URL поставщика                             | https://ak-cent.kz/export
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Емкость для отработанных чернил]]></description>
-<param name="Коды">C11CG21404, C11CG20404, C11CG19404, C11CH96404, C11CH43404, C11CG92405</param>
+<param name="Коды">C13T04D100</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Ёмкость для отработанных чернил Epson C13T04D100 EcoTank Maintenance Box (4clr)</param>
+<param name="Модель">C13T04D100</param>
 </offer>
 
 <offer id="ACC13T619300" available="true">
@@ -169,8 +172,9 @@ URL поставщика                             | https://ak-cent.kz/export
 ]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
-<param name="Модель">C4000E</param>
+<param name="Модель">C33S021601</param>
 <param name="Для бренда">Epson</param>
+<param name="Коды">C33S021601</param>
 </offer>
 
 <offer id="ACS102ABK43" available="true">
@@ -289,7 +293,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CE05403</param>
+<param name="Модель">C13T26704010</param>
+<param name="Коды">C13T26704010</param>
 </offer>
 
 <offer id="ACC13T27914022" available="true">
@@ -308,7 +313,8 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">Около 2200 стр</param>
-<param name="Модель">Картридж Epson C13T27914022 для WF-7620DTWF черный new</param>
+<param name="Модель">C13T27914022</param>
+<param name="Коды">C13T27914022</param>
 </offer>
 
 <offer id="ACC13T41F34N" available="true">
@@ -326,9 +332,9 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">350 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">SureColor SC-T3400 / SC-T3400N / SC-T3405 / SC-T3405N / SC-T5400 / SC-T5400M / SC-T5405</param>
+<param name="Для устройства">Epson SureColor SC-T3400 / SC-T3400N / SC-T3405 / SC-T3405N / SC-T5400 / SC-T5400M / SC-T5405</param>
 <param name="Модель">T3400N</param>
-<param name="Коды">T3400N</param>
+<param name="Коды">C13T41F34N / T41F340</param>
 </offer>
 
 <offer id="ACC13T41F440" available="true">
@@ -347,7 +353,8 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
 <param name="Для устройства">Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000</param>
-<param name="Модель">Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350ml жёлтый</param>
+<param name="Модель">C13T41F440</param>
+<param name="Коды">C13T41F440 / T41F440</param>
 </offer>
 
 <offer id="ACC13T54LA00" available="true">
@@ -364,7 +371,8 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Картридж Epson C13T54LA00 UltraChrome DG2 (800 мл) белый</param>
+<param name="Модель">C13T54LA00</param>
+<param name="Коды">C13T54LA00</param>
 </offer>
 
 <offer id="ACC13T606100" available="true">
@@ -505,9 +513,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">12 мес.</param>
 <param name="Для устройства">Epson Stylus Pro 4800</param>
-<param name="Модель">Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</param>
+<param name="Модель">C13T606B00</param>
 <param name="Для бренда">Epson</param>
 <param name="Тип">Картридж</param>
+<param name="Коды">C13T606B00</param>
 </offer>
 
 <offer id="ACC13T606C00" available="true">
@@ -526,7 +535,8 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Для устройства">Epson Stylus Pro 4800</param>
-<param name="Модель">Картридж Epson C13T606C00 SP-4800 пурпурный светлый</param>
+<param name="Модель">C13T606C00</param>
+<param name="Коды">C13T606C00</param>
 </offer>
 
 <offer id="ACC13T614200" available="true">
@@ -713,7 +723,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Для бренда">Epson</param>
 <param name="Модель">C13T965140</param>
 <param name="Коды">C13T965140</param>
-<param name="Для устройства">WorkForce Pro WF-M5299DW / WorkForce Pro WF-M5299DWSV / WorkForce Pro WF-M5799DWF / WorkForce Pro WF-M5799DWFMV</param>
+<param name="Для устройства">Epson WorkForce Pro WF-M5299DW / Epson WorkForce Pro WF-M5299DWSV / Epson WorkForce Pro WF-M5799DWF / Epson WorkForce Pro WF-M5799DWFMV</param>
 </offer>
 
 <offer id="AC100016948" available="true">
@@ -2105,7 +2115,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG15404</param>
+<param name="Модель">C13T00Q140</param>
+<param name="Коды">C13T00Q140</param>
 </offer>
 
 <offer id="ACC13T00R140" available="true">
@@ -2123,7 +2134,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG15404</param>
+<param name="Модель">C13T00R140</param>
+<param name="Коды">C13T00R140</param>
 </offer>
 
 <offer id="ACC13T00R240" available="true">
@@ -2141,7 +2153,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG15404</param>
+<param name="Модель">C13T00R240</param>
+<param name="Коды">C13T00R240</param>
 </offer>
 
 <offer id="ACC13T00R340" available="true">
@@ -2159,7 +2172,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG15404</param>
+<param name="Модель">C13T00R340</param>
+<param name="Коды">C13T00R340</param>
 </offer>
 
 <offer id="ACC13T00R440" available="true">
@@ -2177,7 +2191,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
-<param name="Модель">C11CG15404</param>
+<param name="Модель">C13T00R440</param>
+<param name="Коды">C13T00R440</param>
 </offer>
 
 <offer id="ACC13T00S24A" available="true">
@@ -2195,8 +2210,9 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG88401</param>
+<param name="Модель">C13T00S24A</param>
 <param name="Для устройства">L3100 / L3101 / L3110 / L3150 / L3151</param>
+<param name="Коды">C13T00S24A</param>
 </offer>
 
 <offer id="ACC13T00S34A" available="true">
@@ -2214,8 +2230,9 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG88401</param>
+<param name="Модель">C13T00S34A</param>
 <param name="Для устройства">L3100 / L3101 / L3110 / L3150 / L3151</param>
+<param name="Коды">C13T00S34A</param>
 </offer>
 
 <offer id="ACC13T00S44A" available="true">
@@ -2233,8 +2250,9 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
-<param name="Модель">C11CG88401</param>
+<param name="Модель">C13T00S44A</param>
 <param name="Для устройства">L3100 / L3101 / L3110 / L3150 / L3151</param>
+<param name="Коды">C13T00S44A</param>
 </offer>
 
 <offer id="ACC13T01L14A" available="true">
@@ -2253,7 +2271,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">2000 стр</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG95405</param>
+<param name="Модель">C13T01L14A</param>
+<param name="Коды">C13T01L14A</param>
 </offer>
 
 <offer id="ACC13T03V14A" available="true">
@@ -2271,7 +2290,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T03V14A 101 EcoTank 127ml для L4150/L4160 черный</param>
+<param name="Модель">C13T03V14A</param>
+<param name="Коды">C13T03V14A</param>
 </offer>
 
 <offer id="ACC13T03V24A" available="true">
@@ -2289,7 +2309,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой</param>
+<param name="Модель">C13T03V24A</param>
+<param name="Коды">C13T03V24A</param>
 </offer>
 
 <offer id="ACC13T03V34A" available="true">
@@ -2307,7 +2328,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный</param>
+<param name="Модель">C13T03V34A</param>
+<param name="Коды">C13T03V34A</param>
 </offer>
 
 <offer id="ACC13T06C14A" available="true">
@@ -2325,7 +2347,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T06C14A для L15150 чёрный</param>
+<param name="Модель">C13T06C14A</param>
+<param name="Коды">C13T06C14A</param>
 </offer>
 
 <offer id="ACC13T06C24A" available="true">
@@ -2343,7 +2366,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T06C24A для L15150 голубой</param>
+<param name="Модель">C13T06C24A</param>
+<param name="Коды">C13T06C24A</param>
 </offer>
 
 <offer id="ACC13T06C34A" available="true">
@@ -2361,7 +2385,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T06C34A для L15150 пурпурный</param>
+<param name="Модель">C13T06C34A</param>
+<param name="Коды">C13T06C34A</param>
 </offer>
 
 <offer id="ACC13T06C44A" available="true">
@@ -2379,7 +2404,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
-<param name="Модель">Чернила Epson C13T06C44A для L15150 жёлтый</param>
+<param name="Модель">C13T06C44A</param>
+<param name="Коды">C13T06C44A</param>
 </offer>
 
 <offer id="ACC13T07D24A" available="true">
@@ -2397,7 +2423,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T07D24A для L8160/L8180 голубые</param>
+<param name="Модель">C13T07D24A</param>
+<param name="Коды">C13T07D24A</param>
 </offer>
 
 <offer id="ACC13T07D34A" available="true">
@@ -2415,7 +2442,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T07D34A для L8160/L8180 пурпурные</param>
+<param name="Модель">C13T07D34A</param>
+<param name="Коды">C13T07D34A</param>
 </offer>
 
 <offer id="ACC13T07D44A" available="true">
@@ -2433,7 +2461,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
-<param name="Модель">Чернила Epson C13T07D44A для L8160/L8180 жёлтые</param>
+<param name="Модель">C13T07D44A</param>
+<param name="Коды">C13T07D44A</param>
 </offer>
 
 <offer id="ACC13T07D54A" available="true">
@@ -2451,7 +2480,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T07D54A для L8160/L8180 серые</param>
+<param name="Модель">C13T07D54A</param>
+<param name="Коды">C13T07D54A</param>
 </offer>
 
 <offer id="ACC13T09C34A" available="true">
@@ -2470,7 +2500,8 @@ LI4278 выводит процесс сканирования одномерны
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Для устройства">L8050 / L18050</param>
-<param name="Модель">Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный</param>
+<param name="Модель">C13T09C34A</param>
+<param name="Коды">C13T09C34A</param>
 </offer>
 
 <offer id="ACC13T66414A" available="true">

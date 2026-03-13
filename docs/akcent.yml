@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-13 16:21:24">
+<yml_catalog date="2026-03-13 16:43:57">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-13 16:21:24
+Время сборки (Алматы)                      | 2026-03-13 16:43:57
 Ближайшая сборка (Алматы)                  | 2026-03-14 02:00:00
 Сколько товаров у поставщика до фильтра    | 1798
 Сколько товаров у поставщика после фильтра | 161
@@ -30,13 +30,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачетсвенную печать для приентеров Epson. Вид струйный Назначение широкоформатный принтер Цвет печати фиолетовый Поддерживаемые модели принтеров Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000 Ресурс 700 мл</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> SureColor SC-P6000 / SureColor SC-P7000 / SureColor SC-P8000 / SureColor SC-P9000</li><li><strong>Модель:</strong> C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Фиолетовый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson SureColor SC-P6000 / Epson SureColor SC-P7000 / Epson SureColor SC-P8000 / Epson SureColor SC-P9000</li><li><strong>Коды:</strong> C13T55KD00</li><li><strong>Модель:</strong> C13T55KD00</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Фиолетовый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">SureColor SC-P6000 / SureColor SC-P7000 / SureColor SC-P8000 / SureColor SC-P9000</param>
-<param name="Модель">C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</param>
+<param name="Для устройства">Epson SureColor SC-P6000 / Epson SureColor SC-P7000 / Epson SureColor SC-P8000 / Epson SureColor SC-P9000</param>
+<param name="Коды">C13T55KD00</param>
+<param name="Модель">C13T55KD00</param>
 <param name="Ресурс">700 мл</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
@@ -61,11 +62,12 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Сменная емкость для отработанных чернил. Информация о необходимости замены появится на панели управление принтера.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> C12C890191</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Тип печати:</strong> Струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C12C890191</li><li><strong>Модель:</strong> C12C890191</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Тип печати:</strong> Струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
+<param name="Коды">C12C890191</param>
 <param name="Модель">C12C890191</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
@@ -89,12 +91,12 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Емкость для отработанных чернил L15150</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C11CJ04404, C11CH72404, C11CH71404, C11CJ30404, C11CJ41404, C11CJ28404, C11CJ20404, C11CJ21403</li><li><strong>Модель:</strong> C12C934591</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Тип печати:</strong> Струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C12C934591</li><li><strong>Модель:</strong> C12C934591</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Тип печати:</strong> Струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды">C11CJ04404, C11CH72404, C11CH71404, C11CJ30404, C11CJ41404, C11CJ28404, C11CJ20404, C11CJ21403</param>
+<param name="Коды">C12C934591</param>
 <param name="Модель">C12C934591</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
@@ -118,12 +120,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Емкость для отработанных чернил</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Ёмкость для отработанных чернил Epson C13T04D000 EcoTank Maintenance Box (5clr)</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Тип печати:</strong> Струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T04D000</li><li><strong>Модель:</strong> C13T04D000</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Тип печати:</strong> Струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Ёмкость для отработанных чернил Epson C13T04D000 EcoTank Maintenance Box (5clr)</param>
+<param name="Коды">C13T04D000</param>
+<param name="Модель">C13T04D000</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
 <keywords>Epson, Ёмкость для отработанных чернил Epson C13T04D000 EcoTank Maintenance Box (5clr), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
@@ -146,13 +149,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Емкость для отработанных чернил</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C11CG21404, C11CG20404, C11CG19404, C11CH96404, C11CH43404, C11CG92405</li><li><strong>Модель:</strong> Ёмкость для отработанных чернил Epson C13T04D100 EcoTank Maintenance Box (4clr)</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Тип печати:</strong> Струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T04D100</li><li><strong>Модель:</strong> C13T04D100</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Тип печати:</strong> Струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды">C11CG21404, C11CG20404, C11CG19404, C11CH96404, C11CH43404, C11CG92405</param>
-<param name="Модель">Ёмкость для отработанных чернил Epson C13T04D100 EcoTank Maintenance Box (4clr)</param>
+<param name="Коды">C13T04D100</param>
+<param name="Модель">C13T04D100</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
 <keywords>Epson, Ёмкость для отработанных чернил Epson C13T04D100 EcoTank Maintenance Box (4clr), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
@@ -261,13 +264,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Тип: Ёмкость для отработанных чернил; Модель: C4000E</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> C4000E</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li></ul>
+<p>Тип: Ёмкость для отработанных чернил; Модель: C33S021601</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C33S021601</li><li><strong>Модель:</strong> C33S021601</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C4000E</param>
+<param name="Коды">C33S021601</param>
+<param name="Модель">C33S021601</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <keywords>Epson, Ёмкость для отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance box, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -435,11 +439,12 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Комбинированный картридж с голубыми, пурпурными и желтыми чернилами (C13T26704010) для Epson WorkForce WF-100W C11CE05403</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> C11CE05403</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой, Пурпурный, Жёлтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T26704010</li><li><strong>Модель:</strong> C13T26704010</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой, Пурпурный, Жёлтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CE05403</param>
+<param name="Коды">C13T26704010</param>
+<param name="Модель">C13T26704010</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой, Пурпурный, Жёлтый</param>
@@ -463,12 +468,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DTW</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Картридж Epson C13T27914022 для WF-7620DTWF черный new</li><li><strong>Ресурс:</strong> Около 2200 стр</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T27914022</li><li><strong>Модель:</strong> C13T27914022</li><li><strong>Ресурс:</strong> Около 2200 стр</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Картридж Epson C13T27914022 для WF-7620DTWF черный new</param>
+<param name="Коды">C13T27914022</param>
+<param name="Модель">C13T27914022</param>
 <param name="Ресурс">Около 2200 стр</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
@@ -493,12 +499,12 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> SureColor SC-T3400 / SC-T3400N / SC-T3405 / SC-T3405N / SC-T5400 / SC-T5400M / SC-T5405</li><li><strong>Коды:</strong> T3400N</li><li><strong>Модель:</strong> T3400N</li><li><strong>Ресурс:</strong> 350 мл</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson SureColor SC-T3400 / SC-T3400N / SC-T3405 / SC-T3405N / SC-T5400 / SC-T5400M / SC-T5405</li><li><strong>Коды:</strong> C13T41F34N / T41F340</li><li><strong>Модель:</strong> T3400N</li><li><strong>Ресурс:</strong> 350 мл</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">SureColor SC-T3400 / SC-T3400N / SC-T3405 / SC-T3405N / SC-T5400 / SC-T5400M / SC-T5405</param>
-<param name="Коды">T3400N</param>
+<param name="Для устройства">Epson SureColor SC-T3400 / SC-T3400N / SC-T3405 / SC-T3405N / SC-T5400 / SC-T5400M / SC-T5405</param>
+<param name="Коды">C13T41F34N / T41F340</param>
 <param name="Модель">T3400N</param>
 <param name="Ресурс">350 мл</param>
 <param name="Тип">Картридж</param>
@@ -524,12 +530,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000</li><li><strong>Модель:</strong> Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350ml жёлтый</li><li><strong>Ресурс:</strong> 350 мл</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000</li><li><strong>Коды:</strong> C13T41F440 / T41F440</li><li><strong>Модель:</strong> C13T41F440</li><li><strong>Ресурс:</strong> 350 мл</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">Epson</param>
 <param name="Для устройства">Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000</param>
-<param name="Модель">Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350ml жёлтый</param>
+<param name="Коды">C13T41F440 / T41F440</param>
+<param name="Модель">C13T41F440</param>
 <param name="Ресурс">350 мл</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
@@ -554,12 +561,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Оригинальный картридж UltraChrome DG2 (C13T54LA00) Epson SureColor F2200 голубого цвета. Объём чернил составляет 800 миллилитров. Высокое качество чернил позволяет получать с их помощью очень чёткие и детализованные отпечатки. Чернила рассчитаны на долгую работу на весь срок службы. Покупая оригинальную продукцию фирмы Epson в нашем магазине - вы можете быть 100% уверены в качестве предлагаемой продукции.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> Без гарантии</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Картридж Epson C13T54LA00 UltraChrome DG2 (800 мл) белый</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> Без гарантии</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T54LA00</li><li><strong>Модель:</strong> C13T54LA00</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">Без гарантии</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Картридж Epson C13T54LA00 UltraChrome DG2 (800 мл) белый</param>
+<param name="Коды">C13T54LA00</param>
+<param name="Модель">C13T54LA00</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <keywords>Epson, Картридж Epson C13T54LA00 UltraChrome DG2 (800 мл) белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
@@ -774,13 +782,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson Stylus Pro 4800</li><li><strong>Модель:</strong> Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</li><li><strong>Тип:</strong> Картридж</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson Stylus Pro 4800</li><li><strong>Коды:</strong> C13T606B00</li><li><strong>Модель:</strong> C13T606B00</li><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес.</param>
 <param name="Для бренда">Epson</param>
 <param name="Для устройства">Epson Stylus Pro 4800</param>
-<param name="Модель">Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</param>
+<param name="Коды">C13T606B00</param>
+<param name="Модель">C13T606B00</param>
 <param name="Тип">Картридж</param>
 <keywords>Epson, Картридж Epson C13T606B00 SP-4800 220ml пурпурный new, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
@@ -802,12 +811,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson Stylus Pro 4800</li><li><strong>Модель:</strong> Картридж Epson C13T606C00 SP-4800 пурпурный светлый</li><li><strong>Ресурс:</strong> 221 мл</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson Stylus Pro 4800</li><li><strong>Коды:</strong> C13T606C00</li><li><strong>Модель:</strong> C13T606C00</li><li><strong>Ресурс:</strong> 221 мл</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">Epson</param>
 <param name="Для устройства">Epson Stylus Pro 4800</param>
-<param name="Модель">Картридж Epson C13T606C00 SP-4800 пурпурный светлый</param>
+<param name="Коды">C13T606C00</param>
+<param name="Модель">C13T606C00</param>
 <param name="Ресурс">221 мл</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
@@ -1088,11 +1098,11 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами ресурсом 10 000 стр. (XL) Совместимые продукты для Контейнер с черными чернилами ресурсом 10 000 стр. (XL) Epson WorkForce Pro WF-M5299DW C11CG07401 Epson WorkForce Pro WF-M5299DWSV C11CG07401 Epson WorkForce Pro WF-M5799DWF C11CG04401 Epson WorkForce Pro WF-M5799DWFMV</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> WorkForce Pro WF-M5299DW / WorkForce Pro WF-M5299DWSV / WorkForce Pro WF-M5799DWF / WorkForce Pro WF-M5799DWFMV</li><li><strong>Коды:</strong> C13T965140</li><li><strong>Модель:</strong> C13T965140</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson WorkForce Pro WF-M5299DW / Epson WorkForce Pro WF-M5299DWSV / Epson WorkForce Pro WF-M5799DWF / Epson WorkForce Pro WF-M5799DWFMV</li><li><strong>Коды:</strong> C13T965140</li><li><strong>Модель:</strong> C13T965140</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">WorkForce Pro WF-M5299DW / WorkForce Pro WF-M5299DWSV / WorkForce Pro WF-M5799DWF / WorkForce Pro WF-M5799DWFMV</param>
+<param name="Для устройства">Epson WorkForce Pro WF-M5299DW / Epson WorkForce Pro WF-M5299DWSV / Epson WorkForce Pro WF-M5799DWF / Epson WorkForce Pro WF-M5799DWFMV</param>
 <param name="Коды">C13T965140</param>
 <param name="Модель">C13T965140</param>
 <param name="Тип">Картридж</param>
@@ -2966,12 +2976,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> C11CG15404</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T00Q140</li><li><strong>Модель:</strong> C13T00Q140</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG15404</param>
+<param name="Коды">C13T00Q140</param>
+<param name="Модель">C13T00Q140</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
@@ -2995,12 +3006,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> C11CG15404</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T00R140</li><li><strong>Модель:</strong> C13T00R140</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG15404</param>
+<param name="Коды">C13T00R140</param>
+<param name="Модель">C13T00R140</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
@@ -3024,12 +3036,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с голубыми чернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> C11CG15404</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T00R240</li><li><strong>Модель:</strong> C13T00R240</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG15404</param>
+<param name="Коды">C13T00R240</param>
+<param name="Модель">C13T00R240</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
@@ -3053,12 +3066,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с пурпурнымичернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> C11CG15404</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T00R340</li><li><strong>Модель:</strong> C13T00R340</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG15404</param>
+<param name="Коды">C13T00R340</param>
+<param name="Модель">C13T00R340</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
@@ -3082,12 +3096,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с желтыми чернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> C11CG15404</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T00R440</li><li><strong>Модель:</strong> C13T00R440</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG15404</param>
+<param name="Коды">C13T00R440</param>
+<param name="Модель">C13T00R440</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
@@ -3111,13 +3126,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Совместимые продукты Epson L3100 C11CG88401 Epson L3101 C11CG88402 - Epson L3110 C11CG87405 Epson L3150 C11CG86409 Epson L3151 C11CG86411</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> L3100 / L3101 / L3110 / L3150 / L3151</li><li><strong>Модель:</strong> C11CG88401</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> L3100 / L3101 / L3110 / L3150 / L3151</li><li><strong>Коды:</strong> C13T00S24A</li><li><strong>Модель:</strong> C13T00S24A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
 <param name="Для устройства">L3100 / L3101 / L3110 / L3150 / L3151</param>
-<param name="Модель">C11CG88401</param>
+<param name="Коды">C13T00S24A</param>
+<param name="Модель">C13T00S24A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
@@ -3141,13 +3157,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Совместимые продукты Epson L3100 C11CG88401 Epson L3101 C11CG88402 - Epson L3110 C11CG87405 Epson L3150 C11CG86409 Epson L3151 C11CG86411</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> L3100 / L3101 / L3110 / L3150 / L3151</li><li><strong>Модель:</strong> C11CG88401</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> L3100 / L3101 / L3110 / L3150 / L3151</li><li><strong>Коды:</strong> C13T00S34A</li><li><strong>Модель:</strong> C13T00S34A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
 <param name="Для устройства">L3100 / L3101 / L3110 / L3150 / L3151</param>
-<param name="Модель">C11CG88401</param>
+<param name="Коды">C13T00S34A</param>
+<param name="Модель">C13T00S34A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
@@ -3171,13 +3188,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Совместимые продукты Epson L3100 C11CG88401 Epson L3101 C11CG88402 - Epson L3110 C11CG87405 Epson L3150 C11CG86409 Epson L3151 C11CG86411</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> L3100 / L3101 / L3110 / L3150 / L3151</li><li><strong>Модель:</strong> C11CG88401</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> L3100 / L3101 / L3110 / L3150 / L3151</li><li><strong>Коды:</strong> C13T00S44A</li><li><strong>Модель:</strong> C13T00S44A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
 <param name="Для устройства">L3100 / L3101 / L3110 / L3150 / L3151</param>
-<param name="Модель">C11CG88401</param>
+<param name="Коды">C13T00S44A</param>
+<param name="Модель">C13T00S44A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
@@ -3201,12 +3219,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами ресурсом 2 000 стр. (L) (C13T01L14A) Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M1140 C11CG26405 Epson M1180 C11CG94405 Epson M2140 C11CG27405 Epson M3140 C11CG91405 Epson M3170 C11CG92405 Epson M3180 C11CG93405 Epson M1170 C11CH44404 Epson M2170 C11CH43404</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> C11CG95405</li><li><strong>Ресурс:</strong> 2000 стр</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T01L14A</li><li><strong>Модель:</strong> C13T01L14A</li><li><strong>Ресурс:</strong> 2000 стр</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">C11CG95405</param>
+<param name="Коды">C13T01L14A</param>
+<param name="Модель">C13T01L14A</param>
 <param name="Ресурс">2000 стр</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
@@ -3231,12 +3250,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с голубыми чернилами для: L4150/L4160</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson C13T03V14A 101 EcoTank 127ml для L4150/L4160 черный</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T03V14A</li><li><strong>Модель:</strong> C13T03V14A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T03V14A 101 EcoTank 127ml для L4150/L4160 черный</param>
+<param name="Коды">C13T03V14A</param>
+<param name="Модель">C13T03V14A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
@@ -3260,12 +3280,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с голубыми чернилами для: L4150/L4160</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T03V24A</li><li><strong>Модель:</strong> C13T03V24A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой</param>
+<param name="Коды">C13T03V24A</param>
+<param name="Модель">C13T03V24A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
@@ -3289,12 +3310,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с пурпурными чернилами для: L4150/L4160</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T03V34A</li><li><strong>Модель:</strong> C13T03V34A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный</param>
+<param name="Коды">C13T03V34A</param>
+<param name="Модель">C13T03V34A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
@@ -3318,12 +3340,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson C13T06C14A для L15150 чёрный</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T06C14A</li><li><strong>Модель:</strong> C13T06C14A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T06C14A для L15150 чёрный</param>
+<param name="Коды">C13T06C14A</param>
+<param name="Модель">C13T06C14A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
@@ -3347,12 +3370,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson C13T06C24A для L15150 голубой</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T06C24A</li><li><strong>Модель:</strong> C13T06C24A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T06C24A для L15150 голубой</param>
+<param name="Коды">C13T06C24A</param>
+<param name="Модель">C13T06C24A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
@@ -3376,12 +3400,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson C13T06C34A для L15150 пурпурный</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T06C34A</li><li><strong>Модель:</strong> C13T06C34A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T06C34A для L15150 пурпурный</param>
+<param name="Коды">C13T06C34A</param>
+<param name="Модель">C13T06C34A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
@@ -3405,12 +3430,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с черными чернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson C13T06C44A для L15150 жёлтый</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T06C44A</li><li><strong>Модель:</strong> C13T06C44A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T06C44A для L15150 жёлтый</param>
+<param name="Коды">C13T06C44A</param>
+<param name="Модель">C13T06C44A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
@@ -3434,12 +3460,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с голубыми чернилами (C13T07D24A)</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson C13T07D24A для L8160/L8180 голубые</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубые</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T07D24A</li><li><strong>Модель:</strong> C13T07D24A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубые</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T07D24A для L8160/L8180 голубые</param>
+<param name="Коды">C13T07D24A</param>
+<param name="Модель">C13T07D24A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубые</param>
@@ -3463,12 +3490,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с пурпурными чернилами (C13T07D34A)</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson C13T07D34A для L8160/L8180 пурпурные</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T07D34A</li><li><strong>Модель:</strong> C13T07D34A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T07D34A для L8160/L8180 пурпурные</param>
+<param name="Коды">C13T07D34A</param>
+<param name="Модель">C13T07D34A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
@@ -3492,12 +3520,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Оригинальные водорастворимые чернила Epson 115 желтого цвета емкостью 70 мл для струйных МФУ Epson L8160/L8180</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson C13T07D44A для L8160/L8180 жёлтые</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T07D44A</li><li><strong>Модель:</strong> C13T07D44A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T07D44A для L8160/L8180 жёлтые</param>
+<param name="Коды">C13T07D44A</param>
+<param name="Модель">C13T07D44A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
@@ -3521,12 +3550,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Контейнер с серыми чернилами (C13T07D54A)</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Чернила Epson C13T07D54A для L8160/L8180 серые</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Серый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Коды:</strong> C13T07D54A</li><li><strong>Модель:</strong> C13T07D54A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Серый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Модель">Чернила Epson C13T07D54A для L8160/L8180 серые</param>
+<param name="Коды">C13T07D54A</param>
+<param name="Модель">C13T07D54A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Серый</param>
@@ -3550,13 +3580,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> L8050 / L18050</li><li><strong>Модель:</strong> Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> L8050 / L18050</li><li><strong>Коды:</strong> C13T09C34A</li><li><strong>Модель:</strong> C13T09C34A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
 <param name="Для устройства">L8050 / L18050</param>
-<param name="Модель">Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный</param>
+<param name="Коды">C13T09C34A</param>
+<param name="Модель">C13T09C34A</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
