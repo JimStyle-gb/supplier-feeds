@@ -2,22 +2,12 @@ QUALITY_GATE: PASS
 baseline_file: scripts/suppliers/akcent/config/quality_baseline.yml
 freeze_current_as_baseline: no
 critical_count: 0
-cosmetic_total_count: 3
-cosmetic_offer_count: 3
+cosmetic_total_count: 0
+cosmetic_offer_count: 0
 known_cosmetic_count: 0
 known_cosmetic_offer_count: 0
-new_cosmetic_count: 3
-new_cosmetic_offer_count: 3
+new_cosmetic_count: 0
+new_cosmetic_offer_count: 0
 max_cosmetic_offers: 5
 max_cosmetic_issues: 5
-
-COSMETIC TOTAL:
-- [desc_header_leak] ACC13T699700 | Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000 | supplier header in description
-- [desc_header_leak] ACS102ABK43 | Интерактивная доска Mr.Pixel S102 BLACK | supplier header in description
-- [desc_header_leak] ACS82ABK43 | Интерактивная доска Mr.Pixel S82 BLACK | supplier header in description
-
-NEW COSMETIC VS BASELINE:
-- [desc_header_leak] ACC13T699700 | Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000 | supplier header in description
-- [desc_header_leak] ACS102ABK43 | Интерактивная доска Mr.Pixel S102 BLACK | supplier header in description
-- [desc_header_leak] ACS82ABK43 | Интерактивная доска Mr.Pixel S82 BLACK | supplier header in description
 
