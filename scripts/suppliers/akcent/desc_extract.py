@@ -4,7 +4,7 @@ Path: scripts/suppliers/akcent/desc_extract.py
 
 AkCent description -> params extraction.
 
-v4:
+v7:
 - больше не режет значения по запятой, из-за чего раньше ломались
   `Покрытие экрана`, `Число касаний`, `Покрытие экрана (антитрение, антиблик)`;
 - лучше режет плотные projector / interactive техблоки по known labels;
@@ -36,6 +36,7 @@ _RE_PAREN_SP = re.compile(r"\(\s+|\s+\)")
 _RE_LINE_PAIR = re.compile(r"^([^:]{1,120})\s*[:：]\s*(.+)$")
 _RE_RANGE = re.compile(r"(?iu)\b\d{1,4}(?:[.,]\d+)?\s*[-–—]\s*\d{1,4}(?:[.,]\d+)?(?:\s*:\s*1)?\b")
 _RE_DIMS = re.compile(r"(?iu)\b\d{1,4}(?:[.,]\d+)?\s*[xх×]\s*\d{1,4}(?:[.,]\d+)?(?:\s*[xх×]\s*\d{1,4}(?:[.,]\d+)?)?\b")
+_RE_DEVICE_TOKEN = re.compile(r"(?iu)\b(?:SC-[A-Z0-9-]+|WF-[A-Z0-9-]+|ET-\d+[A-Z0-9-]*|L\d{4,5}[A-Z0-9-]*|T\d{4,5}[A-Z0-9-]*|P\d{4,5}[A-Z0-9-]*|B\d{4,5}[A-Z0-9-]*|C\d{4,5}[A-Z0-9-]*|M\d{4,5}[A-Z0-9-]*|SP\d{4,5}|L\d{3,5})\b")
 
 _SAFE_DESC_PARAM_KEYS = {
     "Тип", "Модель", "Гарантия", "Для устройства", "Для бренда", "Цвет", "Ресурс", "Объем",
@@ -269,7 +270,27 @@ def _cleanup_value_by_key(key: str, value: str) -> str:
         if m:
             return norm_ws(m.group(0))
     if key == "Технология":
-        return norm_ws(re.split(r"(?iu)\bЖесты\b|\bПанель управления\b|\bГарантия\b|\bРесурс лампы\b|\bРазрешение\b|\bЯркость\b", v, maxsplit=1)[0])
+        m = re.search(r"(?iu)\b3LCD\b|\bLCD\b|\bDLP\b|\bLCoS\b", v)
+        if m:
+            return norm_ws(m.group(0))
+        return norm_ws(re.split(r"(?iu)\bЖесты\b|\bПанель управления\b|\bГарантия\b|\bРесурс лампы\b|\bРазрешение\b|\bЯркость\b|\bОбраз\b", v, maxsplit=1)[0])
+    if key == "Источник света":
+        m = re.search(r"(?iu)\bлазер\b|\blaser\b|\bлампа\b|\blamp\b", v)
+        if m:
+            word = m.group(0).casefold()
+            if 'laser' in word or 'лазер' in word:
+                return 'Лазер'
+            return 'Лампа'
+        return ""
+    if key in {"Срок службы источника света", "Срок службы лампы (норм./ эконом.) ч"}:
+        nums = re.findall(r"(?iu)\b\d{1,3}(?:[ .]\d{3})+|\d{4,6}\b", v)
+        if nums:
+            vals = []
+            for n in nums[:2]:
+                n = n.replace(' ', '').replace('.', '')
+                vals.append(n)
+            return '/'.join(vals) if len(vals) > 1 else vals[0]
+        return ""
     if key == "Микрофоны":
         return norm_ws(re.split(r"(?iu)\bИндикатор состояния\b|\bВстроенный NFC считыватель\b", v, maxsplit=1)[0])
     if key == "NFC" and re.search(r"(?iu)\bесть\b", v):
@@ -299,15 +320,22 @@ def _cleanup_value_by_key(key: str, value: str) -> str:
             return norm_ws(m.group(0))
         return ""
     if key in {"Яркость", "Яркость (ANSI) лмн", "Цветовая яркость"}:
-        m = re.search(r"(?iu)(?:≥\s*)?\d{1,5}(?:[.,]\d+)?\s*(?:cd/m²|ansi\s*lumen|ansi\s*lm|лмн|лм|люмен)\b", v)
+        m = re.search(r"(?iu)(?:≥\s*)?(\d{1,3}(?:[ .]\d{3})+|\d{1,5}(?:[.,]\d+)?)\s*(?:cd/m²|ansi\s*lumen|ansi\s*lm|лмн|лм|люмен)\b", v)
         if m:
-            return norm_ws(m.group(0).replace("ANSI LUMEN", "ANSI lm").replace("ANSI lumen", "ANSI lm"))
+            num = m.group(1).replace(' ', '').replace('.', '')
+            unit_m = re.search(r"(?iu)(cd/m²|ansi\s*lumen|ansi\s*lm|лмн|лм|люмен)", m.group(0))
+            unit = unit_m.group(1) if unit_m else ''
+            unit = unit.replace('ANSI LUMEN', 'ANSI lm').replace('ANSI lumen', 'ANSI lm')
+            return norm_ws(f"{num} {unit}")
         m = re.search(r"(?iu)\b\d{1,5}(?:[.,]\d+)?\b", v)
         if m and key == "Яркость (ANSI) лмн":
             return norm_ws(m.group(0))
         return ""
     if key == "Разрешение":
-        m = re.search(r"(?iu)\b(?:wxga|xga|full\s*hd|4k\s*uhd|uhd|hd|svga)\b(?:\s*\([^)]*\))?", v)
+        m = re.search(r"(?iu)\bfull\s*hd\b(?:\s*\([^)]*\))?", v)
+        if m:
+            return norm_ws(m.group(0))
+        m = re.search(r"(?iu)\b(?:4k\s*uhd|wxga|xga|uhd|svga|hd)\b(?:\s*\([^)]*\))?", v)
         if m:
             return norm_ws(m.group(0))
         m = re.search(r"(?iu)\b\d{3,5}\s*[xх×]\s*\d{3,5}\b", v)
@@ -319,10 +347,21 @@ def _cleanup_value_by_key(key: str, value: str) -> str:
     if key in {"HDMI", "USB", "VGA", "DisplayPort", "Ethernet", "Wi-Fi", "DVI-D", "S-Video", "HDBaseT"}:
         if v.casefold() in {"и", "или", "with", "and"}:
             return ""
+        if key == 'HDMI':
+            if 'arc' in v.casefold():
+                return 'ARC'
+        if key == 'USB':
+            if re.search(r"(?iu)USB\s*2\.0-A|USB\s*2\.0\s*Mini-B|USB-A|USB-B|USB-C", v):
+                vals = re.findall(r"(?iu)USB\s*2\.0-A|USB\s*2\.0\s*Mini-B|USB-A|USB-B|USB-C", v)
+                vals = [norm_ws(x) for x in vals]
+                vals = list(dict.fromkeys(vals))
+                return ', '.join(vals)
+            if re.search(r"(?iu)встроенный\s+динамик|удобно\s+носить", v):
+                return ""
         if key != "USB" and len(v) > 120:
             return ""
     if key == "Интерфейсы":
-        if len(v) > 180:
+        if len(v) > 220:
             return ""
         parts = [norm_ws(x) for x in re.split(r"\s*,\s*", v) if norm_ws(x)]
         if parts:
@@ -332,9 +371,10 @@ def _cleanup_value_by_key(key: str, value: str) -> str:
         if m:
             return norm_ws(m.group(0))
     if key == "Контрастность":
-        m = re.search(r"(?iu)\b\d[\d .]{0,12}:\s*1\b", v)
+        m = re.search(r"(?iu)\b\d{1,3}(?:[ .]\d{3})*(?::\s*1)\b|\b\d[\d .]{0,12}:\s*1\b", v)
         if m:
-            return norm_ws(m.group(0))
+            s = norm_ws(m.group(0)).replace('.', ' ')
+            return s
     return v
 
 
@@ -357,6 +397,20 @@ def _prefer_duplicate_value(key: str, old: str, new: str) -> str:
             return old
         if new_num and not old_num:
             return new
+        # prefer more specific semantic resolution over short "HD"
+        if len(old) >= len(new):
+            return old
+        return new
+    if key == "Для устройства":
+        old_models = len(_RE_DEVICE_TOKEN.findall(old))
+        new_models = len(_RE_DEVICE_TOKEN.findall(new))
+        if new_models > old_models:
+            return new
+        if old_models > new_models:
+            return old
+        if len(new) > len(old):
+            return new
+        return old
     if key in {"Яркость", "Яркость (ANSI) лмн", "Цветовая яркость", "Контрастность", "Вес", "Проекционное расстояние", "Проекционный коэффициент (Throw ratio)"}:
         return new if len(new) > len(old) else old
     if key in {"HDMI", "USB", "VGA", "DisplayPort", "Ethernet", "Wi-Fi", "DVI-D", "S-Video", "HDBaseT"}:
@@ -373,8 +427,11 @@ def _extract_consumable_device_pair(lines: list[str], schema_cfg: dict[str, Any]
     patterns = (
         re.compile(r"(?iu)\bподдерживаемые\s+модели\s+(?:принтеров|устройств|техники)\s*:\s*(.+)$"),
         re.compile(r"(?iu)\bсовместимые\s+модели(?:\s+техники)?\s*:\s*(.+)$"),
+        re.compile(r"(?iu)\bсовместимые\s+продукты(?:\s+для)?\s*:\s*(.+)$"),
         re.compile(r"(?iu)\bдля\s*:\s*(.+)$"),
     )
+    best: tuple[str, str] | None = None
+    best_score = -1
     for line in lines:
         text = norm_ws(line)
         if not text:
@@ -388,11 +445,16 @@ def _extract_consumable_device_pair(lines: list[str], schema_cfg: dict[str, Any]
                 continue
             raw = norm_ws(m.group(1))
             clean = norm_ws(clean_device_value(raw))
-            if clean and len(clean) <= 300:
-                checked = validate_desc_pair("Для устройства", clean, schema_cfg, kind)
-                if checked is not None:
-                    return checked
-    return None
+            if not clean or len(clean) > 300:
+                continue
+            checked = validate_desc_pair("Для устройства", clean, schema_cfg, kind)
+            if checked is None:
+                continue
+            score = len(_RE_DEVICE_TOKEN.findall(checked[1])) * 10 + len(checked[1])
+            if score > best_score:
+                best = checked
+                best_score = score
+    return best
 
 
 def _dedupe_pairs(pairs: list[tuple[str, str]]) -> list[tuple[str, str]]:
@@ -466,9 +528,7 @@ def extract_desc_params(
             continue
         accepted.append(checked)
 
-    have_device = any(k == "Для устройства" for k, _ in accepted)
-    have_compat = any(k == "Совместимость" for k, _ in accepted)
-    if kind == "consumable" and not have_device and not have_compat:
+    if kind == "consumable":
         extra_device = _extract_consumable_device_pair(lines, schema_cfg, kind)
         if extra_device is not None:
             accepted.append(extra_device)
