@@ -135,6 +135,28 @@ def _normalize_consumable_device_params(params: list[tuple[str, str]], *, kind: 
     return out
 
 
+def _build_consumable_short_desc(params: list[tuple[str, str]]) -> str:
+    type_value = _first_value(params, "Тип") or "Расходный материал"
+    brand_value = (
+        _first_value(params, "Для бренда")
+        or _first_value(params, "Бренд")
+        or _first_value(params, "Производитель")
+    )
+    type_value = _clean_text(type_value)
+    brand_value = _clean_text(brand_value)
+
+    if type_value and brand_value:
+        return (
+            f"{type_value} для устройств {brand_value}. "
+            "Основные совместимые модели указаны в характеристике «Для устройства»."
+        )
+
+    if type_value:
+        return f"{type_value}. Основные совместимые модели указаны в характеристике «Для устройства»."
+
+    return "Основные совместимые модели указаны в характеристике «Для устройства»."
+
+
 def _drop_consumable_device_narrative(clean_desc: str, params: list[tuple[str, str]], *, kind: str) -> str:
     if kind != "consumable":
         return _clean_text(clean_desc)
@@ -156,7 +178,11 @@ def _drop_consumable_device_narrative(clean_desc: str, params: list[tuple[str, s
             continue
         kept.append(line)
 
-    return "\n".join(kept)
+    result = "\n".join(kept).strip()
+    if result:
+        return result
+
+    return _build_consumable_short_desc(params).strip()
 
 
 def _clean_text(value: Any) -> str:
