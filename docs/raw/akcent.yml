@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-13 17:12:13">
+<yml_catalog date="2026-03-13 17:27:50">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-13 17:12:13
+Время сборки (Алматы)                      | 2026-03-13 17:27:50
 Ближайшая сборка (Алматы)                  | 2026-03-14 02:00:00
 Сколько товаров у поставщика до фильтра    | 1798
 Сколько товаров у поставщика после фильтра | 161
@@ -22,7 +22,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачетсвенную печать для приентеров Epson. Вид струйный Назначение широкоформатный принтер Цвет печати фиолетовый Поддерживаемые модели принтеров Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000 Ресурс 700 мл]]></description>
+Оригинальный картридж Epson C13T55KD00 фиолетовый цвета для Epson SureColor SC-P6000 / Epson SureColor SC-P7000 / Epson SureColor SC-P8000 / Epson SureColor SC-P9000. Ресурс: 700 мл.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
 <param name="Для устройства">Epson SureColor SC-P6000 / Epson SureColor SC-P7000 / Epson SureColor SC-P8000 / Epson SureColor SC-P9000</param>
@@ -115,7 +115,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ёмкость для отработанных чернил для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный ёмкость для отработанных чернил Epson C13T619300 для SureColor SC-T3000 / SureColor T3000 / SureColor SC-T5000 / SureColor SC-T7000 / SureColor SC-F6000 / SC-B6000.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
@@ -326,7 +326,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson T3400N пурпурный цвета для Epson SureColor SC-T3400 / SC-T3400N / SC-T3405 / SC-T3405N / SC-T5400 / SC-T5400M / SC-T5405. Ресурс: 350 мл.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
@@ -346,7 +346,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T41F440 жёлтый цвета для Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000. Ресурс: 350 мл.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">350 мл</param>
@@ -384,7 +384,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T606100 чёрный цвета для Epson Stylus Pro 4800 Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
@@ -405,7 +405,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T606300 пурпурный цвета для Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
@@ -426,7 +426,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T606400 жёлтый цвета для Epson Stylus Pro 4800 Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
@@ -447,7 +447,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T606500 светло-голубой цвета для Epson Stylus Pro 4800 Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Светло-голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
@@ -468,7 +468,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T606600 светло-пурпурный цвета для Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Светло-пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
@@ -489,7 +489,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T606700 серый цвета для Epson Stylus Pro 4800 Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Серый</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
@@ -510,7 +510,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T606B00 для Epson Stylus Pro 4800.]]></description>
 <param name="Гарантия">12 мес.</param>
 <param name="Для устройства">Epson Stylus Pro 4800</param>
 <param name="Модель">C13T606B00</param>
@@ -528,7 +528,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T606C00 пурпурный цвета для Epson Stylus Pro 4800. Ресурс: 221 мл.]]></description>
 <param name="Ресурс">221 мл</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Тип">Картридж</param>
@@ -548,7 +548,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T614200 голубой цвета для Epson Stylus Pro 4400 Epson Stylus Pro 4450. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
@@ -569,7 +569,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T614300 пурпурный цвета для Epson Stylus Pro 4400 Epson Stylus Pro 4450. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
@@ -590,7 +590,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T614400 жёлтый цвета для Epson Stylus Pro 4400 Epson Stylus Pro 4450. Ресурс: 220 мл.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
@@ -611,7 +611,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T61480N чёрный цвета для Epson Stylus Pro 4800 Epson Stylus Pro 4880 Epson Stylus Pro 4400 Epson Stylus Pro 4450. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
@@ -632,7 +632,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T692500 чёрный цвета для Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000. Ресурс: 110 мл.]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
@@ -653,7 +653,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T694100 чёрный цвета для Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000. Ресурс: 700 мл.]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
@@ -674,7 +674,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T69430N пурпурный цвета для Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000. Ресурс: 700 мл.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
@@ -695,7 +695,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный картридж Epson C13T69440N жёлтый цвета для Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000. Ресурс: 700 мл.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
@@ -716,7 +716,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с черными чернилами ресурсом 10 000 стр. (XL) Совместимые продукты для Контейнер с черными чернилами ресурсом 10 000 стр. (XL) Epson WorkForce Pro WF-M5299DW C11CG07401 Epson WorkForce Pro WF-M5299DWSV C11CG07401 Epson WorkForce Pro WF-M5799DWF C11CG04401 Epson WorkForce Pro WF-M5799DWFMV]]></description>
+Оригинальный картридж Epson C13T965140 чёрный цвета для Epson WorkForce Pro WF-M5299DW / Epson WorkForce Pro WF-M5299DWSV / Epson WorkForce Pro WF-M5799DWF / Epson WorkForce Pro WF-M5799DWFMV.]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
@@ -2204,7 +2204,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Совместимые продукты Epson L3100 C11CG88401 Epson L3101 C11CG88402 - Epson L3110 C11CG87405 Epson L3150 C11CG86409 Epson L3151 C11CG86411]]></description>
+Оригинальный чернила Epson C13T00S24A голубой цвета для L3100 / L3101 / L3110 / L3150 / L3151.]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2224,7 +2224,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Совместимые продукты Epson L3100 C11CG88401 Epson L3101 C11CG88402 - Epson L3110 C11CG87405 Epson L3150 C11CG86409 Epson L3151 C11CG86411]]></description>
+Оригинальный чернила Epson C13T00S34A пурпурный цвета для L3100 / L3101 / L3110 / L3150 / L3151.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2244,7 +2244,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Совместимые продукты Epson L3100 C11CG88401 Epson L3101 C11CG88402 - Epson L3110 C11CG87405 Epson L3150 C11CG86409 Epson L3151 C11CG86411]]></description>
+Оригинальный чернила Epson C13T00S44A жёлтый цвета для L3100 / L3101 / L3110 / L3150 / L3151.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
@@ -2493,7 +2493,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный чернила Epson C13T09C34A голубой цвета для L8050 / L18050.]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2513,7 +2513,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный чернила Epson C13T66414A чёрный цвета для Epson L100 / Epson L110 / Epson L120 / Epson L1300 / Epson L132 / Epson L200 / Epson L210 / Epson L222 / Epson L300 / Epson L312 / Epson L350 / Epson L355 / Epson L362 / Epson L366 / Epson L456 / Epson L550 / Epson L555 / Epson L566. Ресурс: 4000 – 7100 страниц формата A4*.]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2534,7 +2534,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный чернила Epson C13T66434A пурпурный цвета для Epson L100 / Epson L110 / Epson L120 / Epson L1300 / Epson L132 / Epson L200 / Epson L210 / Epson L222 / Epson L300 / Epson L312 / Epson L350 / Epson L355 / Epson L362 / Epson L366 / Epson L456 / Epson L550 / Epson L555 / Epson L566. Ресурс: 5700 – 6500 страниц формата A4*.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2555,7 +2555,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный чернила Epson C13T66444A жёлтый цвета для Epson L100 / Epson L110 / Epson L120 / Epson L1300 / Epson L132 / Epson L200 / Epson L210 / Epson L222 / Epson L300 / Epson L312 / Epson L350 / Epson L355 / Epson L362 / Epson L366 / Epson L456 / Epson L550 / Epson L555 / Epson L566. Ресурс: 5700 – 6500 страниц формата A4*.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
@@ -2576,7 +2576,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный чернила Epson C13T67314A чёрный цвета для Epson L800 / Epson L1800 / Epson L810 / Epson L850. Ресурс: 1500 – 1800 фотографий формата 10х15*.]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2597,7 +2597,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный чернила Epson C13T67324A голубой цвета для Epson L800 / Epson L1800 / Epson L810 / Epson L850. Ресурс: 1500 – 1800 фотографий формата 10х15*.]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2618,7 +2618,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный чернила Epson C13T67334A пурпурный цвета для Epson L800 / Epson L1800 / Epson L810 / Epson L850. Ресурс: 1500 – 1800 фотографий формата 10х15*.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2639,7 +2639,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный чернила Epson C13T67344A жёлтый цвета для Epson L800 / Epson L1800 / Epson L810 / Epson L850. Ресурс: 1500 – 1800 фотографий формата 10х15*.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
@@ -2660,7 +2660,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный чернила Epson C13T67354A светло-голубой цвета для Epson L800 / Epson L1800 / Epson L810 / Epson L850. Ресурс: 1500 – 1800 фотографий формата 10х15*.]]></description>
 <param name="Цвет">Светло-голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2681,7 +2681,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Оригинальный чернила Epson C13T67364A светло-пурпурный цвета для Epson L800 / Epson L1800 / Epson L810 / Epson L850. Ресурс: 1500 – 1800 фотографий формата 10х15*.]]></description>
 <param name="Цвет">Светло-пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2982,7 +2982,7 @@ Fellowes P-25S - Шредер предназначен для персональ
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Чернила Epson серии 664 Сведите затраты на печать к минимуму с чернилами EcoTank. Ресурса комплекта чернил хватит на печать 4 500 черно-белых и 7 500 цветных страниц¹ – отличное решение для тех, кто привык много печатать. Четырехцветные водорастворимые чернила обеспечивают качественный результат и рекордно низкую себестоимость печати. Для повседневной печати Линейка чернил четырех цветов прекрасно подходит для повседневной печати документов. Радикальное снижение затрат на чернила Ищете самое выгодное решение для печати? Уже со стартовым набором чернил в комплекте с устройством Epson вы сократите средние расходы на чернила до 90 %². Доступная цена и высокий ресурс чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных¹. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество.]]></description>
+Оригинальный экономичный набор Epson Экономичный набор из четырех контейнеров с чернилами, серия 664. Ресурс: чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных¹. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Экономичный набор</param>
 <param name="Ресурс">чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных¹. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество</param>
