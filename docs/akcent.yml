@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-13 15:26:02">
+<yml_catalog date="2026-03-13 15:43:01">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-13 15:26:02
+Время сборки (Алматы)                      | 2026-03-13 15:43:01
 Ближайшая сборка (Алматы)                  | 2026-03-14 02:00:00
 Сколько товаров у поставщика до фильтра    | 1798
 Сколько товаров у поставщика после фильтра | 161
@@ -30,15 +30,15 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачетсвенную печать для приентеров Epson. Вид струйный Назначение широкоформатный принтер Цвет печати фиолетовый Поддерживаемые модели принтеров Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000 Ресурс 700 мл</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> SureColor SC-P6000 / SureColor SC-P7000 / P8000 / SureColor SC-P9000</li><li><strong>Модель:</strong> C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Фиолетовый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> SureColor SC-P6000 / SureColor SC-P7000 / SureColor SC-P8000 / SureColor SC-P9000</li><li><strong>Модель:</strong> C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Фиолетовый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">SureColor SC-P6000 / SureColor SC-P7000 / P8000 / SureColor SC-P9000</param>
+<param name="Для устройства">SureColor SC-P6000 / SureColor SC-P7000 / SureColor SC-P8000 / SureColor SC-P9000</param>
 <param name="Модель">C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</param>
 <param name="Ресурс">700 мл</param>
-<param name="Тип">Чернила</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Фиолетовый</param>
 <keywords>Epson, C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>

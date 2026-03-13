@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-13 15:26:02">
+<yml_catalog date="2026-03-13 15:43:01">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-13 15:26:02
+Время сборки (Алматы)                      | 2026-03-13 15:43:01
 Ближайшая сборка (Алматы)                  | 2026-03-14 02:00:00
 Сколько товаров у поставщика до фильтра    | 1798
 Сколько товаров у поставщика после фильтра | 161
@@ -24,8 +24,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <description><![CDATA[
 Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачетсвенную печать для приентеров Epson. Вид струйный Назначение широкоформатный принтер Цвет печати фиолетовый Поддерживаемые модели принтеров Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000 Ресурс 700 мл]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Чернила</param>
-<param name="Для устройства">SureColor SC-P6000 / SureColor SC-P7000 / P8000 / SureColor SC-P9000</param>
+<param name="Тип">Картридж</param>
+<param name="Для устройства">SureColor SC-P6000 / SureColor SC-P7000 / SureColor SC-P8000 / SureColor SC-P9000</param>
 <param name="Цвет">Фиолетовый</param>
 <param name="Ресурс">700 мл</param>
 <param name="Модель">C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</param>
