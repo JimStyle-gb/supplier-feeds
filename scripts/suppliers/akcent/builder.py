@@ -90,8 +90,10 @@ def _normalize_consumable_device_value(value: str) -> str:
     src = re.sub(r"(?iu)\bexpression\b", "Expression", src)
     src = re.sub(r"(?iu)\bpixma\b", "PIXMA", src)
     src = re.sub(r"(?iu)\blaserjet\b", "LaserJet", src)
+    src = re.sub(r"(?iu)\b([A-Z]{1,3})-\s+([A-Z0-9])", r"\1-\2", src)
 
     chunks: list[str] = []
+    last_family = ""
     for m in _RE_DEVICE_MODEL.finditer(src):
         family = _clean_text(m.group(1))
         model = _clean_text(m.group(2))
@@ -99,6 +101,10 @@ def _normalize_consumable_device_value(value: str) -> str:
             continue
         model = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", model)
         model = _clean_text(model)
+        if family:
+            last_family = family
+        elif last_family and re.match(r"(?iu)^(?:P|T|WF|ET|L|SC-|B|C|M)\d", model):
+            family = last_family
         item = f"{family} {model}".strip() if family else model
         chunks.append(item)
 
@@ -175,14 +181,15 @@ def _looks_generic_device_value(value: str) -> bool:
 
 def _infer_consumable_type(name: str, desc: str, current_type: str) -> str:
     low = _cf(" ".join([name, desc, current_type]))
+    name_cf = _cf(name)
     if "емкость для отработанных чернил" in low or "ёмкость для отработанных чернил" in low:
         return "Ёмкость для отработанных чернил"
     if "экономичный набор" in low:
         return "Экономичный набор"
-    if "чернил" in low or _cf(name).startswith("чернила"):
-        return "Чернила"
-    if "картридж" in low:
+    if "картридж" in low or "singlepack" in name_cf or "cartridge" in low:
         return "Картридж"
+    if "чернил" in low or name_cf.startswith("чернила"):
+        return "Чернила"
     return _clean_text(current_type)
 
 
@@ -238,7 +245,17 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
         out = _set_single_param(out, "Для устройства", better_device)
 
     model = _first_value(out, "Модель")
-    if model and (" " in model or len(model) > 18):
+    if kind == "consumable":
+        code_src = " / ".join([
+            _first_value(out, "Коды"),
+            name or "",
+            desc or "",
+            model or "",
+        ])
+        m = _RE_CODE_TOKEN.search(code_src)
+        if m:
+            out = _set_single_param(out, "Модель", _clean_text(m.group(0)).upper())
+    elif model and (" " in model or len(model) > 18):
         code_src = _first_value(out, "Коды") or name or desc or model
         m = _RE_CODE_TOKEN.search(code_src)
         if m:
