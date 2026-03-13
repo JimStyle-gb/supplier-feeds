@@ -606,6 +606,7 @@ def _build_single_offer(
         name=raw_name,
         model=_clean_text(_get_field(src, "model")),
         vendor=_clean_text(_get_field(src, "vendor")),
+        description_text=_clean_text(_get_field(src, "description", "desc")),
         dealer_text=dealer_text,
         price_text=price_text,
         rrp_text=rrp_text,
