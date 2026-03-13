@@ -196,9 +196,7 @@ def key_quality_ok(key: str, schema_cfg: dict[str, Any]) -> bool:
     if not k:
         return False
 
-    banned = set()
-    banned |= _cf_set(schema_cfg.get("banned_exact") or [])
-    banned |= _cf_set(rules.get("banned_exact") or [])
+    banned = _cf_set(rules.get("banned_exact") or [])
     if k.casefold() in banned:
         return False
 
@@ -367,6 +365,39 @@ def _normalize_unitish(value: str) -> str:
     return s
 
 
+# Строгая нормализация объема для расходки: оставляем только реальные объёмы чернил/контейнеров.
+def _normalize_volume(value: str) -> str:
+    s = _clean_text(value)
+    if not s:
+        return ""
+    low = s.casefold().replace('ё', 'е')
+    # Упаковочный/логистический объем и прочие служебные вещи в AkCent не нужны.
+    if 'м3' in low or 'm3' in low or 'cbm' in low or 'литр.' in low:
+        return ""
+
+    import re
+    m = re.search(r'(?iu)\b(\d+(?:[.,]\d+)?)\s*(мл|ml)\b', s)
+    if m:
+        num = m.group(1).replace('.', ',')
+        return f"{num} мл"
+
+    m = re.search(r'(?iu)\b(\d+(?:[.,]\d+)?)\s*(л|l)\b', s)
+    if m:
+        num_raw = m.group(1).replace(',', '.')
+        try:
+            num = float(num_raw)
+        except ValueError:
+            return ""
+        # Для расходки оставляем только внятные литражи, а не микрослужебные объёмы типа 0,003
+        if num < 0.05:
+            return ""
+        pretty = (str(int(num)) if num.is_integer() else str(num).replace('.', ','))
+        return f"{pretty} л"
+
+    # Голое число без единиц для объема считаем мусором.
+    return ""
+
+
 # Умеренная чистка значения по ключу.
 def normalize_param_value(key: str, raw_value: Any, schema_cfg: dict[str, Any]) -> str:
     value = _clean_text(raw_value)
@@ -400,6 +431,9 @@ def normalize_param_value(key: str, raw_value: Any, schema_cfg: dict[str, Any]) 
         if low == "лазерная":
             return "Лазерная"
         return value[0].upper() + value[1:] if value else value
+
+    if kcf == "объем":
+        return _normalize_volume(value)
 
     if kcf in {"диагональ", "диагональ (см)", "яркость", "контрастность", "контрастность (динамическая)", "разрешение", "разрешение печати, dpi", "разрешение сканера, dpi", "максимальное разрешение, dpi", "интерполяционное разрешение, dpi", "скорость печати (a4)", "минимальная плотность бумаги, г/м²", "максимальная плотность бумаги, г/м²", "время отклика", "частота обновления", "размер", "ширина", "высота", "габариты", "вес", "вес (в упак.)", "вес (без упак.)"}:
         return _normalize_unitish(value)
@@ -488,8 +522,6 @@ def extract_xml_params(
     kind_name = kind or detect_kind_by_name(str(_get_field(src, "name") or ""), schema)
 
     discard_exact = _cf_set(schema.get("discard_exact") or [])
-    banned_exact = _cf_set(schema.get("banned_exact") or [])
-    drop_exact = discard_exact | banned_exact
     allow_keys = resolve_allowed_keys(schema, kind_name)
 
     kept: list[tuple[str, str]] = []
@@ -517,7 +549,7 @@ def extract_xml_params(
             stats["dropped_bad_key"] += 1
             continue
 
-        if key.casefold() in drop_exact:
+        if key.casefold() in discard_exact:
             stats["dropped_discard_key"] += 1
             continue
 
