@@ -144,6 +144,9 @@ def _normalize_consumable_device_params(params: list[tuple[str, str]], *, kind: 
 _RE_CONSUMABLE_MODEL_TAIL = re.compile(
     r"(?iu)(?:поддерживаемые\s+модели(?:\s+принтеров|\s+устройств|\s+техники)?|совместимые\s+модели(?:\s+техники)?|совместимые\s+продукты(?:\s+для)?)\s*:?[ \t]*(.+)$"
 )
+_RE_FOR_DEVICE_TAIL = re.compile(
+    r"(?iu)(?:^|\b)(?:для|for)\s+((?:Epson\s+)?(?:WorkForce|SureColor|EcoTank|Stylus(?:\s+Pro)?)\b.+)$"
+)
 _RE_L_SERIES_PACK = re.compile(r"(?iu)\bL(\d{3,5}(?:/\d{3,5})+)\b")
 _RE_CODE_TOKEN = re.compile(r"(?iu)C(?:11|12|13|33)[A-Z0-9]{5,10}|T[0-9A-Z]{5,10}")
 _RE_WORKFORCE_MODEL = re.compile(r"(?iu)(?:Epson\s+)?WorkForce\s+[A-Z0-9-]+")
