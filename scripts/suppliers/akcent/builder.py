@@ -229,6 +229,57 @@ def _looks_generic_device_value(value: str) -> bool:
     return not bool(_RE_DEVICE_MODEL.search(value))
 
 
+_RE_PRIMARY_CONSUMABLE_CODE = re.compile(r"(?iu)\bC(?:11|12|13|33)[A-Z0-9]{5,10}\b")
+_RE_SECONDARY_T_CODE = re.compile(r"(?iu)\bT[0-9A-Z]{5,10}\b")
+
+
+def _pick_name_primary_code(name: str) -> str:
+    m = _RE_PRIMARY_CONSUMABLE_CODE.search(_clean_text(name))
+    return _clean_text(m.group(0)).upper() if m else ""
+
+
+def _pick_secondary_t_code(name: str, desc: str, primary: str) -> str:
+    joined = " / ".join([_clean_text(name), _clean_text(desc)])
+    for m in _RE_SECONDARY_T_CODE.finditer(joined):
+        code = _clean_text(m.group(0)).upper()
+        if code and code != primary:
+            return code
+    return ""
+
+
+def _should_force_consumable_model(current_model: str, primary_code: str, name: str) -> bool:
+    cur = _clean_text(current_model).upper()
+    if not primary_code:
+        return False
+    if not cur:
+        return True
+    if cur == primary_code:
+        return False
+    if ' ' in _clean_text(current_model):
+        return True
+    if cur.startswith('C11') or cur.startswith('C12') or cur.startswith('C13') or cur.startswith('C33'):
+        return True
+    if cur in _clean_text(name).upper() and cur != primary_code:
+        return True
+    return False
+
+
+def _normalize_epson_device_list(value: str) -> str:
+    src = _clean_text(value)
+    if not src:
+        return ""
+    src = re.sub(r"(?iu)\bSC-\s+", "SC-", src)
+    src = re.sub(r"(?iu)\bWF-\s+", "WF-", src)
+    src = re.sub(r"(?iu)\bET-\s+", "ET-", src)
+    src = re.sub(r"(?iu)(?<!Epson\s)\bSureColor\b", "Epson SureColor", src)
+    src = re.sub(r"(?iu)(?<!Epson\s)\bWorkForce\b", "Epson WorkForce", src)
+    src = re.sub(r"(?iu)(?<!Epson\s)\bEcoTank\b", "Epson EcoTank", src)
+    src = re.sub(r"(?iu)(?<!Epson\s)\bStylus(?:\s+Pro)?\b", lambda m: 'Epson ' + _clean_text(m.group(0)), src)
+    # keep only model-like fragments when possible
+    models = _extract_models_from_text(src)
+    return models or src
+
+
 def _infer_consumable_type(name: str, desc: str, current_type: str) -> str:
     low = _cf(" ".join([name, desc, current_type]))
     name_cf = _cf(name)
@@ -297,12 +348,21 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
 
     current_device = _first_value(out, "Для устройства") or _first_value(out, "Совместимость")
     better_device = _extract_consumable_device_candidate(name, desc)
+    if not better_device:
+        better_device = _extract_models_from_text(" ".join([name or "", desc or ""]))
+    better_device = _normalize_epson_device_list(better_device)
     if better_device and (_looks_generic_device_value(current_device) or len(better_device) >= len(current_device)):
         out = _set_single_param(out, "Для устройства", better_device)
 
     model = _first_value(out, "Модель")
+    name_primary = _pick_name_primary_code(name)
+    if name_primary and _should_force_consumable_model(model, name_primary, name):
+        out = _set_single_param(out, "Модель", name_primary)
+        model = name_primary
+
     code_src = " / ".join([
         _first_value(out, "Коды"),
+        name_primary or "",
         name or "",
         model or "",
         desc or "",
@@ -312,17 +372,27 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
         c = _clean_text(m.group(0)).upper()
         if c and c not in codes:
             codes.append(c)
+    if name_primary and name_primary not in codes:
+        codes.insert(0, name_primary)
     if codes:
-        out = _set_single_param(out, "Модель", codes[0])
-        # add codes if there is a distinct secondary code
-        if len(codes) > 1:
-            compact = [c for c in codes[:3] if c != codes[0]]
+        primary = codes[0]
+        if _should_force_consumable_model(_first_value(out, "Модель"), primary, name):
+            out = _set_single_param(out, "Модель", primary)
+        secondary_t = _pick_secondary_t_code(name, desc, primary)
+        if secondary_t:
+            out = _set_single_param(out, "Коды", f"{primary} / {secondary_t}")
+        elif len(codes) > 1:
+            compact = [c for c in codes[1:3] if c != primary]
             if compact:
-                out = _set_single_param(out, "Коды", " / ".join([codes[0]] + compact[:1]))
+                out = _set_single_param(out, "Коды", " / ".join([primary] + compact[:1]))
+            else:
+                out = _set_single_param(out, "Коды", primary)
+        else:
+            out = _set_single_param(out, "Коды", primary)
 
     # some descriptions are just pure model lists; preserve them as device list
     if not _has_key(out, "Для устройства"):
-        models = _extract_models_from_text(desc)
+        models = _normalize_epson_device_list(_extract_models_from_text(desc))
         if models:
             out = _set_single_param(out, "Для устройства", models)
 
