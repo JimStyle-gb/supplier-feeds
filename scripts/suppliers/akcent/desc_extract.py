@@ -25,6 +25,7 @@ from suppliers.akcent.params_xml import (
     normalize_param_value,
     resolve_allowed_keys,
 )
+from suppliers.akcent.compat import clean_device_value
 
 
 _RE_HTML_TAG = re.compile(r"<[^>]+>")
@@ -308,6 +309,34 @@ def _cleanup_value_by_key(key: str, value: str) -> str:
     return v
 
 
+def _extract_consumable_device_pair(lines: list[str], schema_cfg: dict[str, Any], kind: str) -> tuple[str, str] | None:
+    if kind != "consumable":
+        return None
+    patterns = (
+        re.compile(r"(?iu)\bподдерживаемые\s+модели\s+(?:принтеров|устройств|техники)\s*:\s*(.+)$"),
+        re.compile(r"(?iu)\bсовместимые\s+модели(?:\s+техники)?\s*:\s*(.+)$"),
+        re.compile(r"(?iu)\bдля\s*:\s*(.+)$"),
+    )
+    for line in lines:
+        text = norm_ws(line)
+        if not text:
+            continue
+        low = text.casefold().replace("ё", "е")
+        if "epson" not in low and "surecolor" not in low and "workforce" not in low and "stylus" not in low and "ecotank" not in low:
+            continue
+        for pat in patterns:
+            m = pat.search(text)
+            if not m:
+                continue
+            raw = norm_ws(m.group(1))
+            clean = norm_ws(clean_device_value(raw))
+            if clean and len(clean) <= 300:
+                checked = validate_desc_pair("Для устройства", clean, schema_cfg, kind)
+                if checked is not None:
+                    return checked
+    return None
+
+
 def _dedupe_pairs(pairs: list[tuple[str, str]]) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
@@ -369,6 +398,14 @@ def extract_desc_params(
             rejected.append({"key": key, "value": val, "reason": "not_allowed_or_bad"})
             continue
         accepted.append(checked)
+
+    have_device = any(k == "Для устройства" for k, _ in accepted)
+    have_compat = any(k == "Совместимость" for k, _ in accepted)
+    if kind == "consumable" and not have_device and not have_compat:
+        extra_device = _extract_consumable_device_pair(lines, schema_cfg, kind)
+        if extra_device is not None:
+            accepted.append(extra_device)
+
     accepted = _dedupe_pairs(accepted)
     report = {
         "kind": kind,
