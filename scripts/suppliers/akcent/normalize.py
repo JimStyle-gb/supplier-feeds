@@ -139,11 +139,31 @@ def normalize_name(name: str) -> str:
     return _clean_spaces(name)
 
 
-def normalize_model(model: str, *, name: str = "") -> str:
-    """Нормализует модель; если модели нет — берёт name."""
+def _short_model_from_text(*parts: str) -> str:
+    """Пытается достать короткую модель/код из текста."""
+    code = _extract_code_token(*parts)
+    if code:
+        return code.upper()
+    return ""
+
+
+def normalize_model(model: str, *, name: str = "", description_text: str = "") -> str:
+    """
+    Нормализует модель.
+
+    Для AkCent consumable-кейсов старается не тащить полное имя товара,
+    а выделять короткий код модели, если он явно читается.
+    """
     s = _clean_spaces(model)
     if s:
+        short = _short_model_from_text(s, name, description_text)
+        if short and len(s) > len(short) + 6:
+            return short
         return s
+
+    short = _short_model_from_text(name, description_text)
+    if short:
+        return short
     return normalize_name(name)
 
 
@@ -152,6 +172,7 @@ def normalize_vendor(
     *,
     name: str = "",
     model: str = "",
+    description_text: str = "",
     vendor_blacklist: set[str] | None = None,
 ) -> str:
     """
@@ -167,7 +188,7 @@ def normalize_vendor(
     if s and s.casefold() not in vendor_blacklist:
         return s
 
-    guessed = _extract_vendor_from_text(name, model)
+    guessed = _extract_vendor_from_text(name, model, description_text)
     if guessed and guessed.casefold() not in vendor_blacklist:
         return guessed
 
@@ -313,6 +334,7 @@ def normalize_source_basics(
     name: str = "",
     model: str = "",
     vendor: str = "",
+    description_text: str = "",
     dealer_text: str = "",
     price_text: str = "",
     rrp_text: str = "",
@@ -325,8 +347,8 @@ def normalize_source_basics(
 ) -> dict[str, object]:
     """Удобный агрегатор для builder.py."""
     n_name = normalize_name(name)
-    n_model = normalize_model(model, name=n_name)
-    n_vendor = normalize_vendor(vendor, name=n_name, model=n_model, vendor_blacklist=vendor_blacklist)
+    n_model = normalize_model(model, name=n_name, description_text=description_text)
+    n_vendor = normalize_vendor(vendor, name=n_name, model=n_model, description_text=description_text, vendor_blacklist=vendor_blacklist)
     n_article = normalize_article(article, name=n_name, model=n_model)
     n_oid = build_offer_oid(
         raw_id,
