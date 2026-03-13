@@ -145,7 +145,50 @@ _RE_CONSUMABLE_MODEL_TAIL = re.compile(
     r"(?iu)(?:поддерживаемые\s+модели(?:\s+принтеров|\s+устройств|\s+техники)?|совместимые\s+модели(?:\s+техники)?|совместимые\s+продукты(?:\s+для)?)\s*:?[ \t]*(.+)$"
 )
 _RE_L_SERIES_PACK = re.compile(r"(?iu)\bL(\d{3,5}(?:/\d{3,5})+)\b")
-_RE_CODE_TOKEN = re.compile(r"(?iu)\bC13T\d{5,6}[A-Z]?\b|\bT\d{2}[A-Z]?\d{2,5}[A-Z]?\b")
+_RE_CODE_TOKEN = re.compile(r"(?iu)C(?:11|12|13|33)[A-Z0-9]{5,10}|T[0-9A-Z]{5,10}")
+_RE_WORKFORCE_MODEL = re.compile(r"(?iu)(?:Epson\s+)?WorkForce\s+[A-Z0-9-]+")
+_RE_SURECOLOR_MODEL = re.compile(r"(?iu)(?:Epson\s+)?SureColor\s+SC-[A-Z0-9-]+")
+_RE_ECOTANK_MODEL = re.compile(r"(?iu)(?:Epson\s+)?EcoTank\s+[A-Z0-9-]+")
+_RE_STYLUS_MODEL = re.compile(r"(?iu)(?:Epson\s+)?Stylus(?:\s+Pro)?\s+[A-Z0-9-]+")
+_RE_GENERIC_EPS_MODEL = re.compile(r"(?iu)(?:WF|SC|ET|L)-?[A-Z0-9]{2,}")
+
+
+def _title_eps_family(value: str) -> str:
+    v = _clean_text(value)
+    if not v:
+        return ""
+    v = re.sub(r"(?iu)epson", "Epson", v)
+    v = re.sub(r"(?iu)surecolor", "SureColor", v)
+    v = re.sub(r"(?iu)workforce", "WorkForce", v)
+    v = re.sub(r"(?iu)ecotank", "EcoTank", v)
+    v = re.sub(r"(?iu)stylus", "Stylus", v)
+    v = re.sub(r"(?iu)w/?o\s*stand", "", v)
+    return _clean_text(v)
+
+
+def _extract_models_from_text(text: str) -> str:
+    src = _clean_text(text)
+    if not src:
+        return ""
+
+    items: list[str] = []
+    for rx in (_RE_SURECOLOR_MODEL, _RE_WORKFORCE_MODEL, _RE_ECOTANK_MODEL, _RE_STYLUS_MODEL):
+        items.extend([_title_eps_family(m.group(0)) for m in rx.finditer(src)])
+
+    if not items:
+        for m in _RE_GENERIC_EPS_MODEL.finditer(src):
+            token = _clean_text(m.group(0)).upper().replace('SC ', 'SC-').replace('WF ', 'WF-').replace('ET ', 'ET-').replace('L ', 'L')
+            token = token.replace('SC- ', 'SC-').replace('WF- ', 'WF-').replace('ET- ', 'ET-')
+            if token.startswith('SC-'):
+                items.append(f"Epson SureColor {token}")
+            elif token.startswith('WF-'):
+                items.append(f"Epson WorkForce {token}")
+            elif token.startswith('ET-'):
+                items.append(f"Epson EcoTank {token}")
+            elif token.startswith('L') and len(token) > 1 and token[1:].isdigit():
+                items.append(f"Epson {token}")
+
+    return " / ".join(_dedupe_text_items([x for x in items if x]))
 
 
 def _extract_consumable_device_candidate(name: str, desc: str) -> str:
@@ -157,8 +200,15 @@ def _extract_consumable_device_candidate(name: str, desc: str) -> str:
         m = _RE_CONSUMABLE_MODEL_TAIL.search(line)
         if m:
             cand = _normalize_consumable_device_value(m.group(1))
+            models = _extract_models_from_text(cand)
+            if models:
+                return models
             if cand:
                 return cand
+
+    models = _extract_models_from_text(text)
+    if models:
+        return models
 
     # fallback for Epson L-series inks from name like L800/1800/810/850
     m2 = _RE_L_SERIES_PACK.search(_clean_text(name))
@@ -231,35 +281,50 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
     inferred_type = _infer_consumable_type(name, desc, current_type)
 
     if _cf(current_type) in {"струйный", "лазерный", "матричный", "сублимационный", "термосублимационный"}:
-        if not _has_key(out, "Тип печати"):
-            out = _set_single_param(out, "Тип печати", _normalize_print_type_value(current_type))
+        out = _set_single_param(out, "Тип печати", _normalize_print_type_value(current_type))
         out = _set_single_param(out, "Тип", inferred_type or current_type)
-    elif inferred_type and current_type and ("фабрика печати" in _cf(current_type) or "чернила" in _cf(current_type)):
+    elif inferred_type and current_type and ("фабрика печати" in _cf(current_type) or "чернила" in _cf(current_type) or "epson" in _cf(current_type)):
         out = _set_single_param(out, "Тип", inferred_type)
     elif inferred_type and not current_type:
         out = _set_single_param(out, "Тип", inferred_type)
 
+    # normalize final consumable type labels
+    norm_type = _clean_text(_first_value(out, "Тип"))
+    if _cf(' '.join([norm_type, name, desc])).find('картридж') >= 0 or 'singlepack' in _cf(name):
+        out = _set_single_param(out, "Тип", "Картридж")
+    elif norm_type and ("фабрика печати" in _cf(norm_type) or _cf(norm_type) == "чернила"):
+        out = _set_single_param(out, "Тип", "Чернила")
+
     current_device = _first_value(out, "Для устройства") or _first_value(out, "Совместимость")
     better_device = _extract_consumable_device_candidate(name, desc)
-    if better_device and (_looks_generic_device_value(current_device) or len(better_device) > len(current_device)):
+    if better_device and (_looks_generic_device_value(current_device) or len(better_device) >= len(current_device)):
         out = _set_single_param(out, "Для устройства", better_device)
 
     model = _first_value(out, "Модель")
-    if kind == "consumable":
-        code_src = " / ".join([
-            _first_value(out, "Коды"),
-            name or "",
-            desc or "",
-            model or "",
-        ])
-        m = _RE_CODE_TOKEN.search(code_src)
-        if m:
-            out = _set_single_param(out, "Модель", _clean_text(m.group(0)).upper())
-    elif model and (" " in model or len(model) > 18):
-        code_src = _first_value(out, "Коды") or name or desc or model
-        m = _RE_CODE_TOKEN.search(code_src)
-        if m:
-            out = _set_single_param(out, "Модель", _clean_text(m.group(0)).upper())
+    code_src = " / ".join([
+        _first_value(out, "Коды"),
+        name or "",
+        model or "",
+        desc or "",
+    ])
+    codes: list[str] = []
+    for m in _RE_CODE_TOKEN.finditer(code_src):
+        c = _clean_text(m.group(0)).upper()
+        if c and c not in codes:
+            codes.append(c)
+    if codes:
+        out = _set_single_param(out, "Модель", codes[0])
+        # add codes if there is a distinct secondary code
+        if len(codes) > 1:
+            compact = [c for c in codes[:3] if c != codes[0]]
+            if compact:
+                out = _set_single_param(out, "Коды", " / ".join([codes[0]] + compact[:1]))
+
+    # some descriptions are just pure model lists; preserve them as device list
+    if not _has_key(out, "Для устройства"):
+        models = _extract_models_from_text(desc)
+        if models:
+            out = _set_single_param(out, "Для устройства", models)
 
     return out
 
