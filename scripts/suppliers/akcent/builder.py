@@ -251,16 +251,26 @@ def _pick_name_primary_code(name: str) -> str:
 
 def _pick_secondary_t_code(name: str, desc: str, primary: str) -> str:
     joined = " / ".join([_clean_text(name), _clean_text(desc)]).upper()
+
+    # first: normal standalone T-codes
     raw_tokens = re.findall(r"(?iu)T[0-9A-Z]{5,12}", joined)
     for token in raw_tokens:
         code = _clean_text(token).upper()
-        code = re.split(r"(?iu)(?:ULTRACHROME|SINGLEPACK|INK|CARTRIDGE|BLACK|CYAN|MAGENTA|YELLOW|PHOTO)", code)[0]
+        code = re.split(r"(?iu)(?:ULTRACHROME|SINGLEPACK|INK|CARTRIDGE|BLACK|CYAN|MAGENTA|YELLOW|PHOTO|HDX|HD)", code)[0]
         code = _clean_text(code)
         m = re.match(r"(?iu)^T[0-9A-Z]{5,10}$", code)
         if m:
             code = _clean_text(m.group(0)).upper()
             if code and code != primary:
                 return code
+
+    # second: glued tokens like T55KD00UltraChrome / T41F340M
+    glued = re.search(r"(?iu)(T[0-9A-Z]{5,10})(?=ULTRACHROME|SINGLEPACK|INK|CARTRIDGE|BLACK|CYAN|MAGENTA|YELLOW|PHOTO|HDX|HD|)", joined)
+    if glued:
+        code = _clean_text(glued.group(1)).upper()
+        if code and code != primary:
+            return code
+
     return ""
 
 
@@ -413,29 +423,63 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
         if models:
             out = _set_single_param(out, "Для устройства", models)
 
+    # if device list was still missed, try simpler "for/для + model" extraction from body
+    if not _has_key(out, "Для устройства"):
+        desc_models = _normalize_epson_device_list(_extract_models_from_text(desc or name))
+        if desc_models:
+            out = _set_single_param(out, "Для устройства", desc_models)
+
     return out
 
 
 def _build_consumable_short_desc(params: list[tuple[str, str]]) -> str:
-    type_value = _first_value(params, "Тип") or "Расходный материал"
-    brand_value = (
+    type_value = _clean_text(_first_value(params, "Тип") or "Расходный материал")
+    brand_value = _clean_text(
         _first_value(params, "Для бренда")
         or _first_value(params, "Бренд")
         or _first_value(params, "Производитель")
     )
-    type_value = _clean_text(type_value)
-    brand_value = _clean_text(brand_value)
+    model_value = _clean_text(_first_value(params, "Модель"))
+    codes_value = _clean_text(_first_value(params, "Коды"))
+    color_value = _clean_text(_first_value(params, "Цвет"))
+    resource_value = _clean_text(_first_value(params, "Ресурс"))
+    device_value = _clean_text(_first_value(params, "Для устройства") or _first_value(params, "Совместимость"))
 
-    if type_value and brand_value:
-        return (
-            f"{type_value} для устройств {brand_value}. "
-            "Основные совместимые модели указаны в характеристике «Для устройства»."
-        )
+    subject = type_value or "Расходный материал"
+    prefix = brand_value or ""
 
-    if type_value:
-        return f"{type_value}. Основные совместимые модели указаны в характеристике «Для устройства»."
+    code_hint = ""
+    if model_value and codes_value and model_value in codes_value:
+        code_hint = model_value
+    elif model_value:
+        code_hint = model_value
+    elif codes_value:
+        code_hint = codes_value.split('/')[0].strip()
 
-    return "Основные совместимые модели указаны в характеристике «Для устройства»."
+    parts = []
+    if prefix and code_hint:
+        parts.append(f"Оригинальный {subject.lower()} {prefix} {code_hint}")
+    elif prefix:
+        parts.append(f"Оригинальный {subject.lower()} {prefix}")
+    elif code_hint:
+        parts.append(f"{subject} {code_hint}")
+    else:
+        parts.append(subject)
+
+    if color_value:
+        parts[-1] += f" {color_value.lower()} цвета"
+
+    if device_value:
+        parts[-1] += f" для {device_value}"
+
+    sentence = parts[-1].strip()
+    if not sentence.endswith('.'):
+        sentence += '.'
+
+    if resource_value:
+        sentence += f" Ресурс: {resource_value}."
+
+    return sentence.strip()
 
 
 def _drop_consumable_device_narrative(clean_desc: str, params: list[tuple[str, str]], *, kind: str) -> str:
@@ -485,6 +529,13 @@ def _soften_consumable_body(clean_desc: str, params: list[tuple[str, str]], *, k
     text = _clean_text(text)
 
     if not text:
+        return _build_consumable_short_desc(params).strip()
+
+    low = _cf(text)
+    if any(mark in low for mark in [
+        'вид струй', 'назначение', 'цвет печати', 'поддерживаемые модели',
+        'совместимые модели', 'совместимые продукты', 'ресурс '
+    ]):
         return _build_consumable_short_desc(params).strip()
 
     return text
