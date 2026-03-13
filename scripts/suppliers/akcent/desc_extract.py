@@ -269,7 +269,7 @@ def _cleanup_value_by_key(key: str, value: str) -> str:
         if m:
             return norm_ws(m.group(0))
     if key == "Технология":
-        return norm_ws(re.split(r"(?iu)\bЖесты\b|\bПанель управления\b|\bГарантия\b", v, maxsplit=1)[0])
+        return norm_ws(re.split(r"(?iu)\bЖесты\b|\bПанель управления\b|\bГарантия\b|\bРесурс лампы\b|\bРазрешение\b|\bЯркость\b", v, maxsplit=1)[0])
     if key == "Микрофоны":
         return norm_ws(re.split(r"(?iu)\bИндикатор состояния\b|\bВстроенный NFC считыватель\b", v, maxsplit=1)[0])
     if key == "NFC" and re.search(r"(?iu)\bесть\b", v):
@@ -279,34 +279,92 @@ def _cleanup_value_by_key(key: str, value: str) -> str:
         if m:
             return norm_ws(m.group(0))
     if key in {"Проекционный коэффициент (Throw ratio)", "Проекционное расстояние"}:
+        m = re.search(r"(?iu)\b\d{1,3}(?:[.,]\d+)?\s*[-–—]\s*\d{1,3}(?:[.,]\d+)?\s*:\s*1\b", v)
+        if m:
+            return norm_ws(m.group(0))
         m = _RE_RANGE.search(v)
         if m:
-            base = norm_ws(m.group(0))
-            if key == "Проекционный коэффициент (Throw ratio)" and ":1" in v and ":1" not in base:
-                base = norm_ws(base + ":1")
-            return base
-        m = re.search(r"(?iu)\b\d{1,3}(?:[.,]\d+)?\s*m(?:\s*\([^)]*\))?", v)
+            return norm_ws(m.group(0))
+        m = re.search(r"(?iu)\b\d{1,3}(?:[.,]\d+)?\s*m\b(?:\s*[-–—]\s*\d{1,3}(?:[.,]\d+)?\s*m\b)?", v)
         if m:
             return norm_ws(m.group(0))
     if key == "Вес":
-        m = re.search(r"(?iu)\b\d{1,4}(?:[.,]\d+)?\s*кг\b|\b\d{1,4}(?:[.,]\d+)?\b", v)
+        m = re.search(r"(?iu)\b\d{1,4}(?:[.,]\d+)?\s*кг\b", v)
         if m:
             return norm_ws(m.group(0))
+        return ""
     if key == "Энергопотребление":
         m = re.search(r"(?iu)\b\d{1,4}(?:[.,]\d+)?\s*Вт\b", v)
         if m:
             return norm_ws(m.group(0))
-    if key == "Яркость":
-        m = re.search(r"(?iu)(?:≥\s*)?\d{1,5}(?:[.,]\d+)?\s*(?:cd/m²|лм|люмен)\b", v)
+        return ""
+    if key in {"Яркость", "Яркость (ANSI) лмн", "Цветовая яркость"}:
+        m = re.search(r"(?iu)(?:≥\s*)?\d{1,5}(?:[.,]\d+)?\s*(?:cd/m²|ansi\s*lumen|ansi\s*lm|лмн|лм|люмен)\b", v)
+        if m:
+            return norm_ws(m.group(0).replace("ANSI LUMEN", "ANSI lm").replace("ANSI lumen", "ANSI lm"))
+        m = re.search(r"(?iu)\b\d{1,5}(?:[.,]\d+)?\b", v)
+        if m and key == "Яркость (ANSI) лмн":
+            return norm_ws(m.group(0))
+        return ""
+    if key == "Разрешение":
+        m = re.search(r"(?iu)\b(?:wxga|xga|full\s*hd|4k\s*uhd|uhd|hd|svga)\b(?:\s*\([^)]*\))?", v)
         if m:
             return norm_ws(m.group(0))
-    if key == "Интерфейсы" and len(v) > 180:
+        m = re.search(r"(?iu)\b\d{3,5}\s*[xх×]\s*\d{3,5}\b", v)
+        if m:
+            return norm_ws(m.group(0))
+        if v.casefold() in {"оригинальное", "native", "original"}:
+            return ""
         return ""
+    if key in {"HDMI", "USB", "VGA", "DisplayPort", "Ethernet", "Wi-Fi", "DVI-D", "S-Video", "HDBaseT"}:
+        if v.casefold() in {"и", "или", "with", "and"}:
+            return ""
+        if key != "USB" and len(v) > 120:
+            return ""
+    if key == "Интерфейсы":
+        if len(v) > 180:
+            return ""
+        parts = [norm_ws(x) for x in re.split(r"\s*,\s*", v) if norm_ws(x)]
+        if parts:
+            return ", ".join(dict.fromkeys(parts))
     if key == "Габариты":
         m = _RE_DIMS.search(v)
         if m:
             return norm_ws(m.group(0))
+    if key == "Контрастность":
+        m = re.search(r"(?iu)\b\d[\d .]{0,12}:\s*1\b", v)
+        if m:
+            return norm_ws(m.group(0))
     return v
+
+
+def _prefer_duplicate_value(key: str, old: str, new: str) -> str:
+    old = norm_ws(old)
+    new = norm_ws(new)
+    if not old:
+        return new
+    if not new:
+        return old
+    if key == "Разрешение":
+        bad = {"оригинальное", "native", "original"}
+        if old.casefold() in bad:
+            return new
+        if new.casefold() in bad:
+            return old
+        old_num = bool(re.search(r"(?iu)\b\d{3,5}\s*[xх×]\s*\d{3,5}\b", old))
+        new_num = bool(re.search(r"(?iu)\b\d{3,5}\s*[xх×]\s*\d{3,5}\b", new))
+        if old_num and not new_num:
+            return old
+        if new_num and not old_num:
+            return new
+    if key in {"Яркость", "Яркость (ANSI) лмн", "Цветовая яркость", "Контрастность", "Вес", "Проекционное расстояние", "Проекционный коэффициент (Throw ratio)"}:
+        return new if len(new) > len(old) else old
+    if key in {"HDMI", "USB", "VGA", "DisplayPort", "Ethernet", "Wi-Fi", "DVI-D", "S-Video", "HDBaseT"}:
+        if old.casefold() in {"и", "или", "with", "and"}:
+            return new
+        if new.casefold() in {"и", "или", "with", "and"}:
+            return old
+    return old if len(old) >= len(new) else new
 
 
 def _extract_consumable_device_pair(lines: list[str], schema_cfg: dict[str, Any], kind: str) -> tuple[str, str] | None:
@@ -339,12 +397,21 @@ def _extract_consumable_device_pair(lines: list[str], schema_cfg: dict[str, Any]
 
 def _dedupe_pairs(pairs: list[tuple[str, str]]) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
+    by_key: dict[str, int] = {}
     seen: set[tuple[str, str]] = set()
     for k, v in pairs:
         sig = (k.casefold(), v.casefold())
         if sig in seen:
             continue
         seen.add(sig)
+        key_cf = k.casefold()
+        if key_cf in by_key:
+            idx = by_key[key_cf]
+            old_k, old_v = out[idx]
+            best = _prefer_duplicate_value(k, old_v, v)
+            out[idx] = (old_k, best)
+            continue
+        by_key[key_cf] = len(out)
         out.append((k, v))
     return out
 
