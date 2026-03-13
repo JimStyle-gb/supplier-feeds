@@ -66,6 +66,10 @@ _RE_EXTRA_SECTION_LINE = re.compile(
 )
 _RE_BULLET_LEAD = re.compile(r"^[•·▪◦*\-–—]+\s*")
 
+_RE_INLINE_SUPPLIER_HEADER = re.compile(
+    r"(?iu)^(?:основные\s+преимущества|общие\s+характеристики|общие\s+характерстики)\s*:\s*"
+)
+
 
 # ----------------------------- small helpers -----------------------------
 
@@ -172,6 +176,11 @@ def _cleanup_lines(lines: Iterable[str], *, name: str, vendor: str = "", model: 
             continue
         # Убираем supplier-блоки "Дополнительно" / "Сопутствующие товары" целиком.
         if _RE_EXTRA_SECTION_LINE.match(line):
+            continue
+        # Убираем supplier-шапки вида "Основные преимущества:" / "Общие характеристики:"
+        # но сохраняем полезный текст, если он идёт в той же строке.
+        line = _RE_INLINE_SUPPLIER_HEADER.sub("", line).strip()
+        if not line:
             continue
         if _is_title_duplicate(name, line):
             continue
