@@ -1,53 +1,25 @@
-QUALITY_GATE: FAIL
+QUALITY_GATE: PASS
 baseline_file: scripts/suppliers/akcent/config/quality_baseline.yml
 freeze_current_as_baseline: no
 critical_count: 0
-cosmetic_total_count: 18
-cosmetic_offer_count: 18
+cosmetic_total_count: 4
+cosmetic_offer_count: 4
 known_cosmetic_count: 0
 known_cosmetic_offer_count: 0
-new_cosmetic_count: 18
-new_cosmetic_offer_count: 18
+new_cosmetic_count: 4
+new_cosmetic_offer_count: 4
 max_cosmetic_offers: 5
 max_cosmetic_issues: 5
 
 COSMETIC TOTAL:
 - [desc_header_leak] ACC13T699700 | Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000 | supplier header in description
-- [desc_header_leak] ACS102ABK43 | Интерактивная доска Mr.Pixel S102 BLACK | supplier header in description
 - [desc_header_leak] ACS82ABK43 | Интерактивная доска Mr.Pixel S82 BLACK | supplier header in description
 - [placeholder_picture_only] AC4680101 | Шредер Fellowes® AUTOMAX 150C SHREDDER (CROSS CUT) 230V EU | placeholder only
-- [placeholder_picture_only] AC4701001 | Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр. | placeholder only
-- [placeholder_picture_only] AC5050101 | Шредер Fellowes Powershred LX201 белый | placeholder only
 - [placeholder_picture_only] ACC11CJ62404 | МФУ Epson L6260 фабрика печати, Wi-Fi | placeholder only
-- [placeholder_picture_only] ACC11CK37403 | Принтер Epson L8050 фабрика печати, Wi-Fi | placeholder only
-- [placeholder_picture_only] ACC11CK39403 | Принтер Epson L11050 фабрика печати | placeholder only
-- [placeholder_picture_only] ACC12C934591 | Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX MAINTENANCE BOX | placeholder only
-- [placeholder_picture_only] ACC13T00S34A | Чернила Epson C13T00S34A 103 EcoTank для L3100/L3101/L3110/L3150 пурпурный | placeholder only
-- [placeholder_picture_only] ACC13T03V24A | Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой | placeholder only
-- [placeholder_picture_only] ACC13T03V34A | Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный | placeholder only
-- [placeholder_picture_only] ACC13T06C34A | Чернила Epson C13T06C34A для L15150 пурпурный | placeholder only
-- [placeholder_picture_only] ACC13T07D34A | Чернила Epson C13T07D34A для L8160/L8180 пурпурные | placeholder only
-- [placeholder_picture_only] ACC13T07D54A | Чернила Epson C13T07D54A для L8160/L8180 серые | placeholder only
-- [placeholder_picture_only] ACC13T606500 | Картридж Epson C13T606500 SP-4880 светло-голубой | placeholder only
-- [placeholder_picture_only] ACC13T606600 | Картридж Epson C13T606600 SP-4880 светло-пурпурный | placeholder only
 
 NEW COSMETIC VS BASELINE:
 - [desc_header_leak] ACC13T699700 | Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000 | supplier header in description
-- [desc_header_leak] ACS102ABK43 | Интерактивная доска Mr.Pixel S102 BLACK | supplier header in description
 - [desc_header_leak] ACS82ABK43 | Интерактивная доска Mr.Pixel S82 BLACK | supplier header in description
 - [placeholder_picture_only] AC4680101 | Шредер Fellowes® AUTOMAX 150C SHREDDER (CROSS CUT) 230V EU | placeholder only
-- [placeholder_picture_only] AC4701001 | Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр. | placeholder only
-- [placeholder_picture_only] AC5050101 | Шредер Fellowes Powershred LX201 белый | placeholder only
 - [placeholder_picture_only] ACC11CJ62404 | МФУ Epson L6260 фабрика печати, Wi-Fi | placeholder only
-- [placeholder_picture_only] ACC11CK37403 | Принтер Epson L8050 фабрика печати, Wi-Fi | placeholder only
-- [placeholder_picture_only] ACC11CK39403 | Принтер Epson L11050 фабрика печати | placeholder only
-- [placeholder_picture_only] ACC12C934591 | Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX MAINTENANCE BOX | placeholder only
-- [placeholder_picture_only] ACC13T00S34A | Чернила Epson C13T00S34A 103 EcoTank для L3100/L3101/L3110/L3150 пурпурный | placeholder only
-- [placeholder_picture_only] ACC13T03V24A | Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой | placeholder only
-- [placeholder_picture_only] ACC13T03V34A | Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный | placeholder only
-- [placeholder_picture_only] ACC13T06C34A | Чернила Epson C13T06C34A для L15150 пурпурный | placeholder only
-- [placeholder_picture_only] ACC13T07D34A | Чернила Epson C13T07D34A для L8160/L8180 пурпурные | placeholder only
-- [placeholder_picture_only] ACC13T07D54A | Чернила Epson C13T07D54A для L8160/L8180 серые | placeholder only
-- [placeholder_picture_only] ACC13T606500 | Картридж Epson C13T606500 SP-4880 светло-голубой | placeholder only
-- [placeholder_picture_only] ACC13T606600 | Картридж Epson C13T606600 SP-4880 светло-пурпурный | placeholder only
 
