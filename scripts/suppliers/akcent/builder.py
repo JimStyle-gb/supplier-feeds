@@ -372,8 +372,9 @@ def _normalize_epson_device_list(value: str) -> str:
     src = re.sub(r"(?iu)(?<!Epson\s)\bEcoTank\b", "Epson EcoTank", src)
     src = re.sub(r"(?iu)(?<!Epson\s)\bStylus(?:\s+Pro)?\b", lambda m: 'Epson ' + _clean_text(m.group(0)), src)
     # keep only model-like fragments when possible
-    models = _extract_models_from_text(src)
-    return models or src
+    models = _extract_models_from_text(src) or src
+    parts = _dedupe_text_items([_clean_text(x) for x in re.split(r"\s*/\s*", models) if _clean_text(x)])
+    return " / ".join(parts)
 
 
 def _infer_consumable_type(name: str, desc: str, current_type: str) -> str:
