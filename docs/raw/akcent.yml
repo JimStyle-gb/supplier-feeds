@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-13 10:16:19">
+<yml_catalog date="2026-03-13 10:32:30">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-13 10:16:19
+Время сборки (Алматы)                      | 2026-03-13 10:32:30
 Ближайшая сборка (Алматы)                  | 2026-03-14 02:00:00
 Сколько товаров у поставщика до фильтра    | 1806
 Сколько товаров у поставщика после фильтра | 161
@@ -110,7 +110,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Ёмкость для отработанных чернил для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
@@ -319,7 +319,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
@@ -338,7 +338,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">350 мл</param>
@@ -374,7 +374,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
@@ -395,7 +395,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
@@ -416,7 +416,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
@@ -437,7 +437,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Светло-голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
@@ -458,7 +458,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Светло-пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
@@ -479,7 +479,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Серый</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
@@ -500,7 +500,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Расходный материал для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">12 мес.</param>
 <param name="Для устройства">Epson Stylus Pro 4800</param>
 <param name="Модель">Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</param>
@@ -516,7 +516,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Ресурс">221 мл</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Тип">Картридж EPSON</param>
@@ -535,7 +535,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
@@ -556,7 +556,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
@@ -577,7 +577,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
@@ -598,7 +598,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
@@ -619,7 +619,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
@@ -640,7 +640,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
@@ -661,7 +661,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
@@ -682,7 +682,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж EPSON</param>
 <param name="Тип печати">Струйная</param>
@@ -2504,7 +2504,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
@@ -2525,7 +2525,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
@@ -2546,7 +2546,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
@@ -2567,7 +2567,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
@@ -2588,7 +2588,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
@@ -2629,7 +2629,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
 <param name="Тип печати">Струйная</param>
@@ -2650,7 +2650,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Светло-голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
@@ -2671,7 +2671,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-]]></description>
+Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Светло-пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
