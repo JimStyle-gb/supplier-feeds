@@ -29,7 +29,7 @@ from typing import Any, Iterable
 from cs.core import OfferOut
 from cs.pricing import compute_price
 from cs.util import norm_ws
-from suppliers.akcent.compat import reconcile_params
+from suppliers.akcent.compat import clean_device_value, reconcile_params
 from suppliers.akcent.desc_clean import clean_description_text
 from suppliers.akcent.desc_extract import extract_desc_params
 from suppliers.akcent.normalize import normalize_source_basics
@@ -42,6 +42,121 @@ except Exception:
 
 
 _RE_WS = re.compile(r"\s+")
+
+
+_RE_DROP_CONSUMABLE_DESC_LINE = re.compile(
+    r"(?iu)\b(?:поддерживаемые\s+модели(?:\s+принтеров|\s+устройств|\s+техники)?|"
+    r"совместимые\s+модели(?:\s+техники)?|совместимые\s+продукты(?:\s+для)?|для)\s*:"
+)
+
+_RE_DEVICE_MODEL = re.compile(
+    r"(?iu)"
+    r"(?:(SureColor|WorkForce\s+Pro|WorkForce|EcoTank|Stylus\s+Pro|Expression|PIXMA|LaserJet)\s+)?"
+    r"("
+    r"(?:SC-[A-Z0-9-]+|WF-[A-Z0-9-]+|ET-\d+[A-Z0-9-]*|"
+    r"L\d{4,5}[A-Z0-9-]*|T\d{4,5}[A-Z0-9-]*(?:\s*w/\s*o\s*stand)?|"
+    r"P\d{4,5}[A-Z0-9-]*|B\d{4,5}[A-Z0-9-]*|C\d{4,5}[A-Z0-9-]*|"
+    r"M\d{4,5}[A-Z0-9-]*|DCP-[A-Z0-9-]+|MFC-[A-Z0-9-]+)"
+    r")"
+)
+
+
+def _dedupe_text_items(items: Iterable[str]) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for item in items:
+        x = _clean_text(item)
+        if not x:
+            continue
+        key = _cf(x)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(x)
+    return out
+
+
+def _normalize_consumable_device_value(value: str) -> str:
+    src = _clean_text(value)
+    if not src:
+        return ""
+
+    src = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", src)
+    src = re.sub(r"(?iu)\bsurecolor\b", "SureColor", src)
+    src = re.sub(r"(?iu)\bworkforce\s+pro\b", "WorkForce Pro", src)
+    src = re.sub(r"(?iu)\bworkforce\b", "WorkForce", src)
+    src = re.sub(r"(?iu)\becotank\b", "EcoTank", src)
+    src = re.sub(r"(?iu)\bstylus\s+pro\b", "Stylus Pro", src)
+    src = re.sub(r"(?iu)\bexpression\b", "Expression", src)
+    src = re.sub(r"(?iu)\bpixma\b", "PIXMA", src)
+    src = re.sub(r"(?iu)\blaserjet\b", "LaserJet", src)
+
+    chunks: list[str] = []
+    for m in _RE_DEVICE_MODEL.finditer(src):
+        family = _clean_text(m.group(1))
+        model = _clean_text(m.group(2))
+        if not model:
+            continue
+        model = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", model)
+        model = _clean_text(model)
+        item = f"{family} {model}".strip() if family else model
+        chunks.append(item)
+
+    if chunks:
+        cleaned = _dedupe_text_items(chunks)
+        return " / ".join(cleaned)
+
+    fallback = _clean_text(clean_device_value(src))
+    fallback = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", fallback)
+    parts = [x for x in re.split(r"\s*(?:,|/)\s*", fallback) if _clean_text(x)]
+    cleaned = _dedupe_text_items(parts)
+    return " / ".join(cleaned) if cleaned else ""
+
+
+def _normalize_consumable_device_params(params: list[tuple[str, str]], *, kind: str) -> list[tuple[str, str]]:
+    if kind != "consumable" or not params:
+        return list(params or [])
+
+    out: list[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+
+    for key, value in params:
+        k = _clean_text(key)
+        v = _clean_text(value)
+        if not k or not v:
+            continue
+        if _cf(k) in {"для устройства", "совместимость"}:
+            v2 = _normalize_consumable_device_value(v)
+            if v2:
+                _append_unique_param(out, seen, k, v2)
+            continue
+        _append_unique_param(out, seen, k, v)
+
+    return out
+
+
+def _drop_consumable_device_narrative(clean_desc: str, params: list[tuple[str, str]], *, kind: str) -> str:
+    if kind != "consumable":
+        return _clean_text(clean_desc)
+
+    device_value = _first_value(params, "Для устройства") or _first_value(params, "Совместимость")
+    if not device_value:
+        return _clean_text(clean_desc)
+
+    lines = [_clean_text(x) for x in str(clean_desc or "").split("\n")]
+    kept: list[str] = []
+
+    for line in lines:
+        if not line:
+            continue
+        low = _cf(line)
+        if _RE_DROP_CONSUMABLE_DESC_LINE.search(line) and any(
+            mark in low for mark in ("epson", "surecolor", "workforce", "ecotank", "stylus", "pixma", "laserjet")
+        ):
+            continue
+        kept.append(line)
+
+    return "\n".join(kept)
 
 
 def _clean_text(value: Any) -> str:
@@ -508,10 +623,12 @@ def _build_single_offer(
         model=model,
         kind=kind,
     )
+    merged_params = _normalize_consumable_device_params(merged_params, kind=kind)
     merged_params = _dedupe_type_params(merged_params)
     merged_params = _filter_allowed(merged_params, allow_keys)
 
     pictures = _collect_pictures(_iter_picture_urls(src), placeholder_picture=placeholder_picture)
+    cleaned_desc = _drop_consumable_device_narrative(cleaned_desc, merged_params, kind=kind)
     native_desc = _merge_native_desc(cleaned_desc, extra_info)
     final_price = compute_price(price_in if isinstance(price_in, int) else None)
 
