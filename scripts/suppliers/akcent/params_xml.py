@@ -39,6 +39,8 @@ _RE_MCM = re.compile(r"(?iu)^\s*(\d{1,4}(?:[.,]\d+)?)\s*мкм\s*$")
 _RE_DB = re.compile(r"(?iu)^\s*(\d{1,3}(?:[.,]\d+)?)\s*дб\s*$")
 _RE_WATT = re.compile(r"(?iu)^\s*(\d{1,5}(?:[.,]\d+)?)\s*в[тt]\s*$")
 _RE_KG = re.compile(r"(?iu)^\s*(\d{1,4}(?:[.,]\d+)?)\s*кг\s*$")
+_RE_ML = re.compile(r"(?iu)^\s*(\d{1,5}(?:[.,]\d+)?)\s*мл\s*$")
+_RE_L = re.compile(r"(?iu)^\s*(\d{1,5}(?:[.,]\d+)?)\s*л\s*$")
 _RE_GRM2 = re.compile(r"(?iu)^\s*(\d{1,4}(?:[.,]\d+)?)\s*г\s*/\s*м(?:2|²)\s*$")
 _RE_BOOL_YES = re.compile(r"(?iu)^(?:да|yes|true|есть|supported|поддерживается)$")
 _RE_BOOL_NO = re.compile(r"(?iu)^(?:нет|no|false|отсутствует|не поддерживается)$")
@@ -196,7 +198,9 @@ def key_quality_ok(key: str, schema_cfg: dict[str, Any]) -> bool:
     if not k:
         return False
 
-    banned = _cf_set(rules.get("banned_exact") or [])
+    banned = set()
+    banned |= _cf_set(schema_cfg.get("banned_exact") or [])
+    banned |= _cf_set(rules.get("banned_exact") or [])
     if k.casefold() in banned:
         return False
 
@@ -365,37 +369,41 @@ def _normalize_unitish(value: str) -> str:
     return s
 
 
-# Строгая нормализация объема для расходки: оставляем только реальные объёмы чернил/контейнеров.
+# Нормализация объёма.
 def _normalize_volume(value: str) -> str:
     s = _clean_text(value)
     if not s:
         return ""
-    low = s.casefold().replace('ё', 'е')
-    # Упаковочный/логистический объем и прочие служебные вещи в AkCent не нужны.
-    if 'м3' in low or 'm3' in low or 'cbm' in low or 'литр.' in low:
-        return ""
 
-    import re
-    m = re.search(r'(?iu)\b(\d+(?:[.,]\d+)?)\s*(мл|ml)\b', s)
+    m = _RE_ML.match(s)
     if m:
-        num = m.group(1).replace('.', ',')
+        num = m.group(1).replace(",", ".")
+        if num.endswith(".0"):
+            num = num[:-2]
         return f"{num} мл"
 
-    m = re.search(r'(?iu)\b(\d+(?:[.,]\d+)?)\s*(л|l)\b', s)
+    m = _RE_L.match(s)
     if m:
-        num_raw = m.group(1).replace(',', '.')
-        try:
-            num = float(num_raw)
-        except ValueError:
-            return ""
-        # Для расходки оставляем только внятные литражи, а не микрослужебные объёмы типа 0,003
-        if num < 0.05:
-            return ""
-        pretty = (str(int(num)) if num.is_integer() else str(num).replace('.', ','))
-        return f"{pretty} л"
+        num = m.group(1).replace(",", ".")
+        if num.endswith(".0"):
+            num = num[:-2]
+        return f"{num} л"
 
-    # Голое число без единиц для объема считаем мусором.
-    return ""
+    # Голые числа без единиц для объёма считаем мусором.
+    if re.fullmatch(r"\d+(?:[.,]\d+)?", s):
+        return ""
+
+    # Текстовые формы вроде "700ml" / "0.7l"
+    s2 = s.replace(" ", "").casefold()
+    m = re.fullmatch(r"(\d+(?:[.,]\d+)?)(ml|мл|l|л)", s2)
+    if m:
+        num = m.group(1).replace(",", ".")
+        unit = m.group(2)
+        if num.endswith(".0"):
+            num = num[:-2]
+        return f"{num} {'мл' if unit in {'ml','мл'} else 'л'}"
+
+    return s
 
 
 # Умеренная чистка значения по ключу.
@@ -454,6 +462,8 @@ def normalize_param_value(key: str, raw_value: Any, schema_cfg: dict[str, Any]) 
             out = _normalize_compat(out)
         elif op_name in {"unitish", "numeric_units"}:
             out = _normalize_unitish(out)
+        elif op_name in {"volume", "volume_ml_l"}:
+            out = _normalize_volume(out)
         elif op_name in {"bool", "boolean"}:
             out = _normalize_bool(out)
         elif op_name in {"colors", "color_list"}:
@@ -522,6 +532,8 @@ def extract_xml_params(
     kind_name = kind or detect_kind_by_name(str(_get_field(src, "name") or ""), schema)
 
     discard_exact = _cf_set(schema.get("discard_exact") or [])
+    banned_exact = _cf_set(schema.get("banned_exact") or [])
+    drop_exact = discard_exact | banned_exact
     allow_keys = resolve_allowed_keys(schema, kind_name)
 
     kept: list[tuple[str, str]] = []
@@ -549,7 +561,7 @@ def extract_xml_params(
             stats["dropped_bad_key"] += 1
             continue
 
-        if key.casefold() in discard_exact:
+        if key.casefold() in drop_exact:
             stats["dropped_discard_key"] += 1
             continue
 
