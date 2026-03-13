@@ -20,7 +20,6 @@ critical:
 cosmetic:
 - suspicious_vendor
 - compat_label_leak
-- placeholder_picture_only
 """
 
 from __future__ import annotations
@@ -91,7 +90,6 @@ _GENERIC_VENDOR_TOKENS = {
     "экран",
 }
 
-_PLACEHOLDER_URL = "https://placehold.co/800x800/png?text=No+Photo"
 
 
 @dataclass(frozen=True)
@@ -291,16 +289,6 @@ def _detect_issues(feed_path: str) -> list[QualityIssue]:
                 )
                 break
 
-        if pictures and len(pictures) == 1 and _norm_ws(pictures[0]) == _PLACEHOLDER_URL:
-            issues.append(
-                QualityIssue(
-                    severity="cosmetic",
-                    rule="placeholder_picture_only",
-                    oid=oid,
-                    name=name,
-                    details="placeholder only",
-                )
-            )
 
     deduped: dict[tuple[str, str, str], QualityIssue] = {}
     for issue in issues:
