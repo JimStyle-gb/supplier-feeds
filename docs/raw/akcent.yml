@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-13 15:43:01">
+<yml_catalog date="2026-03-13 16:21:24">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-13 15:43:01
+Время сборки (Алматы)                      | 2026-03-13 16:21:24
 Ближайшая сборка (Алматы)                  | 2026-03-14 02:00:00
 Сколько товаров у поставщика до фильтра    | 1798
 Сколько товаров у поставщика после фильтра | 161
@@ -286,7 +286,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <description><![CDATA[
 Комбинированный картридж с голубыми, пурпурными и желтыми чернилами (C13T26704010) для Epson WorkForce WF-100W C11CE05403]]></description>
 <param name="Цвет">Голубой, Пурпурный, Жёлтый</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C11CE05403</param>
@@ -304,7 +304,7 @@ URL поставщика                             | https://ak-cent.kz/export
 Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DTW]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">Около 2200 стр</param>
@@ -320,9 +320,9 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Пурпурный</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">350 мл</param>
 <param name="Для бренда">Epson</param>
@@ -340,14 +340,14 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
-<param name="Тип">Картридж EPSON</param>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">350 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
 <param name="Для устройства">Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000</param>
-<param name="Модель">T41F440</param>
+<param name="Модель">Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350ml жёлтый</param>
 </offer>
 
 <offer id="ACC13T54LA00" available="true">
@@ -361,7 +361,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <description><![CDATA[
 Оригинальный картридж UltraChrome DG2 (C13T54LA00) Epson SureColor F2200 голубого цвета. Объём чернил составляет 800 миллилитров. Высокое качество чернил позволяет получать с их помощью очень чёткие и детализованные отпечатки. Чернила рассчитаны на долгую работу на весь срок службы. Покупая оригинальную продукцию фирмы Epson в нашем магазине - вы можете быть 100% уверены в качестве предлагаемой продукции.]]></description>
 <param name="Гарантия">Без гарантии</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Картридж Epson C13T54LA00 UltraChrome DG2 (800 мл) белый</param>
@@ -376,10 +376,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
@@ -397,10 +397,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
@@ -418,9 +418,9 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
@@ -439,10 +439,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Светло-голубой</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
@@ -460,10 +460,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Светло-пурпурный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
@@ -481,10 +481,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Серый</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
@@ -519,10 +519,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Ресурс">221 мл</param>
 <param name="Цвет">Пурпурный</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Для устройства">Epson Stylus Pro 4800</param>
@@ -538,10 +538,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
@@ -559,10 +559,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
@@ -580,9 +580,9 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
@@ -601,10 +601,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
@@ -622,10 +622,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">110 мл</param>
 <param name="Для бренда">Epson</param>
@@ -643,10 +643,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">700 мл</param>
 <param name="Для бренда">Epson</param>
@@ -664,10 +664,10 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">700 мл</param>
 <param name="Для бренда">Epson</param>
@@ -685,9 +685,9 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Картридж EPSON для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">700 мл</param>
 <param name="Для бренда">Epson</param>
@@ -708,7 +708,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <description><![CDATA[
 Контейнер с черными чернилами ресурсом 10 000 стр. (XL) Совместимые продукты для Контейнер с черными чернилами ресурсом 10 000 стр. (XL) Epson WorkForce Pro WF-M5299DW C11CG07401 Epson WorkForce Pro WF-M5299DWSV C11CG07401 Epson WorkForce Pro WF-M5799DWF C11CG04401 Epson WorkForce Pro WF-M5799DWFMV]]></description>
 <param name="Цвет">Чёрный</param>
-<param name="Тип">Картридж EPSON</param>
+<param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C13T965140</param>
