@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-13 14:42:16">
+<yml_catalog date="2026-03-13 15:26:02">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-13 14:42:16
+Время сборки (Алматы)                      | 2026-03-13 15:26:02
 Ближайшая сборка (Алматы)                  | 2026-03-14 02:00:00
-Сколько товаров у поставщика до фильтра    | 1801
+Сколько товаров у поставщика до фильтра    | 1798
 Сколько товаров у поставщика после фильтра | 161
 Сколько товаров есть в наличии (true)      | 161
 Сколько товаров нет в наличии (false)      | 0
@@ -24,12 +24,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <description><![CDATA[
 Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачетсвенную печать для приентеров Epson. Вид струйный Назначение широкоформатный принтер Цвет печати фиолетовый Поддерживаемые модели принтеров Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000 Ресурс 700 мл]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Струйный</param>
-<param name="Для устройства">Широкоформатный Принтер</param>
+<param name="Тип">Чернила</param>
+<param name="Для устройства">SureColor SC-P6000 / SureColor SC-P7000 / P8000 / SureColor SC-P9000</param>
 <param name="Цвет">Фиолетовый</param>
 <param name="Ресурс">700 мл</param>
 <param name="Модель">C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</param>
 <param name="Для бренда">Epson</param>
+<param name="Тип печати">Струйная</param>
 </offer>
 
 <offer id="ACC12C890191" available="true">
@@ -346,7 +347,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
 <param name="Для устройства">Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000</param>
-<param name="Модель">Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350ml жёлтый</param>
+<param name="Модель">T41F440</param>
 </offer>
 
 <offer id="ACC13T54LA00" available="true">
@@ -501,11 +502,12 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Расходный материал для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Картридж для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">12 мес.</param>
 <param name="Для устройства">Epson Stylus Pro 4800</param>
 <param name="Модель">Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</param>
 <param name="Для бренда">Epson</param>
+<param name="Тип">Картридж</param>
 </offer>
 
 <offer id="ACC13T606C00" available="true">
@@ -711,6 +713,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Для бренда">Epson</param>
 <param name="Модель">C13T965140</param>
 <param name="Коды">C13T965140</param>
+<param name="Для устройства">WorkForce Pro WF-M5299DW / WorkForce Pro WF-M5299DWSV / WorkForce Pro WF-M5799DWF / WorkForce Pro WF-M5799DWFMV</param>
 </offer>
 
 <offer id="AC100016948" available="true">
@@ -2099,7 +2102,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с черными чернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C11CG15404</param>
@@ -2117,7 +2120,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с черными чернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C11CG15404</param>
@@ -2135,7 +2138,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с голубыми чернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C11CG15404</param>
@@ -2153,7 +2156,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с пурпурнымичернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C11CG15404</param>
@@ -2170,7 +2173,7 @@ LI4278 выводит процесс сканирования одномерны
 <description><![CDATA[
 Контейнер с желтыми чернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
@@ -2189,10 +2192,11 @@ LI4278 выводит процесс сканирования одномерны
 Совместимые продукты Epson L3100 C11CG88401 Epson L3101 C11CG88402 - Epson L3110 C11CG87405 Epson L3150 C11CG86409 Epson L3151 C11CG86411]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C11CG88401</param>
+<param name="Для устройства">L3100 / L3101 / L3110 / L3150 / L3151</param>
 </offer>
 
 <offer id="ACC13T00S34A" available="true">
@@ -2207,10 +2211,11 @@ LI4278 выводит процесс сканирования одномерны
 Совместимые продукты Epson L3100 C11CG88401 Epson L3101 C11CG88402 - Epson L3110 C11CG87405 Epson L3150 C11CG86409 Epson L3151 C11CG86411]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C11CG88401</param>
+<param name="Для устройства">L3100 / L3101 / L3110 / L3150 / L3151</param>
 </offer>
 
 <offer id="ACC13T00S44A" available="true">
@@ -2224,11 +2229,12 @@ LI4278 выводит процесс сканирования одномерны
 <description><![CDATA[
 Совместимые продукты Epson L3100 C11CG88401 Epson L3101 C11CG88402 - Epson L3110 C11CG87405 Epson L3150 C11CG86409 Epson L3151 C11CG86411]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
 <param name="Модель">C11CG88401</param>
+<param name="Для устройства">L3100 / L3101 / L3110 / L3150 / L3151</param>
 </offer>
 
 <offer id="ACC13T01L14A" available="true">
@@ -2243,7 +2249,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с черными чернилами ресурсом 2 000 стр. (L) (C13T01L14A) Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M1140 C11CG26405 Epson M1180 C11CG94405 Epson M2140 C11CG27405 Epson M3140 C11CG91405 Epson M3170 C11CG92405 Epson M3180 C11CG93405 Epson M1170 C11CH44404 Epson M2170 C11CH43404]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">2000 стр</param>
 <param name="Для бренда">Epson</param>
@@ -2262,7 +2268,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с голубыми чернилами для: L4150/L4160]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T03V14A 101 EcoTank 127ml для L4150/L4160 черный</param>
@@ -2280,7 +2286,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с голубыми чернилами для: L4150/L4160]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой</param>
@@ -2298,7 +2304,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с пурпурными чернилами для: L4150/L4160]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный</param>
@@ -2316,7 +2322,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с черными чернилами]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T06C14A для L15150 чёрный</param>
@@ -2334,7 +2340,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с черными чернилами]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T06C24A для L15150 голубой</param>
@@ -2352,7 +2358,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с черными чернилами]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T06C34A для L15150 пурпурный</param>
@@ -2369,7 +2375,7 @@ LI4278 выводит процесс сканирования одномерны
 <description><![CDATA[
 Контейнер с черными чернилами]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
@@ -2388,7 +2394,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с голубыми чернилами (C13T07D24A)]]></description>
 <param name="Цвет">Голубые</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T07D24A для L8160/L8180 голубые</param>
@@ -2406,7 +2412,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с пурпурными чернилами (C13T07D34A)]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T07D34A для L8160/L8180 пурпурные</param>
@@ -2423,7 +2429,7 @@ LI4278 выводит процесс сканирования одномерны
 <description><![CDATA[
 Оригинальные водорастворимые чернила Epson 115 желтого цвета емкостью 70 мл для струйных МФУ Epson L8160/L8180]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
@@ -2442,7 +2448,7 @@ LI4278 выводит процесс сканирования одномерны
 Контейнер с серыми чернилами (C13T07D54A)]]></description>
 <param name="Цвет">Серый</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">Чернила Epson C13T07D54A для L8160/L8180 серые</param>
@@ -2457,10 +2463,10 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Для устройства">L8050 / L18050</param>
@@ -2476,14 +2482,14 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">4000 – 7100 страниц формата A4*</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson L100 Epson L200 Epson L110 Epson L210 Epson L300 Epson L355 Epson L550</param>
+<param name="Для устройства">Epson L100 / Epson L110 / Epson L120 / Epson L1300 / Epson L132 / Epson L200 / Epson L210 / Epson L222 / Epson L300 / Epson L312 / Epson L350 / Epson L355 / Epson L362 / Epson L366 / Epson L456 / Epson L550 / Epson L555 / Epson L566</param>
 <param name="Модель">C13T66414A</param>
 <param name="Коды">C13T66414A</param>
 </offer>
@@ -2497,14 +2503,14 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">5700 – 6500 страниц формата A4*</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson L100 Epson L200 Epson L110 Epson L210 Epson L300 Epson L355 Epson L550</param>
+<param name="Для устройства">Epson L100 / Epson L110 / Epson L120 / Epson L1300 / Epson L132 / Epson L200 / Epson L210 / Epson L222 / Epson L300 / Epson L312 / Epson L350 / Epson L355 / Epson L362 / Epson L366 / Epson L456 / Epson L550 / Epson L555 / Epson L566</param>
 <param name="Модель">C13T66434A</param>
 <param name="Коды">C13T66434A</param>
 </offer>
@@ -2518,14 +2524,14 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">5700 – 6500 страниц формата A4*</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
-<param name="Для устройства">Epson L100 Epson L200 Epson L110 Epson L210 Epson L300 Epson L355 Epson L550</param>
+<param name="Для устройства">Epson L100 / Epson L110 / Epson L120 / Epson L1300 / Epson L132 / Epson L200 / Epson L210 / Epson L222 / Epson L300 / Epson L312 / Epson L350 / Epson L355 / Epson L362 / Epson L366 / Epson L456 / Epson L550 / Epson L555 / Epson L566</param>
 <param name="Модель">C13T66444A</param>
 <param name="Коды">C13T66444A</param>
 </offer>
@@ -2539,14 +2545,14 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson L800 Высококачественная Фотопечать Контейнер Объемом 70 Мл Обеспечивает Большой Запас Чернил</param>
+<param name="Для устройства">Epson L800 / Epson L1800 / Epson L810 / Epson L850</param>
 <param name="Модель">C13T67314A</param>
 <param name="Коды">C13T67314A</param>
 </offer>
@@ -2560,14 +2566,14 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson L800 Высококачественная Фотопечать Контейнер Объемом 70 Мл Обеспечивает Большой Запас Чернил</param>
+<param name="Для устройства">Epson L800 / Epson L1800 / Epson L810 / Epson L850</param>
 <param name="Модель">C13T67324A</param>
 <param name="Коды">C13T67324A</param>
 </offer>
@@ -2581,15 +2587,16 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с пурпурными чернилами для: Высококачественная фотопечать Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил. Раскройте свой творческий потенциал Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1. Оригинальные расходные материалы Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.]]></description>
+Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C13T67334A</param>
 <param name="Коды">C13T67334A</param>
+<param name="Для устройства">Epson L800 / Epson L1800 / Epson L810 / Epson L850</param>
 </offer>
 
 <offer id="ACC13T67344A" available="true">
@@ -2601,14 +2608,14 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
-<param name="Для устройства">Epson L800 Высококачественная Фотопечать Контейнер Объемом 70 Мл Обеспечивает Большой Запас Чернил</param>
+<param name="Для устройства">Epson L800 / Epson L1800 / Epson L810 / Epson L850</param>
 <param name="Модель">C13T67344A</param>
 <param name="Коды">C13T67344A</param>
 </offer>
@@ -2622,14 +2629,14 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Светло-голубой</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson L800 Высококачественная Фотопечать Контейнер Объемом 70 Мл Обеспечивает Большой Запас Чернил</param>
+<param name="Для устройства">Epson L800 / Epson L1800 / Epson L810 / Epson L850</param>
 <param name="Модель">C13T67354A</param>
 <param name="Коды">C13T67354A</param>
 </offer>
@@ -2643,14 +2650,14 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Фабрика печати (чернила EPSON) для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
+Чернила для устройств Epson. Основные совместимые модели указаны в характеристике «Для устройства».]]></description>
 <param name="Цвет">Светло-пурпурный</param>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson L800 Высококачественная Фотопечать Контейнер Объемом 70 Мл Обеспечивает Большой Запас Чернил</param>
+<param name="Для устройства">Epson L800 / Epson L1800 / Epson L810 / Epson L850</param>
 <param name="Модель">C13T67364A</param>
 <param name="Коды">C13T67364A</param>
 </offer>
@@ -2915,7 +2922,7 @@ Fellowes P-25S - Шредер предназначен для персональ
 <description><![CDATA[
 Экономичный комплект из четырех контейнеров с оригинальными чернилами Epson 101 объемом 127 мл (черные пигментные) и 70 мл (цветные водорастворимые) для струйных принтеров и МФУ Epson L4150, L4160, L4167 Подробнее:]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Экономичный набор</param>
 <param name="Модель">Экономичный набор из четырех контейнеров с чернилами, серия 101</param>
 <param name="Для бренда">Epson</param>
 </offer>
@@ -2931,7 +2938,7 @@ Fellowes P-25S - Шредер предназначен для персональ
 <description><![CDATA[
 ]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Экономичный набор</param>
 <param name="Модель">Экономичный набор из четырех контейнеров с чернилами, серия 103</param>
 </offer>
 
@@ -2946,7 +2953,7 @@ Fellowes P-25S - Шредер предназначен для персональ
 <description><![CDATA[
 Чернила Epson серии 664 Сведите затраты на печать к минимуму с чернилами EcoTank. Ресурса комплекта чернил хватит на печать 4 500 черно-белых и 7 500 цветных страниц¹ – отличное решение для тех, кто привык много печатать. Четырехцветные водорастворимые чернила обеспечивают качественный результат и рекордно низкую себестоимость печати. Для повседневной печати Линейка чернил четырех цветов прекрасно подходит для повседневной печати документов. Радикальное снижение затрат на чернила Ищете самое выгодное решение для печати? Уже со стартовым набором чернил в комплекте с устройством Epson вы сократите средние расходы на чернила до 90 %². Доступная цена и высокий ресурс чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных¹. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество.]]></description>
 <param name="Гарантия">3 мес.</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Тип">Экономичный набор</param>
 <param name="Ресурс">чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных¹. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество</param>
 <param name="Модель">Экономичный набор из четырех контейнеров с чернилами, серия 664</param>
 <param name="Для бренда">Epson</param>
