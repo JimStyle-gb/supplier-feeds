@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-13 18:48:55">
+<yml_catalog date="2026-03-13 20:09:15">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-13 18:48:55 (не было изменений)
+Время сборки (Алматы)                      | 2026-03-13 20:09:15
 Ближайшая сборка (Алматы)                  | 2026-03-14 02:00:00
 Сколько товаров у поставщика до фильтра    | 1796
 Сколько товаров у поставщика после фильтра | 160
@@ -294,6 +294,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C13T26704010</param>
+<param name="Для устройства">Epson WorkForce WF-100W / Epson WorkForce WF-100W</param>
 <param name="Коды">C13T26704010</param>
 </offer>
 
@@ -314,6 +315,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">Около 2200 стр</param>
 <param name="Модель">C13T27914022</param>
+<param name="Для устройства">Epson WorkForce WF-7620DTWF / Epson WorkForce WF-7610DWF / Epson WorkForce WF-7110DTW</param>
 <param name="Коды">C13T27914022</param>
 </offer>
 
@@ -384,14 +386,14 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальный картридж Epson C13T606100 чёрный цвета для Epson Stylus Pro 4800 Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
+Оригинальный картридж Epson C13T606100 чёрный цвета для Epson Stylus Pro 4800 / Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson Stylus Pro 4800 Epson Stylus Pro 4880</param>
+<param name="Для устройства">Epson Stylus Pro 4800 / Epson Stylus Pro 4880</param>
 <param name="Модель">C13T606100</param>
 <param name="Коды">C13T606100</param>
 </offer>
@@ -426,14 +428,14 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальный картридж Epson C13T606400 жёлтый цвета для Epson Stylus Pro 4800 Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
+Оригинальный картридж Epson C13T606400 жёлтый цвета для Epson Stylus Pro 4800 / Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
-<param name="Для устройства">Epson Stylus Pro 4800 Epson Stylus Pro 4880</param>
+<param name="Для устройства">Epson Stylus Pro 4800 / Epson Stylus Pro 4880</param>
 <param name="Модель">C13T606400</param>
 <param name="Коды">C13T606400</param>
 </offer>
@@ -447,14 +449,14 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальный картридж Epson C13T606500 светло-голубой цвета для Epson Stylus Pro 4800 Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
+Оригинальный картридж Epson C13T606500 светло-голубой цвета для Epson Stylus Pro 4800 / Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Светло-голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson Stylus Pro 4800 Epson Stylus Pro 4880</param>
+<param name="Для устройства">Epson Stylus Pro 4800 / Epson Stylus Pro 4880</param>
 <param name="Модель">C13T606500</param>
 <param name="Коды">C13T606500</param>
 </offer>
@@ -489,14 +491,14 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальный картридж Epson C13T606700 серый цвета для Epson Stylus Pro 4800 Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
+Оригинальный картридж Epson C13T606700 серый цвета для Epson Stylus Pro 4800 / Epson Stylus Pro 4880. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Серый</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson Stylus Pro 4800 Epson Stylus Pro 4880</param>
+<param name="Для устройства">Epson Stylus Pro 4800 / Epson Stylus Pro 4880</param>
 <param name="Модель">C13T606700</param>
 <param name="Коды">C13T606700</param>
 </offer>
@@ -548,14 +550,14 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальный картридж Epson C13T614200 голубой цвета для Epson Stylus Pro 4400 Epson Stylus Pro 4450. Ресурс: 220 мл.]]></description>
+Оригинальный картридж Epson C13T614200 голубой цвета для Epson Stylus Pro 4400 / Epson Stylus Pro 4450. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson Stylus Pro 4400 Epson Stylus Pro 4450</param>
+<param name="Для устройства">Epson Stylus Pro 4400 / Epson Stylus Pro 4450</param>
 <param name="Модель">C13T614200</param>
 <param name="Коды">C13T614200</param>
 </offer>
@@ -569,14 +571,14 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальный картридж Epson C13T614300 пурпурный цвета для Epson Stylus Pro 4400 Epson Stylus Pro 4450. Ресурс: 220 мл.]]></description>
+Оригинальный картридж Epson C13T614300 пурпурный цвета для Epson Stylus Pro 4400 / Epson Stylus Pro 4450. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson Stylus Pro 4400 Epson Stylus Pro 4450</param>
+<param name="Для устройства">Epson Stylus Pro 4400 / Epson Stylus Pro 4450</param>
 <param name="Модель">C13T614300</param>
 <param name="Коды">C13T614300</param>
 </offer>
@@ -590,14 +592,14 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальный картридж Epson C13T614400 жёлтый цвета для Epson Stylus Pro 4400 Epson Stylus Pro 4450. Ресурс: 220 мл.]]></description>
+Оригинальный картридж Epson C13T614400 жёлтый цвета для Epson Stylus Pro 4400 / Epson Stylus Pro 4450. Ресурс: 220 мл.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Жёлтый</param>
-<param name="Для устройства">Epson Stylus Pro 4400 Epson Stylus Pro 4450</param>
+<param name="Для устройства">Epson Stylus Pro 4400 / Epson Stylus Pro 4450</param>
 <param name="Модель">C13T614400</param>
 <param name="Коды">C13T614400</param>
 </offer>
@@ -611,14 +613,14 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальный картридж Epson C13T61480N чёрный цвета для Epson Stylus Pro 4800 Epson Stylus Pro 4880 Epson Stylus Pro 4400 Epson Stylus Pro 4450. Ресурс: 220 мл.]]></description>
+Оригинальный картридж Epson C13T61480N чёрный цвета для Epson Stylus Pro 4800 / Epson Stylus Pro 4880 / Epson Stylus Pro 4400 / Epson Stylus Pro 4450. Ресурс: 220 мл.]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">220 мл</param>
 <param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson Stylus Pro 4800 Epson Stylus Pro 4880 Epson Stylus Pro 4400 Epson Stylus Pro 4450</param>
+<param name="Для устройства">Epson Stylus Pro 4800 / Epson Stylus Pro 4880 / Epson Stylus Pro 4400 / Epson Stylus Pro 4450</param>
 <param name="Модель">C13T61480N</param>
 <param name="Коды">C13T61480N</param>
 </offer>
