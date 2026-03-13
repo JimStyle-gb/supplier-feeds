@@ -197,6 +197,7 @@ def _extract_consumable_device_candidate(name: str, desc: str) -> str:
         line = _clean_text(line)
         if not line:
             continue
+
         m = _RE_CONSUMABLE_MODEL_TAIL.search(line)
         if m:
             cand = _normalize_consumable_device_value(m.group(1))
@@ -205,6 +206,13 @@ def _extract_consumable_device_candidate(name: str, desc: str) -> str:
                 return models
             if cand:
                 return cand
+
+        m_for = _RE_FOR_DEVICE_TAIL.search(line)
+        if m_for:
+            cand = _normalize_consumable_device_value(m_for.group(1))
+            models = _extract_models_from_text(cand)
+            if models:
+                return models
 
     models = _extract_models_from_text(text)
     if models:
@@ -239,11 +247,17 @@ def _pick_name_primary_code(name: str) -> str:
 
 
 def _pick_secondary_t_code(name: str, desc: str, primary: str) -> str:
-    joined = " / ".join([_clean_text(name), _clean_text(desc)])
-    for m in _RE_SECONDARY_T_CODE.finditer(joined):
-        code = _clean_text(m.group(0)).upper()
-        if code and code != primary:
-            return code
+    joined = " / ".join([_clean_text(name), _clean_text(desc)]).upper()
+    raw_tokens = re.findall(r"(?iu)T[0-9A-Z]{5,12}", joined)
+    for token in raw_tokens:
+        code = _clean_text(token).upper()
+        code = re.split(r"(?iu)(?:ULTRACHROME|SINGLEPACK|INK|CARTRIDGE|BLACK|CYAN|MAGENTA|YELLOW|PHOTO)", code)[0]
+        code = _clean_text(code)
+        m = re.match(r"(?iu)^T[0-9A-Z]{5,10}$", code)
+        if m:
+            code = _clean_text(m.group(0)).upper()
+            if code and code != primary:
+                return code
     return ""
 
 
