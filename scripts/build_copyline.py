@@ -42,7 +42,7 @@ COPYLINE_QG_REPORT = os.getenv("COPYLINE_QG_REPORT", "docs/raw/copyline_quality_
 
 
 def main() -> int:
-    build_time = now_almaty()
+    build_time = now_almaty().replace(tzinfo=None)
     next_run = next_run_dom_at_hour(build_time, 3, (1, 10, 20))
 
     index = fetch_product_index()
