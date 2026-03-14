@@ -42,7 +42,7 @@ def _cut_tech_tail(s: str) -> str:
         return ""
     best = None
     for header in TECH_HEADERS:
-        m = re.search(rf"(?:^|\n)\s*{re.escape(header)}\s*:?")
+        m = re.search(rf"(?:^|\n)\s*{re.escape(header)}\s*:?", s, flags=re.I)
         if m:
             pos = m.start()
             if best is None or pos < best:
