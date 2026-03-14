@@ -43,9 +43,19 @@ _DESC_CUT_HEADERS = (
     "Характеристики",
 )
 
-_CONSUMABLE_TITLE_RX = re.compile(
-    r"^(?:картридж|тонер[- ]картридж|драм[- ]картридж|drum\b|чернила\b|девелопер\b)",
-    re.I,
+_CONSUMABLE_TITLE_PREFIXES = (
+    "картридж",
+    "тонер-картридж",
+    "тонер картридж",
+    "драм-картридж",
+    "драм картридж",
+    "drum",
+    "drum unit",
+    "чернила",
+    "девелопер",
+    "developer",
+    "термоблок",
+    "термоэлемент",
 )
 
 CODE_PATTERNS: list[re.Pattern[str]] = [
@@ -57,10 +67,10 @@ CODE_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"\bMLT-[A-Z]\d{3,5}[A-Z0-9/]*\b", re.I),
     re.compile(r"\bCLT-[A-Z]\d{3,5}[A-Z]?\b", re.I),
     re.compile(r"\bTK-?\d{3,5}[A-Z0-9]*\b", re.I),
-    re.compile(r"\b113R\d{5}\b", re.I),
-    re.compile(r"\b108R\d{5}\b", re.I),
     re.compile(r"\b106R\d{5}\b", re.I),
     re.compile(r"\b006R\d{5}\b", re.I),
+    re.compile(r"\b108R\d{5}\b", re.I),
+    re.compile(r"\b113R\d{5}\b", re.I),
     re.compile(r"\bKX-FA\d+[A-Z]?\b", re.I),
     re.compile(r"\bKX-FAT\d+[A-Z]?\b", re.I),
     re.compile(r"\bC13T\d{5,8}[A-Z0-9]*\b", re.I),
@@ -70,6 +80,8 @@ CODE_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"\bUAE-\d+[A-Z0-9-]*\b", re.I),
     re.compile(r"\bDR-\d+[A-Z0-9-]*\b", re.I),
     re.compile(r"\bTN-\d+[A-Z0-9-]*\b", re.I),
+    re.compile(r"\b(?:50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4})\b", re.I),
+    re.compile(r"\b0?71H\b", re.I),
 ]
 
 
@@ -93,17 +105,20 @@ def _normalize_code_token(s: str) -> str:
     if not s:
         return ""
     s = s.replace("\xa0", " ")
-    s = re.sub(r"\s*[-–—]\s*", "-", s)
-    s = re.sub(r"\b(113R|108R|106R|006R|C13T|C12C|C33S)\s+(\d{5,8}[A-Z0-9]*)\b", r"\1\2", s)
-    s = re.sub(r"\b(CLT|MLT|TK|TN|DR|KX)\s*-\s*", r"\1-", s)
-    s = re.sub(r"\bKX\s+(FA|FAT)(\d+[A-Z]?)\b", r"KX-\1\2", s)
-    s = re.sub(r"\s+", " ", s)
-    return s.strip()
+    s = re.sub(r"\s*-\s*", "-", s)
+    s = re.sub(r"\s+", "", s)
+    return s
 
 
 
 def _looks_numeric_sku(s: str) -> bool:
     return bool(re.fullmatch(r"\d+", safe_str(s)))
+
+
+
+def _looks_consumable_title(title: str) -> bool:
+    t = safe_str(title).lower()
+    return any(t.startswith(prefix) for prefix in _CONSUMABLE_TITLE_PREFIXES)
 
 
 
@@ -126,9 +141,10 @@ def _first_vendor_from_text(texts: Sequence[str]) -> str:
     )
     if m:
         val = m.group(1)
-        upper = val.upper()
-        if upper in {"HP", "OKI", "RISO"}:
-            return upper
+        if val.upper() == "HP":
+            return "HP"
+        if val.upper() == "OKI":
+            return "OKI"
         return val.capitalize()
 
     for vendor in VENDOR_PRIORITY:
@@ -155,10 +171,13 @@ def detect_vendor(*, title: str = "", description: str = "", params: Sequence[Tu
 
 
 
-def _find_code(text: str) -> str:
-    hay = _normalize_code_token(text)
+def _search_code(text: str) -> str:
+    hay = _norm_spaces(text)
     if not hay:
         return ""
+    # склейка разорванных кодов
+    hay = re.sub(r"\b(113R|108R|106R|006R|C13T|C12C|C33S)\s+(\d{4,8}[A-Z0-9]*)\b", r"\1\2", hay, flags=re.I)
+    hay = re.sub(r"\b(CLT|MLT|KX|TK|TN|DR|C)\s*-\s*([A-Z0-9]{2,})\b", r"\1-\2", hay, flags=re.I)
     for rx in CODE_PATTERNS:
         m = rx.search(hay)
         if m:
@@ -168,22 +187,28 @@ def _find_code(text: str) -> str:
 
 
 def detect_model(*, title: str = "", description: str = "", sku: str = "") -> str:
-    code_from_title = _find_code(title)
-    if code_from_title:
-        return code_from_title
+    # 1) сначала ищем код в title
+    model = _search_code(title)
+    if model:
+        return model
 
-    code_from_desc = _find_code(description)
-    if code_from_desc:
-        return code_from_desc
+    # 2) потом в description
+    model = _search_code(description)
+    if model:
+        return model
 
+    # 3) fallback только для нечисловых кодоподобных sku
     s = _normalize_code_token(sku)
     if not s:
         return ""
     if _looks_numeric_sku(s):
         return ""
-    if _CONSUMABLE_TITLE_RX.search(safe_str(title)) and _looks_numeric_sku(s):
+    if _looks_consumable_title(title):
+        for rx in CODE_PATTERNS:
+            if rx.fullmatch(s):
+                return s
         return ""
-    if re.fullmatch(r"[A-Z0-9._/-]{3,40}", s):
+    if re.fullmatch(r"[A-Z0-9._/-]{3,40}", s) and not _looks_numeric_sku(s):
         return s
     return ""
 
