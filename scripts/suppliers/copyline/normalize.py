@@ -16,7 +16,7 @@ CopyLine normalize layer.
 from __future__ import annotations
 
 import re
-from typing import Iterable, List, Sequence, Tuple
+from typing import Sequence, Tuple
 
 VENDOR_PRIORITY: list[str] = [
     "HP",
@@ -33,6 +33,7 @@ VENDOR_PRIORITY: list[str] = [
     "OKI",
     "RISO",
     "RIPO",
+    "Panasonic",
 ]
 
 _DESC_CUT_HEADERS = (
@@ -42,6 +43,10 @@ _DESC_CUT_HEADERS = (
     "Характеристики",
 )
 
+_CONSUMABLE_TITLE_RX = re.compile(
+    r"^(?:картридж|тонер[- ]картридж|драм[- ]картридж|drum\b|чернила\b|девелопер\b)",
+    re.I,
+)
 
 CODE_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"\bCF\d{3,4}[A-Z]\b", re.I),
@@ -50,9 +55,14 @@ CODE_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"\bQ\d{4}[A-Z]\b", re.I),
     re.compile(r"\bW\d{4}[A-Z0-9]{1,4}\b", re.I),
     re.compile(r"\bMLT-[A-Z]\d{3,5}[A-Z0-9/]*\b", re.I),
+    re.compile(r"\bCLT-[A-Z]\d{3,5}[A-Z]?\b", re.I),
     re.compile(r"\bTK-?\d{3,5}[A-Z0-9]*\b", re.I),
+    re.compile(r"\b113R\d{5}\b", re.I),
+    re.compile(r"\b108R\d{5}\b", re.I),
     re.compile(r"\b106R\d{5}\b", re.I),
     re.compile(r"\b006R\d{5}\b", re.I),
+    re.compile(r"\bKX-FA\d+[A-Z]?\b", re.I),
+    re.compile(r"\bKX-FAT\d+[A-Z]?\b", re.I),
     re.compile(r"\bC13T\d{5,8}[A-Z0-9]*\b", re.I),
     re.compile(r"\bC12C\d{5,8}[A-Z0-9]*\b", re.I),
     re.compile(r"\bC33S\d{5,8}[A-Z0-9]*\b", re.I),
@@ -63,8 +73,10 @@ CODE_PATTERNS: list[re.Pattern[str]] = [
 ]
 
 
+
 def safe_str(x: object) -> str:
     return str(x).strip() if x is not None else ""
+
 
 
 def _norm_spaces(s: str) -> str:
@@ -73,6 +85,26 @@ def _norm_spaces(s: str) -> str:
     s = re.sub(r"[ \t\r\f\v]+", " ", s)
     s = re.sub(r"\s*\n\s*", "\n", s)
     return s.strip()
+
+
+
+def _normalize_code_token(s: str) -> str:
+    s = safe_str(s).upper()
+    if not s:
+        return ""
+    s = s.replace("\xa0", " ")
+    s = re.sub(r"\s*[-–—]\s*", "-", s)
+    s = re.sub(r"\b(113R|108R|106R|006R|C13T|C12C|C33S)\s+(\d{5,8}[A-Z0-9]*)\b", r"\1\2", s)
+    s = re.sub(r"\b(CLT|MLT|TK|TN|DR|KX)\s*-\s*", r"\1-", s)
+    s = re.sub(r"\bKX\s+(FA|FAT)(\d+[A-Z]?)\b", r"KX-\1\2", s)
+    s = re.sub(r"\s+", " ", s)
+    return s.strip()
+
+
+
+def _looks_numeric_sku(s: str) -> bool:
+    return bool(re.fullmatch(r"\d+", safe_str(s)))
+
 
 
 def normalize_title(title: str) -> str:
@@ -87,17 +119,18 @@ def _first_vendor_from_text(texts: Sequence[str]) -> str:
     if not hay:
         return ""
 
-    # 1) прямые конструкции 'для HP', 'для Canon', ...
     m = re.search(
-        r"(?:^|\b)(?:для|for)\s+(HP|Canon|Xerox|Kyocera|Brother|Epson|Pantum|Ricoh|Lexmark|Samsung|OKI|RISO)\b",
+        r"(?:^|\b)(?:для|for)\s+(HP|Canon|Xerox|Kyocera|Brother|Epson|Pantum|Ricoh|Lexmark|Samsung|OKI|RISO|Panasonic)\b",
         hay,
         flags=re.I,
     )
     if m:
         val = m.group(1)
-        return "OKI" if val.upper() == "OKI" else val.capitalize() if val.lower() not in {"hp"} else "HP"
+        upper = val.upper()
+        if upper in {"HP", "OKI", "RISO"}:
+            return upper
+        return val.capitalize()
 
-    # 2) приоритетные бренды как standalone tokens
     for vendor in VENDOR_PRIORITY:
         if re.search(rf"\b{re.escape(vendor)}\b", hay, flags=re.I):
             return vendor
@@ -122,17 +155,35 @@ def detect_vendor(*, title: str = "", description: str = "", params: Sequence[Tu
 
 
 
-def detect_model(*, title: str = "", description: str = "", sku: str = "") -> str:
-    # 1) пытаемся взять кодовую модель из title/desc
-    hay = "\n".join([safe_str(title), safe_str(description)])
+def _find_code(text: str) -> str:
+    hay = _normalize_code_token(text)
+    if not hay:
+        return ""
     for rx in CODE_PATTERNS:
         m = rx.search(hay)
         if m:
-            return m.group(0).upper().replace(" ", "")
+            return _normalize_code_token(m.group(0))
+    return ""
 
-    # 2) SKU как fallback
-    s = safe_str(sku)
-    if s and re.fullmatch(r"[A-Za-z0-9._/-]{3,40}", s):
+
+
+def detect_model(*, title: str = "", description: str = "", sku: str = "") -> str:
+    code_from_title = _find_code(title)
+    if code_from_title:
+        return code_from_title
+
+    code_from_desc = _find_code(description)
+    if code_from_desc:
+        return code_from_desc
+
+    s = _normalize_code_token(sku)
+    if not s:
+        return ""
+    if _looks_numeric_sku(s):
+        return ""
+    if _CONSUMABLE_TITLE_RX.search(safe_str(title)) and _looks_numeric_sku(s):
+        return ""
+    if re.fullmatch(r"[A-Z0-9._/-]{3,40}", s):
         return s
     return ""
 
@@ -142,13 +193,11 @@ def clean_description(text: str) -> str:
     s = _norm_spaces(text)
     if not s:
         return ""
-    # оставляем только supplier-body до технических заголовков
     for header in _DESC_CUT_HEADERS:
         m = re.search(rf"(^|\n){re.escape(header)}\s*:?", s, flags=re.I)
         if m:
             s = s[: m.start()].strip()
             break
-    # склеить короткий supplier-body в 1–2 предложения
     lines = [x.strip(" -•") for x in s.split("\n") if x.strip(" -•")]
     if not lines:
         return ""
