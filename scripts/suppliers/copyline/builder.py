@@ -22,6 +22,32 @@ from suppliers.copyline.params_page import extract_page_params
 from suppliers.copyline.pictures import full_only_if_present, prefer_full_product_pictures
 
 
+_CODE_FALLBACK_RX = re.compile(
+    r"\b(?:CF\d{3,4}[A-Z]|CE\d{3,4}[A-Z]|CB\d{3,4}[A-Z]|Q\d{4}[A-Z]|W\d{4}[A-Z0-9]{1,4}|"
+    r"113R\d{5}|108R\d{5}|106R\d{5}|006R\d{5}|"
+    r"TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|"
+    r"KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
+    r"C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
+    r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*)\b",
+    re.I,
+)
+
+_VENDOR_FROM_COMPAT = (
+    "HP",
+    "Canon",
+    "Xerox",
+    "Samsung",
+    "Panasonic",
+    "Kyocera",
+    "Brother",
+    "Epson",
+    "Ricoh",
+    "RISO",
+)
+
+_WEAK_VALUES = {"-", "—", "нет", "n/a", "null"}
+
+
 
 def safe_str(x: object) -> str:
     return str(x).strip() if x is not None else ""
@@ -49,6 +75,45 @@ def _merge_params(*blocks: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
                 continue
             seen.add(sig)
             out.append((key, val))
+    return out
+
+
+
+def _is_numeric_model(value: str) -> bool:
+    return bool(re.fullmatch(r"\d+", safe_str(value)))
+
+
+
+def _first_code_from_params(params: Sequence[Tuple[str, str]]) -> str:
+    for key, value in params:
+        if safe_str(key) != "Коды расходников":
+            continue
+        m = _CODE_FALLBACK_RX.search(safe_str(value).upper())
+        if m:
+            return m.group(0).upper().replace(" ", "")
+    return ""
+
+
+
+def _infer_vendor_from_compat(params: Sequence[Tuple[str, str]]) -> str:
+    for key, value in params:
+        if safe_str(key) != "Совместимость":
+            continue
+        compat = safe_str(value)
+        for vendor in _VENDOR_FROM_COMPAT:
+            if re.search(rf"\b{re.escape(vendor)}\b", compat, flags=re.I):
+                return vendor
+    return ""
+
+
+
+def _drop_weak_params(params: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
+    out: list[Tuple[str, str]] = []
+    for key, value in params:
+        v = safe_str(value)
+        if not v or v.casefold() in {x.casefold() for x in _WEAK_VALUES}:
+            continue
+        out.append((safe_str(key), v))
     return out
 
 
@@ -82,8 +147,28 @@ def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut |
     params = _merge_params(page_params, desc_params)
     if model:
         params = _merge_params(params, [("Модель", model)])
+
+    if any(safe_str(k) == "Модель" and _is_numeric_model(v) for k, v in params):
+        code_model = _first_code_from_params(params)
+        new_params: list[Tuple[str, str]] = []
+        for key, value in params:
+            if safe_str(key) != "Модель":
+                new_params.append((key, value))
+                continue
+            if not _is_numeric_model(value):
+                new_params.append((key, value))
+                continue
+            if code_model:
+                new_params.append(("Модель", code_model))
+        params = new_params
+
+    if not vendor:
+        vendor = _infer_vendor_from_compat(params)
+
     if vendor and any(safe_str(k) == "Тип" and safe_str(v) in {"Картридж", "Тонер-картридж", "Драм-картридж", "Девелопер", "Чернила"} for k, v in params):
         params = _merge_params(params, [("Для бренда", vendor)])
+
+    params = _drop_weak_params(params)
     params = reconcile_copyline_params(params)
 
     pictures = prefer_full_product_pictures(page.get("pics") or [])
