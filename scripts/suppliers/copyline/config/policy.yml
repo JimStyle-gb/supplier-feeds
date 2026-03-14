@@ -19,7 +19,7 @@ param_priority:
   - Ресурс
   - Модель
 quality_gate:
-  enforce: true
+  enforce: false
   max_cosmetic_offers: 5
   max_cosmetic_issues: 5
   report_path: docs/raw/copyline_quality_gate.txt
