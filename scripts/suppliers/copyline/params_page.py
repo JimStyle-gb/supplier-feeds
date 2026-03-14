@@ -14,11 +14,51 @@ CopyLine page-params layer.
 from __future__ import annotations
 
 import re
-from typing import Iterable, List, Sequence, Tuple
+from typing import List, Sequence, Tuple
+
+
+CODE_RX = re.compile(
+    r"\b(?:CF\d{3,4}[A-Z]|CE\d{3,4}[A-Z]|CB\d{3,4}[A-Z]|Q\d{4}[A-Z]|W\d{4}[A-Z0-9]{1,4}|"
+    r"113R\d{5}|108R\d{5}|106R\d{5}|006R\d{5}|"
+    r"TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|"
+    r"KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
+    r"C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
+    r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*)\b",
+    re.I,
+)
+
+COMPAT_PATTERNS: tuple[re.Pattern[str], ...] = (
+    re.compile(r"(?:используется\s+в\s+принтерах\s+серий|используется\s+в\s+принтерах)\s+", re.I),
+    re.compile(r"(?:для\s+принтеров\s+серий|для\s+принтеров)\s+", re.I),
+    re.compile(r"применяется\s+в\s+мфу\s+", re.I),
+    re.compile(r"применяется\s+в\s+", re.I),
+    re.compile(r"совместимость\s+с\s+устройствами\s*:?\s*", re.I),
+    re.compile(r"совместим\s+с\s+", re.I),
+    re.compile(r"подходит\s+для\s+", re.I),
+    re.compile(r"используется\s+с\s+", re.I),
+    re.compile(r"для\s+устройств\s+", re.I),
+    re.compile(r"для\s+аппаратов\s+", re.I),
+)
+
+_TECH_STOP_RX = re.compile(
+    r"(?:\n\n+|(?:^|\n)(?:технические\s+характеристики|характеристика|основные\s+характеристики|характеристики|ресурс|цвет|технология\s+печати)\b)",
+    re.I,
+)
+
+_CABLE_KEYS = {
+    "Тип кабеля",
+    "Количество пар",
+    "Толщина проводников",
+    "Категория",
+    "Назначение",
+    "Материал изоляции",
+    "Бухта",
+}
 
 
 def safe_str(x: object) -> str:
     return str(x).strip() if x is not None else ""
+
 
 
 def _title_kind(title: str) -> str:
@@ -61,7 +101,6 @@ KEY_MAP = {
     "бухта": "Бухта",
 }
 
-CODE_RX = re.compile(r"\b(?:CF\d{3,4}[A-Z]|CE\d{3,4}[A-Z]|CB\d{3,4}[A-Z]|Q\d{4}[A-Z]|W\d{4}[A-Z0-9]{1,4}|106R\d{5}|006R\d{5}|TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*)\b", re.I)
 
 
 def _norm_color(val: str) -> str:
@@ -79,6 +118,27 @@ def _norm_color(val: str) -> str:
         if low == k:
             return v
     return s[:120]
+
+
+
+def _normalize_code_token(s: str) -> str:
+    s = safe_str(s).upper()
+    if not s:
+        return ""
+    s = s.replace("\xa0", " ")
+    s = re.sub(r"\s*[-–—]\s*", "-", s)
+    s = re.sub(r"\b(113R|108R|106R|006R|C13T|C12C|C33S)\s+(\d{5,8}[A-Z0-9]*)\b", r"\1\2", s)
+    s = re.sub(r"\b(CLT|MLT|TK|TN|DR|KX)\s*-\s*", r"\1-", s)
+    s = re.sub(r"\bKX\s+(FA|FAT)(\d+[A-Z]?)\b", r"KX-\1\2", s)
+    s = re.sub(r"\s+", " ", s)
+    return s.strip()
+
+
+
+def _normalize_code_search_text(text: str) -> str:
+    s = _normalize_code_token(text)
+    s = re.sub(r"\s+", " ", s)
+    return s.strip()
 
 
 
@@ -100,16 +160,18 @@ def _dedupe_params(items: Sequence[Tuple[str, str]]) -> List[Tuple[str, str]]:
 
 
 def _extract_codes(title: str, description: str) -> str:
-    text = " ".join([safe_str(title), safe_str(description)])
+    text = _normalize_code_search_text(" ".join([safe_str(title), safe_str(description)]))
     found: list[str] = []
     seen: set[str] = set()
     for m in CODE_RX.finditer(text):
-        val = m.group(0).upper().replace(" ", "")
+        val = _normalize_code_token(m.group(0))
+        if not val or val.isdigit() or len(val) < 4:
+            continue
         if val in seen:
             continue
         seen.add(val)
         found.append(val)
-    return ", ".join(found[:4])
+    return ", ".join(found[:6])
 
 
 
@@ -117,15 +179,20 @@ def _extract_compat_from_desc(description: str) -> str:
     d = safe_str(description)
     if not d:
         return ""
-    m = re.search(
-        r"(?:используется\s+в\s+принтерах\s+серий|используется\s+в\s+принтерах|для\s+принтеров\s+серий|для\s+принтеров)\s+(.+?)(?:\.|$)",
-        d,
-        flags=re.I | re.S,
-    )
-    if not m:
-        return ""
-    val = re.sub(r"\s+", " ", m.group(1)).strip(" ,.;")
-    return val[:240]
+    d = re.sub(r"\s+", " ", d).strip()
+    for rx in COMPAT_PATTERNS:
+        m = rx.search(d)
+        if not m:
+            continue
+        tail = d[m.end():]
+        stop = _TECH_STOP_RX.search(tail)
+        if stop:
+            tail = tail[: stop.start()]
+        tail = re.split(r"(?<=[.!?])\s", tail, maxsplit=1)[0]
+        val = re.sub(r"\s+", " ", tail).strip(" ,.;")
+        if val:
+            return val[:320]
+    return ""
 
 
 
@@ -153,6 +220,8 @@ def extract_page_params(
             continue
         if norm_key == "Цвет":
             v = _norm_color(v)
+        elif kind == "Кабель сетевой" and norm_key in _CABLE_KEYS:
+            v = v.strip()
         out.append((norm_key, v))
 
     compat = _extract_compat_from_desc(description)
@@ -163,7 +232,6 @@ def extract_page_params(
     if codes:
         out.append(("Коды расходников", codes))
 
-    # title hints
     title_low = safe_str(title).lower()
     if "yellow" in title_low and not any(k == "Цвет" for k, _ in out):
         out.append(("Цвет", "Желтый"))
