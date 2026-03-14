@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-14 19:53:26">
+<yml_catalog date="2026-03-14 21:12:55">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-14 19:53:26
+Время сборки (Алматы)                      | 2026-03-14 21:12:55
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -148,7 +148,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 113R00670 применяется в многофункциональных принтерах Xerox Phaser 5500, 5550. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 5500, 5550</param>
+<param name="Совместимость">Xerox Phaser 5500, Xerox Phaser 5550</param>
 <param name="Коды расходников">113R00670</param>
 <param name="Модель">113R00670</param>
 <param name="Для бренда">Xerox</param>
@@ -789,7 +789,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00624 применяется в многофункциональных принтерах Xerox WorkCentre 7228, 7235, 7245, 7328, 7335, 7345, 7346. Ресурс печати - 45 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox WorkCentre 7228, 7235, 7245, 7328, 7335, 7345, 7346</param>
+<param name="Совместимость">Xerox WorkCentre 7228, Xerox WorkCentre 7235, Xerox WorkCentre 7245, Xerox WorkCentre 7328, Xerox WorkCentre 7335, Xerox WorkCentre 7345, Xerox WorkCentre 7346</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -805,7 +805,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 006R01176 используется в принтерах серий Xerox WC 7228, 7235, 7245, 7328, 7335, 7345, 7346, WC Pro C2128, C2636, C3435, CopyCentre C2128, C2632, C3545. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox WC 7228, 7235, 7245, 7328, 7335, 7345, 7346, WC Pro C2128, C2636, C3435, CopyCentre C2128, C2632, C3545</param>
+<param name="Совместимость">Xerox WC 7228, 7235, 7245, 7328, 7335, 7345, 7346, Xerox WorkCentre Pro C2128, C2636, C3435, CopyCentre C2128, C2632, C3545</param>
 <param name="Коды расходников">006R01176</param>
 <param name="Модель">006R01176</param>
 <param name="Для бренда">Xerox</param>
@@ -822,7 +822,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 006R01177 используется в принтерах серий Xerox WC 7228, 7235, 7245, 7328, 7335, 7345, 7346, WC Pro C2128, C2636, C3435, CopyCentre C2128, C2632, C3545. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox WC 7228, 7235, 7245, 7328, 7335, 7345, 7346, WC Pro C2128, C2636, C3435, CopyCentre C2128, C2632, C3545</param>
+<param name="Совместимость">Xerox WC 7228, 7235, 7245, 7328, 7335, 7345, 7346, Xerox WorkCentre Pro C2128, C2636, C3435, CopyCentre C2128, C2632, C3545</param>
 <param name="Коды расходников">006R01177</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">006R01177</param>
@@ -840,7 +840,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 006R01178 используется в принтерах серий Xerox WC 7228, 7235, 7245, 7328, 7335, 7345, 7346, WC Pro C2128, C2636, C3435, CopyCentre C2128, C2632, C3545. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox WC 7228, 7235, 7245, 7328, 7335, 7345, 7346, WC Pro C2128, C2636, C3435, CopyCentre C2128, C2632, C3545</param>
+<param name="Совместимость">Xerox WC 7228, 7235, 7245, 7328, 7335, 7345, 7346, Xerox WorkCentre Pro C2128, C2636, C3435, CopyCentre C2128, C2632, C3545</param>
 <param name="Коды расходников">006R01178</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">006R01178</param>
@@ -858,7 +858,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00657 Black применяется в многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225. Ресурс печати - 67 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225</param>
+<param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
 <param name="Цвет">Чёрный</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -874,7 +874,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00660 Cyan применяется в многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225. Ресурс печати - 51 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225</param>
+<param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -889,7 +889,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00659 Magenta применяется в многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225. Ресурс печати - 51 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225</param>
+<param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -905,7 +905,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00658 Yellow применяется в многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225. Ресурс печати - 51 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225</param>
+<param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -1060,6 +1060,13 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Кабель сетевой FTP (витая пара) FCH-5514 RIPO.]]></description>
 <param name="Тип">Кабель сетевой</param>
+<param name="Тип кабеля">FTP</param>
+<param name="Категория">Cat.5e</param>
+<param name="Количество пар">4</param>
+<param name="Толщина проводников">0,51</param>
+<param name="Материал изоляции">LSZH</param>
+<param name="Бухта">305 м/б</param>
+<param name="Назначение">Витая пара</param>
 </offer>
 
 <offer id="CL100221" available="true">
@@ -1073,6 +1080,13 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Кабель сетевой FTP (витая пара) FCH-6574 RIPO.]]></description>
 <param name="Тип">Кабель сетевой</param>
+<param name="Тип кабеля">FTP</param>
+<param name="Категория">Cat.6</param>
+<param name="Количество пар">4</param>
+<param name="Толщина проводников">0,57</param>
+<param name="Материал изоляции">LSZH</param>
+<param name="Бухта">305 м/б</param>
+<param name="Назначение">Витая пара</param>
 </offer>
 
 <offer id="CL100222" available="true">
@@ -1088,7 +1102,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium ML-1710D3 используется в принтерах серий SAMSUNG ML-1410, ML-1500, ML-1510, ML-1520, ML-1710, ML-1740, ML-1750, SCX-4100, SCX-4116, SCX-4216, SF560, SF565, Xerox phaser 3115, 3116, 3120, PE-16, PE-114. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">SAMSUNG ML-1410, ML-1500, ML-1510, ML-1520, ML-1710, ML-1740, ML-1750, SCX-4100, SCX-4116, SCX-4216, SF560, SF565, Xerox phaser 3115, 3116, 3120, PE-16, PE-114</param>
+<param name="Совместимость">SAMSUNG ML-1410, ML-1500, ML-1510, ML-1520, ML-1710, ML-1740, ML-1750, SCX-4100, SCX-4116, SCX-4216, SF560, SF565, Xerox phaser 3115, Xerox phaser 3116, 3120, PE-16, PE-114</param>
+<param name="Материал изоляции">PE</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -1608,6 +1623,13 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Кабель сетевой UTP (витая пара) UAE-5512 RIPO.]]></description>
 <param name="Тип">Кабель сетевой</param>
+<param name="Тип кабеля">UTP</param>
+<param name="Категория">Cat.5e</param>
+<param name="Количество пар">2</param>
+<param name="Толщина проводников">0,51</param>
+<param name="Материал изоляции">PE</param>
+<param name="Бухта">305 м/б</param>
+<param name="Назначение">Витая пара</param>
 <param name="Модель">UAE-5512</param>
 </offer>
 
@@ -2581,7 +2603,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 101R00474 применяется в многофункциональных принтерах Xerox Phaser 3052, 3260, WorkCentre 3215, 3225. Ресурс печати - 10 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 3052, 3260, WorkCentre 3215, 3225</param>
+<param name="Совместимость">Xerox Phaser 3052, Xerox Phaser 3260, Xerox Phaser WorkCentre 3215, Xerox Phaser 3225</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -3255,7 +3277,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Business ML-1610D2 используется в принтерах серий SAMSUNG ML-1610, ML-1615, ML-2010, ML-2015, ML-2570, ML-2571, ML-2510, SCX-4321, SCX-4521, Xerox phaser 3117, 3122, 3124, 3125. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">SAMSUNG ML-1610, ML-1615, ML-2010, ML-2015, ML-2570, ML-2571, ML-2510, SCX-4321, SCX-4521, Xerox phaser 3117, 3122, 3124, 3125</param>
+<param name="Совместимость">SAMSUNG ML-1610, ML-1615, ML-2010, ML-2015, ML-2570, ML-2571, ML-2510, SCX-4321, SCX-4521, Xerox phaser 3117, Xerox phaser 3122, 3124, 3125</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -3631,7 +3653,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00589 применяется в многофункциональных принтерах Xerox WorkCentre M118, M118i, M123, M128, M133, CopyCentre C118, C123, C128, C133, WC Pro 123, 128. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox WorkCentre M118, M118i, M123, M128, M133, CopyCentre C118, C123, C128, C133, WC Pro 123, 128</param>
+<param name="Совместимость">Xerox WorkCentre M118, Xerox WorkCentre M118i, Xerox WorkCentre M123, Xerox WorkCentre M128, Xerox WorkCentre M133, Xerox WorkCentre CopyCentre C118, Xerox WorkCentre C123, Xerox WorkCentre C128, Xerox WorkCentre C133, Xerox WorkCentre Pro 123, Xerox WorkCentre 128</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -3689,7 +3711,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Узел термозакрепления JC81-01690A, JC96-02661A ( термоблок, печка ) для принтеров и МФУ Samsung ML-1510, ML-1710, SCX-4100, SCX-4200, Xerox Phaser 3120, 3121, 3115, 3119.]]></description>
 <param name="Тип">Термоблок</param>
-<param name="Совместимость">и МФУ Samsung ML-1510, ML-1710, SCX-4100, SCX-4200, Xerox Phaser 3120, 3121, 3115, 3119</param>
+<param name="Совместимость">и МФУ Samsung ML-1510, ML-1710, SCX-4100, SCX-4200, Xerox Phaser 3120, Xerox Phaser 3121, 3115, 3119</param>
 </offer>
 
 <offer id="CL101402" available="true">
@@ -3998,6 +4020,13 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Кабель сетевой UTP (витая пара) UCH-5514 RIPO.]]></description>
 <param name="Тип">Кабель сетевой</param>
+<param name="Тип кабеля">UTP</param>
+<param name="Категория">Cat.5e</param>
+<param name="Количество пар">4</param>
+<param name="Толщина проводников">0,51</param>
+<param name="Материал изоляции">LSZH</param>
+<param name="Бухта">305 м/б</param>
+<param name="Назначение">Витая пара</param>
 </offer>
 
 <offer id="CL101599" available="false">
@@ -4011,6 +4040,13 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Кабель сетевой UTP (витая пара) UСE-5512 RIPO.]]></description>
 <param name="Тип">Кабель сетевой</param>
+<param name="Тип кабеля">UTP</param>
+<param name="Категория">Cat.5e</param>
+<param name="Количество пар">2</param>
+<param name="Толщина проводников">0,5</param>
+<param name="Материал изоляции">PE</param>
+<param name="Бухта">305 м/б</param>
+<param name="Назначение">Витая пара</param>
 </offer>
 
 <offer id="CL101600" available="true">
@@ -4024,6 +4060,13 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Кабель сетевой FTP (витая пара) FCH-6574 RIPO.]]></description>
 <param name="Тип">Кабель сетевой</param>
+<param name="Тип кабеля">FTP</param>
+<param name="Категория">Cat.6</param>
+<param name="Количество пар">4</param>
+<param name="Толщина проводников">0,57</param>
+<param name="Материал изоляции">PVC</param>
+<param name="Бухта">305 м/б</param>
+<param name="Назначение">Витая пара</param>
 </offer>
 
 <offer id="CL101624" available="true">
@@ -4828,7 +4871,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 101R00432 применяется в многофункциональных принтерах Xerox WorkCentre 5020, 5016. Ресурс печати - 22 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox WorkCentre 5020, 5016</param>
+<param name="Совместимость">Xerox WorkCentre 5020, Xerox WorkCentre 5016</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -5636,7 +5679,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) DK-130 применяется в принтерах Kyocera FS-1100, FS-1100N, FS-1300D, FS-1300DN. Ресурс печати - 100 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Kyocera FS-1100, FS-1100N, FS-1300D, FS-1300DN</param>
+<param name="Совместимость">Kyocera FS-1100, FS-1100N, FS-1300D, FS-1300DN</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
 
@@ -5665,6 +5708,13 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Кабель сетевой FTP (витая пара) FCE-6574 RIPO.]]></description>
 <param name="Тип">Кабель сетевой</param>
+<param name="Тип кабеля">FTP</param>
+<param name="Категория">Cat.6</param>
+<param name="Количество пар">4</param>
+<param name="Толщина проводников">0,57</param>
+<param name="Материал изоляции">PE</param>
+<param name="Бухта">305 м/б</param>
+<param name="Назначение">Витая пара</param>
 </offer>
 
 <offer id="CL102348" available="true">
@@ -5753,6 +5803,13 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Кабель сетевой UTP (витая пара) UCC-5514 RIPO.]]></description>
 <param name="Тип">Кабель сетевой</param>
+<param name="Тип кабеля">UTP</param>
+<param name="Категория">Cat.5e</param>
+<param name="Количество пар">4</param>
+<param name="Толщина проводников">0,51</param>
+<param name="Материал изоляции">PVC</param>
+<param name="Бухта">305 м/б</param>
+<param name="Назначение">Витая пара</param>
 </offer>
 
 <offer id="CL102399" available="true">
@@ -5874,7 +5931,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 101R00435 применяется в многофункциональных принтерах Xerox WorkCentre 5222, 5225, 5230. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox WorkCentre 5222, 5225, 5230</param>
+<param name="Совместимость">Xerox WorkCentre 5222, Xerox WorkCentre 5225, Xerox WorkCentre 5230</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -5890,6 +5947,13 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Кабель сетевой UTP (витая пара) UAC-5514 RIPO.]]></description>
 <param name="Тип">Кабель сетевой</param>
+<param name="Тип кабеля">UTP</param>
+<param name="Категория">Cat.5e</param>
+<param name="Количество пар">4</param>
+<param name="Толщина проводников">0,5</param>
+<param name="Материал изоляции">PVC</param>
+<param name="Бухта">305 м/б</param>
+<param name="Назначение">Витая пара</param>
 </offer>
 
 <offer id="CL102419" available="true">
@@ -5948,7 +6012,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00591 применяется в многофункциональных принтерах Xerox WorkCentre 5325, 5330, 5335. Ресурс печати - 90 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox WorkCentre 5325, 5330, 5335</param>
+<param name="Совместимость">Xerox WorkCentre 5325, Xerox WorkCentre 5330, Xerox WorkCentre 5335</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -6151,6 +6215,13 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Кабель сетевой UTP (витая пара) UAC-5512 RIPO.]]></description>
 <param name="Тип">Кабель сетевой</param>
+<param name="Тип кабеля">UTP</param>
+<param name="Категория">Cat.5e</param>
+<param name="Количество пар">2</param>
+<param name="Толщина проводников">0,5</param>
+<param name="Материал изоляции">PVC</param>
+<param name="Бухта">305 м/б</param>
+<param name="Назначение">Витая пара</param>
 </offer>
 
 <offer id="CL102616" available="true">
@@ -6610,7 +6681,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R00861 применяется в многофункциональных принтерах Xerox Phaser 7500. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 7500</param>
+<param name="Совместимость">Xerox Phaser 7500</param>
 <param name="Коды расходников">108R00861</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">108R00861</param>
@@ -6858,7 +6929,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00647 применяется в многофункциональных принтерах Xerox WorkCentre 7425, 7428, 7435. Ресурс печати - 75 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox WorkCentre 7425, 7428, 7435</param>
+<param name="Совместимость">Xerox WorkCentre 7425, Xerox WorkCentre 7428, Xerox WorkCentre 7435</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -6945,7 +7016,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00662 применяется в многофункциональных принтерах Xerox: WorkCentre 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970; AltaLink C8030, C8035, C8045, C8055, C8070. Ресурс печати - 125 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox: WorkCentre 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970, AltaLink C8030, C8035, C8045, C8055, C8070</param>
+<param name="Совместимость">Xerox: WorkCentre 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970, AltaLink C8030, C8035, C8045, C8055, C8070</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -6994,7 +7065,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 006R01175 используется в принтерах серий Xerox WC 7228, 7235, 7245, 7328, 7335, 7345, 7346, WC Pro C2128, C2636, C3435, CopyCentre C2128, C2632, C3545. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox WC 7228, 7235, 7245, 7328, 7335, 7345, 7346, WC Pro C2128, C2636, C3435, CopyCentre C2128, C2632, C3545</param>
+<param name="Совместимость">Xerox WC 7228, 7235, 7245, 7328, 7335, 7345, 7346, Xerox WorkCentre Pro C2128, C2636, C3435, CopyCentre C2128, C2632, C3545</param>
 <param name="Коды расходников">006R01175</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">006R01175</param>
@@ -8439,7 +8510,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Узел термозакрепления JC96-03401A ( термоблок, печка ) для принтеров и МФУ Samsung ML-1610, ML-2015; Xerox Phaser 3116, 3117, 3122.]]></description>
 <param name="Тип">Термоблок</param>
-<param name="Совместимость">и МФУ Samsung ML-1610, ML-2015, Xerox Phaser 3116, 3117, 3122</param>
+<param name="Совместимость">и МФУ Samsung ML-1610, ML-2015, Xerox Phaser 3116, Xerox Phaser 3117, 3122</param>
 </offer>
 
 <offer id="CL103179" available="false">
@@ -8453,7 +8524,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 50F0Z00 применяется в принтерах серии Lexmark MS310, MS410, MS510, MS610, MX310, MX410, MX510, MX610. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах серии Lexmark MS310, MS410, MS510, MS610, MX310, MX410, MX510, MX610</param>
+<param name="Совместимость">серии Lexmark MS310, MS410, MS510, MS610, MX310, MX410, MX510, MX610</param>
 <param name="Коды расходников">50F0Z00</param>
 <param name="Модель">50F0Z00</param>
 <param name="Для бренда">Lexmark</param>
@@ -9408,7 +9479,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Барабан-картридж (Drum Unit - блок барабана) Euro Print DR-1075 применяется в принтерах Brother DCP-1510R, DCP-1512R, DCP-1610WR, DCP-1612WR, HL-1110R, HL-1112R, HL-1210WR, HL-1212WR, MFC-1810, MFC-1810R, MFC-1815, MFC-1815R, MFC-1910, MFC-1910W, MFC-1912WR. Ресурс фото-барабана составляет 10000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Brother DCP-1510R, DCP-1512R, DCP-1610WR, DCP-1612WR, HL-1110R, HL-1112R, HL-1210WR, HL-1212WR, MFC-1810, MFC-1810R, MFC-1815, MFC-1815R, MFC-1910, MFC-1910W, MFC-1912WR</param>
+<param name="Совместимость">Brother DCP-1510R, DCP-1512R, DCP-1610WR, DCP-1612WR, HL-1110R, HL-1112R, HL-1210WR, HL-1212WR, MFC-1810, MFC-1810R, MFC-1815, MFC-1815R, MFC-1910, MFC-1910W, MFC-1912WR</param>
 <param name="Коды расходников">DR-1075</param>
 <param name="Модель">DR-1075</param>
 <param name="Для бренда">Brother</param>
@@ -9501,7 +9572,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00670 применяется в многофункциональных принтерах Xerox WorkCentre 5019, 5021, 5022, 5024. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox WorkCentre 5019, 5021, 5022, 5024</param>
+<param name="Совместимость">Xerox WorkCentre 5019, Xerox WorkCentre 5021, Xerox WorkCentre 5022, Xerox WorkCentre 5024</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -9568,7 +9639,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 101R00555 применяется в многофункциональных принтерах Xerox Phaser 3330, WorkCentre 3335, 3345. Ресурс печати - 30 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 3330, WorkCentre 3335, 3345</param>
+<param name="Совместимость">Xerox Phaser 3330, Xerox Phaser WorkCentre 3335, Xerox Phaser 3345</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -9784,7 +9855,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) SP4500E применяется в принтерах Ricoh Aficio SP4510DN, SP4510SF, SP3600DN, SP3600SF, SP3610SF. Ресурс печати - 6 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Ricoh Aficio SP4510DN, SP4510SF, SP3600DN, SP3600SF, SP3610SF</param>
+<param name="Совместимость">Ricoh Aficio SP4510DN, RICOH Aficio SP4510SF, RICOH Aficio SP3600DN, RICOH Aficio SP3600SF, RICOH Aficio SP3610SF</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -10186,7 +10257,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 113R00773 применяется в многофункциональных принтерах Xerox Phaser 3610, WorkCentre 3615. Ресурс печати - 85 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 3610, WorkCentre 3615</param>
+<param name="Совместимость">Xerox Phaser 3610, Xerox Phaser WorkCentre 3615</param>
 <param name="Коды расходников">113R00773</param>
 <param name="Модель">113R00773</param>
 <param name="Для бренда">Xerox</param>
@@ -10203,7 +10274,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) CLT-R404 применяется в принтерах Samsung SL-C430, SL-C480. Ресурс печати - 16 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Samsung SL-C430, SL-C480</param>
+<param name="Совместимость">Samsung SL-C430, SL-C480</param>
 <param name="Коды расходников">CLT-R404</param>
 <param name="Модель">CLT-R404</param>
 <param name="Для бренда">Samsung</param>
@@ -10221,7 +10292,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) CLT-R406 применяется в принтерах Samsung CLP-360, CLP-365, CLP-368, CLX-3300, CLX-3305. Ресурс печати - 16 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Samsung CLP-360, CLP-365, CLP-368, CLX-3300, CLX-3305</param>
+<param name="Совместимость">Samsung CLP-360, CLP-365, CLP-368, CLX-3300, CLX-3305</param>
 <param name="Коды расходников">CLT-R406</param>
 <param name="Модель">CLT-R406</param>
 <param name="Для бренда">Samsung</param>
@@ -10238,7 +10309,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) CLT-R409 применяется в принтерах Samsung CLP-310, CLP-315, CLX-3170, CLX-3175. Ресурс печати - 24 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Samsung CLP-310, CLP-315, CLX-3170, CLX-3175</param>
+<param name="Совместимость">Samsung CLP-310, CLP-315, CLX-3170, CLX-3175</param>
 <param name="Коды расходников">CLT-R409</param>
 <param name="Модель">CLT-R409</param>
 <param name="Для бренда">Samsung</param>
@@ -10256,7 +10327,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) CLT-R407 применяется в принтерах Samsung CLP-320, CLP-325, CLX-3185, CLX-3185N, CLX-3185FN, CLX-3185FW. Ресурс печати - 24 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Samsung CLP-320, CLP-325, CLX-3185, CLX-3185N, CLX-3185FN, CLX-3185FW</param>
+<param name="Совместимость">Samsung CLP-320, CLP-325, CLX-3185, CLX-3185N, CLX-3185FN, CLX-3185FW</param>
 <param name="Коды расходников">CLT-R407</param>
 <param name="Модель">CLT-R407</param>
 <param name="Для бренда">Samsung</param>
@@ -10339,7 +10410,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 113R00773 применяется в многофункциональных принтерах Xerox Phaser 3610, WorkCentre 3615. Ресурс печати - 85 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 3610, WorkCentre 3615</param>
+<param name="Совместимость">Xerox Phaser 3610, Xerox Phaser WorkCentre 3615</param>
 <param name="Коды расходников">113R00773</param>
 <param name="Модель">113R00773</param>
 <param name="Для бренда">Xerox</param>
@@ -10796,7 +10867,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Барабан-картридж (Drum Unit - блок барабана) Euro Print DR-2275 применяется в принтерах Brother HL-2132, HL-2240, HL-2240D, HL-2250DN, HL-2270, DCP7057, DCP7060, DCP7065, DCP7070, MFC7360, MFC7860. Ресурс фото-барабана составляет 12000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Brother HL-2132, HL-2240, HL-2240D, HL-2250DN, HL-2270, DCP7057, DCP7060, DCP7065, DCP7070, MFC7360, MFC7860</param>
+<param name="Совместимость">Brother HL-2132, HL-2240, HL-2240D, HL-2250DN, HL-2270, DCP7057, DCP7060, DCP7065, DCP7070, MFC7360, MFC7860</param>
 <param name="Коды расходников">DR-2275</param>
 <param name="Модель">DR-2275</param>
 <param name="Для бренда">Brother</param>
@@ -11444,7 +11515,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Барабан-картридж (Drum Unit - блок барабана) Euro Print DR-3200 применяется в принтерах Brother HL-5340D, HL-5350DN, HL-570DW, HL-5380DN, DCP8085, DCP8070, MFC8370, MFC8880. Ресурс фото-барабана составляет 25000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Brother HL-5340D, HL-5350DN, HL-570DW, HL-5380DN, DCP8085, DCP8070, MFC8370, MFC8880</param>
+<param name="Совместимость">Brother HL-5340D, HL-5350DN, HL-570DW, HL-5380DN, DCP8085, DCP8070, MFC8370, MFC8880</param>
 <param name="Коды расходников">DR-3200</param>
 <param name="Модель">DR-3200</param>
 <param name="Для бренда">Brother</param>
@@ -11900,7 +11971,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Барабан-картридж (Drum Unit - блок барабана) Euro Print DR-2175 применяется в принтерах Brother HL-2140R, HL-2142, HL-2150NR, HL-2170WR, DCP-7030R, DCP-7032, DCP-7040, DCP-7045NR, MFC-7320R, MFC-7440NR, MFC-7840WR. Ресурс фото-барабана составляет 12000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Brother HL-2140R, HL-2142, HL-2150NR, HL-2170WR, DCP-7030R, DCP-7032, DCP-7040, DCP-7045NR, MFC-7320R, MFC-7440NR, MFC-7840WR</param>
+<param name="Совместимость">Brother HL-2140R, HL-2142, HL-2150NR, HL-2170WR, DCP-7030R, DCP-7032, DCP-7040, DCP-7045NR, MFC-7320R, MFC-7440NR, MFC-7840WR</param>
 <param name="Коды расходников">DR-2175</param>
 <param name="Модель">DR-2175</param>
 <param name="Для бренда">Brother</param>
@@ -13338,7 +13409,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 101R00664 применяется в многофункциональных принтерах Xerox B205, B210, B215. Ресурс печати - 10 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox B205, B210, B215</param>
+<param name="Совместимость">Xerox B205, B210, B215</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -14086,7 +14157,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print Canon 049 применяется в принтерах Canon LBP112, LBP113W. Ресурс печати - 12 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Canon LBP112, LBP113W</param>
+<param name="Совместимость">Canon LBP112, LBP113W</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -14101,7 +14172,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print Canon 051 применяется в принтерах Canon i-SENSYS LBP162dw, MF269dw, MF267dw, MF264dw. Ресурс печати - 23 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Canon i-SENSYS LBP162dw, MF269dw, MF267dw, MF264dw</param>
+<param name="Совместимость">Canon i-SENSYS LBP162dw, Canon i-SENSYS MF269dw, Canon i-SENSYS MF267dw, Canon i-SENSYS MF264dw</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -14116,7 +14187,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 101R00554 применяется в многофункциональных принтерах Xerox VersaLink B400, B405. Ресурс печати - 65 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox VersaLink B400, B405</param>
+<param name="Совместимость">Xerox VersaLink B400, B405</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -15351,7 +15422,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 113R00782 применяется в многофункциональных принтерах Xerox VersaLink C7000. Ресурс печати - 82 200 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox VersaLink C7000</param>
+<param name="Совместимость">Xerox VersaLink C7000</param>
 <param name="Коды расходников">113R00782</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">113R00782</param>
@@ -15369,7 +15440,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 113R00780 применяется в многофункциональных принтерах Xerox VersaLink C7020, C7025, C7030. Ресурс печати - 109 000 страниц для черного картриджа, 87 000 страниц для цветного картриджа.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox VersaLink C7020, C7025, C7030</param>
+<param name="Совместимость">Xerox VersaLink C7020, C7025, C7030</param>
 <param name="Коды расходников">113R00780</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">113R00780</param>
@@ -15448,7 +15519,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01121 Black применяется в многофункциональных принтерах Xerox Phaser 6600, WorkCentre 6605, VersaLink C400N, C400DN, C405N, C400DN. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 6600, WorkCentre 6605, VersaLink C400N, C400DN, C405N</param>
+<param name="Совместимость">Xerox Phaser 6600, Xerox Phaser WorkCentre 6605, Xerox Phaser VersaLink C400N, Xerox Phaser C400DN, Xerox Phaser C405N</param>
 <param name="Коды расходников">108R01121</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">108R01121</param>
@@ -15537,7 +15608,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01121 Cyan применяется в многофункциональных принтерах Xerox Phaser 6600, WorkCentre 6605, VersaLink C400N, C400DN, C405N, C400DN. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 6600, WorkCentre 6605, VersaLink C400N, C400DN, C405N</param>
+<param name="Совместимость">Xerox Phaser 6600, Xerox Phaser WorkCentre 6605, Xerox Phaser VersaLink C400N, Xerox Phaser C400DN, Xerox Phaser C405N</param>
 <param name="Коды расходников">108R01121</param>
 <param name="Модель">108R01121</param>
 <param name="Для бренда">Xerox</param>
@@ -15554,7 +15625,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01121 Magenta применяется в многофункциональных принтерах Xerox Phaser 6600, WorkCentre 6605, VersaLink C400N, C400DN, C405N, C400DN. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 6600, WorkCentre 6605, VersaLink C400N, C400DN, C405N</param>
+<param name="Совместимость">Xerox Phaser 6600, Xerox Phaser WorkCentre 6605, Xerox Phaser VersaLink C400N, Xerox Phaser C400DN, Xerox Phaser C405N</param>
 <param name="Коды расходников">108R01121</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">108R01121</param>
@@ -15618,7 +15689,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01121 Yellow применяется в многофункциональных принтерах Xerox Phaser 6600, WorkCentre 6605, VersaLink C400N, C400DN, C405N, C400DN. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 6600, WorkCentre 6605, VersaLink C400N, C400DN, C405N</param>
+<param name="Совместимость">Xerox Phaser 6600, Xerox Phaser WorkCentre 6605, Xerox Phaser VersaLink C400N, Xerox Phaser C400DN, Xerox Phaser C405N</param>
 <param name="Коды расходников">108R01121</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">108R01121</param>
@@ -15637,7 +15708,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Оригинальный картридж фотобарабана (Drum Unit - блок барабана) 52D0Z00 применяется в принтерах серии Lexmark MS812, MS810, MS811, MX710, MX711, MX810, MX811, MX812. Ресурс печати - 100 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах серии Lexmark MS812, MS810, MS811, MX710, MX711, MX810, MX811, MX812</param>
+<param name="Совместимость">серии Lexmark MS812, MS810, MS811, MX710, MX711, MX810, MX811, MX812</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -15654,7 +15725,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Оригинальный картридж фотобарабана (Drum Unit - блок барабана) 50F0Z00 применяется в принтерах серии Lexmark MS310, MS410, MS510, MS610, MX310, MX410, MX510, MX610. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах серии Lexmark MS310, MS410, MS510, MS610, MX310, MX410, MX510, MX610</param>
+<param name="Совместимость">серии Lexmark MS310, MS410, MS510, MS610, MX310, MX410, MX510, MX610</param>
 <param name="Коды расходников">50F0Z00</param>
 <param name="Модель">50F0Z00</param>
 <param name="Для бренда">Lexmark</param>
@@ -15790,7 +15861,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01148 Black применяется в многофункциональных принтерах Xerox Phaser 7100. Ресурс печати - 24 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 7100</param>
+<param name="Совместимость">Xerox Phaser 7100</param>
 <param name="Коды расходников">108R01151, 108R01148</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">108R01151</param>
@@ -15808,7 +15879,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01148 применяется в многофункциональных принтерах Xerox Phaser 7100. Ресурс печати - 24 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 7100</param>
+<param name="Совместимость">Xerox Phaser 7100</param>
 <param name="Коды расходников">108R01148</param>
 <param name="Модель">108R01148</param>
 <param name="Для бренда">Xerox</param>
@@ -15911,7 +15982,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Узел термозакрепления 126N00433 ( термоблок, печка ) для принтеров и МФУ Xerox Phaser 3020, WC 3025.]]></description>
 <param name="Тип">Термоблок</param>
-<param name="Совместимость">и МФУ Xerox Phaser 3020, WC 3025</param>
+<param name="Совместимость">и МФУ Xerox Phaser 3020, Xerox WorkCentre 3025</param>
 </offer>
 
 <offer id="CL105097" available="true">
@@ -16205,7 +16276,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 113R00779 применяется в многофункциональных принтерах Xerox VersaLink B7025, B7030, B7035. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox VersaLink B7025, B7030, B7035</param>
+<param name="Совместимость">Xerox VersaLink B7025, B7030, B7035</param>
 <param name="Коды расходников">113R00779</param>
 <param name="Модель">113R00779</param>
 <param name="Для бренда">Xerox</param>
@@ -16911,7 +16982,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) DK-3170 применяется в принтерах и МФУ Kyocera Ecosys P3045dn, P3145dn, M3145dn, M3645dn. Ресурс печати - 300 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах и МФУ Kyocera Ecosys P3045dn, P3145dn, M3145dn, M3645dn</param>
+<param name="Совместимость">и МФУ Kyocera Ecosys P3045dn, P3145dn, M3145dn, M3645dn</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
 
@@ -16957,7 +17028,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Оригинальный картридж фотобарабана (Drum Unit - блок барабана) 013R00660 Cyan применяется в многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225. Ресурс печати - 51 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225</param>
+<param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -16987,7 +17058,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01420 применяется в многофункциональных принтерах Xerox Phaser 6510, WC 6515. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 6510, WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">108R01420</param>
 <param name="Модель">108R01420</param>
 <param name="Для бренда">Xerox</param>
@@ -17075,7 +17146,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00688 применяется в многофункциональных принтерах Xerox VersaLink C7120, C7125, C7130. Ресурс печати - 87 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox VersaLink C7120, C7125, C7130</param>
+<param name="Совместимость">Xerox VersaLink C7120, C7125, C7130</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -17807,7 +17878,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01420 БУЛАТ применяется в многофункциональных принтерах Xerox Phaser 6510, WC 6515. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 6510, WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">108R01420</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">108R01420</param>
@@ -17825,7 +17896,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01417 БУЛАТ применяется в многофункциональных принтерах Xerox Phaser 6510, WC 6515. Ресурс печати - 48 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 6510, WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">108R01417</param>
 <param name="Модель">108R01417</param>
 <param name="Для бренда">Xerox</param>
@@ -17842,7 +17913,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01418 БУЛАТ применяется в многофункциональных принтерах Xerox Phaser 6510, WC 6515. Ресурс печати - 48 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 6510, WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">108R01418</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">108R01418</param>
@@ -17860,7 +17931,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01419 БУЛАТ применяется в многофункциональных принтерах Xerox Phaser 6510, WC 6515. Ресурс печати - 48 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 6510, WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">108R01419</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">108R01419</param>
@@ -17878,7 +17949,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01419 применяется в многофункциональных принтерах Xerox Phaser 6510, WC 6515. Ресурс печати - до 48 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 6510, WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">108R01419</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">108R01419</param>
@@ -17896,7 +17967,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01418 применяется в многофункциональных принтерах Xerox Phaser 6510, WC 6515. Ресурс печати - до 48 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 6510, WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">108R01418</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">108R01418</param>
@@ -17914,7 +17985,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01417 применяется в многофункциональных принтерах Xerox Phaser 6510, WC 6515. Ресурс печати - до 48 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox Phaser 6510, WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">108R01417</param>
 <param name="Модель">108R01417</param>
 <param name="Для бренда">Xerox</param>
@@ -17931,7 +18002,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00679 применяется в многофункциональных принтерах Xerox VersaLink B1022DN, B1025DN, B1025DNA. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox VersaLink B1022DN, B1025DN, B1025DNA</param>
+<param name="Совместимость">Xerox VersaLink B1022DN, B1025DN, B1025DNA</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18026,7 +18097,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00691 применяется в многофункциональных принтерах Xerox B225, B230, B235. Ресурс печати - 12 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox B225, B230, B235</param>
+<param name="Совместимость">Xerox B225, B230, B235</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18113,7 +18184,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00677 применяется в многофункциональных принтерах Xerox DocuCentre SC2020. Ресурс печати - 76 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox DocuCentre SC2020</param>
+<param name="Совместимость">Xerox DocuCentre SC2020</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18263,7 +18334,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) DK-170 применяется в принтерах Kyocera ECOSYS P2035d, ECOSYS P2035dn, FS-1320D, FS-1320DN, FS-1370DN, ECOSYS P2135d, ECOSYS P2135dn, FS-1035MFP/DP, FS-1135MFP, ECOSYS M2035dn, ECOSYS M2535dn. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах Kyocera ECOSYS P2035d, ECOSYS P2035dn, FS-1320D, FS-1320DN, FS-1370DN, ECOSYS P2135d, ECOSYS P2135dn, FS-1035MFP/DP, FS-1135MFP, ECOSYS M2035dn, ECOSYS M2535dn</param>
+<param name="Совместимость">Kyocera ECOSYS P2035d, Kyocera ECOSYS ECOSYS P2035dn, Kyocera ECOSYS FS-1320D, Kyocera ECOSYS FS-1320DN, Kyocera ECOSYS FS-1370DN, Kyocera ECOSYS ECOSYS P2135d, Kyocera ECOSYS ECOSYS P2135dn, Kyocera ECOSYS FS-1035MFP/DP, Kyocera ECOSYS FS-1135MFP, Kyocera ECOSYS ECOSYS M2035dn, Kyocera ECOSYS ECOSYS M2535dn</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
 
@@ -18522,7 +18593,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00686 применяется в многофункциональных принтерах Xerox AltaLink B8145, B8155, B8170. Ресурс печати - 200 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox AltaLink B8145, B8155, B8170</param>
+<param name="Совместимость">Xerox AltaLink B8145, B8155, B8170</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18537,7 +18608,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00681 применяется в многофункциональных принтерах Xerox AltaLink C8130, C8135, C8145, C8155, C8170. Один картридж барабана на один цвет. Ресурс печати - 180 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox AltaLink C8130, C8135, C8145, C8155, C8170</param>
+<param name="Совместимость">Xerox AltaLink C8130, C8135, C8145, C8155, C8170</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18552,7 +18623,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00687 применяется в многофункциональных принтерах Xerox VersaLink B7125, B7130, B7135. Один картридж барабана на один цвет. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox VersaLink B7125, B7130, B7135</param>
+<param name="Совместимость">Xerox VersaLink B7125, B7130, B7135</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18816,7 +18887,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) DK-1150 применяется в принтерах и МФУ Kyocera Ecosys P2040dn, P2235dn, M2040dn, M2135dn, M2635dn, M2540dn, M2540dw, M2640idw, M2735dw. Ресурс печати - 100 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах и МФУ Kyocera Ecosys P2040dn, P2235dn, M2040dn, M2135dn, M2635dn, M2540dn, M2540dw, M2640idw, M2735dw</param>
+<param name="Совместимость">и МФУ Kyocera Ecosys P2040dn, P2235dn, M2040dn, M2135dn, M2635dn, M2540dn, M2540dw, M2640idw, M2735dw</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
 
@@ -18832,7 +18903,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) DK-1110 применяется в принтерах и МФУ Kyocera FS-1040, FS-1060DN, FS-1020MFP, FS-1120MFP, FS-1025MFP, FS-1125MFP. Ресурс печати - 100 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">принтерах и МФУ Kyocera FS-1040, FS-1060DN, FS-1020MFP, FS-1120MFP, FS-1025MFP, FS-1125MFP</param>
+<param name="Совместимость">и МФУ Kyocera FS-1040, FS-1060DN, FS-1020MFP, FS-1120MFP, FS-1025MFP, FS-1125MFP</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
 
@@ -19232,7 +19303,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00690 применяется в многофункциональных принтерах Xerox B305, B310, B315. Ресурс печати - 40 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox B305, B310, B315</param>
+<param name="Совместимость">Xerox B305, B310, B315</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -19469,7 +19540,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 108R01484 применяется в многофункциональных принтерах Xerox VersaLink C500, C500DN, C500N, C505, C505S, C505X. Ресурс печати - 40 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox VersaLink C500, C500DN, C500N, C505, C505S, C505X</param>
+<param name="Совместимость">Xerox VersaLink C500, C500DN, C500N, C505, C505S, C505X</param>
 <param name="Коды расходников">108R01484</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">108R01484</param>
@@ -19487,7 +19558,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 108R01481 применяется в многофункциональных принтерах Xerox VersaLink C500, C500DN, C500N, C505, C505S, C505X. Ресурс печати - 40 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox VersaLink C500, C500DN, C500N, C505, C505S, C505X</param>
+<param name="Совместимость">Xerox VersaLink C500, C500DN, C500N, C505, C505S, C505X</param>
 <param name="Коды расходников">108R01481</param>
 <param name="Модель">108R01481</param>
 <param name="Для бренда">Xerox</param>
@@ -19504,7 +19575,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 108R01482 применяется в многофункциональных принтерах Xerox VersaLink C500, C500DN, C500N, C505, C505S, C505X. Ресурс печати - 40 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox VersaLink C500, C500DN, C500N, C505, C505S, C505X</param>
+<param name="Совместимость">Xerox VersaLink C500, C500DN, C500N, C505, C505S, C505X</param>
 <param name="Коды расходников">108R01482</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">108R01482</param>
@@ -19522,7 +19593,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 108R01483 применяется в многофункциональных принтерах Xerox VersaLink C500, C500DN, C500N, C505, C505S, C505X. Ресурс печати - 40 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">многофункциональных принтерах Xerox VersaLink C500, C500DN, C500N, C505, C505S, C505X</param>
+<param name="Совместимость">Xerox VersaLink C500, C500DN, C500N, C505, C505S, C505X</param>
 <param name="Коды расходников">108R01483</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">108R01483</param>
