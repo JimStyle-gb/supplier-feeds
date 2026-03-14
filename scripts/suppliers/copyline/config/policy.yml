@@ -1,0 +1,26 @@
+supplier: copyline
+id_prefix: CL
+source_kind: html_site_parsing
+source_of_truth_for_params: page_params_first
+desc_extract_mode: only_fill_missing
+raw_must_be_clean: true
+mutate_params: false
+auto_codes_from_text: false
+auto_compat_from_text: false
+unknown_keys: drop
+param_priority:
+  - Тип
+  - Для бренда
+  - Коды расходников
+  - Совместимость
+  - Технология печати
+  - Цвет
+  - Количество страниц (5% заполнение)
+  - Ресурс
+  - Модель
+quality_gate:
+  enforce: true
+  max_cosmetic_offers: 5
+  max_cosmetic_issues: 5
+  report_path: docs/raw/copyline_quality_gate.txt
+  baseline_path: scripts/suppliers/copyline/config/quality_gate_baseline.yml
