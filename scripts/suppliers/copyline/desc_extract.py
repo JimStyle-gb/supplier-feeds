@@ -66,18 +66,21 @@ TECH_PAIR_HEADERS = {
     "бухта": "Бухта",
 }
 
+CABLE_TYPE_RX = re.compile(r"\b(UTP|FTP|STP|SFTP|F/UTP|U/UTP|F/FTP|U/FTP)\b", re.I)
+CABLE_CATEGORY_RX = re.compile(r"\bCat\.?\s*(5e|6a|6|7|7a|8)\b", re.I)
+CABLE_DIM_RX = re.compile(r"\b(\d+)x\d+x\d+/([0-9]+(?:[.,][0-9]+)?)\b", re.I)
+CABLE_MATERIAL_RX = re.compile(r"\b(LSZH|PVC|PE)\b", re.I)
+CABLE_SPOOL_RX = re.compile(r"\b(\d+)\s*м/б\b", re.I)
 
 
 def safe_str(x: object) -> str:
     return str(x).strip() if x is not None else ""
 
 
-
 def _norm_spaces(s: str) -> str:
     s = safe_str(s).replace("\xa0", " ")
     s = re.sub(r"\s+", " ", s)
     return s.strip()
-
 
 
 def _normalize_code_token(s: str) -> str:
@@ -87,14 +90,12 @@ def _normalize_code_token(s: str) -> str:
     return s
 
 
-
 def _normalize_code_search_text(text: str) -> str:
     text = safe_str(text).replace("\xa0", " ")
     text = re.sub(r"\s+", " ", text)
     text = re.sub(r"\b(113R|108R|106R|006R|C13T|C12C|C33S)\s+(\d{4,8}[A-Z0-9]*)\b", r"\1\2", text, flags=re.I)
     text = re.sub(r"\b(CLT|MLT|KX|TK|TN|DR|C)\s*-\s*([A-Z0-9]{2,})\b", r"\1-\2", text, flags=re.I)
     return text.strip()
-
 
 
 def _dedupe(items: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
@@ -113,7 +114,6 @@ def _dedupe(items: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
     return out
 
 
-
 def _trim_compat_tail(value: str) -> str:
     value = _norm_spaces(value)
     if not value:
@@ -122,9 +122,15 @@ def _trim_compat_tail(value: str) -> str:
     if stop:
         value = value[: stop.start()].strip()
     value = re.split(r"(?:\.|\n\n)", value, maxsplit=1)[0]
+    value = re.sub(
+        r"^(?:в\s+)?(?:многофункциональных|лазерных|струйных)?\s*"
+        r"(?:принтерах|мфу|устройствах|аппаратах)\s+",
+        "",
+        value,
+        flags=re.I,
+    )
     value = value.strip(" ,.;:-")
     return value[:400]
-
 
 
 def _extract_compat(description: str) -> str:
@@ -142,7 +148,6 @@ def _extract_compat(description: str) -> str:
     return ""
 
 
-
 def _extract_codes(text: str) -> str:
     text = _normalize_code_search_text(text)
     found: list[str] = []
@@ -156,7 +161,6 @@ def _extract_codes(text: str) -> str:
     return ", ".join(found[:6])
 
 
-
 def _extract_inline_pair(line: str) -> tuple[str, str] | None:
     for sep in (":", " - "):
         if sep not in line:
@@ -168,6 +172,35 @@ def _extract_inline_pair(line: str) -> tuple[str, str] | None:
             return key, value
     return None
 
+
+def _extract_cable_params_from_text(text: str) -> list[Tuple[str, str]]:
+    text = _norm_spaces(text)
+    out: list[Tuple[str, str]] = []
+
+    m = CABLE_TYPE_RX.search(text)
+    if m:
+        out.append(("Тип кабеля", m.group(1).upper()))
+
+    m = CABLE_CATEGORY_RX.search(text)
+    if m:
+        out.append(("Категория", f"Cat.{m.group(1)}"))
+
+    m = CABLE_DIM_RX.search(text)
+    if m:
+        out.append(("Количество пар", m.group(1)))
+        out.append(("Толщина проводников", m.group(2).replace('.', ',')))
+
+    m = CABLE_MATERIAL_RX.search(text)
+    if m:
+        out.append(("Материал изоляции", m.group(1).upper()))
+
+    m = CABLE_SPOOL_RX.search(text)
+    if m:
+        out.append(("Бухта", f"{m.group(1)} м/б"))
+
+    if "витая пара" in text.casefold():
+        out.append(("Назначение", "Витая пара"))
+    return out
 
 
 def _extract_line_pairs(description: str) -> list[Tuple[str, str]]:
@@ -188,8 +221,9 @@ def _extract_line_pairs(description: str) -> list[Tuple[str, str]]:
         if len(v) > 240:
             continue
         out.append((norm_key, v))
-    return out
 
+    out.extend(_extract_cable_params_from_text(" ".join(lines)))
+    return out
 
 
 def extract_desc_params(*, title: str, description: str, existing_params: Sequence[Tuple[str, str]] | None = None) -> List[Tuple[str, str]]:
