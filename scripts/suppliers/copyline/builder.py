@@ -22,32 +22,6 @@ from suppliers.copyline.params_page import extract_page_params
 from suppliers.copyline.pictures import full_only_if_present, prefer_full_product_pictures
 
 
-_CODE_FALLBACK_RX = re.compile(
-    r"\b(?:CF\d{3,4}[A-Z]|CE\d{3,4}[A-Z]|CB\d{3,4}[A-Z]|Q\d{4}[A-Z]|W\d{4}[A-Z0-9]{1,4}|"
-    r"113R\d{5}|108R\d{5}|106R\d{5}|006R\d{5}|"
-    r"TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|"
-    r"KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
-    r"C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
-    r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*)\b",
-    re.I,
-)
-
-_VENDOR_FROM_COMPAT = (
-    "HP",
-    "Canon",
-    "Xerox",
-    "Samsung",
-    "Panasonic",
-    "Kyocera",
-    "Brother",
-    "Epson",
-    "Ricoh",
-    "RISO",
-)
-
-_WEAK_VALUES = {"-", "—", "нет", "n/a", "null"}
-
-
 
 def safe_str(x: object) -> str:
     return str(x).strip() if x is not None else ""
@@ -88,33 +62,47 @@ def _first_code_from_params(params: Sequence[Tuple[str, str]]) -> str:
     for key, value in params:
         if safe_str(key) != "Коды расходников":
             continue
-        m = _CODE_FALLBACK_RX.search(safe_str(value).upper())
-        if m:
-            return m.group(0).upper().replace(" ", "")
+        parts = [x.strip() for x in re.split(r"\s*,\s*", safe_str(value)) if x.strip()]
+        for part in parts:
+            if not _is_numeric_model(part):
+                return part
     return ""
 
 
 
 def _infer_vendor_from_compat(params: Sequence[Tuple[str, str]]) -> str:
+    compat = ""
     for key, value in params:
-        if safe_str(key) != "Совместимость":
-            continue
-        compat = safe_str(value)
-        for vendor in _VENDOR_FROM_COMPAT:
-            if re.search(rf"\b{re.escape(vendor)}\b", compat, flags=re.I):
-                return vendor
+        if safe_str(key) == "Совместимость":
+            compat = safe_str(value)
+            break
+    if not compat:
+        return ""
+    for vendor in ("HP", "Canon", "Xerox", "Samsung", "Panasonic", "Kyocera", "Brother", "Epson", "Lexmark", "Ricoh", "RISO"):
+        if re.search(rf"\b{re.escape(vendor)}\b", compat, flags=re.I):
+            return vendor
     return ""
 
 
 
 def _drop_weak_params(params: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
+    bad_values = {"-", "—", "нет", "n/a", "null"}
     out: list[Tuple[str, str]] = []
-    for key, value in params:
-        v = safe_str(value)
-        if not v or v.casefold() in {x.casefold() for x in _WEAK_VALUES}:
+    for k, v in params:
+        key = safe_str(k)
+        val = safe_str(v)
+        if not key or not val:
             continue
-        out.append((safe_str(key), v))
+        if val.casefold() in bad_values:
+            continue
+        out.append((key, val))
     return out
+
+
+
+def _has_consumable_type(params: Sequence[Tuple[str, str]]) -> bool:
+    consumable_types = {"Картридж", "Тонер-картридж", "Драм-картридж", "Девелопер", "Чернила"}
+    return any(safe_str(k) == "Тип" and safe_str(v) in consumable_types for k, v in params)
 
 
 
@@ -148,24 +136,26 @@ def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut |
     if model:
         params = _merge_params(params, [("Модель", model)])
 
-    if any(safe_str(k) == "Модель" and _is_numeric_model(v) for k, v in params):
-        code_model = _first_code_from_params(params)
+    # Страховка: numeric-модель не должна доезжать в raw.
+    current_model = ""
+    for key, value in params:
+        if safe_str(key) == "Модель":
+            current_model = safe_str(value)
+            break
+    if _is_numeric_model(current_model):
+        first_code = _first_code_from_params(params)
         new_params: list[Tuple[str, str]] = []
         for key, value in params:
             if safe_str(key) != "Модель":
                 new_params.append((key, value))
-                continue
-            if not _is_numeric_model(value):
-                new_params.append((key, value))
-                continue
-            if code_model:
-                new_params.append(("Модель", code_model))
+        if first_code:
+            new_params.append(("Модель", first_code))
         params = new_params
 
     if not vendor:
         vendor = _infer_vendor_from_compat(params)
 
-    if vendor and any(safe_str(k) == "Тип" and safe_str(v) in {"Картридж", "Тонер-картридж", "Драм-картридж", "Девелопер", "Чернила"} for k, v in params):
+    if vendor and _has_consumable_type(params):
         params = _merge_params(params, [("Для бренда", vendor)])
 
     params = _drop_weak_params(params)
