@@ -48,29 +48,23 @@ def safe_str(x: object) -> str:
 
 
 
-def _normalize_spaces(value: str) -> str:
-    value = safe_str(value)
-    value = value.replace("\xa0", " ")
-    value = re.sub(r"\s+", " ", value)
-    return value.strip()
-
-
-
 def _normalize_list_separators(value: str) -> str:
-    s = _normalize_spaces(value)
-    s = s.replace(";", ",")
+    s = safe_str(value)
     s = s.replace("|", ",")
+    s = s.replace(";", ",")
+    s = re.sub(r"\s+,\s+", ", ", s)
     s = re.sub(r",{2,}", ",", s)
-    s = re.sub(r"\s*,\s*", ", ", s)
+    s = re.sub(r"\s{2,}", " ", s)
     return s.strip(" ,")
 
 
 
-def _dedupe_list(items: Sequence[str]) -> list[str]:
+def _dedupe_list_text(value: str, sep: str = ", ") -> str:
+    raw = [x for x in re.split(r"\s*,\s*", _normalize_list_separators(value)) if x]
     out: list[str] = []
     seen: set[str] = set()
-    for item in items:
-        val = _normalize_spaces(item).strip(" ,.;/")
+    for item in raw:
+        val = re.sub(r"\s+", " ", item).strip(" ,.;/")
         if not val:
             continue
         sig = val.casefold()
@@ -78,84 +72,97 @@ def _dedupe_list(items: Sequence[str]) -> list[str]:
             continue
         seen.add(sig)
         out.append(val)
-    return out
+    return sep.join(out)
 
 
 
 def _expand_family_shorthand(value: str) -> str:
-    s = _normalize_spaces(value)
+    s = safe_str(value)
     if not s:
         return ""
 
-    for fam in VENDOR_FAMILIES:
-        prefix = fam + " "
-        if not s.startswith(prefix):
-            continue
-        tail = s[len(prefix):].strip()
-        if not tail:
-            return s
+    # Xerox Phaser 5500/5550 -> Xerox Phaser 5500, Xerox Phaser 5550
+    s = re.sub(
+        r"\b(Xerox\s+Phaser)\s+(\d{3,5})\s*/\s*(\d{3,5})\b",
+        lambda m: f"{m.group(1)} {m.group(2)}, {m.group(1)} {m.group(3)}",
+        s,
+        flags=re.I,
+    )
 
-        if "/" in tail and "," not in tail:
-            nums = [x.strip() for x in tail.split("/") if x.strip()]
-            if len(nums) > 1 and all(re.fullmatch(r"[A-Z0-9-]+", x) for x in nums):
-                return ", ".join([f"{fam} {x}" for x in nums])
+    # Xerox Phaser 6510 / WC 6515 -> Xerox Phaser 6510, Xerox WorkCentre 6515
+    s = re.sub(
+        r"\b(Xerox\s+Phaser)\s+(\d{3,5})\s*/\s*WC\s*(\d{3,5})\b",
+        lambda m: f"{m.group(1)} {m.group(2)}, Xerox WorkCentre {m.group(3)}",
+        s,
+        flags=re.I,
+    )
 
-        if "," in tail:
-            parts = [x.strip() for x in tail.split(",") if x.strip()]
-            rebuilt: list[str] = []
-            for part in parts:
-                if part.startswith(fam):
-                    rebuilt.append(part)
-                elif re.match(r"^(?:WC|WorkCentre|Phaser|CLP|CLX|Xpress|iR|imageRUNNER)\b", part, flags=re.I):
-                    brand = fam.split()[0]
-                    rebuilt.append(f"{brand} {part}")
-                else:
-                    rebuilt.append(f"{fam} {part}")
-            return ", ".join(rebuilt)
+    # Canon iR C2020/C2025/C2030...
+    canon_rx = re.compile(
+        r"\b(Canon\s+iR(?:\s+ADVANCE)?)\s+([A-Z]?\d{3,5}(?:\s*/\s*[A-Z]?\d{3,5}){1,})\b",
+        re.I,
+    )
 
-    if re.search(r"\bPhaser\s+\d+\s*/\s*WC\s*\d+\b", s, flags=re.I):
-        m = re.search(r"Phaser\s+(\d+)\s*/\s*WC\s*(\d+)", s, flags=re.I)
-        if m:
-            return f"Xerox Phaser {m.group(1)}, Xerox WorkCentre {m.group(2)}"
+    def _canon_repl(m: re.Match[str]) -> str:
+        fam = m.group(1)
+        parts = [x.strip() for x in re.split(r"\s*/\s*", m.group(2)) if x.strip()]
+        return ", ".join(f"{fam} {part}" for part in parts)
 
+    s = canon_rx.sub(_canon_repl, s)
     return s
 
 
 
 def normalize_codes(value: str) -> str:
-    s = _normalize_list_separators(value)
-    if not s:
-        return ""
-    items = [x.strip() for x in re.split(r"\s*,\s*", s) if x.strip()]
-    return ", ".join(_dedupe_list(items))
+    value = _normalize_list_separators(value)
+    return _dedupe_list_text(value, sep=", ")
 
 
 
 def normalize_compatibility(value: str) -> str:
-    s = _normalize_spaces(value)
+    s = safe_str(value)
     if not s:
         return ""
+    s = re.sub(r"\s+", " ", s)
     s = _expand_family_shorthand(s)
     s = _normalize_list_separators(s)
 
-    parts = [x.strip() for x in re.split(r"\s*,\s*", s) if x.strip()]
-    rebuilt: list[str] = []
-    last_family = ""
-    for part in parts:
-        piece = _normalize_spaces(part)
-        if not piece:
-            continue
-        matched_family = next((fam for fam in VENDOR_FAMILIES if piece.startswith(fam + " ") or piece == fam), "")
-        if matched_family:
-            last_family = matched_family
-            rebuilt.append(piece)
-            continue
-        if last_family and re.fullmatch(r"[A-Z0-9-]+(?:\s+[A-Z0-9-]+)*", piece):
-            rebuilt.append(f"{last_family} {piece}")
-            continue
-        rebuilt.append(piece)
+    if "," in s:
+        parts = [x.strip() for x in re.split(r"\s*,\s*", s) if x.strip()]
+        if parts:
+            first = parts[0]
+            family = ""
+            for fam in VENDOR_FAMILIES:
+                if first.lower().startswith(fam.lower() + " "):
+                    family = fam
+                    break
+            rebuilt: list[str] = []
+            for item in parts:
+                if family and not any(item.lower().startswith(f.lower() + " ") for f in VENDOR_FAMILIES):
+                    if item.upper().startswith("WC "):
+                        rebuilt.append("Xerox WorkCentre " + item[3:].strip())
+                    else:
+                        rebuilt.append(f"{family} {item}")
+                else:
+                    rebuilt.append(item)
+            return _dedupe_list_text(", ".join(rebuilt), sep=", ")[:500]
 
-    return ", ".join(_dedupe_list(rebuilt))[:500]
+    for fam in VENDOR_FAMILIES:
+        if s.lower().startswith(fam.lower() + " "):
+            tail = s[len(fam):].strip()
+            items = [x.strip() for x in re.split(r"\s*/\s*|\s*,\s*", tail) if x.strip()]
+            if not items:
+                return s[:500]
+            rebuilt: list[str] = []
+            for item in items:
+                if item.lower().startswith(tuple(f.lower() for f in VENDOR_FAMILIES)):
+                    rebuilt.append(item)
+                elif item.upper().startswith("WC "):
+                    rebuilt.append("Xerox WorkCentre " + item[3:].strip())
+                else:
+                    rebuilt.append(f"{fam} {item}")
+            return _dedupe_list_text(", ".join(rebuilt), sep=", ")[:500]
+    return s[:500]
 
 
 
