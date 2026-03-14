@@ -26,6 +26,7 @@ from cs.core import get_public_vendor, next_run_dom_at_hour, now_almaty, write_c
 from suppliers.copyline.builder import build_offer_from_page
 from suppliers.copyline.filtering import filter_product_index, load_filter_config
 from suppliers.copyline.source import fetch_product_index, parse_product_page
+from suppliers.copyline.quality_gate import run_quality_gate
 
 SUPPLIER_NAME = "CopyLine"
 SUPPLIER_URL_DEFAULT = os.getenv("SUPPLIER_URL", "https://copyline.kz/goods.html")
@@ -35,6 +36,9 @@ OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or 
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "6") or "6")
 MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "60") or "60")
 COPYLINE_FILTER_YML = os.getenv("COPYLINE_FILTER_YML", "scripts/suppliers/copyline/config/filter.yml")
+COPYLINE_POLICY_YML = os.getenv("COPYLINE_POLICY_YML", "scripts/suppliers/copyline/config/policy.yml")
+COPYLINE_QG_BASELINE = os.getenv("COPYLINE_QG_BASELINE", "scripts/suppliers/copyline/config/quality_gate_baseline.yml")
+COPYLINE_QG_REPORT = os.getenv("COPYLINE_QG_REPORT", "docs/raw/copyline_quality_gate.txt")
 
 
 def main() -> int:
@@ -104,6 +108,14 @@ def main() -> int:
         ),
     )
 
+
+    qg = run_quality_gate(
+        feed_path=RAW_OUT_FILE,
+        policy_path=COPYLINE_POLICY_YML,
+        baseline_path=COPYLINE_QG_BASELINE,
+        report_path=COPYLINE_QG_REPORT,
+    )
+
     after = len(out_offers)
     in_true = sum(1 for o in out_offers if o.available)
     in_false = after - in_true
@@ -111,7 +123,7 @@ def main() -> int:
     print("=" * 72)
     print("[CopyLine] build summary")
     print("=" * 72)
-    print("version: build_copyline_v4_split_desc_compat_builder")
+    print("version: build_copyline_v5_config_quality_gate")
     print(f"before: {before}")
     print(f"after:  {after}")
     print(f"raw_out_file: {RAW_OUT_FILE}")
@@ -121,9 +133,13 @@ def main() -> int:
     for k, v in filter_report.items():
         print(f"  {k}: {v}")
     print("-" * 72)
+    print(f"quality_gate_ok:   {qg.get('ok')}")
+    print(f"quality_gate_report: {qg.get('report_path')}")
     print(f"availability_true:  {in_true}")
     print(f"availability_false: {in_false}")
     print("=" * 72)
+    if not qg.get("ok", True):
+        return 1
     return 0
 
 
