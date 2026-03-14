@@ -13,32 +13,39 @@ from __future__ import annotations
 import re
 from typing import List, Sequence, Tuple
 
-
 CODE_RX = re.compile(
-    r"\b(?:CF\d{3,4}[A-Z]|CE\d{3,4}[A-Z]|CB\d{3,4}[A-Z]|Q\d{4}[A-Z]|W\d{4}[A-Z0-9]{1,4}|"
-    r"113R\d{5}|108R\d{5}|106R\d{5}|006R\d{5}|"
+    r"\b(?:"
+    r"CF\d{3,4}[A-Z]|CE\d{3,4}[A-Z]|CB\d{3,4}[A-Z]|Q\d{4}[A-Z]|W\d{4}[A-Z0-9]{1,4}|"
+    r"106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|"
     r"TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|"
     r"KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
+    r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|"
     r"C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
-    r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*)\b",
+    r"50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H"
+    r")\b",
     re.I,
 )
 
-COMPAT_PATTERNS: tuple[re.Pattern[str], ...] = (
-    re.compile(r"(?:используется\s+в\s+принтерах\s+серий|используется\s+в\s+принтерах)\s+", re.I),
-    re.compile(r"(?:для\s+принтеров\s+серий|для\s+принтеров)\s+", re.I),
-    re.compile(r"применяется\s+в\s+мфу\s+", re.I),
-    re.compile(r"применяется\s+в\s+", re.I),
-    re.compile(r"совместимость\s+с\s+устройствами\s*:?\s*", re.I),
-    re.compile(r"совместим\s+с\s+", re.I),
-    re.compile(r"подходит\s+для\s+", re.I),
-    re.compile(r"используется\s+с\s+", re.I),
-    re.compile(r"для\s+устройств\s+", re.I),
-    re.compile(r"для\s+аппаратов\s+", re.I),
-)
+COMPAT_PATTERNS = [
+    re.compile(r"совместимость\s+с\s+устройствами\s*:?\s*(.+)", re.I | re.S),
+    re.compile(r"используется\s+в\s+принтерах\s+серий\s+(.+)", re.I | re.S),
+    re.compile(r"используется\s+в\s+принтерах\s+(.+)", re.I | re.S),
+    re.compile(r"для\s+принтеров\s+серий\s+(.+)", re.I | re.S),
+    re.compile(r"для\s+принтеров\s+(.+)", re.I | re.S),
+    re.compile(r"применяется\s+в\s+МФУ\s+(.+)", re.I | re.S),
+    re.compile(r"применяется\s+в\s+(.+)", re.I | re.S),
+    re.compile(r"совместим\s+с\s+(.+)", re.I | re.S),
+    re.compile(r"подходит\s+для\s+(.+)", re.I | re.S),
+    re.compile(r"используется\s+с\s+(.+)", re.I | re.S),
+    re.compile(r"для\s+устройств\s+(.+)", re.I | re.S),
+    re.compile(r"для\s+аппаратов\s+(.+)", re.I | re.S),
+]
 
-_TECH_STOP_RX = re.compile(
-    r"(?:\n\n+|(?:^|\n)(?:технические\s+характеристики|характеристика|основные\s+характеристики|характеристики|ресурс|цвет|технология\s+печати)\b)",
+STOP_HEADERS_RX = re.compile(
+    r"(?:^|\b)(?:Производитель|Размер(?:\s+упаковки)?|Вес(?:\s+в\s+упаковке)?|Технические\s+характеристики|"
+    r"Основные\s+характеристики|Характеристики|Артикул|Код\s+товара|Ресурс|Количество\s+страниц|"
+    r"Цвет(?:\s+печати)?|Технология\s+печати|Тип\s+кабеля|Количество\s+пар|Толщина\s+проводников|"
+    r"Категория|Назначение|Материал\s+изоляции|Бухта)\b",
     re.I,
 )
 
@@ -66,22 +73,27 @@ def safe_str(x: object) -> str:
 
 
 
-def _normalize_code_token(s: str) -> str:
-    s = safe_str(s).upper()
-    if not s:
-        return ""
-    s = s.replace("\xa0", " ")
-    s = re.sub(r"\s*[-–—]\s*", "-", s)
-    s = re.sub(r"\b(113R|108R|106R|006R|C13T|C12C|C33S)\s+(\d{5,8}[A-Z0-9]*)\b", r"\1\2", s)
-    s = re.sub(r"\b(CLT|MLT|TK|TN|DR|KX)\s*-\s*", r"\1-", s)
-    s = re.sub(r"\bKX\s+(FA|FAT)(\d+[A-Z]?)\b", r"KX-\1\2", s)
+def _norm_spaces(s: str) -> str:
+    s = safe_str(s).replace("\xa0", " ")
     s = re.sub(r"\s+", " ", s)
     return s.strip()
 
 
 
+def _normalize_code_token(s: str) -> str:
+    s = safe_str(s).upper()
+    s = re.sub(r"\s*-\s*", "-", s)
+    s = re.sub(r"\s+", "", s)
+    return s
+
+
+
 def _normalize_code_search_text(text: str) -> str:
-    return _normalize_code_token(text)
+    text = safe_str(text).replace("\xa0", " ")
+    text = re.sub(r"\s+", " ", text)
+    text = re.sub(r"\b(113R|108R|106R|006R|C13T|C12C|C33S)\s+(\d{4,8}[A-Z0-9]*)\b", r"\1\2", text, flags=re.I)
+    text = re.sub(r"\b(CLT|MLT|KX|TK|TN|DR|C)\s*-\s*([A-Z0-9]{2,})\b", r"\1-\2", text, flags=re.I)
+    return text.strip()
 
 
 
@@ -102,36 +114,42 @@ def _dedupe(items: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
 
 
 
+def _trim_compat_tail(value: str) -> str:
+    value = _norm_spaces(value)
+    if not value:
+        return ""
+    stop = STOP_HEADERS_RX.search(value)
+    if stop:
+        value = value[: stop.start()].strip()
+    value = re.split(r"(?:\.|\n\n)", value, maxsplit=1)[0]
+    value = value.strip(" ,.;:-")
+    return value[:400]
+
+
+
 def _extract_compat(description: str) -> str:
     d = safe_str(description)
     if not d:
         return ""
-    d = re.sub(r"\s+", " ", d).strip()
+    d = _norm_spaces(d)
     for rx in COMPAT_PATTERNS:
         m = rx.search(d)
         if not m:
             continue
-        tail = d[m.end():]
-        stop = _TECH_STOP_RX.search(tail)
-        if stop:
-            tail = tail[: stop.start()]
-        tail = re.split(r"(?<=[.!?])\s", tail, maxsplit=1)[0]
-        val = re.sub(r"\s+", " ", tail).strip(" ,.;")
+        val = _trim_compat_tail(m.group(1))
         if val:
-            return val[:400]
+            return val
     return ""
 
 
 
 def _extract_codes(text: str) -> str:
-    hay = _normalize_code_search_text(text)
+    text = _normalize_code_search_text(text)
     found: list[str] = []
     seen: set[str] = set()
-    for m in CODE_RX.finditer(hay):
+    for m in CODE_RX.finditer(text):
         code = _normalize_code_token(m.group(0))
-        if not code or code.isdigit() or len(code) < 4:
-            continue
-        if code in seen:
+        if not code or code.isdigit() or len(code) < 4 or code in seen:
             continue
         seen.add(code)
         found.append(code)
@@ -139,35 +157,37 @@ def _extract_codes(text: str) -> str:
 
 
 
-def _extract_line_pairs(description: str) -> list[Tuple[str, str]]:
-    out: list[Tuple[str, str]] = []
-    text = safe_str(description)
-    if not text:
-        return out
+def _extract_inline_pair(line: str) -> tuple[str, str] | None:
+    for sep in (":", " - "):
+        if sep not in line:
+            continue
+        left, right = line.split(sep, 1)
+        key = TECH_PAIR_HEADERS.get(safe_str(left).casefold(), "")
+        value = _norm_spaces(right)
+        if key and value and len(value) <= 240:
+            return key, value
+    return None
 
-    lines = [safe_str(x) for x in re.split(r"\n+", text) if safe_str(x)]
+
+
+def _extract_line_pairs(description: str) -> list[Tuple[str, str]]:
+    lines = [safe_str(x) for x in re.split(r"\n+", description) if safe_str(x)]
+    out: list[Tuple[str, str]] = []
 
     for line in lines:
-        m = re.match(r"^([^:]{1,80})\s*:\s*(.+)$", line)
-        if not m:
-            m = re.match(r"^([^\-]{1,80})\s+-\s+(.+)$", line)
-        if not m:
-            continue
-        key = safe_str(m.group(1)).casefold()
-        val = safe_str(m.group(2))
-        norm_key = TECH_PAIR_HEADERS.get(key, "")
-        if not norm_key or not val or len(val) > 240:
-            continue
-        out.append((norm_key, val))
+        pair = _extract_inline_pair(line)
+        if pair:
+            out.append(pair)
 
     for i in range(len(lines) - 1):
         k = lines[i].casefold()
-        v = lines[i + 1]
+        v = _norm_spaces(lines[i + 1])
         norm_key = TECH_PAIR_HEADERS.get(k, "")
-        if not norm_key or not v or len(v) > 240:
+        if not norm_key:
+            continue
+        if len(v) > 240:
             continue
         out.append((norm_key, v))
-
     return out
 
 
