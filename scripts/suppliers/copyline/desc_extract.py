@@ -15,15 +15,32 @@ from typing import List, Sequence, Tuple
 
 
 CODE_RX = re.compile(
-    r"\b(?:CF\d{3,4}[A-Z]|CE\d{3,4}[A-Z]|CB\d{3,4}[A-Z]|Q\d{4}[A-Z]|W\d{4}[A-Z0-9]{1,4}|106R\d{5}|006R\d{5}|TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*)\b",
+    r"\b(?:CF\d{3,4}[A-Z]|CE\d{3,4}[A-Z]|CB\d{3,4}[A-Z]|Q\d{4}[A-Z]|W\d{4}[A-Z0-9]{1,4}|"
+    r"113R\d{5}|108R\d{5}|106R\d{5}|006R\d{5}|"
+    r"TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|"
+    r"KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
+    r"C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
+    r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*)\b",
     re.I,
 )
 
-DEVICE_LINE_RX = re.compile(
-    r"(?:используется\s+в\s+принтерах\s+серий|используется\s+в\s+принтерах|для\s+принтеров\s+серий|для\s+принтеров)\s+(.+?)(?:\.|$)",
-    re.I | re.S,
+COMPAT_PATTERNS: tuple[re.Pattern[str], ...] = (
+    re.compile(r"(?:используется\s+в\s+принтерах\s+серий|используется\s+в\s+принтерах)\s+", re.I),
+    re.compile(r"(?:для\s+принтеров\s+серий|для\s+принтеров)\s+", re.I),
+    re.compile(r"применяется\s+в\s+мфу\s+", re.I),
+    re.compile(r"применяется\s+в\s+", re.I),
+    re.compile(r"совместимость\s+с\s+устройствами\s*:?\s*", re.I),
+    re.compile(r"совместим\s+с\s+", re.I),
+    re.compile(r"подходит\s+для\s+", re.I),
+    re.compile(r"используется\s+с\s+", re.I),
+    re.compile(r"для\s+устройств\s+", re.I),
+    re.compile(r"для\s+аппаратов\s+", re.I),
 )
 
+_TECH_STOP_RX = re.compile(
+    r"(?:\n\n+|(?:^|\n)(?:технические\s+характеристики|характеристика|основные\s+характеристики|характеристики|ресурс|цвет|технология\s+печати)\b)",
+    re.I,
+)
 
 TECH_PAIR_HEADERS = {
     "технология печати": "Технология печати",
@@ -33,12 +50,38 @@ TECH_PAIR_HEADERS = {
     "количество страниц": "Количество страниц (5% заполнение)",
     "ресурс": "Ресурс",
     "совместимость": "Совместимость",
+    "тип кабеля": "Тип кабеля",
+    "количество пар": "Количество пар",
+    "толщина проводников": "Толщина проводников",
+    "категория": "Категория",
+    "назначение": "Назначение",
+    "материал изоляции": "Материал изоляции",
+    "бухта": "Бухта",
 }
 
 
 
 def safe_str(x: object) -> str:
     return str(x).strip() if x is not None else ""
+
+
+
+def _normalize_code_token(s: str) -> str:
+    s = safe_str(s).upper()
+    if not s:
+        return ""
+    s = s.replace("\xa0", " ")
+    s = re.sub(r"\s*[-–—]\s*", "-", s)
+    s = re.sub(r"\b(113R|108R|106R|006R|C13T|C12C|C33S)\s+(\d{5,8}[A-Z0-9]*)\b", r"\1\2", s)
+    s = re.sub(r"\b(CLT|MLT|TK|TN|DR|KX)\s*-\s*", r"\1-", s)
+    s = re.sub(r"\bKX\s+(FA|FAT)(\d+[A-Z]?)\b", r"KX-\1\2", s)
+    s = re.sub(r"\s+", " ", s)
+    return s.strip()
+
+
+
+def _normalize_code_search_text(text: str) -> str:
+    return _normalize_code_token(text)
 
 
 
@@ -63,19 +106,31 @@ def _extract_compat(description: str) -> str:
     d = safe_str(description)
     if not d:
         return ""
-    m = DEVICE_LINE_RX.search(d)
-    if not m:
-        return ""
-    val = re.sub(r"\s+", " ", m.group(1)).strip(" ,.;")
-    return val[:400]
+    d = re.sub(r"\s+", " ", d).strip()
+    for rx in COMPAT_PATTERNS:
+        m = rx.search(d)
+        if not m:
+            continue
+        tail = d[m.end():]
+        stop = _TECH_STOP_RX.search(tail)
+        if stop:
+            tail = tail[: stop.start()]
+        tail = re.split(r"(?<=[.!?])\s", tail, maxsplit=1)[0]
+        val = re.sub(r"\s+", " ", tail).strip(" ,.;")
+        if val:
+            return val[:400]
+    return ""
 
 
 
 def _extract_codes(text: str) -> str:
+    hay = _normalize_code_search_text(text)
     found: list[str] = []
     seen: set[str] = set()
-    for m in CODE_RX.finditer(text):
-        code = m.group(0).upper().replace(" ", "")
+    for m in CODE_RX.finditer(hay):
+        code = _normalize_code_token(m.group(0))
+        if not code or code.isdigit() or len(code) < 4:
+            continue
         if code in seen:
             continue
         seen.add(code)
@@ -85,17 +140,34 @@ def _extract_codes(text: str) -> str:
 
 
 def _extract_line_pairs(description: str) -> list[Tuple[str, str]]:
-    lines = [safe_str(x) for x in re.split(r"\n+", description) if safe_str(x)]
     out: list[Tuple[str, str]] = []
+    text = safe_str(description)
+    if not text:
+        return out
+
+    lines = [safe_str(x) for x in re.split(r"\n+", text) if safe_str(x)]
+
+    for line in lines:
+        m = re.match(r"^([^:]{1,80})\s*:\s*(.+)$", line)
+        if not m:
+            m = re.match(r"^([^\-]{1,80})\s+-\s+(.+)$", line)
+        if not m:
+            continue
+        key = safe_str(m.group(1)).casefold()
+        val = safe_str(m.group(2))
+        norm_key = TECH_PAIR_HEADERS.get(key, "")
+        if not norm_key or not val or len(val) > 240:
+            continue
+        out.append((norm_key, val))
+
     for i in range(len(lines) - 1):
         k = lines[i].casefold()
         v = lines[i + 1]
         norm_key = TECH_PAIR_HEADERS.get(k, "")
-        if not norm_key:
-            continue
-        if len(v) > 240:
+        if not norm_key or not v or len(v) > 240:
             continue
         out.append((norm_key, v))
+
     return out
 
 
