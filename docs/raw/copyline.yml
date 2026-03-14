@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-14 19:09:58">
+<yml_catalog date="2026-03-14 19:53:26">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-14 19:09:58
+Время сборки (Алматы)                      | 2026-03-14 19:53:26
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -723,7 +723,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print SP311HE используется в принтерах серий Ricoh Aficio SP 311DN, SP 311, SP 311DNw, SP 311SFN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP 311DN, SP 311, SP 311DNw, SP 311SFN</param>
+<param name="Совместимость">Ricoh Aficio SP 311DN, RICOH Aficio SP 311, RICOH Aficio SP 311DNw, RICOH Aficio SP 311SFN</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -1538,7 +1538,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium CE411A (305A) используется в принтерах серий HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475</param>
+<param name="Совместимость">HP Color LaserJet Pro 300 M351, HP Color LaserJet M375 Pro 400 M451, HP Color LaserJet M475</param>
 <param name="Коды расходников">CE411A</param>
 <param name="Модель">CE411A</param>
 <param name="Для бренда">HP</param>
@@ -1555,7 +1555,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium CE412A (305A) используется в принтерах серий HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475</param>
+<param name="Совместимость">HP Color LaserJet Pro 300 M351, HP Color LaserJet M375 Pro 400 M451, HP Color LaserJet M475</param>
 <param name="Коды расходников">CE412A</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">CE412A</param>
@@ -1762,7 +1762,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Технология печати">лазерная, монохромная</param>
 <param name="Цвет">черный</param>
 <param name="Ресурс">30000 стр. А4 при 5% заполнении</param>
-<param name="Совместимость">Xerox WorkCentre Pro 5325, Xerox WorkCentre 5330, Xerox WorkCentre 5335 Производитель: Euro Print</param>
+<param name="Совместимость">Xerox WorkCentre Pro 5325, Xerox WorkCentre WorkCentre 5330, Xerox WorkCentre WorkCentre 5335</param>
 <param name="Коды расходников">006R01160</param>
 <param name="Модель">006R01160</param>
 <param name="Для бренда">Xerox</param>
@@ -1922,7 +1922,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print CF283X используется в принтерах серий HP LaserJet Pro M201, M225, Canon i-SENSYS MF211, MF212w, MF216n, MF217w, MF226dn, MF229dw, MF231, MF232w, MF237w, MF244dw, MF247dw, MF249dw, LBP151dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP LaserJet Pro M201, HP LaserJet M225, HP LaserJet Canon i-SENSYS MF211, HP LaserJet MF212w, HP LaserJet MF216n, HP LaserJet MF217w, HP LaserJet MF226dn, HP LaserJet MF229dw, HP LaserJet MF231, HP LaserJet MF232w, HP LaserJet MF237w, HP LaserJet MF244dw, HP LaserJet MF247dw, HP LaserJet MF249dw, HP LaserJet LBP151dw</param>
+<param name="Совместимость">HP LaserJet Pro M201, HP LaserJet M225, Canon i-SENSYS MF211, HP LaserJet MF212w, HP LaserJet MF216n, HP LaserJet MF217w, HP LaserJet MF226dn, HP LaserJet MF229dw, HP LaserJet MF231, HP LaserJet MF232w, HP LaserJet MF237w, HP LaserJet MF244dw, HP LaserJet MF247dw, HP LaserJet MF249dw, HP LaserJet LBP151dw</param>
 <param name="Коды расходников">CF283X</param>
 <param name="Модель">CF283X</param>
 <param name="Для бренда">HP</param>
@@ -2139,7 +2139,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Черный картридж Euro Print Premium Q3960A/Canon 701 используется в принтерах серий HP Color LaserJet 2550, 2550L, 2550N, 2820, 2830, 2840, Canon i-SENSYS MF8180C, LBP5200. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet 2550, HP Color LaserJet 2550L, HP Color LaserJet 2550N, HP Color LaserJet 2820, HP Color LaserJet 2830, HP Color LaserJet 2840, HP Color LaserJet Canon i-SENSYS MF8180C, HP Color LaserJet LBP5200</param>
+<param name="Совместимость">HP Color LaserJet 2550, HP Color LaserJet 2550L, HP Color LaserJet 2550N, HP Color LaserJet 2820, HP Color LaserJet 2830, HP Color LaserJet 2840, Canon i-SENSYS MF8180C, HP Color LaserJet LBP5200</param>
 <param name="Коды расходников">Q3960A</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">Q3960A</param>
@@ -2157,7 +2157,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Пурпурный картридж Euro Print Premium Q3963A/Canon 701 используется в принтерах серий HP Color LaserJet 2550, 2550L, 2550N, 2820, 2830, 2840, Canon i-SENSYS MF8180C, LBP5200. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet 2550, HP Color LaserJet 2550L, HP Color LaserJet 2550N, HP Color LaserJet 2820, HP Color LaserJet 2830, HP Color LaserJet 2840, HP Color LaserJet Canon i-SENSYS MF8180C, HP Color LaserJet LBP5200</param>
+<param name="Совместимость">HP Color LaserJet 2550, HP Color LaserJet 2550L, HP Color LaserJet 2550N, HP Color LaserJet 2820, HP Color LaserJet 2830, HP Color LaserJet 2840, Canon i-SENSYS MF8180C, HP Color LaserJet LBP5200</param>
 <param name="Коды расходников">Q3963A</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">Q3963A</param>
@@ -2175,7 +2175,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium Q6000A/Canon 707 используется в принтерах серий HP Color LaserJet 1600, 2600, 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, HP Color LaserJet CM1015, HP Color LaserJet CM1017, HP Color LaserJet Canon i-SENSYS LBP5000, HP Color LaserJet LBP5100, HP Color LaserJet Laser Shot LBP5000</param>
+<param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, HP Color LaserJet CM1015, HP Color LaserJet CM1017, Canon i-SENSYS LBP5000, HP Color LaserJet LBP5100, HP Color LaserJet Laser Shot LBP5000</param>
 <param name="Коды расходников">Q6000A</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">Q6000A</param>
@@ -2193,7 +2193,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium Q6001A/Canon 707 используется в принтерах серий HP Color LaserJet 1600, 2600, 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, HP Color LaserJet CM1015, HP Color LaserJet CM1017, HP Color LaserJet Canon i-SENSYS LBP5000, HP Color LaserJet LBP5100, HP Color LaserJet Laser Shot LBP5000</param>
+<param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, HP Color LaserJet CM1015, HP Color LaserJet CM1017, Canon i-SENSYS LBP5000, HP Color LaserJet LBP5100, HP Color LaserJet Laser Shot LBP5000</param>
 <param name="Коды расходников">Q6001A</param>
 <param name="Модель">Q6001A</param>
 <param name="Для бренда">HP</param>
@@ -2210,7 +2210,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium Q6003A/Canon 707 используется в принтерах серий HP Color LaserJet 1600, 2600, 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, HP Color LaserJet CM1015, HP Color LaserJet CM1017, HP Color LaserJet Canon i-SENSYS LBP5000, HP Color LaserJet LBP5100, HP Color LaserJet Laser Shot LBP5000</param>
+<param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, HP Color LaserJet CM1015, HP Color LaserJet CM1017, Canon i-SENSYS LBP5000, HP Color LaserJet LBP5100, HP Color LaserJet Laser Shot LBP5000</param>
 <param name="Коды расходников">Q6003A</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">Q6003A</param>
@@ -2334,7 +2334,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Желтый картридж Euro Print Premium Q6472A/Canon 711 используется в принтерах серий HP Color LaserJet 3600, 3600N, 3600DN, Canon i-SENSYS LBP5300, LBP5360. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet 3600, HP Color LaserJet 3600N, HP Color LaserJet 3600DN, HP Color LaserJet Canon i-SENSYS LBP5300, HP Color LaserJet LBP5360</param>
+<param name="Совместимость">HP Color LaserJet 3600, HP Color LaserJet 3600N, HP Color LaserJet 3600DN, Canon i-SENSYS LBP5300, HP Color LaserJet LBP5360</param>
 <param name="Коды расходников">Q6472A</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">Q6472A</param>
@@ -2461,7 +2461,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print SP200HS используется в принтерах серий Ricoh Aficio SP 200N, SP 200NW, SP 200S, SP SP 203SFNW, SP 203SFN, SP 210, SP 210SF, SP 212SUw, SP 212SFNw, SP 212Nw, SP 212W. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP 200N, SP 200NW, SP 200S, SP SP 203SFNW, SP 203SFN, SP 210, SP 210SF, SP 212SUw, SP 212SFNw, SP 212Nw, SP 212W</param>
+<param name="Совместимость">Ricoh Aficio SP 200N, RICOH Aficio SP 200NW, RICOH Aficio SP 200S, RICOH Aficio SP SP 203SFNW, RICOH Aficio SP 203SFN, RICOH Aficio SP 210, RICOH Aficio SP 210SF, RICOH Aficio SP 212SUw, RICOH Aficio SP 212SFNw, RICOH Aficio SP 212Nw, RICOH Aficio SP 212W</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -2478,7 +2478,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print SP150HE используется в принтерах серий Ricoh Aficio SP 150, SP 150SU, SP 150SUW, SP 150W. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP 150, SP 150SU, SP 150SUW, SP 150W</param>
+<param name="Совместимость">Ricoh Aficio SP 150, RICOH Aficio SP 150SU, RICOH Aficio SP 150SUW, RICOH Aficio SP 150W</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -2495,7 +2495,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print SP111E используется в принтерах серий Ricoh Aficio SP 111, SP 111SU, SP 111SF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP 111, SP 111SU, SP 111SF</param>
+<param name="Совместимость">Ricoh Aficio SP 111, RICOH Aficio SP 111SU, RICOH Aficio SP 111SF</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -2596,7 +2596,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R02778 используется в принтерах серий Xerox Phaser 3052, Phaser 3260, WC 3215, WC 3225. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 3052, Xerox Phaser 3260, Xerox WC 3215, Xerox WC 3225</param>
+<param name="Совместимость">Xerox Phaser 3052, Xerox Phaser Phaser 3260, Xerox WorkCentre 3215, Xerox WorkCentre 3225</param>
 <param name="Коды расходников">106R02778</param>
 <param name="Модель">106R02778</param>
 <param name="Для бренда">Xerox</param>
@@ -2664,7 +2664,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R02723 используется в принтерах серий Xerox Phaser 3610, WC 3615. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 3610, Xerox WC 3615</param>
+<param name="Совместимость">Xerox Phaser 3610, Xerox WorkCentre 3615</param>
 <param name="Коды расходников">106R02723</param>
 <param name="Модель">106R02723</param>
 <param name="Для бренда">Xerox</param>
@@ -2974,7 +2974,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print SP101E используется в принтерах серий Ricoh Aficio SP100. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP100</param>
+<param name="Совместимость">RICOH Aficio SP100</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -3448,7 +3448,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж OEM Q6001A/Canon 707 используется в принтерах серий HP Color LaserJet 1600, 2600, 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, HP Color LaserJet CM1015, HP Color LaserJet CM1017, HP Color LaserJet Canon i-SENSYS LBP5000, HP Color LaserJet LBP5100, HP Color LaserJet Laser Shot LBP5000</param>
+<param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, HP Color LaserJet CM1015, HP Color LaserJet CM1017, Canon i-SENSYS LBP5000, HP Color LaserJet LBP5100, HP Color LaserJet Laser Shot LBP5000</param>
 <param name="Коды расходников">Q6001A</param>
 <param name="Модель">Q6001A</param>
 <param name="Для бренда">HP</param>
@@ -3689,7 +3689,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Узел термозакрепления JC81-01690A, JC96-02661A ( термоблок, печка ) для принтеров и МФУ Samsung ML-1510, ML-1710, SCX-4100, SCX-4200, Xerox Phaser 3120, 3121, 3115, 3119.]]></description>
 <param name="Тип">Термоблок</param>
-<param name="Совместимость">и МФУ Samsung ML-1510, ML-1710, SCX-4100, SCX-4200, Xerox Phaser 3120, Xerox Phaser 3121, Xerox Phaser 3115, Xerox Phaser 3119</param>
+<param name="Совместимость">и МФУ Samsung ML-1510, ML-1710, SCX-4100, SCX-4200, Xerox Phaser 3120, 3121, 3115, 3119</param>
 </offer>
 
 <offer id="CL101402" available="true">
@@ -3800,7 +3800,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером TK-1130 используется в принтерах серий Kyocera Ecosys M2030dn, M2530dn, FS-1030MFP, FS-1130MFP. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M2030dn, M2530dn, FS-1030MFP, FS-1130MFP</param>
+<param name="Совместимость">Kyocera Ecosys M2030dn, Kyocera ECOSYS M2530dn, Kyocera ECOSYS FS-1030MFP, Kyocera ECOSYS FS-1130MFP</param>
 <param name="Коды расходников">TK-1130</param>
 <param name="Модель">TK-1130</param>
 <param name="Для бренда">Kyocera</param>
@@ -3921,6 +3921,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM 50F5H00 используется в принтерах серий Lexmark MS310, MS410, MS510, MS610. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Lexmark MS310, MS410, MS510, MS610</param>
+<param name="Коды расходников">50F5H00</param>
+<param name="Модель">50F5H00</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -3979,7 +3981,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R01631 используется в принтерах серий Xerox Phaser 6000, 6010, WorkCentre 6015. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox WorkCentre 6015</param>
+<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox Phaser WorkCentre 6015</param>
 <param name="Коды расходников">106R01631</param>
 <param name="Модель">106R01631</param>
 <param name="Для бренда">Xerox</param>
@@ -4116,7 +4118,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium CE400A (507A) используется в принтерах серий HP Color LaserJet Enterprise 500 M551 Pro 500 M570/M575. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Enterprise 500 M551 Pro 500 M570/M575</param>
+<param name="Совместимость">HP Color LaserJet Enterprise 500 M551 Pro 500 M570, HP Color LaserJet M575</param>
 <param name="Коды расходников">CE400A</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">CE400A</param>
@@ -4134,7 +4136,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium CE401A (507A) используется в принтерах серий HP Color LaserJet Enterprise 500 M551 Pro 500 M570/M575. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Enterprise 500 M551 Pro 500 M570/M575</param>
+<param name="Совместимость">HP Color LaserJet Enterprise 500 M551 Pro 500 M570, HP Color LaserJet M575</param>
 <param name="Коды расходников">CE401A</param>
 <param name="Модель">CE401A</param>
 <param name="Для бренда">HP</param>
@@ -4151,7 +4153,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium CE402A (507A) используется в принтерах серий HP Color LaserJet Enterprise 500 M551 Pro 500 M570/M575. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Enterprise 500 M551 Pro 500 M570/M575</param>
+<param name="Совместимость">HP Color LaserJet Enterprise 500 M551 Pro 500 M570, HP Color LaserJet M575</param>
 <param name="Коды расходников">CE402A</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">CE402A</param>
@@ -4169,7 +4171,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium CE403A (507A) используется в принтерах серий HP Color LaserJet Enterprise 500 M551 Pro 500 M570/M575. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Enterprise 500 M551 Pro 500 M570/M575</param>
+<param name="Совместимость">HP Color LaserJet Enterprise 500 M551 Pro 500 M570, HP Color LaserJet M575</param>
 <param name="Коды расходников">CE403A</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">CE403A</param>
@@ -4251,7 +4253,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером INTEGRAL TK-1130 используется в принтерах серий Kyocera Ecosys M2030dn, M2530dn, FS-1030MFP, FS-1130MFP. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M2030dn, M2530dn, FS-1030MFP, FS-1130MFP</param>
+<param name="Совместимость">Kyocera Ecosys M2030dn, Kyocera ECOSYS M2530dn, Kyocera ECOSYS FS-1030MFP, Kyocera ECOSYS FS-1130MFP</param>
 <param name="Коды расходников">TK-1130</param>
 <param name="Модель">TK-1130</param>
 <param name="Для бренда">Kyocera</param>
@@ -5036,7 +5038,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Q5949A/Q7553A/ Canon 708/715 используется в принтерах серий HP LJ 1160, 1320, 3390, 3392, P2014, P2015, Canon i-SENSYS LBP3300, LBP3360, LBP-3310, LBP-3370. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP LJ 1160, 1320, 3390, 3392, P2014, P2015, Canon i-SENSYS LBP3300, Canon i-SENSYS LBP3360, Canon i-SENSYS LBP-3310, Canon i-SENSYS LBP-3370</param>
+<param name="Совместимость">HP LJ 1160, 1320, 3390, 3392, P2014, P2015, Canon i-SENSYS LBP3300, LBP3360, LBP-3310, LBP-3370</param>
 <param name="Коды расходников">Q5949A, Q7553A</param>
 <param name="Модель">Q5949A</param>
 <param name="Для бренда">HP</param>
@@ -5463,7 +5465,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Технология печати">лазерная, монохромная</param>
 <param name="Цвет">черный</param>
 <param name="Ресурс">2300 стр. А4 при 5% заполнении</param>
-<param name="Совместимость">Xerox Phaser 3010, Xerox Phaser 3040, Xerox WorkCentre 3045 Размер: 85 x 85 x 60 мм Вес: 0</param>
+<param name="Совместимость">Xerox Phaser 3010, Xerox Phaser 3040, Xerox Phaser WorkCentre 3045</param>
 <param name="Коды расходников">106R02183</param>
 <param name="Модель">106R02183</param>
 <param name="Для бренда">Xerox</param>
@@ -5767,7 +5769,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Технология печати">лазерная, монохромная</param>
 <param name="Цвет">черный</param>
 <param name="Ресурс">2300 стр. А4 при 5% заполнении</param>
-<param name="Совместимость">Xerox Phaser 3010, Xerox Phaser 3040, Xerox WorkCentre 3045 Размер: 85 x 85 x 60 мм Вес: 0</param>
+<param name="Совместимость">Xerox Phaser 3010, Xerox Phaser 3040, Xerox Phaser WorkCentre 3045</param>
 <param name="Коды расходников">106R02183</param>
 <param name="Модель">106R02183</param>
 <param name="Для бренда">Xerox</param>
@@ -5784,7 +5786,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium CF210A (131A) используется в принтерах серий HP Color LaserJet Pro 200 M251/ M276. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Pro 200 M251/ M276</param>
+<param name="Совместимость">HP Color LaserJet Pro 200 M251, HP Color LaserJet M276</param>
 <param name="Коды расходников">CF210A</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">CF210A</param>
@@ -5802,7 +5804,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium CF211A (131A) используется в принтерах серий HP Color LaserJet Pro 200 M251/ M276. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Pro 200 M251/ M276</param>
+<param name="Совместимость">HP Color LaserJet Pro 200 M251, HP Color LaserJet M276</param>
 <param name="Коды расходников">CF211A</param>
 <param name="Модель">CF211A</param>
 <param name="Для бренда">HP</param>
@@ -5819,7 +5821,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium CF212A (131A) используется в принтерах серий HP Color LaserJet Pro 200 M251/ M276. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Pro 200 M251/ M276</param>
+<param name="Совместимость">HP Color LaserJet Pro 200 M251, HP Color LaserJet M276</param>
 <param name="Коды расходников">CF212A</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">CF212A</param>
@@ -5837,7 +5839,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R01633 используется в принтерах серий Xerox Phaser 6000, 6010, WorkCentre 6015. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox WorkCentre 6015</param>
+<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox Phaser WorkCentre 6015</param>
 <param name="Коды расходников">106R01633</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">106R01633</param>
@@ -6466,7 +6468,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R01604 используется в принтерах серий Xerox Phaser 6500, WorkCentre 6505. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6500, Xerox WorkCentre 6505</param>
+<param name="Совместимость">Xerox Phaser 6500, Xerox Phaser WorkCentre 6505</param>
 <param name="Коды расходников">106R01604</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">106R01604</param>
@@ -6484,7 +6486,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R01601 используется в принтерах серий Xerox Phaser 6500, WorkCentre 6505. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6500, Xerox WorkCentre 6505</param>
+<param name="Совместимость">Xerox Phaser 6500, Xerox Phaser WorkCentre 6505</param>
 <param name="Коды расходников">106R01601</param>
 <param name="Модель">106R01601</param>
 <param name="Для бренда">Xerox</param>
@@ -6501,7 +6503,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R01602 используется в принтерах серий Xerox Phaser 6500, WorkCentre 6505. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6500, Xerox WorkCentre 6505</param>
+<param name="Совместимость">Xerox Phaser 6500, Xerox Phaser WorkCentre 6505</param>
 <param name="Коды расходников">106R01602</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">106R01602</param>
@@ -6519,7 +6521,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R01603 используется в принтерах серий Xerox Phaser 6500, WorkCentre 6505. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6500, Xerox WorkCentre 6505</param>
+<param name="Совместимость">Xerox Phaser 6500, Xerox Phaser WorkCentre 6505</param>
 <param name="Коды расходников">106R01603</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">106R01603</param>
@@ -6537,7 +6539,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R02236 используется в принтерах серий Xerox Phaser 6600N, 6600DN, WorkCentre 6605N, 6605DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6600N, Xerox Phaser 6600DN, Xerox WorkCentre 6605N, Xerox Phaser 6605DN</param>
+<param name="Совместимость">Xerox Phaser 6600N, Xerox Phaser 6600DN, Xerox Phaser WorkCentre 6605N, Xerox Phaser 6605DN</param>
 <param name="Коды расходников">106R02236</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">106R02236</param>
@@ -6555,7 +6557,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R02233 используется в принтерах серий Xerox Phaser 6600N, 6600DN, WorkCentre 6605N, 6605DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6600N, Xerox Phaser 6600DN, Xerox WorkCentre 6605N, Xerox Phaser 6605DN</param>
+<param name="Совместимость">Xerox Phaser 6600N, Xerox Phaser 6600DN, Xerox Phaser WorkCentre 6605N, Xerox Phaser 6605DN</param>
 <param name="Коды расходников">106R02233</param>
 <param name="Модель">106R02233</param>
 <param name="Для бренда">Xerox</param>
@@ -6572,7 +6574,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R02234 используется в принтерах серий Xerox Phaser 6600N, 6600DN, WorkCentre 6605N, 6605DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6600N, Xerox Phaser 6600DN, Xerox WorkCentre 6605N, Xerox Phaser 6605DN</param>
+<param name="Совместимость">Xerox Phaser 6600N, Xerox Phaser 6600DN, Xerox Phaser WorkCentre 6605N, Xerox Phaser 6605DN</param>
 <param name="Коды расходников">106R02234</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">106R02234</param>
@@ -6590,7 +6592,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R02235 используется в принтерах серий Xerox Phaser 6600N, 6600DN, WorkCentre 6605N, 6605DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6600N, Xerox Phaser 6600DN, Xerox WorkCentre 6605N, Xerox Phaser 6605DN</param>
+<param name="Совместимость">Xerox Phaser 6600N, Xerox Phaser 6600DN, Xerox Phaser WorkCentre 6605N, Xerox Phaser 6605DN</param>
 <param name="Коды расходников">106R02235</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">106R02235</param>
@@ -6627,7 +6629,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R02763 используется в принтерах серий Xerox Phaser 6020, 6022, WC 6025, 6027. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6020, Xerox Phaser 6022, Xerox WC 6025, Xerox Phaser 6027</param>
+<param name="Совместимость">Xerox Phaser 6020, Xerox Phaser 6022, Xerox WorkCentre 6025, Xerox Phaser 6027</param>
 <param name="Коды расходников">106R02763</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">106R02763</param>
@@ -6645,7 +6647,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R02760 используется в принтерах серий Xerox Phaser 6020, 6022, WC 6025, 6027. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6020, Xerox Phaser 6022, Xerox WC 6025, Xerox Phaser 6027</param>
+<param name="Совместимость">Xerox Phaser 6020, Xerox Phaser 6022, Xerox WorkCentre 6025, Xerox Phaser 6027</param>
 <param name="Коды расходников">106R02760</param>
 <param name="Модель">106R02760</param>
 <param name="Для бренда">Xerox</param>
@@ -6662,7 +6664,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R02761 используется в принтерах серий Xerox Phaser 6020, 6022, WC 6025, 6027. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6020, Xerox Phaser 6022, Xerox WC 6025, Xerox Phaser 6027</param>
+<param name="Совместимость">Xerox Phaser 6020, Xerox Phaser 6022, Xerox WorkCentre 6025, Xerox Phaser 6027</param>
 <param name="Коды расходников">106R02761</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">106R02761</param>
@@ -6680,7 +6682,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R02762 используется в принтерах серий Xerox Phaser 6020, 6022, WC 6025, 6027. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6020, Xerox Phaser 6022, Xerox WC 6025, Xerox Phaser 6027</param>
+<param name="Совместимость">Xerox Phaser 6020, Xerox Phaser 6022, Xerox WorkCentre 6025, Xerox Phaser 6027</param>
 <param name="Коды расходников">106R02762</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">106R02762</param>
@@ -7555,7 +7557,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R03623 используется в принтерах серий Xerox Phaser 3330, WC 3335, WC 3345. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 3330, Xerox WC 3335, Xerox WC 3345</param>
+<param name="Совместимость">Xerox Phaser 3330, Xerox WorkCentre 3335, Xerox WorkCentre 3345</param>
 <param name="Коды расходников">106R03623</param>
 <param name="Модель">106R03623</param>
 <param name="Для бренда">Xerox</param>
@@ -7941,7 +7943,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print CE285A используется в принтерах серий HP LJ Pro M1132, M1212nf, M1214nfh, M1217nfw, P1102, P1102s, P1102w, Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, MF3010EX. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP LJ Pro M1132, M1212nf, M1214nfh, M1217nfw, P1102, P1102s, P1102w, Canon i-SENSYS LBP6000, Canon i-SENSYS LBP6020, Canon i-SENSYS LBP6020B, Canon i-SENSYS LBP6030, Canon i-SENSYS LBP6030B, LBP6030w, Canon i-SENSYS MF3010, Canon i-SENSYS MF3010EX</param>
+<param name="Совместимость">HP LJ Pro M1132, M1212nf, M1214nfh, M1217nfw, P1102, P1102s, P1102w, Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, MF3010EX</param>
 <param name="Коды расходников">CE285A</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
@@ -8137,7 +8139,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж OEM CE413A (305A) используется в принтерах серий HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475</param>
+<param name="Совместимость">HP Color LaserJet Pro 300 M351, HP Color LaserJet M375 Pro 400 M451, HP Color LaserJet M475</param>
 <param name="Коды расходников">CE413A</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">CE413A</param>
@@ -8437,7 +8439,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Узел термозакрепления JC96-03401A ( термоблок, печка ) для принтеров и МФУ Samsung ML-1610, ML-2015; Xerox Phaser 3116, 3117, 3122.]]></description>
 <param name="Тип">Термоблок</param>
-<param name="Совместимость">и МФУ Samsung ML-1610, ML-2015, Xerox Phaser 3116, Xerox Phaser 3117, Xerox Phaser 3122</param>
+<param name="Совместимость">и МФУ Samsung ML-1610, ML-2015, Xerox Phaser 3116, 3117, 3122</param>
 </offer>
 
 <offer id="CL103179" available="false">
@@ -8452,6 +8454,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 50F0Z00 применяется в принтерах серии Lexmark MS310, MS410, MS510, MS610, MX310, MX410, MX510, MX610. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">принтерах серии Lexmark MS310, MS410, MS510, MS610, MX310, MX410, MX510, MX610</param>
+<param name="Коды расходников">50F0Z00</param>
+<param name="Модель">50F0Z00</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -8466,7 +8470,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print 106R02773 используется в принтерах серий Xerox Phaser 3020/ WC3025. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Xerox Phaser 3020, Xerox Phaser WC3025</param>
+<param name="Совместимость">Xerox Phaser 3020, Xerox WorkCentre 3025</param>
 <param name="Коды расходников">106R02773</param>
 <param name="Модель">106R02773</param>
 <param name="Для бренда">Xerox</param>
@@ -8547,7 +8551,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium CF213A (131A) используется в принтерах серий HP Color LaserJet Pro 200 M251/ M276. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Pro 200 M251/ M276</param>
+<param name="Совместимость">HP Color LaserJet Pro 200 M251, HP Color LaserJet M276</param>
 <param name="Коды расходников">CF213A</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">CF213A</param>
@@ -8566,7 +8570,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R01634 используется в принтерах серий Xerox Phaser 6000, 6010, WorkCentre 6015. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox WorkCentre 6015</param>
+<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox Phaser WorkCentre 6015</param>
 <param name="Коды расходников">106R01634</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">106R01634</param>
@@ -8584,7 +8588,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R01632 используется в принтерах серий Xerox Phaser 6000, 6010, WorkCentre 6015. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox WorkCentre 6015</param>
+<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox Phaser WorkCentre 6015</param>
 <param name="Коды расходников">106R01632</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">106R01632</param>
@@ -8723,7 +8727,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Технология печати">лазерная, монохромная</param>
 <param name="Цвет">черный</param>
 <param name="Ресурс">1000 стр. А4 при 5% заполнении</param>
-<param name="Совместимость">Xerox Phaser 3010, Xerox Phaser 3040, Xerox WorkCentre 3045 Размер: 85 x 85 x 60 мм Вес: 0</param>
+<param name="Совместимость">Xerox Phaser 3010, Xerox Phaser 3040, Xerox Phaser WorkCentre 3045</param>
 <param name="Коды расходников">106R02181</param>
 <param name="Модель">106R02181</param>
 <param name="Для бренда">Xerox</param>
@@ -9171,7 +9175,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium Q6002A/Canon 707 используется в принтерах серий HP Color LaserJet 1600, 2600, 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, HP Color LaserJet CM1015, HP Color LaserJet CM1017, HP Color LaserJet Canon i-SENSYS LBP5000, HP Color LaserJet LBP5100, HP Color LaserJet Laser Shot LBP5000</param>
+<param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, HP Color LaserJet CM1015, HP Color LaserJet CM1017, Canon i-SENSYS LBP5000, HP Color LaserJet LBP5100, HP Color LaserJet Laser Shot LBP5000</param>
 <param name="Коды расходников">Q6002A</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">Q6002A</param>
@@ -9341,7 +9345,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print SP300 используется в принтерах серий Ricoh Aficio SP 300DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP 300DN</param>
+<param name="Совместимость">RICOH Aficio SP 300DN</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -9891,7 +9895,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером TK-3150 используется в принтерах серий Kyocera Ecosys M3040idn, M3540idn. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M3040idn, M3540idn</param>
+<param name="Совместимость">Kyocera Ecosys M3040idn, Kyocera ECOSYS M3540idn</param>
 <param name="Коды расходников">TK-3150</param>
 <param name="Модель">TK-3150</param>
 <param name="Для бренда">Kyocera</param>
@@ -10165,7 +10169,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R02732 используется в принтерах серий Xerox Phaser 3610, WC 3615. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 3610, Xerox WC 3615</param>
+<param name="Совместимость">Xerox Phaser 3610, Xerox WorkCentre 3615</param>
 <param name="Коды расходников">106R02732</param>
 <param name="Модель">106R02732</param>
 <param name="Для бренда">Xerox</param>
@@ -10352,7 +10356,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print TK-1170 используется в принтерах серий Kyocera Ecosys M2040dn, M2540dn, M2640idw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M2040dn, M2540dn, M2640idw</param>
+<param name="Совместимость">Kyocera Ecosys M2040dn, Kyocera ECOSYS M2540dn, Kyocera ECOSYS M2640idw</param>
 <param name="Коды расходников">TK-1170</param>
 <param name="Модель">TK-1170</param>
 <param name="Для бренда">Kyocera</param>
@@ -10697,7 +10701,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print SP C220 Cyan используется в принтерах серий Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN</param>
+<param name="Совместимость">Ricoh Aficio SP C220S, RICOH Aficio SP C221SF, RICOH Aficio SP C222SF, RICOH Aficio SP C220N, RICOH Aficio SP C221N, RICOH Aficio SP C222DN</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -10712,7 +10716,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print SP C220 Magenta используется в принтерах серий Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN</param>
+<param name="Совместимость">Ricoh Aficio SP C220S, RICOH Aficio SP C221SF, RICOH Aficio SP C222SF, RICOH Aficio SP C220N, RICOH Aficio SP C221N, RICOH Aficio SP C222DN</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
@@ -10728,7 +10732,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print SP C220 Yellow используется в принтерах серий Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN</param>
+<param name="Совместимость">Ricoh Aficio SP C220S, RICOH Aficio SP C221SF, RICOH Aficio SP C222SF, RICOH Aficio SP C220N, RICOH Aficio SP C221N, RICOH Aficio SP C222DN</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
@@ -10744,7 +10748,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print SP C220 Black используется в принтерах серий Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN</param>
+<param name="Совместимость">Ricoh Aficio SP C220S, RICOH Aficio SP C221SF, RICOH Aficio SP C222SF, RICOH Aficio SP C220N, RICOH Aficio SP C221N, RICOH Aficio SP C222DN</param>
 <param name="Цвет">Чёрный</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
@@ -10811,7 +10815,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print SP201HE используется в принтерах серий Ricoh Aficio SP 211, SP 213, SP 220Nw, SP 220SNw, SP 220SFNw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP 211, SP 213, SP 220Nw, SP 220SNw, SP 220SFNw</param>
+<param name="Совместимость">Ricoh Aficio SP 211, RICOH Aficio SP 213, RICOH Aficio SP 220Nw, RICOH Aficio SP 220SNw, RICOH Aficio SP 220SFNw</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -10826,7 +10830,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print TK-1150 используется в принтерах серий Kyocera Ecosys M2135dn, M2635dn, M2735dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M2135dn, M2635dn, M2735dw</param>
+<param name="Совместимость">Kyocera Ecosys M2135dn, Kyocera ECOSYS M2635dn, Kyocera ECOSYS M2735dw</param>
 <param name="Коды расходников">TK-1150</param>
 <param name="Модель">TK-1150</param>
 <param name="Для бренда">Kyocera</param>
@@ -11256,7 +11260,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print SP400LE используется в принтерах серий Ricoh Aficio SP 400, SP 450. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP 400, SP 450</param>
+<param name="Совместимость">Ricoh Aficio SP 400, RICOH Aficio SP 450</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -11489,6 +11493,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж INTEGRAL 50F5H00 используется в принтерах серий Lexmark MS310, MS410, MS510, MS610. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Lexmark MS310, MS410, MS510, MS610</param>
+<param name="Коды расходников">50F5H00</param>
+<param name="Модель">50F5H00</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -11715,7 +11721,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R03485 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03485</param>
 <param name="Модель">106R03485</param>
 <param name="Для бренда">Xerox</param>
@@ -11732,7 +11738,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R03486 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03486</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">106R03486</param>
@@ -11750,7 +11756,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R03487 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03487</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">106R03487</param>
@@ -11769,7 +11775,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R03488 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03488</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">106R03488</param>
@@ -11862,7 +11868,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером TK-3160 используется в принтерах серий Kyocera Ecosys P3045dn. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys P3045dn</param>
+<param name="Совместимость">Kyocera ECOSYS P3045dn</param>
 <param name="Коды расходников">TK-3160</param>
 <param name="Модель">TK-3160</param>
 <param name="Для бренда">Kyocera</param>
@@ -11911,7 +11917,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print TK-5240K используется в принтерах серий Kyocera Ecosys M5526cdw, M5526cdn, P5026cdn, P5026cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M5526cdw, M5526cdn, P5026cdn, P5026cdw</param>
+<param name="Совместимость">Kyocera Ecosys M5526cdw, Kyocera ECOSYS M5526cdn, Kyocera ECOSYS P5026cdn, Kyocera ECOSYS P5026cdw</param>
 <param name="Коды расходников">TK-5240K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TK-5240K</param>
@@ -11929,7 +11935,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print TK-5240C используется в принтерах серий Kyocera Ecosys M5526cdw, M5526cdn, P5026cdn, P5026cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M5526cdw, M5526cdn, P5026cdn, P5026cdw</param>
+<param name="Совместимость">Kyocera Ecosys M5526cdw, Kyocera ECOSYS M5526cdn, Kyocera ECOSYS P5026cdn, Kyocera ECOSYS P5026cdw</param>
 <param name="Коды расходников">TK-5240C</param>
 <param name="Модель">TK-5240C</param>
 <param name="Для бренда">Kyocera</param>
@@ -11946,7 +11952,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print TK-5240M используется в принтерах серий Kyocera Ecosys M5526cdw, M5526cdn, P5026cdn, P5026cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M5526cdw, M5526cdn, P5026cdn, P5026cdw</param>
+<param name="Совместимость">Kyocera Ecosys M5526cdw, Kyocera ECOSYS M5526cdn, Kyocera ECOSYS P5026cdn, Kyocera ECOSYS P5026cdw</param>
 <param name="Коды расходников">TK-5240M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TK-5240M</param>
@@ -11964,7 +11970,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print TK-5240Y используется в принтерах серий Kyocera Ecosys M5526cdw, M5526cdn, P5026cdn, P5026cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M5526cdw, M5526cdn, P5026cdn, P5026cdw</param>
+<param name="Совместимость">Kyocera Ecosys M5526cdw, Kyocera ECOSYS M5526cdn, Kyocera ECOSYS P5026cdn, Kyocera ECOSYS P5026cdw</param>
 <param name="Коды расходников">TK-5240Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TK-5240Y</param>
@@ -12083,7 +12089,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером SPC310E используется в принтерах Ricoh Aficio SP C231SF, C232S, SP C231N, C232DN, C311N, C312DN, C242DN, C242SF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Ricoh Aficio SP C231SF, C232S, SP C231N, C232DN, C311N, C312DN, C242DN, C242SF</param>
+<param name="Совместимость">Ricoh Aficio SP C231SF, RICOH Aficio C232S, RICOH Aficio SP C231N, RICOH Aficio C232DN, RICOH Aficio C311N, RICOH Aficio C312DN, RICOH Aficio C242DN, RICOH Aficio C242SF</param>
 <param name="Цвет">Чёрный</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
@@ -12100,7 +12106,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с голубым тонером SPC310E используется в принтерах Ricoh Aficio SP C231SF, C232S, SP C231N, C232DN, C311N, C312DN, C242DN, C242SF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Ricoh Aficio SP C231SF, C232S, SP C231N, C232DN, C311N, C312DN, C242DN, C242SF</param>
+<param name="Совместимость">Ricoh Aficio SP C231SF, RICOH Aficio C232S, RICOH Aficio SP C231N, RICOH Aficio C232DN, RICOH Aficio C311N, RICOH Aficio C312DN, RICOH Aficio C242DN, RICOH Aficio C242SF</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -12116,7 +12122,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с пурпурным тонером SPC310E используется в принтерах Ricoh Aficio SP C231SF, C232S, SP C231N, C232DN, C311N, C312DN, C242DN, C242SF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Ricoh Aficio SP C231SF, C232S, SP C231N, C232DN, C311N, C312DN, C242DN, C242SF</param>
+<param name="Совместимость">Ricoh Aficio SP C231SF, RICOH Aficio C232S, RICOH Aficio SP C231N, RICOH Aficio C232DN, RICOH Aficio C311N, RICOH Aficio C312DN, RICOH Aficio C242DN, RICOH Aficio C242SF</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
@@ -12133,7 +12139,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с желтым тонером SPC310E используется в принтерах Ricoh Aficio SP C231SF, C232S, SP C231N, C232DN, C311N, C312DN, C242DN, C242SF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Ricoh Aficio SP C231SF, C232S, SP C231N, C232DN, C311N, C312DN, C242DN, C242SF</param>
+<param name="Совместимость">Ricoh Aficio SP C231SF, RICOH Aficio C232S, RICOH Aficio SP C231N, RICOH Aficio C232DN, RICOH Aficio C311N, RICOH Aficio C312DN, RICOH Aficio C242DN, RICOH Aficio C242SF</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
@@ -12409,7 +12415,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print 106R02778 без чипа используется в принтерах серий Xerox Phaser 3052, 3260, WC 3215, 3225. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 3052, Xerox Phaser 3260, Xerox WC 3215, Xerox Phaser 3225</param>
+<param name="Совместимость">Xerox Phaser 3052, Xerox Phaser 3260, Xerox WorkCentre 3215, Xerox Phaser 3225</param>
 <param name="Коды расходников">106R02778</param>
 <param name="Модель">106R02778</param>
 <param name="Для бренда">Xerox</param>
@@ -12672,7 +12678,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Drum Unit SP400 используется в принтерах серий Ricoh Aficio SP 400, SP 450. Новый барабан-картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Драм-картридж</param>
-<param name="Совместимость">Ricoh Aficio SP 400, SP 450</param>
+<param name="Совместимость">Ricoh Aficio SP 400, RICOH Aficio SP 450</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -12705,7 +12711,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print NEW CF210A (131A) /Canon 731 используется в принтерах серий HP Color LaserJet Pro 200 M251/ M276. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Pro 200 M251/ M276</param>
+<param name="Совместимость">HP Color LaserJet Pro 200 M251, HP Color LaserJet M276</param>
 <param name="Коды расходников">CF210A</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">CF210A</param>
@@ -12890,7 +12896,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print NEW SP200HS используется в принтерах серий Ricoh Aficio SP 200N, SP 200NW, SP 200S, SP SP 203SFNW, SP 203SFN, SP 210, SP 210SF, SP 212SUw, SP 212SFNw, SP 212Nw, SP 212W. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP 200N, SP 200NW, SP 200S, SP SP 203SFNW, SP 203SFN, SP 210, SP 210SF, SP 212SUw, SP 212SFNw, SP 212Nw, SP 212W</param>
+<param name="Совместимость">Ricoh Aficio SP 200N, RICOH Aficio SP 200NW, RICOH Aficio SP 200S, RICOH Aficio SP SP 203SFNW, RICOH Aficio SP 203SFN, RICOH Aficio SP 210, RICOH Aficio SP 210SF, RICOH Aficio SP 212SUw, RICOH Aficio SP 212SFNw, RICOH Aficio SP 212Nw, RICOH Aficio SP 212W</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -12926,7 +12932,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print NEW CE402A (507A) используется в принтерах серий HP Color LaserJet Enterprise 500 M551 Pro 500 M570/M575. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Enterprise 500 M551 Pro 500 M570/M575</param>
+<param name="Совместимость">HP Color LaserJet Enterprise 500 M551 Pro 500 M570, HP Color LaserJet M575</param>
 <param name="Коды расходников">CE402A</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">CE402A</param>
@@ -12964,7 +12970,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print NEW Q6002A/Canon 707 используется в принтерах серий HP Color LaserJet 1600, 2600, 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, HP Color LaserJet CM1015, HP Color LaserJet CM1017, HP Color LaserJet Canon i-SENSYS LBP5000, HP Color LaserJet LBP5100, HP Color LaserJet Laser Shot LBP5000</param>
+<param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, HP Color LaserJet CM1015, HP Color LaserJet CM1017, Canon i-SENSYS LBP5000, HP Color LaserJet LBP5100, HP Color LaserJet Laser Shot LBP5000</param>
 <param name="Коды расходников">Q6002A</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">Q6002A</param>
@@ -13208,7 +13214,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print SP230H используется в принтерах серий Ricoh Aficio SP230DNw, SP230SFNw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP230DNw, SP230SFNw</param>
+<param name="Совместимость">Ricoh Aficio SP230DNw, RICOH Aficio SP230SFNw</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -13315,7 +13321,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print TK-1200 используется в принтерах серий Kyocera Ecosys M2235dn, M2735dn, M2835dw, P2335d, P2335dn, P2335dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M2235dn, M2735dn, M2835dw, P2335d, P2335dn, P2335dw</param>
+<param name="Совместимость">Kyocera Ecosys M2235dn, Kyocera ECOSYS M2735dn, Kyocera ECOSYS M2835dw, Kyocera ECOSYS P2335d, Kyocera ECOSYS P2335dn, Kyocera ECOSYS P2335dw</param>
 <param name="Коды расходников">TK-1200</param>
 <param name="Модель">TK-1200</param>
 <param name="Для бренда">Kyocera</param>
@@ -13365,7 +13371,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-8115K используется в принтерах серий Kyocera Ecosys M8124cidn, M8130cidn. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M8124cidn, M8130cidn</param>
+<param name="Совместимость">Kyocera Ecosys M8124cidn, Kyocera ECOSYS M8130cidn</param>
 <param name="Коды расходников">TK-8115K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TK-8115K</param>
@@ -13384,7 +13390,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-8115C используется в принтерах серий Kyocera Ecosys M8124cidn, M8130cidn. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M8124cidn, M8130cidn</param>
+<param name="Совместимость">Kyocera Ecosys M8124cidn, Kyocera ECOSYS M8130cidn</param>
 <param name="Коды расходников">TK-8115C</param>
 <param name="Модель">TK-8115C</param>
 <param name="Для бренда">Kyocera</param>
@@ -13402,7 +13408,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-8115M используется в принтерах серий Kyocera Ecosys M8124cidn, M8130cidn. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M8124cidn, M8130cidn</param>
+<param name="Совместимость">Kyocera Ecosys M8124cidn, Kyocera ECOSYS M8130cidn</param>
 <param name="Коды расходников">TK-8115M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TK-8115M</param>
@@ -13421,7 +13427,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-8115Y используется в принтерах серий Kyocera Ecosys M8124cidn, M8130cidn. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M8124cidn, M8130cidn</param>
+<param name="Совместимость">Kyocera Ecosys M8124cidn, Kyocera ECOSYS M8130cidn</param>
 <param name="Коды расходников">TK-8115Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TK-8115Y</param>
@@ -13740,7 +13746,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Sakura CE411A (305A) используется в принтерах серий HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475</param>
+<param name="Совместимость">HP Color LaserJet Pro 300 M351, HP Color LaserJet M375 Pro 400 M451, HP Color LaserJet M475</param>
 <param name="Коды расходников">CE411A</param>
 <param name="Модель">CE411A</param>
 <param name="Для бренда">HP</param>
@@ -13758,7 +13764,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Sakura CE412A (305A) используется в принтерах серий HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475</param>
+<param name="Совместимость">HP Color LaserJet Pro 300 M351, HP Color LaserJet M375 Pro 400 M451, HP Color LaserJet M475</param>
 <param name="Коды расходников">CE412A</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">CE412A</param>
@@ -14323,6 +14329,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж OEM 50F2H00 используется в принтерах серий Lexmark MS310, MS410, MS510, MS610. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Lexmark MS310, MS410, MS510, MS610</param>
+<param name="Коды расходников">50F2H00</param>
+<param name="Модель">50F2H00</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -14512,7 +14520,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером OEM 106R03623 используется в принтерах серий Xerox Phaser 3330, WC 3335, WC 3345. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 3330, Xerox WC 3335, Xerox WC 3345</param>
+<param name="Совместимость">Xerox Phaser 3330, Xerox WorkCentre 3335, Xerox WorkCentre 3345</param>
 <param name="Коды расходников">106R03623</param>
 <param name="Модель">106R03623</param>
 <param name="Для бренда">Xerox</param>
@@ -14615,7 +14623,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж оригинал CE411A (305A) используется в принтерах серий HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475</param>
+<param name="Совместимость">HP Color LaserJet Pro 300 M351, HP Color LaserJet M375 Pro 400 M451, HP Color LaserJet M475</param>
 <param name="Коды расходников">CE411A</param>
 <param name="Модель">CE411A</param>
 <param name="Для бренда">HP</param>
@@ -14632,7 +14640,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж оригинал CE412A (305A) используется в принтерах серий HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Pro 300 M351/ M375 Pro 400 M451/ M475</param>
+<param name="Совместимость">HP Color LaserJet Pro 300 M351, HP Color LaserJet M375 Pro 400 M451, HP Color LaserJet M475</param>
 <param name="Коды расходников">CE412A</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">CE412A</param>
@@ -14700,7 +14708,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Sakura SP400LE используется в принтерах серий Ricoh Aficio SP 400, SP 450. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP 400, SP 450</param>
+<param name="Совместимость">Ricoh Aficio SP 400, RICOH Aficio SP 450</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -14833,7 +14841,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-3190 используется в принтерах серий Kyocera Ecosys P3055, P3060, P3155, P3260, M3660, M3655. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys P3055, P3060, P3155, P3260, M3660, M3655</param>
+<param name="Совместимость">Kyocera Ecosys P3055, Kyocera ECOSYS P3060, Kyocera ECOSYS P3155, Kyocera ECOSYS P3260, Kyocera ECOSYS M3660, Kyocera ECOSYS M3655</param>
 <param name="Коды расходников">TK-3190</param>
 <param name="Модель">TK-3190</param>
 <param name="Для бренда">Kyocera</param>
@@ -15069,7 +15077,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Технология печати">лазерная, монохромная</param>
 <param name="Цвет">черный</param>
 <param name="Ресурс">30000 стр. А4 при 5% заполнении</param>
-<param name="Совместимость">Xerox WorkCentre Pro 5325, Xerox WorkCentre 5330, Xerox WorkCentre 5335</param>
+<param name="Совместимость">Xerox WorkCentre Pro 5325, Xerox WorkCentre WorkCentre 5330, Xerox WorkCentre WorkCentre 5335</param>
 <param name="Коды расходников">006R01160</param>
 <param name="Модель">006R01160</param>
 <param name="Для бренда">Xerox</param>
@@ -15137,7 +15145,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-8800K используется в принтерах серий Kyocera Ecosys P8060cdn. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys P8060cdn</param>
+<param name="Совместимость">Kyocera ECOSYS P8060cdn</param>
 <param name="Коды расходников">TK-8800K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TK-8800K</param>
@@ -15155,7 +15163,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-8800C используется в принтерах серий Kyocera Ecosys P8060cdn. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys P8060cdn</param>
+<param name="Совместимость">Kyocera ECOSYS P8060cdn</param>
 <param name="Коды расходников">TK-8800C</param>
 <param name="Модель">TK-8800C</param>
 <param name="Для бренда">Kyocera</param>
@@ -15172,7 +15180,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-8800M используется в принтерах серий Kyocera Ecosys P8060cdn. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys P8060cdn</param>
+<param name="Совместимость">Kyocera ECOSYS P8060cdn</param>
 <param name="Коды расходников">TK-8800M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TK-8800M</param>
@@ -15190,7 +15198,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-8800Y используется в принтерах серий Kyocera Ecosys P8060cdn. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys P8060cdn</param>
+<param name="Совместимость">Kyocera ECOSYS P8060cdn</param>
 <param name="Коды расходников">TK-8800Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TK-8800Y</param>
@@ -15226,7 +15234,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-3060 используется в принтерах серий Kyocera Ecosys M3145idn, M3645idn. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M3145idn, M3645idn</param>
+<param name="Совместимость">Kyocera Ecosys M3145idn, Kyocera ECOSYS M3645idn</param>
 <param name="Коды расходников">TK-3060</param>
 <param name="Модель">TK-3060</param>
 <param name="Для бренда">Kyocera</param>
@@ -15243,7 +15251,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print SP330H используется в принтерах серий Ricoh Aficio SP330DNw, SP330SN, SP330SFN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">Ricoh Aficio SP330DNw, SP330SN, SP330SFN</param>
+<param name="Совместимость">Ricoh Aficio SP330DNw, RICOH Aficio SP330SN, RICOH Aficio SP330SFN</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -15647,6 +15655,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Оригинальный картридж фотобарабана (Drum Unit - блок барабана) 50F0Z00 применяется в принтерах серии Lexmark MS310, MS410, MS510, MS610, MX310, MX410, MX510, MX610. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">принтерах серии Lexmark MS310, MS410, MS510, MS610, MX310, MX410, MX510, MX610</param>
+<param name="Коды расходников">50F0Z00</param>
+<param name="Модель">50F0Z00</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -15661,7 +15671,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print TK-6115 используется в принтерах серий Kyocera Ecosys M4125, M4132. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M4125, M4132</param>
+<param name="Совместимость">Kyocera Ecosys M4125, Kyocera ECOSYS M4132</param>
 <param name="Коды расходников">TK-6115</param>
 <param name="Модель">TK-6115</param>
 <param name="Для бренда">Kyocera</param>
@@ -15730,7 +15740,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print TK-1160 используется в принтерах серий Kyocera Ecosys P2040dn, P2040dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys P2040dn, P2040dw</param>
+<param name="Совместимость">Kyocera Ecosys P2040dn, Kyocera ECOSYS P2040dw</param>
 <param name="Коды расходников">TK-1160</param>
 <param name="Модель">TK-1160</param>
 <param name="Для бренда">Kyocera</param>
@@ -15933,7 +15943,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print 106R03693 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03693</param>
 <param name="Модель">106R03693</param>
 <param name="Для бренда">Xerox</param>
@@ -15951,7 +15961,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print 106R03695 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03695</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">106R03695</param>
@@ -15970,7 +15980,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print 106R03694 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03694</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">106R03694</param>
@@ -16074,7 +16084,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Sakura 106R02778 используется в принтерах серий Xerox Phaser 3052, Phaser 3260, WC 3215, WC 3225. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 3052, Xerox Phaser 3260, Xerox WC 3215, Xerox WC 3225</param>
+<param name="Совместимость">Xerox Phaser 3052, Xerox Phaser Phaser 3260, Xerox WorkCentre 3215, Xerox WorkCentre 3225</param>
 <param name="Коды расходников">106R02778</param>
 <param name="Модель">106R02778</param>
 <param name="Для бренда">Xerox</param>
@@ -16092,7 +16102,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Sakura 106R03486 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03486</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">106R03486</param>
@@ -16111,7 +16121,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Sakura 106R03694 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03694</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">106R03694</param>
@@ -16402,7 +16412,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером OEM 106R01631 используется в принтерах серий Xerox Phaser 6000, 6010, WorkCentre 6015. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox WorkCentre 6015</param>
+<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox Phaser WorkCentre 6015</param>
 <param name="Коды расходников">106R01631</param>
 <param name="Модель">106R01631</param>
 <param name="Для бренда">Xerox</param>
@@ -16419,7 +16429,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером OEM 106R01632 используется в принтерах серий Xerox Phaser 6000, 6010, WorkCentre 6015. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox WorkCentre 6015</param>
+<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox Phaser WorkCentre 6015</param>
 <param name="Коды расходников">106R01632</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">106R01632</param>
@@ -16437,7 +16447,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером OEM 106R01633 используется в принтерах серий Xerox Phaser 6000, 6010, WorkCentre 6015. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox WorkCentre 6015</param>
+<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox Phaser WorkCentre 6015</param>
 <param name="Коды расходников">106R01633</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">106R01633</param>
@@ -16456,7 +16466,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером OEM 106R01634 используется в принтерах серий Xerox Phaser 6000, 6010, WorkCentre 6015. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox WorkCentre 6015</param>
+<param name="Совместимость">Xerox Phaser 6000, Xerox Phaser 6010, Xerox Phaser WorkCentre 6015</param>
 <param name="Коды расходников">106R01634</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">106R01634</param>
@@ -16508,7 +16518,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером OEM 106R03488 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03488</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">106R03488</param>
@@ -16544,7 +16554,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером OEM 106R03693 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03693</param>
 <param name="Модель">106R03693</param>
 <param name="Для бренда">Xerox</param>
@@ -16561,7 +16571,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером OEM 106R03694 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03694</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">106R03694</param>
@@ -16579,7 +16589,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером OEM 106R03695 используется в принтерах серий Xerox Phaser 6510, WC 6515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Xerox Phaser 6510, Xerox WC 6515</param>
+<param name="Совместимость">Xerox Phaser 6510, Xerox WorkCentre 6515</param>
 <param name="Коды расходников">106R03695</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">106R03695</param>
@@ -16597,7 +16607,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером OEM TK-1200 используется в принтерах серий Kyocera Ecosys M2235dn, M2735dn, M2835dw, P2335d, P2335dn, P2335dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M2235dn, M2735dn, M2835dw, P2335d, P2335dn, P2335dw</param>
+<param name="Совместимость">Kyocera Ecosys M2235dn, Kyocera ECOSYS M2735dn, Kyocera ECOSYS M2835dw, Kyocera ECOSYS P2335d, Kyocera ECOSYS P2335dn, Kyocera ECOSYS P2335dw</param>
 <param name="Коды расходников">TK-1200</param>
 <param name="Модель">TK-1200</param>
 <param name="Для бренда">Kyocera</param>
@@ -17317,7 +17327,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print W2120A (№212A) без чипа используется в принтерах серий HP Color LaserJet Enterprise M554/M555/M578. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Enterprise M554/M555/M578</param>
+<param name="Совместимость">HP Color LaserJet Enterprise M554, HP Color LaserJet M555, HP Color LaserJet M578</param>
 <param name="Коды расходников">W2120A</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">W2120A</param>
@@ -17335,7 +17345,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print W2121A (№212A) без чипа используется в принтерах серий HP Color LaserJet Enterprise M554/M555/M578. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Enterprise M554/M555/M578</param>
+<param name="Совместимость">HP Color LaserJet Enterprise M554, HP Color LaserJet M555, HP Color LaserJet M578</param>
 <param name="Коды расходников">W2121A</param>
 <param name="Модель">W2121A</param>
 <param name="Для бренда">HP</param>
@@ -17352,7 +17362,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print W2123A (№212A) без чипа используется в принтерах серий HP Color LaserJet Enterprise M554/M555/M578. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Enterprise M554/M555/M578</param>
+<param name="Совместимость">HP Color LaserJet Enterprise M554, HP Color LaserJet M555, HP Color LaserJet M578</param>
 <param name="Коды расходников">W2123A</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">W2123A</param>
@@ -17370,7 +17380,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print W2122A (№212A) без чипа используется в принтерах серий HP Color LaserJet Enterprise M554/M555/M578. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Совместимость">HP Color LaserJet Enterprise M554/M555/M578</param>
+<param name="Совместимость">HP Color LaserJet Enterprise M554, HP Color LaserJet M555, HP Color LaserJet M578</param>
 <param name="Коды расходников">W2122A</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">W2122A</param>
@@ -18068,6 +18078,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 071H используется в принтерах серий Canon i-SENSYS LBP122, MF272, MF275. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP122, Canon i-SENSYS MF272, Canon i-SENSYS MF275</param>
+<param name="Коды расходников">071H</param>
+<param name="Модель">071H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -18733,7 +18745,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-3400 используется в принтерах серий Kyocera Ecosys PA4500x, PA5000x, PA5500x, PA6000x, MA4500x, MA4500fx. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys PA4500x, PA5000x, PA5500x, PA6000x, MA4500x, MA4500fx</param>
+<param name="Совместимость">Kyocera Ecosys PA4500x, Kyocera ECOSYS PA5000x, Kyocera ECOSYS PA5500x, Kyocera ECOSYS PA6000x, Kyocera ECOSYS MA4500x, Kyocera ECOSYS MA4500fx</param>
 <param name="Коды расходников">TK-3400</param>
 <param name="Модель">TK-3400</param>
 <param name="Для бренда">Kyocera</param>
@@ -18751,7 +18763,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-3400 используется в принтерах серий Kyocera Ecosys P3050dn, P3055dn, P3060dn, P3150dn, P3155dn, P3260dn, M3860idn, M3860idnf. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys P3050dn, P3055dn, P3060dn, P3150dn, P3155dn, P3260dn, M3860idn, M3860idnf</param>
+<param name="Совместимость">Kyocera Ecosys P3050dn, Kyocera ECOSYS P3055dn, Kyocera ECOSYS P3060dn, Kyocera ECOSYS P3150dn, Kyocera ECOSYS P3155dn, Kyocera ECOSYS P3260dn, Kyocera ECOSYS M3860idn, Kyocera ECOSYS M3860idnf</param>
 <param name="Коды расходников">TK-3170, TK-3400</param>
 <param name="Модель">TK-3170</param>
 <param name="Для бренда">Kyocera</param>
@@ -19154,7 +19166,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером БУЛАТ TK-3430 используется в принтерах Kyocera Ecosys PA5500x, MA5500ifx. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys PA5500x, MA5500ifx</param>
+<param name="Совместимость">Kyocera Ecosys PA5500x, Kyocera ECOSYS MA5500ifx</param>
 <param name="Коды расходников">TK-3430</param>
 <param name="Модель">TK-3430</param>
 <param name="Для бренда">Kyocera</param>
@@ -19171,7 +19183,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print TK-3430 используется в принтерах Kyocera Ecosys PA5500x, MA5500ifx. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys PA5500x, MA5500ifx</param>
+<param name="Совместимость">Kyocera Ecosys PA5500x, Kyocera ECOSYS MA5500ifx</param>
 <param name="Коды расходников">TK-3430</param>
 <param name="Модель">TK-3430</param>
 <param name="Для бренда">Kyocera</param>
@@ -19203,7 +19215,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print TK-3440 используется в принтерах Kyocera Ecosys PA6000x, MA6000ifx. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys PA6000x, MA6000ifx</param>
+<param name="Совместимость">Kyocera Ecosys PA6000x, Kyocera ECOSYS MA6000ifx</param>
 <param name="Коды расходников">TK-3440</param>
 <param name="Модель">TK-3440</param>
 <param name="Для бренда">Kyocera</param>
@@ -19528,7 +19540,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-5440K используется в принтерах серий Kyocera Ecosys PA2100cx, PA2100cwx, MA2100cfx, MA2100cwfx. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys PA2100cx, PA2100cwx, MA2100cfx, MA2100cwfx</param>
+<param name="Совместимость">Kyocera Ecosys PA2100cx, Kyocera ECOSYS PA2100cwx, Kyocera ECOSYS MA2100cfx, Kyocera ECOSYS MA2100cwfx</param>
 <param name="Коды расходников">TK-5440K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TK-5440K</param>
@@ -19546,7 +19558,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-5440C используется в принтерах серий Kyocera Ecosys PA2100cx, PA2100cwx, MA2100cfx, MA2100cwfx. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys PA2100cx, PA2100cwx, MA2100cfx, MA2100cwfx</param>
+<param name="Совместимость">Kyocera Ecosys PA2100cx, Kyocera ECOSYS PA2100cwx, Kyocera ECOSYS MA2100cfx, Kyocera ECOSYS MA2100cwfx</param>
 <param name="Коды расходников">TK-5440C</param>
 <param name="Модель">TK-5440C</param>
 <param name="Для бренда">Kyocera</param>
@@ -19563,7 +19575,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-5440M используется в принтерах серий Kyocera Ecosys PA2100cx, PA2100cwx, MA2100cfx, MA2100cwfx. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys PA2100cx, PA2100cwx, MA2100cfx, MA2100cwfx</param>
+<param name="Совместимость">Kyocera Ecosys PA2100cx, Kyocera ECOSYS PA2100cwx, Kyocera ECOSYS MA2100cfx, Kyocera ECOSYS MA2100cwfx</param>
 <param name="Коды расходников">TK-5440M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TK-5440M</param>
@@ -19581,7 +19593,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-5440Y используется в принтерах серий Kyocera Ecosys PA2100cx, PA2100cwx, MA2100cfx, MA2100cwfx. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys PA2100cx, PA2100cwx, MA2100cfx, MA2100cwfx</param>
+<param name="Совместимость">Kyocera Ecosys PA2100cx, Kyocera ECOSYS PA2100cwx, Kyocera ECOSYS MA2100cfx, Kyocera ECOSYS MA2100cwfx</param>
 <param name="Коды расходников">TK-5440Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TK-5440Y</param>
@@ -19688,7 +19700,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-5220K используется в принтерах серий Kyocera Ecosys M5521cdn, M5521cdw, P5021cdn, P5021cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M5521cdn, M5521cdw, P5021cdn, P5021cdw</param>
+<param name="Совместимость">Kyocera Ecosys M5521cdn, Kyocera ECOSYS M5521cdw, Kyocera ECOSYS P5021cdn, Kyocera ECOSYS P5021cdw</param>
 <param name="Коды расходников">TK-5220K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TK-5220K</param>
@@ -19706,7 +19718,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-5220C используется в принтерах серий Kyocera Ecosys M5521cdn, M5521cdw, P5021cdn, P5021cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M5521cdn, M5521cdw, P5021cdn, P5021cdw</param>
+<param name="Совместимость">Kyocera Ecosys M5521cdn, Kyocera ECOSYS M5521cdw, Kyocera ECOSYS P5021cdn, Kyocera ECOSYS P5021cdw</param>
 <param name="Коды расходников">TK-5220C</param>
 <param name="Модель">TK-5220C</param>
 <param name="Для бренда">Kyocera</param>
@@ -19723,7 +19735,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-5220M используется в принтерах серий Kyocera Ecosys M5521cdn, M5521cdw, P5021cdn, P5021cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M5521cdn, M5521cdw, P5021cdn, P5021cdw</param>
+<param name="Совместимость">Kyocera Ecosys M5521cdn, Kyocera ECOSYS M5521cdw, Kyocera ECOSYS P5021cdn, Kyocera ECOSYS P5021cdw</param>
 <param name="Коды расходников">TK-5220M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TK-5220M</param>
@@ -19741,7 +19753,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-5220Y используется в принтерах серий Kyocera Ecosys M5521cdn, M5521cdw, P5021cdn, P5021cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys M5521cdn, M5521cdw, P5021cdn, P5021cdw</param>
+<param name="Совместимость">Kyocera Ecosys M5521cdn, Kyocera ECOSYS M5521cdw, Kyocera ECOSYS P5021cdn, Kyocera ECOSYS P5021cdw</param>
 <param name="Коды расходников">TK-5220Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TK-5220Y</param>
@@ -20123,7 +20135,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-5270K используется в принтерах серий Kyocera Ecosys P6230C, M6230CI, M6630CI. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys P6230C, M6230CI, M6630CI</param>
+<param name="Совместимость">Kyocera Ecosys P6230C, Kyocera ECOSYS M6230CI, Kyocera ECOSYS M6630CI</param>
 <param name="Коды расходников">TK-5270K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TK-5270K</param>
@@ -20141,7 +20153,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-5270Y используется в принтерах серий Kyocera Ecosys P6230C, M6230CI, M6630CI. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys P6230C, M6230CI, M6630CI</param>
+<param name="Совместимость">Kyocera Ecosys P6230C, Kyocera ECOSYS M6230CI, Kyocera ECOSYS M6630CI</param>
 <param name="Коды расходников">TK-5270Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TK-5270Y</param>
@@ -20159,7 +20171,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-5270C используется в принтерах серий Kyocera Ecosys P6230C, M6230CI, M6630CI. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys P6230C, M6230CI, M6630CI</param>
+<param name="Совместимость">Kyocera Ecosys P6230C, Kyocera ECOSYS M6230CI, Kyocera ECOSYS M6630CI</param>
 <param name="Коды расходников">TK-5270C</param>
 <param name="Модель">TK-5270C</param>
 <param name="Для бренда">Kyocera</param>
@@ -20176,7 +20188,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-5270M используется в принтерах серий Kyocera Ecosys P6230C, M6230CI, M6630CI. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys P6230C, M6230CI, M6630CI</param>
+<param name="Совместимость">Kyocera Ecosys P6230C, Kyocera ECOSYS M6230CI, Kyocera ECOSYS M6630CI</param>
 <param name="Коды расходников">TK-5270M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TK-5270M</param>
@@ -20194,7 +20206,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером TK-3300 используется в принтерах серий Kyocera Ecosys MA4500ifx. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Совместимость">Kyocera Ecosys MA4500ifx</param>
+<param name="Совместимость">Kyocera ECOSYS MA4500ifx</param>
 <param name="Коды расходников">TK-3300</param>
 <param name="Модель">TK-3300</param>
 <param name="Для бренда">Kyocera</param>
