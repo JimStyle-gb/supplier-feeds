@@ -4,8 +4,9 @@ Path: scripts/suppliers/copyline/desc_extract.py
 CopyLine description-extract layer.
 
 Задача:
-- поднимать недостающие supplier-полезные params из body-description;
-- не дублировать page params, а only-fill-missing.
+- поднимать missing params из body-description;
+- only-fill-missing;
+- не тянуть device-list в Коды расходников.
 """
 
 from __future__ import annotations
@@ -15,10 +16,10 @@ from typing import List, Sequence, Tuple
 
 CODE_RX = re.compile(
     r"\b(?:"
-    r"CF\d{3,4}[A-Z]|CE\d{3,4}[A-Z]|CB\d{3,4}[A-Z]|Q\d{4}[A-Z]|W\d{4}[A-Z0-9]{1,4}|"
+    r"CF\d{3,4}[A-Z]?|CE\d{3,4}[A-Z]?|CB\d{3,4}[A-Z]?|CC\d{3,4}[A-Z]?|Q\d{4}[A-Z]?|W\d{4}[A-Z0-9]{1,4}|"
     r"106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|013R\d{5}|016\d{6}|"
     r"TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|"
-    r"ML-(?:D)?[A-Z0-9]{3,12}|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
+    r"ML-D\d+[A-Z]?|ML-\d{4,5}[A-Z]\d?|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
     r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|"
     r"C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
     r"50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H"
@@ -59,6 +60,12 @@ STOP_HEADERS_RX = re.compile(
     re.I,
 )
 
+COMPAT_GUARD_RX = re.compile(
+    r"(?:совместимость\s+с\s+устройствами|используется\s+в|для\s+принтеров|для\s+устройств|"
+    r"для\s+аппаратов|применяется\s+в|подходит\s+для|совместим\s+с)",
+    re.I,
+)
+
 TECH_PAIR_HEADERS = {
     "технология печати": "Технология печати",
     "цвет печати": "Цвет",
@@ -93,6 +100,15 @@ CABLE_MATERIAL_RX = re.compile(r"\b(LSZH|PVC|PE)\b", re.I)
 CABLE_SPOOL_RX = re.compile(r"\b(\d+)\s*м/б\b", re.I)
 CABLE_CONTEXT_RX = re.compile(r"(?:кабель\s+сетевой|витая\s+пара)", re.I)
 TITLE_CABLE_RX = re.compile(r"^кабель\s+сетевой", re.I)
+
+DEVICE_ONLY_RX = re.compile(
+    r"^(?:ML-\d{4,5}|SCX-\d{4,5}|SF-?\d{3,5}|WC\s?\d{4}|P\d{4}|LBP-?\d{4}|KX-FL\d{3,4}|KX-FLM\d{3,4})$",
+    re.I,
+)
+CONSUMABLE_TITLE_RX = re.compile(
+    r"^(?:картридж|тонер-картридж|тонер\s+картридж|драм-картридж|драм\s+картридж|drum|чернила|девелопер|термоблок|термоэлемент)",
+    re.I,
+)
 
 
 def safe_str(x: object) -> str:
@@ -146,6 +162,47 @@ def _is_cable_context(title: str, text: str) -> bool:
     return False
 
 
+def _is_consumable_title(title: str) -> bool:
+    return bool(CONSUMABLE_TITLE_RX.search(safe_str(title)))
+
+
+def _is_allowed_numeric_code(code: str) -> bool:
+    code = _normalize_code_token(code)
+    return bool(re.fullmatch(r"016\d{6}", code))
+
+
+def _looks_device_series(code: str) -> bool:
+    code = _normalize_code_token(code)
+    if DEVICE_ONLY_RX.fullmatch(code):
+        return True
+    if re.fullmatch(r"\d{3}", code):
+        return True
+    return False
+
+
+def _extract_title_canon_numeric_codes(title: str) -> list[str]:
+    title = _norm_spaces(title)
+    out: list[str] = []
+    seen: set[str] = set()
+    for m in re.finditer(r"\bCanon\s+((?:\d{3}[A-Z]?)(?:\s*/\s*\d{3}[A-Z]?)+)\b", title, flags=re.I):
+        for part in re.split(r"\s*/\s*", safe_str(m.group(1))):
+            token = _normalize_code_token(part)
+            if token and token not in seen:
+                seen.add(token)
+                out.append(token)
+    return out
+
+
+def _strip_compat_zone(text: str) -> str:
+    text = _norm_spaces(text)
+    if not text:
+        return ""
+    m = COMPAT_GUARD_RX.search(text)
+    if m:
+        return text[: m.start()].strip()
+    return text
+
+
 def _trim_compat_tail(value: str) -> str:
     value = _norm_spaces(value)
     if not value:
@@ -180,17 +237,50 @@ def _extract_compat(description: str) -> str:
     return ""
 
 
-def _extract_codes(text: str) -> str:
+def _extract_codes_from_text(text: str, *, allow_numeric: bool) -> list[str]:
     text = _normalize_code_search_text(text)
     found: list[str] = []
     seen: set[str] = set()
     for m in CODE_RX.finditer(text):
         code = _normalize_code_token(m.group(0))
-        if not code or code.isdigit() or len(code) < 4 or code in seen:
+        if not code or len(code) < 3 or code in seen:
+            continue
+        if code.isdigit() and not (allow_numeric and _is_allowed_numeric_code(code)):
+            continue
+        if _looks_device_series(code):
             continue
         seen.add(code)
         found.append(code)
-    return ", ".join(found[:6])
+    return found
+
+
+def _pick_best_codes(codes: Sequence[str]) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for code in codes:
+        norm = _normalize_code_token(code)
+        if not norm or norm in seen:
+            continue
+        seen.add(norm)
+        out.append(norm)
+        if len(out) >= 6:
+            break
+    return out
+
+
+def _extract_codes(title: str, description: str) -> str:
+    title = safe_str(title)
+    description = safe_str(description)
+    title_codes = _extract_codes_from_text(title, allow_numeric=True)
+    title_codes.extend(_extract_title_canon_numeric_codes(title))
+    desc_head = _strip_compat_zone(description)
+    desc_codes = _extract_codes_from_text(desc_head, allow_numeric=_is_consumable_title(title))
+
+    codes = title_codes or desc_codes
+    if not title_codes:
+        codes = desc_codes
+    best = _pick_best_codes(codes)
+    return ", ".join(best)
 
 
 def _extract_inline_pair(line: str, *, is_cable: bool) -> tuple[str, str] | None:
@@ -282,7 +372,7 @@ def extract_desc_params(*, title: str, description: str, existing_params: Sequen
     if compat and "совместимость" not in existing_keys:
         out.append(("Совместимость", compat))
 
-    codes = _extract_codes(" ".join([safe_str(title), safe_str(description)]))
+    codes = _extract_codes(title, description)
     if codes and "коды расходников" not in existing_keys:
         out.append(("Коды расходников", codes))
 
