@@ -39,6 +39,7 @@ VENDOR_FAMILIES = (
     "RISO",
     "Ricoh SP",
     "RICOH Aficio",
+    "Toshiba E-Studio",
 )
 
 STOP_HEADERS_RX = re.compile(
@@ -108,6 +109,13 @@ def _looks_like_family(item: str) -> bool:
     return any(low.startswith(f.casefold() + " ") for f in VENDOR_FAMILIES)
 
 
+def _dedupe_family_word(item: str) -> str:
+    item = _normalize_spaces(item)
+    item = re.sub(r"\b(WorkCentre)\s+\1\b", r"\1", item, flags=re.I)
+    item = re.sub(r"\b(E-Studio)\s+\1\b", r"\1", item, flags=re.I)
+    return item
+
+
 def _canon_expand(family: str, tail: str) -> str:
     parts = [x.strip() for x in re.split(r"\s*/\s*", tail) if x.strip()]
     if len(parts) <= 1:
@@ -156,6 +164,45 @@ def _expand_family_shorthand(value: str) -> str:
     return s
 
 
+def _expand_toshiba_estudio_shorthand(value: str) -> str:
+    s = _normalize_spaces(value)
+    rx = re.compile(r"\b(Toshiba\s+E-Studio)\s+(\d{4}(?:\s*,\s*\d{4})+)\b", re.I)
+
+    def repl(m: re.Match[str]) -> str:
+        family = m.group(1)
+        numbers = re.findall(r"\d{4}", m.group(2))
+        return ", ".join(f"{family} {n}" for n in numbers)
+
+    return rx.sub(repl, s)
+
+
+def _restore_family_prefix(parts: list[str]) -> list[str]:
+    rebuilt: list[str] = []
+    family = ""
+    for item in parts:
+        item = _dedupe_family_word(_strip_compat_leadins(item))
+        if not item:
+            continue
+        matched_family = ""
+        for fam in VENDOR_FAMILIES:
+            if item.casefold().startswith(fam.casefold() + " "):
+                matched_family = fam
+                family = fam
+                break
+        if item.upper().startswith("WC "):
+            rebuilt.append("Xerox WorkCentre " + item[3:].strip())
+            family = "Xerox WorkCentre"
+            continue
+        if family == "Xerox WorkCentre Pro" and item.casefold().startswith("workcentre "):
+            rebuilt.append("Xerox WorkCentre " + item.split(None, 1)[1])
+            continue
+        if family and not matched_family and __import__('re').match(r"^[A-Z]?\d", item):
+            rebuilt.append(f"{family} {item}")
+            continue
+        rebuilt.append(item)
+    return rebuilt
+
+
 def normalize_codes(value: str) -> str:
     value = _normalize_list_separators(value)
     return _dedupe_list_text(value, sep=", ")
@@ -166,49 +213,16 @@ def normalize_compatibility(value: str) -> str:
     if not s:
         return ""
     s = _expand_family_shorthand(s)
+    s = _expand_toshiba_estudio_shorthand(s)
     s = _normalize_list_separators(s)
 
-    if "," in s:
-        parts = [x.strip() for x in re.split(r"\s*,\s*", s) if x.strip()]
-        if parts:
-            family = ""
-            first = parts[0]
-            for fam in VENDOR_FAMILIES:
-                if first.casefold().startswith(fam.casefold() + " "):
-                    family = fam
-                    break
-            rebuilt: list[str] = []
-            for item in parts:
-                item = _strip_compat_leadins(item)
-                if not item:
-                    continue
-                if item.upper().startswith("WC "):
-                    rebuilt.append("Xerox WorkCentre " + item[3:].strip())
-                elif family and not _looks_like_family(item):
-                    rebuilt.append(f"{family} {item}")
-                else:
-                    rebuilt.append(item)
-            return _dedupe_list_text(", ".join(rebuilt), sep=", ")[:500]
+    parts = [x.strip() for x in __import__('re').split(r"\s*,\s*", s) if x.strip()]
+    if not parts:
+        return ""
 
-    for fam in VENDOR_FAMILIES:
-        if s.casefold().startswith(fam.casefold() + " "):
-            tail = s[len(fam):].strip()
-            items = [x.strip() for x in re.split(r"\s*/\s*|\s*,\s*", tail) if x.strip()]
-            if not items:
-                return s[:500]
-            rebuilt: list[str] = []
-            for item in items:
-                item = _strip_compat_leadins(item)
-                if not item:
-                    continue
-                if _looks_like_family(item):
-                    rebuilt.append(item)
-                elif item.upper().startswith("WC "):
-                    rebuilt.append("Xerox WorkCentre " + item[3:].strip())
-                else:
-                    rebuilt.append(f"{fam} {item}")
-            return _dedupe_list_text(", ".join(rebuilt), sep=", ")[:500]
-    return s[:500]
+    rebuilt = _restore_family_prefix(parts)
+    rebuilt = [_dedupe_family_word(x) for x in rebuilt if x]
+    return _dedupe_list_text(", ".join(rebuilt), sep=", ")[:500]
 
 
 def reconcile_copyline_params(params: Sequence[Tuple[str, str]]) -> List[Tuple[str, str]]:
