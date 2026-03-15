@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-15 12:05:14">
+<yml_catalog date="2026-03-15 12:54:19">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-15 12:05:14
+Время сборки (Алматы)                      | 2026-03-15 12:54:19
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -742,7 +742,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D101S используется в принтерах серий SAMSUNG ML-2160, ML-2165, ML-2167, ML-2168, SCX-3400, SCX-3405, SCX-3407. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-2160, ML-2165, ML-2167, ML-2168, SCX-3400, SCX-3405, SCX-3407</param>
-<param name="Коды расходников">MLT-D101S, ML-2160, ML-2165, ML-2167, ML-2168</param>
+<param name="Коды расходников">MLT-D101S</param>
 <param name="Модель">MLT-D101S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -794,6 +794,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Xerox WorkCentre 7228, Xerox WorkCentre 7235, Xerox WorkCentre 7245, Xerox WorkCentre 7328, Xerox WorkCentre 7335, Xerox WorkCentre 7345, Xerox WorkCentre 7346</param>
 <param name="Коды расходников">013R00624</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">013R00624</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -864,6 +865,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
 <param name="Коды расходников">013R00657</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">013R00657</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -880,6 +882,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
 <param name="Коды расходников">013R00660</param>
+<param name="Модель">013R00660</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -897,6 +900,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
 <param name="Коды расходников">013R00659</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">013R00659</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -914,6 +918,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
 <param name="Коды расходников">013R00658</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">013R00658</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -1036,7 +1041,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с желтым тонером 016194600 используется в принтерах серий Xerox Phaser 7700. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Xerox Phaser 7700</param>
+<param name="Коды расходников">016194600</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">016194600</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -1052,7 +1059,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с пурпурным тонером 016194500 используется в принтерах серий Xerox Phaser 7700. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Xerox Phaser 7700</param>
+<param name="Коды расходников">016194500</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">016194500</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -1110,7 +1119,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium ML-1710D3 используется в принтерах серий SAMSUNG ML-1410, ML-1500, ML-1510, ML-1520, ML-1710, ML-1740, ML-1750, SCX-4100, SCX-4116, SCX-4216, SF560, SF565, Xerox phaser 3115, 3116, 3120, PE-16, PE-114. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1410, ML-1500, ML-1510, ML-1520, ML-1710, ML-1740, ML-1750, SCX-4100, SCX-4116, SCX-4216, SF560, SF565, Xerox phaser 3115, Xerox phaser 3116, 3120, PE-16, PE-114</param>
-<param name="Коды расходников">ML-1710D3, ML-1410, ML-1500, ML-1510, ML-1520, ML-1710</param>
+<param name="Коды расходников">ML-1710D3</param>
+<param name="Модель">ML-1710D3</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -1145,7 +1155,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium ML-D1630A используется в принтерах серий SAMSUNG ML-1630, SCX-4500. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1630, SCX-4500</param>
-<param name="Коды расходников">ML-D1630A, ML-1630</param>
+<param name="Коды расходников">ML-D1630A</param>
+<param name="Модель">ML-D1630A</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -1163,7 +1174,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D108S используется в принтерах серий SAMSUNG ML-1640, ML-1641, ML-1645, ML-2240, ML-2241. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1640, ML-1641, ML-1645, ML-2240, ML-2241</param>
-<param name="Коды расходников">MLT-D108S, ML-1640, ML-1641, ML-1645, ML-2240, ML-2241</param>
+<param name="Коды расходников">MLT-D108S</param>
 <param name="Модель">MLT-D108S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -1182,7 +1193,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium ML-D2850A используется в принтерах серий SAMSUNG ML-2850, ML-2851, ML-2855. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-2850, ML-2851, ML-2855</param>
-<param name="Коды расходников">ML-D2850A, ML-2850, ML-2851, ML-2855</param>
+<param name="Коды расходников">ML-D2850A</param>
+<param name="Модель">ML-D2850A</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -1198,7 +1210,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium ML-3560D6 используется в принтерах серий SAMSUNG ML-3560, ML-3561, ML-3562, Xerox phaser 3500. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-3560, ML-3561, ML-3562, Xerox phaser 3500</param>
-<param name="Коды расходников">ML-3560D6, ML-3560, ML-3561, ML-3562</param>
+<param name="Коды расходников">ML-3560D6</param>
+<param name="Модель">ML-3560D6</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -1215,7 +1228,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D105L используется в принтерах серий SAMSUNG ML-1910, ML-1915, ML-2525, ML-2540, ML-2580, scx-4600, scx-4623, sf-650. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1910, ML-1915, ML-2525, ML-2540, ML-2580, scx-4600, scx-4623, sf-650</param>
-<param name="Коды расходников">MLT-D105L, ML-1910, ML-1915, ML-2525, ML-2540, ML-2580</param>
+<param name="Коды расходников">MLT-D105L</param>
 <param name="Модель">MLT-D105L</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -1728,7 +1741,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D105S используется в принтерах серий SAMSUNG ML-1910, ML-1915, ML-2525, ML-2540, ML-2580, scx-4600, scx-4623, sf-650. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1910, ML-1915, ML-2525, ML-2540, ML-2580, scx-4600, scx-4623, sf-650</param>
-<param name="Коды расходников">MLT-D105S, ML-1910, ML-1915, ML-2525, ML-2540, ML-2580</param>
+<param name="Коды расходников">MLT-D105S</param>
 <param name="Модель">MLT-D105S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -2009,7 +2022,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CC530A используется в принтерах серий HP Color LaserJet CP2020, CP2025, CM2320. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP2020, HP Color LaserJet CP2025, HP Color LaserJet CM2320</param>
+<param name="Коды расходников">CC530A</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">CC530A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -2563,7 +2578,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с голубым тонером Euro Print 006R01518 используется в принтерах серий Xerox WorkCentre 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 7525, Xerox WorkCentre 7530, Xerox WorkCentre 7535, Xerox WorkCentre 7545, Xerox WorkCentre 7556, Xerox WorkCentre 7830, Xerox WorkCentre 7835, Xerox WorkCentre 7845, Xerox WorkCentre 7855, Xerox WorkCentre 7970</param>
-<param name="Коды расходников">006R01520, 006R01518</param>
+<param name="Коды расходников">006R01520</param>
 <param name="Модель">006R01520</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -2580,7 +2595,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с пурпурным тонером Euro Print 006R01518 используется в принтерах серий Xerox WorkCentre 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 7525, Xerox WorkCentre 7530, Xerox WorkCentre 7535, Xerox WorkCentre 7545, Xerox WorkCentre 7556, Xerox WorkCentre 7830, Xerox WorkCentre 7835, Xerox WorkCentre 7845, Xerox WorkCentre 7855, Xerox WorkCentre 7970</param>
-<param name="Коды расходников">006R01519, 006R01518</param>
+<param name="Коды расходников">006R01519</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">006R01519</param>
 <param name="Для бренда">Xerox</param>
@@ -2717,6 +2732,8 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления CE988-67902/ RM1-8396 ( термоблок, печка ) для принтеров и МФУ HP LJ Enterprise M601, M602, M603.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ HP LJ Enterprise M601, M602, M603</param>
+<param name="Коды расходников">CE988</param>
+<param name="Модель">CE988</param>
 </offer>
 
 <offer id="CL100899" available="true">
@@ -2786,7 +2803,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Для принтеров: HP LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CB435A, CB436A</param>
+<param name="Коды расходников">CB435A, CB436A, CC388</param>
 <param name="Модель">CB435A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3293,7 +3310,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business ML-1610D2 используется в принтерах серий SAMSUNG ML-1610, ML-1615, ML-2010, ML-2015, ML-2570, ML-2571, ML-2510, SCX-4321, SCX-4521, Xerox phaser 3117, 3122, 3124, 3125. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1610, ML-1615, ML-2010, ML-2015, ML-2570, ML-2571, ML-2510, SCX-4321, SCX-4521, Xerox phaser 3117, Xerox phaser 3122, 3124, 3125</param>
-<param name="Коды расходников">ML-1610D2, ML-1610, ML-1615, ML-2010, ML-2015, ML-2570</param>
+<param name="Коды расходников">ML-1610D2</param>
+<param name="Модель">ML-1610D2</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -3311,7 +3329,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business MLT-D104S используется в принтерах серий SAMSUNG ML-1660, ML-1665, ML-1667, ML-1860, ML-1865, ML-1867, SCX-3200, SCX-3205, SCX-3207, SCX-3217. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1660, ML-1665, ML-1667, ML-1860, ML-1865, ML-1867, SCX-3200, SCX-3205, SCX-3207, SCX-3217</param>
-<param name="Коды расходников">MLT-D104S, ML-1660, ML-1665, ML-1667, ML-1860, ML-1865</param>
+<param name="Коды расходников">MLT-D104S</param>
 <param name="Модель">MLT-D104S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -3671,6 +3689,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre M118, Xerox WorkCentre M118i, Xerox WorkCentre M123, Xerox WorkCentre M128, Xerox WorkCentre M133, Xerox WorkCentre CopyCentre C118, Xerox WorkCentre C123, Xerox WorkCentre C128, Xerox WorkCentre C133, Xerox WorkCentre Pro 123, Xerox WorkCentre 128</param>
 <param name="Коды расходников">013R00589</param>
+<param name="Модель">013R00589</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -3729,7 +3748,6 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления JC81-01690A, JC96-02661A ( термоблок, печка ) для принтеров и МФУ Samsung ML-1510, ML-1710, SCX-4100, SCX-4200, Xerox Phaser 3120, 3121, 3115, 3119.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ Samsung ML-1510, ML-1710, SCX-4100, SCX-4200, Xerox Phaser 3120, Xerox Phaser 3121, 3115, 3119</param>
-<param name="Коды расходников">ML-1510, ML-1710</param>
 </offer>
 
 <offer id="CL101402" available="true">
@@ -3876,6 +3894,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-studio 195, 223, 225, 243, 245</param>
 <param name="Коды расходников">T-2450E</param>
+<param name="Модель">T-2450E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -3982,7 +4001,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером 016194700 используется в принтерах серий Xerox Phaser 7700. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Xerox Phaser 7700</param>
+<param name="Коды расходников">016194700</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">016194700</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -4255,7 +4276,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Для принтеров: HP LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CB435A, CB436A</param>
+<param name="Коды расходников">CB435A, CB436A, CC388</param>
 <param name="Модель">CB435A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -4500,6 +4521,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-studio 28, 35, 45</param>
 <param name="Коды расходников">T-3500E</param>
+<param name="Модель">T-3500E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -4516,6 +4538,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-studio 163, 165, 166, 203, 205</param>
 <param name="Коды расходников">T-1640E</param>
+<param name="Модель">T-1640E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -4532,6 +4555,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-studio 181, 182, 211, 212, 242</param>
 <param name="Коды расходников">T-1810E</param>
+<param name="Модель">T-1810E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -4548,6 +4572,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-studio 200L, 202L, 230, 232, 280, 285</param>
 <param name="Коды расходников">T-2500E</param>
+<param name="Модель">T-2500E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -4563,7 +4588,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером C-EXV21BK используется в многофункциональных аппаратах серий Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880</param>
-<param name="Коды расходников">C-EXV21, C-EXV21BK</param>
+<param name="Коды расходников">C-EXV21</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">C-EXV21</param>
 <param name="Для бренда">Canon</param>
@@ -4581,7 +4606,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с голубым тонером C-EXV21C используется в многофункциональных аппаратах серий Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880</param>
-<param name="Коды расходников">C-EXV21, C-EXV21C</param>
+<param name="Коды расходников">C-EXV21</param>
 <param name="Модель">C-EXV21</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -4598,7 +4623,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с пурпурным тонером C-EXV21M используется в многофункциональных аппаратах серий Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880</param>
-<param name="Коды расходников">C-EXV21, C-EXV21M</param>
+<param name="Коды расходников">C-EXV21</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">C-EXV21</param>
 <param name="Для бренда">Canon</param>
@@ -4616,7 +4641,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с желтым тонером C-EXV21Y используется в многофункциональных аппаратах серий Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880</param>
-<param name="Коды расходников">C-EXV21, C-EXV21Y</param>
+<param name="Коды расходников">C-EXV21</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">C-EXV21</param>
 <param name="Для бренда">Canon</param>
@@ -4652,6 +4677,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-studio 18</param>
 <param name="Коды расходников">T-1800E</param>
+<param name="Модель">T-1800E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -4837,7 +4863,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером INTEGRAL C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
-<param name="Коды расходников">C-EXV34BK, C-EXV34</param>
+<param name="Коды расходников">C-EXV34BK</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">C-EXV34BK</param>
 <param name="Для бренда">Canon</param>
@@ -4855,7 +4881,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с голубым тонером INTEGRAL C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
-<param name="Коды расходников">C-EXV34C, C-EXV34</param>
+<param name="Коды расходников">C-EXV34C</param>
 <param name="Модель">C-EXV34C</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -4872,7 +4898,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с пурпурным тонером INTEGRAL C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
-<param name="Коды расходников">C-EXV34M, C-EXV34</param>
+<param name="Коды расходников">C-EXV34M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">C-EXV34M</param>
 <param name="Для бренда">Canon</param>
@@ -4890,7 +4916,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с желтым тонером INTEGRAL C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
-<param name="Коды расходников">C-EXV34Y, C-EXV34</param>
+<param name="Коды расходников">C-EXV34Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">C-EXV34Y</param>
 <param name="Для бренда">Canon</param>
@@ -4952,7 +4978,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Для принтеров: HP LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CB435A, CB436A, CE285A</param>
+<param name="Коды расходников">CB435A, CB436A, CE285A, CC388</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -5292,6 +5318,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business CC364A используется в принтерах серий HP LJ P4014, P4015, P4515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ P4014, P4015, P4515</param>
+<param name="Коды расходников">CC364A</param>
+<param name="Модель">CC364A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -5308,6 +5336,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-studio 163, 164, 165, 166, 167, 203, 205, 206, 207, 237</param>
 <param name="Коды расходников">T-1640E</param>
+<param name="Модель">T-1640E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -5325,7 +5354,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D103S используется в принтерах серий SAMSUNG ML-2950, ML-2955, SCX-4727, SCX-4728, SCX-4729. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-2950, ML-2955, SCX-4727, SCX-4728, SCX-4729</param>
-<param name="Коды расходников">MLT-D103S, ML-2950, ML-2955</param>
+<param name="Коды расходников">MLT-D103S</param>
 <param name="Модель">MLT-D103S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -5424,6 +5453,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-studio 195, 223, 225, 243, 245</param>
 <param name="Коды расходников">T-2450E</param>
+<param name="Модель">T-2450E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -5487,6 +5517,8 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления RM1-4579/ CB506-67902 ( термоблок, печка ) для принтеров HP LJ P4014, P4015.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">HP LJ P4014, P4015</param>
+<param name="Коды расходников">CB506</param>
+<param name="Модель">CB506</param>
 </offer>
 
 <offer id="CL102173" available="true">
@@ -5502,6 +5534,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-Studio 202L, 232</param>
 <param name="Коды расходников">T-2340E</param>
+<param name="Модель">T-2340E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -6041,7 +6074,6 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления JC96-04717A/ 126N00296/ 126N00323 ( термоблок, печка ) для принтеров и МФУ Samsung ML-2850, ML-2851; Xerox Phaser 3250.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ Samsung ML-2850, ML-2851, Xerox Phaser 3250</param>
-<param name="Коды расходников">ML-2850, ML-2851</param>
 </offer>
 
 <offer id="CL102442" available="false">
@@ -6075,6 +6107,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 5325, Xerox WorkCentre 5330, Xerox WorkCentre 5335</param>
 <param name="Коды расходников">013R00591</param>
+<param name="Модель">013R00591</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -6091,6 +6124,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-Studio 2006, 2506, 2007, 2507</param>
 <param name="Коды расходников">T-2507E</param>
+<param name="Модель">T-2507E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -6140,6 +6174,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с голубым тонером 016194400 используется в принтерах серий Xerox Phaser 7700. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Xerox Phaser 7700</param>
+<param name="Коды расходников">016194400</param>
+<param name="Модель">016194400</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -6998,6 +7034,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Xerox WorkCentre 7425, Xerox WorkCentre 7428, Xerox WorkCentre 7435</param>
 <param name="Коды расходников">013R00647</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">013R00647</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -7086,6 +7123,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Xerox: WorkCentre 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970, AltaLink C8030, C8035, C8045, C8055, C8070</param>
 <param name="Коды расходников">013R00662</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">013R00662</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -7387,6 +7425,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-Studio 256SE, 306SE, 356SE, 456SE, 506S</param>
 <param name="Коды расходников">T-4590E</param>
+<param name="Модель">T-4590E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -7615,6 +7654,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж ON Canon 737 используется в принтерах серий Canon i-SENSYS MF211, i-SENSYS MF212w, i-SENSYS MF216n, i-SENSYS MF217w, i-SENSYS MF226dn, i-SENSYS MF229dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS MF211, Canon i-SENSYS i-SENSYS MF212w, Canon i-SENSYS i-SENSYS MF216n, Canon i-SENSYS i-SENSYS MF217w, Canon i-SENSYS i-SENSYS MF226dn, Canon i-SENSYS i-SENSYS MF229dw</param>
+<param name="Коды расходников">CF283</param>
+<param name="Модель">CF283</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -7873,6 +7914,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Xerox PE220</param>
 <param name="Коды расходников">013R00621</param>
+<param name="Модель">013R00621</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -7889,6 +7931,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Xerox WC 3119</param>
 <param name="Коды расходников">013R00625</param>
+<param name="Модель">013R00625</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -7904,6 +7947,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CC364X используется в принтерах серий HP LJ P4014, P4015, P4515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ P4014, P4015, P4515</param>
+<param name="Коды расходников">CC364X</param>
+<param name="Модель">CC364X</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -7990,6 +8035,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CC531A используется в принтерах серий HP Color LaserJet CP2020, CP2025, CM2320. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP2020, HP Color LaserJet CP2025, HP Color LaserJet CM2320</param>
+<param name="Коды расходников">CC531A</param>
+<param name="Модель">CC531A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -8005,7 +8052,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CC532A используется в принтерах серий HP Color LaserJet CP2020, CP2025, CM2320. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP2020, HP Color LaserJet CP2025, HP Color LaserJet CM2320</param>
+<param name="Коды расходников">CC532A</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">CC532A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -8021,7 +8070,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CC533A используется в принтерах серий HP Color LaserJet CP2020, CP2025, CM2320. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP2020, HP Color LaserJet CP2025, HP Color LaserJet CM2320</param>
+<param name="Коды расходников">CC533A</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">CC533A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -8541,6 +8592,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-Studio 350, 352, 450, 452</param>
 <param name="Коды расходников">T-3520E</param>
+<param name="Модель">T-3520E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -8557,6 +8609,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-Studio 230L, 230, 280</param>
 <param name="Коды расходников">T-2320E</param>
+<param name="Модель">T-2320E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -8573,6 +8626,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-Studio 255, 305, 355, 455</param>
 <param name="Коды расходников">T-4530E</param>
+<param name="Модель">T-4530E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -8620,7 +8674,6 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления JC96-03401A ( термоблок, печка ) для принтеров и МФУ Samsung ML-1610, ML-2015; Xerox Phaser 3116, 3117, 3122.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ Samsung ML-1610, ML-2015, Xerox Phaser 3116, Xerox Phaser 3117, 3122</param>
-<param name="Коды расходников">ML-1610, ML-2015</param>
 </offer>
 
 <offer id="CL103179" available="false">
@@ -9181,7 +9234,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D205S используется в принтерах серий SAMSUNG ML-3310, ML-3710, SCX-4833, SCX-5637. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-3310, ML-3710, SCX-4833, SCX-5637</param>
-<param name="Коды расходников">MLT-D205S, ML-3310, ML-3710</param>
+<param name="Коды расходников">MLT-D205S</param>
 <param name="Модель">MLT-D205S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -9247,6 +9300,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM CC364A используется в принтерах серий HP LJ P4014, P4015, P4515. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ P4014, P4015, P4515</param>
+<param name="Коды расходников">CC364A</param>
+<param name="Модель">CC364A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -9560,6 +9615,8 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления RM1-7397/ CE502-67913 ( термоблок, печка ) для принтеров и МФУ HP LJ M4555.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ HP LJ M4555</param>
+<param name="Коды расходников">CE502</param>
+<param name="Модель">CE502</param>
 </offer>
 
 <offer id="CL103670" available="true">
@@ -9702,6 +9759,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 5019, Xerox WorkCentre 5021, Xerox WorkCentre 5022, Xerox WorkCentre 5024</param>
 <param name="Коды расходников">013R00670</param>
+<param name="Модель">013R00670</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -10369,6 +10427,8 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления RM1-6181/ CE707-67913 ( термоблок, печка ) для принтеров и МФУ HP CLJ CP5525, M750.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ HP CLJ CP5525, M750</param>
+<param name="Коды расходников">CE707</param>
+<param name="Модель">CE707</param>
 </offer>
 
 <offer id="CL103909" available="true">
@@ -11645,6 +11705,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-Studio 2309, 2303</param>
 <param name="Коды расходников">T-2309E</param>
+<param name="Модель">T-2309E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -11709,7 +11770,6 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления JC61-04092A ( термоблок, печка ) для принтеров и МФУ Samsung ML-3310, ML-3710, SCX-4833, SCX-5637, SCX-5737, PRO XPRESS M3320, M3820, M4020.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ Samsung ML-3310, ML-3710, SCX-4833, SCX-5637, SCX-5737, PRO XPRESS M3320, M3820, M4020</param>
-<param name="Коды расходников">ML-3310, ML-3710</param>
 </offer>
 
 <offer id="CL104176" available="true">
@@ -12478,7 +12538,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D101S (без чипа) используется в принтерах серий SAMSUNG ML-2160, ML-2165, ML-2167, ML-2168, SCX-3400, SCX-3405, SCX-3407. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-2160, ML-2165, ML-2167, ML-2168, SCX-3400, SCX-3405, SCX-3407</param>
-<param name="Коды расходников">MLT-D101S, ML-2160, ML-2165, ML-2167, ML-2168</param>
+<param name="Коды расходников">MLT-D101S</param>
 <param name="Модель">MLT-D101S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -12829,6 +12889,7 @@ URL поставщика                             | https://copyline.kz/goods
 Драм-картридж для Xerox (013R00669) WC 5945/5955 (200K) Euro Print]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Коды расходников">013R00669</param>
+<param name="Модель">013R00669</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -13309,6 +13370,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Toshiba E-Studio 163, 164, 165, 166, 167, 203, 205, 206, 207, 237</param>
 <param name="Коды расходников">T-1640E</param>
+<param name="Модель">T-1640E</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -14947,6 +15009,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Xerox WC 3119</param>
 <param name="Коды расходников">013R00625</param>
+<param name="Модель">013R00625</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -15593,7 +15656,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Sakura MLT-D108S используется в принтерах серий SAMSUNG ML-1640, ML-1641, ML-1645, ML-2240, ML-2241. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1640, ML-1641, ML-1645, ML-2240, ML-2241</param>
-<param name="Коды расходников">MLT-D108S, ML-1640, ML-1641, ML-1645, ML-2240, ML-2241</param>
+<param name="Коды расходников">MLT-D108S</param>
 <param name="Модель">MLT-D108S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -16050,7 +16113,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) 108R01148 Black применяется в многофункциональных принтерах Xerox Phaser 7100. Ресурс печати - 24 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox Phaser 7100</param>
-<param name="Коды расходников">108R01151, 108R01148</param>
+<param name="Коды расходников">108R01151</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">108R01151</param>
 <param name="Для бренда">Xerox</param>
@@ -16260,6 +16323,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Xerox PE220</param>
 <param name="Коды расходников">013R00621</param>
+<param name="Модель">013R00621</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -16400,8 +16464,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Девелопер (магнитный порошок) для замены в картридже HP CF257A/X принтера HP LaserJet M436. Вес девелопера - 230гр.]]></description>
 <param name="Тип">Девелопер</param>
-<param name="Коды расходников">CF257A</param>
-<param name="Модель">CF257A</param>
+<param name="Коды расходников">CF257</param>
+<param name="Модель">CF257</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -16954,7 +17018,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Для принтеров: HP LaserJet P1005, P1006, M1120, M1522, P1505, Pro M1132, LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CB435A, CB436A, CE285A</param>
+<param name="Коды расходников">CB435A, CB436A, CE285A, CC388</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -17223,6 +17287,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
 <param name="Коды расходников">013R00660</param>
+<param name="Модель">013R00660</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -17344,6 +17409,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Совместимость">Xerox VersaLink C7120, C7125, C7130</param>
 <param name="Коды расходников">013R00688</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">013R00688</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18205,6 +18271,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox VersaLink B1022DN, B1025DN, B1025DNA</param>
 <param name="Коды расходников">013R00679</param>
+<param name="Модель">013R00679</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18301,6 +18368,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox B225, B230, B235</param>
 <param name="Коды расходников">013R00691</param>
+<param name="Модель">013R00691</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18389,6 +18457,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox DocuCentre SC2020</param>
 <param name="Коды расходников">013R00677</param>
+<param name="Модель">013R00677</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18803,6 +18872,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox AltaLink B8145, B8155, B8170</param>
 <param name="Коды расходников">013R00686</param>
+<param name="Модель">013R00686</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18819,6 +18889,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox AltaLink C8130, C8135, C8145, C8155, C8170</param>
 <param name="Коды расходников">013R00681</param>
+<param name="Модель">013R00681</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18835,6 +18906,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox VersaLink B7125, B7130, B7135</param>
 <param name="Коды расходников">013R00687</param>
+<param name="Модель">013R00687</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -19046,7 +19118,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж с тонером TK-3400 используется в принтерах серий Kyocera Ecosys P3050dn, P3055dn, P3060dn, P3150dn, P3155dn, P3260dn, M3860idn, M3860idnf. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Kyocera Ecosys P3050dn, Kyocera ECOSYS P3055dn, Kyocera ECOSYS P3060dn, Kyocera ECOSYS P3150dn, Kyocera ECOSYS P3155dn, Kyocera ECOSYS P3260dn, Kyocera ECOSYS M3860idn, Kyocera ECOSYS M3860idnf</param>
-<param name="Коды расходников">TK-3170, TK-3400</param>
+<param name="Коды расходников">TK-3170</param>
 <param name="Модель">TK-3170</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
@@ -19516,6 +19588,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox B305, B310, B315</param>
 <param name="Коды расходников">013R00690</param>
+<param name="Модель">013R00690</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -19617,7 +19690,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) DR-313C/M/Y применяется в МФУ Konica Minolta Bizhub C258, C308. Ресурс печати - 55 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Konica Minolta Bizhub C258, C308</param>
-<param name="Коды расходников">DR-313, DR-313C</param>
+<param name="Коды расходников">DR-313</param>
 <param name="Модель">DR-313</param>
 <param name="Для бренда">Konica Minolta</param>
 </offer>
