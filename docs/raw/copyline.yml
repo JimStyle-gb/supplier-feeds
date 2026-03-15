@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-15 18:18:29">
+<yml_catalog date="2026-03-15 19:22:27">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-15 18:18:29
+Время сборки (Алматы)                      | 2026-03-15 19:22:27
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -5232,6 +5232,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business C4092A/ Canon EP-22 используется в принтерах серий HP LJ 1100, 3200, 3220, Canon LBP800, LBP810, LBP1120. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 1100, 3200, 3220, Canon LBP800, LBP810, LBP1120</param>
+<param name="Коды расходников">Canon EP-22</param>
+<param name="Модель">Canon EP-22</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -5789,6 +5791,8 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления RM1-7577 ( термоблок, печка ) для принтеров и МФУ HP LJ M1536, P1566, P1606, CP1525; Canon MF4410, MF4430, MF4450, MF4550, MF4570, MF4580.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ HP LJ M1536, P1566, P1606, CP1525, Canon MF4410, MF4430, MF4450, MF4550, MF4570, MF4580</param>
+<param name="Коды расходников">Canon MF4410</param>
+<param name="Модель">Canon MF4410</param>
 </offer>
 
 <offer id="CL102347" available="true">
@@ -9287,6 +9291,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM C7115A/ Canon EP-25 используется в принтерах серий HP LJ 1000, 1005, 1200, 1220, 3300, 3320mpf, 3330mpf, 3380, Canon Laser Shot LBP1210. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 1000, 1005, 1200, 1220, 3300, 3320mpf, 3330mpf, 3380, Canon Laser Shot LBP1210</param>
+<param name="Коды расходников">Canon EP-25</param>
+<param name="Модель">Canon EP-25</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -16285,6 +16291,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Узел термозакрепления RM2-6461/ RM2-6435 ( термоблок, печка ) для принтеров и МФУ HP CLJ M377, M452, M477, M454, M479; Canon MF-735, MF-734, MF-732.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ HP CLJ M377, M452, M477, M454, M479, Canon MF-735, MF-734, MF-732</param>
+<param name="Коды расходников">Canon MF-735</param>
+<param name="Модель">Canon MF-735</param>
 </offer>
 
 <offer id="CL105094" available="true">
