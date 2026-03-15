@@ -17,7 +17,7 @@ from typing import List, Sequence, Tuple
 CODE_RX = re.compile(
     r"\b(?:"
     r"CF\d{3,4}[A-Z]?|CE\d{3,4}[A-Z]?|CB\d{3,4}[A-Z]?|CC\d{3,4}[A-Z]?|Q\d{4}[A-Z]?|W\d{4}[A-Z0-9]{1,4}|"
-    r"106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|013R\d{5}|016\d{6}|"
+    r"106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|013R\d{5}|016\d{6}|NPG-\d+[A-Z]?|GPR-\d+[A-Z]?|EP-\d+[A-Z]?|E-\d+[A-Z]?|FX-\d+[A-Z]?|T\d{2}[A-Z]?|"
     r"TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|"
     r"ML-D\d+[A-Z]?|ML-\d{4,5}[A-Z]\d?|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
     r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|"
@@ -132,7 +132,7 @@ def _normalize_code_search_text(text: str) -> str:
     text = safe_str(text).replace("\xa0", " ")
     text = re.sub(r"\s+", " ", text)
     text = re.sub(r"\b(113R|108R|106R|006R|013R|016|C13T|C12C|C33S)\s+(\d{4,8}[A-Z0-9]*)\b", r"\1\2", text, flags=re.I)
-    text = re.sub(r"\b(CLT|MLT|ML|KX|TK|TN|DR|T|C)\s*-\s*([A-Z0-9]{2,})\b", r"\1-\2", text, flags=re.I)
+    text = re.sub(r"\b(CLT|MLT|ML|KX|TK|TN|DR|T|C|NPG|GPR|EP|E|FX)\s*-\s*([A-Z0-9]{1,})\b", r"\1-\2", text, flags=re.I)
     return text.strip()
 
 
@@ -202,6 +202,29 @@ def _extract_title_canon_numeric_codes(title: str) -> list[str]:
     return out
 
 
+
+
+def _extract_title_canon_family_codes(title: str) -> list[str]:
+    title = _norm_spaces(title)
+    out: list[str] = []
+    seen: set[str] = set()
+    family_token = r"(?:C-?EXV\d+[A-Z]*|NPG-\d+[A-Z]?|GPR-\d+[A-Z]?|EP-\d+[A-Z]?|E-\d+[A-Z]?|FX-\d+[A-Z]?|T\d{2}[A-Z]?)"
+    patterns = [
+        re.compile(rf"\bCanon\s+(({family_token})(?:\s*/\s*{family_token}){{0,5}})\b", re.I),
+        re.compile(rf"(?:^|[/(,])\s*Canon\s+(({family_token})(?:\s*/\s*{family_token}){{0,5}})\b", re.I),
+    ]
+    for rx in patterns:
+        for m in rx.finditer(title):
+            for part in re.split(r"\s*/\s*", safe_str(m.group(1))):
+                token = _normalize_code_token(part)
+                if not token:
+                    continue
+                if token in seen:
+                    continue
+                seen.add(token)
+                out.append(token)
+    return out
+
 def _split_title_body_parts(title: str) -> tuple[str, str]:
     title = _norm_spaces(title)
     if not title:
@@ -234,33 +257,44 @@ def _extract_title_brand_alpha_tail(title: str) -> list[str]:
     title = _norm_spaces(title)
     out: list[str] = []
     seen: set[str] = set()
+
+    for token in _extract_title_canon_family_codes(title):
+        if token not in seen:
+            seen.add(token)
+            out.append(token)
+
+    family_token = r"(?:C-?EXV\d+[A-Z]*|NPG-\d+[A-Z]?|GPR-\d+[A-Z]?|EP-\d+[A-Z]?|E-\d+[A-Z]?|FX-\d+[A-Z]?|T\d{2}[A-Z]?)"
     branded_tail_rx = re.compile(
-        r"(?:^|/)\s*(Canon)\s+((?:[A-Z]{1,5}-?[A-Z0-9]{1,8})(?:\s*/\s*[A-Z]{1,5}-?[A-Z0-9]{1,8}){0,5})\b",
+        rf"(?:^|[/(,])\s*(Canon)\s+(({family_token})(?:\s*/\s*{family_token}){{0,5}})\b",
         re.I,
     )
     for m in branded_tail_rx.finditer(title):
-        brand = safe_str(m.group(1)).title()
         for part in re.split(r"\s*/\s*", safe_str(m.group(2))):
             token = _normalize_code_token(part)
             if not token or re.fullmatch(r"\d{3,4}[A-Z]?", token, re.I):
                 continue
-            branded = f"{brand} {token}"
-            if branded not in seen:
-                seen.add(branded)
-                out.append(branded)
+            if token not in seen:
+                seen.add(token)
+                out.append(token)
     return out
-
 
 def _extract_title_multicode_tail(title: str) -> list[str]:
     title = _norm_spaces(title)
     out: list[str] = []
     seen: set[str] = set()
+
+    for token in _extract_title_canon_family_codes(title):
+        if token not in seen:
+            seen.add(token)
+            out.append(token)
+
     for token in _extract_title_canon_numeric_codes(title):
         if token not in seen:
             seen.add(token)
             out.append(token)
+
     branded_tail_rx = re.compile(
-        r"(?:^|/)\s*(Canon|Toshiba|Ricoh|Panasonic)\s+((?:[A-Z]?\d{3,6}[A-Z]?)(?:\s*/\s*[A-Z]?\d{3,6}[A-Z]?){0,5})\b",
+        r"(?:^|/|[,(])\s*(Canon|Toshiba|Ricoh|Panasonic)\s+((?:[A-Z]?\d{3,6}[A-Z]?)(?:\s*/\s*[A-Z]?\d{3,6}[A-Z]?){0,5})\b",
         re.I,
     )
     for m in branded_tail_rx.finditer(title):
@@ -277,7 +311,6 @@ def _extract_title_multicode_tail(title: str) -> list[str]:
                 seen.add(token)
                 out.append(token)
     return out
-
 
 def _strip_compat_zone(text: str) -> str:
     text = _norm_spaces(text)
