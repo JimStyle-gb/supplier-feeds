@@ -245,8 +245,8 @@ def _extract_title_canon_numeric_codes(title: str) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
     patterns = [
-        re.compile(r"\bCanon\s+((?:\d{3,4}[A-Z]?)(?:\s*/\s*\d{3,4}[A-Z]?)+)\b", re.I),
-        re.compile(r"(?:^|[/(,])\s*Canon\s+((?:\d{3,4}[A-Z]?)(?:\s*/\s*\d{3,4}[A-Z]?)+)\b", re.I),
+        re.compile(r"\bCanon\s+((?:\d{3,4}[A-Z]?)(?:\s*/\s*\d{3,4}[A-Z]?){0,5})\b", re.I),
+        re.compile(r"(?:^|[/(,])\s*Canon\s+((?:\d{3,4}[A-Z]?)(?:\s*/\s*\d{3,4}[A-Z]?){0,5})\b", re.I),
     ]
     for rx in patterns:
         for m in rx.finditer(title):
@@ -272,13 +272,29 @@ def _split_title_body_parts(title: str) -> tuple[str, str]:
     return title[: m.start()].strip(" ,;/"), title[m.start():].strip()
 
 
+def _extract_single_brand_numeric_tail(title: str) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    text = _normalize_code_search_text(title)
+    for m in re.finditer(r"(?:^|/)\s*(Canon)\s+(\d{3,4}[A-Z]?)\b", text, re.I):
+        brand = _norm_ws(m.group(1))
+        token = _normalize_code_token(m.group(2))
+        if not token:
+            continue
+        branded = f"{brand.title()} {token}"
+        if branded not in seen:
+            seen.add(branded)
+            out.append(branded)
+    return out
+
+
 def _extract_title_multicode_tail(title: str) -> list[str]:
     title = _norm_spaces(title)
     out: list[str] = []
     seen: set[str] = set()
 
     branded_tail_rx = re.compile(
-        r"(?:^|/)\s*(Canon|Toshiba|Ricoh|Panasonic)\s+((?:[A-Z]?\d{3,6}[A-Z]?)(?:\s*/\s*[A-Z]?\d{3,6}[A-Z]?)+)\b",
+        r"(?:^|/)\s*(Canon|Toshiba|Ricoh|Panasonic)\s+((?:[A-Z]?\d{3,6}[A-Z]?)(?:\s*/\s*[A-Z]?\d{3,6}[A-Z]?){0,5})\b",
         re.I,
     )
     for m in branded_tail_rx.finditer(title):
@@ -358,6 +374,7 @@ def _extract_codes(title: str, description: str) -> str:
     title_head, _title_tail = _split_title_body_parts(title)
     title_codes = _collect_codes_from_text(title_head or title, allow_numeric=True)
     title_codes.extend(_extract_title_multicode_tail(title))
+    title_codes.extend(_extract_single_brand_numeric_tail(title))
 
     desc_head = _strip_compat_zone(description)
     desc_codes = _collect_codes_from_text(desc_head, allow_numeric=_is_consumable_title(title))
