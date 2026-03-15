@@ -368,7 +368,13 @@ def _extract_codes(title: str, description: str) -> str:
     desc_head = _strip_compat_zone(description)
     desc_codes = _extract_codes_from_text(desc_head, allow_numeric=_is_consumable_title(title))
 
-    strong_title_codes = [c for c in title_codes if c and (not c.isdigit() or _is_allowed_numeric_code(c))]
+    strong_title_codes = [
+        c
+        for c in title_codes
+        if c
+        and (not c.isdigit() or _is_allowed_numeric_code(c))
+        and not _looks_device_series(c if not safe_str(c).lower().startswith("canon ") else safe_str(c).split(None, 1)[1])
+    ]
     codes = strong_title_codes or title_codes
     if not strong_title_codes:
         codes = desc_codes
