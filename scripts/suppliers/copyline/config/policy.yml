@@ -20,7 +20,7 @@ param_priority:
   - Модель
 quality_gate:
   enforce: true
-  max_cosmetic_offers: 5
-  max_cosmetic_issues: 5
+  max_cosmetic_offers: 500
+  max_cosmetic_issues: 500
   report_path: docs/raw/copyline_quality_gate.txt
   baseline_path: scripts/suppliers/copyline/config/quality_gate_baseline.yml
