@@ -2,12 +2,12 @@
 """
 Path: scripts/suppliers/copyline/quality_gate.py
 
-CopyLine quality gate:
-- critical issues всегда валят сборку;
-- cosmetic issues считаются по offer_count и issue_count;
-- baseline используется только для отчёта;
-- gate проверяет прежде всего raw, потому что raw_must_be_clean=true.
-- v10: добавлены финальные CopyLine-правила под multi-code и broken compat normalization.
+Final quality gate for CopyLine freeze-candidate stage.
+Проверяет raw-feed и ловит уже финальные остаточные классы:
+- неполный multi-code / mixed-brand tail;
+- код есть в title, но не поднялся в params;
+- сломанная нормализация compat;
+- пустой vendor при очевидном бренде.
 """
 
 from __future__ import annotations
@@ -23,47 +23,29 @@ import yaml
 
 _WS_RE = re.compile(r"\s+")
 _DESC_HEADER_RE = re.compile(r"(?iu)^\s*(?:Технические\s+характеристики|Характеристики|Основные\s+характеристики)\s*:?")
-_COMPAT_FAMILY_RE = re.compile(r"(?iu)\b(?:LaserJet|Color\s+LaserJet|WorkForce|SureColor|EcoTank|Kyocera|Brother|Pantum|Xerox)\b")
+_COMPAT_FAMILY_RE = re.compile(r"(?iu)\b(?:LaserJet|Color\s+LaserJet|WorkForce|SureColor|EcoTank|Kyocera|Brother|Pantum|Xerox|Canon|Samsung|Toshiba|Ricoh|Panasonic|Konica-Minolta)\b")
 _PLACEHOLDER_RE = re.compile(r"(?i)placehold\.co/800x800/png\?text=No\+Photo")
+_CONSUMABLE_NAME_RE = re.compile(r"(?iu)^(?:Картридж|Тонер-картридж|Драм-картридж|Drum|Чернила|Девелопер)")
+_CABLE_KEYS = {"Тип кабеля", "Количество пар", "Толщина проводников", "Категория", "Назначение", "Материал изоляции", "Бухта"}
 
-_TITLE_CODE_RX = re.compile(r"""(?ix)
-    \b(?:
-        CF\d{3,4}[A-Z]?|CE\d{3,4}[A-Z]?|CB\d{3,4}[A-Z]?|CC\d{3,4}[A-Z]?|Q\d{4}[A-Z]?|W\d{4}[A-Z0-9]{1,4}|
-        106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|013R\d{5}|016\d{6}|
-        TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|
-        ML-D\d+[A-Z]?|ML-\d{4,5}[A-Z]\d?|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|
-        C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|
-        C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|
-        50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H
-    )\b
-""")
-_MULTI_CANON_TAIL_RX = re.compile(r"(?i)\bCanon\s+(?:\d{3,4}[A-Z]?|[A-Z]{1,5}-?[A-Z0-9]{1,8})(?:\s*/\s*(?:\d{3,4}[A-Z]?|[A-Z]{1,5}-?[A-Z0-9]{1,8}))*\b")
-_BROKEN_COMPAT_RX = re.compile(r"(?i)\b([A-Za-z]+)\s+\1\b")
-
-
-def _title_codes(name: str) -> list[str]:
-    text = _norm_ws(name)
-    if not text:
-        return []
-    out = []
-    seen = set()
-    for m in _TITLE_CODE_RX.finditer(text):
-        token = _norm_ws(m.group(0)).upper().replace(' ', '')
-        if token and token not in seen:
-            seen.add(token)
-            out.append(token)
-    for m in _MULTI_CANON_TAIL_RX.finditer(text):
-        parts = re.split(r"\s*/\s*", re.sub(r"(?i)^canon\s+", "", _norm_ws(m.group(0))))
-        for part in parts:
-            part = _norm_ws(part)
-            if not part:
-                continue
-            token = f"Canon {part}"
-            if token and token not in seen:
-                seen.add(token)
-                out.append(token)
-    return out
-
+# Базовые кодовые токены из title.
+_TITLE_CODE_RX = re.compile(
+    r"\b(?:"
+    r"CF\d{3,4}[A-Z]?|CE\d{3,4}[A-Z]?|CB\d{3,4}[A-Z]?|CC\d{3,4}[A-Z]?|Q\d{4}[A-Z]?|W\d{4}[A-Z0-9]{1,4}|"
+    r"106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|013R\d{5}|016\d{6}|"
+    r"TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|"
+    r"ML-D\d+[A-Z]?|ML-\d{4,5}[A-Z]\d?|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
+    r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|"
+    r"C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
+    r"50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H|FX-10|737|728|725|719|712|713"
+    r")\b",
+    re.I,
+)
+_CANON_NUMERIC_TAIL_RX = re.compile(r"\bCanon\s+((?:\d{3,4}[A-Z]?)(?:\s*/\s*\d{3,4}[A-Z]?){0,5})\b", re.I)
+_CANON_ALPHA_TAIL_RX = re.compile(r"\bCanon\s+([A-Z]{1,5}-?[A-Z0-9]{1,8})\b", re.I)
+_COMPAT_BROKEN_RX = re.compile(
+    r"(?iu)(?:WorkCentre\s+WorkCentre|Phaser\s+Phaser|LaserJet\s+LaserJet|imageRUNNER\s+imageRUNNER|E-Studio\s+E-Studio)"
+)
 
 
 @dataclass(frozen=True)
@@ -82,17 +64,18 @@ def _norm_ws(s: str) -> str:
     return s2
 
 
+def _norm_code(s: str) -> str:
+    s = _norm_ws(s).upper()
+    s = re.sub(r"\s*[-–—]\s*", "-", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+
 def _read_yaml(path: str) -> dict:
     p = Path(path)
     if not p.exists():
         return {}
     return yaml.safe_load(p.read_text(encoding="utf-8")) or {}
-
-
-def _write_yaml(path: str, data: dict) -> None:
-    p = Path(path)
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
 
 
 def _offer_params(offer_el: ET.Element) -> dict[str, list[str]]:
@@ -114,6 +97,59 @@ def _offer_sig(issue: QualityIssue) -> str:
     return f"{issue.rule}|{issue.oid}|{issue.details}"
 
 
+def _split_codes(value: str) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for part in re.split(r"\s*,\s*", _norm_ws(value)):
+        if not part:
+            continue
+        norm = _norm_code(part)
+        if norm in seen:
+            continue
+        seen.add(norm)
+        out.append(norm)
+    return out
+
+
+def _extract_expected_title_codes(name: str) -> list[str]:
+    text = _norm_ws(name)
+    out: list[str] = []
+    seen: set[str] = set()
+
+    for m in _TITLE_CODE_RX.finditer(text):
+        token = _norm_code(m.group(0))
+        # голые Canon numeric хвосты сами по себе не поднимаем: бренд восстанавливаем отдельно.
+        if re.fullmatch(r"(?:712|713|719|725|728|737)", token, re.I):
+            continue
+        if token not in seen:
+            seen.add(token)
+            out.append(token)
+
+    for m in _CANON_NUMERIC_TAIL_RX.finditer(text):
+        for part in re.split(r"\s*/\s*", _norm_ws(m.group(1))):
+            token = f"CANON {part.upper()}"
+            if token not in seen:
+                seen.add(token)
+                out.append(token)
+
+    for m in _CANON_ALPHA_TAIL_RX.finditer(text):
+        token = f"CANON {_norm_code(m.group(1))}"
+        if token not in seen:
+            seen.add(token)
+            out.append(token)
+
+    return out
+
+
+def _obvious_brand(name: str, compat: str) -> str:
+    hay = f"{_norm_ws(name)} | {_norm_ws(compat)}"
+    brands = ["HP", "Canon", "Xerox", "Samsung", "Toshiba", "Ricoh", "Panasonic", "Konica-Minolta", "Brother", "Kyocera"]
+    for b in brands:
+        if re.search(rf"(?iu)\b{re.escape(b)}\b", hay):
+            return b
+    return ""
+
+
 def collect_quality_issues(feed_path: str) -> list[QualityIssue]:
     xml_text = Path(feed_path).read_text(encoding="utf-8", errors="ignore")
     root = ET.fromstring(xml_text)
@@ -131,6 +167,8 @@ def collect_quality_issues(feed_path: str) -> list[QualityIssue]:
         model = _param_first(params, "Модель")
         compat = _param_first(params, "Совместимость")
         codes = _param_first(params, "Коды расходников")
+        code_list = _split_codes(codes)
+        expected_title_codes = _extract_expected_title_codes(name)
 
         if not oid or not name:
             issues.append(QualityIssue("critical", "missing_identity", oid or "?", name or "?", "offer without id/name"))
@@ -149,30 +187,41 @@ def collect_quality_issues(feed_path: str) -> list[QualityIssue]:
         elif _DESC_HEADER_RE.search(desc):
             issues.append(QualityIssue("cosmetic", "desc_header_leak", oid, name, desc[:120]))
 
+        obvious_brand = _obvious_brand(name, compat)
         if not vendor:
             issues.append(QualityIssue("cosmetic", "empty_vendor", oid, name, "vendor empty"))
+            if obvious_brand:
+                issues.append(QualityIssue("cosmetic", "vendor_empty_but_brand_obvious", oid, name, obvious_brand))
 
         if model and name and _norm_ws(model).casefold() == _norm_ws(name).casefold():
             issues.append(QualityIssue("cosmetic", "model_equals_name", oid, name, model[:120]))
 
-        is_consumable = bool(re.match(r"(?iu)^(?:Картридж|Тонер-картридж|Драм-картридж|Drum|Чернила|Девелопер)", name) or typ in {"Картридж", "Тонер-картридж", "Драм-картридж", "Чернила", "Девелопер"})
+        is_consumable = bool(_CONSUMABLE_NAME_RE.match(name) or typ in {"Картридж", "Тонер-картридж", "Драм-картридж", "Чернила", "Девелопер"})
         if is_consumable:
-            title_codes = _title_codes(name)
             if not compat and not _COMPAT_FAMILY_RE.search(desc):
                 issues.append(QualityIssue("cosmetic", "missing_compat", oid, name, "compat missing"))
             if not codes:
                 issues.append(QualityIssue("cosmetic", "missing_codes", oid, name, "codes missing"))
-            if title_codes and not codes:
-                issues.append(QualityIssue("cosmetic", "code_present_in_title_but_missing_in_params", oid, name, ", ".join(title_codes[:6])))
-            if _MULTI_CANON_TAIL_RX.search(name):
-                canon_title = [x for x in title_codes if x.lower().startswith("canon ")]
-                canon_codes = [x.strip() for x in re.split(r",\s*", codes) if x.strip().lower().startswith("canon ")]
-                if canon_title and len(canon_codes) < len(canon_title):
-                    issues.append(QualityIssue("cosmetic", "multi_code_parsing_incomplete", oid, name, f"title={', '.join(canon_title)} | params={codes or '-'}"))
-                    if any(re.search(r"(?i)\bCanon\s+[A-Z]{1,5}-?[A-Z0-9]{1,8}\b", x) for x in canon_title):
-                        issues.append(QualityIssue("cosmetic", "mixed_brand_tail_incomplete", oid, name, f"title={', '.join(canon_title)} | params={codes or '-'}"))
-            if compat and _BROKEN_COMPAT_RX.search(compat):
+
+            if expected_title_codes and not code_list:
+                issues.append(QualityIssue("cosmetic", "code_present_in_title_but_missing_in_params", oid, name, ", ".join(expected_title_codes[:6])))
+
+            if expected_title_codes and code_list:
+                missing = [x for x in expected_title_codes if x not in code_list]
+                canon_expected = [x for x in expected_title_codes if x.startswith("CANON ")]
+                canon_missing = [x for x in missing if x.startswith("CANON ")]
+                if canon_expected and canon_missing:
+                    issues.append(QualityIssue("cosmetic", "mixed_brand_tail_incomplete", oid, name, ", ".join(canon_missing[:6])))
+                elif missing:
+                    issues.append(QualityIssue("cosmetic", "multi_code_parsing_incomplete", oid, name, ", ".join(missing[:6])))
+
+            if _COMPAT_BROKEN_RX.search(compat):
                 issues.append(QualityIssue("cosmetic", "compat_normalization_broken", oid, name, compat[:160]))
+
+        if typ != "Кабель сетевой":
+            unexpected_cable = [k for k in _CABLE_KEYS if _param_first(params, k)]
+            if unexpected_cable:
+                issues.append(QualityIssue("cosmetic", "unexpected_cable_param_on_non_cable", oid, name, ", ".join(unexpected_cable)))
 
     return issues
 
