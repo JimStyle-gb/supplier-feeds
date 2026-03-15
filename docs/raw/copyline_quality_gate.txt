@@ -2,8 +2,8 @@ QUALITY_GATE_THRESHOLD: FAIL
 QUALITY_GATE_EFFECTIVE: PASS
 enforce: false
 critical_count: 0
-cosmetic_total_count: 181
-cosmetic_offer_count: 152
+cosmetic_total_count: 154
+cosmetic_offer_count: 133
 max_cosmetic_offers: 5
 max_cosmetic_issues: 5
 
@@ -24,12 +24,6 @@ COSMETIC:
 - CL101174 | missing_codes | codes missing
 - CL101175 | missing_codes | codes missing
 - CL101176 | missing_codes | codes missing
-- CL101232 | multi_code_parsing_incomplete | GPR-22, NPG-32
-- CL101233 | multi_code_parsing_incomplete | GPR-8
-- CL101235 | multi_code_parsing_incomplete | GPR-10
-- CL101238 | missing_codes | codes missing
-- CL101238 | code_present_in_title_but_missing_in_params | NPG-1, CANON NPG-1
-- CL101242 | multi_code_parsing_incomplete | GPR-18, NPG-28
 - CL101248 | missing_codes | codes missing
 - CL101552 | missing_compat | compat missing
 - CL101552 | missing_codes | codes missing
@@ -39,13 +33,10 @@ COSMETIC:
 - CL101560 | missing_codes | codes missing
 - CL101562 | missing_compat | compat missing
 - CL101562 | missing_codes | codes missing
-- CL101789 | multi_code_parsing_incomplete | NPG-28
 - CL101797 | missing_codes | codes missing
 - CL101801 | missing_codes | codes missing
 - CL101802 | missing_codes | codes missing
 - CL101803 | missing_codes | codes missing
-- CL101829 | missing_codes | codes missing
-- CL101829 | code_present_in_title_but_missing_in_params | EP-27, CANON EP-27
 - CL101847 | missing_codes | codes missing
 - CL101848 | missing_codes | codes missing
 - CL101849 | missing_codes | codes missing
@@ -53,7 +44,6 @@ COSMETIC:
 - CL101856 | missing_codes | codes missing
 - CL101872 | missing_codes | codes missing
 - CL101902 | mixed_brand_tail_incomplete | CANON 725
-- CL101994 | multi_code_parsing_incomplete | NPG-28
 - CL102035 | missing_compat | compat missing
 - CL102035 | missing_codes | codes missing
 - CL102335 | missing_codes | codes missing
@@ -68,20 +58,14 @@ COSMETIC:
 - CL102630 | missing_codes | codes missing
 - CL102631 | missing_codes | codes missing
 - CL102714 | missing_codes | codes missing
-- CL102988 | missing_codes | codes missing
-- CL102988 | code_present_in_title_but_missing_in_params | E-30, CANON E-30
 - CL103089 | missing_compat | compat missing
 - CL103089 | missing_codes | codes missing
 - CL103157 | missing_compat | compat missing
 - CL103157 | missing_codes | codes missing
-- CL103288 | missing_codes | codes missing
-- CL103288 | code_present_in_title_but_missing_in_params | NPG-11, CANON NPG-11
 - CL103438 | missing_compat | compat missing
 - CL103438 | missing_codes | codes missing
 - CL103439 | missing_compat | compat missing
 - CL103439 | missing_codes | codes missing
-- CL103466 | missing_codes | codes missing
-- CL103466 | code_present_in_title_but_missing_in_params | EP-27, CANON EP-27
 - CL103544 | missing_codes | codes missing
 - CL103546 | missing_codes | codes missing
 - CL103551 | missing_codes | codes missing
@@ -137,7 +121,6 @@ COSMETIC:
 - CL104436 | missing_codes | codes missing
 - CL104444 | missing_codes | codes missing
 - CL104503 | missing_codes | codes missing
-- CL104541 | multi_code_parsing_incomplete | NPG-28
 - CL104556 | missing_compat | compat missing
 - CL104556 | missing_codes | codes missing
 - CL104590 | missing_compat | compat missing
@@ -150,10 +133,6 @@ COSMETIC:
 - CL104656 | missing_codes | codes missing
 - CL104711 | missing_codes | codes missing
 - CL104751 | missing_codes | codes missing
-- CL104811 | mixed_brand_tail_incomplete | CANON GPR-36
-- CL104812 | mixed_brand_tail_incomplete | CANON GPR-36
-- CL104813 | mixed_brand_tail_incomplete | CANON GPR-36
-- CL104814 | mixed_brand_tail_incomplete | CANON GPR-36
 - CL104853 | missing_codes | codes missing
 - CL104858 | missing_codes | codes missing
 - CL104896 | missing_compat | compat missing
@@ -172,16 +151,10 @@ COSMETIC:
 - CL105211 | mixed_brand_tail_incomplete | CANON 725
 - CL105281 | missing_codes | codes missing
 - CL105295 | missing_codes | codes missing
-- CL105296 | missing_codes | codes missing
-- CL105296 | code_present_in_title_but_missing_in_params | T08, CANON T08
-- CL105426 | missing_codes | codes missing
-- CL105426 | code_present_in_title_but_missing_in_params | T06, CANON T06
 - CL105517 | missing_codes | codes missing
 - CL105647 | missing_codes | codes missing
 - CL105722 | missing_codes | codes missing
 - CL105723 | missing_codes | codes missing
-- CL105740 | missing_codes | codes missing
-- CL105740 | code_present_in_title_but_missing_in_params | T13, CANON T13
 - CL105755 | missing_codes | codes missing
 - CL105784 | missing_codes | codes missing
 - CL105785 | missing_codes | codes missing
@@ -191,4 +164,4 @@ COSMETIC:
 - CL105825 | missing_codes | codes missing
 
 known_cosmetic: 0
-new_cosmetic: 181
+new_cosmetic: 154

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-15 21:24:52">
+<yml_catalog date="2026-03-15 21:50:06">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-15 21:24:52 (не было изменений)
+Время сборки (Алматы)                      | 2026-03-15 21:50:06
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -2767,7 +2767,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Top print Q2612A/ CANON FX-10 используется в принтерах серий HP LJ 1010, 1012, 1015, 1018, 1020, 3015, 3020, 3030, 3050, 3055, 1022, M1005, Canon FAX-L100, L120, L140. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 1010, 1012, 1015, 1018, 1020, 3015, 3020, 3030, 3050, 3055, 1022, M1005, Canon FAX-L100, L120, L140</param>
-<param name="Коды расходников">Q2612A, Canon FX-10</param>
+<param name="Коды расходников">Q2612A, FX-10</param>
 <param name="Модель">Q2612A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3522,7 +3522,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) C-EXV18/ GPR-22/ NPG-32 применяется в копировальных аппаратах Canon iR 1018, 1019, 1020, 1022, 1023, 1024, 1025. Ресурс печати - 26 900 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">копировальных аппаратах Canon iR 1018, 1019, 1020, 1022, 1023, 1024, 1025</param>
-<param name="Коды расходников">C-EXV18</param>
+<param name="Коды расходников">C-EXV18, GPR-22, NPG-32</param>
 <param name="Модель">C-EXV18</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -3539,7 +3539,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) C-EXV5/ GPR-8 применяется в МФУ Canon iR 1600, 1605, 1610, 2000, 2010. Ресурс печати - 21 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Canon iR 1600, Canon iR 1605, Canon iR 1610, Canon iR 2000, Canon iR 2010</param>
-<param name="Коды расходников">C-EXV5</param>
+<param name="Коды расходников">C-EXV5, GPR-8</param>
 <param name="Модель">C-EXV5</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -3556,7 +3556,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) C-EXV7/ GPR-10 применяется в копировальных аппаратах Canon iR 1200, 1210, 1230, 1270, 1310, 1330, 1370, 1510, 1530, 1570, 1630, 1670. Ресурс печати - 24 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">копировальных аппаратах Canon iR 1200, 1210, 1230, 1270, 1310, 1330, 1370, 1510, 1530, 1570, 1630, 1670</param>
-<param name="Коды расходников">C-EXV7</param>
+<param name="Коды расходников">C-EXV7, GPR-10</param>
 <param name="Модель">C-EXV7</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -3573,6 +3573,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) NPG-1 применяется в копировальных аппаратах Canon NP-1015, NP-1215, NP-1218, NP-1318, NP-1510, NP-1520, NP-1530. NP-1550, NP-1820, NP-2010, NP-2020, NP-2120. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">копировальных аппаратах Canon NP-1015, NP-1215, NP-1218, NP-1318, NP-1510, NP-1520, NP-1530</param>
+<param name="Коды расходников">NPG-1</param>
+<param name="Модель">NPG-1</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -3588,7 +3590,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) C-EXV14/ GPR-18/ NPG-28 применяется в копировальных аппаратах Canon iR 2016, 2020, 2318, 2320, 2420, 2422. Ресурс печати - 55 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">копировальных аппаратах Canon iR 2016, 2020, 2318, 2320, 2420, 2422</param>
-<param name="Коды расходников">C-EXV14</param>
+<param name="Коды расходников">C-EXV14, GPR-18, NPG-28</param>
 <param name="Модель">C-EXV14</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -4374,7 +4376,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером INTEGRAL C-EXV14/NPG-28 используется в копировальных аппаратах серий Canon iR 2016, 2018, 2022, 2025, 2030. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Коды расходников">C-EXV14</param>
+<param name="Коды расходников">C-EXV14, NPG-28</param>
 <param name="Модель">C-EXV14</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -4712,6 +4714,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business EP-27 используется в принтерах Canon i-SENSYS MF3228, Laser Shot LBP3200, LaserBase MF3110, LaserBase MF3240, LaserBase MF5630, LaserBase MF5650, LaserBase MF5730, LaserBase MF5750, LaserBase MF5770. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS MF3228, Laser Shot LBP3200, LaserBase MF3110, LaserBase MF3240, LaserBase MF5630, LaserBase MF5650, LaserBase MF5730, LaserBase MF5750, LaserBase MF5770</param>
+<param name="Коды расходников">EP-27</param>
+<param name="Модель">EP-27</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -5016,7 +5020,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж ON Q2612A/ CANON FX-10 используется в принтерах серий HP LJ 1010, 1012, 1015, 1018, 1020, 3015, 3020, 3030, 3050, 3055, 1022, M1005, Canon FAX-L100, L120, L140. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 1010, 1012, 1015, 1018, 1020, 3015, 3020, 3030, 3050, 3055, 1022, M1005, Canon FAX-L100, L120, L140</param>
-<param name="Коды расходников">Q2612A, Canon FX-10</param>
+<param name="Коды расходников">Q2612A, FX-10</param>
 <param name="Модель">Q2612A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -5122,7 +5126,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print C7115A/ Q2613A/ Q2624A/ Canon EP-25 используется в принтерах серий HP LJ 1000, 1005, 1200, 1220, 3300, 3320mpf, 3330mpf, 3380, 1300, 1150, Canon Laser Shot LBP1210. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 1000, 1005, 1200, 1220, 3300, 3320mpf, 3330mpf, 3380, 1300, 1150, Canon Laser Shot LBP1210</param>
-<param name="Коды расходников">Q2613A, Q2624A, Canon EP-25</param>
+<param name="Коды расходников">Q2613A, Q2624A, EP-25</param>
 <param name="Модель">Q2613A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -5139,7 +5143,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print C7115X/ Q2613X/ Q2624X/ Canon EP-25 используется в принтерах серий HP LJ 1000, 1005, 1200, 1220, 3300, 3320mpf, 3330mpf, 3380, 1300, 1150, Canon Laser Shot LBP1210. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 1000, 1005, 1200, 1220, 3300, 3320mpf, 3330mpf, 3380, 1300, 1150, Canon Laser Shot LBP1210</param>
-<param name="Коды расходников">Q2613X, Q2624X, Canon EP-25</param>
+<param name="Коды расходников">Q2613X, Q2624X, EP-25</param>
 <param name="Модель">Q2613X</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -5232,8 +5236,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business C4092A/ Canon EP-22 используется в принтерах серий HP LJ 1100, 3200, 3220, Canon LBP800, LBP810, LBP1120. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 1100, 3200, 3220, Canon LBP800, LBP810, LBP1120</param>
-<param name="Коды расходников">Canon EP-22</param>
-<param name="Модель">Canon EP-22</param>
+<param name="Коды расходников">EP-22</param>
+<param name="Модель">EP-22</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -5372,7 +5376,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV14/NPG-28 используется в копировальных аппаратах серий Canon iR 2016, 2018, 2022, 2025, 2030. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Коды расходников">C-EXV14</param>
+<param name="Коды расходников">C-EXV14, NPG-28</param>
 <param name="Модель">C-EXV14</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -5791,8 +5795,6 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления RM1-7577 ( термоблок, печка ) для принтеров и МФУ HP LJ M1536, P1566, P1606, CP1525; Canon MF4410, MF4430, MF4450, MF4550, MF4570, MF4580.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ HP LJ M1536, P1566, P1606, CP1525, Canon MF4410, MF4430, MF4450, MF4550, MF4570, MF4580</param>
-<param name="Коды расходников">Canon MF4410</param>
-<param name="Модель">Canon MF4410</param>
 </offer>
 
 <offer id="CL102347" available="true">
@@ -6306,7 +6308,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business Q2612A/ CANON FX-10 используется в принтерах серий HP LJ 1010, 1012, 1015, 1018, 1020, 3015, 3020, 3030, 3050, 3055, 1022, M1005, Canon FAX-L100, L120, L140. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 1010, 1012, 1015, 1018, 1020, 3015, 3020, 3030, 3050, 3055, 1022, M1005, Canon FAX-L100, L120, L140</param>
-<param name="Коды расходников">Q2612A, Canon FX-10</param>
+<param name="Коды расходников">Q2612A, FX-10</param>
 <param name="Модель">Q2612A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -7904,6 +7906,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж Euro Print Premium E-30 используется в копировальных аппаратах серий Canon FC 108, FC 128, FC 200, FC 208, FC 220, FC 228, FC 336, PC 860, PC 880, PC 890. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
+<param name="Коды расходников">E-30</param>
+<param name="Модель">E-30</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -8744,6 +8748,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Tonex NPG-11 используется в копировальных аппаратах серий Canon NP-6012, 6112, 6212, 6312, 6512. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">NPG-11</param>
+<param name="Модель">NPG-11</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -9187,6 +9193,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM EP-27 используется в принтерах Canon i-SENSYS MF3228, Laser Shot LBP3200, LaserBase MF3110, LaserBase MF3240, LaserBase MF5630, LaserBase MF5650, LaserBase MF5730, LaserBase MF5750, LaserBase MF5770. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS MF3228, Laser Shot LBP3200, LaserBase MF3110, LaserBase MF3240, LaserBase MF5630, LaserBase MF5650, LaserBase MF5730, LaserBase MF5750, LaserBase MF5770</param>
+<param name="Коды расходников">EP-27</param>
+<param name="Модель">EP-27</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -9291,8 +9299,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM C7115A/ Canon EP-25 используется в принтерах серий HP LJ 1000, 1005, 1200, 1220, 3300, 3320mpf, 3330mpf, 3380, Canon Laser Shot LBP1210. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 1000, 1005, 1200, 1220, 3300, 3320mpf, 3330mpf, 3380, Canon Laser Shot LBP1210</param>
-<param name="Коды расходников">Canon EP-25</param>
-<param name="Модель">Canon EP-25</param>
+<param name="Коды расходников">EP-25</param>
+<param name="Модель">EP-25</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -13382,7 +13390,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print NEW C-EXV14/NPG-28 используется в копировальных аппаратах серий Canon iR 2016, 2018, 2022, 2025, 2030. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
-<param name="Коды расходников">C-EXV14</param>
+<param name="Коды расходников">C-EXV14, NPG-28</param>
 <param name="Модель">C-EXV14</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -14922,7 +14930,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж с желтым тонером Katun C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
-<param name="Коды расходников">C-EXV34</param>
+<param name="Коды расходников">GPR-36, C-EXV34</param>
 <param name="Модель">C-EXV34</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -14940,7 +14948,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж с пурпурным тонером Katun C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
-<param name="Коды расходников">C-EXV34</param>
+<param name="Коды расходников">GPR-36, C-EXV34</param>
 <param name="Модель">C-EXV34</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -14958,7 +14966,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж с голубым тонером Katun C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
-<param name="Коды расходников">C-EXV34</param>
+<param name="Коды расходников">GPR-36, C-EXV34</param>
 <param name="Модель">C-EXV34</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -14976,7 +14984,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж с тонером Katun C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
-<param name="Коды расходников">C-EXV34</param>
+<param name="Коды расходников">GPR-36, C-EXV34</param>
 <param name="Модель">C-EXV34</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -16291,8 +16299,6 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Узел термозакрепления RM2-6461/ RM2-6435 ( термоблок, печка ) для принтеров и МФУ HP CLJ M377, M452, M477, M454, M479; Canon MF-735, MF-734, MF-732.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ HP CLJ M377, M452, M477, M454, M479, Canon MF-735, MF-734, MF-732</param>
-<param name="Коды расходников">Canon MF-735</param>
-<param name="Модель">Canon MF-735</param>
 </offer>
 
 <offer id="CL105094" available="true">
@@ -17345,6 +17351,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print Canon T08 используется в многофункциональных принтерах серий Canon i-SENSYS X 1238i, 1238iF, 1238Pr. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
+<param name="Коды расходников">T08</param>
+<param name="Модель">T08</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -17647,6 +17655,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print Canon T06 (без чипа) используется в МФУ серий Canon imageRUNNER 1643i, 1643iF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
+<param name="Коды расходников">T06</param>
+<param name="Модель">T06</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -19592,6 +19602,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж Euro Print Canon T13 ( 5640C006 ) используется в многофункциональных принтерах серий Canon i-SENSYS X 1440i, 1440iF, 1440Pr. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
+<param name="Коды расходников">T13</param>
+<param name="Модель">T13</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
