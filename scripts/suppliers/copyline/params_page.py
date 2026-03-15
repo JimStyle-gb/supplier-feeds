@@ -6,7 +6,8 @@ CopyLine page-params layer.
 Задача:
 - нормализовать page params из HTML-таблиц/описания;
 - поднять supplier-specific поля до raw;
-- не тянуть device-list в Коды расходников.
+- не тянуть device-list в Коды расходников;
+- корректно поднимать single-tail и multi-tail вида Canon 725 / Canon 712/713/725.
 """
 
 from __future__ import annotations
