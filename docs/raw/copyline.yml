@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-15 13:50:45">
+<yml_catalog date="2026-03-15 17:20:49">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-15 13:50:45 (не было изменений)
+Время сборки (Алматы)                      | 2026-03-15 17:20:49
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -2785,7 +2785,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Для принтеров: HP LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020. Новый картридж Top print CB435A/CB436A/CE285A/Canon 712/713/725 по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CB435A, CB436A, CE285A</param>
+<param name="Коды расходников">CB435A, CB436A, CE285A, Canon 712, Canon 713, Canon 725</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2803,7 +2803,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Для принтеров: HP LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CB435A, CB436A, CC388</param>
+<param name="Коды расходников">CB435A, CB436A, CC388, Canon 712, Canon 713</param>
 <param name="Модель">CB435A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -4276,7 +4276,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Для принтеров: HP LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CB435A, CB436A, CC388</param>
+<param name="Коды расходников">CB435A, CB436A, CC388, Canon 712, Canon 713</param>
 <param name="Модель">CB435A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -4978,7 +4978,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Для принтеров: HP LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CB435A, CB436A, CE285A, CC388</param>
+<param name="Коды расходников">CB435A, CB436A, CE285A, CC388, Canon 712, Canon 713</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -5158,7 +5158,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Q5949A/Q7553A/ Canon 708/715 используется в принтерах серий HP LJ 1160, 1320, 3390, 3392, P2014, P2015, Canon i-SENSYS LBP3300, LBP3360, LBP-3310, LBP-3370. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 1160, 1320, 3390, 3392, P2014, P2015, Canon i-SENSYS LBP3300, LBP3360, LBP-3310, LBP-3370</param>
-<param name="Коды расходников">Q5949A, Q7553A</param>
+<param name="Коды расходников">Q5949A, Q7553A, Canon 708, Canon 715</param>
 <param name="Модель">Q5949A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -6281,7 +6281,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Для принтеров: HP LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020. Новый картридж Euro Print Business CB435A/CB436A/CE285A/Canon 712/713/725 по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CB435A, CB436A, CE285A</param>
+<param name="Коды расходников">CB435A, CB436A, CE285A, Canon 712, Canon 713, Canon 725</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -17018,7 +17018,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Для принтеров: HP LaserJet P1005, P1006, M1120, M1522, P1505, Pro M1132, LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CB435A, CB436A, CE285A, CC388</param>
+<param name="Коды расходников">CB435A, CB436A, CE285A, CC388, Canon 712, Canon 713</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
 </offer>
