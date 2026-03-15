@@ -3,6 +3,7 @@ name: Build_CopyLine
 on:
   workflow_dispatch:
   schedule:
+    # Алматы UTC+5 → 03:00 local = 22:00 UTC предыдущего дня
     - cron: '0 22 * * *'
 
 permissions:
@@ -14,6 +15,7 @@ jobs:
     concurrency:
       group: build_copyline
       cancel-in-progress: true
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,18 +36,79 @@ jobs:
             pip install requests beautifulsoup4 lxml pyyaml python-dateutil openpyxl
           fi
 
-      - name: Configure git identity (GitHub Actions bot)
+      - name: Configure git identity
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Smoke test (py_compile)
+      - name: Prepare folders
         run: |
-          python -m py_compile scripts/cs/core.py scripts/build_copyline.py
+          mkdir -p docs docs/raw scripts/suppliers/copyline/config
 
-      - name: Snapshot previous feed (for no-change detection)
+      - name: Smoke test (py_compile existing files only)
         run: |
-          mkdir -p /tmp
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          import sys
+
+          files = [
+              "scripts/cs/core.py",
+              "scripts/cs/description.py",
+              "scripts/cs/keywords.py",
+              "scripts/cs/meta.py",
+              "scripts/cs/policy.py",
+              "scripts/cs/pricing.py",
+              "scripts/cs/util.py",
+              "scripts/cs/validators.py",
+              "scripts/cs/writer.py",
+              "scripts/build_copyline.py",
+              "scripts/suppliers/__init__.py",
+              "scripts/suppliers/copyline/__init__.py",
+              "scripts/suppliers/copyline/models.py",
+              "scripts/suppliers/copyline/source.py",
+              "scripts/suppliers/copyline/filtering.py",
+              "scripts/suppliers/copyline/normalize.py",
+              "scripts/suppliers/copyline/pictures.py",
+              "scripts/suppliers/copyline/params_page.py",
+              "scripts/suppliers/copyline/desc_clean.py",
+              "scripts/suppliers/copyline/desc_extract.py",
+              "scripts/suppliers/copyline/compat.py",
+              "scripts/suppliers/copyline/builder.py",
+              "scripts/suppliers/copyline/diagnostics.py",
+              "scripts/suppliers/copyline/quality_gate.py",
+          ]
+
+          failed = False
+          for f in files:
+              p = Path(f)
+              if not p.exists():
+                  print(f"SKIP missing: {f}")
+                  continue
+              try:
+                  py_compile.compile(str(p), doraise=True)
+                  print(f"OK: {f}")
+              except Exception as e:
+                  failed = True
+                  print(f"FAIL: {f}: {e}")
+
+          if failed:
+              sys.exit(1)
+          PY
+
+      - name: Show build version
+        run: |
+          python - <<'PY'
+          import pathlib
+          import re
+          t = pathlib.Path('scripts/build_copyline.py').read_text(encoding='utf-8', errors='ignore')
+          m = re.search(r"BUILD_COPYLINE_VERSION\s*=\s*[\"\']([^\"\']+)[\"\']", t)
+          print('COPYLINE_VERSION', m.group(1) if m else 'UNKNOWN')
+          PY
+
+      - name: Snapshot previous feed
+        run: |
+          mkdir -p /tmp docs docs/raw
           if [ -f docs/copyline.yml ]; then
             cp -f docs/copyline.yml /tmp/prev_feed.yml
           else
@@ -67,21 +130,42 @@ jobs:
 
       - name: Build feed (copyline)
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
+        env:
+          TZ: Asia/Almaty
         run: |
           python scripts/build_copyline.py
 
-      - name: Diagnostics (git status / diff / sizes)
-        if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
+      - name: Diagnostics
+        if: always() && (github.event_name != 'schedule' || steps.gate.outputs.run == 'true')
         run: |
           git status --porcelain || true
           git diff --stat || true
           ls -la docs docs/raw || true
           wc -c docs/copyline.yml docs/raw/copyline.yml 2>/dev/null || true
+          [ -f docs/raw/copyline_watch.txt ] && sed -n '1,200p' docs/raw/copyline_watch.txt || true
+          [ -f docs/raw/copyline_quality_gate.txt ] && sed -n '1,260p' docs/raw/copyline_quality_gate.txt || true
 
-      - name: Update FEED_META build time + next run (and mark no-changes)
+      - name: Show CopyLine quality gate report
+        if: always() && (github.event_name != 'schedule' || steps.gate.outputs.run == 'true')
+        run: |
+          echo "==== copyline_quality_gate.txt ===="
+          if [ -f docs/raw/copyline_quality_gate.txt ]; then
+            cat docs/raw/copyline_quality_gate.txt
+          else
+            echo "Report file not found"
+          fi
+
+      - name: Upload CopyLine quality gate report
+        if: always() && (github.event_name != 'schedule' || steps.gate.outputs.run == 'true')
+        uses: actions/upload-artifact@v4
+        with:
+          name: copyline-quality-gate-report
+          path: docs/raw/copyline_quality_gate.txt
+          if-no-files-found: warn
+
+      - name: Update FEED_META build time + next run
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         run: |
-          # Считаем, изменились ли офферы (игнорируем <yml_catalog date=...> и блок FEED_META)
           norm_hash() {
             local f="$1"
             if [ ! -f "$f" ]; then
@@ -90,21 +174,21 @@ jobs:
             fi
             sed '/<!--FEED_META/,/-->/d' "$f" | sed '/^<yml_catalog date=/d' | md5sum | awk '{print $1}'
           }
+
           OLD_HASH=$(norm_hash /tmp/prev_feed.yml)
           NEW_HASH=$(norm_hash docs/copyline.yml)
+
           NO_CHANGES=0
           if [ -n "$OLD_HASH" ] && [ -n "$NEW_HASH" ] && [ "$OLD_HASH" = "$NEW_HASH" ]; then
             NO_CHANGES=1
           fi
 
-          # Текущее локальное время Алматы
           TS=$(TZ='Asia/Almaty' date '+%Y-%m-%d %H:%M:%S')
           NOTE=""
           if [ "$NO_CHANGES" -eq 1 ]; then
             NOTE=" (не было изменений)"
           fi
 
-          # Следующий запуск (только 1/10/20 числа, в 03:00:00 по Алматы)
           NOW_EPOCH=$(TZ='Asia/Almaty' date +%s)
           NEXT_RUN=""
           for i in $(seq 0 45); do
@@ -120,8 +204,7 @@ jobs:
             fi
           done
           if [ -z "$NEXT_RUN" ]; then
-            # fallback (на всякий случай)
-            NEXT_RUN=$(TZ='Asia/Almaty' date -d "+50 day" '+%Y-%m-%d')" 03:00:00"
+            NEXT_RUN=$(TZ='Asia/Almaty' date -d '+50 day' '+%Y-%m-%d')" 03:00:00"
           fi
 
           for F in docs/copyline.yml docs/raw/copyline.yml; do
@@ -129,10 +212,8 @@ jobs:
               continue
             fi
 
-            # 1) Обновляем <yml_catalog date="...">
             sed -i -E "s/^<yml_catalog date=\"[^\"]+\">/<yml_catalog date=\"${TS}\">/" "$F" || true
 
-            # 2) Обновляем строки FEED_META
             tmp="$F.__tmp"
             : > "$tmp"
             while IFS= read -r ln; do
@@ -143,7 +224,6 @@ jobs:
                 left="${ln%%|*}"
                 echo "${left}| ${NEXT_RUN}" >> "$tmp"
               else
-                # если изменения появились — убираем старую пометку
                 if [ "$NO_CHANGES" -eq 0 ]; then
                   echo "${ln// (не было изменений)/}" >> "$tmp"
                 else
@@ -154,16 +234,24 @@ jobs:
             mv "$tmp" "$F"
           done
 
-          echo "CS_NO_CHANGES=$NO_CHANGES" >> $GITHUB_ENV
+          echo "CS_NO_CHANGES=$NO_CHANGES" >> "$GITHUB_ENV"
 
-      - name: Commit & push docs/copyline.yml (if changed)
+      - name: Commit & push docs/copyline.yml
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         run: |
           git add docs/copyline.yml docs/raw/copyline.yml
+          if [ -f docs/raw/copyline_watch.txt ]; then
+            git add docs/raw/copyline_watch.txt
+          fi
+          if [ -f docs/raw/copyline_quality_gate.txt ]; then
+            git add docs/raw/copyline_quality_gate.txt
+          fi
+
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
+
           git commit -m "build: copyline feed"
           git pull --rebase --autostash
           git push
