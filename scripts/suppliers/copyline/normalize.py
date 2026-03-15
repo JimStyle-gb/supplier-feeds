@@ -2,15 +2,6 @@
 """
 Path: scripts/suppliers/copyline/normalize.py
 CopyLine normalize layer.
-
-Задача:
-- привести title/description к аккуратному raw-виду;
-- попытаться определить vendor на supplier-layer;
-- вытащить короткую модель из title/description.
-
-Важно:
-- здесь нет CS-логики и нет final-обёртки;
-- это только supplier-side normalizer.
 """
 
 from __future__ import annotations
@@ -34,6 +25,7 @@ VENDOR_PRIORITY: list[str] = [
     "RISO",
     "RIPO",
     "Panasonic",
+    "Toshiba",
 ]
 
 _DESC_CUT_HEADERS = (
@@ -59,10 +51,11 @@ _CONSUMABLE_TITLE_PREFIXES = (
 )
 
 CODE_PATTERNS: list[re.Pattern[str]] = [
-    re.compile(r"\bCF\d{3,4}[A-Z]\b", re.I),
-    re.compile(r"\bCE\d{3,4}[A-Z]\b", re.I),
-    re.compile(r"\bCB\d{3,4}[A-Z]\b", re.I),
-    re.compile(r"\bQ\d{4}[A-Z]\b", re.I),
+    re.compile(r"\bCF\d{3,4}[A-Z]?\b", re.I),
+    re.compile(r"\bCE\d{3,4}[A-Z]?\b", re.I),
+    re.compile(r"\bCB\d{3,4}[A-Z]?\b", re.I),
+    re.compile(r"\bCC\d{3,4}[A-Z]?\b", re.I),
+    re.compile(r"\bQ\d{4}[A-Z]?\b", re.I),
     re.compile(r"\bW\d{4}[A-Z0-9]{1,4}\b", re.I),
     re.compile(r"\bMLT-[A-Z]\d{3,5}[A-Z0-9/]*\b", re.I),
     re.compile(r"\bCLT-[A-Z]\d{3,5}[A-Z]?\b", re.I),
@@ -71,8 +64,13 @@ CODE_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"\b006R\d{5}\b", re.I),
     re.compile(r"\b108R\d{5}\b", re.I),
     re.compile(r"\b113R\d{5}\b", re.I),
+    re.compile(r"\b013R\d{5}\b", re.I),
+    re.compile(r"\b016\d{6}\b", re.I),
+    re.compile(r"\bML-D\d+[A-Z]?\b", re.I),
+    re.compile(r"\bML-\d{4,5}[A-Z]\d?\b", re.I),
     re.compile(r"\bKX-FA\d+[A-Z]?\b", re.I),
     re.compile(r"\bKX-FAT\d+[A-Z]?\b", re.I),
+    re.compile(r"\bT-\d{3,6}[A-Z]?\b", re.I),
     re.compile(r"\bC13T\d{5,8}[A-Z0-9]*\b", re.I),
     re.compile(r"\bC12C\d{5,8}[A-Z0-9]*\b", re.I),
     re.compile(r"\bC33S\d{5,8}[A-Z0-9]*\b", re.I),
@@ -85,10 +83,8 @@ CODE_PATTERNS: list[re.Pattern[str]] = [
 ]
 
 
-
 def safe_str(x: object) -> str:
     return str(x).strip() if x is not None else ""
-
 
 
 def _norm_spaces(s: str) -> str:
@@ -97,7 +93,6 @@ def _norm_spaces(s: str) -> str:
     s = re.sub(r"[ \t\r\f\v]+", " ", s)
     s = re.sub(r"\s*\n\s*", "\n", s)
     return s.strip()
-
 
 
 def _normalize_code_token(s: str) -> str:
@@ -110,16 +105,17 @@ def _normalize_code_token(s: str) -> str:
     return s
 
 
-
 def _looks_numeric_sku(s: str) -> bool:
     return bool(re.fullmatch(r"\d+", safe_str(s)))
 
+
+def _is_allowed_numeric_code(s: str) -> bool:
+    return bool(re.fullmatch(r"016\d{6}", _normalize_code_token(s)))
 
 
 def _looks_consumable_title(title: str) -> bool:
     t = safe_str(title).lower()
     return any(t.startswith(prefix) for prefix in _CONSUMABLE_TITLE_PREFIXES)
-
 
 
 def normalize_title(title: str) -> str:
@@ -128,14 +124,13 @@ def normalize_title(title: str) -> str:
     return s[:240]
 
 
-
 def _first_vendor_from_text(texts: Sequence[str]) -> str:
     hay = "\n".join([safe_str(x) for x in texts if safe_str(x)])
     if not hay:
         return ""
 
     m = re.search(
-        r"(?:^|\b)(?:для|for)\s+(HP|Canon|Xerox|Kyocera|Brother|Epson|Pantum|Ricoh|Lexmark|Samsung|OKI|RISO|Panasonic)\b",
+        r"(?:^|\b)(?:для|for)\s+(HP|Canon|Xerox|Kyocera|Brother|Epson|Pantum|Ricoh|Lexmark|Samsung|OKI|RISO|Panasonic|Toshiba)\b",
         hay,
         flags=re.I,
     )
@@ -151,7 +146,6 @@ def _first_vendor_from_text(texts: Sequence[str]) -> str:
         if re.search(rf"\b{re.escape(vendor)}\b", hay, flags=re.I):
             return vendor
     return ""
-
 
 
 def detect_vendor(*, title: str = "", description: str = "", params: Sequence[Tuple[str, str]] | None = None) -> str:
@@ -170,14 +164,12 @@ def detect_vendor(*, title: str = "", description: str = "", params: Sequence[Tu
     return _first_vendor_from_text([title, description, *param_texts])
 
 
-
 def _search_code(text: str) -> str:
     hay = _norm_spaces(text)
     if not hay:
         return ""
-    # склейка разорванных кодов
-    hay = re.sub(r"\b(113R|108R|106R|006R|C13T|C12C|C33S)\s+(\d{4,8}[A-Z0-9]*)\b", r"\1\2", hay, flags=re.I)
-    hay = re.sub(r"\b(CLT|MLT|KX|TK|TN|DR|C)\s*-\s*([A-Z0-9]{2,})\b", r"\1-\2", hay, flags=re.I)
+    hay = re.sub(r"\b(113R|108R|106R|006R|013R|016|C13T|C12C|C33S)\s+(\d{4,8}[A-Z0-9]*)\b", r"\1\2", hay, flags=re.I)
+    hay = re.sub(r"\b(CLT|MLT|KX|TK|TN|DR|T|C)\s*-\s*([A-Z0-9]{2,})\b", r"\1-\2", hay, flags=re.I)
     for rx in CODE_PATTERNS:
         m = rx.search(hay)
         if m:
@@ -185,33 +177,29 @@ def _search_code(text: str) -> str:
     return ""
 
 
-
 def detect_model(*, title: str = "", description: str = "", sku: str = "") -> str:
-    # 1) сначала ищем код в title
     model = _search_code(title)
     if model:
         return model
 
-    # 2) потом в description
-    model = _search_code(description)
+    head = re.split(r"(?:используется\s+в|для\s+принтеров|совместимость\s+с\s+устройствами|применяется\s+в)", description, maxsplit=1, flags=re.I)[0]
+    model = _search_code(head)
     if model:
         return model
 
-    # 3) fallback только для нечисловых кодоподобных sku
     s = _normalize_code_token(sku)
     if not s:
         return ""
-    if _looks_numeric_sku(s):
+    if _looks_numeric_sku(s) and not _is_allowed_numeric_code(s):
         return ""
     if _looks_consumable_title(title):
         for rx in CODE_PATTERNS:
             if rx.fullmatch(s):
                 return s
         return ""
-    if re.fullmatch(r"[A-Z0-9._/-]{3,40}", s) and not _looks_numeric_sku(s):
+    if re.fullmatch(r"[A-Z0-9._/-]{3,40}", s) and (not _looks_numeric_sku(s) or _is_allowed_numeric_code(s)):
         return s
     return ""
-
 
 
 def clean_description(text: str) -> str:
@@ -231,7 +219,6 @@ def clean_description(text: str) -> str:
     return out[:1200]
 
 
-
 def normalize_source_basics(
     *,
     title: str,
@@ -239,7 +226,6 @@ def normalize_source_basics(
     description_text: str,
     params: Sequence[Tuple[str, str]] | None = None,
 ) -> dict:
-    """Собрать нормализованный supplier-basics для builder."""
     norm_title = normalize_title(title)
     clean_desc = clean_description(description_text)
     vendor = detect_vendor(title=norm_title, description=clean_desc or description_text, params=params)
