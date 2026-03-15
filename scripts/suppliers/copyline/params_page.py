@@ -225,11 +225,16 @@ def _looks_device_series(code: str) -> bool:
 
 
 def _code_weight(code: str) -> int:
-    code = _normalize_code_token(code)
+    raw = _norm_spaces(code)
+    if re.fullmatch(r"Canon\s+\d{3,4}[A-Z]?", raw, re.I):
+        return 92
+    norm = _normalize_code_token(raw)
+    if re.fullmatch(r"CANON\d{3,4}[A-Z]?", norm, re.I):
+        return 92
     for rx, weight in CODE_PREFIX_WEIGHTS:
-        if rx.search(code):
+        if rx.search(norm):
             return weight
-    if _is_allowed_numeric_code(code):
+    if _is_allowed_numeric_code(norm):
         return 95
     return 10
 
@@ -239,16 +244,20 @@ def _extract_title_canon_numeric_codes(title: str) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
     patterns = [
-        re.compile(r"\bCanon\s+((?:\d{3}[A-Z]?)(?:\s*/\s*\d{3}[A-Z]?)+)\b", re.I),
-        re.compile(r"(?:^|[/(,])\s*Canon\s+((?:\d{3}[A-Z]?)(?:\s*/\s*\d{3}[A-Z]?)+)\b", re.I),
+        re.compile(r"\bCanon\s+((?:\d{3,4}[A-Z]?)(?:\s*/\s*\d{3,4}[A-Z]?)+)\b", re.I),
+        re.compile(r"(?:^|[/(,])\s*Canon\s+((?:\d{3,4}[A-Z]?)(?:\s*/\s*\d{3,4}[A-Z]?)+)\b", re.I),
     ]
     for rx in patterns:
         for m in rx.finditer(title):
             for part in re.split(r"\s*/\s*", safe_str(m.group(1))):
                 token = _normalize_code_token(part)
-                if token and token not in seen:
-                    seen.add(token)
-                    out.append(token)
+                if not token:
+                    continue
+                branded = f"Canon {token}"
+                if branded in seen:
+                    continue
+                seen.add(branded)
+                out.append(branded)
     return out
 
 
