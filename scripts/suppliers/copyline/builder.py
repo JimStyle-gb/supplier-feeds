@@ -2,10 +2,6 @@
 """
 Path: scripts/suppliers/copyline/builder.py
 CopyLine builder layer.
-
-Задача:
-- собрать уже чистый raw OfferOut из supplier-layer модулей;
-- не оставлять core дожимать supplier-specific смысл.
 """
 
 from __future__ import annotations
@@ -37,6 +33,15 @@ BRAND_HINTS: tuple[tuple[str, str], ...] = (
     (r"\bLexmark\b", "Lexmark"),
     (r"\bRISO\b", "RISO"),
     (r"\bHP\b", "HP"),
+)
+
+CODE_SCORE_PATTERNS: tuple[tuple[re.Pattern[str], int], ...] = (
+    (re.compile(r"^(?:CF|CE|CB|CC|Q|W)\d", re.I), 100),
+    (re.compile(r"^(?:106R|006R|108R|113R|013R)\d", re.I), 100),
+    (re.compile(r"^016\d{6}$", re.I), 95),
+    (re.compile(r"^(?:MLT-|CLT-|TK-|KX-FA|KX-FAT|C-?EXV|DR-|TN-|C13T|C12C|C33S|T-)", re.I), 95),
+    (re.compile(r"^ML-D\d", re.I), 90),
+    (re.compile(r"^ML-\d{4,5}[A-Z]\d?$", re.I), 85),
 )
 
 
@@ -71,15 +76,33 @@ def _is_numeric_model(value: str) -> bool:
     return bool(re.fullmatch(r"\d+", safe_str(value)))
 
 
+def _is_allowed_numeric_code(value: str) -> bool:
+    return bool(re.fullmatch(r"016\d{6}", safe_str(value)))
+
+
+def _code_score(code: str) -> int:
+    code = safe_str(code)
+    for rx, score in CODE_SCORE_PATTERNS:
+        if rx.search(code):
+            return score
+    if _is_allowed_numeric_code(code):
+        return 95
+    return 10
+
+
 def _first_code_from_params(params: Sequence[Tuple[str, str]]) -> str:
+    best_code = ""
+    best_score = -1
     for key, value in params:
         if safe_str(key) != "Коды расходников":
             continue
         parts = [x.strip() for x in re.split(r"\s*,\s*", safe_str(value)) if x.strip()]
         for part in parts:
-            if not _is_numeric_model(part):
-                return part
-    return ""
+            score = _code_score(part)
+            if score > best_score:
+                best_score = score
+                best_code = part
+    return best_code
 
 
 def _infer_vendor_from_text(text: str) -> str:
@@ -155,7 +178,7 @@ def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut |
         if safe_str(key) == "Модель":
             current_model = safe_str(value)
             break
-    if _is_numeric_model(current_model):
+    if _is_numeric_model(current_model) and not _is_allowed_numeric_code(current_model):
         first_code = _first_code_from_params(params)
         new_params: list[Tuple[str, str]] = []
         for key, value in params:
@@ -164,6 +187,10 @@ def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut |
         if first_code:
             new_params.append(("Модель", first_code))
         params = new_params
+    elif not current_model:
+        first_code = _first_code_from_params(params)
+        if first_code:
+            params = _merge_params(params, [("Модель", first_code)])
 
     if not vendor:
         vendor = _infer_vendor_from_compat(params)
