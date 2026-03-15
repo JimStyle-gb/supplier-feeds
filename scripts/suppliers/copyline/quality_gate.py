@@ -2,12 +2,13 @@
 """
 Path: scripts/suppliers/copyline/quality_gate.py
 
-Final quality gate for CopyLine freeze-candidate stage.
+Final quality gate for CopyLine freeze-finalize stage.
 Проверяет raw-feed и ловит уже финальные остаточные классы:
-- неполный multi-code / mixed-brand tail;
+- неполный mixed-brand / multi-code tail;
 - код есть в title, но не поднялся в params;
 - сломанная нормализация compat;
-- пустой vendor при очевидном бренде.
+- пустой vendor при очевидном бренде;
+- неожиданные cable-поля у не-кабелей.
 """
 
 from __future__ import annotations
@@ -27,25 +28,24 @@ _COMPAT_FAMILY_RE = re.compile(r"(?iu)\b(?:LaserJet|Color\s+LaserJet|WorkForce|S
 _PLACEHOLDER_RE = re.compile(r"(?i)placehold\.co/800x800/png\?text=No\+Photo")
 _CONSUMABLE_NAME_RE = re.compile(r"(?iu)^(?:Картридж|Тонер-картридж|Драм-картридж|Drum|Чернила|Девелопер)")
 _CABLE_KEYS = {"Тип кабеля", "Количество пар", "Толщина проводников", "Категория", "Назначение", "Материал изоляции", "Бухта"}
+_BRAND_PREFIX_RE = re.compile(r"(?iu)^(?:HP|HEWLETT\s*PACKARD|CANON|XEROX|SAMSUNG|TOSHIBA|RICOH|PANASONIC|KONICA-?MINOLTA|BROTHER|KYOCERA)\s+")
 
-# Базовые кодовые токены из title.
 _TITLE_CODE_RX = re.compile(
     r"\b(?:"
     r"CF\d{3,4}[A-Z]?|CE\d{3,4}[A-Z]?|CB\d{3,4}[A-Z]?|CC\d{3,4}[A-Z]?|Q\d{4}[A-Z]?|W\d{4}[A-Z0-9]{1,4}|"
     r"106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|013R\d{5}|016\d{6}|"
     r"TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|"
     r"ML-D\d+[A-Z]?|ML-\d{4,5}[A-Z]\d?|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
-    r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|"
+    r"C-?EXV\d+[A-Z]*|GPR-\d+[A-Z]*|NPG-\d+[A-Z]*|FX-10|EP-27|E-30|"
+    r"DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|"
     r"C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
-    r"50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H|FX-10|737|728|725|719|712|713"
+    r"50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H|737|728|725|719|712|713|T06|T08|T13"
     r")\b",
     re.I,
 )
-_CANON_NUMERIC_TAIL_RX = re.compile(r"\bCanon\s+((?:\d{3,4}[A-Z]?)(?:\s*/\s*\d{3,4}[A-Z]?){0,5})\b", re.I)
-_CANON_ALPHA_TAIL_RX = re.compile(r"\bCanon\s+([A-Z]{1,5}-?[A-Z0-9]{1,8})\b", re.I)
-_COMPAT_BROKEN_RX = re.compile(
-    r"(?iu)(?:WorkCentre\s+WorkCentre|Phaser\s+Phaser|LaserJet\s+LaserJet|imageRUNNER\s+imageRUNNER|E-Studio\s+E-Studio)"
-)
+_CANON_NUMERIC_TAIL_RX = re.compile(r"\bCanon\s+((?:\d{2,4}[A-Z]?)(?:\s*/\s*\d{2,4}[A-Z]?){0,6})\b", re.I)
+_CANON_ALPHA_TAIL_RX = re.compile(r"\bCanon\s+([A-Z]{1,8}-?[A-Z0-9]{1,12})\b", re.I)
+_COMPAT_BROKEN_RX = re.compile(r"(?iu)(?:WorkCentre\s+WorkCentre|Phaser\s+Phaser|LaserJet\s+LaserJet|imageRUNNER\s+imageRUNNER|E-Studio\s+E-Studio)")
 
 
 @dataclass(frozen=True)
@@ -69,6 +69,10 @@ def _norm_code(s: str) -> str:
     s = re.sub(r"\s*[-–—]\s*", "-", s)
     s = re.sub(r"\s+", " ", s).strip()
     return s
+
+
+def _brandless_code(s: str) -> str:
+    return _norm_code(_BRAND_PREFIX_RE.sub("", _norm_ws(s)))
 
 
 def _read_yaml(path: str) -> dict:
@@ -118,7 +122,6 @@ def _extract_expected_title_codes(name: str) -> list[str]:
 
     for m in _TITLE_CODE_RX.finditer(text):
         token = _norm_code(m.group(0))
-        # голые Canon numeric хвосты сами по себе не поднимаем: бренд восстанавливаем отдельно.
         if re.fullmatch(r"(?:712|713|719|725|728|737)", token, re.I):
             continue
         if token not in seen:
@@ -148,6 +151,24 @@ def _obvious_brand(name: str, compat: str) -> str:
         if re.search(rf"(?iu)\b{re.escape(b)}\b", hay):
             return b
     return ""
+
+
+def _expected_code_is_covered(expected: str, code_list: list[str], vendor: str, name: str) -> bool:
+    exp = _norm_code(expected)
+    brandless = _brandless_code(exp)
+    codes_exact = {_norm_code(x) for x in code_list}
+    codes_brandless = {_brandless_code(x) for x in code_list}
+    if exp in codes_exact or brandless in codes_brandless:
+        return True
+
+    if vendor.casefold() == "canon" and brandless and brandless in codes_brandless:
+        return True
+
+    title = _norm_ws(name)
+    if "/" not in title and brandless and brandless in codes_brandless:
+        return True
+
+    return False
 
 
 def collect_quality_issues(feed_path: str) -> list[QualityIssue]:
@@ -207,13 +228,14 @@ def collect_quality_issues(feed_path: str) -> list[QualityIssue]:
                 issues.append(QualityIssue("cosmetic", "code_present_in_title_but_missing_in_params", oid, name, ", ".join(expected_title_codes[:6])))
 
             if expected_title_codes and code_list:
-                missing = [x for x in expected_title_codes if x not in code_list]
-                canon_expected = [x for x in expected_title_codes if x.startswith("CANON ")]
-                canon_missing = [x for x in missing if x.startswith("CANON ")]
-                if canon_expected and canon_missing:
-                    issues.append(QualityIssue("cosmetic", "mixed_brand_tail_incomplete", oid, name, ", ".join(canon_missing[:6])))
-                elif missing:
-                    issues.append(QualityIssue("cosmetic", "multi_code_parsing_incomplete", oid, name, ", ".join(missing[:6])))
+                missing = [x for x in expected_title_codes if not _expected_code_is_covered(x, code_list, vendor, name)]
+                if missing:
+                    canon_expected = [x for x in expected_title_codes if x.startswith("CANON ")]
+                    canon_missing = [x for x in missing if x.startswith("CANON ")]
+                    if canon_expected and canon_missing and "/" in name:
+                        issues.append(QualityIssue("cosmetic", "mixed_brand_tail_incomplete", oid, name, ", ".join(canon_missing[:6])))
+                    else:
+                        issues.append(QualityIssue("cosmetic", "multi_code_parsing_incomplete", oid, name, ", ".join(missing[:6])))
 
             if _COMPAT_BROKEN_RX.search(compat):
                 issues.append(QualityIssue("cosmetic", "compat_normalization_broken", oid, name, compat[:160]))
@@ -250,19 +272,21 @@ def run_quality_gate(*, feed_path: str, policy_path: str, baseline_path: str | N
     cosmetic_issue_count = len(cosmetic)
     critical_count = len(critical)
 
-    passed = True
+    threshold_ok = True
     if critical_count > 0:
-        passed = False
+        threshold_ok = False
     if cosmetic_offer_count > max_cosmetic_offers or cosmetic_issue_count > max_cosmetic_issues:
-        passed = False
-    if not enforce:
-        passed = True
+        threshold_ok = False
+
+    effective_ok = threshold_ok if enforce else True
 
     if report_path:
         p = Path(report_path)
         p.parent.mkdir(parents=True, exist_ok=True)
         lines = []
-        lines.append(f"QUALITY_GATE: {'PASS' if passed else 'FAIL'}")
+        lines.append(f"QUALITY_GATE_THRESHOLD: {'PASS' if threshold_ok else 'FAIL'}")
+        lines.append(f"QUALITY_GATE_EFFECTIVE: {'PASS' if effective_ok else 'FAIL'}")
+        lines.append(f"enforce: {str(enforce).lower()}")
         lines.append(f"critical_count: {critical_count}")
         lines.append(f"cosmetic_total_count: {cosmetic_issue_count}")
         lines.append(f"cosmetic_offer_count: {cosmetic_offer_count}")
@@ -284,7 +308,8 @@ def run_quality_gate(*, feed_path: str, policy_path: str, baseline_path: str | N
         p.write_text("\n".join(lines).strip() + "\n", encoding="utf-8")
 
     return {
-        "ok": passed,
+        "ok": effective_ok,
+        "threshold_ok": threshold_ok,
         "critical_count": critical_count,
         "cosmetic_total_count": cosmetic_issue_count,
         "cosmetic_offer_count": cosmetic_offer_count,
