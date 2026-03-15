@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-14 21:12:55">
+<yml_catalog date="2026-03-15 12:05:14">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-14 21:12:55
+Время сборки (Алматы)                      | 2026-03-15 12:05:14
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -688,6 +688,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером C-EXV22 используется в многофункциональных аппаратах серий Canon iR-5055, 5075. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-5055, 5075</param>
 <param name="Коды расходников">C-EXV22</param>
 <param name="Модель">C-EXV22</param>
 <param name="Для бренда">Canon</param>
@@ -741,7 +742,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D101S используется в принтерах серий SAMSUNG ML-2160, ML-2165, ML-2167, ML-2168, SCX-3400, SCX-3405, SCX-3407. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-2160, ML-2165, ML-2167, ML-2168, SCX-3400, SCX-3405, SCX-3407</param>
-<param name="Коды расходников">MLT-D101S</param>
+<param name="Коды расходников">MLT-D101S, ML-2160, ML-2165, ML-2167, ML-2168</param>
 <param name="Модель">MLT-D101S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -757,6 +758,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print KX-FA88A используется в факсах Panasonic KX-FL401, KX-FL402, KX-FL403, KX-FL413, KX-FLC411, KX-FLC412, KX-FLC413, KX-FLC418. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Panasonic KX-FL401, KX-FL402, KX-FL403, KX-FL413, KX-FLC411, KX-FLC412, KX-FLC413, KX-FLC418</param>
 <param name="Коды расходников">KX-FA88A</param>
 <param name="Модель">KX-FA88A</param>
 <param name="Для бренда">Panasonic</param>
@@ -790,6 +792,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00624 применяется в многофункциональных принтерах Xerox WorkCentre 7228, 7235, 7245, 7328, 7335, 7345, 7346. Ресурс печати - 45 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 7228, Xerox WorkCentre 7235, Xerox WorkCentre 7245, Xerox WorkCentre 7328, Xerox WorkCentre 7335, Xerox WorkCentre 7345, Xerox WorkCentre 7346</param>
+<param name="Коды расходников">013R00624</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -859,6 +862,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00657 Black применяется в многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225. Ресурс печати - 67 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
+<param name="Коды расходников">013R00657</param>
 <param name="Цвет">Чёрный</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -875,6 +879,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00660 Cyan применяется в многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225. Ресурс печати - 51 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
+<param name="Коды расходников">013R00660</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -890,6 +895,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00659 Magenta применяется в многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225. Ресурс печати - 51 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
+<param name="Коды расходников">013R00659</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -906,6 +912,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00658 Yellow применяется в многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225. Ресурс печати - 51 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
+<param name="Коды расходников">013R00658</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -1103,7 +1110,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium ML-1710D3 используется в принтерах серий SAMSUNG ML-1410, ML-1500, ML-1510, ML-1520, ML-1710, ML-1740, ML-1750, SCX-4100, SCX-4116, SCX-4216, SF560, SF565, Xerox phaser 3115, 3116, 3120, PE-16, PE-114. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1410, ML-1500, ML-1510, ML-1520, ML-1710, ML-1740, ML-1750, SCX-4100, SCX-4116, SCX-4216, SF560, SF565, Xerox phaser 3115, Xerox phaser 3116, 3120, PE-16, PE-114</param>
-<param name="Материал изоляции">PE</param>
+<param name="Коды расходников">ML-1710D3, ML-1410, ML-1500, ML-1510, ML-1520, ML-1710</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -1138,6 +1145,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium ML-D1630A используется в принтерах серий SAMSUNG ML-1630, SCX-4500. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1630, SCX-4500</param>
+<param name="Коды расходников">ML-D1630A, ML-1630</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -1155,7 +1163,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D108S используется в принтерах серий SAMSUNG ML-1640, ML-1641, ML-1645, ML-2240, ML-2241. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1640, ML-1641, ML-1645, ML-2240, ML-2241</param>
-<param name="Коды расходников">MLT-D108S</param>
+<param name="Коды расходников">MLT-D108S, ML-1640, ML-1641, ML-1645, ML-2240, ML-2241</param>
 <param name="Модель">MLT-D108S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -1174,6 +1182,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium ML-D2850A используется в принтерах серий SAMSUNG ML-2850, ML-2851, ML-2855. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-2850, ML-2851, ML-2855</param>
+<param name="Коды расходников">ML-D2850A, ML-2850, ML-2851, ML-2855</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -1189,6 +1198,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium ML-3560D6 используется в принтерах серий SAMSUNG ML-3560, ML-3561, ML-3562, Xerox phaser 3500. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-3560, ML-3561, ML-3562, Xerox phaser 3500</param>
+<param name="Коды расходников">ML-3560D6, ML-3560, ML-3561, ML-3562</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -1205,7 +1215,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D105L используется в принтерах серий SAMSUNG ML-1910, ML-1915, ML-2525, ML-2540, ML-2580, scx-4600, scx-4623, sf-650. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1910, ML-1915, ML-2525, ML-2540, ML-2580, scx-4600, scx-4623, sf-650</param>
-<param name="Коды расходников">MLT-D105L</param>
+<param name="Коды расходников">MLT-D105L, ML-1910, ML-1915, ML-2525, ML-2540, ML-2580</param>
 <param name="Модель">MLT-D105L</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -1496,7 +1506,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-311</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-311.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-311 используется в принтерах серий Konica-Minolta Bizhub 200, 222, 250, 282, 350, 362. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -1504,6 +1514,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta Bizhub 200, 222, 250, 282, 350, 362</param>
 <param name="Коды расходников">TN-311</param>
 <param name="Модель">TN-311</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL100317" available="true">
@@ -1717,7 +1728,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D105S используется в принтерах серий SAMSUNG ML-1910, ML-1915, ML-2525, ML-2540, ML-2580, scx-4600, scx-4623, sf-650. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1910, ML-1915, ML-2525, ML-2540, ML-2580, scx-4600, scx-4623, sf-650</param>
-<param name="Коды расходников">MLT-D105S</param>
+<param name="Коды расходников">MLT-D105S, ML-1910, ML-1915, ML-2525, ML-2540, ML-2580</param>
 <param name="Модель">MLT-D105S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -1928,6 +1939,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Retech C-EXV33 используется в многофункциональных аппаратах серий Canon iR-2520, iR-2525, iR-2530. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-2520, iR-2525, iR-2530</param>
 <param name="Коды расходников">C-EXV33</param>
 <param name="Модель">C-EXV33</param>
 <param name="Для бренда">Canon</param>
@@ -2631,7 +2643,7 @@ URL поставщика                             | https://copyline.kz/goods
 <price>9900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_EP-TN114.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Konica-Minolta-TN1141.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером Euro Print TN-114 используется в принтерах серий Konica-Minolta Bizhub 162, 163, 210, 211. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -2639,6 +2651,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta Bizhub 162, 163, 210, 211</param>
 <param name="Коды расходников">TN-114</param>
 <param name="Модель">TN-114</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL100868" available="true">
@@ -2978,6 +2991,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером INTEGRAL C-EXV32 используется в многофункциональных аппаратах серий Canon iR-2535, 2535i, 2545, 2545i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-2535, 2535i, 2545, 2545i</param>
 <param name="Коды расходников">C-EXV32</param>
 <param name="Модель">C-EXV32</param>
 <param name="Для бренда">Canon</param>
@@ -3077,7 +3091,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-217</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-217.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-217 используется в принтерах серий Konica-Minolta Bizhub 223, 283. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -3085,6 +3099,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta Bizhub 223, 283</param>
 <param name="Коды расходников">TN-217</param>
 <param name="Модель">TN-217</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL101000" available="true">
@@ -3278,6 +3293,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business ML-1610D2 используется в принтерах серий SAMSUNG ML-1610, ML-1615, ML-2010, ML-2015, ML-2570, ML-2571, ML-2510, SCX-4321, SCX-4521, Xerox phaser 3117, 3122, 3124, 3125. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1610, ML-1615, ML-2010, ML-2015, ML-2570, ML-2571, ML-2510, SCX-4321, SCX-4521, Xerox phaser 3117, Xerox phaser 3122, 3124, 3125</param>
+<param name="Коды расходников">ML-1610D2, ML-1610, ML-1615, ML-2010, ML-2015, ML-2570</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -3295,7 +3311,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business MLT-D104S используется в принтерах серий SAMSUNG ML-1660, ML-1665, ML-1667, ML-1860, ML-1865, ML-1867, SCX-3200, SCX-3205, SCX-3207, SCX-3217. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1660, ML-1665, ML-1667, ML-1860, ML-1865, ML-1867, SCX-3200, SCX-3205, SCX-3207, SCX-3217</param>
-<param name="Коды расходников">MLT-D104S</param>
+<param name="Коды расходников">MLT-D104S, ML-1660, ML-1665, ML-1667, ML-1860, ML-1865</param>
 <param name="Модель">MLT-D104S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -3654,6 +3670,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00589 применяется в многофункциональных принтерах Xerox WorkCentre M118, M118i, M123, M128, M133, CopyCentre C118, C123, C128, C133, WC Pro 123, 128. Ресурс печати - 60 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre M118, Xerox WorkCentre M118i, Xerox WorkCentre M123, Xerox WorkCentre M128, Xerox WorkCentre M133, Xerox WorkCentre CopyCentre C118, Xerox WorkCentre C123, Xerox WorkCentre C128, Xerox WorkCentre C133, Xerox WorkCentre Pro 123, Xerox WorkCentre 128</param>
+<param name="Коды расходников">013R00589</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -3712,6 +3729,7 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления JC81-01690A, JC96-02661A ( термоблок, печка ) для принтеров и МФУ Samsung ML-1510, ML-1710, SCX-4100, SCX-4200, Xerox Phaser 3120, 3121, 3115, 3119.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ Samsung ML-1510, ML-1710, SCX-4100, SCX-4200, Xerox Phaser 3120, Xerox Phaser 3121, 3115, 3119</param>
+<param name="Коды расходников">ML-1510, ML-1710</param>
 </offer>
 
 <offer id="CL101402" available="true">
@@ -3839,6 +3857,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером C-EXV12 используется в многофункциональных аппаратах серий Canon iR-3035, iR-3045, iR-3245, iR-3530, iR-3570, iR-4570. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-3035, iR-3045, iR-3245, iR-3530, iR-3570, iR-4570</param>
 <param name="Коды расходников">C-EXV12</param>
 <param name="Модель">C-EXV12</param>
 <param name="Для бренда">Canon</param>
@@ -3850,11 +3869,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-2450E (24K)</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2450E.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером T-2450E используется в многофункциональных устройствах Toshiba E-studio 195, 223, 225, 243, 245. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-studio 195, 223, 225, 243, 245</param>
+<param name="Коды расходников">T-2450E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL101530" available="true">
@@ -4263,6 +4285,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером INTEGRAL C-EXV33 используется в многофункциональных аппаратах серий Canon iR-2520, iR-2525, iR-2530. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-2520, iR-2525, iR-2530</param>
 <param name="Коды расходников">C-EXV33</param>
 <param name="Модель">C-EXV33</param>
 <param name="Для бренда">Canon</param>
@@ -4346,6 +4369,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером INTEGRAL C-EXV11 используется в многофункциональных аппаратах серий Canon iR-2230, iR-2270, iR-2830, iR-2870, iR-3025, iR-3225. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-2230, iR-2270, iR-2830, iR-2870, iR-3025, iR-3225</param>
 <param name="Коды расходников">C-EXV11</param>
 <param name="Модель">C-EXV11</param>
 <param name="Для бренда">Canon</param>
@@ -4362,6 +4386,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером INTEGRAL C-EXV12 используется в многофункциональных аппаратах серий Canon iR-3035, iR-3045, iR-3245, iR-3530, iR-3570, iR-4570. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-3035, iR-3045, iR-3245, iR-3530, iR-3570, iR-4570</param>
 <param name="Коды расходников">C-EXV12</param>
 <param name="Модель">C-EXV12</param>
 <param name="Для бренда">Canon</param>
@@ -4379,6 +4404,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером INTEGRAL C-EXV37 используется в многофункциональных аппаратах серий Canon iR-1730, 1740, 1750. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-1730, 1740, 1750</param>
 <param name="Коды расходников">C-EXV37</param>
 <param name="Модель">C-EXV37</param>
 <param name="Для бренда">Canon</param>
@@ -4405,7 +4431,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-114 (13100060) 410гр INTEGRAL</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_13100060foruse_BizhubDi152_WEB.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером Euro Print TN-114 используется в принтерах серий Konica-Minolta Bizhub 152, 162, 163, 180, 183, 210, 211, 7516, 7521. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -4413,6 +4439,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta Bizhub 152, 162, 163, 180, 183, 210, 211, 7516, 7521</param>
 <param name="Коды расходников">TN-114</param>
 <param name="Модель">TN-114</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL101801" available="false">
@@ -4466,11 +4493,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-3500E (12K) (15100016) 450 гр INTEGRAL</name>
 <price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_15100022foruse_e-Studio28_WEB.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером INTEGRAL T-3500E используется в многофункциональных устройствах Toshiba E-studio 28, 35, 45. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-studio 28, 35, 45</param>
+<param name="Коды расходников">T-3500E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL101807" available="true">
@@ -4479,11 +4509,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-1640E (24K) (15100022) 675 гр INTEGRAL</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_15100022foruse_e-Studio163__WEB.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером INTEGRAL T-1640E используется в многофункциональных устройствах Toshiba E-studio 163, 165, 166, 203, 205. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-studio 163, 165, 166, 203, 205</param>
+<param name="Коды расходников">T-1640E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL101808" available="true">
@@ -4492,11 +4525,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-1810E (24K) (15100026) 675 гр INTEGRAL</name>
 <price>13900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1527_WEB.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером INTEGRAL T-1810E используется в многофункциональных устройствах Toshiba E-studio 181, 182, 211, 212, 242. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-studio 181, 182, 211, 212, 242</param>
+<param name="Коды расходников">T-1810E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL101810" available="true">
@@ -4505,11 +4541,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-2500E (24K) (15100023) 675 гр INTEGRAL</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1529_WEB.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером INTEGRAL T-2500E используется в многофункциональных устройствах Toshiba E-studio 200L, 202L, 230, 232, 280, 285. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-studio 200L, 202L, 230, 232, 280, 285</param>
+<param name="Коды расходников">T-2500E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL101812" available="true">
@@ -4523,6 +4562,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером C-EXV21BK используется в многофункциональных аппаратах серий Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880</param>
 <param name="Коды расходников">C-EXV21, C-EXV21BK</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">C-EXV21</param>
@@ -4540,6 +4580,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с голубым тонером C-EXV21C используется в многофункциональных аппаратах серий Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880</param>
 <param name="Коды расходников">C-EXV21, C-EXV21C</param>
 <param name="Модель">C-EXV21</param>
 <param name="Для бренда">Canon</param>
@@ -4556,6 +4597,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с пурпурным тонером C-EXV21M используется в многофункциональных аппаратах серий Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880</param>
 <param name="Коды расходников">C-EXV21, C-EXV21M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">C-EXV21</param>
@@ -4573,6 +4615,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с желтым тонером C-EXV21Y используется в многофункциональных аппаратах серий Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880</param>
 <param name="Коды расходников">C-EXV21, C-EXV21Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">C-EXV21</param>
@@ -4602,11 +4645,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-1800E (24K)</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-1800E.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером T-1800E используется в многофункциональных устройствах Toshiba E-studio 18. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-studio 18</param>
+<param name="Коды расходников">T-1800E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL101828" available="true">
@@ -4790,6 +4836,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером INTEGRAL C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
 <param name="Коды расходников">C-EXV34BK, C-EXV34</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">C-EXV34BK</param>
@@ -4807,6 +4854,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с голубым тонером INTEGRAL C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
 <param name="Коды расходников">C-EXV34C, C-EXV34</param>
 <param name="Модель">C-EXV34C</param>
 <param name="Для бренда">Canon</param>
@@ -4823,6 +4871,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с пурпурным тонером INTEGRAL C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
 <param name="Коды расходников">C-EXV34M, C-EXV34</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">C-EXV34M</param>
@@ -4840,6 +4889,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с желтым тонером INTEGRAL C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
 <param name="Коды расходников">C-EXV34Y, C-EXV34</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">C-EXV34Y</param>
@@ -5251,11 +5301,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-1640E (24K)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-1640E.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером T-1640E используется в многофункциональных устройствах Toshiba E-studio 163, 164, 165, 166, 167, 203, 205, 206, 207, 237. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-studio 163, 164, 165, 166, 167, 203, 205, 206, 207, 237</param>
+<param name="Коды расходников">T-1640E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL101979" available="true">
@@ -5272,7 +5325,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D103S используется в принтерах серий SAMSUNG ML-2950, ML-2955, SCX-4727, SCX-4728, SCX-4729. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-2950, ML-2955, SCX-4727, SCX-4728, SCX-4729</param>
-<param name="Коды расходников">MLT-D103S</param>
+<param name="Коды расходников">MLT-D103S, ML-2950, ML-2955</param>
 <param name="Модель">MLT-D103S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -5364,11 +5417,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-2450E (10K)</name>
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2450E1.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером T-2450E используется в многофункциональных устройствах Toshiba E-studio 195, 223, 225, 243, 245. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-studio 195, 223, 225, 243, 245</param>
+<param name="Коды расходников">T-2450E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL102059" available="true">
@@ -5439,11 +5495,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-2340E (23K)</name>
 <price>14900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2340E.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером T-2340E используется в многофункциональных устройствах Toshiba E-Studio 202L, 232. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-Studio 202L, 232</param>
+<param name="Коды расходников">T-2340E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL102178" available="true">
@@ -5982,6 +6041,7 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления JC96-04717A/ 126N00296/ 126N00323 ( термоблок, печка ) для принтеров и МФУ Samsung ML-2850, ML-2851; Xerox Phaser 3250.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ Samsung ML-2850, ML-2851, Xerox Phaser 3250</param>
+<param name="Коды расходников">ML-2850, ML-2851</param>
 </offer>
 
 <offer id="CL102442" available="false">
@@ -5995,6 +6055,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print KX-FA83A используется в факсах Panasonic KX-FL511, KX-FL512, KX-FL513, KX-FL540, KX-FL541, KX-FL543, KX-FL611, KX-FL612, KX-FL613. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Panasonic KX-FL511, KX-FL512, KX-FL513, KX-FL540, KX-FL541, KX-FL543, KX-FL611, KX-FL612, KX-FL613</param>
 <param name="Коды расходников">KX-FA83A</param>
 <param name="Модель">KX-FA83A</param>
 <param name="Для бренда">Panasonic</param>
@@ -6013,6 +6074,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00591 применяется в многофункциональных принтерах Xerox WorkCentre 5325, 5330, 5335. Ресурс печати - 90 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 5325, Xerox WorkCentre 5330, Xerox WorkCentre 5335</param>
+<param name="Коды расходников">013R00591</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -6022,11 +6084,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-2507E (12k)</name>
 <price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2507E.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером T-2507E используется в многофункциональных устройствах Toshiba E-Studio 2006, 2506, 2007, 2507. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-Studio 2006, 2506, 2007, 2507</param>
+<param name="Коды расходников">T-2507E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL102470" available="true">
@@ -6522,6 +6587,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с желтым тонером Euro Print C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
 <param name="Коды расходников">C-EXV34</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">C-EXV34</param>
@@ -6930,6 +6996,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00647 применяется в многофункциональных принтерах Xerox WorkCentre 7425, 7428, 7435. Ресурс печати - 75 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 7425, Xerox WorkCentre 7428, Xerox WorkCentre 7435</param>
+<param name="Коды расходников">013R00647</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -7017,6 +7084,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00662 применяется в многофункциональных принтерах Xerox: WorkCentre 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970; AltaLink C8030, C8035, C8045, C8055, C8070. Ресурс печати - 125 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox: WorkCentre 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970, AltaLink C8030, C8035, C8045, C8055, C8070</param>
+<param name="Коды расходников">013R00662</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -7027,7 +7095,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-214C Cyan (18.5k)</name>
 <price>37900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica-minolta-tn-213-cyan.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-214C используется в принтерах серий Konica-Minolta Bizhub C200. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7035,6 +7103,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta Bizhub C200</param>
 <param name="Коды расходников">TN-214C</param>
 <param name="Модель">TN-214C</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102722" available="true">
@@ -7043,7 +7112,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-214M Magenta (18.5k)</name>
 <price>37900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica-minolta-tn-213-magenta.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-214M используется в принтерах серий Konica-Minolta Bizhub C200. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7052,6 +7121,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-214M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TN-214M</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102727" available="true">
@@ -7078,7 +7148,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-214Y Yellow (18.5k)</name>
 <price>37900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica-minolta-tn-213-yellow.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-214Y используется в принтерах серий Konica-Minolta Bizhub C200. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7087,6 +7157,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-214Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TN-214Y</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102729" available="true">
@@ -7096,7 +7167,7 @@ URL поставщика                             | https://copyline.kz/goods
 <price>33900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-213-214-314BK.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica-minolta-tn-213-black.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-214K используется в принтерах серий Konica-Minolta Bizhub C200. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7105,6 +7176,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-214K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TN-214K</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102730" available="true">
@@ -7114,7 +7186,7 @@ URL поставщика                             | https://copyline.kz/goods
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-216-319BK.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-216black.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-216K используется в принтерах серий Konica-Minolta Bizhub C220, C280, C360. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7123,6 +7195,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-216K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TN-216K</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102731" available="true">
@@ -7131,7 +7204,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-216C Cyan (26k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-216cyan.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-216C используется в принтерах серий Konica-Minolta Bizhub C220, C280, C360. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7139,6 +7212,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta Bizhub C220, C280, C360</param>
 <param name="Коды расходников">TN-216C</param>
 <param name="Модель">TN-216C</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102732" available="true">
@@ -7147,7 +7221,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-216M Magenta (26k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-216magenta.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-216M используется в принтерах серий Konica-Minolta Bizhub C220, C280, C360. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7156,6 +7230,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-216M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TN-216M</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102733" available="true">
@@ -7164,7 +7239,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-216Y Yellow (26k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-216yellow.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-216Y используется в принтерах серий Konica-Minolta Bizhub C220, C280, C360. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7173,6 +7248,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-216Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TN-216Y</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102734" available="true">
@@ -7181,7 +7257,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-512Y Yellow (26k)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-512y.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-512Y используется в принтерах серий Konica-Minolta Bizhub C454, C554. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7190,6 +7266,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-512Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TN-512Y</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102735" available="true">
@@ -7198,7 +7275,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-611K Black</name>
 <price>44900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-611BK.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-611K используется в принтерах серий Konica-Minolta Bizhub C451, C550, C650. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7207,6 +7284,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-611K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TN-611K</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102736" available="true">
@@ -7215,7 +7293,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-611M Magenta</name>
 <price>45900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica_minolta_c550_c650_toner_tn611k_c_m_y1.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-611M используется в принтерах серий Konica-Minolta Bizhub C451, C550, C650. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7224,6 +7302,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-611M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TN-611M</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102737" available="true">
@@ -7232,7 +7311,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-611C Cyan</name>
 <price>45900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica_minolta_c550_c650_toner_tn611k_c_m_y.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-611C используется в принтерах серий Konica-Minolta Bizhub C451, C550, C650. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7240,6 +7319,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta Bizhub C451, C550, C650</param>
 <param name="Коды расходников">TN-611C</param>
 <param name="Модель">TN-611C</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102738" available="true">
@@ -7248,7 +7328,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-611Y Yellow</name>
 <price>45900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica_minolta_c550_c650_toner_tn611k_c_m_y2.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-611Y используется в принтерах серий Konica-Minolta Bizhub C451, C550, C650. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7257,6 +7337,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-611Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TN-611Y</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102744" available="true">
@@ -7299,11 +7380,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-4590E (12K)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-4590E.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером T-4590E используется в многофункциональных устройствах Toshiba E-Studio 256SE, 306SE, 356SE, 456SE, 506S. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-Studio 256SE, 306SE, 356SE, 456SE, 506S</param>
+<param name="Коды расходников">T-4590E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL102749" available="true">
@@ -7329,7 +7413,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-710</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-710.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-710 используется в принтерах серий Konica-Minolta bizhub 600, 601, 750, 751. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7337,6 +7421,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta bizhub 600, 601, 750, 751</param>
 <param name="Коды расходников">TN-710</param>
 <param name="Модель">TN-710</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102792" available="true">
@@ -7363,7 +7448,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-310M Magenta (11,5k)</name>
 <price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-310M.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-310M используется в принтерах серий Konica-Minolta bizhub C350, C450P. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7372,6 +7457,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-310M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TN-310M</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102795" available="true">
@@ -7380,7 +7466,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-310Y Yellow (11,5k)</name>
 <price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-310Y.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-310Y используется в принтерах серий Konica-Minolta bizhub C350, C450P. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7389,6 +7475,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-310Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TN-310Y</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102796" available="true">
@@ -7397,7 +7484,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-310K Black (11,5k)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-310K.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-310K используется в принтерах серий Konica-Minolta bizhub C350, C450P. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7406,6 +7493,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-310K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TN-310K</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102800" available="false">
@@ -7414,7 +7502,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-612K Black (37.4K)</name>
 <price>39900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-612k.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-612K используется в принтерах серий Konica-Minolta bizhub Pro C5501, C6501. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -7423,6 +7511,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-612K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TN-612K</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL102801" available="true">
@@ -7645,6 +7734,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером INTEGRAL C-EXV29BK используется в многофункциональных аппаратах серий Canon iR Advance C5030, C5030i, C5035, C5035i, C5235, C5235i, C5240, C5240i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR Advance C5030, Canon iR C5030i, Canon iR C5035, Canon iR C5035i, Canon iR C5235, Canon iR C5235i, Canon iR C5240, Canon iR C5240i</param>
 <param name="Коды расходников">C-EXV29BK</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">C-EXV29BK</param>
@@ -7662,6 +7752,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с голубым тонером INTEGRAL C-EXV29C используется в многофункциональных аппаратах серий Canon iR Advance C5030, C5030i, C5035, C5035i, C5235, C5235i, C5240, C5240i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR Advance C5030, Canon iR C5030i, Canon iR C5035, Canon iR C5035i, Canon iR C5235, Canon iR C5235i, Canon iR C5240, Canon iR C5240i</param>
 <param name="Коды расходников">C-EXV29C</param>
 <param name="Модель">C-EXV29C</param>
 <param name="Для бренда">Canon</param>
@@ -7678,6 +7769,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с пурпурным тонером INTEGRAL C-EXV29M используется в многофункциональных аппаратах серий Canon iR Advance C5030, C5030i, C5035, C5035i, C5235, C5235i, C5240, C5240i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR Advance C5030, Canon iR C5030i, Canon iR C5035, Canon iR C5035i, Canon iR C5235, Canon iR C5235i, Canon iR C5240, Canon iR C5240i</param>
 <param name="Коды расходников">C-EXV29M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">C-EXV29M</param>
@@ -7695,6 +7787,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с желтым тонером INTEGRAL C-EXV29Y используется в многофункциональных аппаратах серий Canon iR Advance C5030, C5030i, C5035, C5035i, C5235, C5235i, C5240, C5240i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR Advance C5030, Canon iR C5030i, Canon iR C5035, Canon iR C5035i, Canon iR C5235, Canon iR C5235i, Canon iR C5240, Canon iR C5240i</param>
 <param name="Коды расходников">C-EXV29Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">C-EXV29Y</param>
@@ -7779,6 +7872,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print 013R00621 используется в принтерах серий Xerox PE220. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Xerox PE220</param>
+<param name="Коды расходников">013R00621</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -7794,6 +7888,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium 013R00625 используется в принтерах серий Xerox WC 3119. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Xerox WC 3119</param>
+<param name="Коды расходников">013R00625</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -8108,7 +8203,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-210C Cyan (12k)</name>
 <price>35900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-210-C.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-210C используется в принтерах серий Konica-Minolta bizhub C250, C252. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8116,6 +8211,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta bizhub C250, C252</param>
 <param name="Коды расходников">TN-210C</param>
 <param name="Модель">TN-210C</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103085" available="true">
@@ -8124,7 +8220,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-210M Magenta (12k)</name>
 <price>35900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-210-M.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-210M используется в принтерах серий Konica-Minolta bizhub C250, C252. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8133,6 +8229,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-210M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TN-210M</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103086" available="true">
@@ -8141,7 +8238,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-210Y Yellow (12k)</name>
 <price>35900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-210-Y.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-210Y используется в принтерах серий Konica-Minolta bizhub C250, C252. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8150,6 +8247,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-210Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TN-210Y</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103087" available="true">
@@ -8158,7 +8256,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-210K Black (20k)</name>
 <price>29900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-210-Bk.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-210K используется в принтерах серий Konica-Minolta bizhub C250, C252. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8167,6 +8265,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-210K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TN-210K</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103088" available="true">
@@ -8175,7 +8274,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-310C Cyan (11,5k)</name>
 <price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-310C.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-310C используется в принтерах серий Konica-Minolta bizhub C350, C450P. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8183,6 +8282,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta bizhub C350, C450P</param>
 <param name="Коды расходников">TN-310C</param>
 <param name="Модель">TN-310C</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103089" available="true">
@@ -8434,11 +8534,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-3520E</name>
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-3520E.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером T-3520E используется в многофункциональных устройствах Toshiba E-Studio 350, 352, 450, 452. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-Studio 350, 352, 450, 452</param>
+<param name="Коды расходников">T-3520E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL103124" available="false">
@@ -8447,11 +8550,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-2320E</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2320E.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером T-2320E используется в многофункциональных устройствах Toshiba E-Studio 230L, 230, 280. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-Studio 230L, 230, 280</param>
+<param name="Коды расходников">T-2320E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL103125" available="true">
@@ -8460,11 +8566,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-4530E</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-4530E.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером T-4530E используется в многофункциональных устройствах Toshiba E-Studio 255, 305, 355, 455. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-Studio 255, 305, 355, 455</param>
+<param name="Коды расходников">T-4530E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL103126" available="true">
@@ -8511,6 +8620,7 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления JC96-03401A ( термоблок, печка ) для принтеров и МФУ Samsung ML-1610, ML-2015; Xerox Phaser 3116, 3117, 3122.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ Samsung ML-1610, ML-2015, Xerox Phaser 3116, Xerox Phaser 3117, 3122</param>
+<param name="Коды расходников">ML-1610, ML-2015</param>
 </offer>
 
 <offer id="CL103179" available="false">
@@ -8589,6 +8699,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером INTEGRAL C-EXV42 используется в многофункциональных аппаратах серий Canon iR-2202, 2202N. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-2202, 2202N</param>
 <param name="Коды расходников">C-EXV42</param>
 <param name="Модель">C-EXV42</param>
 <param name="Для бренда">Canon</param>
@@ -8673,7 +8784,7 @@ URL поставщика                             | https://copyline.kz/goods
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-321BK.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-321-set.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-321K используется в принтерах серий Konica-Minolta Bizhub C224, C284, C364. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8682,6 +8793,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-321K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TN-321K</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103374" available="true">
@@ -8690,7 +8802,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-321C Cyan (25k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-321-set1.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-321C используется в принтерах серий Konica-Minolta Bizhub C224, C284, C364. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8698,6 +8810,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta Bizhub C224, C284, C364</param>
 <param name="Коды расходников">TN-321C</param>
 <param name="Модель">TN-321C</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103375" available="true">
@@ -8706,7 +8819,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-321M Magenta (25k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-321-set2.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-321M используется в принтерах серий Konica-Minolta Bizhub C224, C284, C364. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8715,6 +8828,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-321M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TN-321M</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103376" available="true">
@@ -8723,7 +8837,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-321Y Yellow (25k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-321-set3.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-321Y используется в принтерах серий Konica-Minolta Bizhub C224, C284, C364. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8732,6 +8846,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-321Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TN-321Y</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103377" available="true">
@@ -8740,7 +8855,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-512K Black (27.5k)</name>
 <price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-512BK.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-512K используется в принтерах серий Konica-Minolta Bizhub C454, C554. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8749,6 +8864,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-512K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TN-512K</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103378" available="true">
@@ -8757,7 +8873,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-512C Cyan(26k)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-512c.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-512C используется в принтерах серий Konica-Minolta Bizhub C454, C554. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8765,6 +8881,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta Bizhub C454, C554</param>
 <param name="Коды расходников">TN-512C</param>
 <param name="Модель">TN-512C</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103379" available="true">
@@ -8773,7 +8890,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-512M Magenta (26k)</name>
 <price>26900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-512m.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-512M используется в принтерах серий Konica-Minolta Bizhub C454, C554. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8782,6 +8899,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-512M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TN-512M</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103423" available="true">
@@ -8854,7 +8972,7 @@ URL поставщика                             | https://copyline.kz/goods
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_EP-TN116.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-1161.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером Euro Print TN-116/TN-118 используется в принтерах серий Konica-Minolta Bizhub 164, 165, 184, 185, 195, 215, 235. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -8862,6 +8980,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta Bizhub 164, 165, 184, 185, 195, 215, 235</param>
 <param name="Коды расходников">TN-116, TN-118</param>
 <param name="Модель">TN-116</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103451" available="true">
@@ -8876,6 +8995,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV28 используется в многофункциональных аппаратах серий Canon imageRUNNER 525i, 525, 525iz, 615i 615, 615iz, 715i 715, 715iz III, C5045, C5051, C5250i C5250, C5255. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER 525i, Canon imageRUNNER 525, Canon imageRUNNER 525iz, Canon imageRUNNER 615i 615, Canon imageRUNNER 615iz, Canon imageRUNNER 715i 715, Canon imageRUNNER 715iz III, Canon imageRUNNER C5045, Canon imageRUNNER C5051, Canon imageRUNNER C5250i C5250, Canon imageRUNNER C5255</param>
 <param name="Коды расходников">C-EXV28</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">C-EXV28</param>
@@ -8894,6 +9014,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV28 используется в многофункциональных аппаратах серий Canon imageRUNNER 525i, 525, 525iz, 615i 615, 615iz, 715i 715, 715iz III, C5045, C5051, C5250i C5250, C5255. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER 525i, Canon imageRUNNER 525, Canon imageRUNNER 525iz, Canon imageRUNNER 615i 615, Canon imageRUNNER 615iz, Canon imageRUNNER 715i 715, Canon imageRUNNER 715iz III, Canon imageRUNNER C5045, Canon imageRUNNER C5051, Canon imageRUNNER C5250i C5250, Canon imageRUNNER C5255</param>
 <param name="Коды расходников">C-EXV28</param>
 <param name="Модель">C-EXV28</param>
 <param name="Для бренда">Canon</param>
@@ -8911,6 +9032,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV28 используется в многофункциональных аппаратах серий Canon imageRUNNER 525i, 525, 525iz, 615i 615, 615iz, 715i 715, 715iz III, C5045, C5051, C5250i C5250, C5255. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER 525i, Canon imageRUNNER 525, Canon imageRUNNER 525iz, Canon imageRUNNER 615i 615, Canon imageRUNNER 615iz, Canon imageRUNNER 715i 715, Canon imageRUNNER 715iz III, Canon imageRUNNER C5045, Canon imageRUNNER C5051, Canon imageRUNNER C5250i C5250, Canon imageRUNNER C5255</param>
 <param name="Коды расходников">C-EXV28</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">C-EXV28</param>
@@ -8929,6 +9051,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV28 используется в многофункциональных аппаратах серий Canon imageRUNNER 525i, 525, 525iz, 615i 615, 615iz, 715i 715, 715iz III, C5045, C5051, C5250i C5250, C5255. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER 525i, Canon imageRUNNER 525, Canon imageRUNNER 525iz, Canon imageRUNNER 615i 615, Canon imageRUNNER 615iz, Canon imageRUNNER 715i 715, Canon imageRUNNER 715iz III, Canon imageRUNNER C5045, Canon imageRUNNER C5051, Canon imageRUNNER C5250i C5250, Canon imageRUNNER C5255</param>
 <param name="Коды расходников">C-EXV28</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">C-EXV28</param>
@@ -8947,6 +9070,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
 <param name="Коды расходников">C-EXV34</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">C-EXV34</param>
@@ -8965,6 +9089,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с голубым тонером Euro Print C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
 <param name="Коды расходников">C-EXV34</param>
 <param name="Модель">C-EXV34</param>
 <param name="Для бренда">Canon</param>
@@ -8982,6 +9107,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с пурпурным тонером Euro Print C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
 <param name="Коды расходников">C-EXV34</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">C-EXV34</param>
@@ -9055,7 +9181,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D205S используется в принтерах серий SAMSUNG ML-3310, ML-3710, SCX-4833, SCX-5637. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-3310, ML-3710, SCX-4833, SCX-5637</param>
-<param name="Коды расходников">MLT-D205S</param>
+<param name="Коды расходников">MLT-D205S, ML-3310, ML-3710</param>
 <param name="Модель">MLT-D205S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -9362,7 +9488,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-611C Cyan MAGNETONE</name>
 <price>47900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-611C.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером MAGNETONE TN-611C используется в принтерах серий Konica-Minolta Bizhub C451, C550, C650. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -9370,6 +9496,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta Bizhub C451, C550, C650</param>
 <param name="Коды расходников">TN-611C</param>
 <param name="Модель">TN-611C</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103597" available="true">
@@ -9378,7 +9505,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-611M Magenta MAGNETONE</name>
 <price>47900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-611M.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером MAGNETONE TN-611M используется в принтерах серий Konica-Minolta Bizhub C451, C550, C650. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -9387,6 +9514,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-611M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TN-611M</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103636" available="false">
@@ -9573,6 +9701,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 013R00670 применяется в многофункциональных принтерах Xerox WorkCentre 5019, 5021, 5022, 5024. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 5019, Xerox WorkCentre 5021, Xerox WorkCentre 5022, Xerox WorkCentre 5024</param>
+<param name="Коды расходников">013R00670</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -9654,6 +9783,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV36 используется в многофункциональных аппаратах серий Canon imageRUNNER 6055, 6065, 6075, 6255, 6265, 6275. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER 6055, Canon imageRUNNER 6065, Canon imageRUNNER 6075, Canon imageRUNNER 6255, Canon imageRUNNER 6265, Canon imageRUNNER 6275</param>
 <param name="Коды расходников">C-EXV36</param>
 <param name="Модель">C-EXV36</param>
 <param name="Для бренда">Canon</param>
@@ -9670,6 +9800,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV43 используется в многофункциональных аппаратах серий Canon iR ADVANCE 400i, 500i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR ADVANCE 400i, Canon iR 500i</param>
 <param name="Коды расходников">C-EXV43</param>
 <param name="Модель">C-EXV43</param>
 <param name="Для бренда">Canon</param>
@@ -9703,6 +9834,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV49 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE C3320, C3330, C3325. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER C3330, Canon imageRUNNER C3325</param>
 <param name="Коды расходников">C-EXV49</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">C-EXV49</param>
@@ -9720,6 +9852,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с голубым тонером Euro Print C-EXV49 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE C3320, C3330, C3325. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER C3330, Canon imageRUNNER C3325</param>
 <param name="Коды расходников">C-EXV49</param>
 <param name="Модель">C-EXV49</param>
 <param name="Для бренда">Canon</param>
@@ -9736,6 +9869,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с пурпурным тонером Euro Print C-EXV49 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE C3320, C3330, C3325. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER C3330, Canon imageRUNNER C3325</param>
 <param name="Коды расходников">C-EXV49</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">C-EXV49</param>
@@ -9753,6 +9887,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с желтым тонером Euro Print C-EXV49 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE C3320, C3330, C3325. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER C3330, Canon imageRUNNER C3325</param>
 <param name="Коды расходников">C-EXV49</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">C-EXV49</param>
@@ -9770,6 +9905,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV38 используется в многофункциональных аппаратах серий Canon iR ADV 4045i, 4051i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR ADV 4045i, Canon iR 4051i</param>
 <param name="Коды расходников">C-EXV38</param>
 <param name="Модель">C-EXV38</param>
 <param name="Для бренда">Canon</param>
@@ -9865,11 +10001,12 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub 200/222/250/ 282/350/362 300гр</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-dv310.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) DV-310, 8938-451 используется в картридже Konica-Minolta bizhub 200, 222, 250, 282, 350, 362. Ресурс использования при печати - 80 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103827" available="true">
@@ -9878,12 +10015,13 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub C224/C284/C364/C454/C554 Black 250гр</name>
 <price>20900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512k.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) черный DV-512K используется в картридже Konica-Minolta bizhub C224, C284, C364, C454, C554. Ресурс использования при печати - 590 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
 <param name="Цвет">Чёрный</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103828" available="true">
@@ -9892,11 +10030,12 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub C224/C284/C364/C454/C554 Cyan 250гр</name>
 <price>20900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512c.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) голубой DV-512C используется в картридже Konica-Minolta bizhub C224, C284, C364, C454, C554. Ресурс использования при печати - 590 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103829" available="true">
@@ -9905,12 +10044,13 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub C224/C284/C364/C454/C554 Magenta 250гр</name>
 <price>20900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512m.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) пурпурный DV-512M используется в картридже Konica-Minolta bizhub C224, C284, C364, C454, C554. Ресурс использования при печати - 590 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103830" available="true">
@@ -9919,12 +10059,13 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub C224/C284/C364/C454/C554 Yellow 250гр</name>
 <price>20900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512y.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) желтый DV-512Y используется в картридже Konica-Minolta bizhub C224, C284, C364, C454, C554. Ресурс использования при печати - 590 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
 <param name="Цвет">Желтый</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103831" available="true">
@@ -10136,11 +10277,12 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Toshiba D4530 500гр</name>
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-Toshiba_D-4530.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) D-4530 используется в картридже Toshiba E-Studio 255, 256, 305, 306, 350, 352, 353, 355, 356, 450, 453, 452, 455, 456, 506. Ресурс использования при печати - 100000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL103883" available="true">
@@ -10542,7 +10684,7 @@ URL поставщика                             | https://copyline.kz/goods
 <price>11900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221k.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221-set1.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-221K используется в принтерах серий Konica-Minolta bizhub C227, C287. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -10551,6 +10693,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-221K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TN-221K</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103974" available="true">
@@ -10560,7 +10703,7 @@ URL поставщика                             | https://copyline.kz/goods
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221c.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221-set.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-221C используется в принтерах серий Konica-Minolta bizhub C227, C287. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -10568,6 +10711,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta bizhub C227, C287</param>
 <param name="Коды расходников">TN-221C</param>
 <param name="Модель">TN-221C</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103975" available="true">
@@ -10577,7 +10721,7 @@ URL поставщика                             | https://copyline.kz/goods
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221m.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221-set2.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-221M используется в принтерах серий Konica-Minolta bizhub C227, C287. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -10586,6 +10730,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-221M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TN-221M</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103976" available="true">
@@ -10595,7 +10740,7 @@ URL поставщика                             | https://copyline.kz/goods
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221-y.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-221-set3.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-221Y используется в принтерах серий Konica-Minolta bizhub C227, C287. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -10604,6 +10749,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-221Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TN-221Y</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL103977" available="true">
@@ -10634,6 +10780,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV50 используется в многофункциональных аппаратах серий Canon imageRUNNER 1435, 1435I, 1435IF, 1435P. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER 1435, Canon imageRUNNER 1435I, Canon imageRUNNER 1435IF, Canon imageRUNNER 1435P</param>
 <param name="Коды расходников">C-EXV50</param>
 <param name="Модель">C-EXV50</param>
 <param name="Для бренда">Canon</param>
@@ -10650,6 +10797,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C1225, Canon imageRUNNER C1225iF, Canon imageRUNNER imageCLASS MF810C, Canon imageRUNNER MF820C</param>
 <param name="Цвет">Чёрный</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -10665,6 +10813,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с голубым тонером Euro Print Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C1225, Canon imageRUNNER C1225iF, Canon imageRUNNER imageCLASS MF810C, Canon imageRUNNER MF820C</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -10679,6 +10828,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с пурпурным тонером Euro Print Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C1225, Canon imageRUNNER C1225iF, Canon imageRUNNER imageCLASS MF810C, Canon imageRUNNER MF820C</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -10694,6 +10844,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с желтым тонером Euro Print Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C1225, Canon imageRUNNER C1225iF, Canon imageRUNNER imageCLASS MF810C, Canon imageRUNNER MF820C</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -10951,6 +11102,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV54 используется в многофункциональных аппаратах серий Canon imageRUNNER C3025, C3025i, C3125, C3226i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C3025, Canon imageRUNNER C3025i, Canon imageRUNNER C3125, Canon imageRUNNER C3226i</param>
 <param name="Коды расходников">C-EXV54</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">C-EXV54</param>
@@ -10969,6 +11121,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с голубым тонером Euro Print C-EXV54 используется в многофункциональных аппаратах серий Canon imageRUNNER C3025, C3025i, C3125, C3226i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C3025, Canon imageRUNNER C3025i, Canon imageRUNNER C3125, Canon imageRUNNER C3226i</param>
 <param name="Коды расходников">C-EXV54</param>
 <param name="Модель">C-EXV54</param>
 <param name="Для бренда">Canon</param>
@@ -10985,6 +11138,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с пурпурным тонером Euro Print C-EXV54 используется в многофункциональных аппаратах серий Canon imageRUNNER C3025, C3025i, C3125, C3226i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C3025, Canon imageRUNNER C3025i, Canon imageRUNNER C3125, Canon imageRUNNER C3226i</param>
 <param name="Коды расходников">C-EXV54</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">C-EXV54</param>
@@ -11002,6 +11156,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с желтым тонером Euro Print C-EXV54 используется в многофункциональных аппаратах серий Canon imageRUNNER C3025, C3025i, C3125, C3226i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C3025, Canon imageRUNNER C3025i, Canon imageRUNNER C3125, Canon imageRUNNER C3226i</param>
 <param name="Коды расходников">C-EXV54</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">C-EXV54</param>
@@ -11483,11 +11638,14 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Toshiba T-2309E (17.5K)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2309e-.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером T-2309E используется в многофункциональных устройствах Toshiba E-Studio 2309, 2303. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-Studio 2309, 2303</param>
+<param name="Коды расходников">T-2309E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL104154" available="true">
@@ -11496,12 +11654,13 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub C220/C280/C360 Yellow 250гр</name>
 <price>21900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV311y.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) желтый DV-311Y используется в картридже Konica-Minolta bizhub C220, C280, C360. Ресурс использования при печати - 115 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
 <param name="Цвет">Желтый</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL104159" available="true">
@@ -11550,6 +11709,7 @@ URL поставщика                             | https://copyline.kz/goods
 Узел термозакрепления JC61-04092A ( термоблок, печка ) для принтеров и МФУ Samsung ML-3310, ML-3710, SCX-4833, SCX-5637, SCX-5737, PRO XPRESS M3320, M3820, M4020.]]></description>
 <param name="Тип">Термоблок</param>
 <param name="Совместимость">и МФУ Samsung ML-3310, ML-3710, SCX-4833, SCX-5637, SCX-5737, PRO XPRESS M3320, M3820, M4020</param>
+<param name="Коды расходников">ML-3310, ML-3710</param>
 </offer>
 
 <offer id="CL104176" available="true">
@@ -12054,7 +12214,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-324K Black (28k)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-324k.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-324K используется в принтерах серий Konica-Minolta bizhub C258, C308, C368. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -12063,6 +12223,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-324K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TN-324K</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL104288" available="true">
@@ -12071,7 +12232,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-324C Cyan (26k)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-324c.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-324C используется в принтерах серий Konica-Minolta bizhub C258, C308, C368. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -12079,6 +12240,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">Konica-Minolta bizhub C258, C308, C368</param>
 <param name="Коды расходников">TN-324C</param>
 <param name="Модель">TN-324C</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL104289" available="true">
@@ -12087,7 +12249,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-324M Magenta (26k)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-324m.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-324M используется в принтерах серий Konica-Minolta bizhub C258, C308, C368. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -12096,6 +12258,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-324M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TN-324M</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL104290" available="true">
@@ -12104,7 +12267,7 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж для Konica-Minolta TN-324Y Yellow (26k)</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-324y.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-324Y используется в принтерах серий Konica-Minolta bizhub C258, C308, C368. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -12113,6 +12276,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Коды расходников">TN-324Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TN-324Y</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL104292" available="true">
@@ -12314,7 +12478,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium MLT-D101S (без чипа) используется в принтерах серий SAMSUNG ML-2160, ML-2165, ML-2167, ML-2168, SCX-3400, SCX-3405, SCX-3407. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-2160, ML-2165, ML-2167, ML-2168, SCX-3400, SCX-3405, SCX-3407</param>
-<param name="Коды расходников">MLT-D101S</param>
+<param name="Коды расходников">MLT-D101S, ML-2160, ML-2165, ML-2167, ML-2168</param>
 <param name="Модель">MLT-D101S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -12470,6 +12634,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV53 используется в многофункциональных аппаратах серий Canon imageRUNNER 4525i 4525, 4535i 4535, 4545i 4545, 4551i 4551, DX 4725i, DX 4751i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER 4525i 4525, Canon imageRUNNER 4535i 4535, Canon imageRUNNER 4545i 4545, Canon imageRUNNER 4551i 4551, Canon imageRUNNER DX 4725i, Canon imageRUNNER DX 4751i</param>
 <param name="Коды расходников">C-EXV53</param>
 <param name="Модель">C-EXV53</param>
 <param name="Для бренда">Canon</param>
@@ -12663,6 +12828,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Драм-картридж для Xerox (013R00669) WC 5945/5955 (200K) Euro Print]]></description>
 <param name="Тип">Драм-картридж</param>
+<param name="Коды расходников">013R00669</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -13136,11 +13302,14 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <name>Тонер-картридж для Toshiba T-1640E (24K) Euro Print NEW</name>
 <price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-1640E.jpg</picture>
-<vendor></vendor>
+<vendor>Toshiba</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером Euro Print T-1640E используется в многофункциональных устройствах Toshiba E-Studio 163, 164, 165, 166, 167, 203, 205, 206, 207, 237. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Toshiba E-Studio 163, 164, 165, 166, 167, 203, 205, 206, 207, 237</param>
+<param name="Коды расходников">T-1640E</param>
+<param name="Для бренда">Toshiba</param>
 </offer>
 
 <offer id="CL104554" available="true">
@@ -13781,6 +13950,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV35 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE 8085, 8095, 8105, 8205, 8285, 8295. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE 8085, Canon imageRUNNER 8095, Canon imageRUNNER 8105, Canon imageRUNNER 8205, Canon imageRUNNER 8285, Canon imageRUNNER 8295</param>
 <param name="Коды расходников">C-EXV35</param>
 <param name="Модель">C-EXV35</param>
 <param name="Для бренда">Canon</param>
@@ -13872,6 +14042,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV55 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE C256i, C356i, C356P. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE C256i, Canon imageRUNNER C356i, Canon imageRUNNER C356P</param>
 <param name="Коды расходников">C-EXV55</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">C-EXV55</param>
@@ -13889,6 +14060,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с голубым тонером Euro Print C-EXV55 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE C256i, C356i, C356P. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE C256i, Canon imageRUNNER C356i, Canon imageRUNNER C356P</param>
 <param name="Коды расходников">C-EXV55</param>
 <param name="Модель">C-EXV55</param>
 <param name="Для бренда">Canon</param>
@@ -13905,6 +14077,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с пурпурным тонером Euro Print C-EXV55 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE C256i, C356i, C356P. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE C256i, Canon imageRUNNER C356i, Canon imageRUNNER C356P</param>
 <param name="Коды расходников">C-EXV55</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">C-EXV55</param>
@@ -13922,6 +14095,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с желтым тонером Euro Print C-EXV55 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE C256i, C356i, C356P. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE C256i, Canon imageRUNNER C356i, Canon imageRUNNER C356P</param>
 <param name="Коды расходников">C-EXV55</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">C-EXV55</param>
@@ -13939,6 +14113,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV51 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE C5535, C5535i, C5540i, C5550i, C5560i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE C5535, Canon imageRUNNER C5535i, Canon imageRUNNER C5540i, Canon imageRUNNER C5550i, Canon imageRUNNER C5560i</param>
 <param name="Коды расходников">C-EXV51</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">C-EXV51</param>
@@ -13956,6 +14131,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с голубым тонером Euro Print C-EXV51 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE C5535, C5535i, C5540i, C5550i, C5560i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE C5535, Canon imageRUNNER C5535i, Canon imageRUNNER C5540i, Canon imageRUNNER C5550i, Canon imageRUNNER C5560i</param>
 <param name="Коды расходников">C-EXV51</param>
 <param name="Модель">C-EXV51</param>
 <param name="Для бренда">Canon</param>
@@ -13972,6 +14148,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с желтым тонером Euro Print C-EXV51 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE C5535, C5535i, C5540i, C5550i, C5560i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE C5535, Canon imageRUNNER C5535i, Canon imageRUNNER C5540i, Canon imageRUNNER C5550i, Canon imageRUNNER C5560i</param>
 <param name="Коды расходников">C-EXV51</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">C-EXV51</param>
@@ -13989,6 +14166,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с пурпурным тонером Euro Print C-EXV51 используется в многофункциональных аппаратах серий Canon imageRUNNER ADVANCE C5535, C5535i, C5540i, C5550i, C5560i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER ADVANCE C5535, Canon imageRUNNER C5535i, Canon imageRUNNER C5540i, Canon imageRUNNER C5550i, Canon imageRUNNER C5560i</param>
 <param name="Коды расходников">C-EXV51</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">C-EXV51</param>
@@ -14609,6 +14787,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с желтым тонером Katun C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
 <param name="Коды расходников">C-EXV34</param>
 <param name="Модель">C-EXV34</param>
 <param name="Для бренда">Canon</param>
@@ -14626,6 +14805,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с пурпурным тонером Katun C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
 <param name="Коды расходников">C-EXV34</param>
 <param name="Модель">C-EXV34</param>
 <param name="Для бренда">Canon</param>
@@ -14643,6 +14823,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с голубым тонером Katun C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
 <param name="Коды расходников">C-EXV34</param>
 <param name="Модель">C-EXV34</param>
 <param name="Для бренда">Canon</param>
@@ -14660,6 +14841,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Katun C-EXV34 используется в многофункциональных аппаратах серий Canon imageRUNNER C2020, C2025, C2030, C2220, C2225, C2230. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C2020, Canon imageRUNNER C2025, Canon imageRUNNER C2030, Canon imageRUNNER C2220, Canon imageRUNNER C2225, Canon imageRUNNER C2230</param>
 <param name="Коды расходников">C-EXV34</param>
 <param name="Модель">C-EXV34</param>
 <param name="Для бренда">Canon</param>
@@ -14764,6 +14946,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж OEM 013R00625 используется в принтерах серий Xerox WC 3119. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Xerox WC 3119</param>
+<param name="Коды расходников">013R00625</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -15332,7 +15515,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <name>Тонер-картридж для Konica-Minolta TN-328K Black (28k)</name>
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328K.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-328K используется в принтерах серий Konica-Minolta bizhub C250i, C250, C300i, C300, C360i, C360. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -15341,6 +15524,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Коды расходников">TN-328K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TN-328K</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL104986" available="true">
@@ -15349,7 +15533,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <name>Тонер-картридж для Konica-Minolta TN-328C Cyan (28k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328C.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-328C используется в принтерах серий Konica-Minolta bizhub C250i, C250, C300i, C300, C360i, C360. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -15357,6 +15541,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Совместимость">Konica-Minolta bizhub C250i, C250, C300i, C300, C360i, C360</param>
 <param name="Коды расходников">TN-328C</param>
 <param name="Модель">TN-328C</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL104987" available="true">
@@ -15365,7 +15550,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <name>Тонер-картридж для Konica-Minolta TN-328M Magenta (28k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328M.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-328M используется в принтерах серий Konica-Minolta bizhub C250i, C250, C300i, C300, C360i, C360. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -15374,6 +15559,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Коды расходников">TN-328M</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">TN-328M</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL104988" available="true">
@@ -15382,7 +15568,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <name>Тонер-картридж для Konica-Minolta TN-328Y Yellow (28k)</name>
 <price>17900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328Y.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-328Y используется в принтерах серий Konica-Minolta bizhub C250i, C250, C300i, C300, C360i, C360. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -15391,6 +15577,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Коды расходников">TN-328Y</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">TN-328Y</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL104990" available="true">
@@ -15406,7 +15593,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Sakura MLT-D108S используется в принтерах серий SAMSUNG ML-1640, ML-1641, ML-1645, ML-2240, ML-2241. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG ML-1640, ML-1641, ML-1645, ML-2240, ML-2241</param>
-<param name="Коды расходников">MLT-D108S</param>
+<param name="Коды расходников">MLT-D108S, ML-1640, ML-1641, ML-1645, ML-2240, ML-2241</param>
 <param name="Модель">MLT-D108S</param>
 <param name="Для бренда">Samsung</param>
 </offer>
@@ -15845,6 +16032,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV60 используется в многофункциональных аппаратах серий Canon imageRUNNER 2425. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER 2425</param>
 <param name="Коды расходников">C-EXV60</param>
 <param name="Модель">C-EXV60</param>
 <param name="Для бренда">Canon</param>
@@ -15997,6 +16185,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV59 используется в многофункциональных аппаратах серий Canon imageRUNNER 2625i, 2630i, 2645i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER 2625i, Canon imageRUNNER 2630i, Canon imageRUNNER 2645i</param>
 <param name="Коды расходников">C-EXV59</param>
 <param name="Модель">C-EXV59</param>
 <param name="Для бренда">Canon</param>
@@ -16070,6 +16259,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж OEM 013R00621 используется в принтерах серий Xerox PE220. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Xerox PE220</param>
+<param name="Коды расходников">013R00621</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -16293,6 +16483,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV32 используется в многофункциональных аппаратах серий Canon iR-2535, 2535i, 2545, 2545i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-2535, 2535i, 2545, 2545i</param>
 <param name="Коды расходников">C-EXV32</param>
 <param name="Модель">C-EXV32</param>
 <param name="Для бренда">Canon</param>
@@ -16949,6 +17140,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV39 используется в многофункциональных аппаратах серий Canon iR-4025, 4035. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon iR-4025, 4035</param>
 <param name="Коды расходников">C-EXV39</param>
 <param name="Модель">C-EXV39</param>
 <param name="Для бренда">Canon</param>
@@ -16960,7 +17152,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <name>Тонер-картридж для Konica-Minolta TN-328K Black (28k) БУЛАТ s-Line</name>
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328K-bulat.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером БУЛАТ TN-328K используется в принтерах серий Konica-Minolta bizhub C250i, C250, C300i, C300, C360i, C360. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -16969,6 +17161,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Коды расходников">TN-328K</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">TN-328K</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL105281" available="true">
@@ -17029,6 +17222,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Оригинальный картридж фотобарабана (Drum Unit - блок барабана) 013R00660 Cyan применяется в многофункциональных принтерах Xerox WorkCentre 7120, 7125, 7220, 7225. Ресурс печати - 51 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 7120, Xerox WorkCentre 7125, Xerox WorkCentre 7220, Xerox WorkCentre 7225</param>
+<param name="Коды расходников">013R00660</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -17043,6 +17237,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с желтым тонером OEM Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C1225, Canon imageRUNNER C1225iF, Canon imageRUNNER imageCLASS MF810C, Canon imageRUNNER MF820C</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -17147,6 +17342,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00688 применяется в многофункциональных принтерах Xerox VersaLink C7120, C7125, C7130. Ресурс печати - 87 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox VersaLink C7120, C7125, C7130</param>
+<param name="Коды расходников">013R00688</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Xerox</param>
 </offer>
@@ -17310,7 +17506,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <name>Тонер-картридж для Konica-Minolta TN-323 (23K)</name>
 <price>14900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_A87M050.jpg</picture>
-<vendor></vendor>
+<vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж с тонером TN-323 используется в принтерах серий Konica-Minolta bizhub 227, 287, 367. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -17318,6 +17514,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Совместимость">Konica-Minolta bizhub 227, 287, 367</param>
 <param name="Коды расходников">TN-323</param>
 <param name="Модель">TN-323</param>
+<param name="Для бренда">Konica-Minolta</param>
 </offer>
 
 <offer id="CL105428" available="true">
@@ -17331,6 +17528,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print W9100MC используется в многофункциональных аппаратах HP Color LaserJet Managed MFP E77428dn, E77422dn, E77422dv, E77422a. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">HP Color LaserJet Managed MFP E77428dn, HP Color LaserJet E77422dn, HP Color LaserJet E77422dv, HP Color LaserJet E77422a</param>
 <param name="Коды расходников">W9100MC</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">W9100MC</param>
@@ -17348,6 +17546,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с голубым тонером Euro Print W9101MC используется в многофункциональных аппаратах HP Color LaserJet Managed MFP E77428dn, E77422dn, E77422dv, E77422a. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">HP Color LaserJet Managed MFP E77428dn, HP Color LaserJet E77422dn, HP Color LaserJet E77422dv, HP Color LaserJet E77422a</param>
 <param name="Коды расходников">W9101MC</param>
 <param name="Модель">W9101MC</param>
 <param name="Для бренда">HP</param>
@@ -17364,6 +17563,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с желтым тонером Euro Print W9102MC используется в многофункциональных аппаратах HP Color LaserJet Managed MFP E77428dn, E77422dn, E77422dv, E77422a. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">HP Color LaserJet Managed MFP E77428dn, HP Color LaserJet E77422dn, HP Color LaserJet E77422dv, HP Color LaserJet E77422a</param>
 <param name="Коды расходников">W9102MC</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">W9102MC</param>
@@ -17381,6 +17581,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с пурпурным тонером Euro Print W9103MC используется в многофункциональных аппаратах HP Color LaserJet Managed MFP E77428dn, E77422dn, E77422dv, E77422a. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">HP Color LaserJet Managed MFP E77428dn, HP Color LaserJet E77422dn, HP Color LaserJet E77422dv, HP Color LaserJet E77422a</param>
 <param name="Коды расходников">W9103MC</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">W9103MC</param>
@@ -18003,6 +18204,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00679 применяется в многофункциональных принтерах Xerox VersaLink B1022DN, B1025DN, B1025DNA. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox VersaLink B1022DN, B1025DN, B1025DNA</param>
+<param name="Коды расходников">013R00679</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18098,6 +18300,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00691 применяется в многофункциональных принтерах Xerox B225, B230, B235. Ресурс печати - 12 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox B225, B230, B235</param>
+<param name="Коды расходников">013R00691</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18185,6 +18388,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00677 применяется в многофункциональных принтерах Xerox DocuCentre SC2020. Ресурс печати - 76 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox DocuCentre SC2020</param>
+<param name="Коды расходников">013R00677</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18473,6 +18677,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV65 Cyan используется в многофункциональных аппаратах серий Canon imageRUNNER C3326. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C3326</param>
 <param name="Коды расходников">C-EXV65</param>
 <param name="Модель">C-EXV65</param>
 <param name="Для бренда">Canon</param>
@@ -18489,6 +18694,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV65 Yellow используется в многофункциональных аппаратах серий Canon imageRUNNER C3326. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C3326</param>
 <param name="Коды расходников">C-EXV65</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">C-EXV65</param>
@@ -18506,6 +18712,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV65 Magenta используется в многофункциональных аппаратах серий Canon imageRUNNER C3326. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C3326</param>
 <param name="Коды расходников">C-EXV65</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">C-EXV65</param>
@@ -18523,6 +18730,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print C-EXV65 Black используется в многофункциональных аппаратах серий Canon imageRUNNER C3326. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Canon imageRUNNER C3326</param>
 <param name="Коды расходников">C-EXV65</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">C-EXV65</param>
@@ -18594,6 +18802,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00686 применяется в многофункциональных принтерах Xerox AltaLink B8145, B8155, B8170. Ресурс печати - 200 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox AltaLink B8145, B8155, B8170</param>
+<param name="Коды расходников">013R00686</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18609,6 +18818,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00681 применяется в многофункциональных принтерах Xerox AltaLink C8130, C8135, C8145, C8155, C8170. Один картридж барабана на один цвет. Ресурс печати - 180 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox AltaLink C8130, C8135, C8145, C8155, C8170</param>
+<param name="Коды расходников">013R00681</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -18624,6 +18834,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00687 применяется в многофункциональных принтерах Xerox VersaLink B7125, B7130, B7135. Один картридж барабана на один цвет. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox VersaLink B7125, B7130, B7135</param>
+<param name="Коды расходников">013R00687</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -19304,6 +19515,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 013R00690 применяется в многофункциональных принтерах Xerox B305, B310, B315. Ресурс печати - 40 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox B305, B310, B315</param>
+<param name="Коды расходников">013R00690</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
