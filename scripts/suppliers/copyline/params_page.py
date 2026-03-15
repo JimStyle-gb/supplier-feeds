@@ -5,10 +5,8 @@ CopyLine page-params layer.
 
 Задача:
 - нормализовать page params из HTML-таблиц/описания;
-- поднять самые полезные supplier-specific поля до raw:
-  Технология печати, Цвет, Ресурс, Коды расходников, Совместимость.
-
-Это ещё не финальный compat-layer, а только page/source-of-truth stage.
+- поднять supplier-specific поля до raw;
+- не тянуть device-list в Коды расходников.
 """
 
 from __future__ import annotations
@@ -19,10 +17,10 @@ from typing import List, Sequence, Tuple
 
 CODE_RX = re.compile(
     r"\b(?:"
-    r"CF\d{3,4}[A-Z]|CE\d{3,4}[A-Z]|CB\d{3,4}[A-Z]|Q\d{4}[A-Z]|W\d{4}[A-Z0-9]{1,4}|"
+    r"CF\d{3,4}[A-Z]?|CE\d{3,4}[A-Z]?|CB\d{3,4}[A-Z]?|CC\d{3,4}[A-Z]?|Q\d{4}[A-Z]?|W\d{4}[A-Z0-9]{1,4}|"
     r"106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|013R\d{5}|016\d{6}|"
     r"TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|"
-    r"ML-(?:D)?[A-Z0-9]{3,12}|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
+    r"ML-D\d+[A-Z]?|ML-\d{4,5}[A-Z]\d?|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
     r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|"
     r"C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
     r"50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H"
@@ -63,6 +61,12 @@ STOP_HEADERS_RX = re.compile(
     re.I,
 )
 
+COMPAT_GUARD_RX = re.compile(
+    r"(?:совместимость\s+с\s+устройствами|используется\s+в|для\s+принтеров|для\s+устройств|"
+    r"для\s+аппаратов|применяется\s+в|подходит\s+для|совместим\s+с)",
+    re.I,
+)
+
 CABLE_PARAM_KEYS = {
     "Тип кабеля",
     "Количество пар",
@@ -78,6 +82,28 @@ CABLE_CATEGORY_RX = re.compile(r"\bCat\.?\s*(5e|6a|6|7|7a|8)\b", re.I)
 CABLE_DIM_RX = re.compile(r"\b(\d+)x\d+x\d+/([0-9]+(?:[.,][0-9]+)?)\b", re.I)
 CABLE_MATERIAL_RX = re.compile(r"\b(LSZH|PVC|PE)\b", re.I)
 CABLE_SPOOL_RX = re.compile(r"\b(\d+)\s*м/б\b", re.I)
+
+
+CODE_PREFIX_WEIGHTS = (
+    (re.compile(r"^(?:CF|CE|CB|CC|Q|W)\d", re.I), 100),
+    (re.compile(r"^(?:106R|006R|108R|113R|013R)\d", re.I), 100),
+    (re.compile(r"^016\d{6}$", re.I), 95),
+    (re.compile(r"^(?:MLT-|CLT-|TK-|KX-FA|KX-FAT|C-?EXV|DR-|TN-|C13T|C12C|C33S|T-)", re.I), 95),
+    (re.compile(r"^ML-D\d", re.I), 90),
+    (re.compile(r"^ML-\d{4,5}[A-Z]\d?$", re.I), 85),
+    (re.compile(r"^(?:50F|55B|56F)\w+$", re.I), 90),
+    (re.compile(r"^0?71H$", re.I), 90),
+)
+
+DEVICE_ONLY_RX = re.compile(
+    r"^(?:ML-\d{4,5}|SCX-\d{4,5}|SF-?\d{3,5}|WC\s?\d{4}|P\d{4}|LBP-?\d{4}|KX-FL\d{3,4}|KX-FLM\d{3,4})$",
+    re.I,
+)
+
+CONSUMABLE_TITLE_RX = re.compile(
+    r"^(?:картридж|тонер-картридж|тонер\s+картридж|драм-картридж|драм\s+картридж|drum|чернила|девелопер|термоблок|термоэлемент)",
+    re.I,
+)
 
 
 def safe_str(x: object) -> str:
@@ -179,17 +205,110 @@ def _dedupe_params(items: Sequence[Tuple[str, str]]) -> List[Tuple[str, str]]:
     return out
 
 
-def _extract_codes(title: str, description: str) -> str:
-    text = _normalize_code_search_text(f"{safe_str(title)} {safe_str(description)}")
+def _is_consumable_title(title: str) -> bool:
+    return bool(CONSUMABLE_TITLE_RX.search(safe_str(title)))
+
+
+def _is_allowed_numeric_code(code: str) -> bool:
+    code = _normalize_code_token(code)
+    return bool(re.fullmatch(r"016\d{6}", code))
+
+
+def _looks_device_series(code: str) -> bool:
+    code = _normalize_code_token(code)
+    if DEVICE_ONLY_RX.fullmatch(code):
+        return True
+    if re.fullmatch(r"\d{3}", code):
+        return True
+    return False
+
+
+def _code_weight(code: str) -> int:
+    code = _normalize_code_token(code)
+    for rx, weight in CODE_PREFIX_WEIGHTS:
+        if rx.search(code):
+            return weight
+    if _is_allowed_numeric_code(code):
+        return 95
+    return 10
+
+
+def _extract_title_canon_numeric_codes(title: str) -> list[str]:
+    title = _norm_spaces(title)
+    out: list[str] = []
+    seen: set[str] = set()
+    for m in re.finditer(r"\bCanon\s+((?:\d{3}[A-Z]?)(?:\s*/\s*\d{3}[A-Z]?)+)\b", title, flags=re.I):
+        for part in re.split(r"\s*/\s*", safe_str(m.group(1))):
+            token = _normalize_code_token(part)
+            if token and token not in seen:
+                seen.add(token)
+                out.append(token)
+    return out
+
+
+def _strip_compat_zone(text: str) -> str:
+    text = _norm_spaces(text)
+    if not text:
+        return ""
+    m = COMPAT_GUARD_RX.search(text)
+    if m:
+        return text[: m.start()].strip()
+    return text
+
+
+def _collect_codes_from_text(text: str, *, allow_numeric: bool) -> list[str]:
+    text = _normalize_code_search_text(text)
     found: list[str] = []
     seen: set[str] = set()
     for m in CODE_RX.finditer(text):
         val = _normalize_code_token(m.group(0))
-        if not val or val.isdigit() or len(val) < 4 or val in seen:
+        if not val or len(val) < 3 or val in seen:
+            continue
+        if val.isdigit() and not (allow_numeric and _is_allowed_numeric_code(val)):
+            continue
+        if _looks_device_series(val):
             continue
         seen.add(val)
         found.append(val)
-    return ", ".join(found[:6])
+    return found
+
+
+def _pick_best_codes(codes: Sequence[str], *, limit: int = 6) -> list[str]:
+    ordered = sorted(codes, key=lambda c: (-_code_weight(c), codes.index(c)))
+    out: list[str] = []
+    seen: set[str] = set()
+    for code in ordered:
+        norm = _normalize_code_token(code)
+        if not norm or norm in seen:
+            continue
+        seen.add(norm)
+        out.append(norm)
+        if len(out) >= limit:
+            break
+    return out
+
+
+def _extract_codes(title: str, description: str) -> str:
+    title = safe_str(title)
+    description = safe_str(description)
+    title_codes = _collect_codes_from_text(title, allow_numeric=True)
+    title_codes.extend(_extract_title_canon_numeric_codes(title))
+
+    desc_head = _strip_compat_zone(description)
+    desc_codes = _collect_codes_from_text(desc_head, allow_numeric=_is_consumable_title(title))
+
+    # Если в title уже есть сильный код расходки, не тянем device-list из description.
+    strong_title_codes = [c for c in title_codes if _code_weight(c) >= 80]
+    codes = strong_title_codes or title_codes
+    if not strong_title_codes:
+        codes.extend(desc_codes)
+    elif not codes:
+        codes.extend(desc_codes)
+
+    if not codes:
+        return ""
+    best = _pick_best_codes(codes)
+    return ", ".join(best)
 
 
 def _trim_compat_tail(value: str) -> str:
