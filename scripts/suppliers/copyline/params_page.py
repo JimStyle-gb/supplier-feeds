@@ -88,6 +88,7 @@ CODE_PREFIX_WEIGHTS = (
     (re.compile(r"^(?:CF|CE|CB|CC|Q|W)\d", re.I), 100),
     (re.compile(r"^(?:106R|006R|108R|113R|013R)\d", re.I), 100),
     (re.compile(r"^016\d{6}$", re.I), 95),
+    (re.compile(r"^Canon\s+\d{3,4}$", re.I), 92),
     (re.compile(r"^(?:MLT-|CLT-|TK-|KX-FA|KX-FAT|C-?EXV|DR-|TN-|C13T|C12C|C33S|T-)", re.I), 95),
     (re.compile(r"^ML-D\d", re.I), 90),
     (re.compile(r"^ML-\d{4,5}[A-Z]\d?$", re.I), 85),
@@ -265,25 +266,33 @@ def _extract_title_multicode_tail(title: str) -> list[str]:
     title = _norm_spaces(title)
     out: list[str] = []
     seen: set[str] = set()
-    for token in _extract_title_canon_numeric_codes(title):
-        if token not in seen:
-            seen.add(token)
-            out.append(token)
+
     branded_tail_rx = re.compile(
         r"(?:^|/)\s*(Canon|Toshiba|Ricoh|Panasonic)\s+((?:[A-Z]?\d{3,6}[A-Z]?)(?:\s*/\s*[A-Z]?\d{3,6}[A-Z]?)+)\b",
         re.I,
     )
     for m in branded_tail_rx.finditer(title):
-        brand = safe_str(m.group(1))
-        for part in re.split(r"\s*/\s*", safe_str(m.group(2))):
+        brand = safe_str(m.group(1)).title()
+        parts = [safe_str(x) for x in re.split(r"\s*/\s*", safe_str(m.group(2))) if safe_str(x)]
+        for part in parts:
             token = _normalize_code_token(part)
             if not token:
                 continue
-            if token.isdigit() and brand.casefold() != "canon":
-                continue
+            if token.isdigit():
+                if brand.casefold() != "canon":
+                    continue
+                token = f"Canon {token}"
+            elif brand.casefold() == "canon" and re.fullmatch(r"\d{3,4}[A-Z]?", token, re.I):
+                token = f"Canon {token}"
             if token not in seen:
                 seen.add(token)
                 out.append(token)
+
+    for token in _extract_title_canon_numeric_codes(title):
+        branded = f"Canon {token}" if re.fullmatch(r"\d{3,4}[A-Z]?", token, re.I) else token
+        if branded not in seen:
+            seen.add(branded)
+            out.append(branded)
     return out
 
 
@@ -319,7 +328,10 @@ def _pick_best_codes(codes: Sequence[str], *, limit: int = 6) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
     for code in ordered:
-        norm = _normalize_code_token(code)
+        raw = _norm_spaces(code)
+        if not raw:
+            continue
+        norm = _normalize_code_token(raw) if not raw.lower().startswith("canon ") else f"Canon {_normalize_code_token(raw.split(None, 1)[1])}"
         if not norm or norm in seen:
             continue
         seen.add(norm)
