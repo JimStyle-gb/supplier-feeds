@@ -89,6 +89,7 @@ CODE_PREFIX_WEIGHTS = (
     (re.compile(r"^(?:CF|CE|CB|CC|Q|W)\d", re.I), 100),
     (re.compile(r"^(?:106R|006R|108R|113R|013R)\d", re.I), 100),
     (re.compile(r"^016\d{6}$", re.I), 95),
+    (re.compile(r"^Canon\s+[A-Z]{1,5}-?[A-Z0-9]{1,8}$", re.I), 93),
     (re.compile(r"^Canon\s+\d{3,4}$", re.I), 92),
     (re.compile(r"^(?:MLT-|CLT-|TK-|KX-FA|KX-FAT|C-?EXV|DR-|TN-|C13T|C12C|C33S|T-)", re.I), 95),
     (re.compile(r"^ML-D\d", re.I), 90),
@@ -403,7 +404,13 @@ def _extract_codes(title: str, description: str) -> str:
     desc_head = _strip_compat_zone(description)
     desc_codes = _collect_codes_from_text(desc_head, allow_numeric=_is_consumable_title(title))
 
-    strong_title_codes = [c for c in title_codes if _code_weight(c) >= 80 or _is_allowed_numeric_code(c)]
+    strong_title_codes = [
+        c
+        for c in title_codes
+        if _code_weight(c) >= 80
+        or _is_allowed_numeric_code(c)
+        or bool(re.fullmatch(r"Canon\s+[A-Z]{1,5}-?[A-Z0-9]{1,8}", _norm_spaces(c), re.I))
+    ]
     codes = strong_title_codes or title_codes
     if not strong_title_codes:
         codes.extend(desc_codes)
