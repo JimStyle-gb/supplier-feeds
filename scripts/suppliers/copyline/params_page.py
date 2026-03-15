@@ -20,9 +20,9 @@ from typing import List, Sequence, Tuple
 CODE_RX = re.compile(
     r"\b(?:"
     r"CF\d{3,4}[A-Z]|CE\d{3,4}[A-Z]|CB\d{3,4}[A-Z]|Q\d{4}[A-Z]|W\d{4}[A-Z0-9]{1,4}|"
-    r"106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|"
+    r"106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|013R\d{5}|016\d{6}|"
     r"TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|"
-    r"KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
+    r"ML-(?:D)?[A-Z0-9]{3,12}|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
     r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|"
     r"C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
     r"50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H"
@@ -32,10 +32,20 @@ CODE_RX = re.compile(
 
 COMPAT_PATTERNS = [
     re.compile(r"совместимость\s+с\s+устройствами\s*:?\s*(.+)", re.I | re.S),
+    re.compile(r"используется\s+в\s+многофункциональных\s+аппаратах\s+серий\s+(.+)", re.I | re.S),
+    re.compile(r"используется\s+в\s+многофункциональных\s+аппаратах\s+(.+)", re.I | re.S),
+    re.compile(r"используется\s+в\s+многофункциональных\s+устройствах\s+серий\s+(.+)", re.I | re.S),
+    re.compile(r"используется\s+в\s+многофункциональных\s+устройствах\s+(.+)", re.I | re.S),
+    re.compile(r"используется\s+в\s+факсимильных\s+аппаратах\s+(.+)", re.I | re.S),
+    re.compile(r"используется\s+в\s+факсах\s+(.+)", re.I | re.S),
+    re.compile(r"используется\s+в\s+аппаратах\s+(.+)", re.I | re.S),
     re.compile(r"используется\s+в\s+принтерах\s+серий\s+(.+)", re.I | re.S),
     re.compile(r"используется\s+в\s+принтерах\s+(.+)", re.I | re.S),
     re.compile(r"для\s+принтеров\s+серий\s+(.+)", re.I | re.S),
     re.compile(r"для\s+принтеров\s+(.+)", re.I | re.S),
+    re.compile(r"применяется\s+в\s+многофункциональных\s+принтерах\s+(.+)", re.I | re.S),
+    re.compile(r"применяется\s+в\s+многофункциональных\s+устройствах\s+(.+)", re.I | re.S),
+    re.compile(r"применяется\s+в\s+многофункциональных\s+аппаратах\s+(.+)", re.I | re.S),
     re.compile(r"применяется\s+в\s+МФУ\s+(.+)", re.I | re.S),
     re.compile(r"применяется\s+в\s+(.+)", re.I | re.S),
     re.compile(r"совместим\s+с\s+(.+)", re.I | re.S),
@@ -131,8 +141,8 @@ def _normalize_code_token(s: str) -> str:
 def _normalize_code_search_text(text: str) -> str:
     text = safe_str(text).replace("\xa0", " ")
     text = re.sub(r"\s+", " ", text)
-    text = re.sub(r"\b(113R|108R|106R|006R|C13T|C12C|C33S)\s+(\d{4,8}[A-Z0-9]*)\b", r"\1\2", text, flags=re.I)
-    text = re.sub(r"\b(CLT|MLT|KX|TK|TN|DR|C)\s*-\s*([A-Z0-9]{2,})\b", r"\1-\2", text, flags=re.I)
+    text = re.sub(r"\b(113R|108R|106R|006R|013R|016|C13T|C12C|C33S)\s+(\d{4,8}[A-Z0-9]*)\b", r"\1\2", text, flags=re.I)
+    text = re.sub(r"\b(CLT|MLT|ML|KX|TK|TN|DR|T|C)\s*-\s*([A-Z0-9]{2,})\b", r"\1-\2", text, flags=re.I)
     return text.strip()
 
 
@@ -191,8 +201,8 @@ def _trim_compat_tail(value: str) -> str:
         value = value[: stop.start()].strip()
     value = re.split(r"(?:\.|\n\n)", value, maxsplit=1)[0]
     value = re.sub(
-        r"^(?:в\s+)?(?:многофункциональных|лазерных|струйных)?\s*"
-        r"(?:принтерах|мфу|устройствах|аппаратах)\s+",
+        r"^(?:в\s+)?(?:многофункциональных|лазерных|струйных|факсимильных)?\s*"
+        r"(?:принтерах|мфу|устройствах|аппаратах|факсах)\s+",
         "",
         value,
         flags=re.I,
