@@ -39,6 +39,7 @@ CODE_SCORE_PATTERNS: tuple[tuple[re.Pattern[str], int], ...] = (
     (re.compile(r"^(?:CF|CE|CB|CC|Q|W)\d", re.I), 100),
     (re.compile(r"^(?:106R|006R|108R|113R|013R)\d", re.I), 100),
     (re.compile(r"^016\d{6}$", re.I), 95),
+    (re.compile(r"^Canon\s+\d{3,4}$", re.I), 92),
     (re.compile(r"^(?:MLT-|CLT-|TK-|KX-FA|KX-FAT|C-?EXV|DR-|TN-|C13T|C12C|C33S|T-)", re.I), 95),
     (re.compile(r"^ML-D\d", re.I), 90),
     (re.compile(r"^ML-\d{4,5}[A-Z]\d?$", re.I), 85),
@@ -80,6 +81,14 @@ def _is_allowed_numeric_code(value: str) -> bool:
     return bool(re.fullmatch(r"016\d{6}", safe_str(value)))
 
 
+def _normalize_model_code(value: str) -> str:
+    value = safe_str(value)
+    if value.lower().startswith("canon "):
+        head, tail = value.split(None, 1)
+        return f"Canon {tail.strip()}"
+    return value
+
+
 def _code_score(code: str) -> int:
     code = safe_str(code)
     for rx, score in CODE_SCORE_PATTERNS:
@@ -101,7 +110,7 @@ def _first_code_from_params(params: Sequence[Tuple[str, str]]) -> str:
             score = _code_score(part)
             if score > best_score:
                 best_score = score
-                best_code = part
+                best_code = _normalize_model_code(part)
     return best_code
 
 
