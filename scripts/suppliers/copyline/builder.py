@@ -22,17 +22,32 @@ from suppliers.copyline.params_page import extract_page_params
 from suppliers.copyline.pictures import full_only_if_present, prefer_full_product_pictures
 
 
+BRAND_HINTS: tuple[tuple[str, str], ...] = (
+    (r"\bKonica[- ]?Minolta\b", "Konica-Minolta"),
+    (r"\bToshiba\b", "Toshiba"),
+    (r"\bRicoh\b", "Ricoh"),
+    (r"\bRICOH\b", "Ricoh"),
+    (r"\bPanasonic\b", "Panasonic"),
+    (r"\bXerox\b", "Xerox"),
+    (r"\bCanon\b", "Canon"),
+    (r"\bSamsung\b", "Samsung"),
+    (r"\bKyocera\b", "Kyocera"),
+    (r"\bBrother\b", "Brother"),
+    (r"\bEpson\b", "Epson"),
+    (r"\bLexmark\b", "Lexmark"),
+    (r"\bRISO\b", "RISO"),
+    (r"\bHP\b", "HP"),
+)
+
 
 def safe_str(x: object) -> str:
     return str(x).strip() if x is not None else ""
-
 
 
 def _mk_oid(sku: str) -> str:
     sku = safe_str(sku)
     sku = re.sub(r"[^A-Za-z0-9\-\._/]", "", sku)
     return "CL" + sku
-
 
 
 def _merge_params(*blocks: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
@@ -52,10 +67,8 @@ def _merge_params(*blocks: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
     return out
 
 
-
 def _is_numeric_model(value: str) -> bool:
     return bool(re.fullmatch(r"\d+", safe_str(value)))
-
 
 
 def _first_code_from_params(params: Sequence[Tuple[str, str]]) -> str:
@@ -69,6 +82,15 @@ def _first_code_from_params(params: Sequence[Tuple[str, str]]) -> str:
     return ""
 
 
+def _infer_vendor_from_text(text: str) -> str:
+    text = safe_str(text)
+    if not text:
+        return ""
+    for pattern, vendor in BRAND_HINTS:
+        if re.search(pattern, text, flags=re.I):
+            return vendor
+    return ""
+
 
 def _infer_vendor_from_compat(params: Sequence[Tuple[str, str]]) -> str:
     compat = ""
@@ -76,13 +98,7 @@ def _infer_vendor_from_compat(params: Sequence[Tuple[str, str]]) -> str:
         if safe_str(key) == "Совместимость":
             compat = safe_str(value)
             break
-    if not compat:
-        return ""
-    for vendor in ("HP", "Canon", "Xerox", "Samsung", "Panasonic", "Kyocera", "Brother", "Epson", "Lexmark", "Ricoh", "RISO"):
-        if re.search(rf"\b{re.escape(vendor)}\b", compat, flags=re.I):
-            return vendor
-    return ""
-
+    return _infer_vendor_from_text(compat)
 
 
 def _drop_weak_params(params: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
@@ -99,11 +115,9 @@ def _drop_weak_params(params: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]
     return out
 
 
-
 def _has_consumable_type(params: Sequence[Tuple[str, str]]) -> bool:
     consumable_types = {"Картридж", "Тонер-картридж", "Драм-картридж", "Девелопер", "Чернила"}
     return any(safe_str(k) == "Тип" and safe_str(v) in consumable_types for k, v in params)
-
 
 
 def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut | None:
@@ -136,7 +150,6 @@ def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut |
     if model:
         params = _merge_params(params, [("Модель", model)])
 
-    # Страховка: numeric-модель не должна доезжать в raw.
     current_model = ""
     for key, value in params:
         if safe_str(key) == "Модель":
@@ -154,6 +167,8 @@ def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut |
 
     if not vendor:
         vendor = _infer_vendor_from_compat(params)
+    if not vendor:
+        vendor = _infer_vendor_from_text(title)
 
     if vendor and _has_consumable_type(params):
         params = _merge_params(params, [("Для бренда", vendor)])
