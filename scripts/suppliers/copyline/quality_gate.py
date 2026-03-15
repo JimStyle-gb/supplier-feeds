@@ -7,6 +7,7 @@ CopyLine quality gate:
 - cosmetic issues считаются по offer_count и issue_count;
 - baseline используется только для отчёта;
 - gate проверяет прежде всего raw, потому что raw_must_be_clean=true.
+- v10: добавлены финальные CopyLine-правила под multi-code и broken compat normalization.
 """
 
 from __future__ import annotations
@@ -24,6 +25,42 @@ _WS_RE = re.compile(r"\s+")
 _DESC_HEADER_RE = re.compile(r"(?iu)^\s*(?:Технические\s+характеристики|Характеристики|Основные\s+характеристики)\s*:?")
 _COMPAT_FAMILY_RE = re.compile(r"(?iu)\b(?:LaserJet|Color\s+LaserJet|WorkForce|SureColor|EcoTank|Kyocera|Brother|Pantum|Xerox)\b")
 _PLACEHOLDER_RE = re.compile(r"(?i)placehold\.co/800x800/png\?text=No\+Photo")
+
+_TITLE_CODE_RX = re.compile(r"""(?ix)
+    \b(?:
+        CF\d{3,4}[A-Z]?|CE\d{3,4}[A-Z]?|CB\d{3,4}[A-Z]?|CC\d{3,4}[A-Z]?|Q\d{4}[A-Z]?|W\d{4}[A-Z0-9]{1,4}|
+        106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|013R\d{5}|016\d{6}|
+        TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|
+        ML-D\d+[A-Z]?|ML-\d{4,5}[A-Z]\d?|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|
+        C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|
+        C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|
+        50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H
+    )\b
+""")
+_MULTI_CANON_TAIL_RX = re.compile(r"(?i)\bCanon\s+\d{3,4}[A-Z]?(?:\s*/\s*\d{3,4}[A-Z]?)*\b")
+_BROKEN_COMPAT_RX = re.compile(r"(?i)\b([A-Za-z]+)\s+\1\b")
+
+
+def _title_codes(name: str) -> list[str]:
+    text = _norm_ws(name)
+    if not text:
+        return []
+    out = []
+    seen = set()
+    for m in _TITLE_CODE_RX.finditer(text):
+        token = _norm_ws(m.group(0)).upper().replace(' ', '')
+        if token and token not in seen:
+            seen.add(token)
+            out.append(token)
+    for m in _MULTI_CANON_TAIL_RX.finditer(text):
+        parts = re.split(r"\s*/\s*", re.sub(r"(?i)^canon\s+", "", _norm_ws(m.group(0))))
+        for part in parts:
+            token = f"Canon {_norm_ws(part)}"
+            if token and token not in seen:
+                seen.add(token)
+                out.append(token)
+    return out
+
 
 
 @dataclass(frozen=True)
@@ -117,10 +154,20 @@ def collect_quality_issues(feed_path: str) -> list[QualityIssue]:
 
         is_consumable = bool(re.match(r"(?iu)^(?:Картридж|Тонер-картридж|Драм-картридж|Drum|Чернила|Девелопер)", name) or typ in {"Картридж", "Тонер-картридж", "Драм-картридж", "Чернила", "Девелопер"})
         if is_consumable:
+            title_codes = _title_codes(name)
             if not compat and not _COMPAT_FAMILY_RE.search(desc):
                 issues.append(QualityIssue("cosmetic", "missing_compat", oid, name, "compat missing"))
             if not codes:
                 issues.append(QualityIssue("cosmetic", "missing_codes", oid, name, "codes missing"))
+            if title_codes and not codes:
+                issues.append(QualityIssue("cosmetic", "code_present_in_title_but_missing_in_params", oid, name, ", ".join(title_codes[:6])))
+            if _MULTI_CANON_TAIL_RX.search(name):
+                canon_title = [x for x in title_codes if x.lower().startswith("canon ")]
+                canon_codes = [x.strip() for x in re.split(r",\s*", codes) if x.strip().lower().startswith("canon ")]
+                if canon_title and len(canon_codes) < len(canon_title):
+                    issues.append(QualityIssue("cosmetic", "multi_code_parsing_incomplete", oid, name, f"title={', '.join(canon_title)} | params={codes or '-'}"))
+            if compat and _BROKEN_COMPAT_RX.search(compat):
+                issues.append(QualityIssue("cosmetic", "compat_normalization_broken", oid, name, compat[:160]))
 
     return issues
 
