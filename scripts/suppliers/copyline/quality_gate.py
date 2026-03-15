@@ -37,7 +37,7 @@ _TITLE_CODE_RX = re.compile(r"""(?ix)
         50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H
     )\b
 """)
-_MULTI_CANON_TAIL_RX = re.compile(r"(?i)\bCanon\s+\d{3,4}[A-Z]?(?:\s*/\s*\d{3,4}[A-Z]?)*\b")
+_MULTI_CANON_TAIL_RX = re.compile(r"(?i)\bCanon\s+(?:\d{3,4}[A-Z]?|[A-Z]{1,5}-?[A-Z0-9]{1,8})(?:\s*/\s*(?:\d{3,4}[A-Z]?|[A-Z]{1,5}-?[A-Z0-9]{1,8}))*\b")
 _BROKEN_COMPAT_RX = re.compile(r"(?i)\b([A-Za-z]+)\s+\1\b")
 
 
@@ -55,7 +55,10 @@ def _title_codes(name: str) -> list[str]:
     for m in _MULTI_CANON_TAIL_RX.finditer(text):
         parts = re.split(r"\s*/\s*", re.sub(r"(?i)^canon\s+", "", _norm_ws(m.group(0))))
         for part in parts:
-            token = f"Canon {_norm_ws(part)}"
+            part = _norm_ws(part)
+            if not part:
+                continue
+            token = f"Canon {part}"
             if token and token not in seen:
                 seen.add(token)
                 out.append(token)
@@ -166,6 +169,8 @@ def collect_quality_issues(feed_path: str) -> list[QualityIssue]:
                 canon_codes = [x.strip() for x in re.split(r",\s*", codes) if x.strip().lower().startswith("canon ")]
                 if canon_title and len(canon_codes) < len(canon_title):
                     issues.append(QualityIssue("cosmetic", "multi_code_parsing_incomplete", oid, name, f"title={', '.join(canon_title)} | params={codes or '-'}"))
+                    if any(re.search(r"(?i)\bCanon\s+[A-Z]{1,5}-?[A-Z0-9]{1,8}\b", x) for x in canon_title):
+                        issues.append(QualityIssue("cosmetic", "mixed_brand_tail_incomplete", oid, name, f"title={', '.join(canon_title)} | params={codes or '-'}"))
             if compat and _BROKEN_COMPAT_RX.search(compat):
                 issues.append(QualityIssue("cosmetic", "compat_normalization_broken", oid, name, compat[:160]))
 
