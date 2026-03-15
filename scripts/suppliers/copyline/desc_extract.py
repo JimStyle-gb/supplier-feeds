@@ -217,7 +217,7 @@ def _extract_single_brand_numeric_tail(title: str) -> list[str]:
     seen: set[str] = set()
     text = _normalize_code_search_text(title)
     for m in re.finditer(r"(?:^|/)\s*(Canon)\s+(\d{3,4}[A-Z]?)\b", text, re.I):
-        brand = _norm_ws(m.group(1))
+        brand = _norm_spaces(m.group(1))
         token = _normalize_code_token(m.group(2))
         if not token:
             continue
