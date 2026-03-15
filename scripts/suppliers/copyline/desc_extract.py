@@ -299,7 +299,10 @@ def _pick_best_codes(codes: Sequence[str]) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
     for code in codes:
-        norm = _normalize_code_token(code)
+        raw = _norm_spaces(code)
+        if not raw:
+            continue
+        norm = _normalize_code_token(raw) if not raw.lower().startswith("canon ") else f"Canon {_normalize_code_token(raw.split(None, 1)[1])}"
         if not norm or norm in seen:
             continue
         seen.add(norm)
