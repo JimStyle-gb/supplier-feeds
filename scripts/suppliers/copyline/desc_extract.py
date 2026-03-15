@@ -185,16 +185,20 @@ def _extract_title_canon_numeric_codes(title: str) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
     patterns = [
-        re.compile(r"\bCanon\s+((?:\d{3}[A-Z]?)(?:\s*/\s*\d{3}[A-Z]?)+)\b", re.I),
-        re.compile(r"(?:^|[/(,])\s*Canon\s+((?:\d{3}[A-Z]?)(?:\s*/\s*\d{3}[A-Z]?)+)\b", re.I),
+        re.compile(r"\bCanon\s+((?:\d{3,4}[A-Z]?)(?:\s*/\s*\d{3,4}[A-Z]?)+)\b", re.I),
+        re.compile(r"(?:^|[/(,])\s*Canon\s+((?:\d{3,4}[A-Z]?)(?:\s*/\s*\d{3,4}[A-Z]?)+)\b", re.I),
     ]
     for rx in patterns:
         for m in rx.finditer(title):
             for part in re.split(r"\s*/\s*", safe_str(m.group(1))):
                 token = _normalize_code_token(part)
-                if token and token not in seen:
-                    seen.add(token)
-                    out.append(token)
+                if not token:
+                    continue
+                branded = f"Canon {token}"
+                if branded in seen:
+                    continue
+                seen.add(branded)
+                out.append(branded)
     return out
 
 
@@ -221,13 +225,15 @@ def _extract_title_multicode_tail(title: str) -> list[str]:
         re.I,
     )
     for m in branded_tail_rx.finditer(title):
-        brand = safe_str(m.group(1))
+        brand = safe_str(m.group(1)).title()
         for part in re.split(r"\s*/\s*", safe_str(m.group(2))):
             token = _normalize_code_token(part)
             if not token:
                 continue
             if token.isdigit() and brand.casefold() != "canon":
                 continue
+            if brand.casefold() == "canon" and re.fullmatch(r"\d{3,4}[A-Z]?", token, re.I):
+                token = f"Canon {token}"
             if token not in seen:
                 seen.add(token)
                 out.append(token)
