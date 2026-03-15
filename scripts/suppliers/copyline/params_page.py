@@ -288,6 +288,29 @@ def _extract_single_brand_numeric_tail(title: str) -> list[str]:
     return out
 
 
+
+
+def _extract_title_brand_alpha_tail(title: str) -> list[str]:
+    title = _norm_spaces(title)
+    out: list[str] = []
+    seen: set[str] = set()
+    branded_tail_rx = re.compile(
+        r"(?:^|/)\s*(Canon)\s+((?:[A-Z]{1,5}-?[A-Z0-9]{1,8})(?:\s*/\s*[A-Z]{1,5}-?[A-Z0-9]{1,8}){0,5})\b",
+        re.I,
+    )
+    for m in branded_tail_rx.finditer(title):
+        brand = safe_str(m.group(1)).title()
+        for part in re.split(r"\s*/\s*", safe_str(m.group(2))):
+            token = _normalize_code_token(part)
+            if not token or re.fullmatch(r"\d{3,4}[A-Z]?", token, re.I):
+                continue
+            branded = f"{brand} {token}"
+            if branded not in seen:
+                seen.add(branded)
+                out.append(branded)
+    return out
+
+
 def _extract_title_multicode_tail(title: str) -> list[str]:
     title = _norm_spaces(title)
     out: list[str] = []
@@ -374,6 +397,7 @@ def _extract_codes(title: str, description: str) -> str:
     title_head, _title_tail = _split_title_body_parts(title)
     title_codes = _collect_codes_from_text(title_head or title, allow_numeric=True)
     title_codes.extend(_extract_title_multicode_tail(title))
+    title_codes.extend(_extract_title_brand_alpha_tail(title))
     title_codes.extend(_extract_single_brand_numeric_tail(title))
 
     desc_head = _strip_compat_zone(description)
