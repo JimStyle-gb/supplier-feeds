@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-15 17:45:44">
+<yml_catalog date="2026-03-15 18:18:29">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-15 17:45:44 (не было изменений)
+Время сборки (Алматы)                      | 2026-03-15 18:18:29
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -375,7 +375,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж TOP PRINT CE278A используется в принтерах серий HP LJ P1566, P1567, P1568, P1569, P1606, M1536, M1537, Canon MF4400, MF4410, MF4420, MF4412, MF4452, MF4450, MF4550, MF4570, D520. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ P1566, P1567, P1568, P1569, P1606, M1536, M1537, Canon MF4400, MF4410, MF4420, MF4412, MF4452, MF4450, MF4550, MF4570, D520</param>
-<param name="Коды расходников">CE278A</param>
+<param name="Коды расходников">CE278A, Canon 728</param>
 <param name="Модель">CE278A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -706,7 +706,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж ОЕМ Q6511X/Canon 710H используется в принтерах серий HP LJ 2410, 2420, 2430, Canon LBP3460. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 2410, 2420, 2430, Canon LBP3460</param>
-<param name="Коды расходников">Q6511X</param>
+<param name="Коды расходников">Q6511X, Canon 710H</param>
 <param name="Модель">Q6511X</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -1331,7 +1331,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Q6511A/Canon 710 используется в принтерах серий HP LJ 2410, 2420, 2430, Canon LBP3460. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 2410, 2420, 2430, Canon LBP3460</param>
-<param name="Коды расходников">Q6511A</param>
+<param name="Коды расходников">Q6511A, Canon 710</param>
 <param name="Модель">Q6511A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -1350,7 +1350,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium Q6511X/Canon 710H используется в принтерах серий HP LJ 2410, 2420, 2430, Canon LBP3460. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 2410, 2420, 2430, Canon LBP3460</param>
-<param name="Коды расходников">Q6511X</param>
+<param name="Коды расходников">Q6511X, Canon 710H</param>
 <param name="Модель">Q6511X</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -1383,7 +1383,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CB540А используется в принтерах серий HP Color LaserJet CP1210, CP1215, CP1217, CP1510, CP1515, CP1518, CM1300, CM1312. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP1210, CP1215, CP1217, CP1510, CP1515, CP1518, CM1300, CM1312</param>
-<param name="Коды расходников">CB540A</param>
+<param name="Коды расходников">CB540A, Canon 716</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">CB540A</param>
 <param name="Для бренда">HP</param>
@@ -1401,7 +1401,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CB541А используется в принтерах серий HP Color LaserJet CP1210, CP1215, CP1217, CP1510, CP1515, CP1518, CM1300, CM1312. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP1210, CP1215, CP1217, CP1510, CP1515, CP1518, CM1300, CM1312</param>
-<param name="Коды расходников">CB541A</param>
+<param name="Коды расходников">CB541A, Canon 716</param>
 <param name="Модель">CB541A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -1418,7 +1418,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CB542А используется в принтерах серий HP Color LaserJet CP1210, CP1215, CP1217, CP1510, CP1515, CP1518, CM1300, CM1312. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP1210, CP1215, CP1217, CP1510, CP1515, CP1518, CM1300, CM1312</param>
-<param name="Коды расходников">CB542A</param>
+<param name="Коды расходников">CB542A, Canon 716</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">CB542A</param>
 <param name="Для бренда">HP</param>
@@ -1437,7 +1437,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CB543А используется в принтерах серий HP Color LaserJet CP1210, CP1215, CP1217, CP1510, CP1515, CP1518, CM1300, CM1312. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP1210, CP1215, CP1217, CP1510, CP1515, CP1518, CM1300, CM1312</param>
-<param name="Коды расходников">CB543A</param>
+<param name="Коды расходников">CB543A, Canon 716</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">CB543A</param>
 <param name="Для бренда">HP</param>
@@ -1970,7 +1970,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print CF283X используется в принтерах серий HP LaserJet Pro M201, M225, Canon i-SENSYS MF211, MF212w, MF216n, MF217w, MF226dn, MF229dw, MF231, MF232w, MF237w, MF244dw, MF247dw, MF249dw, LBP151dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LaserJet Pro M201, HP LaserJet M225, Canon i-SENSYS MF211, MF212w, MF216n, MF217w, MF226dn, MF229dw, MF231, MF232w, MF237w, MF244dw, MF247dw, MF249dw, LBP151dw</param>
-<param name="Коды расходников">CF283X</param>
+<param name="Коды расходников">CF283X, Canon 737</param>
 <param name="Модель">CF283X</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2022,7 +2022,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CC530A используется в принтерах серий HP Color LaserJet CP2020, CP2025, CM2320. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP2020, CP2025, CM2320</param>
-<param name="Коды расходников">CC530A</param>
+<param name="Коды расходников">CC530A, Canon 718</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">CC530A</param>
 <param name="Для бренда">HP</param>
@@ -2041,7 +2041,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print CE310A/Canon 729 используется в принтерах серий HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A; Canon i-SENSYS LBP7010C, LBP7018C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A, Canon i-SENSYS LBP7010C, LBP7018C</param>
-<param name="Коды расходников">CE310A</param>
+<param name="Коды расходников">CE310A, Canon 729</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">CE310A</param>
 <param name="Для бренда">HP</param>
@@ -2060,7 +2060,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CE311A/Canon 729 используется в принтерах серий HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A; Canon i-SENSYS LBP7010C, LBP7018C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A, Canon i-SENSYS LBP7010C, LBP7018C</param>
-<param name="Коды расходников">CE311A</param>
+<param name="Коды расходников">CE311A, Canon 729</param>
 <param name="Модель">CE311A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2078,7 +2078,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CE312A используется в принтерах серий HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A; Canon i-SENSYS LBP7010C, LBP7018C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A, Canon i-SENSYS LBP7010C, LBP7018C</param>
-<param name="Коды расходников">CE312A</param>
+<param name="Коды расходников">CE312A, Canon 729</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">CE312A</param>
 <param name="Для бренда">HP</param>
@@ -2097,7 +2097,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CE313A/Canon 729 используется в принтерах серий HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A; Canon i-SENSYS LBP7010C, LBP7018C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A, Canon i-SENSYS LBP7010C, LBP7018C</param>
-<param name="Коды расходников">CE313A</param>
+<param name="Коды расходников">CE313A, Canon 729</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">CE313A</param>
 <param name="Для бренда">HP</param>
@@ -2189,7 +2189,7 @@ URL поставщика                             | https://copyline.kz/goods
 Черный картридж Euro Print Premium Q3960A/Canon 701 используется в принтерах серий HP Color LaserJet 2550, 2550L, 2550N, 2820, 2830, 2840, Canon i-SENSYS MF8180C, LBP5200. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 2550, HP Color LaserJet 2550L, HP Color LaserJet 2550N, HP Color LaserJet 2820, HP Color LaserJet 2830, HP Color LaserJet 2840, Canon i-SENSYS MF8180C, LBP5200</param>
-<param name="Коды расходников">Q3960A</param>
+<param name="Коды расходников">Q3960A, Canon 701</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">Q3960A</param>
 <param name="Для бренда">HP</param>
@@ -2207,7 +2207,7 @@ URL поставщика                             | https://copyline.kz/goods
 Пурпурный картридж Euro Print Premium Q3963A/Canon 701 используется в принтерах серий HP Color LaserJet 2550, 2550L, 2550N, 2820, 2830, 2840, Canon i-SENSYS MF8180C, LBP5200. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 2550, HP Color LaserJet 2550L, HP Color LaserJet 2550N, HP Color LaserJet 2820, HP Color LaserJet 2830, HP Color LaserJet 2840, Canon i-SENSYS MF8180C, LBP5200</param>
-<param name="Коды расходников">Q3963A</param>
+<param name="Коды расходников">Q3963A, Canon 701</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">Q3963A</param>
 <param name="Для бренда">HP</param>
@@ -2225,7 +2225,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium Q6000A/Canon 707 используется в принтерах серий HP Color LaserJet 1600, 2600, 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000</param>
-<param name="Коды расходников">Q6000A</param>
+<param name="Коды расходников">Q6000A, Canon 707</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">Q6000A</param>
 <param name="Для бренда">HP</param>
@@ -2243,7 +2243,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium Q6001A/Canon 707 используется в принтерах серий HP Color LaserJet 1600, 2600, 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000</param>
-<param name="Коды расходников">Q6001A</param>
+<param name="Коды расходников">Q6001A, Canon 707</param>
 <param name="Модель">Q6001A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2260,7 +2260,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium Q6003A/Canon 707 используется в принтерах серий HP Color LaserJet 1600, 2600, 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000</param>
-<param name="Коды расходников">Q6003A</param>
+<param name="Коды расходников">Q6003A, Canon 707</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">Q6003A</param>
 <param name="Для бренда">HP</param>
@@ -2384,7 +2384,7 @@ URL поставщика                             | https://copyline.kz/goods
 Желтый картридж Euro Print Premium Q6472A/Canon 711 используется в принтерах серий HP Color LaserJet 3600, 3600N, 3600DN, Canon i-SENSYS LBP5300, LBP5360. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 3600, HP Color LaserJet 3600N, HP Color LaserJet 3600DN, Canon i-SENSYS LBP5300, LBP5360</param>
-<param name="Коды расходников">Q6472A</param>
+<param name="Коды расходников">Q6472A, Canon 711</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">Q6472A</param>
 <param name="Для бренда">HP</param>
@@ -2821,7 +2821,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Для принтеров: HP LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020. Новый картридж Top print CE285A/Canon 725 по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CE285A</param>
+<param name="Коды расходников">CE285A, Canon 725</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3291,7 +3291,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business CE505A используется в принтерах серий HP LJ 2050, P2055, Canon LBP6300, LBP6650, LBP6670, LBP6680, MF5850, MF5840, MF5940, MF5980. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 2050, P2055, Canon LBP6300, LBP6650, LBP6670, LBP6680, MF5850, MF5840, MF5940, MF5980</param>
-<param name="Коды расходников">CE505A</param>
+<param name="Коды расходников">CE505A, Canon 719</param>
 <param name="Модель">CE505A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3505,7 +3505,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM Q6001A/Canon 707 используется в принтерах серий HP Color LaserJet 1600, 2600, 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000</param>
-<param name="Коды расходников">Q6001A</param>
+<param name="Коды расходников">Q6001A, Canon 707</param>
 <param name="Модель">Q6001A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -4160,7 +4160,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business CE278A используется в принтерах серий HP LJ P1566, P1567, P1568, P1569, P1606, M1536, M1537, Canon MF4400, MF4410, MF4420, MF4412, MF4452, MF4450, MF4550, MF4570, D520. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ P1566, P1567, P1568, P1569, P1606, M1536, M1537, Canon MF4400, MF4410, MF4420, MF4412, MF4452, MF4450, MF4550, MF4570, D520</param>
-<param name="Коды расходников">CE278A</param>
+<param name="Коды расходников">CE278A, Canon 728</param>
 <param name="Модель">CE278A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -5177,7 +5177,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business CE505X используется в принтерах серий HP LJ 2050, P2055, Canon LBP6300, LBP6650. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 2050, P2055, Canon LBP6300, LBP6650</param>
-<param name="Коды расходников">CE505X</param>
+<param name="Коды расходников">CE505X, Canon 719H</param>
 <param name="Модель">CE505X</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -5406,6 +5406,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Canon 737 используется в принтерах серий Canon i-SENSYS MF211, i-SENSYS MF212w, i-SENSYS MF216n, i-SENSYS MF217w, i-SENSYS MF226dn, i-SENSYS MF229dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS MF211, i-SENSYS MF212w, i-SENSYS MF216n, i-SENSYS MF217w, i-SENSYS MF226dn, i-SENSYS MF229dw</param>
+<param name="Коды расходников">Canon 737</param>
+<param name="Модель">Canon 737</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -6371,7 +6373,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM CE310A используется в принтерах серий HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A; Canon i-SENSYS LBP7010C, LBP7018C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A, Canon i-SENSYS LBP7010C, LBP7018C</param>
-<param name="Коды расходников">CE310A</param>
+<param name="Коды расходников">CE310A, Canon 729</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">CE310A</param>
 <param name="Для бренда">HP</param>
@@ -6389,7 +6391,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM CE311A используется в принтерах серий HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A; Canon i-SENSYS LBP7010C, LBP7018C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A, Canon i-SENSYS LBP7010C, LBP7018C</param>
-<param name="Коды расходников">CE311A</param>
+<param name="Коды расходников">CE311A, Canon 729</param>
 <param name="Модель">CE311A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -6406,7 +6408,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM CE312A используется в принтерах серий HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A; Canon i-SENSYS LBP7010C, LBP7018C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A, Canon i-SENSYS LBP7010C, LBP7018C</param>
-<param name="Коды расходников">CE312A</param>
+<param name="Коды расходников">CE312A, Canon 729</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">CE312A</param>
 <param name="Для бренда">HP</param>
@@ -6424,7 +6426,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM CE313A используется в принтерах серий HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A; Canon i-SENSYS LBP7010C, LBP7018C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP1021, CP1023, CP1025, CP1026, CP1027, CP1028, Pro100 M175A, Pro200 M275A, Canon i-SENSYS LBP7010C, LBP7018C</param>
-<param name="Коды расходников">CE313A</param>
+<param name="Коды расходников">CE313A, Canon 729</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">CE313A</param>
 <param name="Для бренда">HP</param>
@@ -6606,7 +6608,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж ОЕМ CE505A используется в принтерах серий HP LJ P2035, P2055, Canon LBP6300, LBP6650, LBP6670, LBP6680, MF5850, MF5840, MF5940, MF5980. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ P2035, P2055, Canon LBP6300, LBP6650, LBP6670, LBP6680, MF5850, MF5840, MF5940, MF5980</param>
-<param name="Коды расходников">CE505A</param>
+<param name="Коды расходников">CE505A, Canon 719</param>
 <param name="Модель">CE505A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -7654,7 +7656,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж ON Canon 737 используется в принтерах серий Canon i-SENSYS MF211, i-SENSYS MF212w, i-SENSYS MF216n, i-SENSYS MF217w, i-SENSYS MF226dn, i-SENSYS MF229dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS MF211, i-SENSYS MF212w, i-SENSYS MF216n, i-SENSYS MF217w, i-SENSYS MF226dn, i-SENSYS MF229dw</param>
-<param name="Коды расходников">CF283</param>
+<param name="Коды расходников">CF283, Canon 737</param>
 <param name="Модель">CF283</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -8035,7 +8037,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CC531A используется в принтерах серий HP Color LaserJet CP2020, CP2025, CM2320. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP2020, CP2025, CM2320</param>
-<param name="Коды расходников">CC531A</param>
+<param name="Коды расходников">CC531A, Canon 718</param>
 <param name="Модель">CC531A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -8052,7 +8054,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CC532A используется в принтерах серий HP Color LaserJet CP2020, CP2025, CM2320. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP2020, CP2025, CM2320</param>
-<param name="Коды расходников">CC532A</param>
+<param name="Коды расходников">CC532A, Canon 718</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">CC532A</param>
 <param name="Для бренда">HP</param>
@@ -8070,7 +8072,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium CC533A используется в принтерах серий HP Color LaserJet CP2020, CP2025, CM2320. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet CP2020, CP2025, CM2320</param>
-<param name="Коды расходников">CC533A</param>
+<param name="Коды расходников">CC533A, Canon 718</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Модель">CC533A</param>
 <param name="Для бренда">HP</param>
@@ -8161,7 +8163,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print CE285A используется в принтерах серий HP LJ Pro M1132, M1212nf, M1214nfh, M1217nfw, P1102, P1102s, P1102w, Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, MF3010EX. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ Pro M1132, M1212nf, M1214nfh, M1217nfw, P1102, P1102s, P1102w, Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, MF3010EX</param>
-<param name="Коды расходников">CE285A</param>
+<param name="Коды расходников">CE285A, Canon 725</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -9319,7 +9321,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж ON CE278A используется в принтерах серий HP LJ P1566, P1567, P1568, P1569, P1606, M1536, M1537, Canon MF4400, MF4410, MF4420, MF4412, MF4452, MF4450, MF4550, MF4570, D520. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ P1566, P1567, P1568, P1569, P1606, M1536, M1537, Canon MF4400, MF4410, MF4420, MF4412, MF4452, MF4450, MF4550, MF4570, D520</param>
-<param name="Коды расходников">CE278A</param>
+<param name="Коды расходников">CE278A, Canon 728</param>
 <param name="Модель">CE278A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -9335,7 +9337,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Для принтеров: HP LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020. Новый картридж ОЕМ CE285A/435A/436A/Canon 725 по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CE285A</param>
+<param name="Коды расходников">CE285A, Canon 725</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -9354,7 +9356,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж TOP PRINT CE505A используется в принтерах серий HP LJ 2050, P2055, Canon LBP6300, LBP6650, LBP6670, LBP6680, MF5850, MF5840, MF5940, MF5980. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 2050, P2055, Canon LBP6300, LBP6650, LBP6670, LBP6680, MF5850, MF5840, MF5940, MF5980</param>
-<param name="Коды расходников">CE505A</param>
+<param name="Коды расходников">CE505A, Canon 719</param>
 <param name="Модель">CE505A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -9373,7 +9375,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print CE505A/CF280A/Canon 719 используется в принтерах серий HP LJ P2035, P2055 Pro 400 M401, M425, Canon LBP6300, LBP6650, LBP6670, LBP6680, MF5850, MF5840, MF5940, MF5980. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ P2035, P2055 Pro 400 M401, M425, Canon LBP6300, LBP6650, LBP6670, LBP6680, MF5850, MF5840, MF5940, MF5980</param>
-<param name="Коды расходников">CE505A, CF280A</param>
+<param name="Коды расходников">CE505A, CF280A, Canon 719</param>
 <param name="Модель">CF280A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -9392,7 +9394,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж ON CE505A/CF280A/Canon 719 используется в принтерах серий HP LJ P2035, P2055 Pro 400 M401, M425, Canon LBP6300, LBP6650, LBP6670, LBP6680, MF5850, MF5840, MF5940, MF5980. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ P2035, P2055 Pro 400 M401, M425, Canon LBP6300, LBP6650, LBP6670, LBP6680, MF5850, MF5840, MF5940, MF5980</param>
-<param name="Коды расходников">CE505A, CF280A</param>
+<param name="Коды расходников">CE505A, CF280A, Canon 719</param>
 <param name="Модель">CF280A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -9411,7 +9413,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж TOP PRINT CE505A/CF280A/Canon 719 используется в принтерах серий HP LJ P2035, P2055 Pro 400 M401, M425, Canon LBP6300, LBP6650, LBP6670, LBP6680, MF5850, MF5840, MF5940, MF5980. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ P2035, P2055 Pro 400 M401, M425, Canon LBP6300, LBP6650, LBP6670, LBP6680, MF5850, MF5840, MF5940, MF5980</param>
-<param name="Коды расходников">CE505A, CF280A</param>
+<param name="Коды расходников">CE505A, CF280A, Canon 719</param>
 <param name="Модель">CF280A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -9428,7 +9430,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium Q6002A/Canon 707 используется в принтерах серий HP Color LaserJet 1600, 2600, 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000</param>
-<param name="Коды расходников">Q6002A</param>
+<param name="Коды расходников">Q6002A, Canon 707</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">Q6002A</param>
 <param name="Для бренда">HP</param>
@@ -9776,7 +9778,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Для принтеров: HP LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020. Новый картридж ON CE285A/Canon 725 по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CE285A</param>
+<param name="Коды расходников">CE285A, Canon 725</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -10858,7 +10860,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером Euro Print Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C1225, Canon imageRUNNER C1225iF, imageCLASS MF810C, MF820C</param>
+<param name="Коды расходников">Canon 034</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">Canon 034</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -10874,6 +10878,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с голубым тонером Euro Print Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C1225, Canon imageRUNNER C1225iF, imageCLASS MF810C, MF820C</param>
+<param name="Коды расходников">Canon 034</param>
+<param name="Модель">Canon 034</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -10889,7 +10895,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с пурпурным тонером Euro Print Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C1225, Canon imageRUNNER C1225iF, imageCLASS MF810C, MF820C</param>
+<param name="Коды расходников">Canon 034</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">Canon 034</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -10905,7 +10913,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с желтым тонером Euro Print Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C1225, Canon imageRUNNER C1225iF, imageCLASS MF810C, MF820C</param>
+<param name="Коды расходников">Canon 034</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">Canon 034</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -10921,7 +10931,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Canon 045H Black используется в принтерах и МФУ серий Canon i-SENSYS LBP610C, MF630C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP610C, MF630C</param>
+<param name="Коды расходников">Canon 045H</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">Canon 045H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -10937,6 +10949,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Canon 045H Cyan используется в принтерах и МФУ серий Canon i-SENSYS LBP610C, MF630C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP610C, MF630C</param>
+<param name="Коды расходников">Canon 045H</param>
+<param name="Модель">Canon 045H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -10952,7 +10966,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Canon 045H Magenta используется в принтерах и МФУ серий Canon i-SENSYS LBP610C, MF630C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP610C, MF630C</param>
+<param name="Коды расходников">Canon 045H</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">Canon 045H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -10968,7 +10984,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Canon 045H Yellow используется в принтерах и МФУ серий Canon i-SENSYS LBP610C, MF630C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP610C, MF630C</param>
+<param name="Коды расходников">Canon 045H</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">Canon 045H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -11269,7 +11287,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Canon 046H Black используется в принтерах и МФУ серий Canon i-SENSYS LBP650C, MF730C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP650C, MF730C</param>
+<param name="Коды расходников">Canon 046H</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">Canon 046H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -11285,6 +11305,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Canon 046H Cyan используется в принтерах и МФУ серий Canon i-SENSYS LBP650C, MF730C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP650C, MF730C</param>
+<param name="Коды расходников">Canon 046H</param>
+<param name="Модель">Canon 046H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -11300,7 +11322,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Canon 046H Magenta используется в принтерах и МФУ серий Canon i-SENSYS LBP650C, MF730C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP650C, MF730C</param>
+<param name="Коды расходников">Canon 046H</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">Canon 046H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -11316,7 +11340,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Canon 046H Yellow используется в принтерах и МФУ серий Canon i-SENSYS LBP650C, MF730C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP650C, MF730C</param>
+<param name="Коды расходников">Canon 046H</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">Canon 046H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -11998,6 +12024,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Canon 052 используется в принтерах серий Canon i-SENSYS MF421dw, i-SENSYS MF426dw, i-SENSYS MF428x, i-SENSYS MF429x, i-SENSYS LBP212dw, i-SENSYS LBP214dw, i-SENSYS LBP215x. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS MF421dw, i-SENSYS MF426dw, i-SENSYS MF428x, i-SENSYS MF429x, i-SENSYS LBP212dw, i-SENSYS LBP214dw, i-SENSYS LBP215x</param>
+<param name="Коды расходников">Canon 052</param>
+<param name="Модель">Canon 052</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -12521,6 +12549,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Canon 039 используется в принтерах серий Canon i-SENSYS LBP351x, LBP352x. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP351x, LBP352x</param>
+<param name="Коды расходников">Canon 039</param>
+<param name="Модель">Canon 039</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -12994,6 +13024,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print NEW Canon 737 используется в принтерах серий Canon i-SENSYS MF211, i-SENSYS MF212w, i-SENSYS MF216n, i-SENSYS MF217w, i-SENSYS MF226dn, i-SENSYS MF229dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS MF211, i-SENSYS MF212w, i-SENSYS MF216n, i-SENSYS MF217w, i-SENSYS MF226dn, i-SENSYS MF229dw</param>
+<param name="Коды расходников">Canon 737</param>
+<param name="Модель">Canon 737</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -13010,7 +13042,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print NEW CF210A (131A) /Canon 731 используется в принтерах серий HP Color LaserJet Pro 200 M251/ M276. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet Pro 200 M251/ M276</param>
-<param name="Коды расходников">CF210A</param>
+<param name="Коды расходников">CF210A, Canon 731</param>
 <param name="Цвет">Чёрный</param>
 <param name="Модель">CF210A</param>
 <param name="Для бренда">HP</param>
@@ -13161,6 +13193,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print NEW Canon 052 используется в принтерах серий Canon i-SENSYS MF421dw, i-SENSYS MF426dw, i-SENSYS MF428x, i-SENSYS MF429x, i-SENSYS LBP212dw, i-SENSYS LBP214dw, i-SENSYS LBP215x. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS MF421dw, i-SENSYS MF426dw, i-SENSYS MF428x, i-SENSYS MF429x, i-SENSYS LBP212dw, i-SENSYS LBP214dw, i-SENSYS LBP215x</param>
+<param name="Коды расходников">Canon 052</param>
+<param name="Модель">Canon 052</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -13269,7 +13303,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print NEW Q6002A/Canon 707 используется в принтерах серий HP Color LaserJet 1600, 2600, 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 1600, HP Color LaserJet 2600, HP Color LaserJet 2605, CM1015, CM1017, Canon i-SENSYS LBP5000, LBP5100, Laser Shot LBP5000</param>
-<param name="Коды расходников">Q6002A</param>
+<param name="Коды расходников">Q6002A, Canon 707</param>
 <param name="Цвет">Желтый</param>
 <param name="Модель">Q6002A</param>
 <param name="Для бренда">HP</param>
@@ -13288,6 +13322,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print NEW Canon 045H Cyan используется в принтерах и МФУ серий Canon i-SENSYS LBP610C, MF630C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP610C, MF630C</param>
+<param name="Коды расходников">Canon 045H</param>
+<param name="Модель">Canon 045H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -13304,7 +13340,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print NEW Canon 045H Magenta используется в принтерах и МФУ серий Canon i-SENSYS LBP610C, MF630C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP610C, MF630C</param>
+<param name="Коды расходников">Canon 045H</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">Canon 045H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -13321,7 +13359,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print NEW Canon 045H Yellow используется в принтерах и МФУ серий Canon i-SENSYS LBP610C, MF630C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP610C, MF630C</param>
+<param name="Коды расходников">Canon 045H</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">Canon 045H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -13387,6 +13427,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 047 используется в принтерах серий Canon i-SENSYS LBP112, LBP113w, MF112, MF113w. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP112, LBP113w, MF112, MF113w</param>
+<param name="Коды расходников">Canon 047</param>
+<param name="Модель">Canon 047</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -13469,7 +13511,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print CF226A/Canon 052 используется в принтерах серий HP LaserJet Pro M402d, M402dn, M402n, M426dw, M426fdn, M426fdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LaserJet Pro M402d, HP LaserJet M402dn, HP LaserJet M402n, HP LaserJet M426dw, HP LaserJet M426fdn, HP LaserJet M426fdw</param>
-<param name="Коды расходников">CF226A</param>
+<param name="Коды расходников">CF226A, Canon 052</param>
 <param name="Модель">CF226A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -13487,6 +13529,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 051H используется в принтерах серий Canon i-SENSYS LBP162dw, MF264dw, MF267dw, MF269dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP162dw, MF264dw, MF267dw, MF269dw</param>
+<param name="Коды расходников">Canon 051H</param>
+<param name="Модель">Canon 051H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -13778,6 +13822,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 054H Cyan используется в принтерах и МФУ серий Canon i-SENSYS LBP620C, MF640C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP620C, MF640C</param>
+<param name="Коды расходников">Canon 054H</param>
+<param name="Модель">Canon 054H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -13793,7 +13839,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 054H Magenta используется в принтерах и МФУ серий Canon i-SENSYS LBP620C, MF640C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP620C, MF640C</param>
+<param name="Коды расходников">Canon 054H</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">Canon 054H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -13809,7 +13857,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 054H Yellow используется в принтерах и МФУ серий Canon i-SENSYS LBP620C, MF640C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP620C, MF640C</param>
+<param name="Коды расходников">Canon 054H</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">Canon 054H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -13825,7 +13875,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 054H Black используется в принтерах и МФУ серий Canon i-SENSYS LBP620C, MF640C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP620C, MF640C</param>
+<param name="Коды расходников">Canon 054H</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">Canon 054H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -14247,7 +14299,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 055H (без чипа) Black используется в принтерах и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746</param>
+<param name="Коды расходников">Canon 055H</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">Canon 055H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -14263,6 +14317,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 055H (без чипа) Cyan используется в принтерах и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746</param>
+<param name="Коды расходников">Canon 055H</param>
+<param name="Модель">Canon 055H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -14278,7 +14334,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 055H (без чипа) Yellow используется в принтерах и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746</param>
+<param name="Коды расходников">Canon 055H</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">Canon 055H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -14294,7 +14352,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 055H (без чипа) Magenta используется в принтерах и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746</param>
+<param name="Коды расходников">Canon 055H</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">Canon 055H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -14312,6 +14372,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 057H (без чипа) используется в принтерах серий Canon i-SENSYS MF443dw, i-SENSYS MF445dw, i-SENSYS MF446x, i-SENSYS MF449x, i-SENSYS LBP223dw, i-SENSYS LBP226dw, i-SENSYS LBP228x. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS MF443dw, i-SENSYS MF445dw, i-SENSYS MF446x, i-SENSYS MF449x, i-SENSYS LBP223dw, i-SENSYS LBP226dw, i-SENSYS LBP228x</param>
+<param name="Коды расходников">Canon 057H</param>
+<param name="Модель">Canon 057H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -14398,6 +14460,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print Canon 049 применяется в принтерах Canon LBP112, LBP113W. Ресурс печати - 12 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Canon LBP112, LBP113W</param>
+<param name="Коды расходников">Canon 049</param>
+<param name="Модель">Canon 049</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -14413,6 +14477,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print Canon 051 применяется в принтерах Canon i-SENSYS LBP162dw, MF269dw, MF267dw, MF264dw. Ресурс печати - 23 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP162dw, MF269dw, MF267dw, MF264dw</param>
+<param name="Коды расходников">Canon 051</param>
+<param name="Модель">Canon 051</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -15057,7 +15123,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print CF218A/Canon 047 используется в принтерах серий HP LaserJet Pro M132a, M132fn, M132fw, M132nw, M104a, M104w. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LaserJet Pro M132a, HP LaserJet M132fn, HP LaserJet M132fw, HP LaserJet M132nw, HP LaserJet M104a, HP LaserJet M104w</param>
-<param name="Коды расходников">CF218A</param>
+<param name="Коды расходников">CF218A, Canon 047</param>
 <param name="Модель">CF218A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -15074,7 +15140,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана Euro Print CF219A/Canon 049 используется в принтерах серий HP LaserJet Pro M132a, M132fn, M132fw, M132nw, M104a, M104w, M102a, M102w, M130a, M130fn, M130fw, M130nw; Canon i-Sensys LBP112, LBP113w, MF112, MF113w. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LaserJet Pro M132a, HP LaserJet M132fn, HP LaserJet M132fw, HP LaserJet M132nw, HP LaserJet M104a, HP LaserJet M104w, HP LaserJet M102a, HP LaserJet M102w, HP LaserJet M130a, HP LaserJet M130fn, HP LaserJet M130fw, HP LaserJet M130nw, Canon i-Sensys LBP112, LBP113w, MF112, MF113w</param>
-<param name="Коды расходников">CF219A</param>
+<param name="Коды расходников">CF219A, Canon 049</param>
 <param name="Модель">CF219A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -15091,7 +15157,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print CF230A/Canon 051 используется в принтерах серий HP LaserJet Pro M227fdn, M227fdw, M227sdn, M203dn, M203dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LaserJet Pro M227fdn, HP LaserJet M227fdw, HP LaserJet M227sdn, HP LaserJet M203dn, HP LaserJet M203dw</param>
-<param name="Коды расходников">CF230A</param>
+<param name="Коды расходников">CF230A, Canon 051</param>
 <param name="Модель">CF230A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -15108,7 +15174,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print CF230X/Canon 051H используется в принтерах серий HP LaserJet Pro M227fdn, M227fdw, M227sdn, M203dn, M203dw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LaserJet Pro M227fdn, HP LaserJet M227fdw, HP LaserJet M227sdn, HP LaserJet M203dn, HP LaserJet M203dw</param>
-<param name="Коды расходников">CF230X</param>
+<param name="Коды расходников">CF230X, Canon 051H</param>
 <param name="Модель">CF230X</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -15125,7 +15191,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print CF259A/Canon 057 используется в принтерах серий HP LaserJet Pro M304a, M404dn, M404dw, M404n, M428dw, M428fdn, M428fdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LaserJet Pro M304a, HP LaserJet M404dn, HP LaserJet M404dw, HP LaserJet M404n, HP LaserJet M428dw, HP LaserJet M428fdn, HP LaserJet M428fdw</param>
-<param name="Коды расходников">CF259A</param>
+<param name="Коды расходников">CF259A, Canon 057</param>
 <param name="Модель">CF259A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -15142,7 +15208,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print CF259X/Canon 057H используется в принтерах серий HP LaserJet Pro M304a, M404dn, M404dw, M404n, M428dw, M428fdn, M428fdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LaserJet Pro M304a, HP LaserJet M404dn, HP LaserJet M404dw, HP LaserJet M404n, HP LaserJet M428dw, HP LaserJet M428fdn, HP LaserJet M428fdw</param>
-<param name="Коды расходников">CF259X</param>
+<param name="Коды расходников">CF259X, Canon 057H</param>
 <param name="Модель">CF259X</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -15412,7 +15478,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print CF289A/Canon 056 без чипа используется в принтерах серий HP LaserJet Enterprise M507dn, M507n, M507x, M528dn, M528f, M528c, M528z. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LaserJet Enterprise M507dn, HP LaserJet M507n, HP LaserJet M507x, HP LaserJet M528dn, HP LaserJet M528f, HP LaserJet M528c, HP LaserJet M528z</param>
-<param name="Коды расходников">CF289A</param>
+<param name="Коды расходников">CF289A, Canon 056</param>
 <param name="Модель">CF289A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -15429,7 +15495,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print CF289X/Canon 056H без чипа используется в принтерах серий HP LaserJet Enterprise M507dn, M507n, M507x, M528dn, M528f, M528c, M528z. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LaserJet Enterprise M507dn, HP LaserJet M507n, HP LaserJet M507x, HP LaserJet M528dn, HP LaserJet M528f, HP LaserJet M528c, HP LaserJet M528z</param>
-<param name="Коды расходников">CF289X</param>
+<param name="Коды расходников">CF289X, Canon 056H</param>
 <param name="Модель">CF289X</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -17303,7 +17369,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж с желтым тонером OEM Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Canon imageRUNNER C1225, Canon imageRUNNER C1225iF, imageCLASS MF810C, MF820C</param>
+<param name="Коды расходников">Canon 034</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">Canon 034</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -17498,7 +17566,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 069 (без чипа) Black используется в принтерах и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw</param>
+<param name="Коды расходников">Canon 069</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">Canon 069</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -17515,6 +17585,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 069 (без чипа) Cyan используется в принтерах и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw</param>
+<param name="Коды расходников">Canon 069</param>
+<param name="Модель">Canon 069</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -17531,7 +17603,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 069 (без чипа) Magenta используется в принтерах и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw</param>
+<param name="Коды расходников">Canon 069</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">Canon 069</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -17548,7 +17622,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 069 (без чипа) Yellow используется в принтерах и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw</param>
+<param name="Коды расходников">Canon 069</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">Canon 069</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -18304,7 +18380,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 067 Black используется в принтерах и МФУ серий Canon i-SENSYS LBP631Cw, LBP633Cdw, MF651Cw, MF655Cw, MF655Cdw, MF657Cw, MF657Cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP631Cw, LBP633Cdw, MF651Cw, MF655Cw, MF655Cdw, MF657Cw, MF657Cdw</param>
+<param name="Коды расходников">Canon 067</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">Canon 067</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -18320,6 +18398,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 067 Cyan используется в принтерах и МФУ серий Canon i-SENSYS LBP631Cw, LBP633Cdw, MF651Cw, MF655Cw, MF655Cdw, MF657Cw, MF657Cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP631Cw, LBP633Cdw, MF651Cw, MF655Cw, MF655Cdw, MF657Cw, MF657Cdw</param>
+<param name="Коды расходников">Canon 067</param>
+<param name="Модель">Canon 067</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -18335,7 +18415,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 067 Magenta используется в принтерах и МФУ серий Canon i-SENSYS LBP631Cw, LBP633Cdw, MF651Cw, MF655Cw, MF655Cdw, MF657Cw, MF657Cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP631Cw, LBP633Cdw, MF651Cw, MF655Cw, MF655Cdw, MF657Cw, MF657Cdw</param>
+<param name="Коды расходников">Canon 067</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">Canon 067</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -18351,7 +18433,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 067 Yellow используется в принтерах и МФУ серий Canon i-SENSYS LBP631Cw, LBP633Cdw, MF651Cw, MF655Cw, MF655Cdw, MF657Cw, MF657Cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP631Cw, LBP633Cdw, MF651Cw, MF655Cw, MF655Cdw, MF657Cw, MF657Cdw</param>
+<param name="Коды расходников">Canon 067</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">Canon 067</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -18403,6 +18487,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 071 используется в принтерах серий Canon i-SENSYS LBP121, LBP122, MF271, MF272, MF273, MF274, MF275. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP121, LBP122, MF271, MF272, MF273, MF274, MF275</param>
+<param name="Коды расходников">Canon 071</param>
+<param name="Модель">Canon 071</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -18420,7 +18506,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 071H используется в принтерах серий Canon i-SENSYS LBP122, MF272, MF275. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP122, MF272, MF275</param>
-<param name="Коды расходников">071H</param>
+<param name="Коды расходников">Canon 071H, 071H</param>
 <param name="Модель">071H</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -18475,6 +18561,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 070 используется в принтерах серий Canon i-SENSYS LBP243, LBP246, LBP247, MF461, MF463, MF465. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP243, LBP246, LBP247, MF461, MF463, MF465</param>
+<param name="Коды расходников">Canon 070</param>
+<param name="Модель">Canon 070</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -18492,6 +18580,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 070H используется в принтерах серий Canon i-SENSYS LBP243, LBP246, LBP247, MF461, MF463, MF465. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP243, LBP246, LBP247, MF461, MF463, MF465</param>
+<param name="Коды расходников">Canon 070H</param>
+<param name="Модель">Canon 070H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -18508,6 +18598,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 057 используется в принтерах серий Canon i-SENSYS MF443dw, i-SENSYS MF445dw, i-SENSYS MF446x, i-SENSYS MF449x, i-SENSYS LBP223dw, i-SENSYS LBP226dw, i-SENSYS LBP228x. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS MF443dw, i-SENSYS MF445dw, i-SENSYS MF446x, i-SENSYS MF449x, i-SENSYS LBP223dw, i-SENSYS LBP226dw, i-SENSYS LBP228x</param>
+<param name="Коды расходников">Canon 057</param>
+<param name="Модель">Canon 057</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -18525,6 +18617,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 057H используется в принтерах серий Canon i-SENSYS MF443dw, i-SENSYS MF445dw, i-SENSYS MF446x, i-SENSYS MF449x, i-SENSYS LBP223dw, i-SENSYS LBP226dw, i-SENSYS LBP228x. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS MF443dw, i-SENSYS MF445dw, i-SENSYS MF446x, i-SENSYS MF449x, i-SENSYS LBP223dw, i-SENSYS LBP226dw, i-SENSYS LBP228x</param>
+<param name="Коды расходников">Canon 057H</param>
+<param name="Модель">Canon 057H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -19506,6 +19600,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 071 без чипа используется в принтерах серий Canon i-SENSYS LBP121, LBP122, MF271, MF272, MF273, MF274, MF275. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP121, LBP122, MF271, MF272, MF273, MF274, MF275</param>
+<param name="Коды расходников">Canon 071</param>
+<param name="Модель">Canon 071</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20146,7 +20242,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 069 (с чипом) Black используется в принтерах и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw</param>
+<param name="Коды расходников">Canon 069</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">Canon 069</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20163,6 +20261,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 069 (с чипом) Cyan используется в принтерах и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw</param>
+<param name="Коды расходников">Canon 069</param>
+<param name="Модель">Canon 069</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20179,7 +20279,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 069 (с чипом) Magenta используется в принтерах и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw</param>
+<param name="Коды расходников">Canon 069</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">Canon 069</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20196,7 +20298,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 069 (с чипом) Yellow используется в принтерах и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS MF752Cdw, MF754Cdw, LBP673Cdw</param>
+<param name="Коды расходников">Canon 069</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">Canon 069</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20212,6 +20316,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 073 используется в принтерах серий Canon i-SENSYS LBP361, LBP361DW, LBP362, LBP362DW. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP361, LBP361DW, LBP362, LBP362DW</param>
+<param name="Коды расходников">Canon 073</param>
+<param name="Модель">Canon 073</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20361,6 +20467,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 064H Cyan используется в принтерах и МФУ серий Canon i-SENSYS LBP720C, MF830C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP720C, MF830C</param>
+<param name="Коды расходников">Canon 064H</param>
+<param name="Модель">Canon 064H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20376,7 +20484,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 064H Magenta используется в принтерах и МФУ серий Canon i-SENSYS LBP720C, MF830C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP720C, MF830C</param>
+<param name="Коды расходников">Canon 064H</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">Canon 064H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20392,7 +20502,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 064H Yellow используется в принтерах и МФУ серий Canon i-SENSYS LBP720C, MF830C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP720C, MF830C</param>
+<param name="Коды расходников">Canon 064H</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">Canon 064H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20408,7 +20520,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 064H Black используется в принтерах и МФУ серий Canon i-SENSYS LBP720C, MF830C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP720C, MF830C</param>
+<param name="Коды расходников">Canon 064H</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">Canon 064H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20426,6 +20540,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж с чипом Euro Print Canon 070 используется в принтерах серий Canon i-SENSYS LBP243, LBP246, LBP247, MF461, MF463, MF465. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP243, LBP246, LBP247, MF461, MF463, MF465</param>
+<param name="Коды расходников">Canon 070</param>
+<param name="Модель">Canon 070</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20441,7 +20557,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print CF289A/Canon 056 с чипом используется в принтерах серий HP LaserJet Enterprise M507dn, M507n, M507x, M528dn, M528f, M528c, M528z. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LaserJet Enterprise M507dn, HP LaserJet M507n, HP LaserJet M507x, HP LaserJet M528dn, HP LaserJet M528f, HP LaserJet M528c, HP LaserJet M528z</param>
-<param name="Коды расходников">CF289A</param>
+<param name="Коды расходников">CF289A, Canon 056</param>
 <param name="Модель">CF289A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -20458,7 +20574,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print CF289X/Canon 056H с чипом используется в принтерах серий HP LaserJet Enterprise M507dn, M507n, M507x, M528dn, M528f, M528c, M528z. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LaserJet Enterprise M507dn, HP LaserJet M507n, HP LaserJet M507x, HP LaserJet M528dn, HP LaserJet M528f, HP LaserJet M528c, HP LaserJet M528z</param>
-<param name="Коды расходников">CF289X</param>
+<param name="Коды расходников">CF289X, Canon 056H</param>
 <param name="Модель">CF289X</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -20477,6 +20593,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 070H используется в принтерах серий Canon i-SENSYS LBP243, LBP246, LBP247, MF461, MF463, MF465. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Canon i-SENSYS LBP243, LBP246, LBP247, MF461, MF463, MF465</param>
+<param name="Коды расходников">Canon 070H</param>
+<param name="Модель">Canon 070H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20668,6 +20786,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 055H Cyan используется в принтерах и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746</param>
+<param name="Коды расходников">Canon 055H</param>
+<param name="Модель">Canon 055H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20683,7 +20803,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 055H Magenta используется в принтерах и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746</param>
+<param name="Коды расходников">Canon 055H</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">Canon 055H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20699,7 +20821,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 055H Yellow используется в принтерах и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746</param>
+<param name="Коды расходников">Canon 055H</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">Canon 055H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
@@ -20715,7 +20839,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print Canon 055H Black используется в принтерах и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">и МФУ серий Canon i-SENSYS LBP663Cdw, LBP664Cx, MF742Cdw, MF744Cdw, MF746</param>
+<param name="Коды расходников">Canon 055H</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">Canon 055H</param>
 <param name="Для бренда">Canon</param>
 </offer>
 
