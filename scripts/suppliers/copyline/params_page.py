@@ -237,10 +237,51 @@ def _extract_title_canon_numeric_codes(title: str) -> list[str]:
     title = _norm_spaces(title)
     out: list[str] = []
     seen: set[str] = set()
-    for m in re.finditer(r"\bCanon\s+((?:\d{3}[A-Z]?)(?:\s*/\s*\d{3}[A-Z]?)+)\b", title, flags=re.I):
-        for part in re.split(r"\s*/\s*", safe_str(m.group(1))):
+    patterns = [
+        re.compile(r"\bCanon\s+((?:\d{3}[A-Z]?)(?:\s*/\s*\d{3}[A-Z]?)+)\b", re.I),
+        re.compile(r"(?:^|[/(,])\s*Canon\s+((?:\d{3}[A-Z]?)(?:\s*/\s*\d{3}[A-Z]?)+)\b", re.I),
+    ]
+    for rx in patterns:
+        for m in rx.finditer(title):
+            for part in re.split(r"\s*/\s*", safe_str(m.group(1))):
+                token = _normalize_code_token(part)
+                if token and token not in seen:
+                    seen.add(token)
+                    out.append(token)
+    return out
+
+
+def _split_title_body_parts(title: str) -> tuple[str, str]:
+    title = _norm_spaces(title)
+    if not title:
+        return "", ""
+    m = re.search(r"\b(?:для\s+принтеров|для\s+МФУ|для\s+устройств|совместимость\s+с)\b", title, flags=re.I)
+    if not m:
+        return title, ""
+    return title[: m.start()].strip(" ,;/"), title[m.start():].strip()
+
+
+def _extract_title_multicode_tail(title: str) -> list[str]:
+    title = _norm_spaces(title)
+    out: list[str] = []
+    seen: set[str] = set()
+    for token in _extract_title_canon_numeric_codes(title):
+        if token not in seen:
+            seen.add(token)
+            out.append(token)
+    branded_tail_rx = re.compile(
+        r"(?:^|/)\s*(Canon|Toshiba|Ricoh|Panasonic)\s+((?:[A-Z]?\d{3,6}[A-Z]?)(?:\s*/\s*[A-Z]?\d{3,6}[A-Z]?)+)\b",
+        re.I,
+    )
+    for m in branded_tail_rx.finditer(title):
+        brand = safe_str(m.group(1))
+        for part in re.split(r"\s*/\s*", safe_str(m.group(2))):
             token = _normalize_code_token(part)
-            if token and token not in seen:
+            if not token:
+                continue
+            if token.isdigit() and brand.casefold() != "canon":
+                continue
+            if token not in seen:
                 seen.add(token)
                 out.append(token)
     return out
@@ -291,22 +332,22 @@ def _pick_best_codes(codes: Sequence[str], *, limit: int = 6) -> list[str]:
 def _extract_codes(title: str, description: str) -> str:
     title = safe_str(title)
     description = safe_str(description)
-    title_codes = _collect_codes_from_text(title, allow_numeric=True)
-    title_codes.extend(_extract_title_canon_numeric_codes(title))
+
+    title_head, _title_tail = _split_title_body_parts(title)
+    title_codes = _collect_codes_from_text(title_head or title, allow_numeric=True)
+    title_codes.extend(_extract_title_multicode_tail(title))
 
     desc_head = _strip_compat_zone(description)
     desc_codes = _collect_codes_from_text(desc_head, allow_numeric=_is_consumable_title(title))
 
-    # Если в title уже есть сильный код расходки, не тянем device-list из description.
-    strong_title_codes = [c for c in title_codes if _code_weight(c) >= 80]
+    strong_title_codes = [c for c in title_codes if _code_weight(c) >= 80 or _is_allowed_numeric_code(c)]
     codes = strong_title_codes or title_codes
     if not strong_title_codes:
-        codes.extend(desc_codes)
-    elif not codes:
         codes.extend(desc_codes)
 
     if not codes:
         return ""
+
     best = _pick_best_codes(codes)
     return ", ".join(best)
 
