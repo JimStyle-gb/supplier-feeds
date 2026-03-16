@@ -9,12 +9,12 @@ from __future__ import annotations
 import re
 from xml.etree import ElementTree as ET
 
-from scripts.suppliers.nvprint.normalize import (
+from suppliers.nvprint.normalize import (
     DROP_PARAM_NAMES_CF,
     cleanup_param_value_nvprint,
     rename_param_key_nvprint,
 )
-from scripts.suppliers.nvprint.source import get_text, iter_children, local
+from suppliers.nvprint.source import get_text, iter_children, local
 
 
 
