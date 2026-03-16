@@ -385,7 +385,7 @@ def _pick_best_codes(codes: Sequence[str]) -> list[str]:
             continue
         seen.add(norm)
         out.append(norm)
-        if len(out) >= 6:
+        if len(out) >= 8:
             break
     return out
 
