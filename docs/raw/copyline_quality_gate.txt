@@ -1,23 +1,11 @@
-QUALITY_GATE_THRESHOLD: FAIL
+QUALITY_GATE_THRESHOLD: PASS
 QUALITY_GATE_EFFECTIVE: PASS
 enforce: false
 critical_count: 0
-cosmetic_total_count: 10
-cosmetic_offer_count: 10
+cosmetic_total_count: 0
+cosmetic_offer_count: 0
 max_cosmetic_offers: 5
 max_cosmetic_issues: 5
 
-COSMETIC:
-- CL103544 | missing_codes | codes missing
-- CL103546 | missing_codes | codes missing
-- CL103551 | missing_codes | codes missing
-- CL103552 | missing_codes | codes missing
-- CL103553 | missing_codes | codes missing
-- CL103554 | missing_codes | codes missing
-- CL103563 | missing_codes | codes missing
-- CL103832 | missing_codes | codes missing
-- CL104896 | missing_codes | codes missing
-- CL104898 | missing_codes | codes missing
-
 known_cosmetic: 0
-new_cosmetic: 10
+new_cosmetic: 0

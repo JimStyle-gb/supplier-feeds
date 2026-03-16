@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-16 18:47:23">
+<yml_catalog date="2026-03-16 19:33:01">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-16 18:47:23
+Время сборки (Алматы)                      | 2026-03-16 19:33:01
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -9542,6 +9542,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) голубой MagneTone DC 240/250 используется в картридже Xerox DocuColor 240, 242, 250, 252, WorkCentre 7655, 7665, 7675, 7755, 7765, 7775. Ресурс использования при печати - 150 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">DC240/250</param>
+<param name="Модель">DC240/250</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -9556,7 +9558,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) желтый MagneTone DC 240/250 используется в картридже Xerox DocuColor 240, 242, 250, 252, WorkCentre 7655, 7665, 7675, 7755, 7765, 7775. Ресурс использования при печати - 150 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">DC240/250</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">DC240/250</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -9571,7 +9575,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) черный MagneTone WC 7120 используется в картридже Xerox WorkCentre 7120, 7125, 7227, 7225. Ресурс использования при печати - 70 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">WC7120</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">WC7120</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -9586,6 +9592,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) голубой MagneTone WC 7120 используется в картридже Xerox WorkCentre 7120, 7125, 7227, 7225. Ресурс использования при печати - 70 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">WC7120</param>
+<param name="Модель">WC7120</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -9600,7 +9608,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) пурпурный MagneTone WC 7120 используется в картридже Xerox WorkCentre 7120, 7125, 7227, 7225. Ресурс использования при печати - 70 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">WC7120</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">WC7120</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -9615,7 +9625,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) желтый MagneTone WC 7120 используется в картридже Xerox WorkCentre 7120, 7125, 7227, 7225. Ресурс использования при печати - 70 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">WC7120</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">WC7120</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -9630,7 +9642,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) желтый MagneTone WC 7425 используется в картридже Xerox WorkCentre 7425, 7428, 7435, 7525, 7535. Ресурс использования при печати - 120 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">WC7425</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">WC7425</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -10274,6 +10288,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) Phaser 5500/5550 используется в картридже Xerox Phaser 5500, 5550, WorkCentre 118, 123, 128, 133, 5222, 5225, 5325, Lexmark W840, X850e, X852e, X854e. Ресурс использования при печати - 60 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">PHASER5500/5550</param>
+<param name="Модель">PHASER5500/5550</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -15431,6 +15447,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 для L3100/3101/ 3110/3150]]></description>
 <param name="Тип">Чернила</param>
 <param name="Совместимость">Epson L3100, Epson L3101, Epson L3110, Epson L3150</param>
+<param name="Коды расходников">C13T00S24A</param>
+<param name="Модель">C13T00S24A</param>
 <param name="Для бренда">Epson</param>
 </offer>
 
@@ -15446,7 +15464,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 для L3100/3101/ 3110/3150]]></description>
 <param name="Тип">Чернила</param>
 <param name="Совместимость">Epson L3100, Epson L3101, Epson L3110, Epson L3150</param>
+<param name="Коды расходников">C13T00S44A</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">C13T00S44A</param>
 <param name="Для бренда">Epson</param>
 </offer>
 
