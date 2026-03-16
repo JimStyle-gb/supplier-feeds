@@ -24,7 +24,7 @@ CODE_RX = re.compile(
     r"ML-D\d+[A-Z]?|ML-\d{4,5}[A-Z]\d?|SCX-D\d+[A-Z]?|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z0-9]{0,2}|KX-FAT\d+[A-Z0-9]{0,2}|KX-FAD\d+[A-Z0-9]{0,2}|"
     r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|PC-?\d+[A-Z0-9-]*|TL-?\d+[A-Z0-9-]*|DL-?\d+[A-Z0-9-]*|"
     r"C13T\d{5,8}[A-Z0-9]*|C13S\d{6,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
-    r"50F\d[0-9A-Z]{2,4}|51B[0-9A-Z]{4,5}|52D[0-9A-Z]{4,5}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|60F[0-9A-Z]{4,5}|0?71H|C\d{4}[A-Z]|SP\d{3,5}[A-Z]{1,3}|SP\s?C\d{3,5}[A-Z]?|SPC\d{3,5}[A-Z]?|101R\d{5}|CZ\s?\d{3}|T\d{5,8}[A-Z]?|842\d{3,6}|DK-?\d{3,5}|DR\d{2,5}|408059|MP\d{3,5}[A-Z]?"
+    r"50F\d[0-9A-Z]{2,4}|51B[0-9A-Z]{4,5}|52D[0-9A-Z]{4,5}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|60F[0-9A-Z]{4,5}|0?71H|C\d{4}[A-Z]|CZ\d{3}[A-Z]?|SP\d{3,5}[A-Z]{1,3}|SP\s?C\d{3,5}[A-Z]?|SPC\d{3,5}[A-Z]?|101R\d{5}|CZ\s?\d{3}[A-Z]?|T\d{5,8}[A-Z]?|842\d{3,6}|DK-?\d{3,5}|DR\d{2,5}|408059|MP\d{3,5}[A-Z]?|X\d{3,6}[A-Z0-9]{1,4}|DV-\d+[KCMY]?|D-\d{4,5}|\d{4}-\d{3}|TK-\d{1,4}/\d{2,4}"
     r")\b",
     re.I,
 )
@@ -294,7 +294,8 @@ def _extract_title_bare_family_codes(title: str) -> list[str]:
 
     bare_patterns = [
         re.compile(r"\bC\d{4}[A-Z]\b", re.I),
-        re.compile(r"\bSP\d{4,5}[A-Z]?\b", re.I),
+        re.compile(r"\bCZ\d{3}[A-Z]?\b", re.I),
+        re.compile(r"\bSP\d{3,5}[A-Z]?\b", re.I),
         re.compile(r"\bSP\s?C\d{3,5}[A-Z]?\b", re.I),
         re.compile(r"\bSPC\d{3,5}[A-Z]?\b", re.I),
         re.compile(r"\b101R\d{5}\b", re.I),
@@ -306,6 +307,11 @@ def _extract_title_bare_family_codes(title: str) -> list[str]:
         re.compile(r"\b842\d{3,6}\b", re.I),
         re.compile(r"\b408059\b", re.I),
         re.compile(r"\bMP\d{3,5}[A-Z]?\b", re.I),
+        re.compile(r"\bX\d{3,6}[A-Z0-9]{1,4}\b", re.I),
+        re.compile(r"\bDV-\d+[KCMY]?\b", re.I),
+        re.compile(r"\bD-\d{4,5}\b", re.I),
+        re.compile(r"\b\d{4}-\d{3}\b", re.I),
+        re.compile(r"\bTK-\d{1,4}/\d{2,4}\b", re.I),
         re.compile(r"\bDK-?\d{3,5}\b", re.I),
         re.compile(r"\bDR\d{2,5}\b", re.I),
     ]
@@ -363,14 +369,38 @@ def _extract_riso_title_compat(title: str) -> str:
     if not title or not re.search(r"\bRISO\b", title, re.I):
         return ""
     m = re.search(r"\bfor\s+([A-Z]?\d{2,5}(?:\s*/\s*[A-Z]?\d{2,5}){1,8})\b", title, re.I)
+    if m:
+        parts = [safe_str(x) for x in re.split(r"\s*/\s*", safe_str(m.group(1))) if safe_str(x)]
+        out = []
+        for part in parts:
+            token = _normalize_code_token(part)
+            if token and len(token) >= 3:
+                out.append(f"RISO {token}")
+        return ", ".join(out[:8])
+
+    m = re.search(r"\bRISO\s+((?:RP|RZ\s*/\s*RV|CZ\s*\d{2,4}))\b", title, re.I)
     if not m:
         return ""
-    parts = [safe_str(x) for x in re.split(r"\s*/\s*", safe_str(m.group(1))) if safe_str(x)]
+    token = _norm_spaces(m.group(1)).upper()
+    if "/" in token:
+        return ", ".join([f"RISO {safe_str(x).upper()}" for x in re.split(r"\s*/\s*", token) if safe_str(x)])
+    return f"RISO {token}"
+
+
+def _extract_epson_desc_compat(title: str, description: str) -> str:
+    blob = _norm_spaces(f"{safe_str(title)} {safe_str(description)}")
+    if not re.search(r"\bEpson\b", blob, re.I):
+        return ""
+    m = re.search(r"(?:для|for)\s+((?:L?\d{4,5})(?:\s*/\s*L?\d{4,5}){1,8})", blob, re.I)
+    if not m:
+        return ""
+    parts = [safe_str(x) for x in re.split(r"\s*/\s*", m.group(1)) if safe_str(x)]
     out = []
     for part in parts:
-        token = _normalize_code_token(part)
-        if token and len(token) >= 3:
-            out.append(f"RISO {token}")
+        part = part.upper()
+        if not part.startswith("L"):
+            part = f"L{part}"
+        out.append(f"Epson {part}")
     return ", ".join(out[:8])
 
 
@@ -649,7 +679,7 @@ def extract_page_params(
 
     compat = _extract_compat_from_desc(description)
     if not compat and kind == "Чернила":
-        compat = _extract_ink_title_compat(title) or _extract_riso_title_compat(title)
+        compat = _extract_ink_title_compat(title) or _extract_riso_title_compat(title) or _extract_epson_desc_compat(title, description)
     if not compat:
         compat = _extract_panasonic_integral_compat(description)
     if compat:
