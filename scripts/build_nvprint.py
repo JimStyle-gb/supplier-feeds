@@ -34,11 +34,12 @@ def main() -> int:
         raise RuntimeError("NVPRINT_XML_URL пустой. Укажи URL в workflow env.")
 
     now = now_almaty()
+    now_naive = now.replace(tzinfo=None)
     try:
         hour = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "4") or "4").strip())
     except Exception:
         hour = 4
-    next_run = next_run_dom_at_hour(now, hour, (1, 10, 20))
+    next_run = next_run_dom_at_hour(now_naive, hour, (1, 10, 20))
     strict = (os.environ.get("NVPRINT_STRICT") or "").strip().lower() in ("1", "true", "yes")
 
     try:
