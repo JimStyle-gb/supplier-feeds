@@ -221,7 +221,7 @@ def collect_quality_issues(feed_path: str) -> list[QualityIssue]:
         if is_consumable:
             if not compat and not _COMPAT_FAMILY_RE.search(desc):
                 issues.append(QualityIssue("cosmetic", "missing_compat", oid, name, "compat missing"))
-            if not codes:
+            if not codes and not _ink_can_skip_codes(name, typ, desc):
                 issues.append(QualityIssue("cosmetic", "missing_codes", oid, name, "codes missing"))
 
             if expected_title_codes and not code_list:
