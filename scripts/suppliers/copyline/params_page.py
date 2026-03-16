@@ -24,7 +24,7 @@ CODE_RX = re.compile(
     r"ML-D\d+[A-Z]?|ML-\d{4,5}[A-Z]\d?|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
     r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|"
     r"C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
-    r"50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H"
+    r"50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H|C\d{4}[A-Z]|SP\d{4,5}[A-Z]?|101R\d{5}|CZ\s?\d{3}|T\d{5,8}[A-Z]?|842\d{3,6}|DK-?\d{3,5}|DR\d{2,5}"
     r")\b",
     re.I,
 )
@@ -287,6 +287,70 @@ def _extract_title_canon_family_codes(title: str) -> list[str]:
                 out.append(token)
     return out
 
+def _extract_title_bare_family_codes(title: str) -> list[str]:
+    title = _norm_spaces(title)
+    out: list[str] = []
+    seen: set[str] = set()
+
+    bare_patterns = [
+        re.compile(r"\bC\d{4}[A-Z]\b", re.I),
+        re.compile(r"\bSP\d{4,5}[A-Z]?\b", re.I),
+        re.compile(r"\b101R\d{5}\b", re.I),
+        re.compile(r"\bCZ\s?\d{3}\b", re.I),
+        re.compile(r"\bT\d{5,8}[A-Z]?\b", re.I),
+        re.compile(r"\b842\d{3,6}\b", re.I),
+        re.compile(r"\bDK-?\d{3,5}\b", re.I),
+        re.compile(r"\bDR\d{2,5}\b", re.I),
+    ]
+    for rx in bare_patterns:
+        for m in rx.finditer(title):
+            token = _normalize_code_token(m.group(0))
+            if token and token not in seen:
+                seen.add(token)
+                out.append(token)
+
+    for m in re.finditer(r"\bMP\s*C(\d{4})(?:\s*/\s*C?(\d{4}))*", title, re.I):
+        first = safe_str(m.group(1))
+        if first:
+            token = f"MP C{first}"
+            if token not in seen:
+                seen.add(token)
+                out.append(token)
+        tail = title[m.start(): m.end()]
+        for part in re.findall(r"\bC?(\d{4})\b", tail, re.I):
+            token = f"MP C{safe_str(part)}"
+            if token not in seen:
+                seen.add(token)
+                out.append(token)
+
+    return out
+
+
+def _extract_ink_title_compat(title: str) -> str:
+    title = _norm_spaces(title)
+    if not title:
+        return ""
+    m = re.search(r"\bfor\s+([A-Z]?\d{3,5}(?:\s*/\s*[A-Z]?\d{3,5}){1,8})\b", title, re.I)
+    if not m:
+        return ""
+    brand = ""
+    if re.search(r"\bEpson\b", title, re.I):
+        brand = "Epson"
+    elif re.search(r"\bRISO\b", title, re.I):
+        brand = "RISO"
+    parts = [safe_str(x) for x in re.split(r"\s*/\s*", safe_str(m.group(1))) if safe_str(x)]
+    out = []
+    for part in parts:
+        token = _normalize_code_token(part)
+        if not token or len(token) < 3:
+            continue
+        if brand:
+            out.append(f"{brand} {token}")
+        else:
+            out.append(token)
+    return ", ".join(out[:8])
+
+
 def _split_title_body_parts(title: str) -> tuple[str, str]:
     title = _norm_spaces(title)
     if not title:
@@ -429,6 +493,7 @@ def _extract_codes(title: str, description: str) -> str:
 
     title_head, _title_tail = _split_title_body_parts(title)
     title_codes = _collect_codes_from_text(title_head or title, allow_numeric=True)
+    title_codes.extend(_extract_title_bare_family_codes(title))
     title_codes.extend(_extract_title_multicode_tail(title))
     title_codes.extend(_extract_title_brand_alpha_tail(title))
     title_codes.extend(_extract_single_brand_numeric_tail(title))
@@ -550,6 +615,8 @@ def extract_page_params(
         out.extend(_extract_cable_params_from_text(title, description))
 
     compat = _extract_compat_from_desc(description)
+    if not compat and kind == "Чернила":
+        compat = _extract_ink_title_compat(title)
     if compat:
         out.append(("Совместимость", compat))
 
