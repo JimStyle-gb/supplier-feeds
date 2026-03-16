@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from xml.etree import ElementTree as ET
 
-from scripts.suppliers.nvprint.source import get_text, local, pick_first_text
+from suppliers.nvprint.source import get_text, local, pick_first_text
 
 
 
