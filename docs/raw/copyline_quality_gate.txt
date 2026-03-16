@@ -2,8 +2,8 @@ QUALITY_GATE_THRESHOLD: FAIL
 QUALITY_GATE_EFFECTIVE: PASS
 enforce: false
 critical_count: 0
-cosmetic_total_count: 154
-cosmetic_offer_count: 133
+cosmetic_total_count: 150
+cosmetic_offer_count: 130
 max_cosmetic_offers: 5
 max_cosmetic_issues: 5
 
@@ -43,7 +43,6 @@ COSMETIC:
 - CL101850 | missing_codes | codes missing
 - CL101856 | missing_codes | codes missing
 - CL101872 | missing_codes | codes missing
-- CL101902 | mixed_brand_tail_incomplete | CANON 725
 - CL102035 | missing_compat | compat missing
 - CL102035 | missing_codes | codes missing
 - CL102335 | missing_codes | codes missing
@@ -148,7 +147,6 @@ COSMETIC:
 - CL105163 | missing_compat | compat missing
 - CL105163 | missing_codes | codes missing
 - CL105203 | missing_codes | codes missing
-- CL105211 | mixed_brand_tail_incomplete | CANON 725
 - CL105281 | missing_codes | codes missing
 - CL105295 | missing_codes | codes missing
 - CL105517 | missing_codes | codes missing
@@ -158,10 +156,8 @@ COSMETIC:
 - CL105755 | missing_codes | codes missing
 - CL105784 | missing_codes | codes missing
 - CL105785 | missing_codes | codes missing
-- CL105821 | empty_vendor | vendor empty
 - CL105821 | missing_codes | codes missing
-- CL105822 | empty_vendor | vendor empty
 - CL105825 | missing_codes | codes missing
 
 known_cosmetic: 0
-new_cosmetic: 154
+new_cosmetic: 150

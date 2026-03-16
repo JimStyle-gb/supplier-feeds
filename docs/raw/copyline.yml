@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-15 21:50:06">
+<yml_catalog date="2026-03-16 12:28:19">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-15 21:50:06
+Время сборки (Алматы)                      | 2026-03-16 12:28:19
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -4982,7 +4982,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Для принтеров: HP LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CB435A, CB436A, CE285A, CC388, Canon 712, Canon 713</param>
+<param name="Коды расходников">CB435A, CB436A, CE285A, CC388, Canon 712, Canon 713, Canon 725</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -17098,7 +17098,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Для принтеров: HP LaserJet P1005, P1006, M1120, M1522, P1505, Pro M1132, LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1102 Canon LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Коды расходников">CB435A, CB436A, CE285A, CC388, Canon 712, Canon 713</param>
+<param name="Коды расходников">CB435A, CB436A, CE285A, CC388, Canon 712, Canon 713, Canon 725</param>
 <param name="Модель">CE285A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -20347,12 +20347,13 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <name>Drum Unit КАТЮША DR133 (30K) Euro Print</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR133_ep.jpg</picture>
-<vendor></vendor>
+<vendor>КАТЮША</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Драм-картридж Euro Print DR133 используется в принтерах КАТЮША P133, M133. Новый картридж фотобарабана по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">КАТЮША P133, M133</param>
+<param name="Для бренда">КАТЮША</param>
 </offer>
 
 <offer id="CL105822" available="true">
@@ -20362,7 +20363,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK133_ep1.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_____133_ep2.jpg</picture>
-<vendor></vendor>
+<vendor>КАТЮША</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер-картридж Euro Print TK133 используется в принтерах КАТЮША P133, M133. Новый картридж с тонером по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
@@ -20370,6 +20371,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Совместимость">КАТЮША P133, M133</param>
 <param name="Коды расходников">TK133</param>
 <param name="Модель">TK133</param>
+<param name="Для бренда">КАТЮША</param>
 </offer>
 
 <offer id="CL105825" available="true">
