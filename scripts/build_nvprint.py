@@ -16,9 +16,9 @@ from cs.core import (
     write_cs_feed,
     write_cs_feed_raw,
 )
-from scripts.suppliers.nvprint.builder import build_offer_from_item
-from scripts.suppliers.nvprint.filtering import fix_mixed_ru
-from scripts.suppliers.nvprint.source import load_items
+from suppliers.nvprint.builder import build_offer_from_item
+from suppliers.nvprint.filtering import fix_mixed_ru
+from suppliers.nvprint.source import load_items
 
 
 OUT_FILE = "docs/nvprint.yml"
