@@ -9,17 +9,17 @@ from __future__ import annotations
 from xml.etree import ElementTree as ET
 
 from cs.core import OfferOut, compute_price
-from scripts.suppliers.nvprint.filtering import include_by_name
-from scripts.suppliers.nvprint.normalize import (
+from suppliers.nvprint.filtering import include_by_name
+from suppliers.nvprint.normalize import (
     cleanup_name_nvprint,
     cleanup_vendor_nvprint,
     make_oid,
     native_desc,
     supplier_name_from_item,
 )
-from scripts.suppliers.nvprint.params_xml import collect_params, extract_price
-from scripts.suppliers.nvprint.pictures import collect_pictures
-from scripts.suppliers.nvprint.source import pick_first_text
+from suppliers.nvprint.params_xml import collect_params, extract_price
+from suppliers.nvprint.pictures import collect_pictures
+from suppliers.nvprint.source import pick_first_text
 
 
 
