@@ -1,0 +1,12 @@
+supplier: NVPrint
+raw_must_be_clean: true
+expect_public_vendor: NVPrint
+main_params:
+  - Модель
+  - Коды расходников
+  - Совместимость
+  - Тип
+  - Тип печати
+  - Цвет
+  - Ресурс
+  - Для бренда
