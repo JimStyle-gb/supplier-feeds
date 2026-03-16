@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-16 12:28:19">
+<yml_catalog date="2026-03-16 15:13:38">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-16 12:28:19
+Время сборки (Алматы)                      | 2026-03-16 15:13:38
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -1281,6 +1281,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print C8543X используется в принтерах серий HP LJ 9000, 9040, 9050. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 9000, 9040, 9050</param>
+<param name="Коды расходников">C8543X</param>
+<param name="Модель">C8543X</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -2631,6 +2633,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 101R00474 применяется в многофункциональных принтерах Xerox Phaser 3052, 3260, WorkCentre 3215, 3225. Ресурс печати - 10 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox Phaser 3052, Xerox Phaser 3260, WorkCentre 3215, Xerox Phaser 3225</param>
+<param name="Коды расходников">101R00474</param>
+<param name="Модель">101R00474</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -3397,6 +3401,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж ОЕМ C8543X используется в принтерах серий HP LJ 9000, 9040, 9050. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ 9000, 9040, 9050</param>
+<param name="Коды расходников">C8543X</param>
+<param name="Модель">C8543X</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -3413,7 +3419,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM C9730A используется в принтерах серий HP Color LaserJet 5500, 5550. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 5500, HP Color LaserJet 5550</param>
+<param name="Коды расходников">C9730A</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">C9730A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -3430,6 +3438,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM C9731A используется в принтерах серий HP Color LaserJet 5500, 5550. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 5500, HP Color LaserJet 5550</param>
+<param name="Коды расходников">C9731A</param>
+<param name="Модель">C9731A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -3446,7 +3456,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM C9732A используется в принтерах серий HP Color LaserJet 5500, 5550. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 5500, HP Color LaserJet 5550</param>
+<param name="Коды расходников">C9732A</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">C9732A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -3463,7 +3475,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM C9733A используется в принтерах серий HP Color LaserJet 5500, 5550. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 5500, HP Color LaserJet 5550</param>
+<param name="Коды расходников">C9733A</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">C9733A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -4804,7 +4818,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business C9730A используется в принтерах серий HP Color LaserJet 5500, 5550. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 5500, HP Color LaserJet 5550</param>
+<param name="Коды расходников">C9730A</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">C9730A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -4820,6 +4836,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business C9731A используется в принтерах серий HP Color LaserJet 5500, 5550. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 5500, HP Color LaserJet 5550</param>
+<param name="Коды расходников">C9731A</param>
+<param name="Модель">C9731A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -4835,7 +4853,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business C9732A используется в принтерах серий HP Color LaserJet 5500, 5550. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 5500, HP Color LaserJet 5550</param>
+<param name="Коды расходников">C9732A</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">C9732A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -4851,7 +4871,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Business C9733A используется в принтерах серий HP Color LaserJet 5500, 5550. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP Color LaserJet 5500, HP Color LaserJet 5550</param>
+<param name="Коды расходников">C9733A</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">C9733A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -4937,6 +4959,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером SP4500E используется в МФУ Ricoh Aficio SP4510DN, SP4510SF, SP3600DN, SP3600SF, SP3610SF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">SP4500E</param>
+<param name="Модель">SP4500E</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -4952,6 +4976,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 101R00432 применяется в многофункциональных принтерах Xerox WorkCentre 5020, 5016. Ресурс печати - 22 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 5020, Xerox WorkCentre 5016</param>
+<param name="Коды расходников">101R00432</param>
+<param name="Модель">101R00432</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -5445,6 +5471,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Чернила черные для дубликатора (ризографа) RISO CZ 180.]]></description>
 <param name="Тип">Чернила</param>
+<param name="Коды расходников">CZ180</param>
+<param name="Модель">CZ180</param>
 <param name="Для бренда">RISO</param>
 </offer>
 
@@ -5780,6 +5808,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) DK-130 применяется в принтерах Kyocera FS-1100, FS-1100N, FS-1300D, FS-1300DN. Ресурс печати - 100 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Kyocera FS-1100, FS-1100N, FS-1300D, FS-1300DN</param>
+<param name="Коды расходников">DK-130</param>
+<param name="Модель">DK-130</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
 
@@ -6032,6 +6062,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 101R00435 применяется в многофункциональных принтерах Xerox WorkCentre 5222, 5225, 5230. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox WorkCentre 5222, Xerox WorkCentre 5225, Xerox WorkCentre 5230</param>
+<param name="Коды расходников">101R00435</param>
+<param name="Модель">101R00435</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -8357,6 +8389,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Чернила оригинальные T67364A Light Magenta для принтера Epson L800, L1800, 810, 850. Объем - 70 мл.]]></description>
 <param name="Тип">Чернила</param>
+<param name="Совместимость">Epson L800, Epson 1800, Epson 810, Epson 850</param>
+<param name="Коды расходников">T67364A</param>
+<param name="Модель">T67364A</param>
 <param name="Для бренда">Epson</param>
 </offer>
 
@@ -8668,7 +8703,10 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Чернила Epson T67314A for L800/1800/810/850 Black original 70 мл]]></description>
 <param name="Тип">Чернила</param>
+<param name="Совместимость">Epson L800, Epson 1800, Epson 810, Epson 850</param>
+<param name="Коды расходников">T67314A</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">T67314A</param>
 <param name="Для бренда">Epson</param>
 </offer>
 
@@ -9697,7 +9735,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером MP C6003 используется в МФУ Ricoh Aficio MP C4503, C5503, C6003, C4504, C5504, C6004. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">MPC6003</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">MPC6003</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -9712,6 +9752,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с голубым тонером MP C6003 используется в МФУ Ricoh Aficio MP C4503, C5503, C6003, C4504, C5504, C6004. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">MPC6003</param>
+<param name="Модель">MPC6003</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -9726,7 +9768,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с пурпурным тонером MP C6003 используется в МФУ Ricoh Aficio MP C4503, C5503, C6003, C4504, C5504, C6004. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">MPC6003</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">MPC6003</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -9741,7 +9785,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с желтым тонером MP C6003 используется в МФУ Ricoh Aficio MP C4503, C5503, C6003, C4504, C5504, C6004. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">MPC6003</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">MPC6003</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -9843,6 +9889,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) 101R00555 применяется в многофункциональных принтерах Xerox Phaser 3330, WorkCentre 3335, 3345. Ресурс печати - 30 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox Phaser 3330, WorkCentre 3335, Xerox Phaser 3345</param>
+<param name="Коды расходников">101R00555</param>
+<param name="Модель">101R00555</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -10066,6 +10114,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) SP4500E применяется в принтерах Ricoh Aficio SP4510DN, SP4510SF, SP3600DN, SP3600SF, SP3610SF. Ресурс печати - 6 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Ricoh Aficio SP4510DN, SP4510SF, SP3600DN, SP3600SF, SP3610SF</param>
+<param name="Коды расходников">SP4500E</param>
+<param name="Модель">SP4500E</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -13699,6 +13749,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 101R00664 применяется в многофункциональных принтерах Xerox B205, B210, B215. Ресурс печати - 10 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox B205, B210, B215</param>
+<param name="Коды расходников">101R00664</param>
+<param name="Модель">101R00664</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -14000,7 +14052,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print MP C3000E (884946) используется в МФУ Ricoh Aficio MP C2000, C2500, C3000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">MPC2000, MPC2500, MPC3000, C3000E</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">MPC2000</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -14016,6 +14070,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с голубым тонером Euro Print MP C3000E (884949) используется в МФУ Ricoh Aficio MP C2000, C2500, C3000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">MPC2000, MPC2500, MPC3000, C3000E</param>
+<param name="Модель">MPC2000</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -14031,7 +14087,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с пурпурным тонером Euro Print MP C3000E (884948) используется в МФУ Ricoh Aficio MP C2000, C2500, C3000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">MPC2000, MPC2500, MPC3000, C3000E</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">MPC2000</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -14046,7 +14104,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с желтым тонером Euro Print MP C3000E (884947) используется в МФУ Ricoh Aficio MP C2000, C2500, C3000. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">MPC2000, MPC2500, MPC3000, C3000E</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">MPC2000</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -14508,6 +14568,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) 101R00554 применяется в многофункциональных принтерах Xerox VersaLink B400, B405. Ресурс печати - 65 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Xerox VersaLink B400, B405</param>
+<param name="Коды расходников">101R00554</param>
+<param name="Модель">101R00554</param>
 <param name="Для бренда">Xerox</param>
 </offer>
 
@@ -15788,7 +15850,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print 842311 используется в МФУ Ricoh IM C2000, C2500. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">842311</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">842311</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -15804,6 +15868,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с голубым тонером Euro Print 842314 используется в МФУ Ricoh IM C2000, C2500. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">842314</param>
+<param name="Модель">842314</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -15819,7 +15885,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с пурпурным тонером Euro Print 842313 используется в МФУ Ricoh IM C2000, C2500. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">842313</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">842313</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -15834,7 +15902,9 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с желтым тонером Euro Print 842312 используется в МФУ Ricoh IM C2000, C2500. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">842312</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">842312</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -17320,6 +17390,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) DK-3170 применяется в принтерах и МФУ Kyocera Ecosys P3045dn, P3145dn, M3145dn, M3645dn. Ресурс печати - 300 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">и МФУ Kyocera Ecosys P3045dn, P3145dn, M3145dn, M3645dn</param>
+<param name="Коды расходников">DK-3170</param>
+<param name="Модель">DK-3170</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
 
@@ -18720,6 +18792,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) DK-170 применяется в принтерах Kyocera ECOSYS P2035d, ECOSYS P2035dn, FS-1320D, FS-1320DN, FS-1370DN, ECOSYS P2135d, ECOSYS P2135dn, FS-1035MFP/DP, FS-1135MFP, ECOSYS M2035dn, ECOSYS M2535dn. Ресурс печати - 80 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Kyocera ECOSYS P2035d, ECOSYS P2035dn, FS-1320D, FS-1320DN, FS-1370DN, ECOSYS P2135d, ECOSYS P2135dn, FS-1035MFP/DP, FS-1135MFP, ECOSYS M2035dn, ECOSYS M2535dn</param>
+<param name="Коды расходников">DK-170</param>
+<param name="Модель">DK-170</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
 
@@ -19283,6 +19357,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) DK-1150 применяется в принтерах и МФУ Kyocera Ecosys P2040dn, P2235dn, M2040dn, M2135dn, M2635dn, M2540dn, M2540dw, M2640idw, M2735dw. Ресурс печати - 100 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">и МФУ Kyocera Ecosys P2040dn, P2235dn, M2040dn, M2135dn, M2635dn, M2540dn, M2540dw, M2640idw, M2735dw</param>
+<param name="Коды расходников">DK-1150</param>
+<param name="Модель">DK-1150</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
 
@@ -19299,6 +19375,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж фотобарабана (Drum Unit - блок барабана) DK-1110 применяется в принтерах и МФУ Kyocera FS-1040, FS-1060DN, FS-1020MFP, FS-1120MFP, FS-1025MFP, FS-1125MFP. Ресурс печати - 100 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">и МФУ Kyocera FS-1040, FS-1060DN, FS-1020MFP, FS-1120MFP, FS-1025MFP, FS-1125MFP</param>
+<param name="Коды расходников">DK-1110</param>
+<param name="Модель">DK-1110</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
 
@@ -20353,6 +20431,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Драм-картридж Euro Print DR133 используется в принтерах КАТЮША P133, M133. Новый картридж фотобарабана по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">КАТЮША P133, M133</param>
+<param name="Коды расходников">DR133</param>
+<param name="Модель">DR133</param>
 <param name="Для бренда">КАТЮША</param>
 </offer>
 
