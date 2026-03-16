@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 from xml.etree import ElementTree as ET
 
-from scripts.suppliers.nvprint.source import get_text, pick_first_text
+from suppliers.nvprint.source import get_text, pick_first_text
 
 
 RE_DESC_HAS_CS = re.compile(r"<!--\s*WhatsApp\s*-->|<!--\s*Описание\s*-->|<h3>\s*Характеристики\s*</h3>", re.I)
