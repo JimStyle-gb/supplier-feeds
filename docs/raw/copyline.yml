@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-16 17:49:34">
+<yml_catalog date="2026-03-16 18:47:23">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-16 17:49:34
+Время сборки (Алматы)                      | 2026-03-16 18:47:23
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -2766,7 +2766,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером INTEGRAL TK-1140 используется в принтерах серий Kyocera FS-1035, FS-1135, Ecosys M2035dn, M2535dn. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Kyocera FS-1035, FS-1135, Ecosys M2035dn, M2535dn</param>
-<param name="Коды расходников">TK-1140</param>
+<param name="Коды расходников">TK-1140, TK-1140/1142</param>
 <param name="Модель">TK-1140</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
@@ -3510,6 +3510,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Узел термозакрепления FM2-1099-020 ( термоблок, печка ) для МФУ Canon MF3228.]]></description>
 <param name="Тип">Термоблок</param>
+<param name="Коды расходников">1099-020</param>
+<param name="Модель">1099-020</param>
 </offer>
 
 <offer id="CL101184" available="true">
@@ -3991,6 +3993,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Чернила черные для дубликатора (ризографа) RISO RP S-3919.]]></description>
 <param name="Тип">Чернила</param>
+<param name="Совместимость">RISO RP</param>
 <param name="Коды расходников">S-3919</param>
 <param name="Модель">S-3919</param>
 <param name="Для бренда">RISO</param>
@@ -4007,6 +4010,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Чернила черные для цифрового дупликатора (ризографа) RISO RZ/RV S-4253.]]></description>
 <param name="Тип">Чернила</param>
+<param name="Совместимость">RISO RZ, RISO RV</param>
 <param name="Коды расходников">S-4253</param>
 <param name="Модель">S-4253</param>
 <param name="Для бренда">RISO</param>
@@ -4181,7 +4185,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером INTEGRAL TK-310/312 используется в принтерах серий Kyocera FS-2000D, FS-3900DN, FS-4000DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Kyocera FS-2000D, FS-3900DN, FS-4000DN</param>
-<param name="Коды расходников">TK-310</param>
+<param name="Коды расходников">TK-310, TK-310/312</param>
 <param name="Модель">TK-310</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
@@ -4398,7 +4402,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером INTEGRAL TK-330/332 используется в принтерах серий Kyocera FS-4000DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Kyocera FS-4000DN</param>
-<param name="Коды расходников">TK-330</param>
+<param name="Коды расходников">TK-330, TK-330/332</param>
 <param name="Модель">TK-330</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
@@ -5503,6 +5507,7 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Чернила черные для дубликатора (ризографа) RISO CZ 180.]]></description>
 <param name="Тип">Чернила</param>
+<param name="Совместимость">RISO CZ 180</param>
 <param name="Коды расходников">CZ180</param>
 <param name="Модель">CZ180</param>
 <param name="Для бренда">RISO</param>
@@ -5922,6 +5927,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print CZ192A №93A используется в принтерах серий HP LJ Pro M435, M701, M706. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">HP LJ Pro M435, M701, M706</param>
+<param name="Коды расходников">CZ192A</param>
+<param name="Модель">CZ192A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -7091,6 +7098,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером INTEGRAL TK-18/100 используется в принтерах серий Kyocera FS-1018, 1020, KM-1500, 1815, 1820. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Kyocera FS-1018, 1020, KM-1500, 1815, 1820</param>
+<param name="Коды расходников">TK-18/100</param>
+<param name="Модель">TK-18/100</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
 
@@ -8254,7 +8263,7 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером INTEGRAL TK-170/172 используется в принтерах серий Kyocera FS-1320, FS-1370. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Kyocera FS-1320, FS-1370</param>
-<param name="Коды расходников">TK-170</param>
+<param name="Коды расходников">TK-170, TK-170/172</param>
 <param name="Модель">TK-170</param>
 <param name="Для бренда">Kyocera</param>
 </offer>
@@ -9688,6 +9697,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print SP300 используется в принтерах серий Ricoh Aficio SP 300DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP 300DN</param>
+<param name="Коды расходников">SP300</param>
+<param name="Модель">SP300</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -10164,6 +10175,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) DV-310, 8938-451 используется в картридже Konica-Minolta bizhub 200, 222, 250, 282, 350, 362. Ресурс использования при печати - 80 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">DV-310, 8938-451</param>
+<param name="Модель">DV-310</param>
 <param name="Для бренда">Konica-Minolta</param>
 </offer>
 
@@ -10178,7 +10191,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) черный DV-512K используется в картридже Konica-Minolta bizhub C224, C284, C364, C454, C554. Ресурс использования при печати - 590 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">DV-512K</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">DV-512K</param>
 <param name="Для бренда">Konica-Minolta</param>
 </offer>
 
@@ -10193,6 +10208,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) голубой DV-512C используется в картридже Konica-Minolta bizhub C224, C284, C364, C454, C554. Ресурс использования при печати - 590 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">DV-512C</param>
+<param name="Модель">DV-512C</param>
 <param name="Для бренда">Konica-Minolta</param>
 </offer>
 
@@ -10207,7 +10224,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) пурпурный DV-512M используется в картридже Konica-Minolta bizhub C224, C284, C364, C454, C554. Ресурс использования при печати - 590 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">DV-512M</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">DV-512M</param>
 <param name="Для бренда">Konica-Minolta</param>
 </offer>
 
@@ -10222,7 +10241,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) желтый DV-512Y используется в картридже Konica-Minolta bizhub C224, C284, C364, C454, C554. Ресурс использования при печати - 590 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">DV-512Y</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">DV-512Y</param>
 <param name="Для бренда">Konica-Minolta</param>
 </offer>
 
@@ -10442,6 +10463,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) D-4530 используется в картридже Toshiba E-Studio 255, 256, 305, 306, 350, 352, 353, 355, 356, 450, 453, 452, 455, 456, 506. Ресурс использования при печати - 100000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">D-4530</param>
+<param name="Модель">D-4530</param>
 <param name="Для бренда">Toshiba</param>
 </offer>
 
@@ -11175,6 +11198,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж OEM X264H11G используется в принтерах серий Lexmark X264, X363, X364. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Lexmark X264, X363, X364</param>
+<param name="Коды расходников">X264H11G</param>
+<param name="Модель">X264H11G</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -11860,7 +11885,9 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) желтый DV-311Y используется в картридже Konica-Minolta bizhub C220, C280, C360. Ресурс использования при печати - 115 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">DV-311Y</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">DV-311Y</param>
 <param name="Для бренда">Konica-Minolta</param>
 </offer>
 
@@ -13145,8 +13172,8 @@ URL поставщика                             | https://copyline.kz/goods
 Drum Unit SP400 используется в принтерах серий Ricoh Aficio SP 400, SP 450. Новый барабан-картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Ricoh Aficio SP 400, SP 450</param>
-<param name="Коды расходников">408059</param>
-<param name="Модель">408059</param>
+<param name="Коды расходников">SP400, 408059</param>
+<param name="Модель">SP400</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -15403,6 +15430,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 для L3100/3101/ 3110/3150]]></description>
 <param name="Тип">Чернила</param>
+<param name="Совместимость">Epson L3100, Epson L3101, Epson L3110, Epson L3150</param>
 <param name="Для бренда">Epson</param>
 </offer>
 
@@ -15417,6 +15445,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 для L3100/3101/ 3110/3150]]></description>
 <param name="Тип">Чернила</param>
+<param name="Совместимость">Epson L3100, Epson L3101, Epson L3110, Epson L3150</param>
 <param name="Цвет">Желтый</param>
 <param name="Для бренда">Epson</param>
 </offer>
