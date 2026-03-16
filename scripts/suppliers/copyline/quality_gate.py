@@ -174,6 +174,20 @@ def _expected_code_is_covered(expected: str, code_list: list[str], vendor: str, 
 
 def _ink_can_skip_codes(name: str, typ: str, desc: str) -> bool:
     """Разрешаем не требовать codes только для generic/universal ink без явного кода."""
+    if _norm_ws(typ) != "Чернила":
+        return False
+
+    hay = f"{_norm_ws(name)} | {_norm_ws(desc)}"
+    # Если в title/body уже есть явный code-like token, codes всё равно обязательны.
+    if _TITLE_CODE_RX.search(hay) or _CANON_NUMERIC_TAIL_RX.search(hay) or _CANON_ALPHA_TAIL_RX.search(hay):
+        return False
+
+    generic_re = re.compile(
+        r"(?iu)\b(?:universal|универсал(?:ьн(?:ые|ое|ый))?|комплект|set|набор|ink\s*kit|100\s*мл|1\s*л|500\s*мл|250\s*мл|чернила\s+для)\b"
+    )
+    return bool(generic_re.search(hay))
+
+
 def _ink_can_skip_compat(name: str, typ: str, desc: str) -> bool:
     """Разрешаем не требовать compat только для generic/universal ink без явного кода и списка устройств."""
     if _norm_ws(typ) != "Чернила":
@@ -191,22 +205,6 @@ def _ink_can_skip_compat(name: str, typ: str, desc: str) -> bool:
         r"(?iu)\b(?:for\s+[A-Z0-9][A-Z0-9/ -]*|для\s+(?:принтеров?|МФУ|устройств?|аппаратов?)|совместим\s+с|используется\s+в|Epson\s+L\d|EcoTank|LaserJet|WorkForce)\b"
     )
     return bool(generic_re.search(hay)) and not compat_hint_re.search(hay)
-
-    if _norm_ws(typ) != "Чернила":
-        return False
-
-    name_n = _norm_ws(name)
-    desc_n = _norm_ws(desc)
-    hay = f"{name_n} | {desc_n}"
-
-    # Если в title/body уже есть явный code-like token, codes всё равно обязательны.
-    if _TITLE_CODE_RX.search(hay) or _CANON_NUMERIC_TAIL_RX.search(hay) or _CANON_ALPHA_TAIL_RX.search(hay):
-        return False
-
-    generic_re = re.compile(
-        r"(?iu)\b(?:universal|универсал(?:ьн(?:ые|ое|ый))?|комплект|set|набор|ink\s*kit|100\s*мл|1\s*л|500\s*мл|250\s*мл|чернила\s+для)\b"
-    )
-    return bool(generic_re.search(hay))
 
 def collect_quality_issues(feed_path: str) -> list[QualityIssue]:
     xml_text = Path(feed_path).read_text(encoding="utf-8", errors="ignore")
