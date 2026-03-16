@@ -19,12 +19,12 @@ from typing import List, Sequence, Tuple
 CODE_RX = re.compile(
     r"\b(?:"
     r"CF\d{3,4}[A-Z]?|CE\d{3,4}[A-Z]?|CB\d{3,4}[A-Z]?|CC\d{3,4}[A-Z]?|Q\d{4}[A-Z]?|W\d{4}[A-Z0-9]{1,4}|"
-    r"106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|013R\d{5}|016\d{6}|NPG-\d+[A-Z]?|GPR-\d+[A-Z]?|EP-\d+[A-Z]?|E-\d+[A-Z]?|FX-\d+[A-Z]?|T\d{2}[A-Z]?|"
+    r"106R\d{5}|006R\d{5}|108R\d{5}|113R\d{5}|013R\d{5}|016\d{6}|NPG-\d+[A-Z]?|GPR-\d+[A-Z]?|EP-\d+[A-Z]?|E-\d+[A-Z]?|FX-\d+[A-Z]?|T\d{2}[A-Z]?|S-\d{4,5}[A-Z]?|DQ-[A-Z0-9-]+|FQ-[A-Z0-9-]+|"
     r"TK-?\d{3,5}[A-Z0-9]*|MLT-[A-Z]\d{3,5}[A-Z0-9/]*|CLT-[A-Z]\d{3,5}[A-Z]?|"
-    r"ML-D\d+[A-Z]?|ML-\d{4,5}[A-Z]\d?|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z]?|KX-FAT\d+[A-Z]?|"
-    r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|"
-    r"C13T\d{5,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
-    r"50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|0?71H|C\d{4}[A-Z]|SP\d{4,5}[A-Z]?|101R\d{5}|CZ\s?\d{3}|T\d{5,8}[A-Z]?|842\d{3,6}|DK-?\d{3,5}|DR\d{2,5}"
+    r"ML-D\d+[A-Z]?|ML-\d{4,5}[A-Z]\d?|SCX-D\d+[A-Z]?|T-\d{3,6}[A-Z]?|KX-FA\d+[A-Z0-9]{0,2}|KX-FAT\d+[A-Z0-9]{0,2}|KX-FAD\d+[A-Z0-9]{0,2}|"
+    r"C-?EXV\d+[A-Z]*|DR-\d+[A-Z0-9-]*|TN-\d+[A-Z0-9-]*|PC-?\d+[A-Z0-9-]*|TL-?\d+[A-Z0-9-]*|DL-?\d+[A-Z0-9-]*|"
+    r"C13T\d{5,8}[A-Z0-9]*|C13S\d{6,8}[A-Z0-9]*|C12C\d{5,8}[A-Z0-9]*|C33S\d{5,8}[A-Z0-9]*|"
+    r"50F\d[0-9A-Z]{2,4}|51B[0-9A-Z]{4,5}|52D[0-9A-Z]{4,5}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4}|60F[0-9A-Z]{4,5}|0?71H|C\d{4}[A-Z]|SP\d{3,5}[A-Z]{1,3}|SP\s?C\d{3,5}[A-Z]?|SPC\d{3,5}[A-Z]?|101R\d{5}|CZ\s?\d{3}|T\d{5,8}[A-Z]?|842\d{3,6}|DK-?\d{3,5}|DR\d{2,5}|408059|MP\d{3,5}[A-Z]?"
     r")\b",
     re.I,
 )
@@ -94,8 +94,8 @@ CODE_PREFIX_WEIGHTS = (
     (re.compile(r"^(?:MLT-|CLT-|TK-|KX-FA|KX-FAT|C-?EXV|DR-|TN-|C13T|C12C|C33S|NPG-|GPR-|EP-|E-|FX-)", re.I), 95),
     (re.compile(r"^T\d{2}[A-Z]?$", re.I), 95),
     (re.compile(r"^ML-D\d", re.I), 90),
-    (re.compile(r"^ML-\d{4,5}[A-Z]\d?$", re.I), 85),
-    (re.compile(r"^(?:50F|55B|56F)\w+$", re.I), 90),
+    (re.compile(r"^(?:ML-\d{4,5}[A-Z]\d?|SP\d{3,5}[A-Z]{1,3}|SCX-D\d+[A-Z]?)$", re.I), 85),
+    (re.compile(r"^(?:50F|51B|52D|55B|56F|60F)\w+$", re.I), 90),
     (re.compile(r"^0?71H$", re.I), 90),
 )
 
@@ -172,7 +172,7 @@ def _normalize_code_search_text(text: str) -> str:
     text = safe_str(text).replace("\xa0", " ")
     text = re.sub(r"\s+", " ", text)
     text = re.sub(r"\b(113R|108R|106R|006R|013R|016|C13T|C12C|C33S)\s+(\d{4,8}[A-Z0-9]*)\b", r"\1\2", text, flags=re.I)
-    text = re.sub(r"\b(CLT|MLT|ML|KX|TK|TN|DR|T|C|NPG|GPR|EP|E|FX)\s*-\s*([A-Z0-9]{1,})\b", r"\1-\2", text, flags=re.I)
+    text = re.sub(r"\b(CLT|MLT|ML|KX|TK|TN|DR|DL|TL|PC|T|C|NPG|GPR|EP|E|FX|DQ|FQ|S)\s*-\s*([A-Z0-9]{1,})\b", r"\1-\2", text, flags=re.I)
     return text.strip()
 
 
@@ -295,10 +295,17 @@ def _extract_title_bare_family_codes(title: str) -> list[str]:
     bare_patterns = [
         re.compile(r"\bC\d{4}[A-Z]\b", re.I),
         re.compile(r"\bSP\d{4,5}[A-Z]?\b", re.I),
+        re.compile(r"\bSP\s?C\d{3,5}[A-Z]?\b", re.I),
+        re.compile(r"\bSPC\d{3,5}[A-Z]?\b", re.I),
         re.compile(r"\b101R\d{5}\b", re.I),
         re.compile(r"\bCZ\s?\d{3}\b", re.I),
+        re.compile(r"\bS-\d{4,5}[A-Z]?\b", re.I),
+        re.compile(r"\bDQ-[A-Z0-9-]+\b", re.I),
+        re.compile(r"\bFQ-[A-Z0-9-]+\b", re.I),
         re.compile(r"\bT\d{5,8}[A-Z]?\b", re.I),
         re.compile(r"\b842\d{3,6}\b", re.I),
+        re.compile(r"\b408059\b", re.I),
+        re.compile(r"\bMP\d{3,5}[A-Z]?\b", re.I),
         re.compile(r"\bDK-?\d{3,5}\b", re.I),
         re.compile(r"\bDR\d{2,5}\b", re.I),
     ]
@@ -349,6 +356,32 @@ def _extract_ink_title_compat(title: str) -> str:
         else:
             out.append(token)
     return ", ".join(out[:8])
+
+
+def _extract_riso_title_compat(title: str) -> str:
+    title = _norm_spaces(title)
+    if not title or not re.search(r"\bRISO\b", title, re.I):
+        return ""
+    m = re.search(r"\bfor\s+([A-Z]?\d{2,5}(?:\s*/\s*[A-Z]?\d{2,5}){1,8})\b", title, re.I)
+    if not m:
+        return ""
+    parts = [safe_str(x) for x in re.split(r"\s*/\s*", safe_str(m.group(1))) if safe_str(x)]
+    out = []
+    for part in parts:
+        token = _normalize_code_token(part)
+        if token and len(token) >= 3:
+            out.append(f"RISO {token}")
+    return ", ".join(out[:8])
+
+
+def _extract_panasonic_integral_compat(description: str) -> str:
+    d = _norm_spaces(description)
+    if not d:
+        return ""
+    m = re.search(r"(?:для|used in|совместим(?:ость)? с)\s+((?:Panasonic|INTEGRAL)[^.;\n]{3,180})", d, re.I)
+    if not m:
+        return ""
+    return _trim_compat_tail(m.group(1))
 
 
 def _split_title_body_parts(title: str) -> tuple[str, str]:
@@ -616,7 +649,9 @@ def extract_page_params(
 
     compat = _extract_compat_from_desc(description)
     if not compat and kind == "Чернила":
-        compat = _extract_ink_title_compat(title)
+        compat = _extract_ink_title_compat(title) or _extract_riso_title_compat(title)
+    if not compat:
+        compat = _extract_panasonic_integral_compat(description)
     if compat:
         out.append(("Совместимость", compat))
 
