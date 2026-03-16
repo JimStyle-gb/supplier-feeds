@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-16 15:13:38">
+<yml_catalog date="2026-03-16 15:44:15">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-16 15:13:38
+Время сборки (Алматы)                      | 2026-03-16 15:44:15
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -725,6 +725,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print SP311HE используется в принтерах серий Ricoh Aficio SP 311DN, SP 311, SP 311DNw, SP 311SFN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP 311DN, SP 311, SP 311DNw, SP 311SFN</param>
+<param name="Коды расходников">SP311HE</param>
+<param name="Модель">SP311HE</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -1247,6 +1249,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print Premium SCX-D4200A используется в принтерах серий SAMSUNG SCX-4200, SCX-4220. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">SAMSUNG SCX-4200, SCX-4220</param>
+<param name="Коды расходников">SCX-D4200A</param>
+<param name="Модель">SCX-D4200A</param>
 <param name="Для бренда">Samsung</param>
 </offer>
 
@@ -1759,6 +1763,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером KX-FFAT472A7 используется в МФУ Panasonic KX-MB2110RU, KX-MB2117RU, KX-MB2130RU, KX-MB2137RU, KX-MB2170RU, KX-MB2177RU. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">KX-FAT472A7</param>
+<param name="Модель">KX-FAT472A7</param>
 <param name="Для бренда">Panasonic</param>
 </offer>
 
@@ -1774,6 +1780,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) KX-FAD473A7 применяется в МФУ Panasonic KX-MB2110RU, KX-MB2117RU, KX-MB2130RU, KX-MB2137RU, KX-MB2170RU, KX-MB2177RU. Ресурс печати - 10 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Panasonic KX-MB2110RU, KX-MB2117RU, KX-MB2130RU, KX-MB2137RU, KX-MB2170RU, KX-MB2177RU</param>
+<param name="Коды расходников">KX-FAD473A7</param>
+<param name="Модель">KX-FAD473A7</param>
 <param name="Для бренда">Panasonic</param>
 </offer>
 
@@ -2513,6 +2521,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print SP200HS используется в принтерах серий Ricoh Aficio SP 200N, SP 200NW, SP 200S, SP SP 203SFNW, SP 203SFN, SP 210, SP 210SF, SP 212SUw, SP 212SFNw, SP 212Nw, SP 212W. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP 200N, SP 200NW, SP 200S, SP SP 203SFNW, SP 203SFN, SP 210, SP 210SF, SP 212SUw, SP 212SFNw, SP 212Nw, SP 212W</param>
+<param name="Коды расходников">SP200HS</param>
+<param name="Модель">SP200HS</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -2530,6 +2540,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print SP150HE используется в принтерах серий Ricoh Aficio SP 150, SP 150SU, SP 150SUW, SP 150W. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP 150, SP 150SU, SP 150SUW, SP 150W</param>
+<param name="Коды расходников">SP150HE</param>
+<param name="Модель">SP150HE</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -2547,6 +2559,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print SP111E используется в принтерах серий Ricoh Aficio SP 111, SP 111SU, SP 111SF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP 111, SP 111SU, SP 111SF</param>
+<param name="Коды расходников">SP111E</param>
+<param name="Модель">SP111E</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -2966,6 +2980,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером C13S050652 используется в принтерах серий Epson AcuLaser M1400, MX14. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Epson AcuLaser M1400, MX14</param>
+<param name="Коды расходников">C13S050652</param>
+<param name="Модель">C13S050652</param>
 <param name="Для бренда">Epson</param>
 </offer>
 
@@ -3032,6 +3048,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print SP101E используется в принтерах серий Ricoh Aficio SP100. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP100</param>
+<param name="Коды расходников">SP101E</param>
+<param name="Модель">SP101E</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -3672,6 +3690,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж фотобарабана (Drum Unit - блок барабана) KX-FAD93A применяется в МФУ Panasonic KX-MB228, KX-MB262, KX-MB263, KX-MB283, KX-MB763, KX-MB772, KX-MB773, KX-MB778, KX-MB783. Ресурс печати - 6 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Panasonic KX-MB228, KX-MB262, KX-MB263, KX-MB283, KX-MB763, KX-MB772, KX-MB773, KX-MB778, KX-MB783</param>
+<param name="Коды расходников">KX-FAD93A</param>
+<param name="Модель">KX-FAD93A</param>
 <param name="Для бренда">Panasonic</param>
 </offer>
 
@@ -4459,6 +4479,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером INTEGRAL C13S050582 используется в принтерах серий Epson AcuLaser M2400D, M2300, MX20. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Epson AcuLaser M2400D, M2300, MX20</param>
+<param name="Коды расходников">C13S050582</param>
+<param name="Модель">C13S050582</param>
 <param name="Для бренда">Epson</param>
 </offer>
 
@@ -5873,6 +5895,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro print KX-FAT400A7 используется в МФУ Panasonic KX-MB1500RU, KX-MB1520RU, KX-MB1536RU. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">KX-FAT400A7</param>
+<param name="Модель">KX-FAT400A7</param>
 <param name="Для бренда">Panasonic</param>
 </offer>
 
@@ -10664,6 +10688,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж 51B5H00 используется в принтерах серий Lexmark MS/MX 317, 417, 517, 617. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Lexmark MS/MX 317, 417, 517, 617</param>
+<param name="Коды расходников">51B5H00</param>
+<param name="Модель">51B5H00</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -11180,6 +11206,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print SP201HE используется в принтерах серий Ricoh Aficio SP 211, SP 213, SP 220Nw, SP 220SNw, SP 220SFNw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP 211, SP 213, SP 220Nw, SP 220SNw, SP 220SFNw</param>
+<param name="Коды расходников">SP201HE</param>
+<param name="Модель">SP201HE</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -11637,6 +11665,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print SP400LE используется в принтерах серий Ricoh Aficio SP 400, SP 450. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP 400, SP 450</param>
+<param name="Коды расходников">SP400LE</param>
+<param name="Модель">SP400LE</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -11891,6 +11921,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж INTEGRAL 60F5H00 используется в принтерах серий Lexmark MX310, MX410, MX510, MX610. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Lexmark MX310, MX410, MX510, MX610</param>
+<param name="Коды расходников">60F5H00</param>
+<param name="Модель">60F5H00</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -12071,6 +12103,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером KX-FAT421A7 используется в МФУ Panasonic KX-MB2230RU, KX-MB2270RU, KX-MB2510RU, KX-MB2540RU, KX-MB2571RU. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">KX-FAT421A7</param>
+<param name="Модель">KX-FAT421A7</param>
 <param name="Для бренда">Panasonic</param>
 </offer>
 
@@ -12268,6 +12302,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print SP3500XE/SP3510XE используется в МФУ Ricoh Aficio SP 3500SF, 3510SF, 3500DN, 3510DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">SP3500XE, SP3510XE</param>
+<param name="Модель">SP3500XE</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -12442,6 +12478,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print SP3400HE используется в МФУ Ricoh Aficio SP 3400N, 3410DN, 3400SF, 3410SF, 3500N, 3510DN, 3500SF, 3510SF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">SP3400HE</param>
+<param name="Модель">SP3400HE</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -12543,6 +12581,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж 51B5000 используется в принтерах серий Lexmark MS/MX 317, 417, 517, 617. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Lexmark MS/MX 317, 417, 517, 617</param>
+<param name="Коды расходников">51B5000</param>
+<param name="Модель">51B5000</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -12667,6 +12707,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Картридж с тонером Euro Print SP5200HE используется в МФУ Ricoh Aficio SP5200S, SP5210SF, SP5210SR, SP5200DN, SP5210DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">SP5200HE</param>
+<param name="Модель">SP5200HE</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -12842,6 +12884,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж 60F1000 используется в принтерах серий Lexmark MX 310, 410, 510, 610. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Lexmark MX 310, 410, 510, 610</param>
+<param name="Коды расходников">60F1000</param>
+<param name="Модель">60F1000</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -12934,6 +12978,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером Euro Print C13S050582 используется в принтерах серий Epson AcuLaser M2400D, M2300, MX20. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Epson AcuLaser M2400D, M2300, MX20</param>
+<param name="Коды расходников">C13S050582</param>
+<param name="Модель">C13S050582</param>
 <param name="Для бренда">Epson</param>
 </offer>
 
@@ -13293,6 +13339,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print NEW SP200HS используется в принтерах серий Ricoh Aficio SP 200N, SP 200NW, SP 200S, SP SP 203SFNW, SP 203SFN, SP 210, SP 210SF, SP 212SUw, SP 212SFNw, SP 212Nw, SP 212W. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP 200N, SP 200NW, SP 200S, SP SP 203SFNW, SP 203SFN, SP 210, SP 210SF, SP 212SUw, SP 212SFNw, SP 212Nw, SP 212W</param>
+<param name="Коды расходников">SP200HS</param>
+<param name="Модель">SP200HS</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -13625,6 +13673,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print SP230H используется в принтерах серий Ricoh Aficio SP230DNw, SP230SFNw. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP230DNw, SP230SFNw</param>
+<param name="Коды расходников">SP230H</param>
+<param name="Модель">SP230H</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -14800,6 +14850,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж OEM 51B5000 используется в принтерах серий Lexmark MS/MX 317, 417, 517, 617. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Lexmark MS/MX 317, 417, 517, 617</param>
+<param name="Коды расходников">51B5000</param>
+<param name="Модель">51B5000</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -15168,6 +15220,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Sakura SP400LE используется в принтерах серий Ricoh Aficio SP 400, SP 450. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP 400, SP 450</param>
+<param name="Коды расходников">SP400LE</param>
+<param name="Модель">SP400LE</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -15184,6 +15238,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Sakura 51B5H00 используется в принтерах серий Lexmark MS/MX 317, 417, 517, 617. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Lexmark MS/MX 317, 417, 517, 617</param>
+<param name="Коды расходников">51B5H00</param>
+<param name="Модель">51B5H00</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -15711,6 +15767,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print SP330H используется в принтерах серий Ricoh Aficio SP330DNw, SP330SN, SP330SFN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP330DNw, SP330SN, SP330SFN</param>
+<param name="Коды расходников">SP330H</param>
+<param name="Модель">SP330H</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -16109,6 +16167,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Оригинальный картридж фотобарабана (Drum Unit - блок барабана) 52D0Z00 применяется в принтерах серии Lexmark MS812, MS810, MS811, MX710, MX711, MX810, MX811, MX812. Ресурс печати - 100 000 страниц.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">серии Lexmark MS812, MS810, MS811, MX710, MX711, MX810, MX811, MX812</param>
+<param name="Коды расходников">52D0Z00</param>
+<param name="Модель">52D0Z00</param>
 <param name="Для бренда">Lexmark</param>
 </offer>
 
@@ -17408,6 +17468,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print PC-211EV используется в принтерах PANTUM P2200, P2207, P2507, P2500W, M6500, M6550, M6607. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">PANTUM P2200, P2207, P2507, P2500W, M6500, M6550, M6607</param>
+<param name="Коды расходников">PC-211EV</param>
+<param name="Модель">PC-211EV</param>
 <param name="Для бренда">Pantum</param>
 </offer>
 
@@ -18924,7 +18986,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL105655" available="false">
 <categoryId></categoryId>
 <vendorCode>CL105655</vendorCode>
-<name>Тонер-картридж для Canon C-EXV65 Cyan (17,5K) Euro Print</name>
+<name>Тонер-картридж для Canon C-EXV65 Cyan (11K) Euro Print</name>
 <price>22900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv65-c.jpg</picture>
 <vendor>Canon</vendor>
@@ -18941,7 +19003,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL105656" available="false">
 <categoryId></categoryId>
 <vendorCode>CL105656</vendorCode>
-<name>Тонер-картридж для Canon C-EXV65 Yellow (17,5K) Euro Print</name>
+<name>Тонер-картридж для Canon C-EXV65 Yellow (11K) Euro Print</name>
 <price>22900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv65-y.jpg</picture>
 <vendor>Canon</vendor>
@@ -18959,7 +19021,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <offer id="CL105657" available="false">
 <categoryId></categoryId>
 <vendorCode>CL105657</vendorCode>
-<name>Тонер-картридж для Canon C-EXV65 Magenta (17,5K) Euro Print</name>
+<name>Тонер-картридж для Canon C-EXV65 Magenta (11K) Euro Print</name>
 <price>22900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv65-m.jpg</picture>
 <vendor>Canon</vendor>
@@ -19749,6 +19811,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print TL-5120H используется в принтерах PANTUM BP5100, BM5100. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">PANTUM BP5100, BM5100</param>
+<param name="Коды расходников">TL-5120H</param>
+<param name="Модель">TL-5120H</param>
 <param name="Для бренда">Pantum</param>
 </offer>
 
@@ -19989,6 +20053,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Картридж Euro Print TL-420X используется в принтерах PANTUM P3010, P3300, M6700, M6800, M7100, M7200, M7300. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">PANTUM P3010, P3300, M6700, M6800, M7100, M7200, M7300</param>
+<param name="Коды расходников">TL-420X</param>
+<param name="Модель">TL-420X</param>
 <param name="Для бренда">Pantum</param>
 </offer>
 
@@ -20005,6 +20071,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Драм-картридж Euro Print DL-420X используется в принтерах PANTUM P3010, P3300, M6700, M6800, M7100, M7200, M7300. Новый картридж фотобарабана по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">PANTUM P3010, P3300, M6700, M6800, M7100, M7200, M7300</param>
+<param name="Коды расходников">DL-420, DL-420X</param>
+<param name="Модель">DL-420</param>
 <param name="Для бренда">Pantum</param>
 </offer>
 
@@ -20467,6 +20535,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 Драм-картридж Euro Print DL-5120 используется в принтерах PANTUM BP5100, BM5100. Новый картридж фотобарабана по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">PANTUM BP5100, BM5100</param>
+<param name="Коды расходников">DL-5120</param>
+<param name="Модель">DL-5120</param>
 <param name="Для бренда">Pantum</param>
 </offer>
 
