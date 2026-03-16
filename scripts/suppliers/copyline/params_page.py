@@ -287,6 +287,27 @@ def _extract_title_canon_family_codes(title: str) -> list[str]:
                 out.append(token)
     return out
 
+def _extract_xerox_developer_title_codes(title: str) -> list[str]:
+    title = _norm_spaces(title)
+    if not title or not re.search(r"\bДевелопер\b", title, re.I) or not re.search(r"\bXerox\b", title, re.I):
+        return []
+    out: list[str] = []
+    seen: set[str] = set()
+    patterns = [
+        re.compile(r"\bXerox\s+(DC\s*\d{3}(?:\s*/\s*\d{3})+)\b", re.I),
+        re.compile(r"\bXerox\s+(WC\s*\d{4}(?:\s*/\s*\d{4})*)\b", re.I),
+        re.compile(r"\bXerox\s+(Phaser\s*\d{4}(?:\s*/\s*\d{4})+)\b", re.I),
+    ]
+    for rx in patterns:
+        for m in rx.finditer(title):
+            token = _norm_spaces(m.group(1))
+            token = re.sub(r"\s*/\s*", "/", token)
+            if token and token not in seen:
+                seen.add(token)
+                out.append(token)
+    return out
+
+
 def _extract_title_bare_family_codes(title: str) -> list[str]:
     title = _norm_spaces(title)
     out: list[str] = []
@@ -294,6 +315,7 @@ def _extract_title_bare_family_codes(title: str) -> list[str]:
 
     bare_patterns = [
         re.compile(r"\bC\d{4}[A-Z]\b", re.I),
+        re.compile(r"\bC13T[0-9A-Z]{5,10}\b", re.I),
         re.compile(r"\bCZ\d{3}[A-Z]?\b", re.I),
         re.compile(r"\bSP\d{3,5}[A-Z]?\b", re.I),
         re.compile(r"\bSP\s?C\d{3,5}[A-Z]?\b", re.I),
@@ -557,6 +579,7 @@ def _extract_codes(title: str, description: str) -> str:
     title_head, _title_tail = _split_title_body_parts(title)
     title_codes = _collect_codes_from_text(title_head or title, allow_numeric=True)
     title_codes.extend(_extract_title_bare_family_codes(title))
+    title_codes.extend(_extract_xerox_developer_title_codes(title))
     title_codes.extend(_extract_title_multicode_tail(title))
     title_codes.extend(_extract_title_brand_alpha_tail(title))
     title_codes.extend(_extract_single_brand_numeric_tail(title))
