@@ -92,13 +92,23 @@ def safe_int(s: Any) -> int | None:
         return None
 
 
-def _truncate_text(s: str, max_len: int) -> str:
-    """Обрезает текст до max_len, аккуратно (без обрыва HTML, только plain)."""
+def _truncate_text(s: str, max_len: int, *, suffix: str = "") -> str:
+    """Обрезает текст до max_len, аккуратно (plain), опционально с suffix."""
     if not s:
         return ""
     max_len = int(max_len or 0)
     if max_len <= 0:
         return s
+
+    suffix = suffix or ""
     if len(s) <= max_len:
         return s
+
+    if suffix:
+        if max_len <= len(suffix):
+            return suffix[:max_len].rstrip()
+        cut = max_len - len(suffix)
+        base = s[:cut].rstrip()
+        return (base + suffix).rstrip()
+
     return s[:max_len].rstrip()
