@@ -405,7 +405,7 @@ def _collect_codes_from_text(text: str, *, allow_numeric: bool) -> list[str]:
     return found
 
 
-def _pick_best_codes(codes: Sequence[str], *, limit: int = 6) -> list[str]:
+def _pick_best_codes(codes: Sequence[str], *, limit: int = 8) -> list[str]:
     ordered = sorted(codes, key=lambda c: (-_code_weight(c), codes.index(c)))
     out: list[str] = []
     seen: set[str] = set()
