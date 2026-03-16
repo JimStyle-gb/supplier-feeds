@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-16 16:21:44">
+<yml_catalog date="2026-03-16 17:49:34">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-16 16:21:44 (не было изменений)
+Время сборки (Алматы)                      | 2026-03-16 17:49:34
 Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2683
 Сколько товаров у поставщика после фильтра | 1204
@@ -3991,6 +3991,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Чернила черные для дубликатора (ризографа) RISO RP S-3919.]]></description>
 <param name="Тип">Чернила</param>
+<param name="Коды расходников">S-3919</param>
+<param name="Модель">S-3919</param>
 <param name="Для бренда">RISO</param>
 </offer>
 
@@ -4005,6 +4007,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Чернила черные для цифрового дупликатора (ризографа) RISO RZ/RV S-4253.]]></description>
 <param name="Тип">Чернила</param>
+<param name="Коды расходников">S-4253</param>
+<param name="Модель">S-4253</param>
 <param name="Для бренда">RISO</param>
 </offer>
 
@@ -4513,6 +4517,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером INTEGRAL DQ-TU24D используется в принтерах серий Panasonic Workio DP-3510, DP-4510. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Panasonic Workio DP-3510, DP-4510</param>
+<param name="Коды расходников">DQ-TU24D</param>
+<param name="Модель">DQ-TU24D</param>
 <param name="Для бренда">Panasonic</param>
 </offer>
 
@@ -4528,6 +4534,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером INTEGRAL FQ-TK10 используется в принтерах серий Panasonic FP-7718, FP-7722, FP-7818, FP-7824. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Panasonic FP-7718, FP-7722, FP-7818, FP-7824</param>
+<param name="Коды расходников">FQ-TK10</param>
+<param name="Модель">FQ-TK10</param>
 <param name="Для бренда">Panasonic</param>
 </offer>
 
@@ -4543,6 +4551,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером INTEGRAL FQ-TK20 используется в принтерах серий Panasonic FP-7728, FP-7735, FP-7742, FP-7750, FP-7830, FP-7835, FP-7845, FP-7850. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Panasonic FP-7728, FP-7735, FP-7742, FP-7750, FP-7830, FP-7835, FP-7845, FP-7850</param>
+<param name="Коды расходников">FQ-TK20</param>
+<param name="Модель">FQ-TK20</param>
 <param name="Для бренда">Panasonic</param>
 </offer>
 
@@ -10227,6 +10237,8 @@ URL поставщика                             | https://copyline.kz/goods
 <description><![CDATA[
 Девелопер (металлический порошок, носитель тонера) DQ-Z60J-PU используется в картридже Panasonic Workio DP-1520, DP-1820 DP-8016, DP-8020. Ресурс использования при печати - 60 000 стр.]]></description>
 <param name="Тип">Девелопер</param>
+<param name="Коды расходников">DQ-Z60J-PU</param>
+<param name="Модель">DQ-Z60J-PU</param>
 <param name="Для бренда">Panasonic</param>
 </offer>
 
@@ -11092,6 +11104,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print SP C220 Cyan используется в принтерах серий Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN</param>
+<param name="Коды расходников">SPC220</param>
+<param name="Модель">SPC220</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -11107,7 +11121,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print SP C220 Magenta используется в принтерах серий Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN</param>
+<param name="Коды расходников">SPC220</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">SPC220</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -11123,7 +11139,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print SP C220 Yellow используется в принтерах серий Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN</param>
+<param name="Коды расходников">SPC220</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">SPC220</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -11139,7 +11157,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж Euro Print SP C220 Black используется в принтерах серий Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Совместимость">Ricoh Aficio SP C220S, SP C221SF, SP C222SF, SP C220N, SP C221N, SP C222DN</param>
+<param name="Коды расходников">SPC220</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">SPC220</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -12515,7 +12535,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с тонером SPC310E используется в принтерах Ricoh Aficio SP C231SF, C232S, SP C231N, C232DN, C311N, C312DN, C242DN, C242SF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Ricoh Aficio SP C231SF, RICOH Aficio C232S, SP C231N, RICOH Aficio C232DN, RICOH Aficio C311N, RICOH Aficio C312DN, RICOH Aficio C242DN, RICOH Aficio C242SF</param>
+<param name="Коды расходников">SPC310E</param>
 <param name="Цвет">Чёрный</param>
+<param name="Модель">SPC310E</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -12532,6 +12554,8 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с голубым тонером SPC310E используется в принтерах Ricoh Aficio SP C231SF, C232S, SP C231N, C232DN, C311N, C312DN, C242DN, C242SF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Ricoh Aficio SP C231SF, RICOH Aficio C232S, SP C231N, RICOH Aficio C232DN, RICOH Aficio C311N, RICOH Aficio C312DN, RICOH Aficio C242DN, RICOH Aficio C242SF</param>
+<param name="Коды расходников">SPC310E</param>
+<param name="Модель">SPC310E</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -12548,7 +12572,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с пурпурным тонером SPC310E используется в принтерах Ricoh Aficio SP C231SF, C232S, SP C231N, C232DN, C311N, C312DN, C242DN, C242SF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Ricoh Aficio SP C231SF, RICOH Aficio C232S, SP C231N, RICOH Aficio C232DN, RICOH Aficio C311N, RICOH Aficio C312DN, RICOH Aficio C242DN, RICOH Aficio C242SF</param>
+<param name="Коды расходников">SPC310E</param>
 <param name="Цвет">Пурпурный</param>
+<param name="Модель">SPC310E</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -12565,7 +12591,9 @@ URL поставщика                             | https://copyline.kz/goods
 Картридж с желтым тонером SPC310E используется в принтерах Ricoh Aficio SP C231SF, C232S, SP C231N, C232DN, C311N, C312DN, C242DN, C242SF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Совместимость">Ricoh Aficio SP C231SF, RICOH Aficio C232S, SP C231N, RICOH Aficio C232DN, RICOH Aficio C311N, RICOH Aficio C312DN, RICOH Aficio C242DN, RICOH Aficio C242SF</param>
+<param name="Коды расходников">SPC310E</param>
 <param name="Цвет">Желтый</param>
+<param name="Модель">SPC310E</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -13117,6 +13145,8 @@ URL поставщика                             | https://copyline.kz/goods
 Drum Unit SP400 используется в принтерах серий Ricoh Aficio SP 400, SP 450. Новый барабан-картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Драм-картридж</param>
 <param name="Совместимость">Ricoh Aficio SP 400, SP 450</param>
+<param name="Коды расходников">408059</param>
+<param name="Модель">408059</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 
@@ -17161,6 +17191,8 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <description><![CDATA[
 Картридж с тонером Euro Print MP601 (407824) используется в МФУ Ricoh Aficio SP5300DN, SP5310DN, MP501SPF, MP601SPF. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
 <param name="Тип">Тонер-картридж</param>
+<param name="Коды расходников">MP601</param>
+<param name="Модель">MP601</param>
 <param name="Для бренда">Ricoh</param>
 </offer>
 

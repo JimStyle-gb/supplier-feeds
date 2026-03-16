@@ -2,19 +2,14 @@ QUALITY_GATE_THRESHOLD: FAIL
 QUALITY_GATE_EFFECTIVE: PASS
 enforce: false
 critical_count: 0
-cosmetic_total_count: 42
-cosmetic_offer_count: 38
+cosmetic_total_count: 26
+cosmetic_offer_count: 24
 max_cosmetic_offers: 5
 max_cosmetic_issues: 5
 
 COSMETIC:
 - CL101560 | missing_compat | compat missing
-- CL101560 | missing_codes | codes missing
 - CL101562 | missing_compat | compat missing
-- CL101562 | missing_codes | codes missing
-- CL101801 | missing_codes | codes missing
-- CL101802 | missing_codes | codes missing
-- CL101803 | missing_codes | codes missing
 - CL102035 | missing_compat | compat missing
 - CL102358 | missing_codes | codes missing
 - CL102714 | missing_codes | codes missing
@@ -31,25 +26,14 @@ COSMETIC:
 - CL103828 | missing_codes | codes missing
 - CL103829 | missing_codes | codes missing
 - CL103830 | missing_codes | codes missing
-- CL103831 | missing_codes | codes missing
 - CL103832 | missing_codes | codes missing
 - CL103879 | missing_codes | codes missing
-- CL103993 | missing_codes | codes missing
-- CL103994 | missing_codes | codes missing
-- CL103995 | missing_codes | codes missing
-- CL103996 | missing_codes | codes missing
 - CL103997 | missing_codes | codes missing
 - CL104154 | missing_codes | codes missing
-- CL104294 | missing_codes | codes missing
-- CL104295 | missing_codes | codes missing
-- CL104296 | missing_codes | codes missing
-- CL104297 | missing_codes | codes missing
-- CL104444 | missing_codes | codes missing
 - CL104896 | missing_compat | compat missing
 - CL104896 | missing_codes | codes missing
 - CL104898 | missing_compat | compat missing
 - CL104898 | missing_codes | codes missing
-- CL105203 | missing_codes | codes missing
 
 known_cosmetic: 0
-new_cosmetic: 42
+new_cosmetic: 26
