@@ -30,13 +30,12 @@ from cs.core import (
 )
 
 
-# STEP3: подключаем уже вынесенные supplier-модули
+# STEP3 SAFE: подключаем уже вынесенные supplier-модули
 from suppliers.nvprint.source import (
     Auth as _SourceAuth,
     get_auth as _src_get_auth,
     download_xml as _src_download_xml,
     xml_head as _src_xml_head,
-    local as _src_local,
     get_text as _src_get_text,
     pick_first_text as _src_pick_first_text,
     iter_children as _src_iter_children,
@@ -657,7 +656,7 @@ def _derive_vendor_from_name(name: str) -> str:
     return ""
 
 
-# STEP3: переключаем сборщик на supplier-модули (без большого рефакторинга)
+# STEP3 SAFE: перенаправляем часть логики в supplier-модули
 def _get_auth() -> _SourceAuth | None:
     return _src_get_auth(
         login=(os.environ.get("NVPRINT_LOGIN") or "").strip(),
@@ -709,7 +708,7 @@ def _rename_param_key_nvprint(k: str) -> str:
 def _cleanup_param_value_nvprint(k: str, v: str) -> str:
     return _norm_cleanup_param_value_nvprint(k, v)
 
-def _extract_price(item) -> int | None:
+def _extract_price(item):
     return _px_extract_price(item)
 
 def _collect_params(item):
