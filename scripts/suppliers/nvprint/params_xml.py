@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Path: scripts/suppliers/nvprint/params_xml.py
-NVPrint params_xml layer — цена и сырые params из XML.
+NVPrint XML params layer — step2 safe split.
+
+Пока без смены общей логики: переносим извлечение цены,
+param cleanup и native_desc из текущего монолита.
 """
 
 from __future__ import annotations
@@ -10,16 +12,40 @@ import re
 from xml.etree import ElementTree as ET
 
 from suppliers.nvprint.normalize import (
-    DROP_PARAM_NAMES_CF,
-    cleanup_param_value_nvprint,
     rename_param_key_nvprint,
+    cleanup_param_value_nvprint,
 )
-from suppliers.nvprint.source import get_text, iter_children, local
+from suppliers.nvprint.source import (
+    local,
+    get_text,
+    pick_first_text,
+    iter_children,
+)
 
+RE_DESC_HAS_CS = re.compile(r"<!--\s*WhatsApp\s*-->|<!--\s*Описание\s*-->|<h3>\s*Характеристики\s*</h3>", re.I)
+
+DROP_PARAM_NAMES_CF = {
+    "артикул",
+    "остаток",
+    "наличие",
+    "в наличии",
+    "сопутствующие товары",
+    "sku",
+    "код",
+    "guid",
+    "ссылканакартинку",
+    "вес",
+    "высота",
+    "длина",
+    "ширина",
+    "объем",
+    "объём",
+    "разделкаталога",
+    "разделмодели",
+}
 
 
 def parse_num(text: str) -> float | None:
-    """Распарсить число из текста."""
     t = (text or "").strip()
     if not t:
         return None
@@ -33,9 +59,7 @@ def parse_num(text: str) -> float | None:
         return None
 
 
-
 def extract_price(item: ET.Element) -> int | None:
-    """Извлечь supplier price."""
     prefer_keys = {
         "purchase_price", "base_price", "price",
         "цена", "цена_кзт", "ценаказахстан", "ценаkzt", "pricekzt",
@@ -57,12 +81,12 @@ def extract_price(item: ET.Element) -> int | None:
             if n is not None and n > 0:
                 found.append(int(n))
 
-    return min(found) if found else None
+    if not found:
+        return None
+    return min(found)
 
 
-
-def collect_params(item: ET.Element, fix_mixed_ru_func) -> list[tuple[str, str]]:
-    """Собрать supplier params 1:1 без смены поведения."""
+def collect_params(item: ET.Element) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
 
     for p in item.findall("param"):
@@ -76,19 +100,20 @@ def collect_params(item: ET.Element, fix_mixed_ru_func) -> list[tuple[str, str]]
             continue
         if k.casefold() == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
             continue
+
         k = rename_param_key_nvprint(k)
-        v = cleanup_param_value_nvprint(k.replace(" ", ""), v, fix_mixed_ru_func) if k in ("Тип печати", "Цвет печати", "Совместимость с моделями") else cleanup_param_value_nvprint(k, v, fix_mixed_ru_func)
-        orig_k = k
-        k = rename_param_key_nvprint(k)
-        v = cleanup_param_value_nvprint(orig_k, v, fix_mixed_ru_func)
+        v = cleanup_param_value_nvprint(k, v)
         out.append((k, v))
 
     if out:
         return out
 
     skip_keys = {
-        "код", "артикул", "guid", "номенклатура", "номенклатуракратко", "наименование",
-        "цена", "ценасндс", "ценабезндс", "цена_кзт", "price", "new_reman", "разделпрайса", "ссылканакартинку",
+        "код", "артикул", "guid",
+        "номенклатура", "номенклатуракратко", "наименование",
+        "цена", "ценасндс", "ценабезндс", "цена_кзт", "price",
+        "new_reman", "разделпрайса",
+        "ссылканакартинку",
     }
 
     for ch in iter_children(item):
@@ -97,14 +122,26 @@ def collect_params(item: ET.Element, fix_mixed_ru_func) -> list[tuple[str, str]]
         v = get_text(ch)
         if not v:
             continue
-        if cf in skip_keys or cf in DROP_PARAM_NAMES_CF:
+        if cf in skip_keys:
+            continue
+        if cf in DROP_PARAM_NAMES_CF:
             continue
         if cf in ("вес", "высота", "длина", "ширина", "ресурс") and v.strip() in ("0", "0.0", "0,0", "0,00", "0.00"):
             continue
         if cf == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
             continue
+
         k = rename_param_key_nvprint(k)
-        v = cleanup_param_value_nvprint(k.replace(" ", ""), v, fix_mixed_ru_func) if k in ("Тип печати", "Цвет печати", "Совместимость с моделями") else cleanup_param_value_nvprint(k, v, fix_mixed_ru_func)
+        v = cleanup_param_value_nvprint(k, v)
         out.append((k, v))
 
     return out
+
+
+def native_desc(item: ET.Element) -> str:
+    d = pick_first_text(item, ("description", "Описание"))
+    if not d:
+        return ""
+    if RE_DESC_HAS_CS.search(d):
+        return ""
+    return d
