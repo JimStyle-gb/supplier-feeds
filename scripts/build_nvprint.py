@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-NVPrint -> CS adapter (step1-safe split)
+NVPrint -> CS adapter (v65, 1C-XML "КаталогТоваров/Товары/Товар")
 
-Шаг 1: безопасный вынос source/filtering.
-Core и остальная NVPrint-логика пока не трогаются.
+Core (cs/core.py) = только общее: цена/description/params/feed_meta/рендер/валидация/запись.
+Этот файл = только NVPrint-специфика: скачать XML, распарсить "Товар", собрать OfferOut.
 """
 
 from __future__ import annotations
@@ -29,12 +29,14 @@ from cs.core import (
     write_cs_feed_raw,
 )
 
-# Первый безопасный вынос
+
+# STEP3: подключаем уже вынесенные supplier-модули
 from suppliers.nvprint.source import (
-    Auth as SourceAuth,
+    Auth as _SourceAuth,
     get_auth as _src_get_auth,
     download_xml as _src_download_xml,
     xml_head as _src_xml_head,
+    local as _src_local,
     get_text as _src_get_text,
     pick_first_text as _src_pick_first_text,
     iter_children as _src_iter_children,
@@ -45,9 +47,22 @@ from suppliers.nvprint.filtering import (
     name_for_filter as _flt_name_for_filter,
     include_by_name as _flt_include_by_name,
 )
+from suppliers.nvprint.normalize import (
+    cleanup_name_nvprint as _norm_cleanup_name_nvprint,
+    cleanup_vendor_nvprint as _norm_cleanup_vendor_nvprint,
+    rename_param_key_nvprint as _norm_rename_param_key_nvprint,
+    cleanup_param_value_nvprint as _norm_cleanup_param_value_nvprint,
+)
+from suppliers.nvprint.params_xml import (
+    extract_price as _px_extract_price,
+    collect_params as _px_collect_params,
+    native_desc as _px_native_desc,
+)
+
 
 OUT_FILE = "docs/nvprint.yml"
 OUTPUT_ENCODING = "utf-8"
+
 
 # Если описание уже похоже на CS — не берём native_desc (иначе будет дубль секций)
 RE_DESC_HAS_CS = re.compile(r"<!--\s*WhatsApp\s*-->|<!--\s*Описание\s*-->|<h3>\s*Характеристики\s*</h3>", re.I)
@@ -60,7 +75,7 @@ DROP_PARAM_NAMES_CF = {
     "в наличии",
     "сопутствующие товары",
     "sku",
-    "код",
+    "код",  # код используем для oid, но в params не нужен
     "guid",
     "ссылканакартинку",
     "вес",
@@ -71,65 +86,205 @@ DROP_PARAM_NAMES_CF = {
     "объём",
     "разделкаталога",
     "разделмодели",
+
 }
 
-# Фильтр ассортимента NVPrint
+
+# Фильтр ассортимента NVPrint.
+# ВАЖНО: фильтруем по ПРЕФИКСУ названия (а не по наличию слова внутри),
+# иначе почти всё проходит из‑за слов "...для картриджа..." в тексте.
+# Можно расширить через env NVPRINT_INCLUDE_PREFIXES (через запятую).
 NVPRINT_INCLUDE_PREFIXES_CF = [
     "блок фотобарабана",
     "картридж",
     "печатающая головка",
     "струйный картридж",
     "тонер-картридж",
-    "тонер картридж",
+    "тонер картридж",  # бывает без дефиса
     "тонер-туба",
-    "тонер туба",
+    "тонер туба",      # бывает без дефиса
 ]
+
 
 _RE_WS = re.compile(r"\s+")
 
+# Подмена похожих латинских букв на кириллицу, только когда дальше идёт кириллица.
+# Нужно для случаев типа "Cтруйный" (латинская C).
+_LAT2CYR = {
+    "A": "А", "a": "а",
+    "B": "В", "b": "в",
+    "C": "С", "c": "с",
+    "E": "Е", "e": "е",
+    "H": "Н", "h": "н",
+    "K": "К", "k": "к",
+    "M": "М", "m": "м",
+    "O": "О", "o": "о",
+    "P": "Р", "p": "р",
+    "T": "Т", "t": "т",
+    "X": "Х", "x": "х",
+    "Y": "У", "y": "у",
+}
 
-# ---- wrappers over source/filtering (step1 safe split) ----
-
-_Auth = SourceAuth
 
 def _fix_mixed_ru(s: str) -> str:
-    return _flt_fix_mixed_ru(s)
+    # Меняем латиницу на кириллицу ТОЛЬКО если следующая буква кириллическая.
+    if not s:
+        return ""
+    out = []
+    n = len(s)
+    for i, ch in enumerate(s):
+        rep = ch
+        if ch in _LAT2CYR and i + 1 < n:
+            nxt = s[i + 1]
+            if "\u0400" <= nxt <= "\u04FF":  # кириллица
+                rep = _LAT2CYR[ch]
+        out.append(rep)
+    return "".join(out)
+
 
 def _name_for_filter(name: str) -> str:
-    return _flt_name_for_filter(name)
+    s = (name or "").strip()
+    s = _fix_mixed_ru(s)
+    s = s.casefold()
+    s = _RE_WS.sub(" ", s)
+    return s
+
 
 def _include_by_name(name: str) -> bool:
-    return _flt_include_by_name(name, NVPRINT_INCLUDE_PREFIXES_CF, os.environ.get("NVPRINT_INCLUDE_PREFIXES") or "")
+    cf = _name_for_filter(name)
+    if not cf:
+        return False
+
+    extra = (os.environ.get("NVPRINT_INCLUDE_PREFIXES") or "").strip()
+    prefixes = list(NVPRINT_INCLUDE_PREFIXES_CF)
+    if extra:
+        for x in extra.split(","):
+            x = x.strip().casefold()
+            if x and x not in prefixes:
+                prefixes.append(x)
+
+    for p in prefixes:
+        if p and cf.startswith(p):
+            return True
+    # NOTE: Только префиксная фильтрация (см. комментарий выше). Режим 'слова внутри' отключён.
+    return False
+
+
+@dataclass
+class _Auth:
+    login: str
+    password: str
+
+
 
 def _get_auth() -> _Auth | None:
-    return _src_get_auth(
-        login=(os.environ.get("NVPRINT_LOGIN") or "").strip(),
-        password=(os.environ.get("NVPRINT_PASSWORD") or os.environ.get("NVPRINT_PASS") or "").strip(),
-    )
+    login = (os.environ.get("NVPRINT_LOGIN") or "").strip()
+    pw = (os.environ.get("NVPRINT_PASSWORD") or os.environ.get("NVPRINT_PASS") or "").strip()
+    if login and pw:
+        return _Auth(login=login, password=pw)
+    return None
+
 
 def _download_xml(url: str, auth: _Auth | None) -> bytes:
-    return _src_download_xml(
-        url=url,
-        auth=auth,
-        retries=int((os.environ.get("NVPRINT_HTTP_RETRIES", "4") or "4").strip() or "4"),
-        t_connect=int((os.environ.get("NVPRINT_TIMEOUT_CONNECT", "20") or "20").strip() or "20"),
-        t_read=int((os.environ.get("NVPRINT_TIMEOUT_READ", "120") or "120").strip() or "120"),
-    )
+    """Скачать NVPrint XML с ретраями.
+
+    По умолчанию делает несколько попыток с backoff, чтобы не падать на временных сетевых сбоях.
+    Параметры можно переопределить env:
+      - NVPRINT_HTTP_RETRIES (default 4)
+      - NVPRINT_TIMEOUT_CONNECT (default 20)
+      - NVPRINT_TIMEOUT_READ (default 120)
+    """
+    headers = {
+        "User-Agent": "Mozilla/5.0 (CS bot; NVPrint adapter)",
+        "Accept": "application/xml,text/xml,*/*",
+    }
+
+    def _env_int(name: str, default: int) -> int:
+        try:
+            v = int((os.environ.get(name, str(default)) or str(default)).strip())
+            return v if v > 0 else default
+        except Exception:
+            return default
+
+    retries = _env_int("NVPRINT_HTTP_RETRIES", 4)
+    t_connect = _env_int("NVPRINT_TIMEOUT_CONNECT", 20)
+    t_read = _env_int("NVPRINT_TIMEOUT_READ", 120)
+
+    kwargs = {"timeout": (t_connect, t_read), "headers": headers}
+    if auth:
+        kwargs["auth"] = (auth.login, auth.password)
+
+    last_err: Exception | None = None
+    for attempt in range(1, retries + 1):
+        try:
+            r = requests.get(url, **kwargs)
+            if r.status_code == 200 and r.content:
+                return r.content
+            raise RuntimeError(f"Не удалось скачать NVPrint XML: http={r.status_code} bytes={len(r.content or b'')}")
+        except (requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError, requests.exceptions.SSLError) as e:
+            last_err = e
+            if attempt >= retries:
+                break
+            # backoff: 1.5^n + небольшой jitter
+            sleep_s = (1.5 ** (attempt - 1)) + random.uniform(0.0, 0.4)
+            print(f"NVPrint: сеть/таймаут, попытка {attempt}/{retries} -> sleep {sleep_s:.1f}s ({type(e).__name__})", file=sys.stderr)
+            time.sleep(sleep_s)
+        except Exception as e:
+            # прочие ошибки (например, странный HTTP ответ) — без ретраев
+            raise
+
+    raise RuntimeError(f"NVPrint: не удалось скачать XML после {retries} попыток: {last_err}")
+
+
 
 def _xml_head(xml_bytes: bytes, limit: int = 2500) -> str:
-    return _src_xml_head(xml_bytes, limit=limit)
+    try:
+        s = xml_bytes.decode("utf-8")
+    except Exception:
+        try:
+            s = xml_bytes.decode("cp1251")
+        except Exception:
+            s = xml_bytes.decode("utf-8", errors="replace")
+    s = s.replace("\r", "")
+    return s[:limit]
+
+
+def _local(tag: str) -> str:
+    if "}" in tag:
+        return tag.split("}", 1)[1]
+    return tag
+
 
 def _get_text(el: ET.Element | None) -> str:
-    return _src_get_text(el)
+    if el is None or el.text is None:
+        return ""
+    return el.text.strip()
+
 
 def _pick_first_text(node: ET.Element, names: tuple[str, ...]) -> str:
-    return _src_pick_first_text(node, names)
+    want = {n.casefold() for n in names}
+    for ch in list(node):
+        if _local(ch.tag).casefold() in want:
+            v = _get_text(ch)
+            if v:
+                return v
+    return ""
+
 
 def _iter_children(node: ET.Element) -> list[ET.Element]:
-    return _src_iter_children(node)
+    return list(node)
+
 
 def _find_items(root: ET.Element) -> list[ET.Element]:
-    return _src_find_items(root)
+    offers = [el for el in root.iter() if _local(el.tag).casefold() == "offer"]
+    if offers:
+        return offers
+
+    tovar = [el for el in root.iter() if _local(el.tag).casefold() == "товар"]
+    if tovar:
+        return tovar
+
+    return []
 
 
 def _make_oid(item: ET.Element, name: str) -> str | None:
@@ -175,9 +330,7 @@ def _extract_price(item: ET.Element) -> int | None:
     }
 
     for ch in _iter_children(item):
-        # local tag helper not needed here
-        k = ch.tag.split("}", 1)[1] if "}" in ch.tag else ch.tag
-        k = k.casefold()
+        k = _local(ch.tag).casefold()
         if k in prefer_keys:
             n = _parse_num(_get_text(ch))
             if n is not None:
@@ -185,8 +338,7 @@ def _extract_price(item: ET.Element) -> int | None:
 
     found: list[int] = []
     for el in item.iter():
-        k = el.tag.split("}", 1)[1] if "}" in el.tag else el.tag
-        k = k.casefold()
+        k = _local(el.tag).casefold()
         if "цена" in k or k in prefer_keys:
             n = _parse_num(_get_text(el))
             if n is not None and n > 0:
@@ -199,10 +351,10 @@ def _extract_price(item: ET.Element) -> int | None:
 
 
 def _collect_pictures(item: ET.Element) -> list[str]:
+    # 1) yml: <picture>
     pics: list[str] = []
     for el in item.iter():
-        tag = el.tag.split("}", 1)[1] if "}" in el.tag else el.tag
-        if tag.casefold() != "picture":
+        if _local(el.tag).casefold() != "picture":
             continue
         u = _get_text(el)
         if not u:
@@ -214,6 +366,7 @@ def _collect_pictures(item: ET.Element) -> list[str]:
             u = "https://nvprint.ru" + u
         pics.append(u)
 
+    # 2) 1C: часто есть поле "СсылкаНаКартинку" (или похожие)
     if not pics:
         u = _pick_first_text(
             item,
@@ -239,6 +392,7 @@ def _collect_pictures(item: ET.Element) -> list[str]:
     if not pics:
         return []
 
+    # уникализация
     seen = set()
     out: list[str] = []
     for u in pics:
@@ -281,8 +435,7 @@ def _collect_params(item: ET.Element) -> list[tuple[str, str]]:
     }
 
     for ch in _iter_children(item):
-        k = ch.tag.split("}", 1)[1] if "}" in ch.tag else ch.tag
-        k = k.strip()
+        k = _local(ch.tag).strip()
         cf = k.casefold()
         v = _get_text(ch)
         if not v:
@@ -311,7 +464,11 @@ def _native_desc(item: ET.Element) -> str:
     return d
 
 
+
+
+
 _CYR2LAT = {
+    # кириллица -> латиница (конфузаблы), только внутри латинских/цифровых токенов
     "А": "A", "В": "B", "Е": "E", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P", "С": "C", "Т": "T", "Х": "X", "У": "Y",
     "а": "a", "в": "b", "е": "e", "к": "k", "м": "m", "н": "h", "о": "o", "р": "p", "с": "c", "т": "t", "х": "x", "у": "y",
 }
@@ -319,17 +476,23 @@ _CYR2LAT = {
 _RE_TOKEN = re.compile(r"[A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9\-._/]+")
 _RE_DBL_SLASH = re.compile(r"//+")
 _RE_NV_SPACE = re.compile(r"\bNV-\s+")
+_RE_WS = re.compile(r"\s+")
 _RE_SPACE_BEFORE_RP = re.compile(r"\s+\)")
+
 _RE_SLASH_BEFORE_LETTER = re.compile(r"/(?!\s)(?=[A-Za-zА-Яа-я])")
 _RE_SHT_MISSING_SPACE = re.compile(r"\((\d+)шт\)", re.I)
 _RE_NUM_SHT_WORD = re.compile(r"\b(\d+)шт\b", re.I)
 _RE_WORKCENTRE = re.compile(r"\bWorkcentr(e)?\b", re.I)
+
+
 _STOP_BRAND_CF = {
     "лазерных", "струйных", "принтеров", "мфу", "копиров", "копировальных", "плоттеров",
     "принтера", "устройств", "устройства", "печати", "всех",
 }
 
 def _fix_confusables_to_latin_in_latin_tokens(s: str) -> str:
+    # 1) сначала правим "латиница внутри кириллицы" (Cервисный -> Сервисный) уже делает _fix_mixed_ru
+    # 2) потом правим "кириллица внутри латиницы" (СE390X -> CE390X, Kyoсera -> Kyocera)
     if not s:
         return ""
     out = []
@@ -359,6 +522,7 @@ def _drop_unmatched_rparens(s: str) -> str:
                 bal -= 1
                 out.append(ch)
             else:
+                # лишняя ')'
                 continue
         else:
             out.append(ch)
@@ -368,101 +532,192 @@ def _cleanup_name_nvprint(name: str) -> str:
     s = (name or "").strip()
     if not s:
         return ""
-    s = _fix_mixed_ru(s)
-    s = _fix_confusables_to_latin_in_latin_tokens(s)
-    s = _RE_NV_SPACE.sub("NV-", s)
-    s = _RE_DBL_SLASH.sub("/", s)
-    s = _RE_SPACE_BEFORE_RP.sub(")", s)
-    s = _RE_SHT_MISSING_SPACE.sub(r"(\1 шт)", s)
-    s = _RE_NUM_SHT_WORD.sub(r"\1 шт", s)
-    s = _RE_SLASH_BEFORE_LETTER.sub("/ ", s)
-    s = _RE_WORKCENTRE.sub("WorkCentre", s)
-    s = _drop_unmatched_rparens(s)
+    s = _fix_mixed_ru(s)  # латиница -> кириллица в русских словах
+    s = _fix_confusables_to_latin_in_latin_tokens(s)  # кириллица -> латиница в кодах/брендах
+    s = _RE_NV_SPACE.sub("NV-", s)                    # NV- 0617B025 -> NV-0617B025
+    s = _RE_DBL_SLASH.sub("/", s)                     # // -> /
+    s = _RE_SPACE_BEFORE_RP.sub(")", s)               # " )" -> ")"
+    s = _RE_SHT_MISSING_SPACE.sub(r"(\1 шт)", s)  # (2шт) -> (2 шт)
+    s = _RE_NUM_SHT_WORD.sub(r"\1 шт", s)         # 2шт -> 2 шт
+    s = _RE_SLASH_BEFORE_LETTER.sub("/ ", s)       # 3020/WorkCentre -> 3020/ WorkCentre
+    s = _RE_WORKCENTRE.sub("WorkCentre", s)   # Workcentre/Workcentr -> WorkCentre
+    s = _drop_unmatched_rparens(s)                    # убрать лишние ')'
     s = norm_ws(s)
     s = _normalize_name_prefix(s)
+    # дублирующая страховка префиксов
     s = re.sub(r"^Тонер\s+картридж\b", "Тонер-картридж", s, flags=re.I)
     s = _RE_WS.sub(" ", s).strip()
     return s
 
-# ... оставшаяся NVPrint-логика без изменений ...
-# Чтобы шаг был безопасным, ниже оставляем рабочие функции из монолита как есть.
+_COLOR_MAP = {
+    "пурпурный": "Magenta",
+    "магента": "Magenta",
+    "черный": "Black",
+    "чёрный": "Black",
+    "желтый": "Yellow",
+    "жёлтый": "Yellow",
+    "голубой": "Cyan",
+    "циан": "Cyan",
+    "цветной": "Color",
+    "color": "Color",
+    "black": "Black",
+    "cyan": "Cyan",
+    "magenta": "Magenta",
+    "yellow": "Yellow",
+    "red": "Red",
+}
 
-_RE_PREFIX_FIXES = [
-    (re.compile(r"^Cтруйный\b", re.I), "Струйный"),
-    (re.compile(r"^Tонер[\s-]*картридж\b", re.I), "Тонер-картридж"),
-    (re.compile(r"^Kартридж\b", re.I), "Картридж"),
-]
 
-def _normalize_name_prefix(s: str) -> str:
-    for rx, rep in _RE_PREFIX_FIXES:
-        if rx.search(s):
-            s = rx.sub(rep, s)
-            break
-    return s
+_PARAM_KEY_MAP_NVPRINT = {
+    "ТипПечати": "Тип печати",
+    "ЦветПечати": "Цвет печати",
+    "СовместимостьСМоделями": "Совместимость с моделями",
+}
 
 def _rename_param_key_nvprint(k: str) -> str:
-    k0 = norm_ws((k or "").strip())
-    cf = k0.casefold()
-    if cf in {"цвет печати", "цвет"}:
-        return "Цвет печати"
-    if cf in {"тип печати", "тип"}:
-        return "Тип печати"
-    if cf in {"совместимость", "совместимость с моделями"}:
-        return "Совместимость с моделями"
-    if cf in {"код товара", "штрихкод", "штрих-код"}:
-        return "ШтрихКод"
-    return k0
+    k = (k or "").strip()
+    if not k:
+        return ""
+    return _PARAM_KEY_MAP_NVPRINT.get(k, k)
 
 def _cleanup_param_value_nvprint(k: str, v: str) -> str:
-    s = norm_ws(v)
-    if not s:
-        return ""
-    if (k or "").casefold() in {"тип печати", "типпечати"}:
-        low = s.casefold()
-        if "лазер" in low:
-            return "Лазерная"
-        if "струйн" in low:
-            return "Струйная"
-    return s
-
-_RE_HP = re.compile(r"\b(HP|Hewlett[-\s]?Packard)\b", re.I)
-_RE_CANON = re.compile(r"\bCanon\b", re.I)
-_RE_XEROX = re.compile(r"\bXerox\b", re.I)
-_RE_RICOH = re.compile(r"\bRicoh\b", re.I)
-_RE_SAMSUNG = re.compile(r"\bSamsung\b", re.I)
-_RE_KYOCERA = re.compile(r"\bKyocera\b", re.I)
-_RE_BROTHER = re.compile(r"\bBrother\b", re.I)
-_RE_EPSON = re.compile(r"\bEpson\b", re.I)
-_RE_PANASONIC = re.compile(r"\bPanasonic\b", re.I)
-_RE_LEXMARK = re.compile(r"\bLexmark\b", re.I)
-_RE_KATYUSHA = re.compile(r"\b(Катюша|Katyusha)\b", re.I)
+    kk = (k or "").strip()
+    vv = (v or "").strip()
+    if not kk or not vv:
+        return vv
+    cf = kk.casefold()
+    if cf in ("цветпечати", "цвет печати"):
+        vv_cf = vv.casefold().strip()
+        return _COLOR_MAP.get(vv_cf, vv.strip())
+    if cf in ("совместимостьсмоделями", "совместимость с моделями", "модель"):
+        vv = _fix_confusables_to_latin_in_latin_tokens(_fix_mixed_ru(vv))
+        vv = _RE_DBL_SLASH.sub("/", vv)
+        vv = _RE_SLASH_BEFORE_LETTER.sub("/ ", vv)
+        vv = _RE_SPACE_BEFORE_RP.sub(")", vv)
+        vv = _RE_WORKCENTRE.sub("WorkCentre", vv)
+        vv = _drop_unmatched_rparens(vv)
+        vv = _RE_WS.sub(" ", vv).strip()
+        return vv
+    return vv
 
 def _cleanup_vendor_nvprint(vendor: str, name: str) -> str:
-    s = norm_ws((vendor or "").strip())
-    hay = f"{s} {name}".strip()
-    if _RE_HP.search(hay):
-        return "HP"
-    if _RE_CANON.search(hay):
-        return "Canon"
-    if _RE_XEROX.search(hay):
-        return "Xerox"
-    if _RE_RICOH.search(hay):
-        return "Ricoh"
-    if _RE_SAMSUNG.search(hay):
-        return "Samsung"
-    if _RE_KYOCERA.search(hay):
-        return "Kyocera"
-    if _RE_BROTHER.search(hay):
-        return "Brother"
-    if _RE_EPSON.search(hay):
-        return "Epson"
-    if _RE_PANASONIC.search(hay):
-        return "Panasonic"
-    if _RE_LEXMARK.search(hay):
-        return "Lexmark"
-    if _RE_KATYUSHA.search(hay):
-        return "КАТЮША"
+    v = _normalize_vendor(vendor or "")
+    # убираем мусорные "категории" как бренд
+    if v.casefold() in {"остальное", "прочее", "прочие", "другое", "другие", "other"}:
+        v = ""
+    if not v:
+        v = _derive_vendor_from_name(name)  # бренд принтера из "… для Kyocera …"
+    if v and v.casefold() in _STOP_BRAND_CF:
+        v = ""
+    if not v and "nvp" in (name or "").casefold():
+        v = "NVP"
+    return v.strip()
+def _normalize_name_prefix(name: str) -> str:
+    s = (name or "").strip()
+    if not s:
+        return ""
+    # единообразие префиксов
+    if s.casefold().startswith("тонер картридж"):
+        s = "Тонер-картридж" + s[len("Тонер картридж"):]
+    if s.casefold().startswith("тонер туба"):
+        s = "Тонер-туба" + s[len("Тонер туба"):]
     return s
+
+def _normalize_vendor(v: str) -> str:
+    v = (v or "").strip()
+    if not v:
+        return ""
+    # Если есть смесь латиницы и кириллицы (часто "Kyoсera" с кириллической 'с') — приводим похожие буквы к латинице.
+    has_lat = any(("A" <= ch <= "Z") or ("a" <= ch <= "z") for ch in v)
+    has_cyr = any(("А" <= ch <= "я") or (ch in "Ёё") for ch in v)
+    if has_lat and has_cyr:
+        table = str.maketrans({
+            "А": "A", "В": "B", "Е": "E", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P", "С": "C", "Т": "T", "Х": "X", "У": "Y",
+            "а": "a", "в": "b", "е": "e", "к": "k", "м": "m", "н": "h", "о": "o", "р": "p", "с": "c", "т": "t", "х": "x", "у": "y",
+        })
+        v = v.translate(table)
+    return v.strip()
+
+
+_RE_BRAND_AFTER_DLYA = re.compile(r"\bдля\s+([A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9\-._]{1,40})", re.I)
+_RE_BRAND_AFTER_FOR = re.compile(r"\bfor\s+([A-Za-z0-9][A-Za-z0-9\-._]{1,40})", re.I)
+
+
+def _derive_vendor_from_name(name: str) -> str:
+    # Берём бренд принтера из "… для Kyocera …" или "… for HP …"
+    s = (name or "").strip()
+    if not s:
+        return ""
+    m = _RE_BRAND_AFTER_DLYA.search(s)
+    if m:
+        return _normalize_vendor(m.group(1))
+    m = _RE_BRAND_AFTER_FOR.search(s)
+    if m:
+        return _normalize_vendor(m.group(1))
+    return ""
+
+
+# STEP3: переключаем сборщик на supplier-модули (без большого рефакторинга)
+def _get_auth() -> _SourceAuth | None:
+    return _src_get_auth(
+        login=(os.environ.get("NVPRINT_LOGIN") or "").strip(),
+        password=(os.environ.get("NVPRINT_PASSWORD") or os.environ.get("NVPRINT_PASS") or "").strip(),
+    )
+
+def _download_xml(url: str, auth: _SourceAuth | None) -> bytes:
+    return _src_download_xml(
+        url=url,
+        auth=auth,
+        retries=int((os.environ.get("NVPRINT_HTTP_RETRIES", "4") or "4").strip() or "4"),
+        t_connect=int((os.environ.get("NVPRINT_TIMEOUT_CONNECT", "20") or "20").strip() or "20"),
+        t_read=int((os.environ.get("NVPRINT_TIMEOUT_READ", "120") or "120").strip() or "120"),
+    )
+
+def _xml_head(xml_bytes: bytes, limit: int = 2500) -> str:
+    return _src_xml_head(xml_bytes, limit=limit)
+
+def _get_text(el):
+    return _src_get_text(el)
+
+def _pick_first_text(node, names):
+    return _src_pick_first_text(node, names)
+
+def _iter_children(node):
+    return _src_iter_children(node)
+
+def _find_items(root):
+    return _src_find_items(root)
+
+def _fix_mixed_ru(s: str) -> str:
+    return _flt_fix_mixed_ru(s)
+
+def _name_for_filter(name: str) -> str:
+    return _flt_name_for_filter(name)
+
+def _include_by_name(name: str) -> bool:
+    return _flt_include_by_name(name, NVPRINT_INCLUDE_PREFIXES_CF, os.environ.get("NVPRINT_INCLUDE_PREFIXES") or "")
+
+def _cleanup_name_nvprint(name: str) -> str:
+    return _norm_cleanup_name_nvprint(name)
+
+def _cleanup_vendor_nvprint(vendor: str, name: str) -> str:
+    return _norm_cleanup_vendor_nvprint(vendor, name)
+
+def _rename_param_key_nvprint(k: str) -> str:
+    return _norm_rename_param_key_nvprint(k)
+
+def _cleanup_param_value_nvprint(k: str, v: str) -> str:
+    return _norm_cleanup_param_value_nvprint(k, v)
+
+def _extract_price(item) -> int | None:
+    return _px_extract_price(item)
+
+def _collect_params(item):
+    return _px_collect_params(item)
+
+def _native_desc(item) -> str:
+    return _px_native_desc(item)
+
 
 def main() -> int:
     url = (os.environ.get("NVPRINT_XML_URL") or "").strip()
@@ -488,6 +743,7 @@ def main() -> int:
               "Подсказка: чтобы падало жёстко, поставь NVPRINT_STRICT=1", file=sys.stderr)
         return 0
 
+
     try:
         root = ET.fromstring(xml_bytes)
     except Exception as e:
@@ -509,6 +765,7 @@ def main() -> int:
         if not name:
             continue
 
+        # Фильтр по ключевым словам (ассортимент)
         if not _include_by_name(name):
             filtered_out += 1
             continue
@@ -516,7 +773,7 @@ def main() -> int:
         oid = _make_oid(item, name)
         if not oid:
             continue
-
+        # По требованию: всегда считаем товар в наличии
         available = True
         in_true += 1
         pin = _extract_price(item)
@@ -529,6 +786,8 @@ def main() -> int:
         if not vendor:
             vendor = _pick_first_text(item, ("РазделПрайса",))
         vendor = _cleanup_vendor_nvprint(vendor, name)
+
+
 
         params = _collect_params(item)
         desc = _native_desc(item)
@@ -550,17 +809,7 @@ def main() -> int:
 
     public_vendor = get_public_vendor("NVPrint")
 
-    write_cs_feed_raw(
-        out_offers,
-        supplier="NVPrint",
-        supplier_url=url,
-        out_file="docs/raw/nvprint.yml",
-        build_time=now,
-        next_run=next_run,
-        before=len(items),
-        encoding=OUTPUT_ENCODING,
-        currency_id="KZT",
-    )
+    write_cs_feed_raw(out_offers, supplier="NVPrint", supplier_url=url, out_file="docs/raw/nvprint.yml", build_time=now, next_run=next_run, before=len(items), encoding=OUTPUT_ENCODING, currency_id="KZT")
 
     changed = write_cs_feed(
         out_offers,
