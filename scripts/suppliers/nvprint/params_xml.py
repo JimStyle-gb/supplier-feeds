@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-NVPrint XML params layer — step2 safe split.
+NVPrint XML params layer — step4.
 
-Пока без смены общей логики: переносим извлечение цены,
-param cleanup и native_desc из текущего монолита.
+Цели этого шага:
+- безопасно усилить извлечение цены;
+- чуть дочистить param names/values до более CS-похожего raw;
+- перестать массово отдавать пустой native_desc, если из item можно собрать
+  короткое техническое описание.
 """
 
 from __future__ import annotations
@@ -23,6 +26,7 @@ from suppliers.nvprint.source import (
 )
 
 RE_DESC_HAS_CS = re.compile(r"<!--\s*WhatsApp\s*-->|<!--\s*Описание\s*-->|<h3>\s*Характеристики\s*</h3>", re.I)
+RE_WS = re.compile(r"\s+")
 
 DROP_PARAM_NAMES_CF = {
     "артикул",
@@ -44,6 +48,37 @@ DROP_PARAM_NAMES_CF = {
     "разделмодели",
 }
 
+PRICE_KEY_PRIORITY = [
+    "purchase_price",
+    "purchaseprice",
+    "base_price",
+    "baseprice",
+    "supplierprice",
+    "supplier_price",
+    "закупочнаяцена",
+    "закупочная_цена",
+    "ценапоставщика",
+    "цена_поставщика",
+    "ценабезндс",
+    "ценасндс",
+    "цена_с_ндс",
+    "цена",
+    "цена_кзт",
+    "ценаказахстан",
+    "ценаkzt",
+    "pricekzt",
+    "price",
+]
+
+PRICE_KEY_PARTS = ("price", "цена", "стоимость")
+PRICE_BAD_KEY_PARTS = ("старая", "old", "рознич", "retail", "recommended", "рекомендуем", "rrp")
+
+
+def _norm_key(s: str) -> str:
+    s = (s or "").strip().casefold()
+    s = s.replace(" ", "").replace("-", "").replace("_", "")
+    return s
+
 
 def parse_num(text: str) -> float | None:
     t = (text or "").strip()
@@ -59,51 +94,97 @@ def parse_num(text: str) -> float | None:
         return None
 
 
-def extract_price(item: ET.Element) -> int | None:
-    prefer_keys = {
-        "purchase_price", "base_price", "price",
-        "цена", "цена_кзт", "ценаказахстан", "ценаkzt", "pricekzt",
-        "ценасндс", "ценабезндс",
-    }
+def _iter_candidate_price_pairs(item: ET.Element) -> list[tuple[str, int]]:
+    found: list[tuple[str, int]] = []
 
     for ch in iter_children(item):
-        k = local(ch.tag).casefold()
-        if k in prefer_keys:
-            n = parse_num(get_text(ch))
-            if n is not None:
-                return int(n)
+        key = _norm_key(local(ch.tag))
+        val = parse_num(get_text(ch))
+        if val is None or val <= 0:
+            continue
+        found.append((key, int(val)))
 
-    found: list[int] = []
-    for el in item.iter():
-        k = local(el.tag).casefold()
-        if "цена" in k or k in prefer_keys:
-            n = parse_num(get_text(el))
-            if n is not None and n > 0:
-                found.append(int(n))
+    for p in item.findall("param"):
+        raw_key = (p.get("name") or "").strip()
+        key = _norm_key(raw_key)
+        val = parse_num(get_text(p))
+        if val is None or val <= 0:
+            continue
+        found.append((key, int(val)))
 
+    return found
+
+
+def extract_price(item: ET.Element) -> int | None:
+    found = _iter_candidate_price_pairs(item)
     if not found:
         return None
-    return min(found)
+
+    by_key: dict[str, list[int]] = {}
+    for key, val in found:
+        by_key.setdefault(key, []).append(val)
+
+    for key in PRICE_KEY_PRIORITY:
+        nk = _norm_key(key)
+        vals = by_key.get(nk) or []
+        strong = [v for v in vals if v > 100]
+        if strong:
+            return max(strong)
+        if vals:
+            fallback = max(vals)
+            if fallback > 0:
+                return fallback
+
+    fuzzy: list[tuple[str, int]] = []
+    for key, val in found:
+        if any(bad in key for bad in PRICE_BAD_KEY_PARTS):
+            continue
+        if any(part in key for part in PRICE_KEY_PARTS):
+            fuzzy.append((key, val))
+
+    if fuzzy:
+        strong = [v for _, v in fuzzy if v > 100]
+        if strong:
+            return max(strong)
+        return max(v for _, v in fuzzy)
+
+    strong = [v for _, v in found if v > 100]
+    if strong:
+        return max(strong)
+
+    return max(v for _, v in found)
+
+
+def _drop_zeroish_param(key_cf: str, value: str) -> bool:
+    v = (value or "").strip()
+    if key_cf in ("вес", "высота", "длина", "ширина", "ресурс") and v in ("0", "0.0", "0,0", "0,00", "0.00"):
+        return True
+    if key_cf == "гарантия" and v.casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
+        return True
+    return False
 
 
 def collect_params(item: ET.Element) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
+
+    def _push(k: str, v: str) -> None:
+        k = rename_param_key_nvprint(k)
+        v = cleanup_param_value_nvprint(k, v)
+        if not k or not v:
+            return
+        out.append((k, v))
 
     for p in item.findall("param"):
         k = (p.get("name") or "").strip()
         v = get_text(p)
         if not k or not v:
             continue
-        if k.casefold() in DROP_PARAM_NAMES_CF:
+        k_cf = k.casefold()
+        if k_cf in DROP_PARAM_NAMES_CF:
             continue
-        if k.casefold() in ("вес", "высота", "длина", "ширина", "ресурс") and v.strip() in ("0", "0.0", "0,0", "0,00", "0.00"):
+        if _drop_zeroish_param(k_cf, v):
             continue
-        if k.casefold() == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
-            continue
-
-        k = rename_param_key_nvprint(k)
-        v = cleanup_param_value_nvprint(k, v)
-        out.append((k, v))
+        _push(k, v)
 
     if out:
         return out
@@ -126,22 +207,55 @@ def collect_params(item: ET.Element) -> list[tuple[str, str]]:
             continue
         if cf in DROP_PARAM_NAMES_CF:
             continue
-        if cf in ("вес", "высота", "длина", "ширина", "ресурс") and v.strip() in ("0", "0.0", "0,0", "0,00", "0.00"):
+        if _drop_zeroish_param(cf, v):
             continue
-        if cf == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
-            continue
-
-        k = rename_param_key_nvprint(k)
-        v = cleanup_param_value_nvprint(k, v)
-        out.append((k, v))
+        _push(k, v)
 
     return out
 
 
+def _first_param(params: list[tuple[str, str]], names: tuple[str, ...]) -> str:
+    want = {n.casefold() for n in names}
+    for k, v in params:
+        if (k or "").casefold() in want and v:
+            return v
+    return ""
+
+
+def _build_fallback_desc(item: ET.Element) -> str:
+    name = pick_first_text(item, ("Номенклатура", "НоменклатураКратко", "name", "title", "Наименование"))
+    name = RE_WS.sub(" ", (name or "").strip())
+    params = collect_params(item)
+
+    ptype = _first_param(params, ("Тип печати", "Тип"))
+    color = _first_param(params, ("Цвет печати", "Цвет"))
+    compat = _first_param(params, ("Совместимость с моделями", "Совместимость"))
+    resource = _first_param(params, ("Ресурс",))
+    barcode = _first_param(params, ("ШтрихКод",))
+
+    bits = []
+    if name:
+        bits.append(name)
+    if ptype:
+        bits.append(f"Тип печати: {ptype}.")
+    if color:
+        bits.append(f"Цвет: {color}.")
+    if resource:
+        bits.append(f"Ресурс: {resource}.")
+    if compat:
+        bits.append(f"Совместимость: {compat}.")
+    if barcode:
+        bits.append(f"Штрихкод: {barcode}.")
+
+    if not bits:
+        return ""
+    return " ".join(bits).strip()
+
+
 def native_desc(item: ET.Element) -> str:
     d = pick_first_text(item, ("description", "Описание"))
-    if not d:
-        return ""
-    if RE_DESC_HAS_CS.search(d):
-        return ""
-    return d
+    if d:
+        d = d.strip()
+        if d and not RE_DESC_HAS_CS.search(d):
+            return d
+    return _build_fallback_desc(item)
