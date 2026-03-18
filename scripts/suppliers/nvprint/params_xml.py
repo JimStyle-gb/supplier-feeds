@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-NVPrint XML params layer — step4.
+NVPrint XML params layer — step5.
 
-Цели этого шага:
-- безопасно усилить извлечение цены;
-- чуть дочистить param names/values до более CS-похожего raw;
-- перестать массово отдавать пустой native_desc, если из item можно собрать
-  короткое техническое описание.
+Цели:
+- усилить извлечение цены;
+- сохранить уже рабочий fallback native_desc;
+- не трогать shared cs/*.
 """
 
 from __future__ import annotations
@@ -29,55 +28,32 @@ RE_DESC_HAS_CS = re.compile(r"<!--\s*WhatsApp\s*-->|<!--\s*Описание\s*--
 RE_WS = re.compile(r"\s+")
 
 DROP_PARAM_NAMES_CF = {
-    "артикул",
-    "остаток",
-    "наличие",
-    "в наличии",
-    "сопутствующие товары",
-    "sku",
-    "код",
-    "guid",
-    "ссылканакартинку",
-    "вес",
-    "высота",
-    "длина",
-    "ширина",
-    "объем",
-    "объём",
-    "разделкаталога",
-    "разделмодели",
+    "артикул", "остаток", "наличие", "в наличии", "сопутствующие товары",
+    "sku", "код", "guid", "ссылканакартинку",
+    "вес", "высота", "длина", "ширина", "объем", "объём",
+    "разделкаталога", "разделмодели",
 }
 
 PRICE_KEY_PRIORITY = [
-    "purchase_price",
-    "purchaseprice",
-    "base_price",
-    "baseprice",
-    "supplierprice",
-    "supplier_price",
-    "закупочнаяцена",
-    "закупочная_цена",
-    "ценапоставщика",
-    "цена_поставщика",
-    "ценабезндс",
-    "ценасндс",
-    "цена_с_ндс",
-    "цена",
-    "цена_кзт",
-    "ценаказахстан",
-    "ценаkzt",
-    "pricekzt",
-    "price",
+    "purchase_price", "purchaseprice",
+    "base_price", "baseprice",
+    "supplier_price", "supplierprice",
+    "dealerprice", "dealer_price",
+    "optprice", "opt_price",
+    "закупочнаяцена", "закупочная_цена",
+    "ценапоставщика", "цена_поставщика",
+    "ценабезндс", "ценасндс", "цена_с_ндс",
+    "цена", "цена_кзт", "ценаказахстан", "ценаkzt",
+    "pricekzt", "price",
 ]
 
-PRICE_KEY_PARTS = ("price", "цена", "стоимость")
-PRICE_BAD_KEY_PARTS = ("старая", "old", "рознич", "retail", "recommended", "рекомендуем", "rrp")
+PRICE_KEY_PARTS = ("price", "цена", "стоимость", "amount", "sum")
+PRICE_BAD_KEY_PARTS = ("старая", "old", "retail", "рознич", "recommended", "рекомендуем", "rrp", "discount", "скид", "sale")
 
 
 def _norm_key(s: str) -> str:
     s = (s or "").strip().casefold()
-    s = s.replace(" ", "").replace("-", "").replace("_", "")
-    return s
+    return s.replace(" ", "").replace("-", "").replace("_", "")
 
 
 def parse_num(text: str) -> float | None:
@@ -85,7 +61,7 @@ def parse_num(text: str) -> float | None:
     if not t:
         return None
     t = t.replace("\xa0", " ").replace(" ", "").replace(",", ".")
-    m = re.search(r"-?\d+(\.\d+)?", t)
+    m = re.search(r"-?\d+(?:\.\d+)?", t)
     if not m:
         return None
     try:
@@ -97,20 +73,23 @@ def parse_num(text: str) -> float | None:
 def _iter_candidate_price_pairs(item: ET.Element) -> list[tuple[str, int]]:
     found: list[tuple[str, int]] = []
 
+    for raw_key, raw_val in item.attrib.items():
+        key = _norm_key(raw_key)
+        val = parse_num(raw_val)
+        if val is not None and val > 0:
+            found.append((key, int(val)))
+
     for ch in iter_children(item):
         key = _norm_key(local(ch.tag))
         val = parse_num(get_text(ch))
-        if val is None or val <= 0:
-            continue
-        found.append((key, int(val)))
+        if val is not None and val > 0:
+            found.append((key, int(val)))
 
     for p in item.findall("param"):
-        raw_key = (p.get("name") or "").strip()
-        key = _norm_key(raw_key)
+        key = _norm_key((p.get("name") or "").strip())
         val = parse_num(get_text(p))
-        if val is None or val <= 0:
-            continue
-        found.append((key, int(val)))
+        if val is not None and val > 0:
+            found.append((key, int(val)))
 
     return found
 
@@ -124,34 +103,35 @@ def extract_price(item: ET.Element) -> int | None:
     for key, val in found:
         by_key.setdefault(key, []).append(val)
 
+    # 1) Сначала строго по приоритетным ключам.
     for key in PRICE_KEY_PRIORITY:
         nk = _norm_key(key)
         vals = by_key.get(nk) or []
+        if not vals:
+            continue
         strong = [v for v in vals if v > 100]
         if strong:
             return max(strong)
-        if vals:
-            fallback = max(vals)
-            if fallback > 0:
-                return fallback
+        return max(vals)
 
-    fuzzy: list[tuple[str, int]] = []
+    # 2) Потом — по price/цена-подобным ключам, исключая retail/old/discount.
+    fuzzy_vals: list[int] = []
     for key, val in found:
         if any(bad in key for bad in PRICE_BAD_KEY_PARTS):
             continue
         if any(part in key for part in PRICE_KEY_PARTS):
-            fuzzy.append((key, val))
+            fuzzy_vals.append(val)
 
-    if fuzzy:
-        strong = [v for _, v in fuzzy if v > 100]
+    if fuzzy_vals:
+        strong = [v for v in fuzzy_vals if v > 100]
         if strong:
             return max(strong)
-        return max(v for _, v in fuzzy)
+        return max(fuzzy_vals)
 
+    # 3) Последний мягкий фолбэк.
     strong = [v for _, v in found if v > 100]
     if strong:
         return max(strong)
-
     return max(v for _, v in found)
 
 
@@ -203,9 +183,7 @@ def collect_params(item: ET.Element) -> list[tuple[str, str]]:
         v = get_text(ch)
         if not v:
             continue
-        if cf in skip_keys:
-            continue
-        if cf in DROP_PARAM_NAMES_CF:
+        if cf in skip_keys or cf in DROP_PARAM_NAMES_CF:
             continue
         if _drop_zeroish_param(cf, v):
             continue
@@ -232,6 +210,7 @@ def _build_fallback_desc(item: ET.Element) -> str:
     compat = _first_param(params, ("Совместимость с моделями", "Совместимость"))
     resource = _first_param(params, ("Ресурс",))
     barcode = _first_param(params, ("ШтрихКод",))
+    price = extract_price(item)
 
     bits = []
     if name:
@@ -244,11 +223,11 @@ def _build_fallback_desc(item: ET.Element) -> str:
         bits.append(f"Ресурс: {resource}.")
     if compat:
         bits.append(f"Совместимость: {compat}.")
+    if price and price > 100:
+        bits.append(f"Базовая цена поставщика: {price}.")
     if barcode:
         bits.append(f"Штрихкод: {barcode}.")
 
-    if not bits:
-        return ""
     return " ".join(bits).strip()
 
 
