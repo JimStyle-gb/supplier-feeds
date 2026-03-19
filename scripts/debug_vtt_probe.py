@@ -1,31 +1,10 @@
 # -*- coding: utf-8 -*-
-"""
-Path: scripts/debug_vtt_missing_prices.py
-
-Ищет все VTT-товары, у которых текущий live-crawl НЕ находит цену.
-Пишет:
-- docs/raw/vtt_missing_prices.yml
-- docs/raw/vtt_missing_prices_summary.txt
-
-Логика:
-- логинится как обычный VTT crawler
-- собирает те же product links через suppliers.vtt.filtering.collect_all_links
-- парсит страницы текущим suppliers.vtt.params_page.extract_price(...)
-- если price не найден -> пишет offer в probe-YML
-
-ENV:
-- VTT_LOGIN
-- VTT_PASSWORD
-
-Опционально:
-- VTT_PROBE_LIMIT=0      # 0 = без лимита
-"""
-
 from __future__ import annotations
 
 import os
 import re
-from datetime import datetime, timedelta
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
 from xml.sax.saxutils import escape
 
 from suppliers.vtt.source import cfg_from_env, log, make_session, login, clone_session_with_cookies
@@ -133,64 +112,83 @@ def _offer_xml(row: dict[str, str]) -> str:
     return "".join(out)
 
 
+def _probe_one(s, cfg, idx: int, url: str, cat_code: str):
+    sess = clone_session_with_cookies(s, cfg)
+    raw = get_bytes(sess, cfg, url)
+    if not raw:
+        return {"kind": "fetch_failed", "url": url, "category": cat_code or "", "idx": idx}
+
+    sp = soup_from_bytes(raw)
+    title = (extract_title(sp) or "").strip()
+    pairs = extract_pairs(sp)
+    article = _pick_article(pairs)
+    oid = OID_PREFIX + _clean_article(article) if article else f"ROW{idx}"
+    parsed_price = extract_price(sp)
+
+    row = {
+        "oid": oid,
+        "url": url,
+        "category": cat_code or "",
+        "title": title,
+        "article": article,
+        "oem": (pairs.get("OEM-номер") or "").strip(),
+        "catalog": (pairs.get("Каталожный номер") or "").strip(),
+        "visible_price_text": _get_visible_price_text(sp),
+        "hidden_amount": _get_hidden_amount(sp),
+        "add_to_cart": _get_add_to_cart_text(sp),
+        "meta_desc": extract_meta_desc(sp),
+        "body_excerpt": (extract_body_text(sp) or "")[:500],
+        "parsed_price": parsed_price or 0,
+    }
+
+    if parsed_price:
+        return {"kind": "price_found", "row": row}
+    return {"kind": "price_missing", "row": row}
+
+
 def main() -> int:
     cfg = cfg_from_env()
-    deadline = datetime.utcnow() + timedelta(minutes=cfg.max_crawl_minutes)
-    limit_raw = (os.getenv("VTT_PROBE_LIMIT", "0") or "0").strip()
-    limit = int(limit_raw) if limit_raw.isdigit() else 0
+    workers = int((os.getenv("VTT_PROBE_WORKERS", "") or "").strip() or max(4, cfg.max_workers))
 
     s = make_session(cfg)
     if not login(s, cfg):
         raise RuntimeError("VTT missing-prices probe: login failed")
 
-    links = collect_all_links(s, cfg, deadline)
-    log(f"[missing-price-probe] links_before_parse={len(links)}")
+    links = collect_all_links(s, cfg, datetime.utcnow().replace(year=2099))
+    log(f"[missing-price-probe] links_before_parse={len(links)} workers={workers}")
 
-    rows = []
+    rows_missing = []
     checked = 0
+    fetch_failed = 0
+    price_found = 0
 
-    for idx, (url, cat_code) in enumerate(links, 1):
-        if datetime.utcnow() >= deadline:
-            break
-        if limit and checked >= limit:
-            break
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
+        futures = [
+            ex.submit(_probe_one, s, cfg, idx, url, cat_code)
+            for idx, (url, cat_code) in enumerate(links, 1)
+        ]
 
-        sess = clone_session_with_cookies(s, cfg)
-        raw = get_bytes(sess, cfg, url)
-        if not raw:
-            continue
+        for fut in as_completed(futures):
+            res = fut.result()
+            kind = res["kind"]
 
-        checked += 1
-        sp = soup_from_bytes(raw)
-        title = (extract_title(sp) or "").strip()
-        pairs = extract_pairs(sp)
-        article = _pick_article(pairs)
-        oid = OID_PREFIX + _clean_article(article) if article else f"ROW{idx}"
-        parsed_price = extract_price(sp)
+            if kind == "fetch_failed":
+                fetch_failed += 1
+                checked += 1
+                continue
 
-        if parsed_price:
-            continue
+            row = res["row"]
+            checked += 1
 
-        row = {
-            "oid": oid,
-            "url": url,
-            "category": cat_code or "",
-            "title": title,
-            "article": article,
-            "oem": (pairs.get("OEM-номер") or "").strip(),
-            "catalog": (pairs.get("Каталожный номер") or "").strip(),
-            "visible_price_text": _get_visible_price_text(sp),
-            "hidden_amount": _get_hidden_amount(sp),
-            "add_to_cart": _get_add_to_cart_text(sp),
-            "meta_desc": extract_meta_desc(sp),
-            "body_excerpt": (extract_body_text(sp) or "")[:500],
-        }
-        rows.append(row)
+            if kind == "price_found":
+                price_found += 1
+                continue
 
-        log(
-            f"[missing-price-probe] miss {len(rows)} oid={oid} "
-            f"visible='{row['visible_price_text']}' hidden='{row['hidden_amount']}' url={url}"
-        )
+            rows_missing.append(row)
+            log(
+                f"[missing-price-probe] miss {len(rows_missing)} oid={row['oid']} "
+                f"visible='{row['visible_price_text']}' hidden='{row['hidden_amount']}' url={row['url']}"
+            )
 
     os.makedirs("docs/raw", exist_ok=True)
 
@@ -204,7 +202,7 @@ def main() -> int:
     yml.append('    <currencies><currency id="KZT" rate="1"/></currencies>\n')
     yml.append('    <categories><category id="1">MissingPrices</category></categories>\n')
     yml.append("    <offers>\n")
-    for row in rows:
+    for row in rows_missing:
         yml.append(_offer_xml(row))
     yml.append("    </offers>\n")
     yml.append("  </shop>\n")
@@ -213,14 +211,17 @@ def main() -> int:
     with open(OUT_YML, "w", encoding="utf-8", newline="\n") as f:
         f.write("".join(yml))
 
-    summary = []
-    summary.append(f"links_before_parse={len(links)}\n")
-    summary.append(f"checked_pages={checked}\n")
-    summary.append(f"missing_price_offers={len(rows)}\n")
     with open(OUT_SUMMARY, "w", encoding="utf-8", newline="\n") as f:
-        f.writelines(summary)
+        f.write(f"links_before_parse={len(links)}\n")
+        f.write(f"checked_pages={checked}\n")
+        f.write(f"price_found_offers={price_found}\n")
+        f.write(f"missing_price_offers={len(rows_missing)}\n")
+        f.write(f"fetch_failed_pages={fetch_failed}\n")
 
-    log(f"[missing-price-probe] wrote missing={len(rows)} checked={checked} file={OUT_YML}")
+    log(
+        f"[missing-price-probe] wrote missing={len(rows_missing)} "
+        f"price_found={price_found} checked={checked} fetch_failed={fetch_failed} file={OUT_YML}"
+    )
     return 0
 
 
