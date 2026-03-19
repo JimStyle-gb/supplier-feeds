@@ -626,6 +626,55 @@ def _derive_vendor_from_name(name: str) -> str:
         return _normalize_vendor(m.group(1))
     return ""
 
+
+_RE_NUM = re.compile(r"-?\d+(?:[\.,]\d+)?")
+
+def _parse_float(text: str) -> float | None:
+    t = (text or "").strip()
+    if not t:
+        return None
+    t = t.replace("\xa0", " ").replace(" ", "").replace(",", ".")
+    m = _RE_NUM.search(t)
+    if not m:
+        return None
+    try:
+        return float(m.group(0))
+    except Exception:
+        return None
+
+def _get_contract_price_qty(item: ET.Element, contract_no: str) -> tuple[float | None, float | None]:
+    """
+    Берём только цену/количество по целевому договору.
+    Источник: <УсловияПродаж><Договор НомерДоговора="..."><Цена>..</Цена><Наличие Количество=".."/>
+    """
+    target = (contract_no or "").strip()
+    if not target:
+        return None, None
+
+    for el in item.iter():
+        if _local(el.tag).casefold() != "договор":
+            continue
+
+        num = (el.attrib.get("НомерДоговора") or el.attrib.get("Номердоговора") or "").strip()
+        if num != target:
+            continue
+
+        price_val = None
+        qty_val = None
+
+        for ch in list(el):
+            tag = _local(ch.tag).casefold()
+            if tag == "цена":
+                price_val = _parse_float(_get_text(ch))
+            elif tag == "наличие":
+                qty_raw = (ch.attrib.get("Количество") or ch.attrib.get("количество") or _get_text(ch) or "").strip()
+                qty_val = _parse_float(qty_raw)
+
+        return price_val, qty_val
+
+    return None, None
+
+
 def main() -> int:
     url = (os.environ.get("NVPRINT_XML_URL") or "").strip()
     if not url:
@@ -684,7 +733,7 @@ def main() -> int:
         if not oid:
             continue
 
-        # Берём только Алматы-договор: цена > 0 и количество > 0
+        # Оставляем только Алматы-договор: цена > 0 и количество > 0
         contract_price, contract_qty = _get_contract_price_qty(item, target_contract)
         if not contract_price or contract_price <= 0 or not contract_qty or contract_qty <= 0:
             filtered_out += 1
