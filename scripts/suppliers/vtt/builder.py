@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
-"""VTT builder layer — wave4.
-
-Цель wave4:
-- сделать supplier-layer реальным source-of-truth для raw;
-- не отдавать supplier-like пары как основные raw params;
-- raw должен уже приходить в CS-похожем виде.
-"""
+"""VTT builder layer — wave4 hard-switch."""
 
 from __future__ import annotations
 
@@ -29,7 +23,7 @@ from suppliers.vtt.normalize import normalize_name, infer_vendor, build_clean_pa
 OID_PREFIX = "VT"
 
 
-def clean_article(article: str) -> str:
+def _clean_article(article: str) -> str:
     import re
     s = (article or "").strip()
     s = s.translate(str.maketrans({
@@ -47,7 +41,7 @@ def _pick_article(pairs: dict[str, str]) -> str:
     return ""
 
 
-def build_native_desc(name: str, params: list[tuple[str, str]], meta_desc: str, body_txt: str) -> str:
+def _build_native_desc(name: str, params: list[tuple[str, str]], meta_desc: str, body_txt: str) -> str:
     meta_desc = (meta_desc or "").strip()
     body_txt = (body_txt or "").strip()
     if meta_desc and body_txt and body_txt not in meta_desc:
@@ -87,24 +81,20 @@ def build_offer_from_page(s, cfg, url: str, cat_code: str) -> OfferOut | None:
     if not article:
         return None
 
-    article_clean = clean_article(article)
+    article_clean = _clean_article(article)
     if not article_clean:
         return None
 
     oid = OID_PREFIX + article_clean
     vendor = infer_vendor(name, (pairs.get("Вендор") or "").strip())
-
     supplier_price = extract_price(sp)
     price = compute_price(safe_int(supplier_price))
     pics = extract_pictures(cfg, sp)
 
-    # Главное: raw params строим только через normalize-layer,
-    # без supplier-like fallback-пар как основного результата.
     params = build_clean_params(name, vendor, pairs)
-
     meta_desc = extract_meta_desc(sp)
     body_txt = extract_body_text(sp)
-    native_desc = build_native_desc(name, params, meta_desc, body_txt)
+    native_desc = _build_native_desc(name, params, meta_desc, body_txt)
 
     return OfferOut(
         oid=oid,
