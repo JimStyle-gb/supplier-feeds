@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-NVPrint XML params layer — step5.
+NVPrint params_xml — clean wave1.
 
-Цели:
-- усилить извлечение цены;
-- сохранить уже рабочий fallback native_desc;
-- не трогать shared cs/*.
+Основано на реальном source XML:
+- цена truth-source = УсловияПродаж/Договор/Цена
+- compat можно добрать из <Принтеры>/<Принтер>
+- supplier description часто пустой, поэтому нужен короткий technical raw-desc
 """
 
 from __future__ import annotations
@@ -13,15 +13,11 @@ from __future__ import annotations
 import re
 from xml.etree import ElementTree as ET
 
-from suppliers.nvprint.normalize import (
-    rename_param_key_nvprint,
-    cleanup_param_value_nvprint,
-)
 from suppliers.nvprint.source import (
-    local,
     get_text,
-    pick_first_text,
     iter_children,
+    local,
+    pick_first_text,
 )
 
 RE_DESC_HAS_CS = re.compile(r"<!--\s*WhatsApp\s*-->|<!--\s*Описание\s*-->|<h3>\s*Характеристики\s*</h3>", re.I)
@@ -34,106 +30,44 @@ DROP_PARAM_NAMES_CF = {
     "разделкаталога", "разделмодели",
 }
 
-PRICE_KEY_PRIORITY = [
-    "purchase_price", "purchaseprice",
-    "base_price", "baseprice",
-    "supplier_price", "supplierprice",
-    "dealerprice", "dealer_price",
-    "optprice", "opt_price",
-    "закупочнаяцена", "закупочная_цена",
-    "ценапоставщика", "цена_поставщика",
-    "ценабезндс", "ценасндс", "цена_с_ндс",
-    "цена", "цена_кзт", "ценаказахстан", "ценаkzt",
-    "pricekzt", "price",
-]
+COLOR_MAP = {
+    "пурпурный": "Magenta",
+    "магента": "Magenta",
+    "черный": "Black",
+    "чёрный": "Black",
+    "желтый": "Yellow",
+    "жёлтый": "Yellow",
+    "голубой": "Cyan",
+    "циан": "Cyan",
+    "color": "Color",
+    "black": "Black",
+    "cyan": "Cyan",
+    "magenta": "Magenta",
+    "yellow": "Yellow",
+}
 
-PRICE_KEY_PARTS = ("price", "цена", "стоимость", "amount", "sum")
-PRICE_BAD_KEY_PARTS = ("старая", "old", "retail", "рознич", "recommended", "рекомендуем", "rrp", "discount", "скид", "sale")
+KEY_MAP = {
+    "ТипПечати": "Тип печати",
+    "ЦветПечати": "Цвет печати",
+    "СовместимостьСМоделями": "Совместимость с моделями",
+}
 
+def _rename_key(k: str) -> str:
+    k = (k or "").strip()
+    return KEY_MAP.get(k, k)
 
-def _norm_key(s: str) -> str:
-    s = (s or "").strip().casefold()
-    return s.replace(" ", "").replace("-", "").replace("_", "")
-
-
-def parse_num(text: str) -> float | None:
-    t = (text or "").strip()
-    if not t:
-        return None
-    t = t.replace("\xa0", " ").replace(" ", "").replace(",", ".")
-    m = re.search(r"-?\d+(?:\.\d+)?", t)
-    if not m:
-        return None
-    try:
-        return float(m.group(0))
-    except Exception:
-        return None
-
-
-def _iter_candidate_price_pairs(item: ET.Element) -> list[tuple[str, int]]:
-    found: list[tuple[str, int]] = []
-
-    for raw_key, raw_val in item.attrib.items():
-        key = _norm_key(raw_key)
-        val = parse_num(raw_val)
-        if val is not None and val > 0:
-            found.append((key, int(val)))
-
-    for ch in iter_children(item):
-        key = _norm_key(local(ch.tag))
-        val = parse_num(get_text(ch))
-        if val is not None and val > 0:
-            found.append((key, int(val)))
-
-    for p in item.findall("param"):
-        key = _norm_key((p.get("name") or "").strip())
-        val = parse_num(get_text(p))
-        if val is not None and val > 0:
-            found.append((key, int(val)))
-
-    return found
-
-
-def extract_price(item: ET.Element) -> int | None:
-    found = _iter_candidate_price_pairs(item)
-    if not found:
-        return None
-
-    by_key: dict[str, list[int]] = {}
-    for key, val in found:
-        by_key.setdefault(key, []).append(val)
-
-    # 1) Сначала строго по приоритетным ключам.
-    for key in PRICE_KEY_PRIORITY:
-        nk = _norm_key(key)
-        vals = by_key.get(nk) or []
-        if not vals:
-            continue
-        strong = [v for v in vals if v > 100]
-        if strong:
-            return max(strong)
-        return max(vals)
-
-    # 2) Потом — по price/цена-подобным ключам, исключая retail/old/discount.
-    fuzzy_vals: list[int] = []
-    for key, val in found:
-        if any(bad in key for bad in PRICE_BAD_KEY_PARTS):
-            continue
-        if any(part in key for part in PRICE_KEY_PARTS):
-            fuzzy_vals.append(val)
-
-    if fuzzy_vals:
-        strong = [v for v in fuzzy_vals if v > 100]
-        if strong:
-            return max(strong)
-        return max(fuzzy_vals)
-
-    # 3) Последний мягкий фолбэк.
-    strong = [v for _, v in found if v > 100]
-    if strong:
-        return max(strong)
-    return max(v for _, v in found)
-
+def _cleanup_value(k: str, v: str) -> str:
+    kk = (k or "").strip().casefold()
+    vv = RE_WS.sub(" ", (v or "").strip())
+    if not vv:
+        return ""
+    if kk in ("цвет печати", "цветпечати", "цвет"):
+        return COLOR_MAP.get(vv.casefold(), vv)
+    if kk in ("совместимость с моделями", "совместимостьсмоделями", "совместимость"):
+        vv = re.sub(r"\bWorkcentr(e)?\b", "WorkCentre", vv, flags=re.I)
+        vv = re.sub(r"\s*/\s*", "/ ", vv)
+        vv = re.sub(r"\s+", " ", vv).strip()
+    return vv
 
 def _drop_zeroish_param(key_cf: str, value: str) -> bool:
     v = (value or "").strip()
@@ -143,38 +77,44 @@ def _drop_zeroish_param(key_cf: str, value: str) -> bool:
         return True
     return False
 
+def _collect_printers_compat(item: ET.Element) -> str:
+    vals: list[str] = []
+    printers = item.find("Принтеры")
+    if printers is None:
+        return ""
+    for p in printers.findall("Принтер"):
+        v = RE_WS.sub(" ", get_text(p))
+        if v:
+            vals.append(v)
+    if not vals:
+        return ""
+    seen = set()
+    out = []
+    for v in vals:
+        if v in seen:
+            continue
+        seen.add(v)
+        out.append(v)
+    return "/ ".join(out)
 
 def collect_params(item: ET.Element) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
 
     def _push(k: str, v: str) -> None:
-        k = rename_param_key_nvprint(k)
-        v = cleanup_param_value_nvprint(k, v)
-        if not k or not v:
+        k2 = _rename_key(k)
+        v2 = _cleanup_value(k2, v)
+        if not k2 or not v2:
             return
-        out.append((k, v))
+        out.append((k2, v2))
 
-    for p in item.findall("param"):
-        k = (p.get("name") or "").strip()
-        v = get_text(p)
-        if not k or not v:
-            continue
-        k_cf = k.casefold()
-        if k_cf in DROP_PARAM_NAMES_CF:
-            continue
-        if _drop_zeroish_param(k_cf, v):
-            continue
-        _push(k, v)
-
-    if out:
-        return out
-
+    # прямые child-теги — основной truth-source для NVPrint
     skip_keys = {
         "код", "артикул", "guid",
         "номенклатура", "номенклатуракратко", "наименование",
-        "цена", "ценасндс", "ценабезндс", "цена_кзт", "price",
-        "new_reman", "разделпрайса",
         "ссылканакартинку",
+        "условияпродаж", "принтеры",
+        "new_reman", "разделпрайса",
+        "цена", "наличие",
     }
 
     for ch in iter_children(item):
@@ -189,8 +129,13 @@ def collect_params(item: ET.Element) -> list[tuple[str, str]]:
             continue
         _push(k, v)
 
-    return out
+    # если supplier не дал совместимость — поднимаем её из блока Принтеры
+    if not any((k or "").casefold() == "совместимость с моделями" and v for k, v in out):
+        compat = _collect_printers_compat(item)
+        if compat:
+            out.append(("Совместимость с моделями", compat))
 
+    return out
 
 def _first_param(params: list[tuple[str, str]], names: tuple[str, ...]) -> str:
     want = {n.casefold() for n in names}
@@ -198,7 +143,6 @@ def _first_param(params: list[tuple[str, str]], names: tuple[str, ...]) -> str:
         if (k or "").casefold() in want and v:
             return v
     return ""
-
 
 def _build_fallback_desc(item: ET.Element) -> str:
     name = pick_first_text(item, ("Номенклатура", "НоменклатураКратко", "name", "title", "Наименование"))
@@ -210,7 +154,6 @@ def _build_fallback_desc(item: ET.Element) -> str:
     compat = _first_param(params, ("Совместимость с моделями", "Совместимость"))
     resource = _first_param(params, ("Ресурс",))
     barcode = _first_param(params, ("ШтрихКод",))
-    price = extract_price(item)
 
     bits = []
     if name:
@@ -223,13 +166,10 @@ def _build_fallback_desc(item: ET.Element) -> str:
         bits.append(f"Ресурс: {resource}.")
     if compat:
         bits.append(f"Совместимость: {compat}.")
-    if price and price > 100:
-        bits.append(f"Базовая цена поставщика: {price}.")
     if barcode:
         bits.append(f"Штрихкод: {barcode}.")
 
     return " ".join(bits).strip()
-
 
 def native_desc(item: ET.Element) -> str:
     d = pick_first_text(item, ("description", "Описание"))
