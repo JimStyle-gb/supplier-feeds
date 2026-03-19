@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
-"""VTT builder layer — wave2.
+"""VTT builder layer — wave4.
 
-Переносим parse/build в supplier-layer, чтобы raw уже был ближе к CS-шаблону.
+Цель wave4:
+- сделать supplier-layer реальным source-of-truth для raw;
+- не отдавать supplier-like пары как основные raw params;
+- raw должен уже приходить в CS-похожем виде.
 """
 
 from __future__ import annotations
@@ -25,6 +28,7 @@ from suppliers.vtt.normalize import normalize_name, infer_vendor, build_clean_pa
 
 OID_PREFIX = "VT"
 
+
 def clean_article(article: str) -> str:
     import re
     s = (article or "").strip()
@@ -34,8 +38,16 @@ def clean_article(article: str) -> str:
     }))
     return re.sub(r"[^A-Za-z0-9_-]+", "", s)
 
+
+def _pick_article(pairs: dict[str, str]) -> str:
+    for k in ("Артикул", "Партс-номер", "OEM-номер", "Каталожный номер"):
+        v = (pairs.get(k) or "").strip()
+        if v:
+            return v
+    return ""
+
+
 def build_native_desc(name: str, params: list[tuple[str, str]], meta_desc: str, body_txt: str) -> str:
-    # если есть нормальный meta/body — используем их
     meta_desc = (meta_desc or "").strip()
     body_txt = (body_txt or "").strip()
     if meta_desc and body_txt and body_txt not in meta_desc:
@@ -45,7 +57,6 @@ def build_native_desc(name: str, params: list[tuple[str, str]], meta_desc: str, 
     if meta_desc:
         return meta_desc
 
-    # иначе строим короткий technical raw-desc
     d = {k: v for k, v in params}
     bits = [name]
     if d.get("Тип"):
@@ -56,7 +67,10 @@ def build_native_desc(name: str, params: list[tuple[str, str]], meta_desc: str, 
         bits.append(f"Цвет: {d['Цвет']}.")
     if d.get("Ресурс"):
         bits.append(f"Ресурс: {d['Ресурс']}.")
+    if d.get("Партномер"):
+        bits.append(f"Партномер: {d['Партномер']}.")
     return " ".join(x for x in bits if x).strip()
+
 
 def build_offer_from_page(s, cfg, url: str, cat_code: str) -> OfferOut | None:
     b = get_bytes(s, cfg, url)
@@ -69,7 +83,7 @@ def build_offer_from_page(s, cfg, url: str, cat_code: str) -> OfferOut | None:
         return None
 
     pairs = extract_pairs(sp)
-    article = (pairs.get("Артикул") or pairs.get("Партс-номер") or pairs.get("OEM-номер") or pairs.get("Каталожный номер") or "").strip()
+    article = _pick_article(pairs)
     if not article:
         return None
 
@@ -82,8 +96,10 @@ def build_offer_from_page(s, cfg, url: str, cat_code: str) -> OfferOut | None:
 
     supplier_price = extract_price(sp)
     price = compute_price(safe_int(supplier_price))
-
     pics = extract_pictures(cfg, sp)
+
+    # Главное: raw params строим только через normalize-layer,
+    # без supplier-like fallback-пар как основного результата.
     params = build_clean_params(name, vendor, pairs)
 
     meta_desc = extract_meta_desc(sp)
@@ -100,6 +116,7 @@ def build_offer_from_page(s, cfg, url: str, cat_code: str) -> OfferOut | None:
         params=params,
         native_desc=native_desc,
     )
+
 
 def build_offers(s, cfg, links: list[tuple[str, str]], deadline_utc: datetime) -> tuple[list[OfferOut], int]:
     offers: list[OfferOut] = []
