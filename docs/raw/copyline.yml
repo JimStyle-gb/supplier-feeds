@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-16 19:33:01">
+<yml_catalog date="2026-03-20 03:38:50">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-03-16 19:33:01
-Ближайшая сборка (Алматы)                  | 2026-03-20 03:00:00
-Сколько товаров у поставщика до фильтра    | 2683
-Сколько товаров у поставщика после фильтра | 1204
-Сколько товаров есть в наличии (true)      | 995
-Сколько товаров нет в наличии (false)      | 209
+Время сборки (Алматы)                      | 2026-03-20 03:38:50
+Ближайшая сборка (Алматы)                  | 2026-04-01 03:00:00
+Сколько товаров у поставщика до фильтра    | 2687
+Сколько товаров у поставщика после фильтра | 1208
+Сколько товаров есть в наличии (true)      | 997
+Сколько товаров нет в наличии (false)      | 211
 -->
 
 <offer id="CL100014" available="true">
@@ -928,7 +928,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL100175</vendorCode>
 <name>Тонер-картридж 006R01461 Black Euro Print</name>
-<price>19900</price>
+<price>14900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R01461-oem.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -946,7 +946,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL100176</vendorCode>
 <name>Тонер-картридж 006R01462 Yellow Euro Print</name>
-<price>18900</price>
+<price>14900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-Xerox-WC-7120-Y.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -2568,7 +2568,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL100846</vendorCode>
 <name>Тонер-картридж 006R01517 (13K) Black Euro Print</name>
-<price>10900</price>
+<price>11900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-Xerox-WC-7525-Bk.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -5174,7 +5174,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL101934" available="true">
+<offer id="CL101934" available="false">
 <categoryId></categoryId>
 <vendorCode>CL101934</vendorCode>
 <name>Картридж для HP C7115A/Q2613A/Q2624A/Canon EP-25 Euro Print</name>
@@ -5376,7 +5376,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL101947</vendorCode>
 <name>Картридж для HP CC364A Euro Print</name>
-<price>12900</price>
+<price>13900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_364A_euro.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_364A_euro-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_364A_euro-pack.jpg</picture>
@@ -8618,7 +8618,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL103111</vendorCode>
 <name>Тонер-картридж 006R01463 Magenta Euro Print</name>
-<price>18900</price>
+<price>14900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-Xerox-WC-7120-M.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -8636,7 +8636,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL103112</vendorCode>
 <name>Тонер-картридж 006R01464 Cyan Euro Print</name>
-<price>18900</price>
+<price>14900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-Xerox-WC-7120-C.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -8784,7 +8784,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Lexmark</param>
 </offer>
 
-<offer id="CL103180" available="true">
+<offer id="CL103180" available="false">
 <categoryId></categoryId>
 <vendorCode>CL103180</vendorCode>
 <name>Картридж для Xerox Phaser 3020/ WC3025 (106R02773) Euro Print</name>
@@ -8855,7 +8855,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL103343</vendorCode>
 <name>Тонер-картридж 006R01573 (9K) Euro Print</name>
-<price>8900</price>
+<price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-006r01573-xerox-wc-5019.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -9279,7 +9279,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL103476" available="true">
+<offer id="CL103476" available="false">
 <categoryId></categoryId>
 <vendorCode>CL103476</vendorCode>
 <name>Картридж для Samsung MLT-D203E Euro Print</name>
@@ -9940,7 +9940,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL103758</vendorCode>
 <name>Драм-картридж для Xerox (101R00555) Phaser 3330/ WC 3335/3345 (30K)</name>
-<price>7900</price>
+<price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00555.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -10488,7 +10488,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL103883</vendorCode>
 <name>Тонер-картридж 006R01693 (9K) Black</name>
-<price>12900</price>
+<price>11900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Toner-Cartridge-SC2020-k.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -10506,7 +10506,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL103884</vendorCode>
 <name>Тонер-картридж 006R01694 (3K) Cyan</name>
-<price>10900</price>
+<price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Toner-Cartridge-SC2020-c.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -10523,7 +10523,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL103885</vendorCode>
 <name>Тонер-картридж 006R01695 (3K) Magenta</name>
-<price>10900</price>
+<price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Toner-Cartridge-SC2020-m.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -10541,7 +10541,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL103886</vendorCode>
 <name>Тонер-картридж 006R01696 (3K) Yellow</name>
-<price>10900</price>
+<price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Toner-Cartridge-SC2020-y.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -11415,7 +11415,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL104095</vendorCode>
 <name>Тонер-картридж 106R03585 (24,6K) Euro Print</name>
-<price>8900</price>
+<price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106R03585.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -13108,7 +13108,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL104440</vendorCode>
 <name>Тонер-картридж 106R03745 (23,6K) Black Euro Print</name>
-<price>15900</price>
+<price>18900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106R03745_.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -13126,7 +13126,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL104441</vendorCode>
 <name>Тонер-картридж 106R03746 (16,5K) Yellow Euro Print</name>
-<price>15900</price>
+<price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106R03746.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -13144,7 +13144,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL104442</vendorCode>
 <name>Тонер-картридж 106R03747 (16,5K) Magenta Euro Print</name>
-<price>15900</price>
+<price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106R03747.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -13162,7 +13162,7 @@ URL поставщика                             | https://copyline.kz/goods
 <categoryId></categoryId>
 <vendorCode>CL104443</vendorCode>
 <name>Тонер-картридж 106R03748 (16,5K) Cyan Euro Print</name>
-<price>15900</price>
+<price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106R03748.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -13842,7 +13842,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104598" available="false">
+<offer id="CL104598" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104598</vendorCode>
 <name>Тонер-картридж для Kyocera TK-1200 (3K) Euro Print</name>
@@ -14271,7 +14271,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <categoryId></categoryId>
 <vendorCode>CL104686</vendorCode>
 <name>Картридж для HP CE410A (305A) Black Sakura</name>
-<price>7900</price>
+<price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sace410a_1.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sace410a_2.jpg</picture>
 <vendor>HP</vendor>
@@ -15855,7 +15855,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <categoryId></categoryId>
 <vendorCode>CL104985</vendorCode>
 <name>Тонер-картридж для Konica-Minolta TN-328K Black (28k)</name>
-<price>16900</price>
+<price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328K.jpg</picture>
 <vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -15873,7 +15873,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <categoryId></categoryId>
 <vendorCode>CL104986</vendorCode>
 <name>Тонер-картридж для Konica-Minolta TN-328C Cyan (28k)</name>
-<price>17900</price>
+<price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328C.jpg</picture>
 <vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -15890,7 +15890,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <categoryId></categoryId>
 <vendorCode>CL104987</vendorCode>
 <name>Тонер-картридж для Konica-Minolta TN-328M Magenta (28k)</name>
-<price>17900</price>
+<price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328M.jpg</picture>
 <vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -15908,7 +15908,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <categoryId></categoryId>
 <vendorCode>CL104988</vendorCode>
 <name>Тонер-картридж для Konica-Minolta TN-328Y Yellow (28k)</name>
-<price>17900</price>
+<price>15900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328Y.jpg</picture>
 <vendor>Konica-Minolta</vendor>
 <currencyId>KZT</currencyId>
@@ -16138,7 +16138,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <categoryId></categoryId>
 <vendorCode>CL105009</vendorCode>
 <name>Драм-картридж для Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Cyan (60k)</name>
-<price>36900</price>
+<price>34900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01121-Compatible-Imaging-Drum-C.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -16155,7 +16155,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <categoryId></categoryId>
 <vendorCode>CL105010</vendorCode>
 <name>Драм-картридж для Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Magenta (60k)</name>
-<price>36900</price>
+<price>34900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01121-Compatible-Imaging-Drum-M.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -16219,7 +16219,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <categoryId></categoryId>
 <vendorCode>CL105020</vendorCode>
 <name>Драм-картридж для Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Yellow (60k)</name>
-<price>36900</price>
+<price>34900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01121-Compatible-Imaging-Drum-Y.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -16274,7 +16274,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <categoryId></categoryId>
 <vendorCode>CL105056</vendorCode>
 <name>Тонер-картридж для Kyocera TK-6115 (15K) Euro Print</name>
-<price>9900</price>
+<price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-6115.jpg</picture>
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
@@ -17627,7 +17627,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <categoryId></categoryId>
 <vendorCode>CL105413</vendorCode>
 <name>Тонер-картридж 006R01828 Black (31,3K) Euro Print</name>
-<price>18900</price>
+<price>19900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R01828-ep.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -18286,7 +18286,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105493" available="false">
+<offer id="CL105493" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105493</vendorCode>
 <name>Картридж для HP W2210A №207A с чипом Black (1.35K) Euro Print</name>
@@ -18304,7 +18304,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105494" available="false">
+<offer id="CL105494" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105494</vendorCode>
 <name>Картридж для HP W2211A №207A с чипом Cyan (1.25K) Euro Print</name>
@@ -18321,7 +18321,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105495" available="false">
+<offer id="CL105495" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105495</vendorCode>
 <name>Картридж для HP W2212A №207A с чипом Yellow (1.25K) Euro Print</name>
@@ -18339,7 +18339,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105496" available="false">
+<offer id="CL105496" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105496</vendorCode>
 <name>Картридж для HP W2213A №207A с чипом Magenta (1.25K) Euro Print</name>
@@ -20073,7 +20073,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <categoryId></categoryId>
 <vendorCode>CL105781</vendorCode>
 <name>Тонер-картридж 006R04389 Magenta (1,5K) Euro Print</name>
-<price>40900</price>
+<price>41900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R04389-ep.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -20091,7 +20091,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <categoryId></categoryId>
 <vendorCode>CL105782</vendorCode>
 <name>Тонер-картридж 006R04390 Yellow (1,5K) Euro Print</name>
-<price>40900</price>
+<price>41900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R04390-ep.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -21096,6 +21096,77 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Цвет">Чёрный</param>
 <param name="Модель">Canon 055H</param>
 <param name="Для бренда">Canon</param>
+</offer>
+
+<offer id="CL105959" available="false">
+<categoryId></categoryId>
+<vendorCode>CL105959</vendorCode>
+<name>Тонер-картридж 006R04827 Black (2.2K) Euro Print</name>
+<price>100</price>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R04827-ep.jpg</picture>
+<vendor>Xerox</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Картридж с тонером Euro Print 006R04827 используется в принтерах серий Xerox C320, C325. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
+<param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Xerox C320, C325</param>
+<param name="Коды расходников">006R04827</param>
+<param name="Цвет">Чёрный</param>
+<param name="Модель">006R04827</param>
+<param name="Для бренда">Xerox</param>
+</offer>
+
+<offer id="CL105960" available="false">
+<categoryId></categoryId>
+<vendorCode>CL105960</vendorCode>
+<name>Тонер-картридж 006R04825 Magenta (1.8K) Euro Print</name>
+<price>100</price>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R04825-ep.jpg</picture>
+<vendor>Xerox</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Картридж с тонером Euro Print 006R04825 используется в принтерах серий Xerox C320, C325. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
+<param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Xerox C320, C325</param>
+<param name="Коды расходников">006R04825</param>
+<param name="Цвет">Пурпурный</param>
+<param name="Модель">006R04825</param>
+<param name="Для бренда">Xerox</param>
+</offer>
+
+<offer id="CL105961" available="false">
+<categoryId></categoryId>
+<vendorCode>CL105961</vendorCode>
+<name>Тонер-картридж 006R04826 Yellow (1.8K) Euro Print</name>
+<price>100</price>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R04826-ep.jpg</picture>
+<vendor>Xerox</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Картридж с тонером Euro Print 006R04826 используется в принтерах серий Xerox C320, C325. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
+<param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Xerox C320, C325</param>
+<param name="Коды расходников">006R04826</param>
+<param name="Цвет">Желтый</param>
+<param name="Модель">006R04826</param>
+<param name="Для бренда">Xerox</param>
+</offer>
+
+<offer id="CL105962" available="false">
+<categoryId></categoryId>
+<vendorCode>CL105962</vendorCode>
+<name>Тонер-картридж 006R04824 Cyan (1.8K) Euro Print</name>
+<price>100</price>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R04824-ep.jpg</picture>
+<vendor>Xerox</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Картридж с тонером Euro Print 006R04824 используется в принтерах серий Xerox C320, C325. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.]]></description>
+<param name="Тип">Тонер-картридж</param>
+<param name="Совместимость">Xerox C320, C325</param>
+<param name="Коды расходников">006R04824</param>
+<param name="Модель">006R04824</param>
+<param name="Для бренда">Xerox</param>
 </offer>
 
 </offers>
