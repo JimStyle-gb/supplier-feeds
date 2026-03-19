@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-"""VTT normalize layer — wave2.
+"""VTT normalize layer — wave3.
 
-Задача: перенести VTT-specific смысл из core в supplier-layer:
-- vendor normalization
-- type/color/resource extraction
-- part/codes/compat extraction
-- сбор clean raw params
+Фокус:
+- добить color normalization
+- улучшить compat extraction из title
+- стабилизировать codes/partnumber extraction
 """
 
 from __future__ import annotations
@@ -23,7 +22,6 @@ VENDOR_ALIAS = {
     "samsung": "Samsung",
     "epson": "Epson",
     "ricoh": "Ricoh",
-    "konicaminolta": "Konica Minolta",
     "konicaminolta": "Konica Minolta",
 }
 
@@ -50,11 +48,34 @@ COLOR_MAP = {
     "маджента": "Пурпурный",
     "желтый": "Желтый",
     "жёлтый": "Желтый",
+    "красный": "Красный",
+    "синий": "Синий",
+    "серый": "Серый",
+    "белый": "Белый",
+    "зеленый": "Зеленый",
+    "зелёный": "Зеленый",
 }
 
 _RE_CODE = re.compile(r'\b(?:[A-Z]{1,4}\d[A-Z0-9-]{2,}|\d{2,}[A-Z-][A-Z0-9-]*|[A-Z]{1,3}-\d{2,}[A-Z0-9-]*|\d{5,}[A-Z]?)\b')
-_RE_FOR = re.compile(r'\bдля\s+(.+?)(?:,|\s+\d+\s*К\b|\s+\(O\)|\s+[A-Z0-9-]{4,}|$)', re.I)
 _RE_RES = re.compile(r'(\d+(?:[.,]\d+)?)\s*К\b', re.I)
+
+# "для HP DJ T920/T1500", "для WC 7525/7530/..."
+_RE_FOR_TAIL = re.compile(
+    r'\bдля\s+(.+?)(?:,\s*\d+(?:[.,]\d+)?\s*К\b|\s+\(O\)|\s+[A-Z0-9-]{4,}(?:[,\s]|$)|,\s*(?:black|cyan|magenta|yellow|grey|gray|mattblack|photoblack|черный|чёрный|голубой|циан|пурпурный|желтый|жёлтый|красный|синий|серый)\b|$)',
+    re.I,
+)
+
+# brand-led without "для": "Xerox Versant 80/180", "Xerox AltaLink B8145/B8155/B8170"
+_RE_BRAND_SERIES = re.compile(
+    r'\b(HP|Xerox|Canon|Kyocera|Brother|Samsung|Epson|Ricoh)\s+([A-Za-zА-Яа-я0-9-]+(?:\s+[A-Za-zА-Яа-я0-9-]+){0,2})\s+([A-Z]?\d[\dA-Za-z/-]*)',
+    re.I,
+)
+
+_STOP_EXTRA = {
+    "o", "bk", "c", "m", "y", "к", "шт", "мл",
+    "black", "cyan", "magenta", "yellow", "grey", "gray",
+    "черный", "чёрный", "голубой", "циан", "пурпурный", "желтый", "жёлтый", "красный", "синий", "серый",
+}
 
 def normalize_vendor(v: str) -> str:
     v = norm_ws(v or "")
@@ -99,12 +120,10 @@ def infer_type(name: str) -> str:
     return ""
 
 def infer_color(name: str, pairs: dict[str, str]) -> str:
-    # 1) explicit pairs
     for k in ("Цвет", "Color"):
         if pairs.get(k):
-            v = pairs[k].strip()
+            v = norm_ws(pairs[k])
             return COLOR_MAP.get(v.lower(), v)
-    # 2) from name tail
     lower = (name or "").lower()
     for raw, norm in COLOR_MAP.items():
         if re.search(rf'(?:^|[,\s/]){re.escape(raw)}(?:$|[,\s/])', lower):
@@ -130,7 +149,7 @@ def extract_codes(name: str, pairs: dict[str, str]) -> list[str]:
         x = norm_ws(x).strip(" ,;/")
         if not x:
             continue
-        if x.lower() in {"oem", "dj", "wc", "dc"}:
+        if x.lower() in {"o", "bk", "wc", "dc", "dj"}:
             continue
         if x not in seen:
             seen.add(x)
@@ -145,20 +164,40 @@ def infer_partnumber(codes: list[str], pairs: dict[str, str]) -> str:
                 return v
     return codes[0] if codes else ""
 
+def _cleanup_compat_tail(tail: str) -> str:
+    tail = norm_ws(tail)
+    tail = re.sub(r'\s+\(O\)\s*', ' ', tail, flags=re.I)
+    tail = re.sub(r'\s+', ' ', tail).strip(' ,;/')
+    return tail
+
 def infer_compat(name: str, pairs: dict[str, str], vendor: str) -> str:
     for k in ("Совместимость", "Совместимость с моделями"):
         if pairs.get(k):
             return norm_ws(pairs[k])
-    m = _RE_FOR.search(name or "")
-    if not m:
-        return ""
-    tail = norm_ws(m.group(1))
-    if not tail:
-        return ""
-    # prepend vendor if tail starts with series only
-    if vendor and not tail.lower().startswith(vendor.lower()):
-        return f"{vendor} {tail}"
-    return tail
+
+    s = norm_ws(name or "")
+    m = _RE_FOR_TAIL.search(s)
+    if m:
+        tail = _cleanup_compat_tail(m.group(1))
+        if tail:
+            return tail
+
+    # Xerox/HP brand-led series without "для"
+    m = _RE_BRAND_SERIES.search(s)
+    if m:
+        brand = normalize_vendor(m.group(1))
+        series = norm_ws(m.group(2))
+        models = norm_ws(m.group(3))
+        if brand and series and models:
+            return f"{brand} {series} {models}"
+
+    # Special cases from observed titles
+    for brand in ("Xerox Versant", "Xerox AltaLink"):
+        p = re.search(rf'\b{re.escape(brand)}\s+([A-Za-z0-9/-]+)\b', s, re.I)
+        if p:
+            return f"{brand} {p.group(1)}"
+
+    return ""
 
 def normalize_name(name: str) -> str:
     s = norm_ws(name or "")
@@ -189,7 +228,6 @@ def build_clean_params(name: str, vendor: str, pairs: dict[str, str]) -> list[tu
     if resource:
         params.append(("Ресурс", resource))
 
-    # Сохраняем полезные дополнительные поля, но без supplier-мусора
     keep_extra = {
         "Объем": "Объем",
         "Объём": "Объем",
