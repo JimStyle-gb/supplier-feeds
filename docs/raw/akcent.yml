@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-19 02:45:08">
+<yml_catalog date="2026-03-20 02:39:09">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-19 02:45:08
-Ближайшая сборка (Алматы)                  | 2026-03-20 02:00:00
-Сколько товаров у поставщика до фильтра    | 1824
-Сколько товаров у поставщика после фильтра | 174
-Сколько товаров есть в наличии (true)      | 174
+Время сборки (Алматы)                      | 2026-03-20 02:39:09
+Ближайшая сборка (Алматы)                  | 2026-03-21 02:00:00
+Сколько товаров у поставщика до фильтра    | 1846
+Сколько товаров у поставщика после фильтра | 173
+Сколько товаров есть в наличии (true)      | 173
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -2501,25 +2501,6 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <param name="Коды">C13T03V44A</param>
 </offer>
 
-<offer id="ACC13T06C14A" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T06C14A</vendorCode>
-<name>Чернила Epson C13T06C14A для L15150 чёрный</name>
-<price>16900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/6c8/cee6dvrlhtdj8luzfay1j99lf0918onj.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Контейнер с черными чернилами]]></description>
-<param name="Цвет">Чёрный</param>
-<param name="Гарантия">3 мес.</param>
-<param name="Тип">Чернила</param>
-<param name="Тип печати">Струйная</param>
-<param name="Для бренда">Epson</param>
-<param name="Модель">C13T06C14A</param>
-<param name="Коды">C13T06C14A</param>
-</offer>
-
 <offer id="ACC13T06C24A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T06C24A</vendorCode>
@@ -3076,7 +3057,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <categoryId></categoryId>
 <vendorCode>AC100017466</vendorCode>
 <name>Шредер Fellowes® Powershred® 15C shredder (cross cut) 230V EU</name>
-<price>100</price>
+<price>119900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/008/pv24gugow36bnlxtyp7qd7b3gedo8kat.png</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
@@ -3143,7 +3124,7 @@ Fellowes P-25S - Шредер предназначен для персональ
 <categoryId></categoryId>
 <vendorCode>AC5502601</vendorCode>
 <name>Шредер Fellowes® Powershred®LX220 BLACK SHREDDER EU/UK</name>
-<price>100</price>
+<price>435900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/4d7/tygdopqp7y4b990bluimyx2ysevkhci8.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
