@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-"""VTT params_page layer — wave3.
+"""VTT params_page layer — price-fix based on supplier HTML.
 
-Фокус:
-- добить price extraction
-- добить body/meta extraction
-- картинкам/парам логику не ломаем
+Основано на реальном supplier file:
+- основная цена на VTT живёт в видимом KZT-блоке:
+  span.price_main > b.price-cart-amount__rub
+- hidden input name="amount" содержит не KZT-цену и не должен использоваться
+- цена должна парситься только из видимых KZT-блоков / meta / json-ld,
+  без ложного fallback на hidden amount
 """
 
 from __future__ import annotations
@@ -15,8 +17,8 @@ from bs4 import BeautifulSoup
 
 from suppliers.vtt.source import abs_url, soup_from_bytes, get_bytes
 
-_RE_NUM = re.compile(r'\d[\d\s.,]*')
 _RE_IMG_EXT = re.compile(r'\.(jpg|jpeg|png|webp|gif|bmp|tif|tiff)(\?|#|$)', re.I)
+
 
 def parse_int(text: str) -> int | None:
     if not text:
@@ -28,6 +30,7 @@ def parse_int(text: str) -> int | None:
         return int(s)
     except Exception:
         return None
+
 
 def parse_price_int(text: str) -> int | None:
     if not text:
@@ -51,8 +54,9 @@ def parse_price_int(text: str) -> int | None:
             else:
                 s = s.replace(",", "")
         if "." in s and "," not in s:
-            if not (s.count(".") == 1 and len(s.split(".")[1]) == 2):
-                s = s.replace(".", "")
+            # для VTT "10 336.64" надо взять 10336
+            # decimal-хвост просто отбрасываем позже
+            pass
 
     try:
         if "." in s:
@@ -61,6 +65,7 @@ def parse_price_int(text: str) -> int | None:
         return int(s)
     except Exception:
         return None
+
 
 def extract_pairs(sp: BeautifulSoup) -> dict[str, str]:
     out: dict[str, str] = {}
@@ -76,21 +81,44 @@ def extract_pairs(sp: BeautifulSoup) -> dict[str, str]:
             out[k] = v
     return out
 
-def _price_from_attrs(sp: BeautifulSoup) -> int | None:
-    attrs = ("data-price", "data-product-price", "data-item-price", "content")
-    tags = sp.select("[data-price], [data-product-price], [data-item-price], meta[itemprop=price], meta[property='product:price:amount']")
-    for tag in tags:
-        for attr in attrs:
-            val = tag.get(attr)
-            if not val:
-                continue
-            p = parse_price_int(str(val))
+
+def _price_from_visible_kzt_block(sp: BeautifulSoup) -> int | None:
+    # Реальный supplier pattern из сохранённого товара:
+    # <span class="price_main"><b class="price-cart-amount__rub">10 336.64</b> T</span>
+    selectors = (
+        "span.price_main b.price-cart-amount__rub",
+        "div.item_data_price span.price_main b.price-cart-amount__rub",
+        "span.price_main b",
+        "span.price_main",
+        "div.item_data_price span.price_main",
+        ".catalog_item_right .item_data_price .price_main",
+    )
+    for sel in selectors:
+        el = sp.select_one(sel)
+        if not el:
+            continue
+        txt = el.get_text(" ", strip=True)
+        p = parse_price_int(txt)
+        if p and p > 0:
+            return p
+    return None
+
+
+def _price_from_meta(sp: BeautifulSoup) -> int | None:
+    for meta_sel in (
+        ("meta", {"property": "product:price:amount"}),
+        ("meta", {"itemprop": "price"}),
+        ("meta", {"name": "price"}),
+    ):
+        meta = sp.find(meta_sel[0], attrs=meta_sel[1])
+        if meta and meta.get("content"):
+            p = parse_price_int(str(meta.get("content")))
             if p and p > 0:
                 return p
     return None
 
-def _price_from_scripts(sp: BeautifulSoup) -> int | None:
-    # JSON-LD
+
+def _price_from_json_ld(sp: BeautifulSoup) -> int | None:
     for script in sp.find_all("script", attrs={"type": "application/ld+json"}):
         try:
             data = json.loads(script.get_text(strip=True) or "{}")
@@ -117,74 +145,57 @@ def _price_from_scripts(sp: BeautifulSoup) -> int | None:
             return None
 
         p = _walk(data)
-        if p:
+        if p and p > 0:
             return p
-
-    # Generic JS vars / dataLayer
-    for script in sp.find_all("script"):
-        txt = script.get_text(" ", strip=True) or ""
-        if not txt:
-            continue
-        for rx in (
-            re.compile(r'["\']price["\']\s*:\s*["\']?([0-9][0-9\s.,]{2,})["\']?', re.I),
-            re.compile(r'\bprice\s*=\s*["\']?([0-9][0-9\s.,]{2,})["\']?', re.I),
-            re.compile(r'\bpriceValue\s*[:=]\s*["\']?([0-9][0-9\s.,]{2,})["\']?', re.I),
-        ):
-            m = rx.search(txt)
-            if m:
-                p = parse_price_int(m.group(1))
-                if p:
-                    return p
     return None
 
-def extract_price(sp: BeautifulSoup) -> int | None:
-    # 1) strongest visible selectors
-    for sel in (
-        "span.price_main b",
-        "span.price_main",
-        "span.price_value",
-        "div.price b",
-        "div.price",
-        ".catalog_price",
-        ".item_price",
-        ".product_price",
-        "[itemprop=price]",
-    ):
-        el = sp.select_one(sel)
-        if el and el.get_text(strip=True):
-            p = parse_price_int(el.get_text(" ", strip=True))
-            if p:
-                return p
 
-    # 2) meta/data attrs
-    p = _price_from_attrs(sp)
-    if p:
-        return p
-
-    # 3) scripts/json-ld
-    p = _price_from_scripts(sp)
-    if p:
-        return p
-
-    # 4) last soft textual fallback
+def _price_from_text(sp: BeautifulSoup) -> int | None:
     txt = sp.get_text(" ", strip=True)
-    m = re.search(r"\bЦена\b[^\d]{0,20}([0-9][0-9\s.,]{2,})\s*(?:тг|₸|руб)?", txt, flags=re.I)
+    m = re.search(r"\bЦена\b[^\d]{0,20}([0-9][0-9\s.,]{2,})\s*(?:тг|₸|t|тенге)?", txt, flags=re.I)
     if m:
         p = parse_price_int(m.group(1))
-        if p:
+        if p and p > 0:
             return p
-
     return None
+
+
+def extract_price(sp: BeautifulSoup) -> int | None:
+    # 1) supplier truth: видимый KZT-блок
+    p = _price_from_visible_kzt_block(sp)
+    if p:
+        return p
+
+    # 2) structured meta
+    p = _price_from_meta(sp)
+    if p:
+        return p
+
+    # 3) json-ld
+    p = _price_from_json_ld(sp)
+    if p:
+        return p
+
+    # 4) мягкий текстовый fallback
+    p = _price_from_text(sp)
+    if p:
+        return p
+
+    # ВАЖНО: hidden input name="amount" специально НЕ парсим.
+    return None
+
 
 def extract_title(sp: BeautifulSoup) -> str:
     el = sp.select_one(".page_title") or sp.title or sp.find("h1")
     txt = el.get_text(" ", strip=True) if el else ""
     return (txt or "").strip()
 
+
 def extract_meta_desc(sp: BeautifulSoup) -> str:
     meta = sp.find("meta", attrs={"name": "description"}) or sp.find("meta", attrs={"property": "og:description"})
     out = (meta.get("content") if meta else "") or ""
     return re.sub(r"\s+", " ", out).strip()
+
 
 def extract_body_text(sp: BeautifulSoup) -> str:
     for sel in ("div.catalog_item_descr > div", "div.catalog_item_descr", "div.catalog_item", "article"):
@@ -196,6 +207,7 @@ def extract_body_text(sp: BeautifulSoup) -> str:
         if txt and len(txt) >= 60:
             return txt
     return ""
+
 
 def extract_pictures(cfg, sp: BeautifulSoup, limit: int = 8) -> list[str]:
     BAD_HOST_SNIPS = (
