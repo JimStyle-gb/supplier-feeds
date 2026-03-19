@@ -35,18 +35,18 @@ jobs:
             pip install requests beautifulsoup4 lxml pyyaml python-dateutil openpyxl
           fi
 
-      - name: Configure git identity (GitHub Actions bot)
+      - name: Configure git identity
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Smoke test (py_compile)
+      - name: Smoke test
         run: |
           python -m py_compile scripts/cs/core.py scripts/build_vtt.py scripts/debug_vtt_probe.py
 
-      - name: Gate by day-of-month (Asia/Almaty: 1/10/20)
+      - name: "Gate by day-of-month (Asia/Almaty: 1/10/20)"
         id: gate
-        if: github.event_name == 'schedule'
+        if: ${{ github.event_name == 'schedule' }}
         run: |
           day=$(TZ=Asia/Almaty date +%d)
           if [ "$day" = "01" ] || [ "$day" = "10" ] || [ "$day" = "20" ]; then
@@ -58,15 +58,15 @@ jobs:
           fi
 
       - name: Debug VTT probe
-        if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
+        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'true' }}
         env:
-          VTT_PROBE_MATCH: VT005402
+          VTT_PROBE_MATCH: "VT005402"
           VTT_PROBE_LIMIT: "20"
         run: |
           python scripts/debug_vtt_probe.py
 
       - name: Diagnostics
-        if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
+        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'true' }}
         run: |
           git status --porcelain || true
           ls -la docs docs/raw || true
@@ -74,7 +74,7 @@ jobs:
           sed -n '1,220p' docs/raw/vtt_probe.yml 2>/dev/null || true
 
       - name: Upload probe artifact
-        if: always()
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: vtt-probe
