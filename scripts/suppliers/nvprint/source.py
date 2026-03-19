@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
-"""NVPrint source layer: download + XML helpers."""
+"""
+NVPrint source layer — clean wave1.
+
+Основано на реальном XML:
+- корень <КаталогТоваров>
+- товары лежат в <Товары>/<Товар>
+- цены и количество для договоров живут в <УсловияПродаж>/<Договор>
+"""
 
 from __future__ import annotations
 
@@ -61,8 +68,7 @@ def xml_head(xml_bytes: bytes, limit: int = 2500) -> str:
             s = xml_bytes.decode("cp1251")
         except Exception:
             s = xml_bytes.decode("utf-8", errors="replace")
-    s = s.replace("\r", "")
-    return s[:limit]
+    return s.replace("\r", "")[:limit]
 
 
 def local(tag: str) -> str:
@@ -92,12 +98,53 @@ def iter_children(node: ET.Element) -> list[ET.Element]:
 
 
 def find_items(root: ET.Element) -> list[ET.Element]:
-    offers = [el for el in root.iter() if local(el.tag).casefold() == "offer"]
-    if offers:
-        return offers
+    goods = root.find("Товары")
+    if goods is not None:
+        items = goods.findall("Товар")
+        if items:
+            return items
 
-    tovar = [el for el in root.iter() if local(el.tag).casefold() == "товар"]
-    if tovar:
-        return tovar
+    # мягкий fallback
+    offers = [el for el in root.iter() if local(el.tag).casefold() in ("товар", "offer")]
+    return offers
 
-    return []
+
+def _parse_float(text: str) -> float | None:
+    t = (text or "").strip()
+    if not t:
+        return None
+    t = t.replace("\xa0", " ").replace(" ", "").replace(",", ".")
+    import re
+    m = re.search(r"-?\d+(?:\.\d+)?", t)
+    if not m:
+        return None
+    try:
+        return float(m.group(0))
+    except Exception:
+        return None
+
+
+def get_contract_price_qty(item: ET.Element, contract_no: str) -> tuple[float | None, float | None]:
+    target = (contract_no or "").strip()
+    if not target:
+        return None, None
+
+    sales = item.find("УсловияПродаж")
+    if sales is None:
+        return None, None
+
+    for d in sales.findall("Договор"):
+        num = (d.attrib.get("НомерДоговора") or d.attrib.get("Номердоговора") or "").strip()
+        if num != target:
+            continue
+
+        price_val = _parse_float(get_text(d.find("Цена")))
+        qty_val = None
+        nal = d.find("Наличие")
+        if nal is not None:
+            qty_raw = (nal.attrib.get("Количество") or nal.attrib.get("количество") or get_text(nal) or "").strip()
+            qty_val = _parse_float(qty_raw)
+
+        return price_val, qty_val
+
+    return None, None
