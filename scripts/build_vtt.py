@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-CS adapter: VTT (wave2 thin orchestrator)
-
-Wave2:
-- normalize.py
-- builder.py
-source/filtering/params_page остаются из wave1.
-"""
+"""CS adapter: VTT (wave4 thin orchestrator)."""
 
 from __future__ import annotations
 
@@ -54,7 +47,7 @@ def main() -> int:
     offers, dup = build_offers(s, cfg, links, deadline)
 
     if not offers:
-        msg = "VTT: 0 offers (скорее всего сайт недоступен/503 или изменили верстку)."
+        msg = "VTT: 0 offers (скорее всего сайт недоступен/503 или изменилась верстка)."
         if cfg.softfail:
             log("[SOFTFAIL] " + msg)
             return 0
@@ -63,6 +56,7 @@ def main() -> int:
     next_run = next_run_dom_at_hour(now_naive, 5, (1, 10, 20))
     public_vendor = get_public_vendor(SUPPLIER)
 
+    # before=len(links) показывает реальный объём до supplier-layer parsing/filtering
     write_cs_feed_raw(
         offers,
         supplier=SUPPLIER,
@@ -70,7 +64,7 @@ def main() -> int:
         out_file="docs/raw/vtt.yml",
         build_time=now,
         next_run=next_run,
-        before=len(offers),
+        before=len(links),
         encoding="utf-8",
         currency_id="KZT",
     )
@@ -82,14 +76,14 @@ def main() -> int:
         out_file=OUT_FILE,
         build_time=now,
         next_run=next_run,
-        before=len(offers),
+        before=len(links),
         encoding="utf-8",
         public_vendor=public_vendor,
         currency_id="KZT",
         param_priority=None,
     )
 
-    log(f"[done] offers={len(offers)} dup_skipped={dup} changed={changed} out={OUT_FILE}")
+    log(f"[done] links={len(links)} offers={len(offers)} dup_skipped={dup} changed={changed} out={OUT_FILE}")
     return 0
 
 
