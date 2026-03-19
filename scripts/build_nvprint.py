@@ -30,35 +30,6 @@ from cs.core import (
 )
 
 
-# STEP3 SAFE: подключаем уже вынесенные supplier-модули
-from suppliers.nvprint.source import (
-    Auth as _SourceAuth,
-    get_auth as _src_get_auth,
-    download_xml as _src_download_xml,
-    xml_head as _src_xml_head,
-    get_text as _src_get_text,
-    pick_first_text as _src_pick_first_text,
-    iter_children as _src_iter_children,
-    find_items as _src_find_items,
-)
-from suppliers.nvprint.filtering import (
-    fix_mixed_ru as _flt_fix_mixed_ru,
-    name_for_filter as _flt_name_for_filter,
-    include_by_name as _flt_include_by_name,
-)
-from suppliers.nvprint.normalize import (
-    cleanup_name_nvprint as _norm_cleanup_name_nvprint,
-    cleanup_vendor_nvprint as _norm_cleanup_vendor_nvprint,
-    rename_param_key_nvprint as _norm_rename_param_key_nvprint,
-    cleanup_param_value_nvprint as _norm_cleanup_param_value_nvprint,
-)
-from suppliers.nvprint.params_xml import (
-    extract_price as _px_extract_price,
-    collect_params as _px_collect_params,
-    native_desc as _px_native_desc,
-)
-
-
 OUT_FILE = "docs/nvprint.yml"
 OUTPUT_ENCODING = "utf-8"
 
@@ -655,69 +626,6 @@ def _derive_vendor_from_name(name: str) -> str:
         return _normalize_vendor(m.group(1))
     return ""
 
-
-# STEP3 SAFE: перенаправляем часть логики в supplier-модули
-def _get_auth() -> _SourceAuth | None:
-    return _src_get_auth(
-        login=(os.environ.get("NVPRINT_LOGIN") or "").strip(),
-        password=(os.environ.get("NVPRINT_PASSWORD") or os.environ.get("NVPRINT_PASS") or "").strip(),
-    )
-
-def _download_xml(url: str, auth: _SourceAuth | None) -> bytes:
-    return _src_download_xml(
-        url=url,
-        auth=auth,
-        retries=int((os.environ.get("NVPRINT_HTTP_RETRIES", "4") or "4").strip() or "4"),
-        t_connect=int((os.environ.get("NVPRINT_TIMEOUT_CONNECT", "20") or "20").strip() or "20"),
-        t_read=int((os.environ.get("NVPRINT_TIMEOUT_READ", "120") or "120").strip() or "120"),
-    )
-
-def _xml_head(xml_bytes: bytes, limit: int = 2500) -> str:
-    return _src_xml_head(xml_bytes, limit=limit)
-
-def _get_text(el):
-    return _src_get_text(el)
-
-def _pick_first_text(node, names):
-    return _src_pick_first_text(node, names)
-
-def _iter_children(node):
-    return _src_iter_children(node)
-
-def _find_items(root):
-    return _src_find_items(root)
-
-def _fix_mixed_ru(s: str) -> str:
-    return _flt_fix_mixed_ru(s)
-
-def _name_for_filter(name: str) -> str:
-    return _flt_name_for_filter(name)
-
-def _include_by_name(name: str) -> bool:
-    return _flt_include_by_name(name, NVPRINT_INCLUDE_PREFIXES_CF, os.environ.get("NVPRINT_INCLUDE_PREFIXES") or "")
-
-def _cleanup_name_nvprint(name: str) -> str:
-    return _norm_cleanup_name_nvprint(name)
-
-def _cleanup_vendor_nvprint(vendor: str, name: str) -> str:
-    return _norm_cleanup_vendor_nvprint(vendor, name)
-
-def _rename_param_key_nvprint(k: str) -> str:
-    return _norm_rename_param_key_nvprint(k)
-
-def _cleanup_param_value_nvprint(k: str, v: str) -> str:
-    return _norm_cleanup_param_value_nvprint(k, v)
-
-def _extract_price(item):
-    return _px_extract_price(item)
-
-def _collect_params(item):
-    return _px_collect_params(item)
-
-def _native_desc(item) -> str:
-    return _px_native_desc(item)
-
-
 def main() -> int:
     url = (os.environ.get("NVPRINT_XML_URL") or "").strip()
     if not url:
@@ -754,8 +662,11 @@ def main() -> int:
 
     out_offers: list[OfferOut] = []
     filtered_out = 0
+    filtered_contract = 0
     in_true = 0
     in_false = 0
+
+    target_contract = (os.environ.get("NVPRINT_TARGET_CONTRACT") or "ТА-000079").strip()
 
     for item in items:
         name = _get_text(item.find("Номенклатура")) or _get_text(item.find("НоменклатураКратко")) or _pick_first_text(item, ("name", "title", "Наименование"))
@@ -772,10 +683,17 @@ def main() -> int:
         oid = _make_oid(item, name)
         if not oid:
             continue
-        # По требованию: всегда считаем товар в наличии
+
+        # Берём только Алматы-договор: цена > 0 и количество > 0
+        contract_price, contract_qty = _get_contract_price_qty(item, target_contract)
+        if not contract_price or contract_price <= 0 or not contract_qty or contract_qty <= 0:
+            filtered_out += 1
+            filtered_contract += 1
+            continue
+
         available = True
         in_true += 1
-        pin = _extract_price(item)
+        pin = int(contract_price)
         price = compute_price(pin)
 
         pics = _collect_pictures(item)
@@ -825,7 +743,8 @@ def main() -> int:
     )
 
     print(
-        f"[build_nvprint] OK | offers_in={len(items)} | offers_out={len(out_offers)} | filtered_out={filtered_out} | "
+        f"[build_nvprint] OK | offers_in={len(items)} | offers_out={len(out_offers)} | "
+        f"filtered_out={filtered_out} | filtered_contract={filtered_contract} | "
         f"in_true={in_true} | in_false={in_false} | changed={'yes' if changed else 'no'} | file={OUT_FILE}"
     )
     return 0
