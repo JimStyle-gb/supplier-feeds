@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""CS adapter: VTT (wave4 thin orchestrator)."""
+"""CS adapter: VTT (wave4 hard-switch orchestrator)."""
 
 from __future__ import annotations
 
@@ -13,12 +13,7 @@ from cs.core import (
     write_cs_feed_raw,
 )
 
-from suppliers.vtt.source import (
-    cfg_from_env,
-    log,
-    make_session,
-    login,
-)
+from suppliers.vtt.source import cfg_from_env, log, make_session, login
 from suppliers.vtt.filtering import collect_all_links
 from suppliers.vtt.builder import build_offers
 
@@ -33,7 +28,6 @@ def main() -> int:
     deadline = datetime.utcnow() + timedelta(minutes=cfg.max_crawl_minutes)
 
     s = make_session(cfg)
-
     if not login(s, cfg):
         msg = "VTT: авторизация не прошла (проверь VTT_LOGIN/VTT_PASSWORD). Если в логах 503/5xx — проблема на стороне сайта."
         if cfg.softfail:
@@ -42,10 +36,9 @@ def main() -> int:
         raise RuntimeError(msg)
 
     links = collect_all_links(s, cfg, deadline)
-    log(f"[site] urls={len(links)} workers={cfg.max_workers}")
+    log(f"[site] links_before_parse={len(links)} workers={cfg.max_workers}")
 
     offers, dup = build_offers(s, cfg, links, deadline)
-
     if not offers:
         msg = "VTT: 0 offers (скорее всего сайт недоступен/503 или изменилась верстка)."
         if cfg.softfail:
@@ -56,7 +49,6 @@ def main() -> int:
     next_run = next_run_dom_at_hour(now_naive, 5, (1, 10, 20))
     public_vendor = get_public_vendor(SUPPLIER)
 
-    # before=len(links) показывает реальный объём до supplier-layer parsing/filtering
     write_cs_feed_raw(
         offers,
         supplier=SUPPLIER,
@@ -83,7 +75,7 @@ def main() -> int:
         param_priority=None,
     )
 
-    log(f"[done] links={len(links)} offers={len(offers)} dup_skipped={dup} changed={changed} out={OUT_FILE}")
+    log(f"[done] links_before_parse={len(links)} offers={len(offers)} dup_skipped={dup} changed={changed} out={OUT_FILE}")
     return 0
 
 
