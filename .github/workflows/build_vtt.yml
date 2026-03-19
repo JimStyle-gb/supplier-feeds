@@ -45,7 +45,7 @@ jobs:
 
       - name: Smoke test
         run: |
-          python -m py_compile scripts/cs/core.py scripts/build_vtt.py scripts/debug_vtt_probe.py
+          python -m py_compile scripts/cs/core.py scripts/build_vtt.py scripts/debug_vtt_missing_prices.py
 
       - name: Check required secrets
         run: |
@@ -67,26 +67,27 @@ jobs:
             echo "Almaty day=$day -> run=false"
           fi
 
-      - name: Debug VTT probe
+      - name: Debug VTT missing prices
         if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'true' }}
         env:
-          VTT_PROBE_MATCH: "VT005402"
-          VTT_PROBE_LIMIT: "20"
+          VTT_PROBE_LIMIT: "0"
         run: |
-          python scripts/debug_vtt_probe.py
+          python scripts/debug_vtt_missing_prices.py
 
       - name: Diagnostics
         if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'true' }}
         run: |
           git status --porcelain || true
           ls -la docs docs/raw || true
-          wc -c docs/raw/vtt_probe.yml 2>/dev/null || true
-          sed -n '1,220p' docs/raw/vtt_probe.yml 2>/dev/null || true
+          sed -n '1,40p' docs/raw/vtt_missing_prices_summary.txt 2>/dev/null || true
+          sed -n '1,220p' docs/raw/vtt_missing_prices.yml 2>/dev/null || true
 
-      - name: Upload probe artifact
+      - name: Upload missing-prices artifacts
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: vtt-probe
-          path: docs/raw/vtt_probe.yml
+          name: vtt-missing-prices
+          path: |
+            docs/raw/vtt_missing_prices.yml
+            docs/raw/vtt_missing_prices_summary.txt
           if-no-files-found: warn
