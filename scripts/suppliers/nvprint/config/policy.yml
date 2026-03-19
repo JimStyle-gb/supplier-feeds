@@ -1,9 +1,0 @@
-supplier: NVPrint
-always_true_available: true
-source_of_truth_for_params: xml_params_first
-desc_extract_mode: only_fill_missing
-raw_must_be_clean: true
-quality_gate:
-  enforce: false
-  max_cosmetic_offers: 5
-  max_cosmetic_issues: 5
