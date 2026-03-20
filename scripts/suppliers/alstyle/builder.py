@@ -1,1133 +1,511 @@
 # -*- coding: utf-8 -*-
 """
-Path: scripts/suppliers/akcent/builder.py
+Path: scripts/suppliers/alstyle/builder.py
 
-AkCent supplier layer — сборка raw OfferOut.
+AlStyle supplier layer — сборка raw offer.
 
-Что делает:
-- принимает уже отфильтрованные source-offers AkCent;
-- нормализует базовые поля (oid / vendor / model / available / price_in / warranty);
-- определяет kind строго по prefix-based схеме AkCent;
-- собирает родные XML params;
-- чистит description и аккуратно добирает недостающие desc params;
-- применяет supplier-side cleanup для расходки (codes / compat / device);
-- собирает чистый raw OfferOut для core.
-
-Важно:
-- core остаётся общим и не получает AkCent-specific логики;
-- builder работает adapter-first;
-- логика построена backward-safe: умеет брать данные и из dataclass-объектов, и из dict, и из offer_el.
+v113:
+- усиливает selective override для Совместимость;
+- грязная XML/merged Совместимость с протёкшими label-блоками
+  ("Характеристики / Модель / Совместимые модели") теперь
+  заменяется чистой desc-derived версией на финальном reconcile-pass;
+- для тяжёлых Xerox compatibility chains можно предпочесть
+  более короткую и чистую desc-derived версию;
+- сохраняет safe-override только для:
+  Совместимость / Цвет / Технология / Ресурс;
+- сохраняет fallback Модель из name;
+- сохраняет fallback Совместимость из name только для Xerox init kits;
+- core не трогает.
 """
 
 from __future__ import annotations
 
-from collections import Counter
 import re
-import xml.etree.ElementTree as ET
-from typing import Any, Iterable
 
 from cs.core import OfferOut
 from cs.pricing import compute_price
 from cs.util import norm_ws
-from suppliers.akcent.compat import clean_device_value, reconcile_params
-from suppliers.akcent.desc_clean import clean_description_text
-from suppliers.akcent.desc_extract import extract_desc_params
-from suppliers.akcent.normalize import normalize_source_basics
-from suppliers.akcent.params_xml import collect_xml_params, detect_kind_by_name, resolve_allowed_keys
+from suppliers.alstyle.desc_clean import sanitize_native_desc
+from suppliers.alstyle.desc_extract import extract_desc_spec_pairs
+from suppliers.alstyle.models import SourceOffer
+from suppliers.alstyle.normalize import (
+    build_offer_oid,
+    normalize_available,
+    normalize_name,
+    normalize_price_in,
+    normalize_vendor,
+)
+from suppliers.alstyle.params_xml import collect_xml_params
+from suppliers.alstyle.pictures import collect_picture_urls
 
-try:
-    from suppliers.akcent.pictures import collect_picture_urls as _collect_picture_urls  # type: ignore
-except Exception:
-    _collect_picture_urls = None
 
+_NAME_MODEL_RE = re.compile(
+    r"\b(?:"
+    r"(?:PG|CL|CLI|BCI|GI|PFI|CF|CE|CB|CC|CH|BH)-[A-Z0-9]{2,10}|"
+    r"\d{3}[A-Z]\d{5}|"
+    r"[A-Z]{1,4}\d-\d{4}-\d{3,4}|"
+    r"[A-Z]{1,4}\d-[A-Z]\d{3,4}-\d{3,4}"
+    r")\b",
+    re.IGNORECASE,
+)
+_SHORT_DIGIT_SUFFIX_RE = re.compile(r"^\d{1,4}$", re.IGNORECASE)
 
-_RE_WS = re.compile(r"\s+")
+_XEROX_INIT_KIT_RE = re.compile(
+    r"(?iu)\bКомплект\s+инициализации\b.*?\b(Xerox)\s+(AltaLink|VersaLink)\s+([A-Z]?\d{4,5}(?:\s*/\s*[A-Z]?\d{4,5})*)\b"
+)
+_DEVICE_TOKEN_RE = re.compile(r"^[A-Z]?\d{4,5}$", re.IGNORECASE)
 
+_SAFE_DESC_OVERRIDE_KEYS = {"Совместимость", "Цвет", "Технология", "Ресурс"}
 
-_RE_DROP_CONSUMABLE_DESC_LINE = re.compile(
-    r"(?iu)\b(?:поддерживаемые\s+модели(?:\s+принтеров|\s+устройств|\s+техники)?|"
-    r"совместимые\s+модели(?:\s+техники)?|совместимые\s+продукты(?:\s+для)?|для)\s*:"
+_DIRTY_COMPAT_RE = re.compile(
+    r"(?iu)\b(?:"
+    r"Гарантированн(?:ый|ого)\s+об(?:ъ|ь)ем\s+отпечатков|"
+    r"при\s+5%\s+заполнении|"
+    r"формата\s+A4|"
+    r"только\s+для\s+продажи\s+на\s+территории|"
+    r"Форматы\s+бумаги|Плотность|Емкость|Ёмкость|"
+    r"Скорость\s+печати|Интерфейс|Процессор|Память|"
+    r"Характеристики|Модель|Совместимые\s+модели|Совместимость|"
+    r"Устройства|Устройство|Применение|"
+    r"Количество\s+в\s+упаковке|Колличество\s+в\s+упаковке"
+    r")\b"
+)
+_DIRTY_COLOR_RE = re.compile(
+    r"(?iu)\b(?:Тип\s+чернил|Ресурс(?:\s+картриджа)?|Количество\s+страниц|Секция\s+аппарата|"
+    r"Совместимость|Устройства|Количество\s+цветов|серия|Vivobook|Vector|Gaming|игров)\b"
+)
+_DIRTY_TECH_RE = re.compile(
+    r"(?iu)\b(?:Количество\s+цветов|Тип\s+чернил|Ресурс(?:\s+картриджа)?|Совместимость|"
+    r"Устройства|Об(?:ъ|ь)ем\s+картриджа|Секция\s+аппарата|серия)\b"
+)
+_CLEAN_TECH_RE = re.compile(
+    r"(?iu)^(?:Лазерная(?:\s+монохромная|\s+цветная)?|Светодиодная(?:\s+монохромная|\s+цветная)?|"
+    r"Струйная|Термоструйная|Матричная|Термосублимационная)$"
+)
+_CLEAN_RESOURCE_RE = re.compile(r"(?iu)^\d[\d\s.,]*(?:\s*(?:стр\.?|страниц|pages|copies))?$")
+
+_COMPAT_BRAND_HINT_RE = re.compile(
+    r"(?iu)\b(?:"
+    r"Xerox|Canon|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark|"
+    r"VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser|"
+    r"DocuColor|Versant|PrimeLink|DocuCentre|ImagePROGRAF|imageRUNNER|imagePRESS|PIXMA|"
+    r"J75|C75|D95|D110|D125"
+    r")\b"
+)
+_XEROX_HEAVY_COMPAT_RE = re.compile(
+    r"(?iu)\b(?:VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser|DocuColor|Versant)\b"
 )
 
-_RE_DEVICE_MODEL = re.compile(
-    r"(?iu)"
-    r"(?:(SureColor|WorkForce\s+Pro|WorkForce|EcoTank|Stylus\s+Pro|Expression|PIXMA|LaserJet)\s+)?"
-    r"("
-    r"(?:SC-[A-Z0-9-]+|WF-[A-Z0-9-]+|ET-\d+[A-Z0-9-]*|"
-    r"L\d{4,5}[A-Z0-9-]*|T\d{4,5}[A-Z0-9-]*(?:\s*w/\s*o\s*stand)?|"
-    r"P\d{4,5}[A-Z0-9-]*|B\d{4,5}[A-Z0-9-]*|C\d{4,5}[A-Z0-9-]*|"
-    r"M\d{4,5}[A-Z0-9-]*|DCP-[A-Z0-9-]+|MFC-[A-Z0-9-]+)"
-    r")"
-)
 
-
-def _dedupe_text_items(items: Iterable[str]) -> list[str]:
-    out: list[str] = []
-    seen: set[str] = set()
-    for item in items:
-        x = _clean_text(item)
-        if not x:
-            continue
-        key = _cf(x)
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(x)
-    return out
-
-
-def _normalize_consumable_device_value(value: str) -> str:
-    src = _clean_text(value)
-    if not src:
-        return ""
-
-    src = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", src)
-    src = re.sub(r"(?iu)\bsurecolor\b", "SureColor", src)
-    src = re.sub(r"(?iu)\bworkforce\s+pro\b", "WorkForce Pro", src)
-    src = re.sub(r"(?iu)\bworkforce\b", "WorkForce", src)
-    src = re.sub(r"(?iu)\becotank\b", "EcoTank", src)
-    src = re.sub(r"(?iu)\bstylus\s+pro\b", "Stylus Pro", src)
-    src = re.sub(r"(?iu)\bexpression\b", "Expression", src)
-    src = re.sub(r"(?iu)\bpixma\b", "PIXMA", src)
-    src = re.sub(r"(?iu)\blaserjet\b", "LaserJet", src)
-    src = re.sub(r"(?iu)\b([A-Z]{1,3})-\s+([A-Z0-9])", r"\1-\2", src)
-
-    chunks: list[str] = []
-    last_family = ""
-    for m in _RE_DEVICE_MODEL.finditer(src):
-        family = _clean_text(m.group(1))
-        model = _clean_text(m.group(2))
-        if not model:
-            continue
-        model = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", model)
-        model = _clean_text(model)
-        if family:
-            last_family = family
-        elif last_family and re.match(r"(?iu)^(?:P|T|WF|ET|L|SC-|B|C|M)\d", model):
-            family = last_family
-        item = f"{family} {model}".strip() if family else model
-        chunks.append(item)
-
-    if chunks:
-        cleaned = _dedupe_text_items(chunks)
-        return " / ".join(cleaned)
-
-    fallback = _clean_text(clean_device_value(src))
-    fallback = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", fallback)
-    parts = [x for x in re.split(r"\s*(?:,|/)\s*", fallback) if _clean_text(x)]
-    cleaned = _dedupe_text_items(parts)
-    return " / ".join(cleaned) if cleaned else ""
-
-
-def _normalize_consumable_device_params(params: list[tuple[str, str]], *, kind: str) -> list[tuple[str, str]]:
-    if kind != "consumable" or not params:
-        return list(params or [])
-
-    out: list[tuple[str, str]] = []
-    seen: set[tuple[str, str]] = set()
-
-    for key, value in params:
-        k = _clean_text(key)
-        v = _clean_text(value)
-        if not k or not v:
-            continue
-        if _cf(k) in {"для устройства", "совместимость"}:
-            v2 = _normalize_consumable_device_value(v)
-            if v2:
-                _append_unique_param(out, seen, k, v2)
-            continue
-        _append_unique_param(out, seen, k, v)
-
-    return out
-
-
-_RE_CONSUMABLE_MODEL_TAIL = re.compile(
-    r"(?iu)(?:поддерживаемые\s+модели(?:\s+принтеров|\s+устройств|\s+техники)?|совместимые\s+модели(?:\s+техники)?|совместимые\s+продукты(?:\s+для)?)\s*:?[ \t]*(.+)$"
-)
-_RE_FOR_DEVICE_TAIL = re.compile(
-    r"(?iu)(?:^|\b)(?:для|for)\s+((?:Epson\s+)?(?:WorkForce|SureColor|EcoTank|Stylus(?:\s+Pro)?)\b.+)$"
-)
-_RE_L_SERIES_PACK = re.compile(r"(?iu)\bL(\d{3,5}(?:/\d{3,5})+)\b")
-_RE_CODE_TOKEN = re.compile(r"(?iu)C(?:11|12|13|33)[A-Z0-9]{5,10}|T[0-9A-Z]{5,10}")
-_RE_WORKFORCE_MODEL = re.compile(r"(?iu)(?:Epson\s+)?WorkForce\s+[A-Z0-9-]+")
-_RE_SURECOLOR_MODEL = re.compile(r"(?iu)(?:Epson\s+)?SureColor\s+SC-[A-Z0-9-]+")
-_RE_ECOTANK_MODEL = re.compile(r"(?iu)(?:Epson\s+)?EcoTank\s+[A-Z0-9-]+")
-_RE_STYLUS_MODEL = re.compile(r"(?iu)(?:Epson\s+)?Stylus(?:\s+Pro)?\s+[A-Z0-9-]+")
-_RE_GENERIC_EPS_MODEL = re.compile(r"(?iu)(?:WF|SC|ET|L)-?[A-Z0-9]{2,}")
-
-
-def _title_eps_family(value: str) -> str:
-    v = _clean_text(value)
-    if not v:
-        return ""
-    v = re.sub(r"(?iu)epson", "Epson", v)
-    v = re.sub(r"(?iu)surecolor", "SureColor", v)
-    v = re.sub(r"(?iu)workforce", "WorkForce", v)
-    v = re.sub(r"(?iu)ecotank", "EcoTank", v)
-    v = re.sub(r"(?iu)stylus", "Stylus", v)
-    v = re.sub(r"(?iu)w/?o\s*stand", "", v)
-    return _clean_text(v)
-
-
-def _extract_models_from_text(text: str) -> str:
-    src = _clean_text(text)
-    if not src:
-        return ""
-
-    items: list[str] = []
-    for rx in (_RE_SURECOLOR_MODEL, _RE_WORKFORCE_MODEL, _RE_ECOTANK_MODEL, _RE_STYLUS_MODEL):
-        items.extend([_title_eps_family(m.group(0)) for m in rx.finditer(src)])
-
-    if not items:
-        for m in _RE_GENERIC_EPS_MODEL.finditer(src):
-            token = _clean_text(m.group(0)).upper().replace('SC ', 'SC-').replace('WF ', 'WF-').replace('ET ', 'ET-').replace('L ', 'L')
-            token = token.replace('SC- ', 'SC-').replace('WF- ', 'WF-').replace('ET- ', 'ET-')
-            if token.startswith('SC-'):
-                items.append(f"Epson SureColor {token}")
-            elif token.startswith('WF-'):
-                items.append(f"Epson WorkForce {token}")
-            elif token.startswith('ET-'):
-                items.append(f"Epson EcoTank {token}")
-            elif token.startswith('L') and len(token) > 1 and token[1:].isdigit():
-                items.append(f"Epson {token}")
-
-    return " / ".join(_dedupe_text_items([x for x in items if x]))
-
-
-def _extract_explicit_epson_devices(text: str) -> str:
-    src = _clean_text(text)
-    if not src:
-        return ""
-
-    items: list[str] = []
-    for rx in (
-        re.compile(r"(?iu)(?:Epson\s+)?WorkForce\s+WF-[A-Z0-9-]+"),
-        re.compile(r"(?iu)(?:Epson\s+)?SureColor\s+SC-[A-Z0-9-]+"),
-        re.compile(r"(?iu)(?:Epson\s+)?EcoTank\s+ET-[A-Z0-9-]+"),
-        re.compile(r"(?iu)(?:Epson\s+)?Stylus(?:\s+Pro)?\s+[A-Z0-9-]+"),
-    ):
-        items.extend([_title_eps_family(m.group(0)) for m in rx.finditer(src)])
-
-    if not items:
-        for m in re.finditer(r"(?iu)(?:WF|SC|ET)-?[A-Z0-9]{2,}", src):
-            token = _clean_text(m.group(0)).upper().replace('SC ', 'SC-').replace('WF ', 'WF-').replace('ET ', 'ET-')
-            token = token.replace('SC- ', 'SC-').replace('WF- ', 'WF-').replace('ET- ', 'ET-')
-            if token.startswith('WF-'):
-                items.append(f"Epson WorkForce {token}")
-            elif token.startswith('SC-'):
-                items.append(f"Epson SureColor {token}")
-            elif token.startswith('ET-'):
-                items.append(f"Epson EcoTank {token}")
-
-    return " / ".join(_dedupe_text_items([x for x in items if x]))
-
-
-def _extract_consumable_device_candidate(name: str, desc: str) -> str:
-    text = _clean_text(desc)
-    for line in text.split("\n"):
-        line = _clean_text(line)
-        if not line:
-            continue
-
-        m = _RE_CONSUMABLE_MODEL_TAIL.search(line)
-        if m:
-            cand = _normalize_consumable_device_value(m.group(1))
-            models = _extract_models_from_text(cand)
-            if models:
-                return models
-            if cand:
-                return cand
-
-        m_for = _RE_FOR_DEVICE_TAIL.search(line)
-        if m_for:
-            cand = _normalize_consumable_device_value(m_for.group(1))
-            models = _extract_models_from_text(cand)
-            if models:
-                return models
-
-    models = _extract_models_from_text(text)
-    if models:
-        return models
-
-    # fallback for Epson L-series inks from name like L800/1800/810/850
-    m2 = _RE_L_SERIES_PACK.search(_clean_text(name))
-    if m2:
-        nums = [x for x in m2.group(1).split('/') if _clean_text(x)]
-        items = [f"Epson L{n}" for n in nums]
-        return " / ".join(_dedupe_text_items(items))
-
-    return ""
-
-
-def _looks_generic_device_value(value: str) -> bool:
-    low = _cf(value)
-    if not low:
+def _is_dirty_value(key: str, value: str) -> bool:
+    k = norm_ws(key)
+    v = norm_ws(value)
+    if not k or not v:
         return True
-    if any(x in low for x in ["широкоформатный принтер", "принтер", "мфу", "фотопечать", "устройств epson"]):
-        return True
-    return not bool(_RE_DEVICE_MODEL.search(value))
 
-
-_RE_PRIMARY_CONSUMABLE_CODE = re.compile(r"(?iu)\bC(?:11|12|13|33)[A-Z0-9]{5,10}\b")
-_RE_SECONDARY_T_CODE = re.compile(r"(?iu)\bT[0-9A-Z]{5,10}\b")
-
-
-def _pick_name_primary_code(name: str) -> str:
-    m = _RE_PRIMARY_CONSUMABLE_CODE.search(_clean_text(name))
-    return _clean_text(m.group(0)).upper() if m else ""
-
-
-def _pick_secondary_t_code(name: str, desc: str, primary: str) -> str:
-    joined = " / ".join([_clean_text(name), _clean_text(desc)]).upper()
-
-    # only real T-codes are allowed: must start with T and contain digits immediately after T
-    # this prevents false positives like MAINTENANCE -> TENANCE
-    raw_tokens = re.findall(r"(?iu)T\d[A-Z0-9]{4,10}", joined)
-    for token in raw_tokens:
-        code = _clean_text(token).upper()
-        code = re.split(r"(?iu)(?:ULTRACHROME|SINGLEPACK|INK|CARTRIDGE|BLACK|CYAN|MAGENTA|YELLOW|PHOTO|HDX|HD)", code)[0]
-        code = _clean_text(code)
-        m = re.match(r"(?iu)^T\d[A-Z0-9]{4,10}$", code)
-        if m:
-            code = _clean_text(m.group(0)).upper()
-            if code and code != primary:
-                return code
-
-    # glued tokens like T55KD00UltraChrome / T41F340M are allowed only when digit follows T
-    glued = re.search(r"(?iu)(T\d[A-Z0-9]{4,10})(?=ULTRACHROME|SINGLEPACK|INK|CARTRIDGE|BLACK|CYAN|MAGENTA|YELLOW|PHOTO|HDX|HD|$)", joined)
-    if glued:
-        code = _clean_text(glued.group(1)).upper()
-        if code and code != primary:
-            return code
-
-    return ""
-
-
-def _should_force_consumable_model(current_model: str, primary_code: str, name: str) -> bool:
-    cur = _clean_text(current_model).upper()
-    if not primary_code:
+    if k == "Совместимость":
+        if _DIRTY_COMPAT_RE.search(v):
+            return True
+        if ":" in v and re.search(r"(?iu)\b(?:характеристики|модель|совместим(?:ость|ые\s+модели)|устройства?)\b", v):
+            return True
+        if not _COMPAT_BRAND_HINT_RE.search(v) and len(v.split()) > 8:
+            return True
+        if "/" not in v and "," not in v and len(v.split()) > 10:
+            return True
+        if re.search(r"(?iu)Canon\s+imagePRESS(?:\s+Lite)?\s+[^/]+\s+Canon\s+imageRUNNER", v):
+            return True
         return False
-    if not cur:
-        return True
-    if cur == primary_code:
+
+    if k == "Цвет":
+        if _DIRTY_COLOR_RE.search(v):
+            return True
+        if len(v.split()) > 4:
+            return True
         return False
-    if ' ' in _clean_text(current_model):
-        return True
-    if cur.startswith('C11') or cur.startswith('C12') or cur.startswith('C13') or cur.startswith('C33'):
-        return True
-    if cur in _clean_text(name).upper() and cur != primary_code:
-        return True
+
+    if k == "Технология":
+        if _DIRTY_TECH_RE.search(v):
+            return True
+        if not _CLEAN_TECH_RE.fullmatch(v):
+            return True
+        return False
+
+    if k == "Ресурс":
+        if len(v) > 40:
+            return True
+        if not _CLEAN_RESOURCE_RE.fullmatch(v):
+            return True
+        return False
+
     return False
 
 
-def _normalize_epson_device_list(value: str) -> str:
-    src = _clean_text(value)
-    if not src:
-        return ""
-    src = re.sub(r"(?iu)\bSC-\s+", "SC-", src)
-    src = re.sub(r"(?iu)\bWF-\s+", "WF-", src)
-    src = re.sub(r"(?iu)\bET-\s+", "ET-", src)
-    src = re.sub(r"(?iu)(?<!Epson\s)\bSureColor\b", "Epson SureColor", src)
-    src = re.sub(r"(?iu)(?<!Epson\s)\bWorkForce\b", "Epson WorkForce", src)
-    src = re.sub(r"(?iu)(?<!Epson\s)\bEcoTank\b", "Epson EcoTank", src)
-    src = re.sub(r"(?iu)(?<!Epson\s)\bStylus(?:\s+Pro)?\b", lambda m: 'Epson ' + _clean_text(m.group(0)), src)
-    # keep only model-like fragments when possible
-    models = _extract_models_from_text(src)
-    return models or src
+def _compat_looks_clean(v: str) -> bool:
+    s = norm_ws(v)
+    if not s:
+        return False
+    if _is_dirty_value("Совместимость", s):
+        return False
+    if not _COMPAT_BRAND_HINT_RE.search(s):
+        return False
+    return True
 
 
-def _infer_consumable_type(name: str, desc: str, current_type: str) -> str:
-    low = _cf(" ".join([name, desc, current_type]))
-    name_cf = _cf(name)
-    if "емкость для отработанных чернил" in low or "ёмкость для отработанных чернил" in low:
-        return "Ёмкость для отработанных чернил"
-    if "экономичный набор" in low:
-        return "Экономичный набор"
-    if "картридж" in low or "singlepack" in name_cf or "cartridge" in low:
-        return "Картридж"
-    if "чернил" in low or name_cf.startswith("чернила"):
-        return "Чернила"
-    return _clean_text(current_type)
+def _prefer_desc_value(key: str, xml_val: str, desc_val: str) -> bool:
+    if key not in _SAFE_DESC_OVERRIDE_KEYS:
+        return False
+    if not desc_val:
+        return False
 
+    xml_dirty = _is_dirty_value(key, xml_val)
+    desc_dirty = _is_dirty_value(key, desc_val)
+    if desc_dirty:
+        return False
+    if xml_dirty:
+        return True
 
-def _normalize_print_type_value(value: str) -> str:
-    low = _cf(value)
-    mapping = {
-        "струйный": "Струйная",
-        "лазерный": "Лазерная",
-        "матричный": "Матричная",
-        "сублимационный": "Сублимационная",
-        "термосублимационный": "Термосублимационная",
-    }
-    return mapping.get(low, _clean_text(value))
+    if key == "Ресурс" and len(desc_val) < len(xml_val):
+        return True
 
+    if key == "Совместимость":
+        xml_len = len(norm_ws(xml_val))
+        desc_len = len(norm_ws(desc_val))
 
-def _set_single_param(params: list[tuple[str, str]], key: str, value: str) -> list[tuple[str, str]]:
-    kcf = _cf(key)
-    v = _clean_text(value)
-    out: list[tuple[str, str]] = []
-    placed = False
-    for k, old in params:
-        if _cf(k) == kcf:
-            if not placed and v:
-                out.append((key, v))
-                placed = True
-            continue
-        out.append((k, old))
-    if not placed and v:
-        out.append((key, v))
-    return out
-
-
-def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc: str, kind: str) -> list[tuple[str, str]]:
-    if kind != "consumable":
-        return list(params or [])
-
-    out = list(params or [])
-    current_type = _first_value(out, "Тип")
-    inferred_type = _infer_consumable_type(name, desc, current_type)
-
-    if _cf(current_type) in {"струйный", "лазерный", "матричный", "сублимационный", "термосублимационный"}:
-        out = _set_single_param(out, "Тип печати", _normalize_print_type_value(current_type))
-        out = _set_single_param(out, "Тип", inferred_type or current_type)
-    elif inferred_type and current_type and ("фабрика печати" in _cf(current_type) or "чернила" in _cf(current_type) or "epson" in _cf(current_type)):
-        out = _set_single_param(out, "Тип", inferred_type)
-    elif inferred_type and not current_type:
-        out = _set_single_param(out, "Тип", inferred_type)
-
-    # normalize final consumable type labels
-    norm_type = _clean_text(_first_value(out, "Тип"))
-    if _cf(' '.join([norm_type, name, desc])).find('картридж') >= 0 or 'singlepack' in _cf(name):
-        out = _set_single_param(out, "Тип", "Картридж")
-    elif norm_type and ("фабрика печати" in _cf(norm_type) or _cf(norm_type) == "чернила"):
-        out = _set_single_param(out, "Тип", "Чернила")
-
-    current_device = _first_value(out, "Для устройства") or _first_value(out, "Совместимость")
-    better_device = _extract_consumable_device_candidate(name, desc)
-    if not better_device:
-        better_device = _extract_explicit_epson_devices(" ".join([desc or "", name or ""]))
-    if not better_device:
-        better_device = _extract_models_from_text(" ".join([name or "", desc or ""]))
-    better_device = _normalize_epson_device_list(better_device)
-    if better_device and (_looks_generic_device_value(current_device) or len(better_device) >= len(current_device)):
-        out = _set_single_param(out, "Для устройства", better_device)
-
-    model = _first_value(out, "Модель")
-    name_primary = _pick_name_primary_code(name)
-    if name_primary and _should_force_consumable_model(model, name_primary, name):
-        out = _set_single_param(out, "Модель", name_primary)
-        model = name_primary
-
-    code_src = " / ".join([
-        _first_value(out, "Коды"),
-        name_primary or "",
-        name or "",
-        model or "",
-        desc or "",
-    ])
-    codes: list[str] = []
-    for m in _RE_CODE_TOKEN.finditer(code_src):
-        c = _clean_text(m.group(0)).upper()
-        if c and c not in codes:
-            codes.append(c)
-    if name_primary and name_primary not in codes:
-        codes.insert(0, name_primary)
-    if codes:
-        primary = codes[0]
-        if _should_force_consumable_model(_first_value(out, "Модель"), primary, name):
-            out = _set_single_param(out, "Модель", primary)
-        secondary_t = _pick_secondary_t_code(name, desc, primary)
-        if secondary_t:
-            out = _set_single_param(out, "Коды", f"{primary} / {secondary_t}")
-        else:
-            # for consumables we keep only the primary item code unless a valid secondary T-code exists
-            out = _set_single_param(out, "Коды", primary)
-
-    # some descriptions are just pure model lists; preserve them as device list
-    if not _has_key(out, "Для устройства"):
-        models = _normalize_epson_device_list(_extract_explicit_epson_devices(desc) or _extract_models_from_text(desc))
-        if models:
-            out = _set_single_param(out, "Для устройства", models)
-
-    # if device list was still missed, try simpler extraction from body/name again
-    if not _has_key(out, "Для устройства"):
-        desc_models = _normalize_epson_device_list(_extract_explicit_epson_devices(desc or name) or _extract_models_from_text(desc or name))
-        if desc_models:
-            out = _set_single_param(out, "Для устройства", desc_models)
-
-    return out
-
-
-def _build_consumable_short_desc(params: list[tuple[str, str]]) -> str:
-    type_value = _clean_text(_first_value(params, "Тип") or "Расходный материал")
-    brand_value = _clean_text(
-        _first_value(params, "Для бренда")
-        or _first_value(params, "Бренд")
-        or _first_value(params, "Производитель")
-    )
-    model_value = _clean_text(_first_value(params, "Модель"))
-    codes_value = _clean_text(_first_value(params, "Коды"))
-    color_value = _clean_text(_first_value(params, "Цвет"))
-    resource_value = _clean_text(_first_value(params, "Ресурс"))
-    device_value = _clean_text(_first_value(params, "Для устройства") or _first_value(params, "Совместимость"))
-
-    subject = type_value or "Расходный материал"
-    prefix = brand_value or ""
-
-    code_hint = ""
-    if model_value and codes_value and model_value in codes_value:
-        code_hint = model_value
-    elif model_value:
-        code_hint = model_value
-    elif codes_value:
-        code_hint = codes_value.split('/')[0].strip()
-
-    parts = []
-    if prefix and code_hint:
-        parts.append(f"Оригинальный {subject.lower()} {prefix} {code_hint}")
-    elif prefix:
-        parts.append(f"Оригинальный {subject.lower()} {prefix}")
-    elif code_hint:
-        parts.append(f"{subject} {code_hint}")
-    else:
-        parts.append(subject)
-
-    if color_value:
-        parts[-1] += f" {color_value.lower()} цвета"
-
-    if device_value:
-        parts[-1] += f" для {device_value}"
-
-    sentence = parts[-1].strip()
-    if not sentence.endswith('.'):
-        sentence += '.'
-
-    if resource_value:
-        sentence += f" Ресурс: {resource_value}."
-
-    return sentence.strip()
-
-
-def _drop_consumable_device_narrative(clean_desc: str, params: list[tuple[str, str]], *, kind: str) -> str:
-    if kind != "consumable":
-        return _clean_text(clean_desc)
-
-    device_value = _first_value(params, "Для устройства") or _first_value(params, "Совместимость")
-    if not device_value:
-        return _clean_text(clean_desc)
-
-    lines = [_clean_text(x) for x in str(clean_desc or "").split("\n")]
-    kept: list[str] = []
-
-    for line in lines:
-        if not line:
-            continue
-        low = _cf(line)
-        if _RE_DROP_CONSUMABLE_DESC_LINE.search(line) and any(
-            mark in low for mark in ("epson", "surecolor", "workforce", "ecotank", "stylus", "pixma", "laserjet")
+        if (
+            desc_len >= 8
+            and xml_len >= 8
+            and desc_len + 40 < xml_len
+            and _compat_looks_clean(desc_val)
+            and desc_val.count(",") <= xml_val.count(",") + 1
         ):
+            return True
+
+    return False
+
+
+def _best_desc_values(desc_params: list[tuple[str, str]]) -> dict[str, tuple[str, str]]:
+    best: dict[str, tuple[str, str]] = {}
+
+    for k, v in desc_params:
+        k2 = norm_ws(k)
+        v2 = norm_ws(v)
+        if not k2 or not v2:
             continue
-        kept.append(line)
 
-    result = "\n".join(kept).strip()
-    if result:
-        return result
+        key_cf = k2.casefold()
+        prev = best.get(key_cf)
 
-    return _build_consumable_short_desc(params).strip()
-
-
-_RE_INLINE_SUPPLIER_HEADER = re.compile(
-    r"(?iu)\b(?:технические\s+характеристики|основные\s+характеристики|общие\s+характеристики|общие\s+характерстики)\b\s*:?"
-)
-
-
-def _soften_consumable_body(clean_desc: str, params: list[tuple[str, str]], *, kind: str) -> str:
-    text = _drop_consumable_device_narrative(clean_desc, params, kind=kind)
-    text = _clean_text(text)
-    if not text:
-        return text
-
-    if kind != "consumable":
-        return text
-
-    text = _RE_INLINE_SUPPLIER_HEADER.sub(" ", text)
-    text = re.sub(r"(?iu)\s*[;|]\s*", ". ", text)
-    text = _clean_text(text)
-
-    if not text:
-        return _build_consumable_short_desc(params).strip()
-
-    low = _cf(text)
-    if any(mark in low for mark in [
-        'вид струй', 'назначение', 'цвет печати', 'поддерживаемые модели',
-        'совместимые модели', 'совместимые продукты', 'ресурс '
-    ]):
-        return _build_consumable_short_desc(params).strip()
-
-    return text
-
-
-def _clean_text(value: Any) -> str:
-    return norm_ws(str(value or ""))
-
-
-def _cf(value: Any) -> str:
-    return _clean_text(value).casefold().replace("ё", "е")
-
-
-def _get_field(obj: Any, *names: str) -> Any:
-    for name in names:
-        if isinstance(obj, dict) and name in obj:
-            return obj.get(name)
-        if hasattr(obj, name):
-            return getattr(obj, name)
-    return None
-
-
-def _get_offer_el(src: Any) -> ET.Element | None:
-    el = _get_field(src, "offer_el", "el", "xml_offer")
-    return el if isinstance(el, ET.Element) else None
-
-
-def _iter_picture_urls(src: Any) -> list[str]:
-    direct = _get_field(src, "picture_urls", "pictures", "picture_list")
-    out: list[str] = []
-    seen: set[str] = set()
-
-    if isinstance(direct, (list, tuple)):
-        for raw in direct:
-            s = _clean_text(raw).replace(" ", "%20")
-            if not s:
+        if key_cf == "совместимость":
+            if not _compat_looks_clean(v2):
                 continue
-            key = s.casefold()
-            if key in seen:
+            if prev is None:
+                best[key_cf] = (k2, v2)
                 continue
-            seen.add(key)
-            out.append(s)
 
-    for raw in (
-        _get_field(src, "picture_url"),
-        _get_field(src, "picture"),
-        _get_field(src, "image"),
-    ):
-        s = _clean_text(raw).replace(" ", "%20")
-        if not s:
+            prev_v = prev[1]
+            if len(v2) < len(prev_v):
+                best[key_cf] = (k2, v2)
             continue
-        key = s.casefold()
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(s)
 
-    offer_el = _get_offer_el(src)
-    if offer_el is not None:
-        for pic_el in offer_el.findall("picture"):
-            s = _clean_text("".join(pic_el.itertext())).replace(" ", "%20")
-            if not s:
+        if key_cf in {"цвет", "технология", "ресурс"}:
+            if _is_dirty_value(k2, v2):
                 continue
-            key = s.casefold()
-            if key in seen:
-                continue
-            seen.add(key)
-            out.append(s)
+            if prev is None or len(v2) < len(prev[1]):
+                best[key_cf] = (k2, v2)
 
-    return out
+    return best
 
 
-def _collect_pictures(urls: list[str], *, placeholder_picture: str) -> list[str]:
-    if _collect_picture_urls is not None:
-        return _collect_picture_urls(urls, placeholder_picture=placeholder_picture)
+def _final_reconcile_params(
+    params: list[tuple[str, str]],
+    desc_params: list[tuple[str, str]],
+) -> list[tuple[str, str]]:
+    """
+    Последний reconcile-pass после merge:
+    - если merged Совместимость всё ещё грязная, а clean desc Совместимость есть -> заменить;
+    - если merged Xerox Совместимость слишком тяжёлая, а clean desc версия заметно компактнее -> заменить.
+    """
+    if not params:
+        return params
 
-    out: list[str] = []
-    seen: set[str] = set()
-    for raw in urls or []:
-        s = _clean_text(raw).replace(" ", "%20")
-        if not s:
-            continue
-        key = s.casefold()
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(s)
-    if not out and placeholder_picture:
-        out = [placeholder_picture]
-    return out
+    best_desc = _best_desc_values(desc_params)
+    compat_desc = best_desc.get("совместимость")
+    if not compat_desc:
+        return params
 
+    desc_v = compat_desc[1]
+    out: list[tuple[str, str]] = []
 
-def _read_price_triplet(src: Any) -> tuple[str, str, str]:
-    dealer = _clean_text(
-        _get_field(
-            src,
-            "dealer_price_text",
-            "dealer_text",
-            "dealer_price",
-            "purchase_price_text",
-            "purchase_price",
-        )
-    )
-    price = _clean_text(
-        _get_field(
-            src,
-            "price_text",
-            "price",
-            "price_kzt",
-        )
-    )
-    rrp = _clean_text(
-        _get_field(
-            src,
-            "rrp_text",
-            "rrp",
-            "retail_price_text",
-            "rrp_price",
-        )
-    )
-
-    offer_el = _get_offer_el(src)
-    prices_el = offer_el.find("prices") if offer_el is not None else None
-    if prices_el is not None:
-        for price_el in prices_el.findall("price"):
-            value = _clean_text("".join(price_el.itertext()))
-            ptype = _cf(price_el.get("type"))
-            if not value:
-                continue
-            if not dealer and ("дилер" in ptype or "dealer" in ptype):
-                dealer = value
-                continue
-            if not rrp and ptype == "rrp":
-                rrp = value
-                continue
-            if not price:
-                price = value
-
-    if offer_el is not None and not price:
-        price = _clean_text(offer_el.findtext("price"))
-
-    return dealer, price, rrp
-
-
-def _read_warranty_values(src: Any) -> list[str]:
-    values: list[str] = []
-    for raw in (
-        _get_field(src, "manufacturer_warranty", "manufacturer_warranty_text"),
-        _get_field(src, "warranty", "warranty_text"),
-    ):
-        s = _clean_text(raw)
-        if s:
-            values.append(s)
-
-    params_attr = _get_field(src, "params")
-    if isinstance(params_attr, (list, tuple)):
-        for item in params_attr:
-            if isinstance(item, (list, tuple)) and len(item) >= 2:
-                key = _clean_text(item[0])
-                val = _clean_text(item[1])
-                if key.casefold() == "гарантия" and val:
-                    values.append(val)
-
-    offer_el = _get_offer_el(src)
-    if offer_el is not None:
-        for p in offer_el.findall("Param"):
-            key = _clean_text(p.get("name"))
-            val = _clean_text("".join(p.itertext()))
-            if key.casefold() == "гарантия" and val:
-                values.append(val)
-
-    # дедуп без потери порядка
-    out: list[str] = []
-    seen: set[str] = set()
-    for value in values:
-        key = value.casefold()
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(value)
-    return out
-
-
-def _append_unique_param(out: list[tuple[str, str]], seen: set[tuple[str, str]], key: str, value: str) -> None:
-    k = _clean_text(key)
-    v = _clean_text(value)
-    if not k or not v:
-        return
-    item = (k, v)
-    if item in seen:
-        return
-    seen.add(item)
-    out.append(item)
-
-
-def _first_value(params: Iterable[tuple[str, str]], key: str) -> str:
-    key_cf = _cf(key)
     for k, v in params:
-        if _cf(k) == key_cf and _clean_text(v):
-            return _clean_text(v)
+        k2 = norm_ws(k)
+        v2 = norm_ws(v)
+
+        if k2.casefold() == "совместимость":
+            if _is_dirty_value("Совместимость", v2):
+                out.append((k2, desc_v))
+                continue
+
+            if (
+                _XEROX_HEAVY_COMPAT_RE.search(v2)
+                and _XEROX_HEAVY_COMPAT_RE.search(desc_v)
+                and len(desc_v) + 50 < len(v2)
+                and _compat_looks_clean(desc_v)
+            ):
+                out.append((k2, desc_v))
+                continue
+
+        out.append((k2, v2))
+
+    return out
+
+
+def merge_params(
+    xml_params: list[tuple[str, str]],
+    desc_params: list[tuple[str, str]],
+) -> list[tuple[str, str]]:
+    """
+    XML params по умолчанию приоритетнее.
+    Description-derived params только дополняют,
+    но могут точечно заменить грязные XML значения
+    для безопасного набора ключей.
+    """
+    out: list[tuple[str, str]] = []
+    seen_pair: set[tuple[str, str]] = set()
+    index_by_key: dict[str, int] = {}
+
+    for k, v in xml_params:
+        k2 = norm_ws(k)
+        v2 = norm_ws(v)
+        if not k2 or not v2:
+            continue
+        sig = (k2.casefold(), v2.casefold())
+        if sig in seen_pair:
+            continue
+        index_by_key.setdefault(k2.casefold(), len(out))
+        out.append((k2, v2))
+        seen_pair.add(sig)
+
+    for k, v in desc_params:
+        k2 = norm_ws(k)
+        v2 = norm_ws(v)
+        if not k2 or not v2:
+            continue
+
+        key_cf = k2.casefold()
+        sig = (key_cf, v2.casefold())
+        if sig in seen_pair:
+            continue
+
+        if key_cf in index_by_key:
+            idx = index_by_key[key_cf]
+            xml_k, xml_v = out[idx]
+            if _prefer_desc_value(xml_k, xml_v, v2):
+                seen_pair.discard((xml_k.casefold(), xml_v.casefold()))
+                out[idx] = (xml_k, v2)
+                seen_pair.add((xml_k.casefold(), v2.casefold()))
+            continue
+
+        out.append((k2, v2))
+        index_by_key[key_cf] = len(out) - 1
+        seen_pair.add(sig)
+
+    out = _final_reconcile_params(out, desc_params)
+    return out
+
+
+def _has_param(params: list[tuple[str, str]], key: str) -> bool:
+    kcf = norm_ws(key).casefold()
+    return any(norm_ws(k).casefold() == kcf and norm_ws(v) for k, v in params)
+
+
+def _append_unique(out: list[str], seen: set[str], value: str) -> None:
+    v = norm_ws(value)
+    if not v:
+        return
+    sig = v.casefold()
+    if sig in seen:
+        return
+    seen.add(sig)
+    out.append(v)
+
+
+def _append_unique_model_code(out: list[str], seen: set[str], code: str) -> None:
+    c = norm_ws(code).upper()
+    if not c:
+        return
+    sig = c.casefold()
+    if sig in seen:
+        return
+    seen.add(sig)
+    out.append(c)
+
+
+def _infer_model_from_name(name: str) -> str:
+    n = norm_ws(name)
+    if not n:
+        return ""
+
+    prepared = re.sub(r"[\(\)\[\],;]+", " / ", n)
+    prepared = re.sub(r"\s*/\s*", " / ", prepared)
+    parts = [norm_ws(x) for x in prepared.split("/") if norm_ws(x)]
+
+    out: list[str] = []
+    seen: set[str] = set()
+    last_full: str = ""
+
+    for part in parts:
+        full_hits = [m.group(0).upper() for m in _NAME_MODEL_RE.finditer(part)]
+        if full_hits:
+            for hit in full_hits:
+                _append_unique_model_code(out, seen, hit)
+                last_full = hit
+            continue
+
+        token = norm_ws(part).upper()
+        if last_full and _SHORT_DIGIT_SUFFIX_RE.fullmatch(token):
+            candidate = (last_full[:-len(token)] + token).upper()
+            if _NAME_MODEL_RE.fullmatch(candidate):
+                _append_unique_model_code(out, seen, candidate)
+                continue
+
+    if out:
+        return " / ".join(out)
     return ""
 
 
-def _has_key(params: Iterable[tuple[str, str]], key: str) -> bool:
-    return bool(_first_value(params, key))
-
-
-def _merge_params(
-    xml_params: list[tuple[str, str]],
-    desc_params: list[tuple[str, str]],
-    *,
-    allow_keys: set[str],
-) -> list[tuple[str, str]]:
-    """
-    Базовый merge:
-    - XML params считаем первичным источником;
-    - desc params добираем только если такого ключа ещё нет;
-    - порядок сохраняем стабильным.
-    """
-    out: list[tuple[str, str]] = []
-    seen_pairs: set[tuple[str, str]] = set()
-    seen_keys: set[str] = set()
-
-    for key, value in xml_params or []:
-        k = _clean_text(key)
-        v = _clean_text(value)
-        if not k or not v:
-            continue
-        if allow_keys and k not in allow_keys:
-            continue
-        _append_unique_param(out, seen_pairs, k, v)
-        seen_keys.add(_cf(k))
-
-    for key, value in desc_params or []:
-        k = _clean_text(key)
-        v = _clean_text(value)
-        if not k or not v:
-            continue
-        if allow_keys and k not in allow_keys:
-            continue
-        if _cf(k) in seen_keys:
-            continue
-        _append_unique_param(out, seen_pairs, k, v)
-        seen_keys.add(_cf(k))
-
-    return out
-
-
-def _ensure_default_params(
-    params: list[tuple[str, str]],
-    *,
-    kind: str,
-    model: str,
-    warranty: str,
-    vendor: str,
-    allow_keys: set[str],
-) -> list[tuple[str, str]]:
-    out = list(params or [])
-    seen: set[tuple[str, str]] = set(out)
-
-    if model and (not allow_keys or "Модель" in allow_keys) and not _has_key(out, "Модель"):
-        _append_unique_param(out, seen, "Модель", model)
-
-    if warranty and (not allow_keys or "Гарантия" in allow_keys) and not _has_key(out, "Гарантия"):
-        _append_unique_param(out, seen, "Гарантия", warranty)
-
-    if kind == "consumable" and vendor and (not allow_keys or "Для бренда" in allow_keys) and not _has_key(out, "Для бренда"):
-        _append_unique_param(out, seen, "Для бренда", vendor)
-
-    return out
-
-
-
-
-def _dedupe_type_params(params: list[tuple[str, str]]) -> list[tuple[str, str]]:
-    """
-    Чистит конфликтующие дубли по ключу "Тип".
-
-    Логика:
-    - если есть два значения "Тип", где одно содержится в другом
-      ("Проектор" / "Проектор универсальный",
-       "Экран" / "Экран настенный",
-       "Картридж" / "Картридж EPSON"),
-      оставляем более конкретное / длинное;
-    - несвязанные значения не склеиваем;
-    - порядок остальных параметров не трогаем.
-    """
-    if not params:
+def _expand_device_chain(seq: str) -> list[str]:
+    raw_parts = [norm_ws(x).upper() for x in re.split(r"\s*/\s*", seq or "") if norm_ws(x)]
+    if not raw_parts:
         return []
 
-    type_values: list[str] = []
-    for key, value in params:
-        if _cf(key) == "тип":
-            v = _clean_text(value)
-            if v:
-                type_values.append(v)
+    out: list[str] = []
+    last_prefix = ""
 
-    if len(type_values) <= 1:
-        return list(params)
-
-    keep_values: set[str] = set(type_values)
-
-    def _norm_type(v: str) -> str:
-        return _RE_WS.sub(" ", _cf(v)).strip()
-
-    norm_map = {v: _norm_type(v) for v in type_values}
-
-    for left in type_values:
-        nl = norm_map[left]
-        if not nl:
+    for part in raw_parts:
+        token = part.strip()
+        if not token:
             continue
-        for right in type_values:
-            if left == right:
-                continue
-            nr = norm_map[right]
-            if not nr:
-                continue
-            if nl == nr:
-                # если по смыслу одинаковые, оставляем более длинный / конкретный
-                if len(right) > len(left):
-                    keep_values.discard(left)
-                continue
-            if nl in nr and len(nr) > len(nl):
-                keep_values.discard(left)
-                continue
 
-    out: list[tuple[str, str]] = []
-    seen: set[tuple[str, str]] = set()
-    for key, value in params:
-        k = _clean_text(key)
-        v = _clean_text(value)
-        if not k or not v:
+        m = re.fullmatch(r"([A-Z]?)(\d{4,5})", token)
+        if not m:
             continue
-        if _cf(k) == "тип" and v not in keep_values:
-            continue
-        item = (k, v)
-        if item in seen:
-            continue
-        seen.add(item)
-        out.append(item)
+
+        pref, digits = m.groups()
+        if pref:
+            last_prefix = pref
+            out.append(f"{pref}{digits}")
+        elif last_prefix:
+            out.append(f"{last_prefix}{digits}")
+        else:
+            out.append(digits)
+
     return out
 
 
-def _filter_allowed(params: list[tuple[str, str]], allow_keys: set[str]) -> list[tuple[str, str]]:
-    if not allow_keys:
-        return params
-    out: list[tuple[str, str]] = []
-    seen: set[tuple[str, str]] = set()
-    for key, value in params or []:
-        k = _clean_text(key)
-        v = _clean_text(value)
-        if not k or not v:
-            continue
-        if k not in allow_keys:
-            continue
-        _append_unique_param(out, seen, k, v)
-    return out
-
-
-def _render_extra_info(extra_info: list[tuple[str, str]], *, limit: int = 12) -> str:
-    items: list[str] = []
-    for key, value in extra_info[: max(0, int(limit))]:
-        k = _clean_text(key)
-        v = _clean_text(value)
-        if not k or not v:
-            continue
-        items.append(f"{k}: {v}")
-    if not items:
+def _infer_compat_from_name(name: str) -> str:
+    n = norm_ws(name)
+    if not n:
         return ""
-    return "Дополнительно:\n" + "\n".join(items)
+
+    m = _XEROX_INIT_KIT_RE.search(n)
+    if not m:
+        return ""
+
+    brand = norm_ws(m.group(1))
+    family = norm_ws(m.group(2))
+    seq = norm_ws(m.group(3))
+
+    models = _expand_device_chain(seq)
+    if not models:
+        return ""
+
+    out: list[str] = []
+    seen: set[str] = set()
+    for model in models:
+        if not _DEVICE_TOKEN_RE.fullmatch(model):
+            continue
+        _append_unique(out, seen, f"{brand} {family} {model}")
+
+    return " / ".join(out)
 
 
-def _merge_native_desc(clean_desc: str, extra_info: list[tuple[str, str]]) -> str:
-    base = _clean_text(clean_desc)
-    extra_block = _render_extra_info(extra_info)
-    if base and extra_block:
-        return f"{base}\n\n{extra_block}"
-    return base or extra_block
-
-
-def _build_single_offer(
-    src: Any,
+def build_offer(
+    src: SourceOffer,
     *,
-    schema_cfg: dict[str, Any],
-    placeholder_picture: str,
-    id_prefix: str,
+    schema_cfg: dict,
     vendor_blacklist: set[str],
-) -> tuple[OfferOut | None, dict[str, Any]]:
-    raw_name = _clean_text(_get_field(src, "name"))
-    kind = detect_kind_by_name(raw_name, schema_cfg)
-    allow_keys = resolve_allowed_keys(schema_cfg, kind)
+    placeholder_picture: str,
+    id_prefix: str = "AS",
+) -> tuple[OfferOut | None, bool]:
+    raw_id = norm_ws(src.raw_id)
+    name = normalize_name(src.name)
+    if not raw_id or not name:
+        return None, False
 
-    dealer_text, price_text, rrp_text = _read_price_triplet(src)
-    warranty_values = _read_warranty_values(src)
+    oid = build_offer_oid(raw_id, prefix=id_prefix)
+    available = normalize_available(src.available_attr, src.available_tag)
+    pictures = collect_picture_urls(src.picture_urls, placeholder_picture=placeholder_picture)
+    vendor = normalize_vendor(src.vendor, vendor_blacklist=vendor_blacklist)
 
-    basics = normalize_source_basics(
-        raw_id=_clean_text(_get_field(src, "raw_id", "id")),
-        offer_id=_clean_text(_get_field(src, "offer_id", "Offer_ID")),
-        article=_clean_text(_get_field(src, "article", "vendor_code")),
-        name=raw_name,
-        model=_clean_text(_get_field(src, "model")),
-        vendor=_clean_text(_get_field(src, "vendor")),
-        description_text=_clean_text(_get_field(src, "description", "desc")),
-        dealer_text=dealer_text,
-        price_text=price_text,
-        rrp_text=rrp_text,
-        available_attr=_clean_text(_get_field(src, "available_attr", "available")),
-        available_tag=_clean_text(_get_field(src, "available_tag", "delivery")),
-        stock_text=_clean_text(_get_field(src, "stock_text", "Stock", "stock")),
-        warranty_values=warranty_values,
-        vendor_blacklist=vendor_blacklist,
-        id_prefix=id_prefix,
-    )
+    desc_src = sanitize_native_desc(src.description or "", name=name)
 
-    oid = _clean_text(basics.get("oid"))
-    name = _clean_text(basics.get("name"))
-    model = _clean_text(basics.get("model"))
-    vendor = _clean_text(basics.get("vendor"))
-    warranty = _clean_text(basics.get("warranty"))
-    price_in = basics.get("price_in")
-    available = bool(basics.get("available"))
+    xml_params = collect_xml_params(src.offer_el, schema_cfg) if src.offer_el is not None else []
+    desc_params = extract_desc_spec_pairs(desc_src, schema_cfg)
+    params = merge_params(xml_params, desc_params)
 
-    if not oid or not name:
-        return None, {
-            "built": False,
-            "reason": "missing_identity",
-            "kind": kind,
-            "oid": oid,
-            "name": name,
-        }
+    if not _has_param(params, "Модель"):
+        inferred_model = _infer_model_from_name(name)
+        if inferred_model:
+            params.append(("Модель", inferred_model))
 
-    xml_params, extra_info, xml_report = collect_xml_params(
-        src,
-        schema_cfg=schema_cfg,
-        kind=kind,
-        unknown_to_extra_info=True,
-    )
+    if not _has_param(params, "Совместимость"):
+        inferred_compat = _infer_compat_from_name(name)
+        if inferred_compat:
+            params.append(("Совместимость", inferred_compat))
 
-    description_raw = _clean_text(_get_field(src, "description", "desc"))
-    cleaned_desc = clean_description_text(
-        description_raw,
-        name=name,
-        kind=kind,
-        vendor=vendor,
-        model=model,
-    )
-    desc_params, desc_report = extract_desc_params(
-        cleaned_desc,
-        name=name,
-        kind=kind,
-        vendor=vendor,
-        model=model,
-        schema_cfg=schema_cfg,
-    )
-
-    merged_params = _merge_params(xml_params, desc_params, allow_keys=allow_keys)
-    merged_params = _ensure_default_params(
-        merged_params,
-        kind=kind,
-        model=model,
-        warranty=warranty,
-        vendor=vendor,
-        allow_keys=allow_keys,
-    )
-    merged_params = reconcile_params(
-        merged_params,
-        name=name,
-        model=model,
-        kind=kind,
-    )
-    merged_params = _normalize_consumable_device_params(merged_params, kind=kind)
-    merged_params = _repair_consumable_params(merged_params, name=name, desc=cleaned_desc, kind=kind)
-    merged_params = _dedupe_type_params(merged_params)
-    merged_params = _filter_allowed(merged_params, allow_keys)
-
-    pictures = _collect_pictures(_iter_picture_urls(src), placeholder_picture=placeholder_picture)
-    cleaned_desc = _soften_consumable_body(cleaned_desc, merged_params, kind=kind)
-    native_desc = _merge_native_desc(cleaned_desc, extra_info)
-    final_price = compute_price(price_in if isinstance(price_in, int) else None)
+    price_in = normalize_price_in(src.purchase_price_text, src.price_text)
+    price = compute_price(price_in)
 
     offer = OfferOut(
         oid=oid,
         available=available,
         name=name,
-        price=final_price,
+        price=price,
         pictures=pictures,
         vendor=vendor,
-        params=merged_params,
-        native_desc=native_desc,
+        params=params,
+        native_desc=desc_src,
     )
-
-    info = {
-        "built": True,
-        "kind": kind,
-        "oid": oid,
-        "name": name,
-        "price_in": price_in,
-        "price": final_price,
-        "available": available,
-        "params_count": len(merged_params),
-        "extra_info_count": len(extra_info),
-        "desc_params_count": len(desc_params),
-        "xml_params_count": len(xml_params),
-        "xml_report": xml_report,
-        "desc_report": desc_report,
-        "used_placeholder_picture": bool(pictures and len(pictures) == 1 and pictures[0] == placeholder_picture),
-    }
-    return offer, info
+    return offer, available
 
 
 def build_offers(
-    filtered_offers: list[Any],
+    source_offers: list[SourceOffer],
     *,
-    schema_cfg: dict[str, Any] | None = None,
-    policy_cfg: dict[str, Any] | None = None,
-    placeholder_picture: str = "https://placehold.co/800x800/png?text=No+Photo",
-    id_prefix: str = "AC",
-    vendor_blacklist: set[str] | None = None,
-) -> tuple[list[OfferOut], dict[str, Any]]:
-    """
-    Главная сборка AkCent raw offers.
+    schema_cfg: dict,
+    vendor_blacklist: set[str],
+    placeholder_picture: str,
+    id_prefix: str = "AS",
+) -> tuple[list[OfferOut], int, int]:
+    out: list[OfferOut] = []
+    in_true = 0
+    in_false = 0
 
-    Возвращает:
-    - список OfferOut;
-    - подробный report для orchestrator/diagnostics.
-    """
-    schema_cfg = dict(schema_cfg or {})
-    policy_cfg = dict(policy_cfg or {})
-    vendor_blacklist = set(vendor_blacklist or set())
-
-    if not placeholder_picture:
-        placeholder_picture = _clean_text(
-            (policy_cfg.get("placeholder_picture") if isinstance(policy_cfg, dict) else "")
-            or "https://placehold.co/800x800/png?text=No+Photo"
-        )
-
-    built: list[OfferOut] = []
-    kind_hits: Counter[str] = Counter()
-    fail_reasons: Counter[str] = Counter()
-    used_placeholder_picture = 0
-    rows: list[dict[str, Any]] = []
-
-    for src in filtered_offers or []:
-        offer, info = _build_single_offer(
+    for src in source_offers:
+        offer, available = build_offer(
             src,
             schema_cfg=schema_cfg,
+            vendor_blacklist=vendor_blacklist,
             placeholder_picture=placeholder_picture,
             id_prefix=id_prefix,
-            vendor_blacklist=vendor_blacklist,
         )
-        rows.append(info)
-        if not offer:
-            fail_reasons[str(info.get("reason") or "build_failed")] += 1
+        if offer is None:
             continue
-        built.append(offer)
-        kind_hits[str(info.get("kind") or "unknown")] += 1
-        if bool(info.get("used_placeholder_picture")):
-            used_placeholder_picture += 1
+        if available:
+            in_true += 1
+        else:
+            in_false += 1
+        out.append(offer)
 
-    report: dict[str, Any] = {
-        "before": len(filtered_offers or []),
-        "after": len(built),
-        "dropped_total": max(0, len(filtered_offers or []) - len(built)),
-        "kinds": dict(sorted(kind_hits.items())),
-        "fail_reasons": dict(sorted(fail_reasons.items())),
-        "placeholder_picture_count": used_placeholder_picture,
-        "rows_preview": rows[:50],
-    }
-    return built, report
+    out.sort(key=lambda x: x.oid)
+    return out, in_true, in_false
