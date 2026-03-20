@@ -1,0 +1,51 @@
+# Path: .github/workflows/build_vtt_probe.yml
+name: Build_VTT
+
+on:
+  workflow_dispatch:
+
+jobs:
+  probe-vtt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      TZ: Asia/Almaty
+      VTT_BASE_URL: https://b2b.vtt.ru/
+      VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
+      VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
+      VTT_PROBE_MAX_PAGES: 800
+      VTT_PROBE_DELAY: 0.35
+      VTT_PROBE_MAX_PRODUCT_HTML: 50
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4
+
+      - name: Smoke test
+        run: |
+          python -m py_compile \
+            scripts/build_vtt_probe.py \
+            scripts/suppliers/vtt/__init__.py \
+            scripts/suppliers/vtt/client.py \
+            scripts/suppliers/vtt/filtering.py \
+            scripts/suppliers/vtt/probe.py
+
+      - name: Run VTT probe
+        run: python scripts/build_vtt_probe.py
+
+      - name: Upload probe artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vtt_probe_output
+          path: docs/debug/vtt_probe/
+          if-no-files-found: error
