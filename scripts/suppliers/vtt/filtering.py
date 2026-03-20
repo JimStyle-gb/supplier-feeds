@@ -3,10 +3,11 @@
 Path: scripts/suppliers/vtt/filtering.py
 
 VTT temporary filtering.
-v2:
+v3:
 - основной gate только по prefix в начале названия;
 - категории не режут товары, а сохраняются только как диагностика;
-- нормализует пробелы/тире перед startswith.
+- нормализует пробелы/тире перед startswith;
+- summary теперь рассчитан для уже дочитанных candidate product pages.
 """
 
 from __future__ import annotations
@@ -65,9 +66,14 @@ def build_filter_summary(items: list[dict[str, object]]) -> dict[str, object]:
     confident = sum(1 for x in items if x.get("product_confident"))
     with_price = sum(1 for x in items if x.get("price_candidates"))
     with_images = sum(1 for x in items if (x.get("images_count") or 0) > 0)
+    with_tables = sum(1 for x in items if (x.get("tables_count") or 0) > 0)
 
     categories_seen: dict[str, int] = {}
+    prefixes_seen: dict[str, int] = {}
     for item in items:
+        matched = item.get("matched_prefix")
+        if matched:
+            prefixes_seen[str(matched)] = prefixes_seen.get(str(matched), 0) + 1
         for code in (item.get("category_codes_found") or []):
             categories_seen[str(code)] = categories_seen.get(str(code), 0) + 1
 
@@ -77,7 +83,9 @@ def build_filter_summary(items: list[dict[str, object]]) -> dict[str, object]:
         "product_confident": confident,
         "with_price_candidates": with_price,
         "with_images": with_images,
+        "with_tables": with_tables,
         "allowed_prefixes": DEFAULT_ALLOWED_PREFIXES,
+        "matched_prefixes_top20": dict(sorted(prefixes_seen.items(), key=lambda kv: (-kv[1], kv[0]))[:20]),
         "categories_seen_top20": dict(sorted(categories_seen.items(), key=lambda kv: (-kv[1], kv[0]))[:20]),
-        "mode": "prefix_first_category_diagnostics_only",
+        "mode": "prefix_first_candidate_product_pages",
     }
