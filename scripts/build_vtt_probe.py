@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """Path: scripts/build_vtt_probe.py
 
-VTT temporary probe launcher.
+VTT temporary full-inventory probe launcher.
 
-v4:
-- search-seed crawl from /catalog + /catalog?word=<prefix>;
-- candidate product discovery by /catalog/<slug>;
-- then fetch candidate product pages and apply prefix filter by real page title.
+v5:
+- extracts full visible supplier inventory first;
+- does NOT filter goods by business prefixes at extraction stage;
+- writes inventory maps and summaries for later manual assortment decision.
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ from pathlib import Path
 from suppliers.vtt.client import VTTClient
 from suppliers.vtt.probe import ProbeConfig, run_vtt_probe
 
-BUILD_VTT_VERSION = "build_vtt_probe_v4"
+BUILD_VTT_VERSION = "build_vtt_probe_v5"
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 OUT_DIR = BASE_DIR / "docs" / "debug" / "vtt_probe"
@@ -41,10 +41,10 @@ def main() -> int:
     base_url = (os.getenv("VTT_BASE_URL") or "https://b2b.vtt.ru/").strip()
     login = _require_env("VTT_LOGIN")
     password = _require_env("VTT_PASSWORD")
-    max_pages = int((os.getenv("VTT_PROBE_MAX_PAGES") or "1000").strip() or "1000")
+    max_pages = int((os.getenv("VTT_PROBE_MAX_PAGES") or "2500").strip() or "2500")
     delay_seconds = float((os.getenv("VTT_PROBE_DELAY") or "0.35").strip() or "0.35")
-    max_product_html = int((os.getenv("VTT_PROBE_MAX_PRODUCT_HTML") or "50").strip() or "50")
-    max_candidate_fetch = int((os.getenv("VTT_PROBE_MAX_PRODUCT_FETCH") or "500").strip() or "500")
+    max_product_html = int((os.getenv("VTT_PROBE_MAX_PRODUCT_HTML") or "120").strip() or "120")
+    max_candidate_fetch = int((os.getenv("VTT_PROBE_MAX_PRODUCT_FETCH") or "10000").strip() or "10000")
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -65,7 +65,7 @@ def main() -> int:
                 max_candidate_fetch=max_candidate_fetch,
             ),
         )
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         summary = {
             "ok": False,
             "stage": "crash",
@@ -101,13 +101,22 @@ def main() -> int:
     print("stage:", summary.get("stage"))
     print("pages_total:", summary.get("pages_total"))
     print("candidate_product_urls:", summary.get("candidate_product_urls"))
-    print("product_pages_fetched:", summary.get("product_pages_fetched"))
-    print("prefix_matched_products:", summary.get("prefix_matched_products"))
-    print("sample_products:", summary.get("sample_products"))
-    print("discovered_endpoints:", summary.get("discovered_endpoints"))
+    print("inventory_items_fetched:", summary.get("inventory_items_fetched"))
+    print("product_confident_items:", summary.get("product_confident_items"))
+    print("with_price:", summary.get("with_price"))
+    print("with_images:", summary.get("with_images"))
+    print("with_params:", summary.get("with_params"))
+    print("with_description:", summary.get("with_description"))
+    print("with_codes:", summary.get("with_codes"))
+    print("with_compat:", summary.get("with_compat"))
     print("-" * 72)
     print("run_summary:", summary_path)
-    print("login_report:", OUT_DIR / "login_report.json")
+    print("inventory_summary:", OUT_DIR / "inventory_summary.json")
+    print("field_coverage:", OUT_DIR / "field_coverage.json")
+    print("title_prefix_1word_top200:", OUT_DIR / "title_prefix_1word_top200.json")
+    print("title_prefix_2word_top200:", OUT_DIR / "title_prefix_2word_top200.json")
+    print("category_stats:", OUT_DIR / "category_stats.json")
+    print("brand_stats:", OUT_DIR / "brand_stats.json")
     print("=" * 72)
 
     return 0 if summary.get("ok") else 1
