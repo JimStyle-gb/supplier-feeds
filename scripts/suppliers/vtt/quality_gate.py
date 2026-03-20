@@ -7,8 +7,11 @@ VTT quality gate.
 Задача:
 - проверить, что RAW уже чистый;
 - отделить critical от cosmetic;
-- уважать supplier policy/baseline;
+- уважать supplier policy;
 - записать текстовый отчёт.
+
+Без baseline-файла:
+первый прогон должен быть честным, без маскировки остатков.
 """
 
 from __future__ import annotations
@@ -26,7 +29,6 @@ except Exception:  # pragma: no cover
 
 
 DEFAULT_POLICY_PATH = Path(__file__).resolve().parent / "config" / "policy.yml"
-DEFAULT_BASELINE_PATH = Path(__file__).resolve().parent / "config" / "quality_gate_baseline.yml"
 DEFAULT_REPORT_PATH = Path("docs/raw/vtt_quality_gate.txt")
 
 
@@ -71,20 +73,9 @@ def _load_policy(path: str | Path | None) -> dict:
     }
 
 
-def _load_baseline(path: str | Path | None) -> dict:
-    data = _read_yaml(path or DEFAULT_BASELINE_PATH)
-    if not isinstance(data, dict):
-        return {"critical": [], "cosmetic": []}
-    return {
-        "critical": [str(x) for x in (data.get("critical") or [])],
-        "cosmetic": [str(x) for x in (data.get("cosmetic") or [])],
-    }
-
-
 def _iter_offers(feed_path: str | Path) -> list[ET.Element]:
     root = ET.parse(str(feed_path)).getroot()
-    offers = root.findall(".//offer")
-    return list(offers)
+    return list(root.findall(".//offer"))
 
 
 def _param_map(offer: ET.Element) -> dict[str, list[str]]:
@@ -146,7 +137,7 @@ def _looks_like_untranslated_color(value: str) -> bool:
     s = _cf(value).replace(" ", "")
     bad = {
         "black", "bk", "cyan", "magenta", "yellow", "grey", "gray",
-        "mattblack", "matteblack", "photoblack", "photo black".replace(" ", ""),
+        "mattblack", "matteblack", "photoblack", "photoblack",
         "color", "colour",
     }
     return s in bad
@@ -158,7 +149,6 @@ def _looks_like_bad_compat(value: str) -> bool:
         return False
     if len(s) < 4:
         return True
-    # service tails in compat
     if re.search(r"\b(купить|цена|в наличии|под заказ|доставка|ресурс|цвет)\b", s, flags=re.I):
         return True
     return False
@@ -183,30 +173,6 @@ def _is_mostly_service_desc(desc: str) -> bool:
     return hits >= 2
 
 
-def _normalize_issue(issue: str) -> str:
-    return re.sub(r"\s+", " ", _safe_text(issue)).strip()
-
-
-def _apply_baseline(issues: Iterable[str], baseline_list: Iterable[str]) -> list[str]:
-    out: list[str] = []
-    patterns = [str(x) for x in baseline_list if _safe_text(x)]
-    for issue in issues:
-        msg = _normalize_issue(issue)
-        muted = False
-        for pat in patterns:
-            try:
-                if re.search(pat, msg, flags=re.I):
-                    muted = True
-                    break
-            except re.error:
-                if pat.casefold() in msg.casefold():
-                    muted = True
-                    break
-        if not muted:
-            out.append(msg)
-    return out
-
-
 def _check_offer(offer: ET.Element) -> tuple[list[str], list[str]]:
     critical: list[str] = []
     cosmetic: list[str] = []
@@ -226,7 +192,6 @@ def _check_offer(offer: ET.Element) -> tuple[list[str], list[str]]:
     color = _param_first(params, "Цвет")
     codes = _param_first(params, "Коды расходников")
 
-    # critical
     if not oid:
         critical.append("offer без id")
     if not vendor_code:
@@ -251,12 +216,10 @@ def _check_offer(offer: ET.Element) -> tuple[list[str], list[str]]:
     elif any(_looks_like_placeholder(x) for x in pics[1:]):
         critical.append(f"{oid}: placeholder не должен идти после реальных фото")
 
-    # supplier-clean RAW checks
     leak = _has_bad_service_leak([name, desc, *(_all_param_keys(params)), *(_all_param_values(params))])
     if leak:
         critical.append(f"{oid}: утечка служебного поля '{leak}' в RAW")
 
-    # cosmetic
     if not vendor:
         cosmetic.append(f"{oid}: пустой vendor")
     if not partnumber:
@@ -295,20 +258,14 @@ def _check_duplicates(offers: list[ET.Element]) -> tuple[list[str], list[str]]:
             continue
         seen_ids[oid] = seen_ids.get(oid, 0) + 1
 
-    dups = [oid for oid, cnt in seen_ids.items() if cnt > 1]
-    for oid in dups:
-        critical.append(f"{oid}: duplicate offer id")
+    for oid, cnt in seen_ids.items():
+        if cnt > 1:
+            critical.append(f"{oid}: duplicate offer id")
 
     return critical, cosmetic
 
 
-def _build_report(
-    *,
-    feed_path: str,
-    critical: list[str],
-    cosmetic: list[str],
-    ok: bool,
-) -> str:
+def _build_report(*, feed_path: str, critical: list[str], cosmetic: list[str], ok: bool) -> str:
     lines: list[str] = []
     lines.append("VTT QUALITY GATE REPORT")
     lines.append("=" * 72)
@@ -341,15 +298,14 @@ def run_quality_gate(
     *,
     feed_path: str | Path,
     policy_path: str | Path | None = None,
-    baseline_path: str | Path | None = None,
     report_path: str | Path | None = None,
 ) -> QualityGateResult:
     """
     Главная функция quality gate.
+    Без baseline: все найденные проблемы считаются честно.
     """
     feed_path = str(feed_path)
     policy = _load_policy(policy_path)
-    baseline = _load_baseline(baseline_path)
 
     crit: list[str] = []
     cos: list[str] = []
@@ -365,28 +321,17 @@ def run_quality_gate(
         crit.extend(c)
         cos.extend(z)
 
-    crit = _apply_baseline(crit, baseline.get("critical") or [])
-    cos = _apply_baseline(cos, baseline.get("cosmetic") or [])
-
     crit = sorted(set(crit))
     cos = sorted(set(cos))
 
     max_critical = int(policy.get("max_critical", 0))
     max_cosmetic = int(policy.get("max_cosmetic", 5))
-
     ok = (len(crit) <= max_critical) and (len(cos) <= max_cosmetic)
 
-    final_report_path = Path(
-        str(report_path or policy.get("report_path") or DEFAULT_REPORT_PATH)
-    )
+    final_report_path = Path(str(report_path or policy.get("report_path") or DEFAULT_REPORT_PATH))
     final_report_path.parent.mkdir(parents=True, exist_ok=True)
     final_report_path.write_text(
-        _build_report(
-            feed_path=feed_path,
-            critical=crit,
-            cosmetic=cos,
-            ok=ok,
-        ),
+        _build_report(feed_path=feed_path, critical=crit, cosmetic=cos, ok=ok),
         encoding="utf-8",
     )
 
