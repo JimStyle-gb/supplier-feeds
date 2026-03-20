@@ -2,18 +2,18 @@
 """
 Path: scripts/build_vtt.py
 
-VTT adapter stage-next.
+VTT adapter.
 
-Структура:
-- source.py        -> login / crawl / raw page parse
-- filtering.py     -> category + item filter до парсинга карточек
-- pictures.py      -> чистка картинок
-- normalize.py     -> базовая нормализация item
+Логика:
+- source.py        -> login / category crawl / raw page parse
+- filtering.py     -> category + item filter до builder
+- pictures.py      -> supplier pictures cleanup
+- normalize.py     -> title / article / vendor / native_desc basis
 - params_page.py   -> page params -> clean RAW params
 - desc_clean.py    -> supplier native_desc cleanup
 - desc_extract.py  -> only_fill_missing
 - compat.py        -> compat/codes reconcile
-- builder.py       -> сборка OfferOut
+- builder.py       -> сборка supplier-clean RAW OfferOut
 - quality_gate.py  -> проверка RAW
 
 Правило:
@@ -34,7 +34,13 @@ try:
 except Exception:  # pragma: no cover
     yaml = None  # type: ignore
 
-from cs.core import get_public_vendor, next_run_dom_at_hour, now_almaty, write_cs_feed, write_cs_feed_raw
+from cs.core import (
+    get_public_vendor,
+    next_run_dom_at_hour,
+    now_almaty,
+    write_cs_feed,
+    write_cs_feed_raw,
+)
 from suppliers.vtt.builder import build_offer_from_raw
 from suppliers.vtt.filtering import filter_product_index, load_filter_config
 from suppliers.vtt.quality_gate import run_quality_gate
@@ -62,15 +68,19 @@ def _safe_str(x: object) -> str:
     return str(x).strip() if x is not None else ""
 
 
-def _load_policy(path: str | Path | None = None) -> dict:
-    p = Path(path or VTT_POLICY_YML)
-    if not p.exists() or yaml is None:
+def _read_yaml(path: str | Path | None) -> dict:
+    p = Path(path) if path else None
+    if not p or not p.exists() or yaml is None:
         return {}
     try:
         data = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
         return data if isinstance(data, dict) else {}
     except Exception:
         return {}
+
+
+def _load_policy(path: str | Path | None = None) -> dict:
+    return _read_yaml(path or VTT_POLICY_YML)
 
 
 def _param_priority() -> Sequence[str]:
@@ -108,7 +118,7 @@ def _print_summary(
     print("=" * 72)
     print("[VTT] build summary")
     print("=" * 72)
-    print("version: build_vtt_v2_supplier_layer_raw_clean")
+    print("version: build_vtt_v3_supplier_layer_raw_clean")
     print(f"before: {before}")
     print(f"after_filter: {after_filter}")
     print(f"after:  {after}")
@@ -119,12 +129,12 @@ def _print_summary(
     for k, v in filter_report.items():
         print(f"  {k}: {v}")
     print("-" * 72)
-    print(f"quality_gate_ok:    {qg.ok}")
-    print(f"quality_gate_report:{qg.report_path}")
+    print(f"quality_gate_ok:       {qg.ok}")
+    print(f"quality_gate_report:   {qg.report_path}")
     print(f"quality_gate_critical: {qg.critical_count}")
     print(f"quality_gate_cosmetic: {qg.cosmetic_count}")
-    print(f"availability_true:  {availability_true}")
-    print(f"availability_false: {availability_false}")
+    print(f"availability_true:     {availability_true}")
+    print(f"availability_false:    {availability_false}")
     print("=" * 72)
 
 
@@ -144,21 +154,9 @@ def main() -> int:
             return 0
         raise RuntimeError(msg)
 
-    category_urls = list(getattr(cfg, "categories", None) or [])
-    if not category_urls:
-        category_urls = [
-            f"{cfg.base_url}/catalog/?category={code}"
-            for code in (filter_cfg.get("allowed_category_codes") or [])
-            if _safe_str(code)
-        ]
-    if not category_urls:
-        msg = "VTT: пустой список category urls для source/index."
-        if cfg.softfail:
-            log("[SOFTFAIL] " + msg)
-            return 0
-        raise RuntimeError(msg)
-
-    index = collect_product_index(sess, cfg, category_urls, deadline)
+    # Источник поведения — старый рабочий VTT: категории берём из cfg.categories.
+    # filter.yml управляет supplier filter-layer, а не заменяет source categories.
+    index = collect_product_index(sess, cfg, list(cfg.categories), deadline)
     before = len(index)
 
     filtered_index, filter_report = filter_product_index(
@@ -185,12 +183,15 @@ def main() -> int:
             for fut in as_completed(futures):
                 if datetime.utcnow() >= deadline:
                     break
+
                 raw = fut.result()
                 if not raw:
                     continue
+
                 offer = build_offer_from_raw(raw, id_prefix="VT")
                 if not offer:
                     continue
+
                 if offer.oid in seen_oids:
                     continue
                 seen_oids.add(offer.oid)
@@ -200,7 +201,7 @@ def main() -> int:
     after = len(out_offers)
 
     if not out_offers:
-        msg = "VTT: 0 offers после filtering/builder (скорее всего сайт недоступен или изменили верстку)."
+        msg = "VTT: 0 offers после filtering/builder (скорее всего сайт недоступен или изменилась верстка)."
         if cfg.softfail:
             log("[SOFTFAIL] " + msg)
             return 0
@@ -239,8 +240,8 @@ def main() -> int:
         report_path=VTT_QG_REPORT,
     )
 
-    in_true = sum(1 for o in out_offers if o.available)
-    in_false = after - in_true
+    availability_true = sum(1 for o in out_offers if o.available)
+    availability_false = after - availability_true
 
     _print_summary(
         before=before,
@@ -250,13 +251,11 @@ def main() -> int:
         out_file=OUT_FILE,
         filter_report=filter_report,
         qg=qg,
-        availability_true=in_true,
-        availability_false=in_false,
+        availability_true=availability_true,
+        availability_false=availability_false,
     )
 
-    if not qg.ok:
-        return 1
-    return 0
+    return 0 if qg.ok else 1
 
 
 if __name__ == "__main__":
