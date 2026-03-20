@@ -3,11 +3,11 @@
 Path: scripts/suppliers/vtt/probe.py
 
 VTT temporary probe.
-v3:
-- больше не использует category-gate;
-- работает в prefix-first режиме;
-- обходит только /catalog;
-- старается отличать реальные товарные карточки от шума;
+v4:
+- больше не пытается угадывать "product_like" по общему crawl;
+- строит discovery через /catalog + /catalog?word=<prefix>;
+- собирает candidate product URLs по старому рабочему паттерну: /catalog/<slug>;
+- отдельно дочитывает candidate product pages и уже по ним фильтрует title startswith(prefix);
 - категории сохраняет только как диагностику.
 """
 
@@ -19,16 +19,23 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, quote, urlparse
 
 from bs4 import BeautifulSoup
 
-from suppliers.vtt.filtering import build_filter_summary, title_passes_prefix_filter
+from suppliers.vtt.filtering import (
+    DEFAULT_ALLOWED_PREFIXES,
+    build_filter_summary,
+    title_passes_prefix_filter,
+)
 
-
-_PRICE_RE = re.compile(r"(?<!\d)(\d{1,3}(?:[ \u00A0]?\d{3})+|\d+)(?:[.,]\d{1,2})?\s*(?:₽|руб|тенге|kzt)?", re.I)
-_CODE_RE = re.compile(r"\b[A-Z0-9]{4,}[-/A-Z0-9]*\b")
+_PRODUCT_HREF_RE = re.compile(r"^/catalog/[^/?#]+/?$", re.I)
+_PRICE_RE = re.compile(
+    r"(?<!\d)(\d{1,3}(?:[ \u00A0]?\d{3})+|\d+)(?:[.,]\d{1,2})?\s*(?:₸|тг|тенге|kzt)?",
+    re.I,
+)
 _CATEGORY_CODE_RE = re.compile(r"\b[A-Z_]{4,}\b")
+_BAD_IMAGE_RE = re.compile(r"(favicon|yandex|counter|watch/|pixel|metrika|doubleclick)", re.I)
 
 
 @dataclass(slots=True)
@@ -36,6 +43,7 @@ class ProbeConfig:
     out_dir: Path
     max_pages: int = 1000
     max_product_pages_to_save: int = 50
+    max_candidate_fetch: int = 500
 
 
 def run_vtt_probe(client, config: ProbeConfig) -> dict[str, Any]:
@@ -52,29 +60,29 @@ def run_vtt_probe(client, config: ProbeConfig) -> dict[str, Any]:
             "message": "Login failed. Check login_report.json.",
         }
 
+    seed_urls = _build_seed_urls(login_report.get("catalog_url") or "/catalog/")
+    _write_json(out_dir / "search_seed_urls.json", seed_urls)
+
     pages = client.crawl_same_host(
-        start_urls=[login_report.get("catalog_url") or "/catalog/"],
+        start_urls=seed_urls,
         max_pages=config.max_pages,
         allow_paths=["/catalog"],
     )
     _write_json(out_dir / "crawl_pages.json", _strip_html_for_main_dump(pages))
 
-    analyzed = [_analyze_page(page) for page in pages if page.get("kind") != "error"]
-    _write_json(out_dir / "pages_analyzed.json", analyzed)
+    candidate_urls = _collect_candidate_product_urls(pages)
+    _write_json(out_dir / "candidate_product_urls.json", candidate_urls)
 
-    product_confident = [x for x in analyzed if x.get("product_confident")]
-    listing_like = [x for x in analyzed if x.get("page_kind") == "listing_like"]
-    catalog_other = [x for x in analyzed if not x.get("product_confident") and x.get("page_kind") != "listing_like"]
+    analyzed_products = _fetch_and_analyze_candidates(client, candidate_urls, config.max_candidate_fetch)
+    _write_json(out_dir / "product_pages.json", analyzed_products)
 
-    _write_json(out_dir / "product_pages.json", product_confident)
-    _write_json(out_dir / "category_pages.json", listing_like)
-    _write_json(out_dir / "other_pages.json", catalog_other)
-
-    sample_products = _pick_sample_products(product_confident)
+    sample_products = _pick_sample_products(analyzed_products)
     _write_json(out_dir / "sample_products.json", sample_products)
-    _write_product_html_samples(out_dir / "sample_html", pages, sample_products, config.max_product_pages_to_save)
     _write_csv(out_dir / "sample_products.csv", sample_products)
-    _write_json(out_dir / "filter_summary.json", build_filter_summary(sample_products))
+    _write_product_html_samples(out_dir / "sample_html", analyzed_products, config.max_product_pages_to_save)
+
+    filter_summary = build_filter_summary(analyzed_products)
+    _write_json(out_dir / "filter_summary.json", filter_summary)
 
     discovered_endpoints = _collect_discovered_endpoints(pages)
     _write_json(out_dir / "discovered_endpoints.json", discovered_endpoints)
@@ -83,15 +91,14 @@ def run_vtt_probe(client, config: ProbeConfig) -> dict[str, Any]:
         "ok": True,
         "out_dir": str(out_dir),
         "pages_total": len(pages),
-        "pages_analyzed": len(analyzed),
-        "product_like_pages": len(product_confident),
-        "category_like_pages": len(listing_like),
-        "other_pages": len(catalog_other),
+        "candidate_product_urls": len(candidate_urls),
+        "product_pages_fetched": len(analyzed_products),
+        "prefix_matched_products": sum(1 for x in analyzed_products if x.get("passes_prefix")),
         "sample_products": len(sample_products),
         "discovered_endpoints": len(discovered_endpoints),
-        "filter_summary": build_filter_summary(sample_products),
+        "filter_summary": filter_summary,
         "notes": [
-            "Temporary VTT probe in prefix-first mode.",
+            "Temporary VTT probe in search-seed + candidate-product-url mode.",
             "Categories are diagnostics only and do not gate selection.",
             "After VTT structure is understood, delete probe files and create final adapter.",
         ],
@@ -100,118 +107,136 @@ def run_vtt_probe(client, config: ProbeConfig) -> dict[str, Any]:
     return summary
 
 
-def _analyze_page(page: dict[str, Any]) -> dict[str, Any]:
-    html = page.get("html") or ""
-    url = str(page.get("url") or "")
-    title = str(page.get("title") or "")
+def _build_seed_urls(catalog_url: str) -> list[str]:
+    seeds = [catalog_url, "/catalog", "/catalog/"]
+    for prefix in DEFAULT_ALLOWED_PREFIXES:
+        seeds.append(f"/catalog?word={quote(prefix)}")
+    seen: set[str] = set()
+    out: list[str] = []
+    for item in seeds:
+        value = str(item).strip()
+        if value and value not in seen:
+            seen.add(value)
+            out.append(value)
+    return out
+
+
+def _collect_candidate_product_urls(pages: list[dict[str, Any]]) -> list[str]:
+    seen: set[str] = set()
+    out: list[str] = []
+    for page in pages:
+        for raw in [page.get("url")] + list(page.get("links") or []) + list(page.get("api_like_links") or []):
+            url = str(raw or "").strip()
+            if not url:
+                continue
+            parsed = urlparse(url)
+            if parsed.query or parsed.fragment:
+                continue
+            if not _PRODUCT_HREF_RE.match(parsed.path):
+                continue
+            norm = parsed._replace(query="", fragment="").geturl()
+            if norm not in seen:
+                seen.add(norm)
+                out.append(norm)
+    return out
+
+
+def _fetch_and_analyze_candidates(client, candidate_urls: list[str], max_candidate_fetch: int) -> list[dict[str, Any]]:
+    out: list[dict[str, Any]] = []
+    for url in candidate_urls[: max(1, max_candidate_fetch)]:
+        try:
+            resp = client.get(url, allow_redirects=True)
+            html = resp.text or ""
+            if not html:
+                continue
+            out.append(_analyze_product_page(resp.url, html))
+        except Exception as exc:  # noqa: BLE001
+            out.append(
+                {
+                    "url": url,
+                    "fetch_error": str(exc),
+                    "product_confident": False,
+                    "passes_prefix": False,
+                    "matched_prefix": None,
+                    "title": "",
+                    "h1": "",
+                    "normalized_title": "",
+                    "price_candidates": [],
+                    "images": [],
+                    "images_count": 0,
+                    "tables": [],
+                    "tables_count": 0,
+                    "category_codes_found": [],
+                    "text_snippet": "",
+                    "html_path": "",
+                }
+            )
+    return out
+
+
+def _analyze_product_page(url: str, html: str) -> dict[str, Any]:
     soup = BeautifulSoup(html, "html.parser")
-
-    h1 = soup.find("h1")
-    h1_text = " ".join(h1.get_text(" ", strip=True).split()) if h1 else ""
-    title_for_filter = h1_text or title
+    title = _extract_title(soup)
+    h1 = _extract_h1(soup)
+    title_for_filter = h1 or title
     prefix_res = title_passes_prefix_filter(title_for_filter)
-
-    breadcrumb = [
-        " ".join(a.get_text(" ", strip=True).split())
-        for a in soup.select("[class*=breadcrumb] a, nav[aria-label*=breadcrumb] a")
-        if a.get_text(strip=True)
-    ]
+    text = " ".join(soup.get_text(" ", strip=True).split())
 
     tables = _extract_tables(soup)
     images = _extract_images(soup, url)
-    text = " ".join(soup.get_text(" ", strip=True).split())
     price_candidates = _extract_prices(text)
-    code_candidates = _extract_code_candidates(f"{title_for_filter} {text}")
+    breadcrumb = _extract_breadcrumbs(soup)
     category_codes = _extract_category_codes(url, text, breadcrumb)
 
-    has_add_to_cart = ("в корзину" in text.lower()) or ("add to cart" in text.lower())
-    service_noise = _service_noise_score(url, text)
-    product_score = 0
-    if has_add_to_cart:
-        product_score += 4
-    if price_candidates:
-        product_score += 2
-    if tables:
-        product_score += 2
-    if images:
-        product_score += 1
-    if code_candidates:
-        product_score += 1
-    if "/catalog/" in url.lower():
-        product_score += 1
-    product_score -= service_noise
-
-    page_kind = str(page.get("kind") or "other")
-    if page_kind not in {"product_like", "listing_like", "catalog_like"}:
-        page_kind = "catalog_like" if "/catalog" in url.lower() else "other"
-
-    product_confident = product_score >= 5 and not _looks_like_listing(url, text, tables)
+    has_buy = ("в корзину" in text.lower()) or ("куп" in text.lower())
+    product_confident = bool(
+        title_for_filter
+        and (price_candidates or images or tables or has_buy)
+    )
 
     return {
         "url": url,
-        "page_kind": page_kind,
         "title": title,
-        "h1": h1_text,
+        "h1": h1,
         "normalized_title": prefix_res.normalized_title,
         "matched_prefix": prefix_res.matched_prefix,
         "passes_prefix": prefix_res.allowed,
-        "product_score": product_score,
         "product_confident": product_confident,
         "breadcrumbs": breadcrumb,
         "category_codes_found": category_codes,
         "images": images[:20],
-        "tables": tables[:30],
+        "images_count": len(images),
+        "tables": tables[:50],
+        "tables_count": len(tables),
         "price_candidates": price_candidates[:10],
-        "code_candidates": code_candidates[:30],
-        "has_add_to_cart": has_add_to_cart,
         "text_snippet": text[:5000],
+        "html": html,
     }
 
 
-def _looks_like_listing(url: str, text: str, tables: list[dict[str, str]]) -> bool:
-    lower = text.lower()
-    if "категории товаров" in lower or "все товары каталога" in lower:
-        return True
-    if "показать еще" in lower or "показать ещё" in lower:
-        return True
-    if "фильтр" in lower and "сортировка" in lower:
-        return True
-    if len(tables) == 0 and lower.count("в корзину") > 5:
-        return True
-    query = parse_qs(urlparse(url).query)
-    if "category" in query and not any(x in lower for x in ["артикул", "модель", "ресурс", "совместимость"]):
-        return True
-    return False
+def _extract_title(soup: BeautifulSoup) -> str:
+    el = soup.select_one(".page_title") or soup.find("title") or soup.find("h1")
+    return " ".join(el.get_text(" ", strip=True).split()) if el else ""
 
 
-def _service_noise_score(url: str, text: str) -> int:
-    lower = text.lower()
-    score = 0
-    noise_markers = [
-        "документы",
-        "претензии",
-        "помощь",
-        "аккаунт",
-        "профиль",
-        "резервы",
-        "прогнозы",
-        "extra-баллы",
-        "редактировать список",
-        "мои категории",
-    ]
-    for marker in noise_markers:
-        if marker in lower:
-            score += 2
-    if re.search(r"/(help|account|documents|claims|forecast|reserve)", url, re.I):
-        score += 4
-    return score
+def _extract_h1(soup: BeautifulSoup) -> str:
+    el = soup.find("h1")
+    return " ".join(el.get_text(" ", strip=True).split()) if el else ""
+
+
+def _extract_breadcrumbs(soup: BeautifulSoup) -> list[str]:
+    out: list[str] = []
+    for a in soup.select("[class*=breadcrumb] a, nav[aria-label*=breadcrumb] a"):
+        txt = " ".join(a.get_text(" ", strip=True).split())
+        if txt:
+            out.append(txt)
+    return out
 
 
 def _extract_tables(soup: BeautifulSoup) -> list[dict[str, str]]:
     out: list[dict[str, str]] = []
     for table in soup.find_all("table"):
-        rows = table.find_all("tr")
-        for row in rows:
+        for row in table.find_all("tr"):
             cells = row.find_all(["th", "td"])
             if len(cells) < 2:
                 continue
@@ -219,11 +244,25 @@ def _extract_tables(soup: BeautifulSoup) -> list[dict[str, str]]:
             value = " ".join(cells[1].get_text(" ", strip=True).split())
             if key and value:
                 out.append({"key": key, "value": value})
+    if out:
+        return out
+
+    # fallback: старый VTT часто держал dt/dd внутри description
+    box = soup.select_one("div.description.catalog_item_descr")
+    if box:
+        dts = box.find_all("dt")
+        dds = box.find_all("dd")
+        for dt, dd in zip(dts, dds):
+            key = " ".join(dt.get_text(" ", strip=True).split()).strip(":")
+            value = " ".join(dd.get_text(" ", strip=True).split())
+            if key and value:
+                out.append({"key": key, "value": value})
     return out
 
 
 def _extract_images(soup: BeautifulSoup, page_url: str) -> list[str]:
     from urllib.parse import urljoin
+
     out: list[str] = []
     seen: set[str] = set()
     for tag in soup.find_all(["img", "source"]):
@@ -234,7 +273,7 @@ def _extract_images(soup: BeautifulSoup, page_url: str) -> list[str]:
         if not src:
             continue
         abs_url = urljoin(page_url, src)
-        if "yandex.ru/watch" in abs_url:
+        if _BAD_IMAGE_RE.search(abs_url):
             continue
         if abs_url not in seen:
             seen.add(abs_url)
@@ -245,9 +284,9 @@ def _extract_images(soup: BeautifulSoup, page_url: str) -> list[str]:
 def _extract_prices(text: str) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
-    for match in _PRICE_RE.findall(text):
-        cleaned = " ".join(match.split())
-        if len(cleaned) < 2:
+    for match in _PRICE_RE.findall(text or ""):
+        cleaned = " ".join(str(match).split())
+        if not cleaned:
             continue
         if cleaned not in seen:
             seen.add(cleaned)
@@ -255,148 +294,116 @@ def _extract_prices(text: str) -> list[str]:
     return out
 
 
-def _extract_code_candidates(text: str) -> list[str]:
-    out: list[str] = []
+def _extract_category_codes(url: str, text: str, breadcrumbs: list[str]) -> list[str]:
+    found: list[str] = []
     seen: set[str] = set()
-    for match in _CODE_RE.findall(text):
-        token = match.strip(" -_/")
-        if len(token) < 4:
+    query = parse_qs(urlparse(url).query)
+    for value in query.get("category", []):
+        val = (value or "").strip()
+        if val and val not in seen:
+            seen.add(val)
+            found.append(val)
+    for block in [text] + breadcrumbs:
+        for code in _CATEGORY_CODE_RE.findall(block or ""):
+            if code not in seen:
+                seen.add(code)
+                found.append(code)
+    return found[:50]
+
+
+def _pick_sample_products(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    # сначала prefix-match товары, потом просто confident products
+    ranked = sorted(
+        items,
+        key=lambda x: (
+            0 if x.get("passes_prefix") else 1,
+            0 if x.get("product_confident") else 1,
+            -(len(x.get("price_candidates") or [])),
+            -(x.get("images_count") or 0),
+            x.get("normalized_title") or "",
+        ),
+    )
+    out: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in ranked:
+        url = str(item.get("url") or "")
+        if not url or url in seen:
             continue
-        if token not in seen:
-            seen.add(token)
-            out.append(token)
+        seen.add(url)
+        slim = dict(item)
+        slim.pop("html", None)
+        out.append(slim)
+        if len(out) >= 120:
+            break
     return out
 
 
-def _extract_category_codes(url: str, text: str, breadcrumbs: list[str]) -> list[str]:
-    found: set[str] = set()
-    query = parse_qs(urlparse(url).query)
-    for value in query.get("category", []):
-        if value:
-            found.add(value.strip().upper())
-    for token in _CATEGORY_CODE_RE.findall(" ".join(breadcrumbs) + " " + text[:2000]):
-        if "_" in token and len(token) >= 6:
-            found.add(token.strip().upper())
-    return sorted(found)
+def _write_product_html_samples(sample_dir: Path, analyzed_products: list[dict[str, Any]], limit: int) -> None:
+    sample_dir.mkdir(parents=True, exist_ok=True)
+    for old in sample_dir.glob("*.html"):
+        try:
+            old.unlink()
+        except Exception:
+            pass
 
+    chosen = [
+        x for x in analyzed_products
+        if x.get("passes_prefix") and x.get("html")
+    ]
+    if not chosen:
+        chosen = [x for x in analyzed_products if x.get("product_confident") and x.get("html")]
 
-def _pick_sample_products(product_pages: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    picked: list[dict[str, Any]] = []
-    seen_url: set[str] = set()
-    seen_prefix: set[str] = set()
-
-    # сначала хотим хотя бы по одному товару на каждый prefix
-    for page in sorted(product_pages, key=lambda x: (-int(x.get("product_score") or 0), x.get("url") or "")):
-        if page["url"] in seen_url:
+    for idx, item in enumerate(chosen[: max(1, limit)], start=1):
+        html = item.get("html") or ""
+        if not html:
             continue
-        if not page.get("passes_prefix"):
-            continue
-        prefix = str(page.get("matched_prefix") or "")
-        if prefix in seen_prefix:
-            continue
-        picked.append(_sample_row(page))
-        seen_url.add(page["url"])
-        seen_prefix.add(prefix)
-
-    # потом добиваем ещё товары только с prefix match
-    for page in sorted(product_pages, key=lambda x: (-int(x.get("product_score") or 0), x.get("url") or "")):
-        if page["url"] in seen_url:
-            continue
-        if not page.get("passes_prefix"):
-            continue
-        picked.append(_sample_row(page))
-        seen_url.add(page["url"])
-        if len(picked) >= 50:
-            break
-
-    return picked
-
-
-def _sample_row(page: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "url": page["url"],
-        "title": page.get("h1") or page.get("title") or "",
-        "normalized_title": page.get("normalized_title") or "",
-        "matched_prefix": page.get("matched_prefix"),
-        "passes_prefix": bool(page.get("passes_prefix")),
-        "product_confident": bool(page.get("product_confident")),
-        "product_score": int(page.get("product_score") or 0),
-        "category_codes_found": page.get("category_codes_found") or [],
-        "price_candidates": page.get("price_candidates") or [],
-        "images_count": len(page.get("images") or []),
-        "images": (page.get("images") or [])[:10],
-        "tables": (page.get("tables") or [])[:30],
-        "code_candidates": (page.get("code_candidates") or [])[:30],
-        "breadcrumbs": page.get("breadcrumbs") or [],
-        "text_snippet": page.get("text_snippet") or "",
-    }
+        (sample_dir / f"{idx:03d}.html").write_text(str(html), encoding="utf-8", errors="ignore")
 
 
 def _collect_discovered_endpoints(pages: list[dict[str, Any]]) -> list[str]:
-    out: list[str] = []
     seen: set[str] = set()
+    out: list[str] = []
     for page in pages:
         for url in page.get("api_like_links") or []:
-            path = urlparse(url).path.lower()
-            if not any(x in path for x in ["api", "json", "ajax", "catalog", "item", "product", "goods", "search"]):
-                continue
-            if url not in seen:
-                seen.add(url)
-                out.append(url)
-    return out[:500]
+            value = str(url).strip()
+            if value and value not in seen:
+                seen.add(value)
+                out.append(value)
+    return out[:1000]
 
 
 def _strip_html_for_main_dump(pages: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    cleaned: list[dict[str, Any]] = []
+    out: list[dict[str, Any]] = []
     for page in pages:
-        row = dict(page)
-        row.pop("html", None)
-        cleaned.append(row)
-    return cleaned
+        item = dict(page)
+        if "html" in item:
+            item.pop("html")
+        out.append(item)
+    return out
 
 
-def _write_product_html_samples(sample_dir: Path, pages: list[dict[str, Any]], sample_products: list[dict[str, Any]], max_count: int) -> None:
-    sample_dir.mkdir(parents=True, exist_ok=True)
-    wanted = {x["url"] for x in sample_products[:max_count]}
-    idx = 1
-    for page in pages:
-        if page.get("url") not in wanted:
-            continue
-        html = page.get("html") or ""
-        (sample_dir / f"{idx:03d}.html").write_text(html, encoding="utf-8", errors="ignore")
-        idx += 1
+def _write_json(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
-    if not rows:
-        path.write_text("", encoding="utf-8")
-        return
-    columns = [
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
         "url",
         "title",
+        "h1",
         "normalized_title",
         "matched_prefix",
         "passes_prefix",
         "product_confident",
-        "product_score",
-        "category_codes_found",
-        "price_candidates",
         "images_count",
-        "code_candidates",
-        "breadcrumbs",
+        "tables_count",
+        "price_candidates",
+        "category_codes_found",
     ]
-    with path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=columns)
+    with path.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for row in rows:
-            writer.writerow({k: _csv_value(row.get(k)) for k in columns})
-
-
-def _csv_value(value: Any) -> str:
-    if isinstance(value, (list, dict)):
-        return json.dumps(value, ensure_ascii=False)
-    return "" if value is None else str(value)
-
-
-def _write_json(path: Path, data: Any) -> None:
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            writer.writerow({k: row.get(k) for k in fieldnames})
