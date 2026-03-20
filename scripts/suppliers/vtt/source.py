@@ -1,222 +1,167 @@
 # -*- coding: utf-8 -*-
-"""VTT source layer — session, login, requests."""
+"""
+Path: scripts/suppliers/vtt/source.py
+VTT supplier layer — source reader.
+
+Задача файла:
+- получить исходный VTT feed из URL или локального файла;
+- распарсить XML/YML без business-логики;
+- вернуть список сырых offer-словарей для builder.py.
+"""
 
 from __future__ import annotations
 
+from pathlib import Path
+from typing import Any
 import os
-import random
-import time
-from dataclasses import dataclass
-from datetime import datetime
-from urllib.parse import urlencode, urlparse, urlunparse
-from bs4 import BeautifulSoup
+import xml.etree.ElementTree as ET
+
 import requests
 
 
-_DEFAULT_CATEGORIES: list[str] = [
-    "https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT",
-    "https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG",
-    "https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD",
-    "https://b2b.vtt.ru/catalog/?category=CARTLAS_COMPAT",
-    "https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY",
-    "https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG",
-    "https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT",
-    "https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR",
-    "https://b2b.vtt.ru/catalog/?category=CARTMAT_CART",
-    "https://b2b.vtt.ru/catalog/?category=DEV_DEV",
-    "https://b2b.vtt.ru/catalog/?category=DRM_CRT",
-    "https://b2b.vtt.ru/catalog/?category=DRM_UNIT",
-    "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC",
-    "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT",
-]
+DEFAULT_TIMEOUT_CONNECT = int(os.getenv("VTT_SOURCE_TIMEOUT_CONNECT", "20") or "20")
+DEFAULT_TIMEOUT_READ = int(os.getenv("VTT_SOURCE_TIMEOUT_READ", "180") or "180")
+DEFAULT_USER_AGENT = (
+    os.getenv("VTT_SOURCE_USER_AGENT", "Mozilla/5.0 (compatible; CS-VTT-Bot/1.0; +https://complexsolutions.kz)")
+    or "Mozilla/5.0 (compatible; CS-VTT-Bot/1.0; +https://complexsolutions.kz)"
+).strip()
 
 
-@dataclass(frozen=True)
-class VttCfg:
-    base_url: str
-    start_url: str
-    categories: list[str]
-    login: str
-    password: str
-    max_pages: int
-    max_workers: int
-    max_crawl_minutes: float
-    delay_ms: int
-    verify: object
-    softfail: bool
+def fetch_vtt_source() -> bytes:
+    """Читает source VTT: сначала локальный файл, потом URL."""
+    src_file = (os.getenv("VTT_SOURCE_FILE", "") or "").strip()
+    if src_file:
+        p = Path(src_file)
+        if not p.is_file():
+            raise FileNotFoundError(f"VTT source file not found: {p}")
+        return p.read_bytes()
 
+    src_url = (os.getenv("VTT_SOURCE_URL", "") or "").strip()
+    if not src_url:
+        raise RuntimeError("VTT_SOURCE_URL or VTT_SOURCE_FILE is required")
 
-def log(msg: str) -> None:
-    print(msg, flush=True)
-
-
-def _env_bool(name: str, default: bool) -> bool:
-    v = (os.getenv(name, "") or "").strip().lower()
-    if not v:
-        return default
-    return v in ("1", "true", "yes", "y", "on")
-
-
-def _env_int(name: str, default: int) -> int:
-    try:
-        return int((os.getenv(name, "") or "").strip() or str(default))
-    except Exception:
-        return default
-
-
-def _env_float(name: str, default: float) -> float:
-    try:
-        return float((os.getenv(name, "") or "").strip() or str(default))
-    except Exception:
-        return default
-
-
-def cfg_from_env() -> VttCfg:
-    base = (os.getenv("VTT_BASE_URL", "https://b2b.vtt.ru") or "").strip().rstrip("/")
-    start = (os.getenv("VTT_START_URL", f"{base}/catalog/") or "").strip()
-    cats_raw = (os.getenv("VTT_CATEGORIES", "") or "").strip()
-    cats = [c.strip() for c in cats_raw.split(",") if c.strip()] if cats_raw else list(_DEFAULT_CATEGORIES)
-
-    login = (os.getenv("VTT_LOGIN", "") or "").strip()
-    password = (os.getenv("VTT_PASSWORD", "") or "").strip()
-
-    ssl_verify = _env_bool("VTT_SSL_VERIFY", True)
-    ca_bundle = (os.getenv("VTT_CA_BUNDLE", "") or "").strip()
-    verify: object = ca_bundle if ca_bundle else ssl_verify
-
-    return VttCfg(
-        base_url=base,
-        start_url=start,
-        categories=cats,
-        login=login,
-        password=password,
-        max_pages=_env_int("VTT_MAX_PAGES", 200),
-        max_workers=_env_int("VTT_MAX_WORKERS", 10),
-        max_crawl_minutes=_env_float("VTT_MAX_CRAWL_MINUTES", 18.0),
-        delay_ms=_env_int("VTT_REQUEST_DELAY_MS", 80),
-        verify=verify,
-        softfail=_env_bool("VTT_SOFTFAIL", True),
+    resp = requests.get(
+        src_url,
+        headers={"User-Agent": DEFAULT_USER_AGENT, "Accept": "application/xml,text/xml,*/*"},
+        timeout=(DEFAULT_TIMEOUT_CONNECT, DEFAULT_TIMEOUT_READ),
     )
+    resp.raise_for_status()
+    return resp.content or b""
 
 
-def sleep_ms(ms: int) -> None:
-    if ms <= 0:
-        return
-    time.sleep((ms / 1000.0) * random.uniform(0.75, 1.35))
+def parse_vtt_source(xml_bytes: bytes) -> list[dict[str, Any]]:
+    """Парсит VTT XML/YML и возвращает список сырых offer-словарей."""
+    if not xml_bytes:
+        return []
+
+    try:
+        root = ET.fromstring(xml_bytes)
+    except ET.ParseError as e:
+        raise ValueError(f"VTT source parse error: {e}") from e
+
+    out: list[dict[str, Any]] = []
+    for node in _iter_offer_nodes(root):
+        item = _parse_offer_node(node)
+        if item is None:
+            continue
+        out.append(item)
+    return out
 
 
-def make_session(cfg: VttCfg) -> requests.Session:
-    s = requests.Session()
-    s.headers.update(
-        {
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
-            "Accept-Language": "ru,en;q=0.8",
-        }
-    )
-    return s
+def parse_vtt_offers(xml_bytes: bytes) -> list[dict[str, Any]]:
+    """Back-compat alias для build_vtt.py."""
+    return parse_vtt_source(xml_bytes)
 
 
-def request(s: requests.Session, cfg: VttCfg, method: str, url: str, *, timeout: int = 25, data: dict | None = None, headers: dict | None = None) -> requests.Response | None:
-    tries = 7
-    for i in range(tries):
-        try:
-            r = s.request(
-                method=method,
-                url=url,
-                data=data,
-                headers=headers,
-                timeout=timeout,
-                verify=cfg.verify,
-                allow_redirects=True,
-            )
-            if r.status_code in (500, 502, 503, 504):
-                raise requests.HTTPError(f"{r.status_code}")
-            return r
-        except (requests.Timeout, requests.ConnectionError, requests.HTTPError) as e:
-            last = (i == tries - 1)
-            log(f"[http] {method} {url} fail: {e}{' (last)' if last else ''}")
-            if last:
-                return None
-            time.sleep(min(12.0, 0.6 * (2**i)) + random.uniform(0.0, 0.6))
-    return None
+def _iter_offer_nodes(root: ET.Element):
+    """Ищет все offer-узлы без привязки к namespace."""
+    for node in root.iter():
+        if _local_name(node.tag) == "offer":
+            yield node
 
 
-def get_bytes(s: requests.Session, cfg: VttCfg, url: str, *, timeout: int = 25) -> bytes | None:
-    r = request(s, cfg, "GET", url, timeout=timeout)
-    if not r or r.status_code != 200:
+def _parse_offer_node(node: ET.Element) -> dict[str, Any] | None:
+    """Собирает один сырой offer в dict."""
+    raw_id = (node.attrib.get("id", "") or "").strip()
+    name = _child_text(node, "name")
+    price = _child_text(node, "price")
+    vendor = _child_text(node, "vendor")
+    description = _child_text(node, "description")
+
+    item: dict[str, Any] = {
+        "id": raw_id,
+        "available": _parse_bool_available(node.attrib.get("available")),
+        "name": name,
+        "price": price,
+        "vendor": vendor,
+        "description": description,
+        "pictures": _extract_pictures(node),
+        "params": _extract_params(node),
+    }
+
+    # Совсем пустой мусор не тащим дальше.
+    if not item["id"] and not item["name"] and not item["price"]:
         return None
-    sleep_ms(cfg.delay_ms)
-    return r.content
+    return item
 
 
-def post_ok(s: requests.Session, cfg: VttCfg, url: str, *, data: dict, headers: dict | None = None, timeout: int = 25) -> bool:
-    r = request(s, cfg, "POST", url, timeout=timeout, data=data, headers=headers)
-    ok = bool(r and r.status_code in (200, 204))
-    sleep_ms(cfg.delay_ms)
-    return ok
+def _extract_pictures(node: ET.Element) -> list[str]:
+    """Собирает picture в исходном порядке."""
+    out: list[str] = []
+    for ch in node:
+        if _local_name(ch.tag) != "picture":
+            continue
+        val = _node_text(ch)
+        if not val:
+            continue
+        out.append(val)
+    return out
 
 
-def abs_url(cfg: VttCfg, href: str) -> str:
-    u = (href or "").strip()
-    if not u:
+def _extract_params(node: ET.Element) -> list[tuple[str, str]]:
+    """Собирает все param как список (name, value)."""
+    out: list[tuple[str, str]] = []
+    for ch in node:
+        if _local_name(ch.tag) != "param":
+            continue
+        key = (ch.attrib.get("name", "") or "").strip()
+        val = _node_text(ch)
+        if not key and not val:
+            continue
+        out.append((key, val))
+    return out
+
+
+def _child_text(node: ET.Element, child_name: str) -> str:
+    """Текст первого дочернего узла по local-name."""
+    child_name_cf = child_name.casefold()
+    for ch in node:
+        if _local_name(ch.tag).casefold() == child_name_cf:
+            return _node_text(ch)
+    return ""
+
+
+def _node_text(node: ET.Element) -> str:
+    """Безопасно вытаскивает текст узла вместе с CDATA."""
+    if node is None:
         return ""
-    if u.startswith("http://") or u.startswith("https://"):
-        return u
-    if not u.startswith("/"):
-        u = "/" + u
-    return cfg.base_url + u
+    text = "".join(node.itertext())
+    return (text or "").strip()
 
 
-def set_q(url: str, key: str, value: str) -> str:
-    pu = urlparse(url)
-    from urllib.parse import parse_qs
-    q = parse_qs(pu.query)
-    q[key] = [value]
-    return urlunparse(pu._replace(query=urlencode(q, doseq=True)))
-
-
-def soup_from_bytes(html_bytes: bytes) -> BeautifulSoup:
-    return BeautifulSoup(html_bytes, "html.parser")
-
-
-def extract_csrf_token(html_bytes: bytes) -> str:
-    sp = soup_from_bytes(html_bytes)
-    m = sp.find("meta", attrs={"name": "csrf-token"})
-    return ((m.get("content") if m else "") or "").strip()
-
-
-def login(s: requests.Session, cfg: VttCfg) -> bool:
-    if not cfg.login or not cfg.password:
-        log("[WARN] VTT_LOGIN/VTT_PASSWORD пустые")
+def _parse_bool_available(raw: str | None) -> bool:
+    """Переводит source available в bool."""
+    val = (raw or "").strip().casefold()
+    if val in {"1", "true", "yes", "y", "on"}:
+        return True
+    if val in {"0", "false", "no", "n", "off"}:
         return False
-
-    home = get_bytes(s, cfg, cfg.base_url + "/")
-    if not home:
-        return False
-
-    csrf = extract_csrf_token(home)
-    headers = {"Referer": cfg.base_url + "/"}
-    if csrf:
-        headers["X-CSRF-TOKEN"] = csrf
-
-    ok = post_ok(
-        s,
-        cfg,
-        cfg.base_url + "/validateLogin",
-        data={"login": cfg.login, "password": cfg.password},
-        headers=headers,
-    )
-    if not ok:
-        return False
-
-    cat = get_bytes(s, cfg, cfg.start_url)
-    return bool(cat)
+    return True
 
 
-def clone_session_with_cookies(src: requests.Session, cfg: VttCfg) -> requests.Session:
-    s2 = make_session(cfg)
-    try:
-        s2.cookies.update(src.cookies)
-    except Exception:
-        pass
-    return s2
+def _local_name(tag: Any) -> str:
+    """Возвращает local-name, даже если тег с namespace."""
+    s = str(tag or "")
+    if "}" in s:
+        return s.rsplit("}", 1)[-1]
+    return s
