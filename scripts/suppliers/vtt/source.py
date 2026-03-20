@@ -2,13 +2,20 @@
 """
 Path: scripts/suppliers/vtt/source.py
 
-VTT source-layer.
-Только transport / login / crawl / raw page parse.
-Без business-логики supplier-layer:
-- без фильтра ассортимента,
-- без нормализации params,
-- без compat,
-- без сборки OfferOut.
+VTT source layer.
+
+Роль:
+- env/config
+- session / retry / login
+- category crawl
+- raw product-index
+- raw product-page parse
+
+Без supplier business-логики:
+- без filtering config-решений
+- без params cleanup
+- без compat
+- без OfferOut
 """
 
 from __future__ import annotations
@@ -26,25 +33,43 @@ from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 import requests
 from bs4 import BeautifulSoup
 
-# Старый рабочий regex ссылок товара.
+
+_DEFAULT_CATEGORIES: list[str] = [
+    "https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT",
+    "https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG",
+    "https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_COMPAT",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR",
+    "https://b2b.vtt.ru/catalog/?category=CARTMAT_CART",
+    "https://b2b.vtt.ru/catalog/?category=DEV_DEV",
+    "https://b2b.vtt.ru/catalog/?category=DRM_CRT",
+    "https://b2b.vtt.ru/catalog/?category=DRM_UNIT",
+    "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC",
+    "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT",
+]
+
 _PRODUCT_HREF_RE = re.compile(r"^/catalog/[^?]+/?$")
 
-# Совместимость со старым debug-слоем.
-log = print
+
+def log(msg: str) -> None:
+    print(msg, flush=True)
 
 
 @dataclass(frozen=True)
 class VttSourceCfg:
-    """Конфиг source-слоя VTT."""
     base_url: str
     start_url: str
+    categories: list[str]
     login: str
     password: str
     max_pages: int
     max_workers: int
     max_crawl_minutes: float
     delay_ms: int
-    verify: object  # bool | path to CA bundle
+    verify: object
     softfail: bool
 
 
@@ -70,9 +95,10 @@ def _env_float(name: str, default: float) -> float:
 
 
 def cfg_from_env() -> VttSourceCfg:
-    """Читает env для source-слоя VTT."""
     base = (os.getenv("VTT_BASE_URL", "https://b2b.vtt.ru") or "").strip().rstrip("/")
     start = (os.getenv("VTT_START_URL", f"{base}/catalog/") or "").strip()
+    cats_raw = (os.getenv("VTT_CATEGORIES", "") or "").strip()
+    categories = [c.strip() for c in cats_raw.split(",") if c.strip()] if cats_raw else list(_DEFAULT_CATEGORIES)
 
     ssl_verify = _env_bool("VTT_SSL_VERIFY", True)
     ca_bundle = (os.getenv("VTT_CA_BUNDLE", "") or "").strip()
@@ -81,6 +107,7 @@ def cfg_from_env() -> VttSourceCfg:
     return VttSourceCfg(
         base_url=base,
         start_url=start,
+        categories=categories,
         login=(os.getenv("VTT_LOGIN", "") or "").strip(),
         password=(os.getenv("VTT_PASSWORD", "") or "").strip(),
         max_pages=_env_int("VTT_MAX_PAGES", 200),
@@ -99,15 +126,10 @@ def _sleep_ms(ms: int) -> None:
 
 
 def make_session(cfg: VttSourceCfg) -> requests.Session:
-    """Создаёт requests session."""
     s = requests.Session()
     s.headers.update(
         {
-            "User-Agent": (
-                "Mozilla/5.0 (X11; Linux x86_64) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/120 Safari/537.36"
-            ),
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
             "Accept-Language": "ru,en;q=0.8",
         }
     )
@@ -115,7 +137,6 @@ def make_session(cfg: VttSourceCfg) -> requests.Session:
 
 
 def clone_session_with_cookies(src: requests.Session, cfg: VttSourceCfg) -> requests.Session:
-    """Клонирует сессию для параллельного парса карточек."""
     s2 = make_session(cfg)
     try:
         s2.cookies.update(src.cookies)
@@ -134,7 +155,6 @@ def _request(
     data: dict[str, Any] | None = None,
     headers: dict[str, str] | None = None,
 ) -> requests.Response | None:
-    """GET/POST с retry/backoff."""
     tries = 7
     for i in range(tries):
         try:
@@ -151,8 +171,8 @@ def _request(
                 raise requests.HTTPError(f"{r.status_code}")
             return r
         except (requests.Timeout, requests.ConnectionError, requests.HTTPError) as e:
-            last = (i == tries - 1)
-            log(f"[vtt:http] {method} {url} fail: {e}{' (last)' if last else ''}", flush=True)
+            last = i == tries - 1
+            log(f"[vtt:http] {method} {url} fail: {e}{' (last)' if last else ''}")
             if last:
                 return None
             time.sleep(min(12.0, 0.6 * (2 ** i)) + random.uniform(0.0, 0.6))
@@ -211,9 +231,8 @@ def _extract_csrf_token(html_bytes: bytes) -> str:
 
 
 def login(s: requests.Session, cfg: VttSourceCfg) -> bool:
-    """Логин на b2b.vtt.ru."""
     if not cfg.login or not cfg.password:
-        log("[WARN] VTT_LOGIN/VTT_PASSWORD пустые", flush=True)
+        log("[WARN] VTT_LOGIN/VTT_PASSWORD пустые")
         return False
 
     home = _get_bytes(s, cfg, cfg.base_url + "/")
@@ -223,25 +242,24 @@ def login(s: requests.Session, cfg: VttSourceCfg) -> bool:
     csrf = _extract_csrf_token(home)
     headers = {"Referer": cfg.base_url + "/"}
     if csrf:
-        headers["X-CSRF-Token"] = csrf
+        headers["X-CSRF-TOKEN"] = csrf
 
-    login_url = cfg.base_url + "/site/login"
-    payload = {
-        "LoginForm[login]": cfg.login,
-        "LoginForm[password]": cfg.password,
-    }
-    ok = _post_ok(s, cfg, login_url, data=payload, headers=headers, timeout=30)
+    ok = _post_ok(
+        s,
+        cfg,
+        cfg.base_url + "/validateLogin",
+        data={"login": cfg.login, "password": cfg.password},
+        headers=headers,
+        timeout=30,
+    )
     if not ok:
         return False
 
     probe = _get_bytes(s, cfg, cfg.start_url)
-    if not probe:
-        return False
-    return True
+    return bool(probe)
 
 
 def category_code(category_url: str) -> str:
-    """Вытаскивает code из ?category=..."""
     q = parse_qs(urlparse(category_url).query)
     return (q.get("category", [""]) or [""])[0].strip()
 
@@ -252,7 +270,6 @@ def collect_links_in_category(
     category_url: str,
     deadline_utc: datetime,
 ) -> list[str]:
-    """Собирает ссылки товаров из одной категории."""
     found: list[str] = []
     seen: set[str] = set()
 
@@ -299,48 +316,52 @@ def collect_links_in_category(
     return found
 
 
+def collect_all_links(
+    s: requests.Session,
+    cfg: VttSourceCfg,
+    deadline_utc: datetime,
+) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+    for category_url in cfg.categories:
+        if datetime.utcnow() >= deadline_utc:
+            break
+        code = category_code(category_url)
+        links = collect_links_in_category(s, cfg, category_url, deadline_utc)
+        log(f"[vtt:site] category={code or '?'} links={len(links)}")
+        for u in links:
+            out.append((u, code))
+    return out
+
+
 def collect_product_index(
     s: requests.Session,
     cfg: VttSourceCfg,
-    category_urls: list[str],
+    category_urls: list[str] | None,
     deadline_utc: datetime,
 ) -> list[dict[str, str]]:
-    """
-    Собирает сырой product-index.
-    Здесь без filtering.py: source только приносит индекс.
-    """
+    urls = category_urls if category_urls else list(cfg.categories)
     out: list[dict[str, str]] = []
     seen: set[str] = set()
 
-    for cu in category_urls:
+    for category_url in urls:
         if datetime.utcnow() >= deadline_utc:
             break
-
-        code = category_code(cu)
-        links = collect_links_in_category(s, cfg, cu, deadline_utc)
-        log(f"[vtt:site] category={code or '?'} links={len(links)}", flush=True)
-
+        code = category_code(category_url)
+        links = collect_links_in_category(s, cfg, category_url, deadline_utc)
+        log(f"[vtt:site] category={code or '?'} links={len(links)}")
         for u in links:
             if u in seen:
                 continue
             seen.add(u)
-            out.append(
-                {
-                    "url": u,
-                    "category_code": code,
-                    "title": "",
-                }
-            )
+            out.append({"url": u, "category_code": code, "title": ""})
 
     return out
 
 
 def _parse_price_int(text: str) -> int | None:
-    """Понимает '2 449.22', '2 449,22', '2449', '2 449'."""
     if not text:
         return None
-    s = str(text).replace("\u00a0", " ").replace("&nbsp;", " ")
-    s = s.strip()
+    s = str(text).replace("\u00a0", " ").replace("&nbsp;", " ").strip()
     s = re.sub(r"[^0-9.,\s]+", "", s)
     s = re.sub(r"\s+", "", s)
     if not s:
@@ -372,7 +393,6 @@ def _parse_price_int(text: str) -> int | None:
 
 
 def extract_pairs(sp: BeautifulSoup) -> dict[str, str]:
-    """Сырые пары dt/dd из карточки."""
     out: dict[str, str] = {}
     box = sp.select_one("div.description.catalog_item_descr")
     if not box:
@@ -388,7 +408,6 @@ def extract_pairs(sp: BeautifulSoup) -> dict[str, str]:
 
 
 def extract_price(sp: BeautifulSoup) -> int | None:
-    """Сырой supplier price."""
     for sel in (
         "span.price_main b",
         "span.price_main",
@@ -468,13 +487,7 @@ def extract_meta_desc(sp: BeautifulSoup) -> str:
 
 
 def extract_body_text(sp: BeautifulSoup) -> str:
-    """Человеческий текст карточки без params-table."""
-    for sel in (
-        "div.catalog_item_descr > div",
-        "div.catalog_item_descr",
-        "div.catalog_item",
-        "article",
-    ):
+    for sel in ("div.catalog_item_descr > div", "div.catalog_item_descr", "div.catalog_item", "article"):
         el = sp.select_one(sel)
         if not el:
             continue
@@ -486,7 +499,6 @@ def extract_body_text(sp: BeautifulSoup) -> str:
 
 
 def extract_pictures(cfg: VttSourceCfg, sp: BeautifulSoup, limit: int = 8) -> list[str]:
-    """Сырые картинки карточки, без supplier-очистки business-слоя."""
     bad_host_snips = (
         "mc.yandex.ru",
         "metrika.yandex",
@@ -516,17 +528,13 @@ def extract_pictures(cfg: VttSourceCfg, sp: BeautifulSoup, limit: int = 8) -> li
         url = (url or "").strip()
         if not url:
             return
-        abs_u = _abs_url(cfg, url)
-        if _is_good_img(abs_u) and abs_u not in out:
-            out.append(abs_u)
+        abs_url = _abs_url(cfg, url)
+        if _is_good_img(abs_url) and abs_url not in out:
+            out.append(abs_url)
 
     out: list[str] = []
 
-    for a in sp.select(
-        "div.catalog_item_pic a.glightbox[href], "
-        "div.carousel-item a.glightbox[href], "
-        "a.glightbox[data-gallery][href]"
-    ):
+    for a in sp.select("div.catalog_item_pic a.glightbox[href], div.carousel-item a.glightbox[href], a.glightbox[data-gallery][href]"):
         href = a.get("href") or ""
         _push(out, href)
         if len(out) >= limit:
@@ -552,6 +560,9 @@ def extract_pictures(cfg: VttSourceCfg, sp: BeautifulSoup, limit: int = 8) -> li
         if href and img_ext_re.search(str(href).lower()):
             _push(out, str(href))
 
+    if not out:
+        out = ["https://placehold.co/800x800/png?text=No+Photo"]
+
     return out[:limit]
 
 
@@ -562,23 +573,19 @@ def parse_product_page(
     *,
     category_code: str = "",
 ) -> dict[str, Any] | None:
-    """
-    Парсит карточку VTT в сырой supplier-item.
-    Без нормализации params / compat / OfferOut.
-    """
     b = _get_bytes(s, cfg, url)
     if not b:
         return None
-    sp = _soup(b)
 
+    sp = _soup(b)
     name = extract_title(sp)
     if not name:
         return None
 
     pairs = extract_pairs(sp)
-    pics = extract_pictures(cfg, sp)
-    meta_desc = extract_meta_desc(sp)
-    body_txt = extract_body_text(sp)
+    article = (pairs.get("Артикул") or pairs.get("Партс-номер") or "").strip()
+    if not article:
+        return None
 
     params: list[tuple[str, str]] = []
     for k, v in pairs.items():
@@ -593,11 +600,11 @@ def parse_product_page(
         "available": True,
         "name": name,
         "vendor": (pairs.get("Вендор") or "").strip(),
-        "article": (pairs.get("Артикул") or pairs.get("Партс-номер") or "").strip(),
+        "article": article,
         "supplier_price": extract_price(sp),
-        "pictures": pics,
-        "description_meta": meta_desc,
-        "description_body": body_txt,
+        "pictures": extract_pictures(cfg, sp),
+        "description_meta": extract_meta_desc(sp),
+        "description_body": extract_body_text(sp),
         "params": params,
     }
 
@@ -607,7 +614,6 @@ def parse_product_page_from_index(
     cfg: VttSourceCfg,
     index_item: dict[str, Any],
 ) -> dict[str, Any] | None:
-    """Удобный wrapper для item из product-index."""
     url = str(index_item.get("url") or "").strip()
     code = str(index_item.get("category_code") or "").strip()
     if not url:
