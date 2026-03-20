@@ -1,247 +1,253 @@
 # -*- coding: utf-8 -*-
-"""VTT normalize layer — wave3.
+"""
+Path: scripts/suppliers/vtt/normalize.py
 
-Фокус:
-- добить color normalization
-- улучшить compat extraction из title
-- стабилизировать codes/partnumber extraction
+VTT normalize layer.
+
+Задача:
+- базовая санитарная нормализация сырого item из source.py;
+- чистка title / vendor / article / description basis;
+- без params-cleanup, compat и OfferOut.
 """
 
 from __future__ import annotations
 
 import re
-from cs.core import norm_ws, clean_params
+from typing import Iterable
 
-VENDOR_ALIAS = {
+
+VENDOR_PRIORITY: list[str] = [
+    "HP",
+    "Canon",
+    "Xerox",
+    "Kyocera",
+    "Brother",
+    "Epson",
+    "Pantum",
+    "Ricoh",
+    "Konica Minolta",
+    "Lexmark",
+    "Samsung",
+    "OKI",
+    "RISO",
+    "Panasonic",
+    "Toshiba",
+    "Sharp",
+    "Develop",
+    "Minolta",
+]
+
+_VENDOR_ALIASES: dict[str, str] = {
     "hewlettpackard": "HP",
     "hp": "HP",
-    "kyocera": "Kyocera",
     "canon": "Canon",
     "xerox": "Xerox",
+    "kyocera": "Kyocera",
     "brother": "Brother",
-    "samsung": "Samsung",
     "epson": "Epson",
+    "pantum": "Pantum",
     "ricoh": "Ricoh",
+    "lexmark": "Lexmark",
+    "samsung": "Samsung",
+    "oki": "OKI",
+    "riso": "RISO",
+    "panasonic": "Panasonic",
+    "toshiba": "Toshiba",
+    "sharp": "Sharp",
     "konicaminolta": "Konica Minolta",
+    "minolta": "Konica Minolta",
+    "konica": "Konica Minolta",
+    "develop": "Develop",
 }
 
-COLOR_MAP = {
-    "black": "Черный",
-    "mattblack": "Черный",
-    "matteblack": "Черный",
-    "photoblack": "Черный",
-    "cyan": "Голубой",
-    "magenta": "Пурпурный",
-    "yellow": "Желтый",
-    "red": "Красный",
-    "blue": "Синий",
-    "grey": "Серый",
-    "gray": "Серый",
-    "white": "Белый",
-    "green": "Зеленый",
-    "violet": "Фиолетовый",
-    "черный": "Черный",
-    "чёрный": "Черный",
-    "голубой": "Голубой",
-    "циан": "Голубой",
-    "пурпурный": "Пурпурный",
-    "маджента": "Пурпурный",
-    "желтый": "Желтый",
-    "жёлтый": "Желтый",
-    "красный": "Красный",
-    "синий": "Синий",
-    "серый": "Серый",
-    "белый": "Белый",
-    "зеленый": "Зеленый",
-    "зелёный": "Зеленый",
-}
-
-_RE_CODE = re.compile(r'\b(?:[A-Z]{1,4}\d[A-Z0-9-]{2,}|\d{2,}[A-Z-][A-Z0-9-]*|[A-Z]{1,3}-\d{2,}[A-Z0-9-]*|\d{5,}[A-Z]?)\b')
-_RE_RES = re.compile(r'(\d+(?:[.,]\d+)?)\s*К\b', re.I)
-
-# "для HP DJ T920/T1500", "для WC 7525/7530/..."
-_RE_FOR_TAIL = re.compile(
-    r'\bдля\s+(.+?)(?:,\s*\d+(?:[.,]\d+)?\s*К\b|\s+\(O\)|\s+[A-Z0-9-]{4,}(?:[,\s]|$)|,\s*(?:black|cyan|magenta|yellow|grey|gray|mattblack|photoblack|черный|чёрный|голубой|циан|пурпурный|желтый|жёлтый|красный|синий|серый)\b|$)',
-    re.I,
+_SERVICE_TAILS = (
+    "купить",
+    "цена",
+    "в наличии",
+    "на складе",
+    "заказать",
 )
 
-# brand-led without "для": "Xerox Versant 80/180", "Xerox AltaLink B8145/B8155/B8170"
-_RE_BRAND_SERIES = re.compile(
-    r'\b(HP|Xerox|Canon|Kyocera|Brother|Samsung|Epson|Ricoh)\s+([A-Za-zА-Яа-я0-9-]+(?:\s+[A-Za-zА-Яа-я0-9-]+){0,2})\s+([A-Z]?\d[\dA-Za-z/-]*)',
-    re.I,
+_RU_TO_LAT_TABLE = str.maketrans(
+    {
+        "А": "A",
+        "В": "B",
+        "Е": "E",
+        "К": "K",
+        "М": "M",
+        "Н": "H",
+        "О": "O",
+        "Р": "P",
+        "С": "C",
+        "Т": "T",
+        "Х": "X",
+        "а": "a",
+        "е": "e",
+        "о": "o",
+        "р": "p",
+        "с": "c",
+        "х": "x",
+    }
 )
 
-_STOP_EXTRA = {
-    "o", "bk", "c", "m", "y", "к", "шт", "мл",
-    "black", "cyan", "magenta", "yellow", "grey", "gray",
-    "черный", "чёрный", "голубой", "циан", "пурпурный", "желтый", "жёлтый", "красный", "синий", "серый",
-}
 
-def normalize_vendor(v: str) -> str:
-    v = norm_ws(v or "")
-    if not v:
+def safe_str(x: object) -> str:
+    return str(x).strip() if x is not None else ""
+
+
+def norm_spaces(text: str) -> str:
+    s = safe_str(text)
+    if not s:
         return ""
-    key = re.sub(r'[^a-z0-9]+', '', v.lower())
-    return VENDOR_ALIAS.get(key, v)
+    s = s.replace("\xa0", " ").replace("&nbsp;", " ")
+    s = re.sub(r"[ \t\r\f\v]+", " ", s)
+    s = re.sub(r"\s*\n\s*", "\n", s)
+    return s.strip()
 
-def infer_vendor(name: str, vendor: str = "") -> str:
-    v = normalize_vendor(vendor)
-    if v:
-        return v
-    s = (name or "").lower()
-    for raw, norm in (
-        ("hp", "HP"),
-        ("hewlett-packard", "HP"),
-        ("kyocera", "Kyocera"),
-        ("canon", "Canon"),
-        ("xerox", "Xerox"),
-        ("brother", "Brother"),
-        ("samsung", "Samsung"),
-        ("epson", "Epson"),
-        ("ricoh", "Ricoh"),
-        ("konica", "Konica Minolta"),
-    ):
-        if raw in s:
-            return norm
+
+def ru_to_lat_ascii(text: str) -> str:
+    """Стабилизирует артикула с кириллическими псевдо-латинскими буквами."""
+    return safe_str(text).translate(_RU_TO_LAT_TABLE)
+
+
+def clean_article(article: str) -> str:
+    """
+    Нормализация article / партномера для oid-basis.
+    Оставляем только безопасные символы.
+    """
+    s = ru_to_lat_ascii(article)
+    s = s.replace("—", "-").replace("–", "-")
+    s = re.sub(r"\s*[/|]+\s*", "-", s)
+    s = re.sub(r"\s+", "", s)
+    s = re.sub(r"[^A-Za-z0-9._-]+", "", s)
+    s = re.sub(r"-{2,}", "-", s)
+    s = re.sub(r"_{2,}", "_", s)
+    s = s.strip("._-")
+    return s[:80]
+
+
+def build_oid(article: str, *, id_prefix: str = "VT") -> str:
+    base = clean_article(article)
+    return f"{id_prefix}{base}" if base else ""
+
+
+def _keyify_vendor(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", safe_str(text).lower())
+
+
+def normalize_vendor(vendor: str) -> str:
+    """Приводит vendor к канону проекта."""
+    raw = norm_spaces(vendor)
+    if not raw:
+        return ""
+    key = _keyify_vendor(raw)
+    if not key:
+        return ""
+    return _VENDOR_ALIASES.get(key, raw)
+
+
+def vendor_from_texts(*texts: str) -> str:
+    """Пытается вытащить бренд из title/desc, если source vendor пустой."""
+    hay = "\n".join([norm_spaces(x) for x in texts if norm_spaces(x)])
+    if not hay:
+        return ""
+
+    m = re.search(
+        r"(?:^|\b)(?:для|for)\s+(HP|Canon|Xerox|Kyocera|Brother|Epson|Pantum|Ricoh|Lexmark|Samsung|OKI|RISO|Panasonic|Toshiba|Sharp)\b",
+        hay,
+        flags=re.I,
+    )
+    if m:
+        return normalize_vendor(m.group(1))
+
+    for vendor in VENDOR_PRIORITY:
+        if re.search(rf"\b{re.escape(vendor)}\b", hay, flags=re.I):
+            return vendor
     return ""
 
-def infer_type(name: str) -> str:
-    s = (name or "").lower()
-    if "тонер-картридж" in s:
-        return "Тонер-картридж"
-    if "картридж" in s:
-        return "Картридж"
-    if "блок фотобарабана" in s or "фотобарабан" in s:
-        return "Блок фотобарабана"
-    if "термоблок" in s:
-        return "Термоблок"
-    if "драм" in s:
-        return "Драм-картридж"
-    return ""
 
-def infer_color(name: str, pairs: dict[str, str]) -> str:
-    for k in ("Цвет", "Color"):
-        if pairs.get(k):
-            v = norm_ws(pairs[k])
-            return COLOR_MAP.get(v.lower(), v)
-    lower = (name or "").lower()
-    for raw, norm in COLOR_MAP.items():
-        if re.search(rf'(?:^|[,\s/]){re.escape(raw)}(?:$|[,\s/])', lower):
-            return norm
-    return ""
+def normalize_title(title: str) -> str:
+    """
+    Лёгкая чистка title без supplier-magic.
+    Ничего не вырезаем агрессивно, только санитария.
+    """
+    s = norm_spaces(title)
+    if not s:
+        return ""
 
-def infer_resource(name: str, pairs: dict[str, str]) -> str:
-    for k in ("Ресурс", "Resource"):
-        if pairs.get(k):
-            return norm_ws(pairs[k])
-    m = _RE_RES.search(name or "")
-    return m.group(1).replace('.', ',') + "K" if m else ""
+    s = s.replace(" ,", ",").replace(" .", ".")
+    s = re.sub(r"\(\s+", "(", s)
+    s = re.sub(r"\s+\)", ")", s)
+    s = re.sub(r"\[\s+", "[", s)
+    s = re.sub(r"\s+\]", "]", s)
+    s = re.sub(r"\s{2,}", " ", s)
+    s = re.sub(r"\s*([,/;:])\s*", r"\1 ", s)
+    s = re.sub(r"\s{2,}", " ", s)
 
-def extract_codes(name: str, pairs: dict[str, str]) -> list[str]:
-    raw = []
-    for k in ("OEM-номер", "Каталожный номер", "Партномер", "Артикул", "Партс-номер"):
-        if pairs.get(k):
-            raw.extend(re.split(r'[/,;]\s*', pairs[k]))
-    raw.extend(_RE_CODE.findall(name or ""))
-    out = []
-    seen = set()
-    for x in raw:
-        x = norm_ws(x).strip(" ,;/")
-        if not x:
+    # лёгкий срез типичного SEO-хвоста
+    low = s.lower()
+    for tail in _SERVICE_TAILS:
+        pos = low.find(" " + tail)
+        if pos > 0:
+            s = s[:pos].strip()
+            break
+
+    return s[:240]
+
+
+def merge_native_desc(meta_desc: str, body_desc: str, title: str = "") -> str:
+    """
+    Собирает supplier native_desc до входа в общий description builder.
+    Если description == title, не тащим пустой мусор.
+    """
+    meta = norm_spaces(meta_desc)
+    body = norm_spaces(body_desc)
+    ttl = norm_spaces(title)
+
+    parts: list[str] = []
+    for chunk in (meta, body):
+        if not chunk:
             continue
-        if x.lower() in {"o", "bk", "wc", "dc", "dj"}:
+        if ttl and chunk.casefold() == ttl.casefold():
             continue
-        if x not in seen:
-            seen.add(x)
-            out.append(x)
+        if chunk not in parts:
+            parts.append(chunk)
+
+    out = "\n".join(parts).strip()
+    out = re.sub(r"\n{3,}", "\n\n", out)
+    return out[:4000]
+
+
+def normalize_raw_item(raw: dict, *, id_prefix: str = "VT") -> dict:
+    """
+    Базовая нормализация сырого VTT item.
+    Не трогает params/pictures/compat.
+    """
+    title = normalize_title(raw.get("name") or "")
+    article = clean_article(raw.get("article") or "")
+    vendor_src = normalize_vendor(raw.get("vendor") or "")
+    if not vendor_src:
+        vendor_src = vendor_from_texts(
+            title,
+            raw.get("description_meta") or "",
+            raw.get("description_body") or "",
+        )
+
+    native_desc = merge_native_desc(
+        raw.get("description_meta") or "",
+        raw.get("description_body") or "",
+        title=title,
+    )
+
+    out = dict(raw)
+    out["name"] = title
+    out["article"] = article
+    out["oid"] = build_oid(article, id_prefix=id_prefix)
+    out["vendor"] = vendor_src
+    out["native_desc"] = native_desc
     return out
 
-def infer_partnumber(codes: list[str], pairs: dict[str, str]) -> str:
-    for k in ("OEM-номер", "Каталожный номер", "Партномер", "Партс-номер", "Артикул"):
-        if pairs.get(k):
-            v = norm_ws(pairs[k])
-            if v:
-                return v
-    return codes[0] if codes else ""
 
-def _cleanup_compat_tail(tail: str) -> str:
-    tail = norm_ws(tail)
-    tail = re.sub(r'\s+\(O\)\s*', ' ', tail, flags=re.I)
-    tail = re.sub(r'\s+', ' ', tail).strip(' ,;/')
-    return tail
-
-def infer_compat(name: str, pairs: dict[str, str], vendor: str) -> str:
-    for k in ("Совместимость", "Совместимость с моделями"):
-        if pairs.get(k):
-            return norm_ws(pairs[k])
-
-    s = norm_ws(name or "")
-    m = _RE_FOR_TAIL.search(s)
-    if m:
-        tail = _cleanup_compat_tail(m.group(1))
-        if tail:
-            return tail
-
-    # Xerox/HP brand-led series without "для"
-    m = _RE_BRAND_SERIES.search(s)
-    if m:
-        brand = normalize_vendor(m.group(1))
-        series = norm_ws(m.group(2))
-        models = norm_ws(m.group(3))
-        if brand and series and models:
-            return f"{brand} {series} {models}"
-
-    # Special cases from observed titles
-    for brand in ("Xerox Versant", "Xerox AltaLink"):
-        p = re.search(rf'\b{re.escape(brand)}\s+([A-Za-z0-9/-]+)\b', s, re.I)
-        if p:
-            return f"{brand} {p.group(1)}"
-
-    return ""
-
-def normalize_name(name: str) -> str:
-    s = norm_ws(name or "")
-    s = s.replace("Mattblack", "MattBlack").replace("photoblack", "PhotoBlack")
-    s = re.sub(r'\s+/\s+', '/', s)
-    return s
-
-def build_clean_params(name: str, vendor: str, pairs: dict[str, str]) -> list[tuple[str, str]]:
-    vendor = infer_vendor(name, vendor)
-    ptype = infer_type(name)
-    color = infer_color(name, pairs)
-    codes = extract_codes(name, pairs)
-    part = infer_partnumber(codes, pairs)
-    compat = infer_compat(name, pairs, vendor)
-    resource = infer_resource(name, pairs)
-
-    params: list[tuple[str, str]] = []
-    if part:
-        params.append(("Партномер", part))
-    if codes:
-        params.append(("Коды расходников", ", ".join(codes)))
-    if ptype:
-        params.append(("Тип", ptype))
-    if color:
-        params.append(("Цвет", color))
-    if compat:
-        params.append(("Совместимость", compat))
-    if resource:
-        params.append(("Ресурс", resource))
-
-    keep_extra = {
-        "Объем": "Объем",
-        "Объём": "Объем",
-        "Формат": "Формат",
-        "Размер": "Размер",
-    }
-    for k, v in pairs.items():
-        kk = norm_ws(k)
-        vv = norm_ws(v)
-        if not kk or not vv:
-            continue
-        if kk in {"Артикул", "Партс-номер", "Вендор", "Цена", "Стоимость", "Категория", "Подкатегория", "Штрих-код", "Штрихкод", "EAN", "Barcode", "OEM-номер", "Каталожный номер", "Аналоги"}:
-            continue
-        if kk in keep_extra:
-            params.append((keep_extra[kk], vv))
-
-    return clean_params(params)
+def normalize_many(items: Iterable[dict], *, id_prefix: str = "VT") -> list[dict]:
+    """Удобный helper для отладки."""
+    return [normalize_raw_item(x, id_prefix=id_prefix) for x in items]
