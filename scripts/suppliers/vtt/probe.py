@@ -3,12 +3,10 @@
 Path: scripts/suppliers/vtt/probe.py
 
 VTT temporary full-inventory probe.
-v5:
-- больше не режет товары по prefix на стадии вытаскивания;
-- после логина пытается собрать максимально полный список candidate product URLs;
-- дочитывает все candidate product pages (лимит задается config);
-- строит inventory-карту поставщика: title/category/brand/price/stock/images/params/desc/codes/compat;
-- сохраняет сводки, чтобы потом решить, какие группы оставлять в финальном адаптере.
+v6:
+- supports chunked fetching via fetch_offset + max_candidate_fetch;
+- keeps full candidate URL dump, but reads only a slice of product pages per run;
+- writes chunk_summary.json so large inventories can be collected in several runs.
 """
 
 from __future__ import annotations
@@ -34,7 +32,6 @@ _CATEGORY_CODE_RE = re.compile(r"\b[A-Z_]{4,}\b")
 _BAD_IMAGE_RE = re.compile(r"(favicon|yandex|counter|watch/|pixel|metrika|doubleclick)", re.I)
 _SPLIT_RE = re.compile(r"[\s/|,;:()]+")
 
-# search-seeds только для discovery, НЕ для final filtering
 DEFAULT_DISCOVERY_WORDS: list[str] = [
     "Drum",
     "Девелопер",
@@ -65,7 +62,8 @@ class ProbeConfig:
     out_dir: Path
     max_pages: int = 2500
     max_product_pages_to_save: int = 120
-    max_candidate_fetch: int = 10000
+    max_candidate_fetch: int = 1000
+    fetch_offset: int = 0
 
 
 def run_vtt_probe(client, config: ProbeConfig) -> dict[str, Any]:
@@ -95,11 +93,24 @@ def run_vtt_probe(client, config: ProbeConfig) -> dict[str, Any]:
     candidate_urls = _collect_candidate_product_urls(pages)
     _write_json(out_dir / "candidate_product_urls.json", candidate_urls)
 
-    inventory_items = _fetch_and_analyze_candidates(client, candidate_urls, config.max_candidate_fetch)
+    chunk_urls = candidate_urls[config.fetch_offset : config.fetch_offset + max(1, config.max_candidate_fetch)]
+    _write_json(out_dir / "candidate_product_urls_chunk.json", chunk_urls)
+
+    inventory_items = _fetch_and_analyze_candidates(
+        client,
+        chunk_urls,
+        fetch_offset=config.fetch_offset,
+    )
     _write_json(out_dir / "inventory_items.json", inventory_items)
     _write_csv(out_dir / "inventory_items.csv", inventory_items)
 
-    inventory_summary = _build_inventory_summary(inventory_items, len(candidate_urls), len(pages))
+    inventory_summary = _build_inventory_summary(
+        inventory_items,
+        candidate_total=len(candidate_urls),
+        pages_total=len(pages),
+        fetch_offset=config.fetch_offset,
+        chunk_size=len(chunk_urls),
+    )
     _write_json(out_dir / "inventory_summary.json", inventory_summary)
 
     field_coverage = _build_field_coverage(inventory_items)
@@ -124,12 +135,29 @@ def run_vtt_probe(client, config: ProbeConfig) -> dict[str, Any]:
 
     _write_product_html_samples(out_dir / "sample_html", inventory_items, config.max_product_pages_to_save)
 
+    next_offset = config.fetch_offset + len(chunk_urls)
+    has_more = next_offset < len(candidate_urls)
+
+    chunk_summary = {
+        "candidate_total": len(candidate_urls),
+        "fetch_offset": config.fetch_offset,
+        "chunk_size": len(chunk_urls),
+        "processed_until_exclusive": next_offset,
+        "has_more": has_more,
+        "next_offset": next_offset if has_more else None,
+    }
+    _write_json(out_dir / "chunk_summary.json", chunk_summary)
+
     summary = {
         "ok": True,
         "out_dir": str(out_dir),
         "pages_total": len(pages),
         "candidate_product_urls": len(candidate_urls),
         "inventory_items_fetched": len(inventory_items),
+        "fetch_offset": config.fetch_offset,
+        "chunk_size": len(chunk_urls),
+        "has_more": has_more,
+        "next_offset": next_offset if has_more else None,
         "product_confident_items": sum(1 for x in inventory_items if x.get("product_confident")),
         "with_price": sum(1 for x in inventory_items if x.get("price_text")),
         "with_images": sum(1 for x in inventory_items if (x.get("images_count") or 0) > 0),
@@ -139,9 +167,9 @@ def run_vtt_probe(client, config: ProbeConfig) -> dict[str, Any]:
         "with_compat": sum(1 for x in inventory_items if x.get("compat_present")),
         "discovered_endpoints": len(discovered_endpoints),
         "notes": [
-            "Temporary full-inventory VTT probe.",
-            "No business filtering is applied at extraction stage.",
-            "Use inventory_summary/category_stats/brand_stats/title_prefix_* to decide which goods to keep later.",
+            "Temporary full-inventory VTT probe in chunk mode.",
+            "No business filtering at extraction stage.",
+            "Repeat runs with next_offset until has_more=false, then merge chunks outside probe.",
         ],
     }
     _write_json(out_dir / "summary.json", summary)
@@ -182,23 +210,23 @@ def _collect_candidate_product_urls(pages: list[dict[str, Any]]) -> list[str]:
     return out
 
 
-def _fetch_and_analyze_candidates(client, candidate_urls: list[str], max_candidate_fetch: int) -> list[dict[str, Any]]:
+def _fetch_and_analyze_candidates(client, chunk_urls: list[str], fetch_offset: int) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
-    limit = min(len(candidate_urls), max(1, max_candidate_fetch))
-    for idx, url in enumerate(candidate_urls[:limit], start=1):
+    for idx, url in enumerate(chunk_urls, start=1):
+        global_index = fetch_offset + idx
         try:
             resp = client.get(url, allow_redirects=True)
             html = resp.text or ""
             if not html:
                 continue
             item = _analyze_product_page(resp.url, html)
-            item["fetch_index"] = idx
+            item["fetch_index"] = global_index
             out.append(item)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             out.append(
                 {
                     "url": url,
-                    "fetch_index": idx,
+                    "fetch_index": global_index,
                     "fetch_error": str(exc),
                     "product_confident": False,
                     "title": "",
@@ -473,12 +501,14 @@ def _extract_category_codes(url: str, text: str, breadcrumbs: list[str]) -> list
     return found[:50]
 
 
-def _build_inventory_summary(items: list[dict[str, Any]], candidate_total: int, pages_total: int) -> dict[str, Any]:
+def _build_inventory_summary(items: list[dict[str, Any]], candidate_total: int, pages_total: int, fetch_offset: int, chunk_size: int) -> dict[str, Any]:
     confident = [x for x in items if x.get("product_confident")]
     return {
         "candidate_product_urls_total": candidate_total,
         "inventory_items_fetched": len(items),
         "pages_total": pages_total,
+        "fetch_offset": fetch_offset,
+        "chunk_size": chunk_size,
         "product_confident_items": len(confident),
         "with_price": sum(1 for x in items if x.get("price_text")),
         "with_images": sum(1 for x in items if (x.get("images_count") or 0) > 0),
@@ -546,13 +576,7 @@ def _build_brand_stats(items: list[dict[str, Any]]) -> dict[str, int]:
     return dict(counter.most_common(200))
 
 
-def _build_examples_by_prefix(
-    items: list[dict[str, Any]],
-    *,
-    words_count: int,
-    per_group: int,
-    top_groups: int,
-) -> dict[str, list[dict[str, Any]]]:
+def _build_examples_by_prefix(items: list[dict[str, Any]], *, words_count: int, per_group: int, top_groups: int) -> dict[str, list[dict[str, Any]]]:
     groups: defaultdict[str, list[dict[str, Any]]] = defaultdict(list)
     stats = _build_prefix_stats(items, words_count=words_count)
     top_names = list(stats.keys())[:top_groups]
