@@ -3,23 +3,19 @@
 Path: scripts/build_vtt.py
 
 VTT adapter.
-
-Логика:
-- source.py        -> login / category crawl / raw page parse
-- builder.py       -> supplier-clean RAW OfferOut
-- quality_gate.py  -> проверка RAW
-
-Правило:
-RAW должен быть уже clean supplier-result.
-Core делает только общие shared-правки.
+v5:
+- keeps category-first logic;
+- reuses one logged-in session per worker thread instead of cloning per item;
+- supplier RAW is cleaned before core;
+- does not touch photo/price logic in this patch.
 """
 
 from __future__ import annotations
 
 import os
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
-from pathlib import Path
 
 from cs.core import (
     get_public_vendor,
@@ -60,7 +56,7 @@ def _print_summary(
     print("=" * 72)
     print("[VTT] build summary")
     print("=" * 72)
-    print("version: build_vtt_v4_category_first_js_price")
+    print("version: build_vtt_v5_type_color_threadlocal")
     print(f"before: {before}")
     print(f"after:  {after}")
     print(f"raw_out_file: {raw_out_file}")
@@ -96,13 +92,21 @@ def main() -> int:
     seen_oids: set[str] = set()
 
     if index:
+        thread_state = threading.local()
+
+        def parse_worker(item: dict):
+            worker_sess = getattr(thread_state, "sess", None)
+            if worker_sess is None:
+                worker_sess = clone_session_with_cookies(sess, cfg)
+                thread_state.sess = worker_sess
+            return parse_product_page_from_index(worker_sess, cfg, item)
+
         with ThreadPoolExecutor(max_workers=max(1, int(cfg.max_workers))) as pool:
             futures = []
             for item in index:
                 if datetime.utcnow() >= deadline:
                     break
-                child = clone_session_with_cookies(sess, cfg)
-                futures.append(pool.submit(parse_product_page_from_index, child, cfg, item))
+                futures.append(pool.submit(parse_worker, item))
 
             for fut in as_completed(futures):
                 if datetime.utcnow() >= deadline:
