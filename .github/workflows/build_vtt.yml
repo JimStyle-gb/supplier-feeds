@@ -22,10 +22,10 @@ jobs:
       VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
       VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
-      # Мягкое ускорение без смены логики результата.
-      VTT_REQUEST_DELAY_MS: 20
+      # Осторожное ускорение без смены охвата.
+      VTT_REQUEST_DELAY_MS: 10
       VTT_MAX_LISTING_PAGES: 5000
-      VTT_MAX_WORKERS: 10
+      VTT_MAX_WORKERS: 14
       VTT_MAX_CRAWL_MINUTES: 90
       VTT_SOFTFAIL: "false"
 
@@ -115,8 +115,7 @@ jobs:
           fi
 
       - name: Build feed (vtt)
-        run: |
-          python scripts/build_vtt.py
+        run: python scripts/build_vtt.py
 
       - name: Diagnostics
         run: |
@@ -204,8 +203,6 @@ jobs:
 
             mv "$tmp" "$F"
           done
-
-          echo "CS_NO_CHANGES=$NO_CHANGES" >> "$GITHUB_ENV"
 
       - name: Commit & push docs/vtt.yml
         run: |
