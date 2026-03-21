@@ -3,11 +3,10 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v3:
-- RAW gets meaningful native_desc before core;
-- adds resource + compatibility extraction from title/body;
-- improves code cleanup so compatibility/resource tokens do not pollute Коды расходников;
-- normalizes vendor and color casing/terms;
+v4:
+- cleans supplier SEO tails from title before RAW/core;
+- removes logistics/internal params from feed;
+- keeps type inference title-first;
 - price and photos intentionally untouched.
 """
 
@@ -54,11 +53,12 @@ TECH_BY_CATEGORY: dict[str, str] = {
     "PARTSPRINT_DEVUN": "Лазерная",
 }
 
-SKIP_PARAM_KEYS = {"Артикул", "Штрих-код", "Вендор", "Категория", "Подкатегория"}
+SKIP_PARAM_KEYS = {"Артикул", "Штрих-код", "Вендор", "Категория", "Подкатегория", "В упаковке, штук", "Местный склад, штук", "Местный, до новой поставки, дней", "Склад Москва, штук", "Москва, до новой поставки, дней"}
 CODE_SOURCE_KEYS = {"Каталожный номер", "OEM-номер", "Партс-номер", "Партномер", "Аналоги"}
 VENDOR_HINTS = ("HP", "Canon", "Xerox", "Brother", "Kyocera", "Samsung", "Epson", "Ricoh", "Konica Minolta", "Pantum", "Lexmark", "Oki", "Sharp", "Panasonic", "Toshiba", "Develop", "Gestetner", "RISO")
 CODE_TOKEN_RE = re.compile(r"\b[A-Z0-9][A-Z0-9\-./]{2,}\b")
 RES_IN_TITLE_RE = re.compile(r"(?<!\d)(\d+(?:[.,]\d+)?)\s*([kк]|ml|мл|l|л)\b", re.I)
+TITLE_TAIL_RE = re.compile(r"\s*,?\s*(?:купить|цена|в\s+компании\s+втт|в\s+компании\s+vtt).*$", re.I)
 
 def _s(x: object) -> str:
     return str(x).strip() if x is not None else ""
@@ -71,6 +71,12 @@ def _canon_vendor(vendor: str) -> str:
     low = v.casefold()
     mapping = {"kyocera-mita": "Kyocera", "kyocera mita": "Kyocera", "konica-minolta": "Konica Minolta", "konica minolta": "Konica Minolta"}
     return mapping.get(low, v)
+
+
+def _clean_title(title: str) -> str:
+    title = _norm_ws(title)
+    title = TITLE_TAIL_RE.sub("", title).strip(" ,.-")
+    return _norm_ws(title)
 
 def _mk_oid(sku: str, title: str) -> str:
     base = _s(sku) or _first_code(title) or re.sub(r"[^A-Za-z0-9]+", "", title)[:28]
@@ -141,6 +147,8 @@ def _should_keep_code(code: str) -> bool:
     if "/" in code:
         return False
     if re.fullmatch(r"\d+(?:[.,]\d+)?", code):
+        return False
+    if re.fullmatch(r"\d+(?:[.,]\d+)?[kкmlл]+", code, re.I):
         return False
     return True
 
@@ -321,7 +329,7 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, codes: list
     return out
 
 def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None:
-    title = _norm_ws(raw.get("name"))
+    title = _clean_title(_norm_ws(raw.get("name")))
     if not title:
         return None
     sku = _s(raw.get("sku"))
