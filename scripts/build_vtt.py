@@ -3,11 +3,11 @@
 Path: scripts/build_vtt.py
 
 VTT adapter.
-v5:
-- keeps category-first logic;
-- reuses one logged-in session per worker thread instead of cloning per item;
-- supplier RAW is cleaned before core;
-- does not touch photo/price logic in this patch.
+v6:
+- same category-first logic;
+- same supplier scope;
+- faster page fetch with slightly higher worker count;
+- no price/photo logic changes in this patch.
 """
 
 from __future__ import annotations
@@ -17,24 +17,10 @@ import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 
-from cs.core import (
-    get_public_vendor,
-    next_run_dom_at_hour,
-    now_almaty,
-    write_cs_feed,
-    write_cs_feed_raw,
-)
+from cs.core import get_public_vendor, next_run_dom_at_hour, now_almaty, write_cs_feed, write_cs_feed_raw
 from suppliers.vtt.builder import build_offer_from_raw
 from suppliers.vtt.quality_gate import run_quality_gate
-from suppliers.vtt.source import (
-    cfg_from_env,
-    clone_session_with_cookies,
-    collect_product_index,
-    login,
-    log,
-    make_session,
-    parse_product_page_from_index,
-)
+from suppliers.vtt.source import cfg_from_env, clone_session_with_cookies, collect_product_index, login, log, make_session, parse_product_page_from_index
 
 SUPPLIER_NAME = "VTT"
 OUT_FILE = os.getenv("OUT_FILE", "docs/vtt.yml")
@@ -42,21 +28,11 @@ RAW_OUT_FILE = os.getenv("RAW_OUT_FILE", "docs/raw/vtt.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 VTT_QG_REPORT = os.getenv("VTT_QG_REPORT", "docs/raw/vtt_quality_gate.txt")
 
-
-def _print_summary(
-    *,
-    before: int,
-    after: int,
-    raw_out_file: str,
-    out_file: str,
-    qg,
-    availability_true: int,
-    availability_false: int,
-) -> None:
+def _print_summary(*, before: int, after: int, raw_out_file: str, out_file: str, qg, availability_true: int, availability_false: int) -> None:
     print("=" * 72)
     print("[VTT] build summary")
     print("=" * 72)
-    print("version: build_vtt_v5_type_color_threadlocal")
+    print("version: build_vtt_v6_source_fast_builder_clean")
     print(f"before: {before}")
     print(f"after:  {after}")
     print(f"raw_out_file: {raw_out_file}")
@@ -69,7 +45,6 @@ def _print_summary(
     print(f"availability_true:     {availability_true}")
     print(f"availability_false:    {availability_false}")
     print("=" * 72)
-
 
 def main() -> int:
     cfg = cfg_from_env()
@@ -171,11 +146,7 @@ def main() -> int:
         ),
     )
 
-    qg = run_quality_gate(
-        feed_path=RAW_OUT_FILE,
-        report_path=VTT_QG_REPORT,
-    )
-
+    qg = run_quality_gate(feed_path=RAW_OUT_FILE, report_path=VTT_QG_REPORT)
     availability_true = sum(1 for o in out_offers if o.available)
     availability_false = after - availability_true
 
@@ -190,7 +161,6 @@ def main() -> int:
     )
 
     return 0 if qg.ok else 1
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
