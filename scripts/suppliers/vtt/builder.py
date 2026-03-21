@@ -3,11 +3,11 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-
-Роль:
-- нормализовать raw VTT карточку
-- собрать clean RAW OfferOut
-- не тащить shared-логику в supplier adapter
+v2:
+- safer type inference: title-first, category-second;
+- fixes mismatches like "Тонер-картридж" -> Тип=Тонер-картридж;
+- adds gentle color inference from title without touching price/photos;
+- keeps supplier RAW clean before core.
 """
 
 from __future__ import annotations
@@ -67,14 +67,6 @@ CODE_SOURCE_KEYS = {
     "Партс-номер",
     "Партномер",
     "Аналоги",
-}
-COLOR_MAP = {
-    "black": "Черный",
-    "cyan": "Голубой",
-    "yellow": "Желтый",
-    "magenta": "Пурпурный",
-    "photo black": "Черный",
-    "matte black": "Черный",
 }
 VENDOR_HINTS = (
     "HP", "Canon", "Xerox", "Brother", "Kyocera", "Samsung", "Epson", "Ricoh",
@@ -148,46 +140,99 @@ def _collect_codes(raw: dict, params: Sequence[tuple[str, str]]) -> list[str]:
     return out
 
 
+def _infer_type_by_title(title: str) -> str:
+    low = title.casefold()
+    checks = [
+        ("тонер-картридж", "Тонер-картридж"),
+        ("копи-картридж", "Копи-картридж"),
+        ("принт-картридж", "Принт-картридж"),
+        ("драм-картридж", "Драм-картридж"),
+        ("драм-юниты", "Драм-юнит"),
+        ("драм-юнит", "Драм-юнит"),
+        ("контейнер для отработанного тонера", "Контейнер для отработанного тонера"),
+        ("контейнер", "Контейнер для отработанного тонера"),
+        ("блок проявки", "Блок проявки"),
+        ("бункер", "Бункер отработанного тонера"),
+        ("фотобарабан", "Фотобарабан"),
+        ("барабан", "Барабан"),
+        ("девелопер", "Девелопер"),
+        ("печатающая головка", "Печатающая головка"),
+        ("головка печатающая", "Печатающая головка"),
+        ("головка", "Печатающая головка"),
+        ("чернила", "Чернила"),
+        ("тонер", "Тонер"),
+        ("носитель", "Носитель девелопера"),
+        ("картриджи", "Картридж"),
+        ("картридж", "Картридж"),
+    ]
+    for prefix, normalized in checks:
+        if low.startswith(prefix):
+            return normalized
+    return ""
+
+
 def _infer_type(category_codes: Sequence[str], title: str) -> str:
+    title_type = _infer_type_by_title(title)
+    if title_type:
+        return title_type
     for code in category_codes:
         t = CATEGORY_TYPE_MAP.get(_s(code))
         if t:
             return t
-    low = title.casefold()
-    if low.startswith("тонер-картридж"):
-        return "Тонер-картридж"
-    if low.startswith("картридж"):
-        return "Картридж"
-    if low.startswith("чернила"):
-        return "Чернила"
-    if low.startswith("девелопер"):
-        return "Девелопер"
-    if low.startswith("драм-юнит") or low.startswith("драм-юниты"):
-        return "Драм-юнит"
-    if low.startswith("драм-картридж"):
-        return "Драм-картридж"
     return ""
 
 
-def _infer_tech(category_codes: Sequence[str], type_name: str) -> str:
+def _infer_tech(category_codes: Sequence[str], type_name: str, title: str) -> str:
     for code in category_codes:
         t = TECH_BY_CATEGORY.get(_s(code))
         if t:
             return t
-    low = type_name.casefold()
+    low = f"{type_name} {title}".casefold()
     if "стру" in low or "чернил" in low or "головк" in low:
         return "Струйная"
     if "матрич" in low:
         return "Матричная"
-    if "картридж" in low or "драм" in low or "девелопер" in low or "тонер" in low:
+    if any(x in low for x in ("картридж", "драм", "девелопер", "тонер", "барабан", "фотобарабан", "блок проявки")):
         return "Лазерная"
     return ""
 
 
 def _norm_color(value: str) -> str:
     val = _norm_ws(value)
-    low = val.casefold()
-    return COLOR_MAP.get(low, val)
+    low = val.casefold().replace("-", " ").replace("_", " ")
+    if low in {"black", "matte black", "matt black", "photo black", "photoblack", "matteblack", "mattblack"}:
+        return "Черный"
+    if low in {"cyan"}:
+        return "Голубой"
+    if low in {"yellow"}:
+        return "Желтый"
+    if low in {"magenta"}:
+        return "Пурпурный"
+    if low in {"black/cyan/magenta/yellow", "black cyan magenta yellow"}:
+        return "Черный/Голубой/Пурпурный/Желтый"
+    return val
+
+
+def _infer_color_from_title(title: str) -> str:
+    low = title.casefold().replace("-", " ")
+    if any(x in low for x in ("black/cyan/magenta/yellow", "black cyan magenta yellow")):
+        return "Черный/Голубой/Пурпурный/Желтый"
+    checks = [
+        ("photo black", "Черный"),
+        ("photoblack", "Черный"),
+        ("matte black", "Черный"),
+        ("matt black", "Черный"),
+        ("matteblack", "Черный"),
+        ("mattblack", "Черный"),
+        ("black", "Черный"),
+        ("cyan", "Голубой"),
+        ("yellow", "Желтый"),
+        ("magenta", "Пурпурный"),
+    ]
+    for needle, value in checks:
+        if needle in low:
+            return value
+    return ""
 
 
 def _clean_desc(raw: dict, title: str) -> str:
@@ -199,7 +244,6 @@ def _clean_desc(raw: dict, title: str) -> str:
         parts.append(meta)
 
     if body:
-        # убираем шумовые логистические хвосты
         body = re.sub(r"\b(?:Местный склад|Склад Москва|В упаковке, штук|до новой поставки)[^|]{0,200}", " ", body, flags=re.I)
         body = re.sub(r"\s{2,}", " ", body).strip()
         if body and body.casefold() != title.casefold():
@@ -209,9 +253,10 @@ def _clean_desc(raw: dict, title: str) -> str:
     return desc or title
 
 
-def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, codes: list[str]) -> list[tuple[str, str]]:
+def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, codes: list[str], title: str) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
+    color_found = ""
 
     def add(k: str, v: str) -> None:
         key = _norm_ws(k)
@@ -224,13 +269,13 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, codes: list
         seen.add(sig)
         out.append((key, val))
 
-    raw_params = [( _s(k), _s(v) ) for (k, v) in (raw.get("params") or [])]
+    raw_params = [(_s(k), _s(v)) for (k, v) in (raw.get("params") or [])]
 
     if type_name:
         add("Тип", type_name)
     if tech:
         add("Технология печати", tech)
-    if vendor and type_name and any(x in type_name.casefold() for x in ("картридж", "драм", "девелопер", "чернила", "тонер", "головка", "блок")):
+    if vendor and type_name and any(x in type_name.casefold() for x in ("картридж", "драм", "девелопер", "чернила", "тонер", "головка", "блок", "барабан", "контейнер", "носитель")):
         add("Для бренда", vendor)
 
     for key, value in raw_params:
@@ -240,6 +285,7 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, codes: list
             continue
         if key == "Цвет":
             value = _norm_color(value)
+            color_found = value or color_found
         add(key, value)
 
     if codes:
@@ -255,7 +301,11 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, codes: list
     if model:
         add("Модель", model)
 
-    # category diagnostics держим как supplier raw param
+    if not color_found:
+        inferred_color = _infer_color_from_title(title)
+        if inferred_color:
+            add("Цвет", inferred_color)
+
     src_cats = [c for c in (raw.get("source_categories") or []) if _s(c)]
     if src_cats:
         add("Категория VTT", ", ".join(src_cats))
@@ -272,14 +322,14 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
     source_categories = list(raw.get("source_categories") or ([] if not _s(raw.get("category_code")) else [_s(raw.get("category_code"))]))
     vendor = _guess_vendor(_s(raw.get("vendor")), title, raw.get("params") or [])
     type_name = _infer_type(source_categories, title)
-    tech = _infer_tech(source_categories, type_name)
+    tech = _infer_tech(source_categories, type_name, title)
     codes = _collect_codes(raw, raw.get("params") or [])
-    params = _merge_params(raw, vendor, type_name, tech, codes)
+    params = _merge_params(raw, vendor, type_name, tech, codes, title)
 
     raw_price = int(raw.get("price_rub_raw") or 0)
     price = compute_price(raw_price)
 
-    pictures = [ _s(x) for x in (raw.get("pictures") or []) if _s(x) ]
+    pictures = [_s(x) for x in (raw.get("pictures") or []) if _s(x)]
     if not pictures:
         pictures = ["https://placehold.co/800x800/png?text=No+Photo"]
 
@@ -290,7 +340,7 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
 
     return OfferOut(
         oid=oid,
-        available=True,  # по проектному правилу VT всегда true
+        available=True,
         name=title,
         price=price,
         pictures=pictures,
