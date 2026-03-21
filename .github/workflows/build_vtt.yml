@@ -3,7 +3,6 @@ name: Build_VTT
 on:
   workflow_dispatch:
   schedule:
-    # Алматы UTC+5 → 05:00 local = 00:00 UTC
     - cron: "0 0 1,10,20 * *"
 
 permissions:
@@ -23,11 +22,8 @@ jobs:
       VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
       VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
-      # Первая самая безобидная оптимизация:
-      # чуть уменьшаем межзапросную паузу, не трогая логику сбора.
-      VTT_REQUEST_DELAY_MS: 25
-
-      # Остальное пока не дожимаем агрессивно, чтобы не рисковать полнотой.
+      # Мягкое ускорение без смены логики результата.
+      VTT_REQUEST_DELAY_MS: 20
       VTT_MAX_LISTING_PAGES: 5000
       VTT_MAX_WORKERS: 10
       VTT_MAX_CRAWL_MINUTES: 90
