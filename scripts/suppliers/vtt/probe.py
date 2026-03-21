@@ -2,11 +2,14 @@
 """
 Path: scripts/suppliers/vtt/probe.py
 
-VTT temporary full-inventory probe.
-v6:
-- supports chunked fetching via fetch_offset + max_candidate_fetch;
-- keeps full candidate URL dump, but reads only a slice of product pages per run;
-- writes chunk_summary.json so large inventories can be collected in several runs.
+VTT category-first full probe.
+v1:
+- logs in once;
+- crawls only user-approved category URLs;
+- discovers pagination inside those categories;
+- collects all product URLs from those categories;
+- reads every collected product card;
+- saves inventory summaries for manual assortment review.
 """
 
 from __future__ import annotations
@@ -18,12 +21,29 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-from urllib.parse import parse_qs, quote, urlparse
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from bs4 import BeautifulSoup
 
+DEFAULT_CATEGORY_URLS: list[str] = [
+    "https://b2b.vtt.ru/catalog/?category=DRM_CRT",
+    "https://b2b.vtt.ru/catalog/?category=DRM_UNIT",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR",
+    "https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD",
+    "https://b2b.vtt.ru/catalog/?category=CARTINJ_Refill",
+    "https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG",
+    "https://b2b.vtt.ru/catalog/?category=CARTMAT_CART",
+    "https://b2b.vtt.ru/catalog/?category=TNR_WASTETON",
+    "https://b2b.vtt.ru/catalog/?category=DEV_DEV",
+    "https://b2b.vtt.ru/catalog/?category=TNR_REFILL",
+    "https://b2b.vtt.ru/catalog/?category=INK_COMMON",
+    "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_DEVUN",
+]
 
-_PRODUCT_HREF_RE = re.compile(r"^/catalog/[^/?#]+/?$", re.I)
+_PRODUCT_PATH_RE = re.compile(r"^/catalog/[^/?#]+/?$", re.I)
 _PRICE_RE = re.compile(
     r"(?<!\d)(\d{1,3}(?:[ \u00A0]?\d{3})+|\d+)(?:[.,]\d{1,2})?\s*(?:₸|тг|тенге|kzt)?",
     re.I,
@@ -32,38 +52,13 @@ _CATEGORY_CODE_RE = re.compile(r"\b[A-Z_]{4,}\b")
 _BAD_IMAGE_RE = re.compile(r"(favicon|yandex|counter|watch/|pixel|metrika|doubleclick)", re.I)
 _SPLIT_RE = re.compile(r"[\s/|,;:()]+")
 
-DEFAULT_DISCOVERY_WORDS: list[str] = [
-    "Drum",
-    "Девелопер",
-    "Драм-картридж",
-    "Драм-юниты",
-    "Кабель",
-    "Картридж",
-    "Картриджи",
-    "Термоблок",
-    "Тонер-картридж",
-    "Чернила",
-    "Тонер",
-    "Драм",
-    "Термопленка",
-    "Термоэлемент",
-    "Печь",
-    "Ролик",
-    "Чип",
-    "Головка",
-    "Developer",
-    "Ink",
-    "Cartridge",
-]
-
 
 @dataclass(slots=True)
 class ProbeConfig:
     out_dir: Path
-    max_pages: int = 2500
-    max_product_pages_to_save: int = 120
-    max_candidate_fetch: int = 1000
-    fetch_offset: int = 0
+    category_urls: list[str]
+    max_listing_pages: int = 4000
+    max_product_pages_to_save: int = 80
 
 
 def run_vtt_probe(client, config: ProbeConfig) -> dict[str, Any]:
@@ -80,46 +75,38 @@ def run_vtt_probe(client, config: ProbeConfig) -> dict[str, Any]:
             "message": "Login failed. Check login_report.json.",
         }
 
-    seed_urls = _build_seed_urls(login_report.get("catalog_url") or "/catalog/")
-    _write_json(out_dir / "search_seed_urls.json", seed_urls)
+    allowed_category_codes = _extract_allowed_category_codes(config.category_urls)
+    _write_json(out_dir / "category_urls.json", config.category_urls)
+    _write_json(out_dir / "category_codes.json", sorted(allowed_category_codes))
 
-    pages = client.crawl_same_host(
-        start_urls=seed_urls,
-        max_pages=config.max_pages,
-        allow_paths=["/catalog"],
+    listing_pages, product_urls = _crawl_category_listings(
+        client=client,
+        category_urls=config.category_urls,
+        allowed_category_codes=allowed_category_codes,
+        max_listing_pages=config.max_listing_pages,
     )
-    _write_json(out_dir / "crawl_pages.json", _strip_html_for_main_dump(pages))
+    _write_json(out_dir / "listing_pages.json", listing_pages)
+    _write_json(out_dir / "candidate_product_urls.json", product_urls)
 
-    candidate_urls = _collect_candidate_product_urls(pages)
-    _write_json(out_dir / "candidate_product_urls.json", candidate_urls)
-
-    chunk_urls = candidate_urls[config.fetch_offset : config.fetch_offset + max(1, config.max_candidate_fetch)]
-    _write_json(out_dir / "candidate_product_urls_chunk.json", chunk_urls)
-
-    inventory_items = _fetch_and_analyze_candidates(
-        client,
-        chunk_urls,
-        fetch_offset=config.fetch_offset,
-    )
+    inventory_items = _fetch_and_analyze_products(client, product_urls)
     _write_json(out_dir / "inventory_items.json", inventory_items)
     _write_csv(out_dir / "inventory_items.csv", inventory_items)
 
     inventory_summary = _build_inventory_summary(
-        inventory_items,
-        candidate_total=len(candidate_urls),
-        pages_total=len(pages),
-        fetch_offset=config.fetch_offset,
-        chunk_size=len(chunk_urls),
+        inventory_items=inventory_items,
+        listing_pages_total=len(listing_pages),
+        product_urls_total=len(product_urls),
+        category_urls_total=len(config.category_urls),
     )
     _write_json(out_dir / "inventory_summary.json", inventory_summary)
 
     field_coverage = _build_field_coverage(inventory_items)
     _write_json(out_dir / "field_coverage.json", field_coverage)
 
-    prefix_stats_1 = _build_prefix_stats(inventory_items, words_count=1)
-    prefix_stats_2 = _build_prefix_stats(inventory_items, words_count=2)
-    _write_json(out_dir / "title_prefix_1word_top200.json", prefix_stats_1)
-    _write_json(out_dir / "title_prefix_2word_top200.json", prefix_stats_2)
+    title_prefix_1 = _build_prefix_stats(inventory_items, 1)
+    title_prefix_2 = _build_prefix_stats(inventory_items, 2)
+    _write_json(out_dir / "title_prefix_1word_top200.json", title_prefix_1)
+    _write_json(out_dir / "title_prefix_2word_top200.json", title_prefix_2)
 
     category_stats = _build_category_stats(inventory_items)
     _write_json(out_dir / "category_stats.json", category_stats)
@@ -127,37 +114,28 @@ def run_vtt_probe(client, config: ProbeConfig) -> dict[str, Any]:
     brand_stats = _build_brand_stats(inventory_items)
     _write_json(out_dir / "brand_stats.json", brand_stats)
 
-    product_type_examples = _build_examples_by_prefix(inventory_items, words_count=1, per_group=12, top_groups=50)
-    _write_json(out_dir / "sample_by_1word_prefix.json", product_type_examples)
+    product_to_categories = {
+        item.get("url", ""): {
+            "title": item.get("normalized_title", ""),
+            "source_categories": item.get("source_categories", []),
+            "breadcrumbs": item.get("breadcrumbs", []),
+        }
+        for item in inventory_items
+    }
+    _write_json(out_dir / "product_to_categories.json", product_to_categories)
 
-    discovered_endpoints = _collect_discovered_endpoints(pages)
-    _write_json(out_dir / "discovered_endpoints.json", discovered_endpoints)
+    sample_by_1word_prefix = _build_examples_by_prefix(inventory_items, words_count=1, per_group=12, top_groups=80)
+    _write_json(out_dir / "sample_by_1word_prefix.json", sample_by_1word_prefix)
 
     _write_product_html_samples(out_dir / "sample_html", inventory_items, config.max_product_pages_to_save)
-
-    next_offset = config.fetch_offset + len(chunk_urls)
-    has_more = next_offset < len(candidate_urls)
-
-    chunk_summary = {
-        "candidate_total": len(candidate_urls),
-        "fetch_offset": config.fetch_offset,
-        "chunk_size": len(chunk_urls),
-        "processed_until_exclusive": next_offset,
-        "has_more": has_more,
-        "next_offset": next_offset if has_more else None,
-    }
-    _write_json(out_dir / "chunk_summary.json", chunk_summary)
 
     summary = {
         "ok": True,
         "out_dir": str(out_dir),
-        "pages_total": len(pages),
-        "candidate_product_urls": len(candidate_urls),
+        "category_urls_total": len(config.category_urls),
+        "listing_pages_total": len(listing_pages),
+        "candidate_product_urls_total": len(product_urls),
         "inventory_items_fetched": len(inventory_items),
-        "fetch_offset": config.fetch_offset,
-        "chunk_size": len(chunk_urls),
-        "has_more": has_more,
-        "next_offset": next_offset if has_more else None,
         "product_confident_items": sum(1 for x in inventory_items if x.get("product_confident")),
         "with_price": sum(1 for x in inventory_items if x.get("price_text")),
         "with_images": sum(1 for x in inventory_items if (x.get("images_count") or 0) > 0),
@@ -165,69 +143,142 @@ def run_vtt_probe(client, config: ProbeConfig) -> dict[str, Any]:
         "with_description": sum(1 for x in inventory_items if x.get("description_present")),
         "with_codes": sum(1 for x in inventory_items if x.get("codes_present")),
         "with_compat": sum(1 for x in inventory_items if x.get("compat_present")),
-        "discovered_endpoints": len(discovered_endpoints),
         "notes": [
-            "Temporary full-inventory VTT probe in chunk mode.",
+            "Category-first full VTT inventory probe.",
             "No business filtering at extraction stage.",
-            "Repeat runs with next_offset until has_more=false, then merge chunks outside probe.",
+            "All products are collected only from approved category URLs and their pagination.",
         ],
     }
     _write_json(out_dir / "summary.json", summary)
     return summary
 
 
-def _build_seed_urls(catalog_url: str) -> list[str]:
-    seeds = [catalog_url, "/catalog", "/catalog/"]
-    for word in DEFAULT_DISCOVERY_WORDS:
-        seeds.append(f"/catalog?word={quote(word)}")
-    seen: set[str] = set()
-    out: list[str] = []
-    for item in seeds:
-        value = str(item).strip()
-        if value and value not in seen:
-            seen.add(value)
-            out.append(value)
+def _extract_allowed_category_codes(category_urls: list[str]) -> set[str]:
+    out: set[str] = set()
+    for url in category_urls:
+        qs = parse_qs(urlparse(url).query)
+        for value in qs.get("category", []):
+            if value:
+                out.add(value.strip())
     return out
 
 
-def _collect_candidate_product_urls(pages: list[dict[str, Any]]) -> list[str]:
-    seen: set[str] = set()
-    out: list[str] = []
-    for page in pages:
-        for raw in [page.get("url")] + list(page.get("links") or []) + list(page.get("api_like_links") or []):
-            url = str(raw or "").strip()
-            if not url:
-                continue
-            parsed = urlparse(url)
-            if parsed.query or parsed.fragment:
-                continue
-            if not _PRODUCT_HREF_RE.match(parsed.path):
-                continue
-            norm = parsed._replace(query="", fragment="").geturl()
-            if norm not in seen:
-                seen.add(norm)
-                out.append(norm)
-    return out
+def _normalize_listing_url(url: str) -> str:
+    parsed = urlparse(url)
+    qs = parse_qs(parsed.query)
+    items: list[tuple[str, str]] = []
+    for key in sorted(qs):
+        for value in sorted(qs[key]):
+            items.append((key, value))
+    query = urlencode(items, doseq=True)
+    return urlunparse((parsed.scheme, parsed.netloc, parsed.path, "", query, ""))
 
 
-def _fetch_and_analyze_candidates(client, chunk_urls: list[str], fetch_offset: int) -> list[dict[str, Any]]:
+def _crawl_category_listings(client, category_urls: list[str], allowed_category_codes: set[str], max_listing_pages: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    pending = [_normalize_listing_url(x) for x in category_urls]
+    seen_listings: set[str] = set()
+    listing_pages: list[dict[str, Any]] = []
+    product_to_categories: dict[str, set[str]] = defaultdict(set)
+
+    while pending and len(listing_pages) < max_listing_pages:
+        current = pending.pop(0)
+        if current in seen_listings:
+            continue
+        seen_listings.add(current)
+
+        try:
+            resp = client.get(current, allow_redirects=True)
+            html = resp.text or ""
+        except Exception as exc:
+            listing_pages.append({"url": current, "error": str(exc), "category_codes": [], "links_count": 0, "product_links_count": 0})
+            continue
+
+        page_info, new_listing_urls, product_links = _analyze_listing_page(resp.url, html, allowed_category_codes)
+        listing_pages.append(page_info)
+
+        for listing_url in new_listing_urls:
+            norm = _normalize_listing_url(listing_url)
+            if norm not in seen_listings and norm not in pending:
+                pending.append(norm)
+
+        for prod_url, categories in product_links.items():
+            for code in categories:
+                product_to_categories[prod_url].add(code)
+
+    product_urls = [
+        {"url": url, "source_categories": sorted(list(codes))}
+        for url, codes in sorted(product_to_categories.items(), key=lambda kv: kv[0])
+    ]
+    return listing_pages, product_urls
+
+
+def _analyze_listing_page(page_url: str, html: str, allowed_category_codes: set[str]) -> tuple[dict[str, Any], list[str], dict[str, set[str]]]:
+    soup = BeautifulSoup(html, "html.parser")
+    current_qs = parse_qs(urlparse(page_url).query)
+    current_categories = {x.strip() for x in current_qs.get("category", []) if x.strip()}
+
+    same_host_listing_urls: list[str] = []
+    product_links: dict[str, set[str]] = defaultdict(set)
+    seen_listing: set[str] = set()
+
+    for tag in soup.find_all("a", href=True):
+        href = (tag.get("href") or "").strip()
+        if not href or href.startswith("#") or href.startswith("javascript:"):
+            continue
+        abs_url = client_abs_url(page_url, href)
+        parsed = urlparse(abs_url)
+
+        if parsed.path.lower().startswith("/catalog/") and not parsed.query and _PRODUCT_PATH_RE.match(parsed.path):
+            for code in current_categories:
+                product_links[abs_url].add(code)
+            continue
+
+        if parsed.path.lower().startswith("/catalog"):
+            qs = parse_qs(parsed.query)
+            cat_values = {x.strip() for x in qs.get("category", []) if x.strip()}
+            if cat_values and cat_values.issubset(allowed_category_codes):
+                norm = _normalize_listing_url(abs_url)
+                if norm not in seen_listing:
+                    seen_listing.add(norm)
+                    same_host_listing_urls.append(norm)
+
+    page_info = {
+        "url": page_url,
+        "title": _extract_title(soup),
+        "category_codes": sorted(list(current_categories)),
+        "links_count": len(soup.find_all("a", href=True)),
+        "listing_links_count": len(same_host_listing_urls),
+        "product_links_count": len(product_links),
+    }
+    return page_info, same_host_listing_urls, product_links
+
+
+def client_abs_url(page_url: str, href: str) -> str:
+    from urllib.parse import urljoin
+    return urljoin(page_url, href)
+
+
+def _fetch_and_analyze_products(client, product_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
-    for idx, url in enumerate(chunk_urls, start=1):
-        global_index = fetch_offset + idx
+    for idx, row in enumerate(product_rows, start=1):
+        url = str(row.get("url") or "")
+        source_categories = list(row.get("source_categories") or [])
         try:
             resp = client.get(url, allow_redirects=True)
             html = resp.text or ""
             if not html:
                 continue
             item = _analyze_product_page(resp.url, html)
-            item["fetch_index"] = global_index
+            item["fetch_index"] = idx
+            item["source_categories"] = source_categories
             out.append(item)
         except Exception as exc:
             out.append(
                 {
                     "url": url,
-                    "fetch_index": global_index,
+                    "fetch_index": idx,
                     "fetch_error": str(exc),
+                    "source_categories": source_categories,
                     "product_confident": False,
                     "title": "",
                     "h1": "",
@@ -347,7 +398,6 @@ def _extract_params(soup: BeautifulSoup) -> list[dict[str, str]]:
             if key and value and (key, value) not in seen:
                 seen.add((key, value))
                 out.append({"key": key, "value": value})
-
     return out
 
 
@@ -450,14 +500,12 @@ def _extract_compat_text(params: list[dict[str, str]], description_text: str) ->
         value = row.get("value") or ""
         if any(word in key for word in ["совмест", "подходит", "для устройств", "для принтеров"]):
             parts.append(value)
-    desc_hits = []
     for pattern in [
         r"(?:совместим(?:ость|ые)?|подходит для)[^.;]{0,500}",
         r"(?:для принтеров|для мфу|для устройств)[^.;]{0,500}",
     ]:
         for m in re.finditer(pattern, description_text or "", re.I):
-            desc_hits.append(m.group(0))
-    parts.extend(desc_hits)
+            parts.append(m.group(0))
     return _normalize_text(" | ".join(x for x in parts if x))
 
 
@@ -501,23 +549,22 @@ def _extract_category_codes(url: str, text: str, breadcrumbs: list[str]) -> list
     return found[:50]
 
 
-def _build_inventory_summary(items: list[dict[str, Any]], candidate_total: int, pages_total: int, fetch_offset: int, chunk_size: int) -> dict[str, Any]:
-    confident = [x for x in items if x.get("product_confident")]
+def _build_inventory_summary(inventory_items: list[dict[str, Any]], listing_pages_total: int, product_urls_total: int, category_urls_total: int) -> dict[str, Any]:
+    confident = [x for x in inventory_items if x.get("product_confident")]
     return {
-        "candidate_product_urls_total": candidate_total,
-        "inventory_items_fetched": len(items),
-        "pages_total": pages_total,
-        "fetch_offset": fetch_offset,
-        "chunk_size": chunk_size,
+        "category_urls_total": category_urls_total,
+        "listing_pages_total": listing_pages_total,
+        "candidate_product_urls_total": product_urls_total,
+        "inventory_items_fetched": len(inventory_items),
         "product_confident_items": len(confident),
-        "with_price": sum(1 for x in items if x.get("price_text")),
-        "with_images": sum(1 for x in items if (x.get("images_count") or 0) > 0),
-        "with_params": sum(1 for x in items if (x.get("params_count") or 0) > 0),
-        "with_description": sum(1 for x in items if x.get("description_present")),
-        "with_codes": sum(1 for x in items if x.get("codes_present")),
-        "with_compat": sum(1 for x in items if x.get("compat_present")),
-        "with_brand_guess": sum(1 for x in items if x.get("brand_guess")),
-        "fetch_errors": sum(1 for x in items if x.get("fetch_error")),
+        "with_price": sum(1 for x in inventory_items if x.get("price_text")),
+        "with_images": sum(1 for x in inventory_items if (x.get("images_count") or 0) > 0),
+        "with_params": sum(1 for x in inventory_items if (x.get("params_count") or 0) > 0),
+        "with_description": sum(1 for x in inventory_items if x.get("description_present")),
+        "with_codes": sum(1 for x in inventory_items if x.get("codes_present")),
+        "with_compat": sum(1 for x in inventory_items if x.get("compat_present")),
+        "with_brand_guess": sum(1 for x in inventory_items if x.get("brand_guess")),
+        "fetch_errors": sum(1 for x in inventory_items if x.get("fetch_error")),
     }
 
 
@@ -535,12 +582,9 @@ def _build_field_coverage(items: list[dict[str, Any]]) -> dict[str, Any]:
         "compat": sum(1 for x in items if x.get("compat_present")),
         "breadcrumbs": sum(1 for x in items if x.get("breadcrumbs")),
         "category_codes_found": sum(1 for x in items if x.get("category_codes_found")),
+        "source_categories": sum(1 for x in items if x.get("source_categories")),
     }
-    return {
-        "total_items": len(items),
-        "counts": counts,
-        "share_pct": {k: round(v * 100.0 / total, 2) for k, v in counts.items()},
-    }
+    return {"total_items": len(items), "counts": counts, "share_pct": {k: round(v * 100.0 / total, 2) for k, v in counts.items()}}
 
 
 def _build_prefix_stats(items: list[dict[str, Any]], words_count: int) -> dict[str, int]:
@@ -556,12 +600,12 @@ def _build_prefix_stats(items: list[dict[str, Any]], words_count: int) -> dict[s
 def _build_category_stats(items: list[dict[str, Any]]) -> dict[str, int]:
     counter: Counter[str] = Counter()
     for item in items:
-        for crumb in item.get("breadcrumbs") or []:
-            value = _normalize_text(str(crumb))
+        for cat in item.get("source_categories") or []:
+            value = _normalize_text(str(cat))
             if value:
                 counter[value] += 1
-        for code in item.get("category_codes_found") or []:
-            value = _normalize_text(str(code))
+        for crumb in item.get("breadcrumbs") or []:
+            value = _normalize_text(str(crumb))
             if value:
                 counter[value] += 1
     return dict(counter.most_common(300))
@@ -597,6 +641,7 @@ def _build_examples_by_prefix(items: list[dict[str, Any]], *, words_count: int, 
             "params_count": item.get("params_count"),
             "codes_present": item.get("codes_present"),
             "compat_present": item.get("compat_present"),
+            "source_categories": item.get("source_categories"),
             "breadcrumbs": item.get("breadcrumbs"),
         }
         if len(groups[group]) < per_group:
@@ -642,27 +687,6 @@ def _write_product_html_samples(sample_dir: Path, items: list[dict[str, Any]], l
             (sample_dir / f"{idx:03d}.html").write_text(str(html), encoding="utf-8", errors="ignore")
 
 
-def _collect_discovered_endpoints(pages: list[dict[str, Any]]) -> list[str]:
-    seen: set[str] = set()
-    out: list[str] = []
-    for page in pages:
-        for url in page.get("api_like_links") or []:
-            value = str(url).strip()
-            if value and value not in seen:
-                seen.add(value)
-                out.append(value)
-    return out[:1500]
-
-
-def _strip_html_for_main_dump(pages: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    out: list[dict[str, Any]] = []
-    for page in pages:
-        item = dict(page)
-        item.pop("html", None)
-        out.append(item)
-    return out
-
-
 def _write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -685,6 +709,7 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "codes_present",
         "compat_present",
         "product_confident",
+        "source_categories",
         "breadcrumbs",
         "category_codes_found",
     ]
