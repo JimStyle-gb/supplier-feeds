@@ -414,8 +414,3 @@ def parse_product_page_from_index(sess: requests.Session, cfg: VTTConfig, item: 
         "source_categories": list(item.get("source_categories") or []),
         "category_code": ",".join(item.get("source_categories") or []),
     }
-"""
-
-for path, content in files.items():
-    Path(path).write_text(content, encoding="utf-8")
-    print(path)
