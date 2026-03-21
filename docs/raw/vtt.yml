@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-21 18:44:45">
+<yml_catalog date="2026-03-21 20:29:23">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-03-21 18:44:45
+Время сборки (Алматы)                      | 2026-03-21 20:29:23
 Ближайшая сборка (Алматы)                  | 2026-03-21 05:00:00
 Сколько товаров у поставщика до фильтра    | 3285
 Сколько товаров у поставщика после фильтра | 3278
@@ -28,6 +28,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">005401, B3P19A, 727, T920/T1500, 130</param>
 <param name="Модель">B3P19A</param>
+<param name="Цвет">Голубой</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -46,6 +47,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">005402, B3P20A, 727, T920/T1500, 130</param>
 <param name="Модель">B3P20A</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -64,6 +66,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">005403, B3P21A, 727, T920/T1500, 130</param>
 <param name="Модель">B3P21A</param>
+<param name="Цвет">Желтый</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -82,6 +85,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">005404, B3P22A, 727, T920/T1500, 130</param>
 <param name="Модель">B3P22A</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -100,6 +104,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">005405, B3P23A, 727, T920/T1500, 130</param>
 <param name="Модель">B3P23A</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -149,7 +154,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">006R01646, 80/180</param>
@@ -167,7 +172,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">006R01647, 80/180</param>
@@ -185,7 +190,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">006R01648, 80/180</param>
@@ -203,7 +208,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">006R01649, 80/180</param>
@@ -278,7 +283,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">006R01694, SC2020</param>
@@ -296,7 +301,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">006R01695, SC2020</param>
@@ -314,7 +319,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">006R01696, SC2020</param>
@@ -450,6 +455,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">1005401, HB-HP№727(B3P19A)-С, 727(B3P19A), B3P19A, T920/T1500, 727, 130</param>
 <param name="Модель">HB-HP№727(B3P19A)-С</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -563,7 +569,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">10111573, 9436B002, C-EXV50, IR1435</param>
@@ -581,7 +587,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">10111574, 9437B002AA, C-EXV50-Kit, GPR-54, NPG-68, C-EXV50, IR1435</param>
@@ -899,7 +905,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">101R00582, B600/B605/B610/B615</param>
@@ -917,7 +923,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Принт-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">101R00664, B205/B210/B215</param>
@@ -1012,7 +1018,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Цвет">Черный</param>
@@ -1327,7 +1333,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж для отработанного тонера Phaser 6510/ WC 6515/ VL C500/505/600/605, 48K (O) 108R01416,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">108R01416, 6510, 6515, C500/505/600/605, 48K</param>
@@ -1345,7 +1351,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Фотобарабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Цвет">Голубой</param>
@@ -1364,7 +1370,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Фотобарабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Цвет">Пурпурный</param>
@@ -1383,7 +1389,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Фотобарабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Цвет">Желтый</param>
@@ -1402,7 +1408,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Фотобарабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Цвет">Blue</param>
@@ -1545,6 +1551,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">1100042, HB-HP№72(C9371A)-С, 72(C9371A), HB-C9371A, T610/1000/1100/1120/1200/1300/2300</param>
 <param name="Модель">HB-HP№72(C9371A)-С</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -2536,11 +2543,12 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">1394C002, C-EXV54BK, C3025</param>
 <param name="Модель">1394C002</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTLAS_ORIG</param>
 </offer>
 
@@ -2554,11 +2562,12 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">1396C002, C-EXV54M, C3025</param>
 <param name="Модель">1396C002</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">CARTLAS_ORIG</param>
 </offer>
 
@@ -2572,11 +2581,12 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">1397C002, C-EXV54Y, C3025</param>
 <param name="Модель">1397C002</param>
+<param name="Цвет">Желтый</param>
 <param name="Категория VTT">CARTLAS_ORIG</param>
 </offer>
 
@@ -3684,6 +3694,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">0,95К</param>
 <param name="Коды расходников">15011974292, HB-HP№178XL(CB323HE)-С, 178XL(CB323HE), HB-CB323HE, C5383/C6383/B8553/D5463, 178XL</param>
 <param name="Модель">HB-HP№178XL(CB323HE)-С</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -3765,6 +3776,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">0,98К</param>
 <param name="Коды расходников">15011974296, HB-HP№920XL(CD972AE)-С, 920XL(CD972AE), HB-CD972AE, 6000/6500/7000, 920XL</param>
 <param name="Модель">HB-HP№920XL(CD972AE)-С</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -4749,6 +4761,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">0,635К</param>
 <param name="Коды расходников">1501221810, HB-EPS-T0806LM-LM, T0806LM, HB-T0806, P50/PX660/700W/800FW/R265</param>
 <param name="Модель">HB-EPS-T0806LM-LM</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -4768,6 +4781,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">0,33К</param>
 <param name="Коды расходников">15012218120, HB-EPS-T0805LC-LC, T0805LC, HB-T0805, P50/PX660/700W/800FW/R265</param>
 <param name="Модель">HB-EPS-T0805LC-LC</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -6721,6 +6735,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">1,6К</param>
 <param name="Коды расходников">1502092058, 46 (CZ637A), 2020/2520, CZ637AE</param>
 <param name="Модель">1502092058</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -6740,6 +6755,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">0,75К</param>
 <param name="Коды расходников">1502092059, 46 (CZ638A), 2020/2520, CZ638AE</param>
 <param name="Модель">1502092059</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -6852,6 +6868,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">1502155004, CH561HE, 122, 1050/2050/2050S</param>
 <param name="Модель">CH561HE</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -6888,6 +6905,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">15021572100, F9J68A, 728, T730/T830</param>
 <param name="Модель">F9J68A</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -6966,6 +6984,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">150215721004, HB-HP№728XL(F9J67A)-С, 728XL(F9J67A), HB-F9J67A, T730/T830, 728XL</param>
 <param name="Модель">HB-HP№728XL(F9J67A)-С</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -6984,6 +7003,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">1502157211, F9J76A, 727, T920/T1500</param>
 <param name="Модель">F9J76A</param>
+<param name="Цвет">Голубой</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -7002,6 +7022,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">1502157212, F9J78A, 727, T920/T1500</param>
 <param name="Модель">F9J78A</param>
+<param name="Цвет">Желтый</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -7020,6 +7041,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">1502157213, C1Q12A, 727, T920/T1500</param>
 <param name="Модель">C1Q12A</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -7038,6 +7060,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">1502157214, F9J77A, 727, T920/T1500</param>
 <param name="Модель">F9J77A</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -7074,6 +7097,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">1502157216, F9J79A, 727, T920/T1500</param>
 <param name="Модель">F9J79A</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -7092,6 +7116,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">1502157217, F9J67A, 728, T730/T830</param>
 <param name="Модель">F9J67A</param>
+<param name="Цвет">Голубой</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -7110,6 +7135,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">1502157218, F9J65A, 728, T730/T830</param>
 <param name="Модель">F9J65A</param>
+<param name="Цвет">Желтый</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -7128,6 +7154,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">1502157219, F9J66A, 728, T730/T830</param>
 <param name="Модель">F9J66A</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -7146,6 +7173,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">150215722, CN053AE, 932XL, 6100/6600/6700</param>
 <param name="Модель">CN053AE</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -7164,6 +7192,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">150215724, CN055AE, 933XL, 6100/6600/6700</param>
 <param name="Модель">CN055AE</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -7182,6 +7211,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">150215725, CN056AE, 933XL, 6100/6600/6700</param>
 <param name="Модель">CN056AE</param>
+<param name="Цвет">Желтый</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -7200,6 +7230,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">150215726, CN057AE, 932, 6100/6600/6700</param>
 <param name="Модель">CN057AE</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -8145,6 +8176,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">1507010953, HiBl-CANUniv-4х100Ml, C-V1</param>
 <param name="Модель">HiBl-CANUniv-4х100Ml</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">INK_COMMON</param>
 </offer>
 
@@ -8163,6 +8195,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">1507010954, HiBl-HPUniv-4х100Ml, H-V1</param>
 <param name="Модель">HiBl-HPUniv-4х100Ml-</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">INK_COMMON</param>
 </offer>
 
@@ -8181,6 +8214,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Brother</param>
 <param name="Коды расходников">1507010955, HiBl-BROUniv-4х100Ml, B-V1</param>
 <param name="Модель">HiBl-BROUniv-4х100Ml</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">INK_COMMON</param>
 </offer>
 
@@ -8199,6 +8233,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">1507010956, HiBl-EPSUniv-4х100Ml, E-V1</param>
 <param name="Модель">HiBl-EPSUniv-4х100Ml</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">INK_COMMON</param>
 </offer>
 
@@ -9976,6 +10011,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">0,46K</param>
 <param name="Коды расходников">1530169050, HB-EPS-T0485LC-LC, T0485LC, HB-T0485, R200/R300/RX500/RX600</param>
 <param name="Модель">HB-EPS-T0485LC-LC</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -10000,6 +10036,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">0,46K</param>
 <param name="Коды расходников">1530169060, HB-EPS-T0486LM-LM, T0486LM, HB-T0486, R200/R300/RX500/RX600</param>
 <param name="Модель">HB-EPS-T0486LM-LM</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -10157,7 +10194,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">4,5k</param>
@@ -10181,7 +10218,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">7,5k</param>
@@ -10205,7 +10242,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">7,5k</param>
@@ -10229,7 +10266,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">7,5k</param>
@@ -10253,7 +10290,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">4k</param>
@@ -10277,7 +10314,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">6,5k</param>
@@ -10301,7 +10338,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">6,5k</param>
@@ -10325,7 +10362,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">6,5k</param>
@@ -10349,7 +10386,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">3k</param>
@@ -10373,7 +10410,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">5,4k</param>
@@ -10397,7 +10434,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">5,4k</param>
@@ -10421,7 +10458,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">5,4k</param>
@@ -10445,7 +10482,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">5,4k</param>
@@ -10469,7 +10506,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Ресурс">5,4k</param>
@@ -10495,7 +10532,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Черный</param>
@@ -10520,7 +10557,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -10545,7 +10582,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -10570,7 +10607,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
@@ -10596,7 +10633,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Черный</param>
@@ -10622,7 +10659,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Голубой</param>
@@ -10648,7 +10685,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Пурпурный</param>
@@ -10674,7 +10711,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Желтый</param>
@@ -10699,7 +10736,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Черный</param>
@@ -10725,7 +10762,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Голубой</param>
@@ -10751,7 +10788,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Пурпурный</param>
@@ -10777,7 +10814,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Желтый</param>
@@ -10799,7 +10836,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Черный</param>
@@ -10821,7 +10858,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Голубой</param>
@@ -10843,7 +10880,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Пурпурный</param>
@@ -10865,7 +10902,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Желтый</param>
@@ -10891,7 +10928,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Голубой</param>
@@ -10917,7 +10954,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Пурпурный</param>
@@ -10943,7 +10980,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Желтый</param>
@@ -10967,7 +11004,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Черный</param>
@@ -10993,7 +11030,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Черный</param>
@@ -11018,7 +11055,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Черный</param>
@@ -11043,7 +11080,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -11068,7 +11105,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -11093,7 +11130,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
@@ -11118,7 +11155,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Черный</param>
@@ -11143,7 +11180,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -11168,7 +11205,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -11193,7 +11230,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
@@ -11218,7 +11255,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Light Cyan</param>
@@ -11243,7 +11280,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Чернила</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Light Magenta</param>
@@ -11797,6 +11834,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">0,61K</param>
 <param name="Коды расходников">1530231410, HB-EPS-T0825LC-LC, T0825LC, HB-T0825, R270/295/390/RX590/T50</param>
 <param name="Модель">HB-EPS-T0825LC-LC</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -11816,6 +11854,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">0,61K</param>
 <param name="Коды расходников">1530231510, HB-EPS-T0826LM-LM, T0826LM, HB-T0826, R270/295/390/RX590/T50</param>
 <param name="Модель">HB-EPS-T0826LM-LM</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -11932,6 +11971,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">161001, HB-EPS-RR-ERC31 PU, RR-EP-ERC31 PU, ERC-31/TM-950</param>
 <param name="Модель">HB-EPS-RR-ERC31 PU</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTMAT_CART</param>
 </offer>
 
@@ -12732,7 +12772,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Ресурс">25000</param>
@@ -12752,7 +12792,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Ресурс">12000</param>
@@ -12772,7 +12812,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Ресурс">12000</param>
@@ -12792,7 +12832,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Ресурс">12000</param>
@@ -13361,6 +13401,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">20111359, HB-DEV-XERUniv-T1.0-100G-Bk, 1.0, 100</param>
 <param name="Модель">HB-DEV-XERUniv-T1.0-100G-Bk</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">DEV_DEV</param>
 </offer>
 
@@ -13447,7 +13488,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-картридж</param>
+<param name="Тип">Фотобарабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">2170C001, 051</param>
@@ -13892,7 +13933,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Драм-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Ресурс">23K</param>
@@ -14821,7 +14862,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Черный</param>
@@ -16400,6 +16441,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">2MY93022, 302MY93022, 302K093020, 302K093021, 302K093024, 302K093025, 302MY93020, 302MY93023, 302MY93024, DV-895Y, DV-896Y, 302MY93022/DV-896Y, FS-C8020MFP/C8025MFP</param>
 <param name="Модель">302MY93022</param>
+<param name="Цвет">Желтый</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -16418,6 +16460,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">2MY93033, 302MY93033, 302K093035, 302MY93031, 302MY93032, 302MY93034, DV-895M, DV-896M, 302MY93033/DV-896M, FS-C8020MFP/C8025MFP</param>
 <param name="Модель">302MY93033</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -16436,6 +16479,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">2MY93042, 302MY93042, 302K093040, 302K093041, 302K093042, 302K093043, 302MY93041, DV-895C, DV-896C, 302MY93042/DV-896C, FS-C8020MFP/C8025MFP</param>
 <param name="Модель">302MY93042</param>
+<param name="Цвет">Голубой</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -16454,6 +16498,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">2MY93052, 302MY93052, 302K093050, 302K093051, 302K093052, 302K093053, 302K093054, 302K093055, 302MY93053, 302MY93054, DV-895K, DV-896K, 302MY93052/DV-896K, FS-C8020MFP/C8025MFP</param>
 <param name="Модель">302MY93052</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -16544,6 +16589,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">2NP93052, 302NP93052, DV-8325K, 302NP93052/DV-8325K</param>
 <param name="Модель">302NP93052</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -17583,6 +17629,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">302NP93044, 302NP93040, 302NP93041, 302NP93042, 302NP93043, 302NP93140, DV8325C, 302NP93044/DV-8325C</param>
 <param name="Модель">302NP93044</param>
+<param name="Цвет">Голубой</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -17601,6 +17648,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">302NP93064, 302NP93060, 302NP93061, 302NP93062, 302NP93063, 302NP93160, DV-8325K, DV8325M, 302NP93064/DV-8325M</param>
 <param name="Модель">302NP93064</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -17619,6 +17667,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">302NP93074, 302NP93060, 302NP93061, 302NP93062, 302NP93063, 302NP93070, 302NP93071, 302NP93072, 302NP93073, 302NP93160, 302NP93170, DV-8325K, DV8325M, DV8325Y, 302NP93074/DV-8325Y</param>
 <param name="Модель">302NP93074</param>
+<param name="Цвет">Желтый</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -17784,6 +17833,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">302P393021, 302P393021/302P393020, DV-8115C</param>
 <param name="Модель">302P393021</param>
+<param name="Цвет">Голубой</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -17802,6 +17852,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">302P393031, 302P393031/302P393030, DV-8115K</param>
 <param name="Модель">302P393031</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -17820,6 +17871,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">302P393041, 302P393041/302P393040, DV-8115M</param>
 <param name="Модель">302P393041</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -17838,6 +17890,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">302P393051, 302P393051/302P393050, DV-8115Y</param>
 <param name="Модель">302P393051</param>
+<param name="Цвет">Желтый</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -18302,7 +18355,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">3526C002, T06</param>
@@ -18320,7 +18373,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">3760C002, 2625/2630/2645</param>
@@ -18924,7 +18977,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">401070571, TK-160, 3502920000, FS-1120D, 1T02LY0NLC</param>
@@ -19150,6 +19203,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">401071550912, HB-DEV-KY Col ED88-TKA08D-100G, ED-88, TKA-08D, 100</param>
 <param name="Модель">HB-DEV-KY Col ED88-TKA08D-100G</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">DEV_DEV</param>
 </offer>
 
@@ -19322,7 +19376,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">401080122, TK-3130, 3592410000, FS-4200DN/4300DN, 1T02LV0NL0</param>
@@ -19380,7 +19434,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">401080212, TK-6305, 35K, 1T02LH0NL0</param>
@@ -19458,7 +19512,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">4010804, TK-475, 3592450000, FS-6025MFP/B/6030MFP/6525MFP/6530MFP, 1T02K30NL0</param>
@@ -19892,7 +19946,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Принт-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Ricoh</param>
 <param name="Коды расходников">408010, SP150, SP150SU</param>
@@ -21858,11 +21912,12 @@ DV-1130/302MH93020 Блок проявки Kyocera FS-1030MFP/1130MFP (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера Hi-Black WT-3100 для Kyocera FS2100/4100 (совм), Hi-Black]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">41006491, CMP-Bunk-302LV93020, 302LV93020, WT-3100, FS2100/4100</param>
 <param name="Модель">CMP-Bunk-302LV93020</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">TNR_WASTETON</param>
 </offer>
 
@@ -21895,11 +21950,12 @@ WT-860/1902LC0UN0 Бункер отработанного тонера Kyocera T
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера Hi-Black для Kyocera TASKalfa 3050ci/3550ci/4550ci, Hi-Black]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">410065101, HB-KY-WT-860/1902LC0UN0, WT-860/1902LC0UN0, 1902LC0UN0, 2LC93150, 302LC9315, WT860, WT862, WT-862</param>
 <param name="Модель">HB-KY-WT-860/1902LC0UN0</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">TNR_WASTETON</param>
 </offer>
 
@@ -21931,11 +21987,12 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера Hi-Black (WT-1110) для Kyocera FS-1020/ 1025/ 1120, Hi-Black]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">41006914, HB-KY-WT1110-302M293030, 302M293030, WT-1110, FS-1020, 1025, 1120</param>
 <param name="Модель">HB-KY-WT1110-302M293030</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">TNR_WASTETON</param>
 </offer>
 
@@ -22008,6 +22065,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">4561234, CF403A, 201A, M252/252N/252DN/252DW, 277DW</param>
 <param name="Модель">CF403A</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">CARTLAS_ORIG</param>
 </offer>
 
@@ -22639,7 +22697,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Коды расходников">7010101300, AR202LT, AR-163/201/M160/M205</param>
@@ -22855,7 +22913,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,5K</param>
@@ -22875,7 +22933,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,2K</param>
@@ -22895,7 +22953,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,2K</param>
@@ -22915,7 +22973,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,2K</param>
@@ -23213,7 +23271,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">1,4K</param>
@@ -23233,7 +23291,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">4K</param>
@@ -23253,7 +23311,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">1,6K</param>
@@ -23293,7 +23351,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">1,6K</param>
@@ -23313,7 +23371,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">2,3K</param>
@@ -23333,7 +23391,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">2,3K</param>
@@ -23375,7 +23433,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">1,4K</param>
@@ -23395,7 +23453,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">4K</param>
@@ -23415,7 +23473,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">1,6K</param>
@@ -23435,7 +23493,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">1,6K</param>
@@ -23482,7 +23540,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">6K</param>
@@ -23502,7 +23560,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">6K</param>
@@ -23522,7 +23580,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">5K</param>
@@ -23562,7 +23620,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Драм-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Ресурс">23K</param>
@@ -24459,6 +24517,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">84654742, HB-HP-SET-123XL(Bk+C, F6V18AE, 123XL, F6V19AE</param>
 <param name="Модель">HB-HP-SET-123XL(Bk+C</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -24529,7 +24588,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">8528B003AA, 54-Drum, 8528B002AA, 8528B004AA, C-EXV49, GPR-53, NPG-67, C3320</param>
@@ -24941,11 +25000,12 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер сбора отработанного тонера Hi-Black для Konica-Minolta bizhub C224/C284/C364, Hi-Black]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Коды расходников">9200211, A4NNWY1/WX-103, C224/C284/C364</param>
 <param name="Модель">A4NNWY1/WX-103</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">TNR_WASTETON</param>
 </offer>
 
@@ -24959,7 +25019,7 @@ DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221 (O), 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">939271, TK-3100, FS-2100D/2100DN/4100/4200, M3040DN/3540, 1T02MS0N</param>
@@ -25856,7 +25916,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Ресурс">3K</param>
@@ -25916,7 +25976,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Ресурс">3K</param>
@@ -26756,7 +26816,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1K</param>
@@ -26776,7 +26836,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1K</param>
@@ -26910,7 +26970,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Ricoh</param>
 <param name="Ресурс">3K</param>
@@ -28173,7 +28233,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1,2K</param>
@@ -28193,7 +28253,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">0,7K</param>
@@ -28213,7 +28273,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1,5K</param>
@@ -28253,7 +28313,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1,5K</param>
@@ -28293,7 +28353,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,6K</param>
@@ -28313,7 +28373,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,6K</param>
@@ -28333,7 +28393,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж Brother HL-5340/5350/5370/5380/DCP8070D/8085DN (O) TN-3230, 3К]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Коды расходников">98402202, TN3230, HL-5340/5350/5370/5380/DCP8070D/8085DN, TN-3230</param>
@@ -28351,7 +28411,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">3K</param>
@@ -28371,7 +28431,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">8K</param>
@@ -28391,7 +28451,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">8K</param>
@@ -28411,7 +28471,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,6K</param>
@@ -28431,7 +28491,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,6K</param>
@@ -28451,7 +28511,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">8K</param>
@@ -28471,7 +28531,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">8K</param>
@@ -28491,7 +28551,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,5K</param>
@@ -28511,7 +28571,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,5K</param>
@@ -28531,7 +28591,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1,2K</param>
@@ -28551,7 +28611,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1,2K</param>
@@ -28571,7 +28631,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1,2K</param>
@@ -28591,7 +28651,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1,5K</param>
@@ -28611,7 +28671,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1,5K</param>
@@ -28631,7 +28691,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1,2K</param>
@@ -28651,7 +28711,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">7K</param>
@@ -28671,7 +28731,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">7K</param>
@@ -28691,7 +28751,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">8K</param>
@@ -28711,7 +28771,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">8K</param>
@@ -28971,7 +29031,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-картридж</param>
+<param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Lexmark</param>
 <param name="Коды расходников">9842710211, 50F0Z00, 500Z, MX310/410/510/610, 50F0ZA0/50F0Z00</param>
@@ -29112,6 +29172,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">98900205, C9383A, T610/T1100/T1200/T1300/T2300</param>
 <param name="Модель">C9383A</param>
+<param name="Цвет">Голубой</param>
 <param name="Категория VTT">CARTINJ_PRNTHD</param>
 </offer>
 
@@ -29130,6 +29191,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">98900206, C9384A, T610/T1100/T1200/T1300/T2300</param>
 <param name="Модель">C9384A</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_PRNTHD</param>
 </offer>
 
@@ -29166,6 +29228,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">9890070, C9370A, T1100/T610</param>
 <param name="Модель">C9370A</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -29202,6 +29265,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">9890072уц, C9372A, T1100/T610</param>
 <param name="Модель">C9372A</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -29220,6 +29284,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">9890073, C9373A, T1100/T610</param>
 <param name="Модель">C9373A</param>
+<param name="Цвет">Желтый</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -29256,6 +29321,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">9890075, C9403A, T1100/T610</param>
 <param name="Модель">C9403A</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -29274,6 +29340,7 @@ CE980-67901/CE980A Бункер для сбора отработанного т�
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">9890077, C9380A, T610/T1100/T1200/T1300/T2300</param>
 <param name="Модель">C9380A</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_PRNTHD</param>
 </offer>
 
@@ -29564,11 +29631,12 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер для отработанного тонера Hi-Black для Xerox WC 7425/7428/7435/7525/7530/7535, Hi-Black]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">9892564901, HB-XER-008R13061, 008R13061, 7425/7428/7435/7525/7530/7535</param>
 <param name="Модель">HB-XER-008R13061</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">TNR_WASTETON</param>
 </offer>
 
@@ -29815,6 +29883,7 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">98927109488, HB-HP№3ED67A-С, 3ED67A, 712, T650/T630/T250/T230/T210</param>
 <param name="Модель">HB-HP№3ED67A-С</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -31323,6 +31392,7 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">989560024, 106R01634, 6000/6010/WC6015</param>
 <param name="Модель">106R01634</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTLAS_PRINT</param>
 </offer>
 
@@ -31341,6 +31411,7 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">989560026, 106R01632, 6000/6010/WC6015</param>
 <param name="Модель">106R01632</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">CARTLAS_PRINT</param>
 </offer>
 
@@ -31359,6 +31430,7 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">989560027, 106R01633, 6000/6010/WC6015</param>
 <param name="Модель">106R01633</param>
+<param name="Цвет">Желтый</param>
 <param name="Категория VTT">CARTLAS_PRINT</param>
 </offer>
 
@@ -31710,7 +31782,7 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-картридж</param>
+<param name="Тип">Копи-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">98956318, 101R00434, 5222, 50000</param>
@@ -32072,7 +32144,7 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">989606229, TK-360, FS-4020DN, 1T02J20EUC</param>
@@ -32108,7 +32180,7 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Цвет">Голубой</param>
@@ -32127,7 +32199,7 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Цвет">Желтый</param>
@@ -32146,7 +32218,7 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Цвет">Черный</param>
@@ -32205,7 +32277,7 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">9896070011, TK-590K, FS-C2026MFP/C2126MFP/C5250/ECOSYS, M6026CDN, 1T02KV0</param>
@@ -32263,7 +32335,7 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">9896070012, TK-590M, FS-C2026MFP/C2126MFP/C5250/ECOSYS, M6026CDN, 1T02</param>
@@ -32361,7 +32433,7 @@ FM3-9276/WT-101 Бункер отработанного тонера Canon iR-25
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">9896070013, TK-590Y, FS-C2026MFP/C2126MFP/C5250/ECOSYS, M6026CDN, 1T02KVA</param>
@@ -33314,7 +33386,7 @@ DV-360/302J293010 Блок проявки в сборе Kyocera FS4020DN (O), н
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">9896103020, TK-1130, FS-1030MFP/DP/1130MFP/ECOSYS, M2030DN, 1T02MJ0NL0</param>
@@ -33332,7 +33404,7 @@ DV-360/302J293010 Блок проявки в сборе Kyocera FS4020DN (O), н
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">9896103021, TK-1140, 1T02ML0NL0, FS-1035MFP/DP/1135MFP/ECOSYS, M2035DN/M2535DN, 1T02ML0NLC</param>
@@ -33350,7 +33422,7 @@ DV-360/302J293010 Блок проявки в сборе Kyocera FS4020DN (O), н
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">9896103023, TK-1110, FS-1040/1020MFP/1120MFP, 1T02M50NX0</param>
@@ -33368,7 +33440,7 @@ DV-360/302J293010 Блок проявки в сборе Kyocera FS4020DN (O), н
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">9896103024, TK-1120, 5190320000, FS-1060DN/1025MFP/1125MFP, 1T02M70NX0</param>
@@ -33466,7 +33538,7 @@ DV-360/302J293010 Блок проявки в сборе Kyocera FS4020DN (O), н
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">989610308, TK-130, FS-1300D/1300DN/1028MFP/DP/1128MFP, 1T02HS0EU0</param>
@@ -34709,7 +34781,7 @@ DV-360/302J293010 Блок проявки в сборе Kyocera FS4020DN (O), н
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Цвет">Голубой</param>
@@ -34728,7 +34800,7 @@ DV-360/302J293010 Блок проявки в сборе Kyocera FS4020DN (O), н
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Цвет">Пурпурный</param>
@@ -34747,7 +34819,7 @@ DV-360/302J293010 Блок проявки в сборе Kyocera FS4020DN (O), н
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Цвет">Желтый</param>
@@ -34766,7 +34838,7 @@ DV-360/302J293010 Блок проявки в сборе Kyocera FS4020DN (O), н
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Цвет">Черный</param>
@@ -34785,7 +34857,7 @@ DV-360/302J293010 Блок проявки в сборе Kyocera FS4020DN (O), н
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">989698909, TK-4105, 1800/2200/1801/2201, 1T02NG0NL0</param>
@@ -34803,7 +34875,7 @@ DV-360/302J293010 Блок проявки в сборе Kyocera FS4020DN (O), н
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">9896989190, TK-715, KM-3050/4050/5050, 870, 1T02GR0EU0</param>
@@ -34956,7 +35028,7 @@ DV-170/302LZ93010 Блок проявки Kyocera FS-1320D/FS-1370DN/ECOSYS P213
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">989698983, TK-350, 3502900000, FS-3920DN, 1T02LX0NL0</param>
@@ -35623,7 +35695,7 @@ DV-170/302LZ93010 Блок проявки Kyocera FS-1320D/FS-1370DN/ECOSYS P213
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Драм-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Pantum</param>
 <param name="Ресурс">12K</param>
@@ -35801,7 +35873,7 @@ DV-170/302LZ93010 Блок проявки Kyocera FS-1320D/FS-1370DN/ECOSYS P213
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Драм-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Pantum</param>
 <param name="Ресурс">12K</param>
@@ -37314,7 +37386,7 @@ DV-170/302LZ93010 Блок проявки Kyocera FS-1320D/FS-1370DN/ECOSYS P213
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Принт-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">9899991901, 106R01159, 3122/3117/3124</param>
@@ -37432,7 +37504,7 @@ DV-170/302LZ93010 Блок проявки Kyocera FS-1320D/FS-1370DN/ECOSYS P213
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">9899991971, 006R01160, 5325/5330/5335, 30K</param>
@@ -39376,7 +39448,7 @@ DV-170/302LZ93010 Блок проявки Kyocera FS-1320D/FS-1370DN/ECOSYS P213
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">989999938744, 2785B002, 2525/2530, C-EXV33</param>
@@ -39891,6 +39963,7 @@ DV-170/302LZ93010 Блок проявки Kyocera FS-1320D/FS-1370DN/ECOSYS P213
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">991132105, C13T67354A, L800/L1800/L810/L850, C13T67354A/C13T673598</param>
 <param name="Модель">C13T67354A</param>
+<param name="Цвет">Голубой</param>
 <param name="Категория VTT">INK_COMMON</param>
 </offer>
 
@@ -39909,6 +39982,7 @@ DV-170/302LZ93010 Блок проявки Kyocera FS-1320D/FS-1370DN/ECOSYS P213
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">991132106, C13T67364A, L800/L1800/L810/L850, C13T67364A/C13T673698</param>
 <param name="Модель">C13T67364A</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">INK_COMMON</param>
 </offer>
 
@@ -40195,7 +40269,7 @@ DV-170/302LZ93010 Блок проявки Kyocera FS-1320D/FS-1370DN/ECOSYS P213
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,6K</param>
@@ -40215,7 +40289,7 @@ DV-170/302LZ93010 Блок проявки Kyocera FS-1320D/FS-1370DN/ECOSYS P213
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,6K</param>
@@ -40890,7 +40964,7 @@ DV-170/302LZ93010 Блок проявки Kyocera FS-1320D/FS-1370DN/ECOSYS P213
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">995616081, 0384B006, 0385B001BA, 0385B002BA, 0385B003BA, C-EXV14, 2016J/2020</param>
@@ -41152,7 +41226,7 @@ DV-1110/302M293020 Блок проявки Kyocera FS-1020MFP/1025MFP (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">9956716, 6908B002, 2202/2202N, C-EXV42, 10200</param>
@@ -41584,7 +41658,7 @@ DV-1110/302M293020 Блок проявки Kyocera FS-1020MFP/1025MFP (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">12K</param>
@@ -42243,11 +42317,12 @@ DV-1110/302M293020 Блок проявки Kyocera FS-1020MFP/1025MFP (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">9963520544, HB-EPS-T6716, T6716, WF-M5299, WF-M5799, WF-C5790DWF</param>
 <param name="Модель">HB-EPS-T6716</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -42267,11 +42342,12 @@ DV-1110/302M293020 Блок проявки Kyocera FS-1020MFP/1025MFP (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">9963520545, MC-G04, G1130/G2170/G3170</param>
 <param name="Модель">9963520545</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -44291,7 +44367,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,5K</param>
@@ -44311,7 +44387,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,2K</param>
@@ -44331,7 +44407,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,2K</param>
@@ -44351,7 +44427,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,2K</param>
@@ -44371,7 +44447,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">4K</param>
@@ -44391,7 +44467,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">3,5K</param>
@@ -44411,7 +44487,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">3,5K</param>
@@ -44431,7 +44507,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">3,5K</param>
@@ -44451,7 +44527,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">4K</param>
@@ -44471,7 +44547,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">3,5K</param>
@@ -44491,7 +44567,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">3,5K</param>
@@ -44511,7 +44587,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">3,5K</param>
@@ -44691,7 +44767,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">6,5K</param>
@@ -44711,7 +44787,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">4K</param>
@@ -44731,7 +44807,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">4K</param>
@@ -44751,7 +44827,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">4K</param>
@@ -44771,7 +44847,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">3K</param>
@@ -44791,7 +44867,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1,8K</param>
@@ -44811,7 +44887,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1,8K</param>
@@ -44831,7 +44907,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">1,8K</param>
@@ -44851,7 +44927,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">9K</param>
@@ -44871,7 +44947,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">9K</param>
@@ -44891,7 +44967,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">9K</param>
@@ -44911,7 +44987,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">9K</param>
@@ -44931,7 +45007,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">3K</param>
@@ -44951,7 +45027,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,3K</param>
@@ -44971,7 +45047,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,3K</param>
@@ -44991,7 +45067,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,3K</param>
@@ -45330,7 +45406,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер TN-221Y Konica-Minolta bizhub C227/С287-серия, 21К (O) жёлтый A8K3250]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Коды расходников">A8K3250, TN-221Y, C227</param>
@@ -45348,7 +45424,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер TN-221M Konica-Minolta bizhub C227/С287-серия, 21К (O) малиновый A8K3350]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Коды расходников">A8K3350, TN-221M, C227</param>
@@ -45366,7 +45442,7 @@ DUNT-0699RS21/DUNT-0699RSZZ Блок проявки Sharp AR5516/5520 (O), на 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер TN-221C Konica-Minolta bizhub C227/С287-серия, 21К (O) голубой A8K3450]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Коды расходников">A8K3450, TN-221C, C227</param>
@@ -45421,7 +45497,7 @@ B5L37-67901/B5L37A Бункер отработанного тонера HP CLJ M
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-картридж</param>
+<param name="Тип">Фотобарабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Коды расходников">BPDR20SA</param>
@@ -45457,7 +45533,7 @@ B5L37-67901/B5L37A Бункер отработанного тонера HP CLJ M
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Цвет">Черный</param>
@@ -45476,7 +45552,7 @@ B5L37-67901/B5L37A Бункер отработанного тонера HP CLJ M
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Цвет">Черный</param>
@@ -45495,7 +45571,7 @@ B5L37-67901/B5L37A Бункер отработанного тонера HP CLJ M
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Цвет">Голубой</param>
@@ -45514,7 +45590,7 @@ B5L37-67901/B5L37A Бункер отработанного тонера HP CLJ M
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Цвет">Голубой</param>
@@ -45723,7 +45799,7 @@ B5L37-67901/B5L37A Бункер отработанного тонера HP CLJ M
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T00R240, L7160/7180</param>
@@ -45741,7 +45817,7 @@ B5L37-67901/B5L37A Бункер отработанного тонера HP CLJ M
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Черный</param>
@@ -45760,7 +45836,7 @@ B5L37-67901/B5L37A Бункер отработанного тонера HP CLJ M
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -45779,7 +45855,7 @@ B5L37-67901/B5L37A Бункер отработанного тонера HP CLJ M
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -45798,7 +45874,7 @@ B5L37-67901/B5L37A Бункер отработанного тонера HP CLJ M
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
@@ -45817,7 +45893,7 @@ B5L37-67901/B5L37A Бункер отработанного тонера HP CLJ M
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Коды расходников">C13T03P14A, M1100/1120/2140</param>
@@ -45911,7 +45987,7 @@ B5L37-67901/B5L37A Бункер отработанного тонера HP CLJ M
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">CMY+Bk</param>
@@ -46095,7 +46171,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) TF2CR для CANON iR ADVANCE C5051 (CET), 1000г/пак, CET121087,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">CET121087, C-EXV28/C-EXV29, TF2CR, C5051</param>
@@ -51633,7 +51709,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) TF11D для CANON iR ADVANCE C5535 (CET), 20кг/мешок, CET151005,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">CET151005, C-EXV51, TF11D, C5535</param>
@@ -51651,7 +51727,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) TF11D для CANON iR ADVANCE C5535 (CET), 250г/бут, CET151005D-250,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">CET151005D-250, C-EXV51, TF11D, C5535</param>
@@ -51669,7 +51745,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) CE08-D для XEROX IVC2270 (Japan), 25кг/мешок, (унив.), CET151009,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">CET151009, 106R04057/106R04054, CE08-D, IVC2270</param>
@@ -51687,7 +51763,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) CE08-D для XEROX IVC2270 (Japan), 450г/бут, (унив.), CET151009450,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">CET151009450, 106R04057/106R04054, CE08-D, IVC2270</param>
@@ -51705,7 +51781,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) CE28-D для KONICA MINOLTA Bizhub C258/308/368 (Japan), 25кг/мешок, CET151012,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Коды расходников">CET151012, CE28-D, C258/308/368</param>
@@ -51723,7 +51799,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) TF8D для CANON iR C3125i (CET), 250г/бут, (унив.), CET151015D-250,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">CET151015D-250, C-EXV49/C-EXV54, TF8D</param>
@@ -51741,7 +51817,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) TF8D для CANON iR ADVANCE C3325i (CET), 20кг/мешок, CET151015R, CET151015,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">CET151015R, C-EXV49/C-EXV54, TF8D, CET151015</param>
@@ -51759,7 +51835,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) TF2CR для CANON iR ADVANCE C5051 (CET), 20кг/мешок, CET151016R, CET151016,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">CET151016R, TF2CR, C5051, CET151016</param>
@@ -52787,7 +52863,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера для HP Color LaserJet Enterprise CM4540 MFP (CET), CET3134,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">CET3134, CE265A/CC493-67913, CM4540</param>
@@ -53886,7 +53962,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера для CANON iR ADVANCE C5030 (CET), CET5197,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">CET5197, FM4-8400/FM3-5945, C5030</param>
@@ -53904,7 +53980,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера 108R01124 для Xerox Phaser 6600N, VersaLink C400/405 (CET), CET521001,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">CET521001, 108R01124, 6600N, C400/405</param>
@@ -53922,7 +53998,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера 108R01504 для XEROX VersaLink C8000/9000 (CET), 83000 стр., CET521028,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Ресурс">83000</param>
@@ -53941,7 +54017,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера для KONICA MINOLTA Bizhub C250i (CET), CET521030,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Коды расходников">CET521030, WX-107/AAVAWY1</param>
@@ -53959,7 +54035,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера D2426400 для RICOH MPC2011SP/2504/3004/4504 (CET), CET521031,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Ricoh</param>
 <param name="Коды расходников">CET521031, D2426400, MPC2011SP/2504/3004/4504</param>
@@ -53977,7 +54053,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера для KYOCERA TASKalfa 3050ci (CET), CET521033,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">CET521033, 1902LC0UN0/WT-860</param>
@@ -53995,7 +54071,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера для KONICA MINOLTA Bizhub C3300i (CET), CET521042,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Коды расходников">CET521042, WB-P08/ACDN0Y1</param>
@@ -54013,7 +54089,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера для KONICA MINOLTA AccurioPress C2060 (CET), CET521044,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Коды расходников">CET521044, A50UR70115, C2060</param>
@@ -54031,7 +54107,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера для KONICA MINOLTA Bizhub 552 (CET), CET521045,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Коды расходников">CET521045, A2WY0Y1/WX-102, 552</param>
@@ -54049,7 +54125,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера MX-601HB для SHARP MX-2651/3571/2630N/3051/5051/3061 (CET), CET521048,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Коды расходников">CET521048, MX-601HB, MX-2651/3571/2630N/3051/5051/3061</param>
@@ -54087,7 +54163,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера WT-202 (CET) Canon iR ADV C3325i/C3330i/C3320/C3320L/C3320i CET5274,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">CET5274, WT-202/FM1-A606-030, WT-202, C3320/C3320L</param>
@@ -55707,7 +55783,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера CET Konica-Minolta BizHub C224/C258/C284/C308/ C364/C368 CET7114/WX-103,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Коды расходников">CET7114, WX-103/A4NNWY1, C224/C258/C284/C308, C364/C368, CET7114/WX-103</param>
@@ -56075,7 +56151,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера (CET) для Kyocera Ecosys P3045dn/3050dn/3055dn/3060dn, CET7378/WT-3100,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">CET7378, WT-3100/WT-3200, CET7378/WT-3100</param>
@@ -56132,7 +56208,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера для SHARP MX-M364N (CET), CET7697,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Коды расходников">CET7697, MX-560HB, MX-M364N</param>
@@ -56188,7 +56264,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера для XEROX WorkCentre 7425 (CET), CET7947,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">CET7947, 008R13061/CWAA0751, 7425</param>
@@ -56226,7 +56302,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера 008R13089 для XEROX WorkCentre 7120/7125/7225 (CET), CET7972,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">CET7972, CWAA0777/008R13089, 008R13089, 7120/7125/7225</param>
@@ -56244,7 +56320,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера CWAA0869 для XEROX DocuCentre SC2020/2021 (CET), CET7979,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">CET7979, CWAA0869, SC2020/2021</param>
@@ -56830,7 +56906,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) 6/7/8 для KONICA MINOLTA Bizhub C220 (CET), 25кг/мешок, CET8772,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Коды расходников">CET8772, TN-321/TN-322/TN-324, 6/7/8, C220</param>
@@ -57377,7 +57453,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Черный</param>
@@ -57396,7 +57472,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-картридж</param>
+<param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">CF232A, 32A, M203/MFP, M227</param>
@@ -57524,7 +57600,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-картридж</param>
+<param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">CF257-67902, CF257A, 57A</param>
@@ -57542,7 +57618,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-картридж</param>
+<param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Черный</param>
@@ -57602,6 +57678,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">CF283AF, CF283AD, 83A, M125/M127</param>
 <param name="Модель">CF283AF</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTLAS_ORIG</param>
 </offer>
 
@@ -57985,7 +58062,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера WT-1110 для KYOCERA FS-1040/1060/1020MFP (CET), DGP0743,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">DGP0743, 302M293030/WT-1110, WT-1110, FS-1040/1060/1020MFP</param>
@@ -58003,7 +58080,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера для KYOCERA FS-6025MFP (CET), DGP0758,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">DGP0758, 2K393130/WT-475, FS-6025MFP</param>
@@ -58021,7 +58098,7 @@ CET121077D100 Носитель (девелопер) (СЕТ) CE28-D Konica Minol
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Бункер отработанного тонера 108R01416 для XEROX Phaser 6510, WorkCentre 6515 (CET), DGP0759,]]></description>
-<param name="Тип">Контейнер для отработанного тонера</param>
+<param name="Тип">Бункер отработанного тонера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">DGP0759, 108R01416, 6510, 6515</param>
@@ -58865,6 +58942,7 @@ DV-8115C Блок проявки (Тех.упак.) Kyocera M8124cidn/M8130cidn 
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">DV-8115C-OEM, 302P393021, DV-8115C</param>
 <param name="Модель">DV-8115C-OEM</param>
+<param name="Цвет">Голубой</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -58883,6 +58961,7 @@ DV-8115M Блок проявки (Тех.упак.) Kyocera M8124cidn/M8130cidn 
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">DV-8115M-OEM, 302P393041, DV-8115M</param>
 <param name="Модель">DV-8115M-OEM</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -58901,6 +58980,7 @@ DV-8115Y Блок проявки (Тех.упак.) Kyocera M8124cidn/M8130cidn 
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">DV-8115Y-OEM, 302P393051, DV-8115Y</param>
 <param name="Модель">DV-8115Y-OEM</param>
+<param name="Цвет">Желтый</param>
 <param name="Категория VTT">PARTSPRINT_DEVUN</param>
 </offer>
 
@@ -59457,6 +59537,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">HB-440XL-441XL-set, HB440XL-441XLset, 440XL-441XL, MG2140/3140</param>
 <param name="Модель">HB440XL-441XLset</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -60130,7 +60211,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Драм-юнит</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Huawei</param>
 <param name="Ресурс">15K</param>
@@ -60305,6 +60386,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <param name="Ресурс">0,6K</param>
 <param name="Коды расходников">HB-HP-652XL-Bk, F6V25AE, 652XL, HB-F6V25AE, 1115/2135/3635/3636</param>
 <param name="Модель">HB-HP-652XL-Bk</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -60329,6 +60411,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <param name="Ресурс">0,45K</param>
 <param name="Коды расходников">HB-HP-652XL-Col, F6V24AE, 652XL, HB-F6V24AE, 1115/2135/3635/3636</param>
 <param name="Модель">HB-HP-652XL-Col</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -60934,6 +61017,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">HB-PFI5100PM, HB-CAN-PFI-5100PM, PFI-5100PM, PRO-310</param>
 <param name="Модель">HB-CAN-PFI-5100PM</param>
+<param name="Цвет">Черный</param>
 <param name="Категория VTT">CARTINJ_ORIG</param>
 </offer>
 
@@ -62070,7 +62154,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">10K</param>
@@ -62090,7 +62174,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">3K</param>
@@ -63323,7 +63407,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Барабан NetProduct для Xerox VersaLink B600/B605/B610/B615, 60К]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">N-OPC-XRB600, N-OPC-XR-VLINK-B600, B600/B605/B610/B615</param>
@@ -63341,7 +63425,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-юнит</param>
+<param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Коды расходников">N-OPC-XRB600-PR, N-OPC-XR-VLINK-B600-PR, B600/B605/B610/B615</param>
@@ -63588,7 +63672,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">3K</param>
@@ -63608,7 +63692,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер-картридж NetProduct (N-TN-2560XL) для Brother HL-L2400D/L2440DW/MFC L2805DW/2885/DCP L2640, 3K]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">3K</param>
@@ -63631,7 +63715,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">6K</param>
@@ -63651,7 +63735,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">6K</param>
@@ -63674,7 +63758,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Ресурс">2,6K</param>
@@ -63901,7 +63985,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) Type 024 для CANON iR ADVANCE C3320i (Japan), 230г/бут, OSP0024-D230,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Коды расходников">OSP0024-D230, 024</param>
@@ -63919,7 +64003,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) PK216 для KYOCERA TASKalfa 3253ci (Japan), 200г/бут, (унив.), OSP0216D-200,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera-Mita</param>
 <param name="Коды расходников">OSP0216D-200, TK-8335/TK-8345, PK216</param>
@@ -63937,7 +64021,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель (девелопер) Type 416 для KONICA MINOLTA Bizhub C4050i (Japan), 10кг/мешок, OSP0416D,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Коды расходников">OSP0416D, TNP79K/TNP80K/TNP81K, 416</param>
@@ -63955,7 +64039,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель Type 523 для RICOH Pro C5100/C7100/C9100 (Japan), 10кг/мешок, (унив.), OSP0523D, OSP0523-D,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Ricoh</param>
 <param name="Коды расходников">OSP0523D, 828225/828402/828350, 523, C5100/C7100/C9100, OSP0523-D</param>
@@ -63973,7 +64057,7 @@ DV-8305Y Блок проявки (Тех.упак) Kyocera TASKalfa 3050ci/3550c
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Носитель Type 523 для RICOH Pro C5100/C7100/C9100 (Japan), 400г/бут, (унив.), OSP0523D400,]]></description>
-<param name="Тип">Девелопер</param>
+<param name="Тип">Носитель девелопера</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Ricoh</param>
 <param name="Коды расходников">OSP0523D400, 828225/828402/828350, 523, C5100/C7100/C9100</param>
@@ -64310,7 +64394,7 @@ RM2-6613/P1B94A Бункер сбора отработанного тонера 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Коды расходников">SHARP35, MX237GT, AR-6020/6023/6026N/6031/7024</param>
@@ -64346,7 +64430,7 @@ RM2-6613/P1B94A Бункер сбора отработанного тонера 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Тонер-картридж</param>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Коды расходников">SHARP88, MX238GT, AR6020/60236026/6031/7024, 8.4K</param>
@@ -64401,7 +64485,7 @@ RM2-6613/P1B94A Бункер сбора отработанного тонера 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Картридж</param>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Pantum</param>
 <param name="Цвет">Черный</param>
@@ -64551,7 +64635,7 @@ RM2-6613/P1B94A Бункер сбора отработанного тонера 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
-<param name="Тип">Драм-картридж</param>
+<param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Коды расходников">W1104A, 104A</param>
