@@ -3,10 +3,9 @@
 Path: scripts/build_vtt.py
 
 VTT adapter.
-v6:
-- same category-first logic;
-- same supplier scope;
-- faster page fetch with slightly higher worker count;
+v7:
+- same coverage and category scope;
+- safer worker exceptions handling;
 - no price/photo logic changes in this patch.
 """
 
@@ -32,7 +31,7 @@ def _print_summary(*, before: int, after: int, raw_out_file: str, out_file: str,
     print("=" * 72)
     print("[VTT] build summary")
     print("=" * 72)
-    print("version: build_vtt_v6_source_fast_builder_clean")
+    print("version: build_vtt_v7_pool_title_params")
     print(f"before: {before}")
     print(f"after:  {after}")
     print(f"raw_out_file: {raw_out_file}")
@@ -86,7 +85,11 @@ def main() -> int:
             for fut in as_completed(futures):
                 if datetime.utcnow() >= deadline:
                     break
-                raw = fut.result()
+                try:
+                    raw = fut.result()
+                except Exception as exc:
+                    log(f"[VTT] product parse error: {exc}")
+                    continue
                 if not raw:
                     continue
                 offer = build_offer_from_raw(raw, id_prefix="VT")
