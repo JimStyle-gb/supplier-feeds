@@ -23,9 +23,9 @@ jobs:
       VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
       # Осторожное ускорение без смены охвата.
-      VTT_REQUEST_DELAY_MS: 10
+      VTT_REQUEST_DELAY_MS: 8
       VTT_MAX_LISTING_PAGES: 5000
-      VTT_MAX_WORKERS: 14
+      VTT_MAX_WORKERS: 16
       VTT_MAX_CRAWL_MINUTES: 90
       VTT_SOFTFAIL: "false"
 
