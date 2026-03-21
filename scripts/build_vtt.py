@@ -27,6 +27,7 @@ RAW_OUT_FILE = os.getenv("RAW_OUT_FILE", "docs/raw/vtt.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 VTT_QG_REPORT = os.getenv("VTT_QG_REPORT", "docs/raw/vtt_quality_gate.txt")
 
+
 def _print_summary(*, before: int, after: int, raw_out_file: str, out_file: str, qg, availability_true: int, availability_false: int) -> None:
     print("=" * 72)
     print("[VTT] build summary")
@@ -44,6 +45,7 @@ def _print_summary(*, before: int, after: int, raw_out_file: str, out_file: str,
     print(f"availability_true:     {availability_true}")
     print(f"availability_false:    {availability_false}")
     print("=" * 72)
+
 
 def main() -> int:
     cfg = cfg_from_env()
@@ -164,6 +166,7 @@ def main() -> int:
     )
 
     return 0 if qg.ok else 1
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
