@@ -1,0 +1,8 @@
+VTT quality gate
+========================================================================
+feed_path: docs/raw/vtt.yml
+critical_count: 0
+cosmetic_count: 1
+------------------------------------------------------------------------
+cosmetic:
+  - placeholder_pictures_present
