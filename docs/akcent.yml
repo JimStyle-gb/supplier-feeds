@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-21 02:33:40">
+<yml_catalog date="2026-03-22 02:29:00">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-21 02:33:40
-Ближайшая сборка (Алматы)                  | 2026-03-22 02:00:00
-Сколько товаров у поставщика до фильтра    | 1894
+Время сборки (Алматы)                      | 2026-03-22 02:29:00
+Ближайшая сборка (Алматы)                  | 2026-03-23 02:00:00
+Сколько товаров у поставщика до фильтра    | 1892
 Сколько товаров у поставщика после фильтра | 171
 Сколько товаров есть в наличии (true)      | 171
 Сколько товаров нет в наличии (false)      | 0
@@ -2128,7 +2128,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CH81301A0</vendorCode>
 <name>Плоттер Epson SureColor SC-T5700D</name>
 <price>3571900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/a55/2v8s80l97lxt2019er1ky09n52gspe4m.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
