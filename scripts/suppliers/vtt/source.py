@@ -3,11 +3,11 @@
 Path: scripts/suppliers/vtt/source.py
 
 VTT source layer.
-v6:
-- keeps category-first scope;
-- adds requests connection pooling via HTTPAdapter;
-- keeps one configured session shape for master/worker sessions;
-- lighter product parsing: regex first, BeautifulSoup only for params/desc;
+v7:
+- same category-first coverage;
+- stronger HTTP pooling / keep-alive reuse;
+- separate gentle delay for listing pages and near-zero delay for product pages;
+- lighter regex-first parsing for params/desc, BeautifulSoup only as fallback;
 - no price/photo business logic changes.
 """
 
@@ -17,6 +17,7 @@ import html as ihtml
 import os
 import re
 import time
+from collections import deque
 from dataclasses import dataclass, field
 from datetime import datetime
 from html import unescape
@@ -27,6 +28,7 @@ import requests
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+
 
 DEFAULT_CATEGORY_CODES: list[str] = [
     "DRM_CRT",
@@ -67,6 +69,10 @@ _DESC_BLOCK_RE = re.compile(
     r'''<div[^>]+class=["'][^"']*(?:description|catalog_item_descr)[^"']*["'][^>]*>(.*?)</div>''',
     re.I | re.S,
 )
+_DT_DD_RE = re.compile(r"<dt[^>]*>(.*?)</dt>\s*<dd[^>]*>(.*?)</dd>", re.I | re.S)
+_TR_RE = re.compile(r"<tr[^>]*>(.*?)</tr>", re.I | re.S)
+_CELL_RE = re.compile(r"<(?:th|td)[^>]*>(.*?)</(?:th|td)>", re.I | re.S)
+_TAG_RE = re.compile(r"<[^>]+>")
 
 
 def _product_path_re(path: str) -> bool:
@@ -80,10 +86,11 @@ class VTTConfig:
     login_url: str
     login: str
     password: str
-    timeout_s: int = 40
-    request_delay_ms: int = 10
+    timeout_s: int = 35
+    listing_request_delay_ms: int = 6
+    product_request_delay_ms: int = 0
     max_listing_pages: int = 5000
-    max_workers: int = 16
+    max_workers: int = 20
     max_crawl_minutes: float = 90.0
     softfail: bool = False
     categories: list[str] = field(default_factory=lambda: list(DEFAULT_CATEGORY_CODES))
@@ -102,8 +109,12 @@ def _norm_ws(text: str) -> str:
     return " ".join(str(text or "").replace("\xa0", " ").split()).strip()
 
 
-def _html_text(fragment: str) -> str:
-    return _norm_ws(BeautifulSoup(fragment or "", "html.parser").get_text(" ", strip=True))
+def _html_text_fast(fragment: str) -> str:
+    if not fragment:
+        return ""
+    text = _TAG_RE.sub(" ", fragment)
+    text = ihtml.unescape(text)
+    return _norm_ws(text)
 
 
 def _canon_vendor(vendor: str) -> str:
@@ -150,7 +161,7 @@ def _build_retry() -> Retry:
         total=4,
         connect=4,
         read=4,
-        backoff_factor=0.8,
+        backoff_factor=0.7,
         status_forcelist=(429, 500, 502, 503, 504),
         allowed_methods=frozenset({"GET", "POST"}),
         raise_on_status=False,
@@ -159,10 +170,11 @@ def _build_retry() -> Retry:
 
 def _configure_session(session: requests.Session, cfg: VTTConfig) -> requests.Session:
     adapter = HTTPAdapter(
-        pool_connections=max(16, cfg.max_workers + 4),
-        pool_maxsize=max(32, cfg.max_workers * 2),
+        pool_connections=max(32, cfg.max_workers * 2),
+        pool_maxsize=max(64, cfg.max_workers * 4),
         max_retries=_build_retry(),
     )
+    session.trust_env = False
     session.headers.update(
         {
             "User-Agent": UA,
@@ -199,25 +211,26 @@ def cfg_from_env() -> VTTConfig:
         login_url=urljoin(base_url, "/validateLogin"),
         login=(os.getenv("VTT_LOGIN") or "").strip(),
         password=(os.getenv("VTT_PASSWORD") or "").strip(),
-        timeout_s=int((os.getenv("VTT_TIMEOUT_S") or "40").strip() or "40"),
-        request_delay_ms=int((os.getenv("VTT_REQUEST_DELAY_MS") or "10").strip() or "10"),
+        timeout_s=int((os.getenv("VTT_TIMEOUT_S") or "35").strip() or "35"),
+        listing_request_delay_ms=int((os.getenv("VTT_LISTING_REQUEST_DELAY_MS") or os.getenv("VTT_REQUEST_DELAY_MS") or "6").strip() or "6"),
+        product_request_delay_ms=int((os.getenv("VTT_PRODUCT_REQUEST_DELAY_MS") or "0").strip() or "0"),
         max_listing_pages=int((os.getenv("VTT_MAX_LISTING_PAGES") or "5000").strip() or "5000"),
-        max_workers=int((os.getenv("VTT_MAX_WORKERS") or "16").strip() or "16"),
+        max_workers=int((os.getenv("VTT_MAX_WORKERS") or "20").strip() or "20"),
         max_crawl_minutes=float((os.getenv("VTT_MAX_CRAWL_MINUTES") or "90").strip() or "90"),
         softfail=(os.getenv("VTT_SOFTFAIL") or "false").strip().lower() == "true",
         categories=cats,
     )
 
 
-def _get(sess: requests.Session, cfg: VTTConfig, url: str) -> requests.Response:
-    _sleep_ms(cfg.request_delay_ms)
+def _get(sess: requests.Session, cfg: VTTConfig, url: str, *, delay_ms: int) -> requests.Response:
+    _sleep_ms(delay_ms)
     resp = sess.get(url, timeout=cfg.timeout_s, allow_redirects=True)
     resp.raise_for_status()
     return resp
 
 
-def _post(sess: requests.Session, cfg: VTTConfig, url: str, **kwargs) -> requests.Response:
-    _sleep_ms(cfg.request_delay_ms)
+def _post(sess: requests.Session, cfg: VTTConfig, url: str, *, delay_ms: int, **kwargs) -> requests.Response:
+    _sleep_ms(delay_ms)
     resp = sess.post(url, timeout=cfg.timeout_s, allow_redirects=True, **kwargs)
     resp.raise_for_status()
     return resp
@@ -226,16 +239,23 @@ def _post(sess: requests.Session, cfg: VTTConfig, url: str, **kwargs) -> request
 def login(sess: requests.Session, cfg: VTTConfig) -> bool:
     if not cfg.login or not cfg.password:
         return False
-    home = _get(sess, cfg, urljoin(cfg.base_url, "/"))
+    home = _get(sess, cfg, urljoin(cfg.base_url, "/"), delay_ms=cfg.listing_request_delay_ms)
     html = home.text or ""
     m = _META_CSRF_RE.search(html)
     token = m.group(1).strip() if m else ""
     headers = {"Referer": urljoin(cfg.base_url, "/")}
     if token:
         headers["X-CSRF-TOKEN"] = token
-    _post(sess, cfg, cfg.login_url, data={"login": cfg.login, "password": cfg.password}, headers=headers)
+    _post(
+        sess,
+        cfg,
+        cfg.login_url,
+        delay_ms=cfg.listing_request_delay_ms,
+        data={"login": cfg.login, "password": cfg.password},
+        headers=headers,
+    )
     try:
-        chk = _get(sess, cfg, cfg.start_url)
+        chk = _get(sess, cfg, cfg.start_url, delay_ms=cfg.listing_request_delay_ms)
         body = chk.text or ""
         return ("/login" not in chk.url.lower()) and ("Вход для клиентов" not in body)
     except Exception:
@@ -244,17 +264,18 @@ def login(sess: requests.Session, cfg: VTTConfig) -> bool:
 
 def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: list[str], deadline: datetime) -> list[dict[str, Any]]:
     allowed_categories = set(categories)
-    queue = [_normalize_listing_url(_mk_category_url(cfg.base_url, code)) for code in categories]
+    base_netloc = urlparse(cfg.base_url).netloc
+    queue = deque(_normalize_listing_url(_mk_category_url(cfg.base_url, code)) for code in categories)
     seen_listings: set[str] = set()
     product_to_categories: dict[str, set[str]] = {}
 
     while queue and len(seen_listings) < cfg.max_listing_pages and datetime.utcnow() < deadline:
-        url = queue.pop(0)
+        url = queue.popleft()
         if url in seen_listings:
             continue
         seen_listings.add(url)
         try:
-            resp = _get(sess, cfg, url)
+            resp = _get(sess, cfg, url, delay_ms=cfg.listing_request_delay_ms)
             html = resp.text or ""
         except Exception as exc:
             log(f"[VTT] listing error: {url} :: {exc}")
@@ -268,7 +289,7 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
                 continue
             abs_url = urljoin(resp.url, href)
             p = urlparse(abs_url)
-            if p.netloc != urlparse(cfg.base_url).netloc:
+            if p.netloc != base_netloc:
                 continue
             if p.path.lower().startswith("/catalog/") and not p.query and _product_path_re(p.path):
                 rec = product_to_categories.setdefault(abs_url, set())
@@ -279,21 +300,18 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
                 cat_values = {x.strip() for x in qs.get("category", []) if x.strip()}
                 if cat_values and cat_values.issubset(allowed_categories):
                     norm = _normalize_listing_url(abs_url)
-                    if norm not in seen_listings and norm not in queue:
+                    if norm not in seen_listings:
                         queue.append(norm)
 
-    return [
-        {"url": url, "source_categories": sorted(list(cats))}
-        for url, cats in sorted(product_to_categories.items(), key=lambda kv: kv[0])
-    ]
+    return [{"url": url, "source_categories": sorted(list(cats))} for url, cats in sorted(product_to_categories.items(), key=lambda kv: kv[0])]
 
 
 def _extract_title(html: str) -> str:
     m = _H1_RE.search(html)
     if m:
-        return _html_text(m.group(1))
+        return _html_text_fast(m.group(1))
     m = _TITLE_RE.search(html)
-    return _html_text(m.group(1)) if m else ""
+    return _html_text_fast(m.group(1)) if m else ""
 
 
 def _extract_meta_desc(html: str) -> str:
@@ -330,9 +348,42 @@ def _extract_images_from_html(page_url: str, html: str) -> list[str]:
     return out
 
 
-def _extract_params_and_desc(html: str) -> tuple[list[tuple[str, str]], str]:
-    soup = BeautifulSoup(html, "html.parser")
+def _extract_params_and_desc_fast(html: str) -> tuple[list[tuple[str, str]], str]:
     params: list[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+
+    for key_html, val_html in _DT_DD_RE.findall(html or ""):
+        key = _html_text_fast(key_html).strip(":")
+        val = _html_text_fast(val_html)
+        if key and val and (key, val) not in seen:
+            seen.add((key, val))
+            params.append((key, val))
+
+    if not params:
+        for tr_html in _TR_RE.findall(html or ""):
+            cells = _CELL_RE.findall(tr_html)
+            if len(cells) < 2:
+                continue
+            key = _html_text_fast(cells[0]).strip(":")
+            val = _html_text_fast(cells[1])
+            if key and val and (key, val) not in seen:
+                seen.add((key, val))
+                params.append((key, val))
+
+    desc = ""
+    m = _DESC_BLOCK_RE.search(html or "")
+    if m:
+        desc = _html_text_fast(m.group(1))
+    return params, desc
+
+
+def _extract_params_and_desc(html: str) -> tuple[list[tuple[str, str]], str]:
+    params, desc = _extract_params_and_desc_fast(html)
+    if params or desc:
+        return params, desc
+
+    soup = BeautifulSoup(html or "", "lxml")
+    params = []
     seen: set[tuple[str, str]] = set()
 
     for box in soup.select("div.description.catalog_item_descr, div.description"):
@@ -358,10 +409,10 @@ def _extract_params_and_desc(html: str) -> tuple[list[tuple[str, str]], str]:
                     seen.add((key, val))
                     params.append((key, val))
 
-    desc = ""
-    m = _DESC_BLOCK_RE.search(html)
-    if m:
-        desc = _html_text(m.group(1))
+    if not desc:
+        m = _DESC_BLOCK_RE.search(html or "")
+        if m:
+            desc = _html_text_fast(m.group(1))
     return params, desc
 
 
@@ -394,7 +445,7 @@ def parse_product_page_from_index(sess: requests.Session, cfg: VTTConfig, item: 
     url = _norm_ws(item.get("url"))
     if not url:
         return None
-    resp = _get(sess, cfg, url)
+    resp = _get(sess, cfg, url, delay_ms=cfg.product_request_delay_ms)
     html = resp.text or ""
     title = _extract_title(html)
     if not title:
