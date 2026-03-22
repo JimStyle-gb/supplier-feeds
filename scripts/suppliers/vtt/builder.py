@@ -3,11 +3,12 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v6:
+v7:
 - keeps RAW params clean before core;
 - removes duplicate leading codes from title;
 - treats (O)/(О)/OEM as original marker;
 - appends "(оригинал)" to name once;
+- removes duplicated trailing part numbers from title;
 - cleans compatibility from original marker, part number, color and volume tails;
 - keeps only useful product params in output;
 - does not change price/photo logic.
@@ -95,6 +96,7 @@ SERVICE_DESC_RE = re.compile(
     re.I,
 )
 ORIGINAL_MARK_RE = re.compile(r"(?<!\w)\((?:O|О|OEM)\)(?!\w)|\bоригинал(?:ьн(?:ый|ая|ое|ые))?\b", re.I)
+TRAIL_PART_RE = re.compile(r"(?:,?\s*[A-Z0-9][A-Z0-9\-./]{2,})+$", re.I)
 COLOR_TAIL_RE = re.compile(
     r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|"
     r"cyan|yellow|magenta|grey|gray|red|blue|"
@@ -213,9 +215,11 @@ def _cleanup_compat(value: str, vendor: str, part_number: str = "") -> str:
     compat = ORIGINAL_MARK_RE.sub("", compat)
     if part_number:
         compat = re.sub(rf"(?<!\w){re.escape(part_number)}(?!\w)", "", compat, flags=re.I)
+    compat = TRAIL_PART_RE.sub("", compat).strip(" ,.;")
     compat = COLOR_TAIL_RE.sub("", compat).strip(" ,.;")
     compat = VOLUME_TAIL_RE.sub("", compat).strip(" ,.;")
     compat = RESOURCE_TAIL_RE.sub("", compat).strip(" ,.;")
+    compat = re.sub(r"\s*,\s*,+", ", ", compat)
     compat = re.sub(r"\s{2,}", " ", compat).strip(" ,.;")
     if vendor and compat and not compat.upper().startswith(vendor.upper()):
         compat = f"{vendor} {compat}"
@@ -530,6 +534,9 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
     type_name = _infer_type(source_categories, clean_title)
     tech = _infer_tech(source_categories, type_name, clean_title)
     part_number = _extract_part_number(raw, raw.get("params") or [], clean_title)
+    if part_number:
+        title = re.sub(rf"(,?\\s*{re.escape(part_number)})+$", "", title).strip(" ,") + (" (оригинал)" if original_flag and not title.endswith("(оригинал)") else "")
+        title = _norm_ws(title)
     compat = _extract_compat(clean_title, vendor, raw.get("params") or [], _s(raw.get("description_body")), part_number)
     resource = _extract_resource(clean_title, raw.get("params") or [], _s(raw.get("description_body")))
     codes = _collect_codes(raw, raw.get("params") or [], resource, part_number)
