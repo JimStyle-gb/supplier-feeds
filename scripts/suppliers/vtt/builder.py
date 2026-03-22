@@ -3,13 +3,16 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v5:
+v6:
+- supplier RAW stays clean before core;
 - keeps only useful product params in RAW;
 - removes internal supplier/logistics params from output;
 - renames "Модель" role to "Партномер";
 - removes "Категория VTT" from output params;
 - keeps "Для бренда" as-is;
 - title-first type inference, including titles with code before type;
+- treats (O)/(О) as originality marker:
+  removes it from compatibility noise and appends "(оригинал)" to title once;
 - cleaner compatibility/resource/description/code extraction;
 - does not change price/photo logic.
 """
@@ -58,7 +61,6 @@ TECH_BY_CATEGORY: dict[str, str] = {
     "PARTSPRINT_DEVUN": "Лазерная",
 }
 
-# Не пускаем в feed внутренние / складские supplier-поля.
 SKIP_PARAM_KEYS = {
     "Артикул",
     "Штрих-код",
@@ -114,8 +116,10 @@ SERVICE_DESC_RE = re.compile(
     r"Москва, до новой поставки, дней)\s*[:\-][^.;\n]*",
     re.I,
 )
+ORIGINAL_MARK_RE = re.compile(r"\((?:O|О)\)", re.I)
+ORIGINAL_WORD_RE = re.compile(r"\bоригинал(?:ьн\w+)?\b", re.I)
 COMPAT_NOISE_RE = re.compile(
-    r"\s*(?:\((?:O|OEM)\)|,\s*(?:OEM|O)\b|,\s*[A-Z0-9]{3,}\b|\b[0-9]+(?:[.,][0-9]+)?\s*[kк]\b)\s*$",
+    r"\s*(?:\((?:O|О|OEM)\)|,\s*(?:OEM|O|О)\b|,\s*[A-Z0-9]{3,}\b|\b[0-9]+(?:[.,][0-9]+)?\s*[kк]\b)\s*$",
     re.I,
 )
 
@@ -142,10 +146,42 @@ def _canon_vendor(vendor: str) -> str:
     return mapping.get(low, v)
 
 
+def _has_original_marker(*values: str) -> bool:
+    for value in values:
+        text = _s(value)
+        if not text:
+            continue
+        if ORIGINAL_MARK_RE.search(text):
+            return True
+        if ORIGINAL_WORD_RE.search(text):
+            return True
+    return False
+
+
+def _strip_original_markers(text: str) -> str:
+    value = _norm_ws(text)
+    value = ORIGINAL_MARK_RE.sub("", value)
+    return _norm_ws(value).strip(" ,.;")
+
+
 def _clean_title(title: str) -> str:
     title = _norm_ws(title)
     title = TITLE_TAIL_RE.sub("", title).strip(" ,.-")
+    title = _strip_original_markers(title)
     return _norm_ws(title)
+
+
+def _append_original_suffix(title: str, is_original: bool) -> str:
+    clean = _clean_title(title)
+    if not clean:
+        return clean
+    if not is_original:
+        return clean
+    if ORIGINAL_WORD_RE.search(clean):
+        return clean
+    if clean.endswith("(оригинал)"):
+        return clean
+    return f"{clean} (оригинал)"
 
 
 def _mk_oid(sku: str, title: str) -> str:
@@ -197,7 +233,7 @@ def _extract_resource(title: str, params: Sequence[tuple[str, str]], desc: str) 
 
 
 def _cleanup_compat(value: str, vendor: str) -> str:
-    compat = _norm_ws(value).strip(" ,.;")
+    compat = _strip_original_markers(value).strip(" ,.;")
     if not compat:
         return ""
     while True:
@@ -429,7 +465,7 @@ def _clean_desc_body(desc_body: str) -> str:
     return _norm_ws(body)
 
 
-def _build_native_desc(title: str, type_name: str, part_number: str, compat: str, resource: str, color: str, desc_body: str) -> str:
+def _build_native_desc(title: str, type_name: str, part_number: str, compat: str, resource: str, color: str, desc_body: str, is_original: bool) -> str:
     parts: list[str] = []
     if type_name:
         parts.append(f"Тип: {type_name}")
@@ -441,6 +477,8 @@ def _build_native_desc(title: str, type_name: str, part_number: str, compat: str
         parts.append(f"Ресурс: {resource}")
     if color:
         parts.append(f"Цвет: {color}")
+    if is_original:
+        parts.append("Оригинальность: Оригинал")
     head = "; ".join(parts)
     body = _clean_desc_body(desc_body)
     if body and body.casefold() != title.casefold():
@@ -503,19 +541,29 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number
 
 
 def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None:
-    title = _clean_title(_norm_ws(raw.get("name")))
+    raw_name = _norm_ws(raw.get("name"))
+    raw_desc = _s(raw.get("description_body") or raw.get("description_meta"))
+    raw_params = raw.get("params") or []
+
+    is_original = _has_original_marker(
+        raw_name,
+        raw_desc,
+        *[_s(v) for _, v in raw_params],
+    )
+
+    title = _append_original_suffix(raw_name, is_original)
     if not title:
         return None
 
     sku = _s(raw.get("sku"))
     source_categories = list(raw.get("source_categories") or ([] if not _s(raw.get("category_code")) else [_s(raw.get("category_code"))]))
-    vendor = _guess_vendor(_s(raw.get("vendor")), title, raw.get("params") or [])
+    vendor = _guess_vendor(_s(raw.get("vendor")), title, raw_params)
     type_name = _infer_type(source_categories, title)
     tech = _infer_tech(source_categories, type_name, title)
-    compat = _extract_compat(title, vendor, raw.get("params") or [], _s(raw.get("description_body")))
-    resource = _extract_resource(title, raw.get("params") or [], _s(raw.get("description_body")))
-    part_number = _extract_part_number(raw, raw.get("params") or [], title)
-    codes = _collect_codes(raw, raw.get("params") or [], resource, part_number)
+    compat = _extract_compat(title, vendor, raw_params, raw_desc)
+    resource = _extract_resource(title, raw_params, raw_desc)
+    part_number = _extract_part_number(raw, raw_params, title)
+    codes = _collect_codes(raw, raw_params, resource, part_number)
     params = _merge_params(raw, vendor, type_name, tech, part_number, codes, title, compat, resource)
 
     raw_price = int(raw.get("price_rub_raw") or 0)
@@ -537,7 +585,8 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         compat=compat,
         resource=resource,
         color=color,
-        desc_body=_s(raw.get("description_body") or raw.get("description_meta")),
+        desc_body=raw_desc,
+        is_original=is_original,
     )
 
     oid = _mk_oid(sku, title)
