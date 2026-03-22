@@ -4,16 +4,12 @@ Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
 v6:
-- supplier RAW stays clean before core;
-- keeps only useful product params in RAW;
-- removes internal supplier/logistics params from output;
-- renames "Модель" role to "Партномер";
-- removes "Категория VTT" from output params;
-- keeps "Для бренда" as-is;
-- title-first type inference, including titles with code before type;
-- treats (O)/(О) as originality marker:
-  removes it from compatibility noise and appends "(оригинал)" to title once;
-- cleaner compatibility/resource/description/code extraction;
+- keeps RAW params clean before core;
+- removes duplicate leading codes from title;
+- treats (O)/(О)/OEM as original marker;
+- appends "(оригинал)" to name once;
+- cleans compatibility from original marker, part number, color and volume tails;
+- keeps only useful product params in output;
 - does not change price/photo logic.
 """
 
@@ -84,44 +80,34 @@ CODE_SOURCE_KEYS = {
 }
 
 VENDOR_HINTS = (
-    "HP",
-    "Canon",
-    "Xerox",
-    "Brother",
-    "Kyocera",
-    "Samsung",
-    "Epson",
-    "Ricoh",
-    "Konica Minolta",
-    "Pantum",
-    "Lexmark",
-    "Oki",
-    "Sharp",
-    "Panasonic",
-    "Toshiba",
-    "Develop",
-    "Gestetner",
-    "RISO",
+    "HP", "Canon", "Xerox", "Brother", "Kyocera", "Samsung", "Epson", "Ricoh",
+    "Konica Minolta", "Pantum", "Lexmark", "Oki", "Sharp", "Panasonic",
+    "Toshiba", "Develop", "Gestetner", "RISO",
 )
 
 CODE_TOKEN_RE = re.compile(r"\b[A-Z0-9][A-Z0-9\-./]{2,}\b")
 RES_RE = re.compile(r"(?<!\d)(\d+(?:[.,]\d+)?)\s*([kк]|ml|мл|l|л)\b", re.I)
-TITLE_TAIL_RE = re.compile(
-    r"\s*,?\s*(?:купить|цена|в\s+компании\s+втт|в\s+компании\s+vtt).*$",
-    re.I,
-)
+TITLE_TAIL_RE = re.compile(r"\s*,?\s*(?:купить|цена|в\s+компании\s+втт|в\s+компании\s+vtt).*$", re.I)
 SERVICE_DESC_RE = re.compile(
     r"(?:^|[.;,\n ])(?:Артикул|Штрих-?код|Вендор|Категория|Подкатегория|В упаковке, штук|"
     r"Местный склад, штук|Местный, до новой поставки, дней|Склад Москва, штук|"
     r"Москва, до новой поставки, дней)\s*[:\-][^.;\n]*",
     re.I,
 )
-ORIGINAL_MARK_RE = re.compile(r"\((?:O|О)\)", re.I)
-ORIGINAL_WORD_RE = re.compile(r"\bоригинал(?:ьн\w+)?\b", re.I)
-COMPAT_NOISE_RE = re.compile(
-    r"\s*(?:\((?:O|О|OEM)\)|,\s*(?:OEM|O|О)\b|,\s*[A-Z0-9]{3,}\b|\b[0-9]+(?:[.,][0-9]+)?\s*[kк]\b)\s*$",
+ORIGINAL_MARK_RE = re.compile(r"(?<!\w)\((?:O|О|OEM)\)(?!\w)|\bоригинал(?:ьн(?:ый|ая|ое|ые))?\b", re.I)
+COLOR_TAIL_RE = re.compile(
+    r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|"
+    r"cyan|yellow|magenta|grey|gray|red|blue|"
+    r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|"
+    r"голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|"
+    r"желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
+    r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|"
+    r"сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))+$",
     re.I,
 )
+VOLUME_TAIL_RE = re.compile(r"(?:,?\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l))+$", re.I)
+RESOURCE_TAIL_RE = re.compile(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])+$", re.I)
+DUPLICATE_LEAD_RE = re.compile(r"^([A-Z0-9][A-Z0-9\-./]{2,})\s*,\s*\1\b", re.I)
 
 
 def _s(x: object) -> str:
@@ -146,42 +132,38 @@ def _canon_vendor(vendor: str) -> str:
     return mapping.get(low, v)
 
 
-def _has_original_marker(*values: str) -> bool:
-    for value in values:
-        text = _s(value)
-        if not text:
-            continue
-        if ORIGINAL_MARK_RE.search(text):
-            return True
-        if ORIGINAL_WORD_RE.search(text):
-            return True
-    return False
+def _first_code(text: str) -> str:
+    for code in CODE_TOKEN_RE.findall(text or ""):
+        code = code.strip(".-/")
+        if len(code) >= 3 and re.search(r"\d", code):
+            return code
+    return ""
 
 
-def _strip_original_markers(text: str) -> str:
-    value = _norm_ws(text)
-    value = ORIGINAL_MARK_RE.sub("", value)
-    return _norm_ws(value).strip(" ,.;")
+def _is_original(*parts: str) -> bool:
+    return any(ORIGINAL_MARK_RE.search(_s(x)) for x in parts if _s(x))
 
 
 def _clean_title(title: str) -> str:
     title = _norm_ws(title)
     title = TITLE_TAIL_RE.sub("", title).strip(" ,.-")
-    title = _strip_original_markers(title)
+    title = ORIGINAL_MARK_RE.sub("", title)
+    title = _norm_ws(title).strip(" ,.-")
+    while True:
+        new_title = DUPLICATE_LEAD_RE.sub(r"\1", title).strip(" ,")
+        if new_title == title:
+            break
+        title = new_title
     return _norm_ws(title)
 
 
 def _append_original_suffix(title: str, is_original: bool) -> str:
-    clean = _clean_title(title)
-    if not clean:
-        return clean
+    title = _norm_ws(title)
     if not is_original:
-        return clean
-    if ORIGINAL_WORD_RE.search(clean):
-        return clean
-    if clean.endswith("(оригинал)"):
-        return clean
-    return f"{clean} (оригинал)"
+        return title
+    if "оригинал" in title.casefold():
+        return title
+    return f"{title} (оригинал)"
 
 
 def _mk_oid(sku: str, title: str) -> str:
@@ -206,14 +188,6 @@ def _guess_vendor(raw_vendor: str, title: str, params: Sequence[tuple[str, str]]
     return ""
 
 
-def _first_code(text: str) -> str:
-    for code in CODE_TOKEN_RE.findall(text or ""):
-        code = code.strip(".-/")
-        if len(code) >= 3 and re.search(r"\d", code):
-            return code
-    return ""
-
-
 def _extract_resource(title: str, params: Sequence[tuple[str, str]], desc: str) -> str:
     for key, value in params:
         if _s(key).casefold() == "ресурс" and _norm_ws(value):
@@ -232,25 +206,37 @@ def _extract_resource(title: str, params: Sequence[tuple[str, str]], desc: str) 
     return ""
 
 
-def _cleanup_compat(value: str, vendor: str) -> str:
-    compat = _strip_original_markers(value).strip(" ,.;")
+def _cleanup_compat(value: str, vendor: str, part_number: str = "") -> str:
+    compat = _norm_ws(value).strip(" ,.;")
     if not compat:
         return ""
-    while True:
-        new_val = COMPAT_NOISE_RE.sub("", compat).strip(" ,.;")
-        if new_val == compat:
-            break
-        compat = new_val
+    compat = ORIGINAL_MARK_RE.sub("", compat)
+    if part_number:
+        compat = re.sub(rf"(?<!\w){re.escape(part_number)}(?!\w)", "", compat, flags=re.I)
+    compat = COLOR_TAIL_RE.sub("", compat).strip(" ,.;")
+    compat = VOLUME_TAIL_RE.sub("", compat).strip(" ,.;")
+    compat = RESOURCE_TAIL_RE.sub("", compat).strip(" ,.;")
+    compat = re.sub(r"\s{2,}", " ", compat).strip(" ,.;")
     if vendor and compat and not compat.upper().startswith(vendor.upper()):
         compat = f"{vendor} {compat}"
     return _norm_ws(compat)
 
 
-def _extract_compat(title: str, vendor: str, params: Sequence[tuple[str, str]], desc: str) -> str:
+def _extract_part_number(raw: dict, params: Sequence[tuple[str, str]], title: str) -> str:
+    for key, value in params:
+        if _s(key) in ("Партномер", "Партс-номер", "Каталожный номер", "OEM-номер") and _norm_ws(value):
+            return _norm_ws(value)
+    sku = _s(raw.get("sku"))
+    if sku:
+        return sku
+    return _first_code(title)
+
+
+def _extract_compat(title: str, vendor: str, params: Sequence[tuple[str, str]], desc: str, part_number: str) -> str:
     for key, value in params:
         k = _s(key).casefold()
         if any(x in k for x in ("совмест", "для устройств", "для принтеров", "подходит")):
-            val = _cleanup_compat(_s(value), vendor)
+            val = _cleanup_compat(_s(value), vendor, part_number)
             if val:
                 return val
 
@@ -258,14 +244,14 @@ def _extract_compat(title: str, vendor: str, params: Sequence[tuple[str, str]], 
     if " для " in clean_title.casefold():
         m = re.search(r"\bдля\s+(.+)$", clean_title, re.I)
         if m:
-            compat = _cleanup_compat(m.group(1), vendor)
+            compat = _cleanup_compat(m.group(1), vendor, part_number)
             if compat:
                 return compat
 
     if desc:
         m = re.search(r"(?:совместим(?:ость|ые)?|подходит для|для принтеров|для устройств)\s*[:\-]?\s*([^.;\n]+)", desc, re.I)
         if m:
-            compat = _cleanup_compat(m.group(1), vendor)
+            compat = _cleanup_compat(m.group(1), vendor, part_number)
             if compat:
                 return compat
     return ""
@@ -289,16 +275,6 @@ def _should_keep_code(code: str, resource: str = "") -> bool:
         if code_norm == res_norm:
             return False
     return True
-
-
-def _extract_part_number(raw: dict, params: Sequence[tuple[str, str]], title: str) -> str:
-    for key, value in params:
-        if _s(key) in ("Партномер", "Партс-номер", "Каталожный номер", "OEM-номер") and _norm_ws(value):
-            return _norm_ws(value)
-    sku = _s(raw.get("sku"))
-    if sku:
-        return sku
-    return _first_code(title)
 
 
 def _collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, part_number: str) -> list[str]:
@@ -461,11 +437,12 @@ def _clean_desc_body(desc_body: str) -> str:
     if not body:
         return ""
     body = SERVICE_DESC_RE.sub(" ", body)
+    body = ORIGINAL_MARK_RE.sub("", body)
     body = re.sub(r"\s{2,}", " ", body).strip(" ,.;")
     return _norm_ws(body)
 
 
-def _build_native_desc(title: str, type_name: str, part_number: str, compat: str, resource: str, color: str, desc_body: str, is_original: bool) -> str:
+def _build_native_desc(title: str, type_name: str, part_number: str, compat: str, resource: str, color: str, is_original: bool, desc_body: str) -> str:
     parts: list[str] = []
     if type_name:
         parts.append(f"Тип: {type_name}")
@@ -541,30 +518,22 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number
 
 
 def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None:
-    raw_name = _norm_ws(raw.get("name"))
-    raw_desc = _s(raw.get("description_body") or raw.get("description_meta"))
-    raw_params = raw.get("params") or []
-
-    is_original = _has_original_marker(
-        raw_name,
-        raw_desc,
-        *[_s(v) for _, v in raw_params],
-    )
-
-    title = _append_original_suffix(raw_name, is_original)
+    original_flag = _is_original(_s(raw.get("name")), _s(raw.get("description_body")), _s(raw.get("description_meta")))
+    clean_title = _clean_title(_norm_ws(raw.get("name")))
+    title = _append_original_suffix(clean_title, original_flag)
     if not title:
         return None
 
     sku = _s(raw.get("sku"))
     source_categories = list(raw.get("source_categories") or ([] if not _s(raw.get("category_code")) else [_s(raw.get("category_code"))]))
-    vendor = _guess_vendor(_s(raw.get("vendor")), title, raw_params)
-    type_name = _infer_type(source_categories, title)
-    tech = _infer_tech(source_categories, type_name, title)
-    compat = _extract_compat(title, vendor, raw_params, raw_desc)
-    resource = _extract_resource(title, raw_params, raw_desc)
-    part_number = _extract_part_number(raw, raw_params, title)
-    codes = _collect_codes(raw, raw_params, resource, part_number)
-    params = _merge_params(raw, vendor, type_name, tech, part_number, codes, title, compat, resource)
+    vendor = _guess_vendor(_s(raw.get("vendor")), clean_title, raw.get("params") or [])
+    type_name = _infer_type(source_categories, clean_title)
+    tech = _infer_tech(source_categories, type_name, clean_title)
+    part_number = _extract_part_number(raw, raw.get("params") or [], clean_title)
+    compat = _extract_compat(clean_title, vendor, raw.get("params") or [], _s(raw.get("description_body")), part_number)
+    resource = _extract_resource(clean_title, raw.get("params") or [], _s(raw.get("description_body")))
+    codes = _collect_codes(raw, raw.get("params") or [], resource, part_number)
+    params = _merge_params(raw, vendor, type_name, tech, part_number, codes, clean_title, compat, resource)
 
     raw_price = int(raw.get("price_rub_raw") or 0)
     price = compute_price(raw_price)
@@ -585,11 +554,11 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         compat=compat,
         resource=resource,
         color=color,
-        desc_body=raw_desc,
-        is_original=is_original,
+        is_original=original_flag,
+        desc_body=_s(raw.get("description_body") or raw.get("description_meta")),
     )
 
-    oid = _mk_oid(sku, title)
+    oid = _mk_oid(sku, clean_title)
     if id_prefix and not oid.startswith(id_prefix):
         oid = id_prefix + oid.lstrip()
 
