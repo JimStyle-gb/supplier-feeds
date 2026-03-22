@@ -22,9 +22,11 @@ jobs:
       VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
       VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
-      VTT_REQUEST_DELAY_MS: 8
+      # Патч на ускорение: сохраняем охват, ускоряем только сеть/парсинг.
+      VTT_LISTING_REQUEST_DELAY_MS: 6
+      VTT_PRODUCT_REQUEST_DELAY_MS: 0
       VTT_MAX_LISTING_PAGES: 5000
-      VTT_MAX_WORKERS: 16
+      VTT_MAX_WORKERS: 20
       VTT_MAX_CRAWL_MINUTES: 90
       VTT_SOFTFAIL: "false"
 
@@ -67,6 +69,7 @@ jobs:
           from pathlib import Path
           import py_compile
           import sys
+
           files = [
               "scripts/cs/core.py",
               "scripts/cs/description.py",
@@ -85,6 +88,7 @@ jobs:
               "scripts/suppliers/vtt/builder.py",
               "scripts/suppliers/vtt/quality_gate.py",
           ]
+
           failed = False
           for f in files:
               p = Path(f)
@@ -97,6 +101,7 @@ jobs:
               except Exception as e:
                   failed = True
                   print(f"FAIL: {f}: {e}")
+
           if failed:
               sys.exit(1)
           PY
@@ -131,20 +136,25 @@ jobs:
             fi
             sed '/<!--FEED_META/,/-->/d' "$f" | sed '/^<yml_catalog date=/d' | md5sum | awk '{print $1}'
           }
+
           OLD_HASH=$(norm_hash /tmp/prev_feed.yml)
           NEW_HASH=$(norm_hash docs/vtt.yml)
+
           NO_CHANGES=0
           if [ -n "$OLD_HASH" ] && [ -n "$NEW_HASH" ] && [ "$OLD_HASH" = "$NEW_HASH" ]; then
             NO_CHANGES=1
           fi
+
           TS=$(TZ='Asia/Almaty' date '+%Y-%m-%d %H:%M:%S')
           NOTE=""
           if [ "$NO_CHANGES" -eq 1 ]; then
             NOTE=" (не было изменений)"
           fi
+
           NOW_DOM=$(TZ='Asia/Almaty' date '+%-d')
           NOW_HMS=$(TZ='Asia/Almaty' date '+%H%M%S')
           TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
+
           if [ "$NOW_DOM" -lt 10 ]; then
             NEXT_DATE=$(TZ='Asia/Almaty' date -d "$(date +%Y-%m-10)" '+%Y-%m-%d')
             if [ "$NOW_DOM" -eq 1 ] && [ "$NOW_HMS" -lt "050000" ]; then
@@ -163,14 +173,19 @@ jobs:
               NEXT_DATE="$TODAY"
             fi
           fi
+
           NEXT_RUN="${NEXT_DATE} 05:00:00"
+
           for F in docs/vtt.yml docs/raw/vtt.yml; do
             if [ ! -f "$F" ]; then
               continue
             fi
+
             sed -i -E "s/^<yml_catalog date=\"[^\"]+\">/<yml_catalog date=\"${TS}\">/" "$F" || true
+
             tmp="$F.__tmp"
             : > "$tmp"
+
             while IFS= read -r ln; do
               if [[ "$ln" == Время\ сборки\ \(Алматы\)* ]]; then
                 left="${ln%%|*}"
@@ -186,6 +201,7 @@ jobs:
                 fi
               fi
             done < "$F"
+
             mv "$tmp" "$F"
           done
 
@@ -195,10 +211,12 @@ jobs:
           if [ -f docs/raw/vtt_quality_gate.txt ]; then
             git add docs/raw/vtt_quality_gate.txt
           fi
+
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
+
           git commit -m "build: vtt feed"
           git pull --rebase --autostash
           git push
