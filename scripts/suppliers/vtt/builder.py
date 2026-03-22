@@ -554,4 +554,3 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         params=params,
         native_desc=desc,
     )
-}
