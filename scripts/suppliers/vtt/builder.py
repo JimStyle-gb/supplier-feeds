@@ -3,11 +3,15 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v4:
-- cleans supplier SEO tails from title before RAW/core;
-- removes logistics/internal params from feed;
-- keeps type inference title-first;
-- keeps price/photo logic untouched.
+v5:
+- keeps only useful product params in RAW;
+- removes internal supplier/logistics params from output;
+- renames "Модель" role to "Партномер";
+- removes "Категория VTT" from output params;
+- keeps "Для бренда" as-is;
+- title-first type inference, including titles with code before type;
+- cleaner compatibility/resource/description/code extraction;
+- does not change price/photo logic.
 """
 
 from __future__ import annotations
@@ -54,6 +58,7 @@ TECH_BY_CATEGORY: dict[str, str] = {
     "PARTSPRINT_DEVUN": "Лазерная",
 }
 
+# Не пускаем в feed внутренние / складские supplier-поля.
 SKIP_PARAM_KEYS = {
     "Артикул",
     "Штрих-код",
@@ -65,7 +70,9 @@ SKIP_PARAM_KEYS = {
     "Местный, до новой поставки, дней",
     "Склад Москва, штук",
     "Москва, до новой поставки, дней",
+    "Категория VTT",
 }
+
 CODE_SOURCE_KEYS = {
     "Каталожный номер",
     "OEM-номер",
@@ -73,15 +80,42 @@ CODE_SOURCE_KEYS = {
     "Партномер",
     "Аналоги",
 }
+
 VENDOR_HINTS = (
-    "HP", "Canon", "Xerox", "Brother", "Kyocera", "Samsung", "Epson", "Ricoh",
-    "Konica Minolta", "Pantum", "Lexmark", "Oki", "Sharp", "Panasonic",
-    "Toshiba", "Develop", "Gestetner", "RISO",
+    "HP",
+    "Canon",
+    "Xerox",
+    "Brother",
+    "Kyocera",
+    "Samsung",
+    "Epson",
+    "Ricoh",
+    "Konica Minolta",
+    "Pantum",
+    "Lexmark",
+    "Oki",
+    "Sharp",
+    "Panasonic",
+    "Toshiba",
+    "Develop",
+    "Gestetner",
+    "RISO",
 )
+
 CODE_TOKEN_RE = re.compile(r"\b[A-Z0-9][A-Z0-9\-./]{2,}\b")
-RES_IN_TITLE_RE = re.compile(r"(?<!\d)(\d+(?:[.,]\d+)?)\s*([kк]|ml|мл|l|л)\b", re.I)
+RES_RE = re.compile(r"(?<!\d)(\d+(?:[.,]\d+)?)\s*([kк]|ml|мл|l|л)\b", re.I)
 TITLE_TAIL_RE = re.compile(
     r"\s*,?\s*(?:купить|цена|в\s+компании\s+втт|в\s+компании\s+vtt).*$",
+    re.I,
+)
+SERVICE_DESC_RE = re.compile(
+    r"(?:^|[.;,\n ])(?:Артикул|Штрих-?код|Вендор|Категория|Подкатегория|В упаковке, штук|"
+    r"Местный склад, штук|Местный, до новой поставки, дней|Склад Москва, штук|"
+    r"Москва, до новой поставки, дней)\s*[:\-][^.;\n]*",
+    re.I,
+)
+COMPAT_NOISE_RE = re.compile(
+    r"\s*(?:\((?:O|OEM)\)|,\s*(?:OEM|O)\b|,\s*[A-Z0-9]{3,}\b|\b[0-9]+(?:[.,][0-9]+)?\s*[kк]\b)\s*$",
     re.I,
 )
 
@@ -102,6 +136,8 @@ def _canon_vendor(vendor: str) -> str:
         "kyocera mita": "Kyocera",
         "konica-minolta": "Konica Minolta",
         "konica minolta": "Konica Minolta",
+        "hewlett-packard": "HP",
+        "hewlett packard": "HP",
     }
     return mapping.get(low, v)
 
@@ -147,7 +183,7 @@ def _extract_resource(title: str, params: Sequence[tuple[str, str]], desc: str) 
         if _s(key).casefold() == "ресурс" and _norm_ws(value):
             return _norm_ws(value)
     hay = " | ".join([title, desc])
-    m = RES_IN_TITLE_RE.search(hay)
+    m = RES_RE.search(hay)
     if not m:
         return ""
     unit = m.group(2)
@@ -160,27 +196,46 @@ def _extract_resource(title: str, params: Sequence[tuple[str, str]], desc: str) 
     return ""
 
 
+def _cleanup_compat(value: str, vendor: str) -> str:
+    compat = _norm_ws(value).strip(" ,.;")
+    if not compat:
+        return ""
+    while True:
+        new_val = COMPAT_NOISE_RE.sub("", compat).strip(" ,.;")
+        if new_val == compat:
+            break
+        compat = new_val
+    if vendor and compat and not compat.upper().startswith(vendor.upper()):
+        compat = f"{vendor} {compat}"
+    return _norm_ws(compat)
+
+
 def _extract_compat(title: str, vendor: str, params: Sequence[tuple[str, str]], desc: str) -> str:
     for key, value in params:
         k = _s(key).casefold()
         if any(x in k for x in ("совмест", "для устройств", "для принтеров", "подходит")):
-            val = _norm_ws(value)
+            val = _cleanup_compat(_s(value), vendor)
             if val:
                 return val
-    m = re.search(
-        r"\bдля\s+(.+?)(?:(?:,\s*(?:\d+(?:[.,]\d+)?\s*[kк]|black|cyan|magenta|yellow|grey|gray|red|blue|photo ?black|matt?e?black|ч[её]рн|ж[её]лт|син|голуб|малинов|пурпур|сер|крас))|$)",
-        _norm_ws(title),
-        re.I,
-    )
-    if not m:
-        return ""
-    compat = _norm_ws(m.group(1).strip(" ,"))
-    if vendor and compat and not compat.upper().startswith(vendor.upper()):
-        compat = f"{vendor} {compat}"
-    return compat
+
+    clean_title = _norm_ws(title)
+    if " для " in clean_title.casefold():
+        m = re.search(r"\bдля\s+(.+)$", clean_title, re.I)
+        if m:
+            compat = _cleanup_compat(m.group(1), vendor)
+            if compat:
+                return compat
+
+    if desc:
+        m = re.search(r"(?:совместим(?:ость|ые)?|подходит для|для принтеров|для устройств)\s*[:\-]?\s*([^.;\n]+)", desc, re.I)
+        if m:
+            compat = _cleanup_compat(m.group(1), vendor)
+            if compat:
+                return compat
+    return ""
 
 
-def _should_keep_code(code: str) -> bool:
+def _should_keep_code(code: str, resource: str = "") -> bool:
     code = code.strip(".-/")
     if len(code) < 3:
         return False
@@ -192,17 +247,34 @@ def _should_keep_code(code: str) -> bool:
         return False
     if re.fullmatch(r"\d+(?:[.,]\d+)?[kкmlл]+", code, re.I):
         return False
+    if resource:
+        res_norm = resource.replace(" ", "").replace("мл", "ml").replace("л", "l").casefold()
+        code_norm = code.replace(" ", "").casefold()
+        if code_norm == res_norm:
+            return False
     return True
 
 
-def _collect_codes(raw: dict, params: Sequence[tuple[str, str]]) -> list[str]:
+def _extract_part_number(raw: dict, params: Sequence[tuple[str, str]], title: str) -> str:
+    for key, value in params:
+        if _s(key) in ("Партномер", "Партс-номер", "Каталожный номер", "OEM-номер") and _norm_ws(value):
+            return _norm_ws(value)
+    sku = _s(raw.get("sku"))
+    if sku:
+        return sku
+    return _first_code(title)
+
+
+def _collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, part_number: str) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
 
     def add(val: str) -> None:
         for part in re.split(r"\s*,\s*", _s(val)):
             code = part.strip().strip(".-/")
-            if not _should_keep_code(code):
+            if not _should_keep_code(code, resource):
+                continue
+            if part_number and code.casefold() == part_number.casefold():
                 continue
             if code not in seen:
                 seen.add(code)
@@ -244,8 +316,8 @@ def _infer_type_by_title(title: str) -> str:
         ("картриджи", "Картридж"),
         ("картридж", "Картридж"),
     ]
-    for prefix, normalized in checks:
-        if low.startswith(prefix):
+    for needle, normalized in checks:
+        if low.startswith(needle) or f" {needle}" in low:
             return normalized
     return ""
 
@@ -348,12 +420,21 @@ def _infer_color_from_title(title: str) -> str:
     return ""
 
 
-def _build_native_desc(title: str, type_name: str, model: str, compat: str, resource: str, color: str, desc_body: str) -> str:
+def _clean_desc_body(desc_body: str) -> str:
+    body = _norm_ws(desc_body)
+    if not body:
+        return ""
+    body = SERVICE_DESC_RE.sub(" ", body)
+    body = re.sub(r"\s{2,}", " ", body).strip(" ,.;")
+    return _norm_ws(body)
+
+
+def _build_native_desc(title: str, type_name: str, part_number: str, compat: str, resource: str, color: str, desc_body: str) -> str:
     parts: list[str] = []
     if type_name:
         parts.append(f"Тип: {type_name}")
-    if model:
-        parts.append(f"Модель: {model}")
+    if part_number:
+        parts.append(f"Партномер: {part_number}")
     if compat:
         parts.append(f"Совместимость: {compat}")
     if resource:
@@ -361,13 +442,13 @@ def _build_native_desc(title: str, type_name: str, model: str, compat: str, reso
     if color:
         parts.append(f"Цвет: {color}")
     head = "; ".join(parts)
-    body = _norm_ws(desc_body)
+    body = _clean_desc_body(desc_body)
     if body and body.casefold() != title.casefold():
         return f"{head}. {body}" if head else body
     return head or title
 
 
-def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, codes: list[str], title: str, compat: str, resource: str) -> list[tuple[str, str]]:
+def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number: str, codes: list[str], title: str, compat: str, resource: str) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     color_found = ""
@@ -400,8 +481,12 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, codes: list
             color_found = value or color_found
         if key.casefold() == "ресурс":
             resource = resource or _norm_ws(value)
+        if key in {"Модель", "Партномер"}:
+            continue
         add(key, value)
 
+    if part_number:
+        add("Партномер", part_number)
     if compat:
         add("Совместимость", compat)
     if resource:
@@ -409,24 +494,10 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, codes: list
     if codes:
         add("Коды расходников", ", ".join(codes))
 
-    model = ""
-    for key, value in raw_params:
-        if key in ("Каталожный номер", "OEM-номер", "Партс-номер", "Партномер") and value:
-            model = _norm_ws(value)
-            break
-    if not model and codes:
-        model = codes[0]
-    if model:
-        add("Модель", model)
-
     if not color_found:
         inferred_color = _infer_color_from_title(title)
         if inferred_color:
             add("Цвет", inferred_color)
-
-    src_cats = [c for c in (raw.get("source_categories") or []) if _s(c)]
-    if src_cats:
-        add("Категория VTT", ", ".join(src_cats))
 
     return out
 
@@ -443,8 +514,9 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
     tech = _infer_tech(source_categories, type_name, title)
     compat = _extract_compat(title, vendor, raw.get("params") or [], _s(raw.get("description_body")))
     resource = _extract_resource(title, raw.get("params") or [], _s(raw.get("description_body")))
-    codes = _collect_codes(raw, raw.get("params") or [])
-    params = _merge_params(raw, vendor, type_name, tech, codes, title, compat, resource)
+    part_number = _extract_part_number(raw, raw.get("params") or [], title)
+    codes = _collect_codes(raw, raw.get("params") or [], resource, part_number)
+    params = _merge_params(raw, vendor, type_name, tech, part_number, codes, title, compat, resource)
 
     raw_price = int(raw.get("price_rub_raw") or 0)
     price = compute_price(raw_price)
@@ -453,18 +525,15 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
     if not pictures:
         pictures = ["https://placehold.co/800x800/png?text=No+Photo"]
 
-    model = ""
     color = ""
     for k, v in params:
-        if k == "Модель" and not model:
-            model = _norm_ws(v)
         if k == "Цвет" and not color:
             color = _norm_color(v)
 
     desc = _build_native_desc(
         title=title,
         type_name=type_name,
-        model=model,
+        part_number=part_number,
         compat=compat,
         resource=resource,
         color=color,
@@ -485,3 +554,4 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         params=params,
         native_desc=desc,
     )
+}
