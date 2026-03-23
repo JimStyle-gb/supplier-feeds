@@ -9,12 +9,23 @@ permissions:
   contents: write
 
 jobs:
-  build_vtt:
+  build_vtt_shards:
+    name: build-vtt-${{ matrix.shard_name }}
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 180
     concurrency:
-      group: build_vtt
+      group: build_vtt_${{ matrix.shard_name }}
       cancel-in-progress: true
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - shard_name: shard_a
+            category_codes: CARTLAS_TNR,CARTLAS_COPY,CARTLAS_PRINT,TNR_REFILL,TNR_WASTETON
+          - shard_name: shard_b
+            category_codes: CARTLAS_ORIG,DRM_UNIT,DRM_CRT
+          - shard_name: shard_c
+            category_codes: CARTINJ_ORIG,INK_COMMON,CARTINJ_PRNTHD,CARTINJ_Refill,CARTMAT_CART,DEV_DEV,PARTSPRINT_DEVUN
 
     env:
       TZ: Asia/Almaty
@@ -22,13 +33,71 @@ jobs:
       VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
       VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
-      # Патч на ускорение: сохраняем охват, ускоряем только сеть/парсинг.
-      VTT_LISTING_REQUEST_DELAY_MS: 6
-      VTT_PRODUCT_REQUEST_DELAY_MS: 0
+      VTT_BUILD_MODE: shard
+      VTT_SHARD_NAME: ${{ matrix.shard_name }}
+      VTT_CATEGORY_CODES: ${{ matrix.category_codes }}
+
+      # Умеренная нагрузка на каждый shard, ускорение за счет параллельных jobs.
+      VTT_REQUEST_DELAY_MS: 8
       VTT_MAX_LISTING_PAGES: 5000
-      VTT_MAX_WORKERS: 20
+      VTT_MAX_WORKERS: 10
       VTT_MAX_CRAWL_MINUTES: 90
       VTT_SOFTFAIL: "false"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            pip install requests beautifulsoup4 lxml pyyaml python-dateutil openpyxl
+          fi
+
+      - name: Prepare folders
+        run: mkdir -p docs/debug/vtt_shards
+
+      - name: Smoke test
+        run: |
+          python -m py_compile \
+            scripts/build_vtt.py \
+            scripts/suppliers/vtt/source.py \
+            scripts/suppliers/vtt/builder.py \
+            scripts/suppliers/vtt/quality_gate.py
+
+      - name: Build shard
+        run: python scripts/build_vtt.py
+
+      - name: Upload shard artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: vtt-${{ matrix.shard_name }}
+          path: docs/debug/vtt_shards/${{ matrix.shard_name }}.json
+
+  merge_vtt:
+    name: merge-vtt
+    needs: build_vtt_shards
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    concurrency:
+      group: build_vtt_merge
+      cancel-in-progress: true
+
+    env:
+      TZ: Asia/Almaty
+      VTT_BASE_URL: https://b2b.vtt.ru/
+      VTT_BUILD_MODE: merge
 
       OUT_FILE: docs/vtt.yml
       RAW_OUT_FILE: docs/raw/vtt.yml
@@ -61,50 +130,23 @@ jobs:
 
       - name: Prepare folders
         run: |
-          mkdir -p docs docs/raw
+          mkdir -p docs docs/raw docs/debug/vtt_shards
+          rm -f docs/debug/vtt_shards/*.json || true
 
-      - name: Smoke test (py_compile existing files only)
+      - name: Download shard artifacts
+        uses: actions/download-artifact@v8
+        with:
+          pattern: vtt-shard_*
+          merge-multiple: true
+          path: docs/debug/vtt_shards
+
+      - name: Smoke test
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import py_compile
-          import sys
-
-          files = [
-              "scripts/cs/core.py",
-              "scripts/cs/description.py",
-              "scripts/cs/keywords.py",
-              "scripts/cs/meta.py",
-              "scripts/cs/policy.py",
-              "scripts/cs/pricing.py",
-              "scripts/cs/util.py",
-              "scripts/cs/validators.py",
-              "scripts/cs/writer.py",
-              "scripts/build_vtt.py",
-              "scripts/suppliers/__init__.py",
-              "scripts/suppliers/vtt/__init__.py",
-              "scripts/suppliers/vtt/client.py",
-              "scripts/suppliers/vtt/source.py",
-              "scripts/suppliers/vtt/builder.py",
-              "scripts/suppliers/vtt/quality_gate.py",
-          ]
-
-          failed = False
-          for f in files:
-              p = Path(f)
-              if not p.exists():
-                  print(f"SKIP missing: {f}")
-                  continue
-              try:
-                  py_compile.compile(str(p), doraise=True)
-                  print(f"OK: {f}")
-              except Exception as e:
-                  failed = True
-                  print(f"FAIL: {f}: {e}")
-
-          if failed:
-              sys.exit(1)
-          PY
+          python -m py_compile \
+            scripts/build_vtt.py \
+            scripts/suppliers/vtt/source.py \
+            scripts/suppliers/vtt/builder.py \
+            scripts/suppliers/vtt/quality_gate.py
 
       - name: Snapshot previous feed
         run: |
@@ -115,14 +157,14 @@ jobs:
             : > /tmp/prev_feed.yml
           fi
 
-      - name: Build feed (vtt)
+      - name: Merge shards + build final feeds
         run: python scripts/build_vtt.py
 
       - name: Diagnostics
         run: |
           git status --porcelain || true
           git diff --stat || true
-          ls -la docs docs/raw || true
+          ls -la docs docs/raw docs/debug/vtt_shards || true
           wc -c docs/vtt.yml docs/raw/vtt.yml 2>/dev/null || true
           [ -f docs/raw/vtt_quality_gate.txt ] && sed -n '1,260p' docs/raw/vtt_quality_gate.txt || true
 
@@ -223,7 +265,7 @@ jobs:
 
       - name: Upload VTT build artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: vtt-build-output
           path: |
