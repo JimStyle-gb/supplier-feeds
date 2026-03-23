@@ -3,12 +3,13 @@
 Path: scripts/build_vtt.py
 
 VTT adapter.
-v8:
+v9:
 - supports normal full build;
-- supports shard build via VTT_BUILD_MODE=shard;
+- supports fast shared index build via VTT_BUILD_MODE=index;
+- supports 5-way product-index shard build via VTT_BUILD_MODE=shard_index;
 - supports shard merge via VTT_BUILD_MODE=merge;
-- keeps supplier logic identical for item parsing/building;
-- uses shard mode only to reduce wall-clock time.
+- keeps supplier parsing/building logic unchanged;
+- reduces wall-clock time by balancing shards on actual product count.
 """
 
 from __future__ import annotations
@@ -47,6 +48,7 @@ OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or 
 VTT_QG_REPORT = os.getenv("VTT_QG_REPORT", "docs/raw/vtt_quality_gate.txt")
 ROOT = Path(__file__).resolve().parents[1]
 SHARDS_DIR = ROOT / "docs" / "debug" / "vtt_shards"
+INDEX_FILE = SHARDS_DIR / "index.json"
 
 
 def _print_summary(
@@ -109,20 +111,30 @@ def _safe_write_json(path: Path, payload: dict | list) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def _build_offers_for_cfg(cfg) -> tuple[list[OfferOut], int, list[str]]:
-    deadline = datetime.utcnow() + timedelta(minutes=max(1.0, float(cfg.max_crawl_minutes)))
-
+def _login_or_raise(cfg):
     sess = make_session(cfg)
     if not login(sess, cfg):
         msg = "VTT: авторизация не прошла (проверь VTT_LOGIN/VTT_PASSWORD или доступность сайта)."
         if cfg.softfail:
             log("[SOFTFAIL] " + msg)
-            return [], 0, []
+            return None
         raise RuntimeError(msg)
+    return sess
 
-    index = collect_product_index(sess, cfg, list(cfg.categories), deadline)
-    before = len(index)
-    index_urls = [str(item.get("url") or "") for item in index if str(item.get("url") or "")]
+
+def _collect_index(cfg) -> list[dict]:
+    deadline = datetime.utcnow() + timedelta(minutes=max(1.0, float(cfg.max_crawl_minutes)))
+    sess = _login_or_raise(cfg)
+    if sess is None:
+        return []
+    return collect_product_index(sess, cfg, list(cfg.categories), deadline)
+
+
+def _build_offers_for_index(cfg, index: list[dict]) -> list[OfferOut]:
+    deadline = datetime.utcnow() + timedelta(minutes=max(1.0, float(cfg.max_crawl_minutes)))
+    sess = _login_or_raise(cfg)
+    if sess is None:
+        return []
 
     out_offers: list[OfferOut] = []
     seen_oids: set[str] = set()
@@ -163,30 +175,69 @@ def _build_offers_for_cfg(cfg) -> tuple[list[OfferOut], int, list[str]]:
                 out_offers.append(offer)
 
     out_offers.sort(key=lambda o: o.oid)
-    return out_offers, before, index_urls
+    return out_offers
 
 
-def _run_shard() -> int:
-    shard_name = (os.getenv("VTT_SHARD_NAME") or "shard").strip() or "shard"
+def _run_index() -> int:
     cfg = cfg_from_env()
-    offers, before, index_urls = _build_offers_for_cfg(cfg)
-
+    index = _collect_index(cfg)
     payload = {
-        "shard_name": shard_name,
         "categories": list(cfg.categories),
+        "total": len(index),
+        "index": index,
+    }
+    SHARDS_DIR.mkdir(parents=True, exist_ok=True)
+    _safe_write_json(INDEX_FILE, payload)
+    _safe_write_json(
+        SHARDS_DIR / "index_summary.json",
+        {"total": len(index), "categories": list(cfg.categories)},
+    )
+
+    print("=" * 72)
+    print("[VTT] index summary")
+    print("=" * 72)
+    print("index_file:", INDEX_FILE)
+    print("total:", len(index))
+    print("categories:", ",".join(cfg.categories))
+    print("=" * 72)
+    return 0
+
+
+def _run_shard_index() -> int:
+    cfg = cfg_from_env()
+    shard_name = (os.getenv("VTT_SHARD_NAME") or "shard").strip() or "shard"
+    shard_total = max(1, int((os.getenv("VTT_SHARD_TOTAL") or "5").strip() or "5"))
+    shard_no = int((os.getenv("VTT_SHARD_NO") or "0").strip() or "0")
+
+    if not INDEX_FILE.exists():
+        raise RuntimeError(f"VTT index file not found: {INDEX_FILE}")
+
+    payload = json.loads(INDEX_FILE.read_text(encoding="utf-8"))
+    full_index = list(payload.get("index") or [])
+    before = len(full_index)
+    shard_index = [item for i, item in enumerate(full_index) if i % shard_total == shard_no]
+
+    offers = _build_offers_for_index(cfg, shard_index)
+
+    shard_payload = {
+        "shard_name": shard_name,
+        "shard_no": shard_no,
+        "shard_total": shard_total,
         "before": before,
-        "index_urls": index_urls,
+        "shard_input": len(shard_index),
         "after": len(offers),
         "offers": [_offer_to_dict(x) for x in offers],
     }
     SHARDS_DIR.mkdir(parents=True, exist_ok=True)
-    _safe_write_json(SHARDS_DIR / f"{shard_name}.json", payload)
+    _safe_write_json(SHARDS_DIR / f"{shard_name}.json", shard_payload)
     _safe_write_json(
         SHARDS_DIR / f"{shard_name}_summary.json",
         {
             "shard_name": shard_name,
-            "categories": list(cfg.categories),
+            "shard_no": shard_no,
+            "shard_total": shard_total,
             "before": before,
+            "shard_input": len(shard_index),
             "after": len(offers),
         },
     )
@@ -195,8 +246,10 @@ def _run_shard() -> int:
     print("[VTT] shard summary")
     print("=" * 72)
     print("shard_name:", shard_name)
-    print("categories:", ",".join(cfg.categories))
+    print("shard_no:", shard_no)
+    print("shard_total:", shard_total)
     print("before:", before)
+    print("shard_input:", len(shard_index))
     print("after:", len(offers))
     print("json:", SHARDS_DIR / f"{shard_name}.json")
     print("=" * 72)
@@ -206,18 +259,26 @@ def _run_shard() -> int:
 def _load_shards() -> tuple[list[OfferOut], int]:
     offers: list[OfferOut] = []
     seen_oids: set[str] = set()
-    all_index_urls: set[str] = set()
 
     shard_files = sorted(SHARDS_DIR.glob("*.json"))
-    shard_files = [x for x in shard_files if not x.name.endswith("_summary.json") and x.name != "merge_summary.json"]
+    shard_files = [
+        x for x in shard_files
+        if not x.name.endswith("_summary.json")
+        and x.name not in {"merge_summary.json", "index.json"}
+    ]
     if not shard_files:
         raise RuntimeError("No VTT shard JSON files found for merge.")
 
+    before = 0
+    if INDEX_FILE.exists():
+        try:
+            payload = json.loads(INDEX_FILE.read_text(encoding="utf-8"))
+            before = int(payload.get("total") or 0)
+        except Exception:
+            before = 0
+
     for path in shard_files:
         payload = json.loads(path.read_text(encoding="utf-8"))
-        for url in payload.get("index_urls", []):
-            if url:
-                all_index_urls.add(str(url))
         for row in payload.get("offers", []):
             offer = _dict_to_offer(row)
             if offer.oid in seen_oids:
@@ -226,7 +287,7 @@ def _load_shards() -> tuple[list[OfferOut], int]:
             offers.append(offer)
 
     offers.sort(key=lambda x: x.oid)
-    return offers, len(all_index_urls)
+    return offers, before
 
 
 def _run_merge() -> int:
@@ -290,7 +351,7 @@ def _run_merge() -> int:
     )
 
     _print_summary(
-        version="build_vtt_v8_merge_shards",
+        version="build_vtt_v9_merge_index_shards",
         before=before,
         after=len(offers),
         raw_out_file=RAW_OUT_FILE,
@@ -307,7 +368,9 @@ def _run_full() -> int:
     build_time = now_almaty().replace(tzinfo=None)
     next_run = next_run_dom_at_hour(build_time, 5, (1, 10, 20))
 
-    out_offers, before, _ = _build_offers_for_cfg(cfg)
+    full_index = _collect_index(cfg)
+    before = len(full_index)
+    out_offers = _build_offers_for_index(cfg, full_index)
     after = len(out_offers)
 
     if not out_offers:
@@ -358,7 +421,7 @@ def _run_full() -> int:
     availability_false = after - availability_true
 
     _print_summary(
-        version="build_vtt_v8_full_or_sharded",
+        version="build_vtt_v9_full_indexable",
         before=before,
         after=after,
         raw_out_file=RAW_OUT_FILE,
@@ -372,8 +435,10 @@ def _run_full() -> int:
 
 def main() -> int:
     mode = (os.getenv("VTT_BUILD_MODE") or "full").strip().lower()
-    if mode == "shard":
-        return _run_shard()
+    if mode == "index":
+        return _run_index()
+    if mode == "shard_index":
+        return _run_shard_index()
     if mode == "merge":
         return _run_merge()
     return _run_full()
