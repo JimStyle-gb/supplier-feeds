@@ -20,12 +20,25 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Самый тяжелый блок — отдельно.
           - shard_name: shard_a
-            category_codes: CARTLAS_TNR,CARTLAS_COPY,CARTLAS_PRINT,TNR_REFILL,TNR_WASTETON
+            category_codes: CARTLAS_TNR
+            max_workers: 12
+
+          # Второй по весу блок + мелкие лазерные хвосты.
           - shard_name: shard_b
-            category_codes: CARTLAS_ORIG,DRM_UNIT,DRM_CRT
+            category_codes: CARTLAS_ORIG,TNR_WASTETON,CARTLAS_COPY,CARTLAS_PRINT,TNR_REFILL
+            max_workers: 10
+
+          # Средний блок.
           - shard_name: shard_c
-            category_codes: CARTINJ_ORIG,INK_COMMON,CARTINJ_PRNTHD,CARTINJ_Refill,CARTMAT_CART,DEV_DEV,PARTSPRINT_DEVUN
+            category_codes: CARTINJ_ORIG,DRM_UNIT,DEV_DEV
+            max_workers: 10
+
+          # Легкий / смешанный хвост.
+          - shard_name: shard_d
+            category_codes: INK_COMMON,PARTSPRINT_DEVUN,CARTINJ_PRNTHD,CARTINJ_Refill,CARTMAT_CART,DRM_CRT
+            max_workers: 8
 
     env:
       TZ: Asia/Almaty
@@ -37,10 +50,10 @@ jobs:
       VTT_SHARD_NAME: ${{ matrix.shard_name }}
       VTT_CATEGORY_CODES: ${{ matrix.category_codes }}
 
-      # Умеренная нагрузка на каждый shard, ускорение за счет параллельных jobs.
+      # Аккуратная нагрузка на каждый shard; ускорение за счет лучшего баланса.
       VTT_REQUEST_DELAY_MS: 8
       VTT_MAX_LISTING_PAGES: 5000
-      VTT_MAX_WORKERS: 10
+      VTT_MAX_WORKERS: ${{ matrix.max_workers }}
       VTT_MAX_CRAWL_MINUTES: 90
       VTT_SOFTFAIL: "false"
 
@@ -80,7 +93,7 @@ jobs:
 
       - name: Upload shard artifact
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: vtt-${{ matrix.shard_name }}
           path: docs/debug/vtt_shards/${{ matrix.shard_name }}.json
@@ -134,7 +147,7 @@ jobs:
           rm -f docs/debug/vtt_shards/*.json || true
 
       - name: Download shard artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           pattern: vtt-shard_*
           merge-multiple: true
@@ -265,7 +278,7 @@ jobs:
 
       - name: Upload VTT build artifacts
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: vtt-build-output
           path: |
