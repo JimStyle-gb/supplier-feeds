@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-23 13:18:51">
+<yml_catalog date="2026-03-24 01:46:32">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-03-23 13:18:51
-Ближайшая сборка (Алматы)                  | 2026-03-23 05:00:00
+Время сборки (Алматы)                      | 2026-03-24 01:46:32
+Ближайшая сборка (Алматы)                  | 2026-03-24 05:00:00
 Сколько товаров у поставщика до фильтра    | 3285
 Сколько товаров у поставщика после фильтра | 3205
 Сколько товаров есть в наличии (true)      | 3205
@@ -12469,19 +12469,20 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT2020/2520" available="true">
 <categoryId></categoryId>
 <vendorCode>VT2020/2520</vendorCode>
-<name>Картридж 46 для HP DJ 2020/2520, 0,75К CZ638AE, Color, 150209207 (оригинал)</name>
+<name>Картридж 46 для HP DJ 2020/2520,1,5К CZ637AE, BK, 150209205 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/150209207.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150209205.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: CZ638AE; Совместимость: HP DJ 2020/2520; Ресурс: 0,75K; Оригинальность: Оригинал]]></description>
+Тип: Картридж; Партномер: CZ637AE; Совместимость: HP DJ 2020/2520,1,5К , BK; Ресурс: 1,5K; Цвет: Черный; Оригинальность: Оригинал]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Партномер">CZ638AE</param>
-<param name="Совместимость">HP DJ 2020/2520</param>
-<param name="Ресурс">0,75K</param>
+<param name="Партномер">CZ637AE</param>
+<param name="Совместимость">HP DJ 2020/2520,1,5К , BK</param>
+<param name="Ресурс">1,5K</param>
+<param name="Цвет">Черный</param>
 </offer>
 
 <offer id="VT207A" available="true">
@@ -16970,21 +16971,21 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT307A" available="true">
 <categoryId></categoryId>
 <vendorCode>VT307A</vendorCode>
-<name>Картридж HP 307A для HP CLJ 5225, 7,3К жёлтый CE742A, 989130615 (оригинал)</name>
+<name>Картридж HP 307A для HP CLJ 5225, 7К чёрный CE740A, 989130613 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/989130615.jpg</picture>
+<picture>https://b2b.vtt.ru/images/989130613.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: CE742A; Совместимость: HP CLJ 5225; Ресурс: 7,3K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+Тип: Картридж; Партномер: CE740A; Совместимость: HP CLJ 5225; Ресурс: 7K; Цвет: Черный; Оригинальность: Оригинал]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
-<param name="Партномер">CE742A</param>
+<param name="Партномер">CE740A</param>
 <param name="Совместимость">HP CLJ 5225</param>
-<param name="Ресурс">7,3K</param>
+<param name="Ресурс">7K</param>
 <param name="Коды расходников">307A</param>
-<param name="Цвет">Желтый</param>
+<param name="Цвет">Черный</param>
 </offer>
 
 <offer id="VT30959" available="true">
@@ -21147,9 +21148,9 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT57A" available="true">
 <categoryId></categoryId>
 <vendorCode>VT57A</vendorCode>
-<name>Барабан 57A для HP LJ M436dn, 80К черный CF257-67902, CF257-67902 (оригинал)</name>
+<name>Барабан 57A для HP LJ M436dn, 80К черный CF257A, CF257A (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/CF257-67902.jpg</picture>
+<picture>https://b2b.vtt.ru/images/CF257A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -21157,11 +21158,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
+<param name="Цвет">Черный</param>
 <param name="Партномер">CF257A</param>
 <param name="Совместимость">HP LJ M436dn</param>
 <param name="Ресурс">80K</param>
-<param name="Коды расходников">57A, CF257-67902</param>
-<param name="Цвет">Черный</param>
+<param name="Коды расходников">CF257-67902, 57A</param>
 </offer>
 
 <offer id="VT59X" available="true">
@@ -21205,19 +21206,19 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT6510" available="true">
 <categoryId></categoryId>
 <vendorCode>VT6510</vendorCode>
-<name>Картридж для отработанного тонера Phaser 6510/ WC 6515/ VL C500/505/600/605, 48K 108R01416, 108R01416 (оригинал)</name>
+<name>Тонер-картридж Xerox Phaser 6510/ WC 6515, 5,5К чёрный 106R03488, 106R03488 (оригинал)</name>
 <price>100</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.vtt.ru/images/106R03488.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер; Партномер: 108R01416; Совместимость: Xerox отработанного тонера Phaser 6510/ WC 6515/ VL C500/505/600/605; Ресурс: 48K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер</param>
+Тип: Тонер-картридж; Партномер: 106R03488; Ресурс: 5,5K; Цвет: Черный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
-<param name="Партномер">108R01416</param>
-<param name="Совместимость">Xerox отработанного тонера Phaser 6510/ WC 6515/ VL C500/505/600/605</param>
-<param name="Ресурс">48K</param>
+<param name="Цвет">Черный</param>
+<param name="Партномер">106R03488</param>
+<param name="Ресурс">5,5K</param>
 </offer>
 
 <offer id="VT6510/WC" available="true">
@@ -21847,38 +21848,38 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT711" available="true">
 <categoryId></categoryId>
 <vendorCode>VT711</vendorCode>
-<name>Картридж 711 для HP DJ T120/T520, желтый, 3*29мл CZ136A (3штХупак), 2201218 (оригинал)</name>
+<name>Картридж 711 для HP DJ T120/T520, 80мл чёрный CZ133A, 2201215 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/2201218.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201215.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: CZ136A; Совместимость: HP DJ T120/T520, желтый, 3*29мл (3штХупак); Ресурс: 29 мл; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+Тип: Картридж; Партномер: CZ133A; Совместимость: HP DJ T120/T520; Ресурс: 80 мл; Цвет: Черный; Оригинальность: Оригинал]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Желтый</param>
-<param name="Партномер">CZ136A</param>
-<param name="Совместимость">HP DJ T120/T520, желтый, 3*29мл (3штХупак)</param>
-<param name="Ресурс">29 мл</param>
+<param name="Цвет">Черный</param>
+<param name="Партномер">CZ133A</param>
+<param name="Совместимость">HP DJ T120/T520</param>
+<param name="Ресурс">80 мл</param>
 </offer>
 
 <offer id="VT7120/7125/7220/7225" available="true">
 <categoryId></categoryId>
 <vendorCode>VT7120/7125/7220/7225</vendorCode>
-<name>Тонер-картридж Xerox WC 7120/7125/7220/7225, 15К жёлтый 006R01462, 98968047 (оригинал)</name>
+<name>Тонер-картридж Xerox WC 7120/7125/7220/7225, 15К малиновый 006R01463, 98968044 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/98968047.jpg</picture>
+<picture>https://b2b.vtt.ru/images/98968044.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 006R01462; Ресурс: 15K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+Тип: Тонер-картридж; Партномер: 006R01463; Ресурс: 15K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
-<param name="Партномер">006R01462</param>
+<param name="Партномер">006R01463</param>
 <param name="Ресурс">15K</param>
-<param name="Цвет">Желтый</param>
+<param name="Цвет">Пурпурный</param>
 </offer>
 
 <offer id="VT727" available="true">
@@ -21975,19 +21976,19 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT730" available="true">
 <categoryId></categoryId>
 <vendorCode>VT730</vendorCode>
-<name>Картридж 730 для HP DJ T1700, 130мл голубой P2V62A, P2V62A (оригинал)</name>
+<name>Картридж 730 для HP DJ T1700, 130мл фото чёрный P2V67A, P2V67A (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/P2V62A.jpg</picture>
+<picture>https://b2b.vtt.ru/images/P2V67A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: P2V62A; Совместимость: HP DJ T1700; Ресурс: 130 мл; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+Тип: Картридж; Партномер: P2V67A; Совместимость: HP DJ T1700, 130мл фото; Ресурс: 130 мл; Цвет: Черный; Оригинальность: Оригинал]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Голубой</param>
-<param name="Партномер">P2V62A</param>
-<param name="Совместимость">HP DJ T1700</param>
+<param name="Цвет">Черный</param>
+<param name="Партномер">P2V67A</param>
+<param name="Совместимость">HP DJ T1700, 130мл фото</param>
 <param name="Ресурс">130 мл</param>
 <param name="Коды расходников">T1700</param>
 </offer>
@@ -23895,20 +23896,20 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT933XL" available="true">
 <categoryId></categoryId>
 <vendorCode>VT933XL</vendorCode>
-<name>Картридж 933XL для HP OJ 6100/6600/6700, 825стр magenta CN055AE, 150215724 (оригинал)</name>
+<name>Картридж 933XL для HP OJ 6100/6600/6700, 825стр yellow CN056AE, 150215725 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/150215724.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150215725.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: CN055AE; Совместимость: HP OJ 6100/6600/6700, 825стр; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+Тип: Картридж; Партномер: CN056AE; Совместимость: HP OJ 6100/6600/6700, 825стр; Цвет: Желтый; Оригинальность: Оригинал]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Партномер">CN055AE</param>
+<param name="Партномер">CN056AE</param>
 <param name="Совместимость">HP OJ 6100/6600/6700, 825стр</param>
 <param name="Коды расходников">933XL</param>
-<param name="Цвет">Пурпурный</param>
+<param name="Цвет">Желтый</param>
 </offer>
 
 <offer id="VT934" available="true">
@@ -24731,21 +24732,21 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT953XL" available="true">
 <categoryId></categoryId>
 <vendorCode>VT953XL</vendorCode>
-<name>Картридж 953XL для HP OJP 8710/8715/8720/8730/8210/8725 1,6К F6U17AE, M, 989271096 (оригинал)</name>
+<name>Картридж 953XL для HP OJP 8710/8715/8720/8730/8210/8725 1,6К F6U16AE, C, 989271095 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/989271096.jpg</picture>
+<picture>https://b2b.vtt.ru/images/989271095.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: F6U17AE; Совместимость: HP OJP 8710/8715/8720/8730/8210/8725 1,6К , M; Ресурс: 1,6K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+Тип: Картридж; Партномер: F6U16AE; Совместимость: HP OJP 8710/8715/8720/8730/8210/8725 1,6К , C; Ресурс: 1,6K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Партномер">F6U17AE</param>
-<param name="Совместимость">HP OJP 8710/8715/8720/8730/8210/8725 1,6К , M</param>
+<param name="Партномер">F6U16AE</param>
+<param name="Совместимость">HP OJP 8710/8715/8720/8730/8210/8725 1,6К , C</param>
 <param name="Ресурс">1,6K</param>
 <param name="Коды расходников">953XL</param>
-<param name="Цвет">Пурпурный</param>
+<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VT96001011" available="true">
@@ -42960,18 +42961,18 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTC7020/7025/7030" available="true">
 <categoryId></categoryId>
 <vendorCode>VTC7020/7025/7030</vendorCode>
-<name>Тонер-картридж XEROX VersaLink C7020/7025/7030, 16,5К пурпурный 106R03747, 106R03747 (оригинал)</name>
+<name>Тонер-картридж XEROX VersaLink C7020/7025/7030, 16,5К голубой 106R03748, 106R03748 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/106R03747.jpg</picture>
+<picture>https://b2b.vtt.ru/images/106R03748.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 106R03747; Ресурс: 16,5K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+Тип: Тонер-картридж; Партномер: 106R03748; Ресурс: 16,5K; Цвет: Blue; Оригинальность: Оригинал]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
-<param name="Цвет">Пурпурный</param>
-<param name="Партномер">106R03747</param>
+<param name="Цвет">Blue</param>
+<param name="Партномер">106R03748</param>
 <param name="Ресурс">16,5K</param>
 </offer>
 
@@ -59493,19 +59494,18 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTL4150/4160/L6160/L6170/L6190" available="true">
 <categoryId></categoryId>
 <vendorCode>VTL4150/4160/L6160/L6170/L6190</vendorCode>
-<name>Чернила Epson EcoTank L4150/4160/L6160/L6170/L6190, 70мл голубые C13T03V24A, C13T03V24A (оригинал)</name>
+<name>Чернила Epson EcoTank L4150/4160/L6160/L6170/L6190 4 цвета мультипак C13T03V64A, C13T03V64A (оригинал)</name>
 <price>100</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: C13T03V24A; Ресурс: 70 мл; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+Тип: Чернила; Партномер: C13T03V64A; Цвет: CMY+Bk; Оригинальность: Оригинал]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Голубой</param>
-<param name="Партномер">C13T03V24A</param>
-<param name="Ресурс">70 мл</param>
+<param name="Цвет">CMY+Bk</param>
+<param name="Партномер">C13T03V64A</param>
 </offer>
 
 <offer id="VTL7160/7180" available="true">
@@ -59820,18 +59820,18 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTMP240/260/480" available="true">
 <categoryId></categoryId>
 <vendorCode>VTMP240/260/480</vendorCode>
-<name>Картридж Canon PIXMA MP240/260/480 PG-512, BK, 995631113 (оригинал)</name>
+<name>Картридж Canon PIXMA MP240/260/480 PG-510, BK, 995631112 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/995631113.jpg</picture>
+<picture>https://b2b.vtt.ru/images/995631112.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 2969B007; Цвет: Черный; Оригинальность: Оригинал]]></description>
+Тип: Картридж; Партномер: 2970B007; Цвет: Черный; Оригинальность: Оригинал]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Партномер">2969B007</param>
-<param name="Коды расходников">PG-512</param>
+<param name="Партномер">2970B007</param>
+<param name="Коды расходников">PG-510</param>
 <param name="Цвет">Черный</param>
 </offer>
 
@@ -61373,20 +61373,20 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTSC2020" available="true">
 <categoryId></categoryId>
 <vendorCode>VTSC2020</vendorCode>
-<name>Тонер-картридж Xerox DC SC2020, 3K пурпурный 006R01695, 006R01695 (оригинал)</name>
+<name>Тонер-картридж Xerox DC SC2020, 3K голубой 006R01694, 006R01694 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/006R01695.jpg</picture>
+<picture>https://b2b.vtt.ru/images/006R01694.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 006R01695; Ресурс: 3K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+Тип: Тонер-картридж; Партномер: 006R01694; Ресурс: 3K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
-<param name="Партномер">006R01695</param>
+<param name="Партномер">006R01694</param>
 <param name="Ресурс">3K</param>
 <param name="Коды расходников">SC2020</param>
-<param name="Цвет">Пурпурный</param>
+<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VTSHARP35" available="true">
@@ -61499,18 +61499,18 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTT610/T1100/T1200/T1300/T2300" available="true">
 <categoryId></categoryId>
 <vendorCode>VTT610/T1100/T1200/T1300/T2300</vendorCode>
-<name>Печатающая головка №72 HP DJ T610/T1100/T1200/T1300/T2300 magenta &amp; cyan C9383A, 98900205 (оригинал)</name>
+<name>Печатающая головка №72 HP DJ T610/T1100/T1200/T1300/T2300 photo black &amp; grey C9380A, 9890077 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/98900205.jpg</picture>
+<picture>https://b2b.vtt.ru/images/9890077.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Печатающая головка; Партномер: C9383A; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+Тип: Печатающая головка; Партномер: C9380A; Цвет: Черный; Оригинальность: Оригинал]]></description>
 <param name="Тип">Печатающая головка</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Партномер">C9383A</param>
-<param name="Цвет">Голубой</param>
+<param name="Партномер">C9380A</param>
+<param name="Цвет">Черный</param>
 </offer>
 
 <offer id="VTTK-1170" available="true">
