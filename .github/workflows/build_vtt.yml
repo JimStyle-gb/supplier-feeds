@@ -9,36 +9,13 @@ permissions:
   contents: write
 
 jobs:
-  build_vtt_shards:
-    name: build-vtt-${{ matrix.shard_name }}
+  build_vtt_index:
+    name: build-vtt-index
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 120
     concurrency:
-      group: build_vtt_${{ matrix.shard_name }}
+      group: build_vtt_index
       cancel-in-progress: true
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # Самый тяжелый блок — отдельно.
-          - shard_name: shard_a
-            category_codes: CARTLAS_TNR
-            max_workers: 12
-
-          # Второй по весу блок + мелкие лазерные хвосты.
-          - shard_name: shard_b
-            category_codes: CARTLAS_ORIG,TNR_WASTETON,CARTLAS_COPY,CARTLAS_PRINT,TNR_REFILL
-            max_workers: 10
-
-          # Средний блок.
-          - shard_name: shard_c
-            category_codes: CARTINJ_ORIG,DRM_UNIT,DEV_DEV
-            max_workers: 10
-
-          # Легкий / смешанный хвост.
-          - shard_name: shard_d
-            category_codes: INK_COMMON,PARTSPRINT_DEVUN,CARTINJ_PRNTHD,CARTINJ_Refill,CARTMAT_CART,DRM_CRT
-            max_workers: 8
 
     env:
       TZ: Asia/Almaty
@@ -46,14 +23,10 @@ jobs:
       VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
       VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
-      VTT_BUILD_MODE: shard
-      VTT_SHARD_NAME: ${{ matrix.shard_name }}
-      VTT_CATEGORY_CODES: ${{ matrix.category_codes }}
-
-      # Аккуратная нагрузка на каждый shard; ускорение за счет лучшего баланса.
+      VTT_BUILD_MODE: index
       VTT_REQUEST_DELAY_MS: 8
       VTT_MAX_LISTING_PAGES: 5000
-      VTT_MAX_WORKERS: ${{ matrix.max_workers }}
+      VTT_MAX_WORKERS: 8
       VTT_MAX_CRAWL_MINUTES: 90
       VTT_SOFTFAIL: "false"
 
@@ -88,15 +61,95 @@ jobs:
             scripts/suppliers/vtt/builder.py \
             scripts/suppliers/vtt/quality_gate.py
 
-      - name: Build shard
+      - name: Build shared index
+        run: python scripts/build_vtt.py
+
+      - name: Upload index artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vtt-index
+          path: |
+            docs/debug/vtt_shards/index.json
+            docs/debug/vtt_shards/index_summary.json
+
+  build_vtt_shards:
+    name: build-vtt-shard-${{ matrix.shard_no }}
+    needs: build_vtt_index
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    concurrency:
+      group: build_vtt_shard_${{ matrix.shard_no }}
+      cancel-in-progress: true
+    strategy:
+      fail-fast: false
+      matrix:
+        shard_no: [0, 1, 2, 3, 4]
+
+    env:
+      TZ: Asia/Almaty
+      VTT_BASE_URL: https://b2b.vtt.ru/
+      VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
+      VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
+
+      VTT_BUILD_MODE: shard_index
+      VTT_SHARD_NAME: shard_${{ matrix.shard_no }}
+      VTT_SHARD_NO: ${{ matrix.shard_no }}
+      VTT_SHARD_TOTAL: 5
+
+      # Ускорение за счет равномерного деления по реальному количеству товаров.
+      VTT_REQUEST_DELAY_MS: 8
+      VTT_MAX_LISTING_PAGES: 5000
+      VTT_MAX_WORKERS: 10
+      VTT_MAX_CRAWL_MINUTES: 90
+      VTT_SOFTFAIL: "false"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            pip install requests beautifulsoup4 lxml pyyaml python-dateutil openpyxl
+          fi
+
+      - name: Prepare folders
+        run: mkdir -p docs/debug/vtt_shards
+
+      - name: Download index artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vtt-index
+          path: docs/debug/vtt_shards
+
+      - name: Smoke test
+        run: |
+          python -m py_compile \
+            scripts/build_vtt.py \
+            scripts/suppliers/vtt/source.py \
+            scripts/suppliers/vtt/builder.py \
+            scripts/suppliers/vtt/quality_gate.py
+
+      - name: Build shard from shared index
         run: python scripts/build_vtt.py
 
       - name: Upload shard artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vtt-${{ matrix.shard_name }}
-          path: docs/debug/vtt_shards/${{ matrix.shard_name }}.json
+          name: vtt-shard-${{ matrix.shard_no }}
+          path: docs/debug/vtt_shards/shard_${{ matrix.shard_no }}.json
 
   merge_vtt:
     name: merge-vtt
@@ -146,10 +199,16 @@ jobs:
           mkdir -p docs docs/raw docs/debug/vtt_shards
           rm -f docs/debug/vtt_shards/*.json || true
 
+      - name: Download index artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vtt-index
+          path: docs/debug/vtt_shards
+
       - name: Download shard artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: vtt-shard_*
+          pattern: vtt-shard-*
           merge-multiple: true
           path: docs/debug/vtt_shards
 
