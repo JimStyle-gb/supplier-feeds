@@ -3,14 +3,15 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v7:
+v8:
 - keeps RAW params clean before core;
-- removes duplicate leading codes from title;
+- removes duplicate leading/trailing codes from title;
 - treats (O)/(О)/OEM as original marker;
 - appends "(оригинал)" to name once;
 - removes duplicated trailing part numbers from title;
-- cleans compatibility from original marker, part number, color and volume tails;
+- cleans compatibility from original marker, part number, color/resource/volume tails and trailing device-code noise;
 - keeps only useful product params in output;
+- avoids putting device model codes from compatibility into "Коды расходников";
 - does not change price/photo logic.
 """
 
@@ -110,6 +111,7 @@ COLOR_TAIL_RE = re.compile(
 VOLUME_TAIL_RE = re.compile(r"(?:,?\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l))+$", re.I)
 RESOURCE_TAIL_RE = re.compile(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])+$", re.I)
 DUPLICATE_LEAD_RE = re.compile(r"^([A-Z0-9][A-Z0-9\-./]{2,})\s*,\s*\1\b", re.I)
+TRAIL_DUP_PART_RE = re.compile(r"(?:,?\s*[A-Z0-9][A-Z0-9\-./]{2,})+$", re.I)
 
 
 def _s(x: object) -> str:
@@ -146,6 +148,7 @@ def _is_original(*parts: str) -> bool:
     return any(ORIGINAL_MARK_RE.search(_s(x)) for x in parts if _s(x))
 
 
+
 def _clean_title(title: str) -> str:
     title = _norm_ws(title)
     title = TITLE_TAIL_RE.sub("", title).strip(" ,.-")
@@ -156,8 +159,12 @@ def _clean_title(title: str) -> str:
         if new_title == title:
             break
         title = new_title
+    m = re.match(r"^(.+?)(?:,\s*([A-Z0-9][A-Z0-9\-./]{2,}))$", title, re.I)
+    if m:
+        head, tail = m.group(1), m.group(2)
+        if _first_code(head).casefold() == tail.casefold():
+            title = head
     return _norm_ws(title)
-
 
 def _append_original_suffix(title: str, is_original: bool) -> str:
     title = _norm_ws(title)
@@ -208,23 +215,32 @@ def _extract_resource(title: str, params: Sequence[tuple[str, str]], desc: str) 
     return ""
 
 
+
 def _cleanup_compat(value: str, vendor: str, part_number: str = "") -> str:
-    compat = _norm_ws(value).strip(" ,.;")
+    compat = _norm_ws(value).strip(" ,.;/")
     if not compat:
         return ""
     compat = ORIGINAL_MARK_RE.sub("", compat)
     if part_number:
         compat = re.sub(rf"(?<!\w){re.escape(part_number)}(?!\w)", "", compat, flags=re.I)
-    compat = TRAIL_PART_RE.sub("", compat).strip(" ,.;")
-    compat = COLOR_TAIL_RE.sub("", compat).strip(" ,.;")
-    compat = VOLUME_TAIL_RE.sub("", compat).strip(" ,.;")
-    compat = RESOURCE_TAIL_RE.sub("", compat).strip(" ,.;")
-    compat = re.sub(r"\s*,\s*,+", ", ", compat)
-    compat = re.sub(r"\s{2,}", " ", compat).strip(" ,.;")
+
+    changed = True
+    while changed and compat:
+        before = compat
+        compat = TRAIL_PART_RE.sub("", compat).strip(" ,.;/")
+        compat = COLOR_TAIL_RE.sub("", compat).strip(" ,.;/")
+        compat = VOLUME_TAIL_RE.sub("", compat).strip(" ,.;/")
+        compat = RESOURCE_TAIL_RE.sub("", compat).strip(" ,.;/")
+        compat = re.sub(r"(?:,|/)?\s*(?:orig|original|оригинал(?:ьн(?:ый|ая|ое|ые))?)\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        compat = re.sub(r"\s*,\s*", ", ", compat)
+        compat = re.sub(r"\s*/\s*", "/", compat)
+        compat = re.sub(r"\s{2,}", " ", compat).strip(" ,.;/")
+        changed = compat != before
+
+    compat = re.sub(r"(?:,|\s)+[A-Z]{2,}[A-Z0-9-]{1,}\d+[A-Z0-9-]*/?\s*$", "", compat, flags=re.I).strip(" ,.;/")
     if vendor and compat and not compat.upper().startswith(vendor.upper()):
         compat = f"{vendor} {compat}"
     return _norm_ws(compat)
-
 
 def _extract_part_number(raw: dict, params: Sequence[tuple[str, str]], title: str) -> str:
     for key, value in params:
@@ -281,9 +297,11 @@ def _should_keep_code(code: str, resource: str = "") -> bool:
     return True
 
 
-def _collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, part_number: str) -> list[str]:
+
+def _collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, part_number: str, compat: str) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
+    compat_low = _norm_ws(compat).casefold()
 
     def add(val: str) -> None:
         for part in re.split(r"\s*,\s*", _s(val)):
@@ -291,6 +309,8 @@ def _collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, 
             if not _should_keep_code(code, resource):
                 continue
             if part_number and code.casefold() == part_number.casefold():
+                continue
+            if compat_low and re.search(rf"(?<!\w){re.escape(code.casefold())}(?!\w)", compat_low):
                 continue
             if code not in seen:
                 seen.add(code)
@@ -305,7 +325,6 @@ def _collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, 
     for code in raw.get("title_codes") or []:
         add(_s(code))
     return out
-
 
 def _infer_type_by_title(title: str) -> str:
     low = title.casefold()
@@ -521,6 +540,7 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number
     return out
 
 
+
 def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None:
     original_flag = _is_original(_s(raw.get("name")), _s(raw.get("description_body")), _s(raw.get("description_meta")))
     clean_title = _clean_title(_norm_ws(raw.get("name")))
@@ -534,12 +554,16 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
     type_name = _infer_type(source_categories, clean_title)
     tech = _infer_tech(source_categories, type_name, clean_title)
     part_number = _extract_part_number(raw, raw.get("params") or [], clean_title)
+
     if part_number:
-        title = re.sub(rf"(,?\\s*{re.escape(part_number)})+$", "", title).strip(" ,") + (" (оригинал)" if original_flag and not title.endswith("(оригинал)") else "")
-        title = _norm_ws(title)
+        title_no_suffix = re.sub(r"\s*\(оригинал\)$", "", title, flags=re.I).strip(" ,")
+        title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(part_number)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
+        title_no_suffix = DUPLICATE_LEAD_RE.sub(r"\1", title_no_suffix).strip(" ,")
+        title = _append_original_suffix(_norm_ws(title_no_suffix), original_flag)
+
     compat = _extract_compat(clean_title, vendor, raw.get("params") or [], _s(raw.get("description_body")), part_number)
     resource = _extract_resource(clean_title, raw.get("params") or [], _s(raw.get("description_body")))
-    codes = _collect_codes(raw, raw.get("params") or [], resource, part_number)
+    codes = _collect_codes(raw, raw.get("params") or [], resource, part_number, compat)
     params = _merge_params(raw, vendor, type_name, tech, part_number, codes, clean_title, compat, resource)
 
     raw_price = int(raw.get("price_rub_raw") or 0)
@@ -579,3 +603,4 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         params=params,
         native_desc=desc,
     )
+
