@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-24 02:40:18">
+<yml_catalog date="2026-03-25 02:41:10">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-24 02:40:18
-Ближайшая сборка (Алматы)                  | 2026-03-25 02:00:00
-Сколько товаров у поставщика до фильтра    | 1893
+Время сборки (Алматы)                      | 2026-03-25 02:41:10
+Ближайшая сборка (Алматы)                  | 2026-03-26 02:00:00
+Сколько товаров у поставщика до фильтра    | 1891
 Сколько товаров у поставщика после фильтра | 172
 Сколько товаров есть в наличии (true)      | 172
 Сколько товаров нет в наличии (false)      | 0
@@ -4436,7 +4436,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC4653101</vendorCode>
 <name>Шредер Fellowes® Powershred® 53C, DIN P-4</name>
 <price>51900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/57f/1hh99ilsb5rf3si1088yvxppk4ckllw2.png</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
