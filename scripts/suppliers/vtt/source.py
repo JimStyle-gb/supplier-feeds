@@ -3,12 +3,12 @@
 Path: scripts/suppliers/vtt/source.py
 
 VTT source layer.
-v7:
+v8:
 - same category-first coverage;
-- stronger HTTP pooling / keep-alive reuse;
-- separate gentle delay for listing pages and near-zero delay for product pages;
-- lighter regex-first parsing for params/desc, BeautifulSoup only as fallback;
-- no price/photo business logic changes.
+- keeps stronger HTTP pooling / keep-alive reuse;
+- adds early prefix filter on LISTING titles before opening product cards;
+- normalizes listing titles by removing leading codes and originality markers;
+- keeps full fallback behavior if listing title is missing.
 """
 
 from __future__ import annotations
@@ -48,31 +48,65 @@ DEFAULT_CATEGORY_CODES: list[str] = [
     "PARTSPRINT_DEVUN",
 ]
 
+# Ранний фильтр по смысловому началу названия на листинге.
+DEFAULT_ALLOWED_TITLE_PREFIXES: list[str] = [
+    "Drum",
+    "Девелопер",
+    "Драм-картридж",
+    "Драм-юнит",
+    "Драм-юниты",
+    "Кабель сетевой",
+    "Картридж",
+    "Картриджи",
+    "Термоблок",
+    "Тонер-картридж",
+    "Чернила",
+    "Печатающая головка",
+    "Копи-картридж",
+    "Принт-картридж",
+    "Контейнер",
+    "Блок",
+    "Бункер",
+    "Носитель",
+    "Фотобарабан",
+    "Барабан",
+    "Тонер",
+]
+
 UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) "
     "Chrome/124.0.0.0 Safari/537.36"
 )
 
-_HREF_RE = re.compile(r'''href=["']([^"']+)["']''', re.I)
-_META_CSRF_RE = re.compile(r'''<meta[^>]+name=["']csrf-token["'][^>]+content=["']([^"']+)["']''', re.I)
+_HREF_RE = re.compile(r"""href=["']([^"']+)["']""", re.I)
+_ANCHOR_RE = re.compile(r"""<a\b[^>]*href=["']([^"']+)["'][^>]*>(.*?)</a>""", re.I | re.S)
+_META_CSRF_RE = re.compile(r"""<meta[^>]+name=["']csrf-token["'][^>]+content=["']([^"']+)["']""", re.I)
 _TITLE_RE = re.compile(r"<title>(.*?)</title>", re.I | re.S)
 _H1_RE = re.compile(r"<h1[^>]*>(.*?)</h1>", re.I | re.S)
-_META_DESC_RE = re.compile(r'''<meta[^>]+name=["']description["'][^>]+content=["']([^"']*)["']''', re.I)
-_SKU_RE = re.compile(r'''let\s+sku\s*=\s*["']([^"']+)["']''', re.I)
-_PRICE_RUB_RE = re.compile(r'''let\s+priceRUB\s*=\s*([0-9]+(?:\.[0-9]+)?)''', re.I)
-_PRICE_MAIN_RE = re.compile(r'''price_main[^>]*>\s*<b>([^<]+)</b>''', re.I | re.S)
-_IMAGE_RE = re.compile(r'''(?:src|href|data-src|data-original|srcset)=["']([^"']+\.(?:jpg|jpeg|png|webp|gif)(?:\?[^"']*)?)["']''', re.I)
+_META_DESC_RE = re.compile(r"""<meta[^>]+name=["']description["'][^>]+content=["']([^"']*)["']""", re.I)
+_SKU_RE = re.compile(r"""let\s+sku\s*=\s*["']([^"']+)["']""", re.I)
+_PRICE_RUB_RE = re.compile(r"""let\s+priceRUB\s*=\s*([0-9]+(?:\.[0-9]+)?)""", re.I)
+_PRICE_MAIN_RE = re.compile(r"""price_main[^>]*>\s*<b>([^<]+)</b>""", re.I | re.S)
+_IMAGE_RE = re.compile(
+    r"""(?:src|href|data-src|data-original|srcset)=["']([^"']+\.(?:jpg|jpeg|png|webp|gif)(?:\?[^"']*)?)["']""",
+    re.I,
+)
 _CODE_TOKEN_RE = re.compile(r"\b[A-Z0-9][A-Z0-9\-./]{2,}\b")
 _BAD_IMAGE_RE = re.compile(r"(favicon|yandex|counter|watch/|pixel|metrika|doubleclick)", re.I)
 _DESC_BLOCK_RE = re.compile(
-    r'''<div[^>]+class=["'][^"']*(?:description|catalog_item_descr)[^"']*["'][^>]*>(.*?)</div>''',
+    r"""<div[^>]+class=["'][^"']*(?:description|catalog_item_descr)[^"']*["'][^>]*>(.*?)</div>""",
     re.I | re.S,
 )
 _DT_DD_RE = re.compile(r"<dt[^>]*>(.*?)</dt>\s*<dd[^>]*>(.*?)</dd>", re.I | re.S)
 _TR_RE = re.compile(r"<tr[^>]*>(.*?)</tr>", re.I | re.S)
 _CELL_RE = re.compile(r"<(?:th|td)[^>]*>(.*?)</(?:th|td)>", re.I | re.S)
 _TAG_RE = re.compile(r"<[^>]+>")
+_TITLE_LEAD_CODE_RE = re.compile(
+    r"""^(?:[A-Z0-9][A-Z0-9\-./]{2,}(?:\s*,\s*[A-Z0-9][A-Z0-9\-./]{2,})*\s+)+""",
+    re.I,
+)
+_ORIGINAL_MARK_RE = re.compile(r"""(?<!\w)\((?:O|О|OEM)\)(?!\w)|\bоригинал(?:ьн(?:ый|ая|ое|ые))?\b""", re.I)
 
 
 def _product_path_re(path: str) -> bool:
@@ -94,6 +128,7 @@ class VTTConfig:
     max_crawl_minutes: float = 90.0
     softfail: bool = False
     categories: list[str] = field(default_factory=lambda: list(DEFAULT_CATEGORY_CODES))
+    allowed_title_prefixes: list[str] = field(default_factory=lambda: list(DEFAULT_ALLOWED_TITLE_PREFIXES))
 
 
 def log(msg: str) -> None:
@@ -205,6 +240,9 @@ def cfg_from_env() -> VTTConfig:
     cats = [x.strip() for x in (os.getenv("VTT_CATEGORY_CODES") or "").split(",") if x.strip()]
     if not cats:
         cats = list(DEFAULT_CATEGORY_CODES)
+    prefixes = [x.strip() for x in (os.getenv("VTT_ALLOWED_TITLE_PREFIXES") or "").split(",") if x.strip()]
+    if not prefixes:
+        prefixes = list(DEFAULT_ALLOWED_TITLE_PREFIXES)
     return VTTConfig(
         base_url=base_url,
         start_url=urljoin(base_url, "/catalog/"),
@@ -219,6 +257,7 @@ def cfg_from_env() -> VTTConfig:
         max_crawl_minutes=float((os.getenv("VTT_MAX_CRAWL_MINUTES") or "90").strip() or "90"),
         softfail=(os.getenv("VTT_SOFTFAIL") or "false").strip().lower() == "true",
         categories=cats,
+        allowed_title_prefixes=prefixes,
     )
 
 
@@ -262,12 +301,35 @@ def login(sess: requests.Session, cfg: VTTConfig) -> bool:
         return False
 
 
+def _normalize_listing_title(title: str) -> str:
+    title = _norm_ws(title)
+    title = _ORIGINAL_MARK_RE.sub("", title)
+    title = _TITLE_LEAD_CODE_RE.sub("", title)
+    title = _norm_ws(title).strip(" ,.-")
+    return title
+
+
+def _title_matches_allowed(title: str, prefixes: list[str]) -> bool:
+    if not prefixes:
+        return True
+    if not title:
+        return True  # не режем товар, если не смогли достать заголовок с листинга
+    low = title.casefold()
+    for prefix in prefixes:
+        p = prefix.casefold()
+        if low.startswith(p):
+            return True
+    return False
+
+
 def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: list[str], deadline: datetime) -> list[dict[str, Any]]:
     allowed_categories = set(categories)
+    allowed_prefixes = list(cfg.allowed_title_prefixes)
     base_netloc = urlparse(cfg.base_url).netloc
     queue = deque(_normalize_listing_url(_mk_category_url(cfg.base_url, code)) for code in categories)
     seen_listings: set[str] = set()
-    product_to_categories: dict[str, set[str]] = {}
+    product_candidates: dict[str, dict[str, Any]] = {}
+    early_rejected = 0
 
     while queue and len(seen_listings) < cfg.max_listing_pages and datetime.utcnow() < deadline:
         url = queue.popleft()
@@ -283,6 +345,35 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
 
         current_cats = {x.strip() for x in parse_qs(urlparse(resp.url).query).get("category", []) if x.strip()}
 
+        for href, inner in _ANCHOR_RE.findall(html):
+            href = unescape((href or "").strip())
+            if not href or href.startswith("#") or href.startswith("javascript:"):
+                continue
+            abs_url = urljoin(resp.url, href)
+            p = urlparse(abs_url)
+            if p.netloc != base_netloc:
+                continue
+
+            if p.path.lower().startswith("/catalog/") and not p.query and _product_path_re(p.path):
+                rec = product_candidates.setdefault(
+                    abs_url,
+                    {"source_categories": set(), "titles": set()},
+                )
+                rec["source_categories"].update(current_cats)
+                title_text = _normalize_listing_title(_html_text_fast(inner))
+                if title_text:
+                    rec["titles"].add(title_text)
+                continue
+
+            if p.path.lower().startswith("/catalog"):
+                qs = parse_qs(p.query)
+                cat_values = {x.strip() for x in qs.get("category", []) if x.strip()}
+                if cat_values and cat_values.issubset(allowed_categories):
+                    norm = _normalize_listing_url(abs_url)
+                    if norm not in seen_listings:
+                        queue.append(norm)
+
+        # fallback on bare href scan for product links without anchor text
         for href in _HREF_RE.findall(html):
             href = unescape((href or "").strip())
             if not href or href.startswith("#") or href.startswith("javascript:"):
@@ -292,18 +383,28 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
             if p.netloc != base_netloc:
                 continue
             if p.path.lower().startswith("/catalog/") and not p.query and _product_path_re(p.path):
-                rec = product_to_categories.setdefault(abs_url, set())
-                rec.update(current_cats)
-                continue
-            if p.path.lower().startswith("/catalog"):
-                qs = parse_qs(p.query)
-                cat_values = {x.strip() for x in qs.get("category", []) if x.strip()}
-                if cat_values and cat_values.issubset(allowed_categories):
-                    norm = _normalize_listing_url(abs_url)
-                    if norm not in seen_listings:
-                        queue.append(norm)
+                rec = product_candidates.setdefault(
+                    abs_url,
+                    {"source_categories": set(), "titles": set()},
+                )
+                rec["source_categories"].update(current_cats)
 
-    return [{"url": url, "source_categories": sorted(list(cats))} for url, cats in sorted(product_to_categories.items(), key=lambda kv: kv[0])]
+    out: list[dict[str, Any]] = []
+    for url, meta in sorted(product_candidates.items(), key=lambda kv: kv[0]):
+        titles = sorted(meta.get("titles") or [])
+        if titles and not any(_title_matches_allowed(title, allowed_prefixes) for title in titles):
+            early_rejected += 1
+            continue
+        out.append(
+            {
+                "url": url,
+                "source_categories": sorted(list(meta.get("source_categories") or [])),
+                "listing_titles": titles,
+            }
+        )
+
+    log(f"[VTT] listing_index total={len(product_candidates)} kept={len(out)} early_rejected={early_rejected}")
+    return out
 
 
 def _extract_title(html: str) -> str:
@@ -464,4 +565,5 @@ def parse_product_page_from_index(sess: requests.Session, cfg: VTTConfig, item: 
         "title_codes": _extract_title_codes(title),
         "source_categories": list(item.get("source_categories") or []),
         "category_code": ",".join(item.get("source_categories") or []),
+        "listing_titles": list(item.get("listing_titles") or []),
     }
