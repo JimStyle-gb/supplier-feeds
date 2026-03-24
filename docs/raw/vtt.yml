@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-24 10:23:06">
+<yml_catalog date="2026-03-24 11:03:57">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-03-24 10:23:06
+Время сборки (Алматы)                      | 2026-03-24 11:03:57
 Ближайшая сборка (Алматы)                  | 2026-03-24 05:00:00
-Сколько товаров у поставщика до фильтра    | 3221
-Сколько товаров у поставщика после фильтра | 3143
-Сколько товаров есть в наличии (true)      | 3143
+Сколько товаров у поставщика до фильтра    | 3272
+Сколько товаров у поставщика после фильтра | 3193
+Сколько товаров есть в наличии (true)      | 3193
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -207,6 +207,23 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Xerox</param>
 <param name="Партномер">006R01731</param>
 <param name="Ресурс">13,7K</param>
+</offer>
+
+<offer id="VT013R00676" available="true">
+<categoryId></categoryId>
+<vendorCode>VT013R00676</vendorCode>
+<name>013R00676/013R00674 Модуль фоторецептора Xerox Versant 80/180/2100 34,8K , 013R00676 (оригинал)</name>
+<price>130900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Xerox</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Драм-юнит; Партномер: 013R00676; Ресурс: 34,8K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Драм-юнит</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Xerox</param>
+<param name="Партномер">013R00676</param>
+<param name="Ресурс">34,8K</param>
 </offer>
 
 <offer id="VT013R00686" available="true">
@@ -833,6 +850,25 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Черный</param>
 <param name="Партномер">HB-C-EXV59</param>
 <param name="Совместимость">Canon iR</param>
+</offer>
+
+<offer id="VT103A" available="true">
+<categoryId></categoryId>
+<vendorCode>VT103A</vendorCode>
+<name>Заправочный комплект тонера 103A HP Neverstop Laser 1000a/1000w/1200a/1200w, 2,5К W1103A, W1103A</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/W1103A.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Тонер; Партномер: W1103A; Ресурс: 2,5K; Цвет: Черный]]></description>
+<param name="Тип">Тонер</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">HP</param>
+<param name="Цвет">Черный</param>
+<param name="Партномер">W1103A</param>
+<param name="Ресурс">2,5K</param>
+<param name="Коды расходников">103A</param>
 </offer>
 
 <offer id="VT104090960" available="true">
@@ -2280,6 +2316,43 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">10K</param>
 <param name="Цвет">Черный</param>
 <param name="Партномер">N-KX-FAD473A</param>
+</offer>
+
+<offer id="VT128A" available="true">
+<categoryId></categoryId>
+<vendorCode>VT128A</vendorCode>
+<name>Набор картриджей 128A для HP CLJ Pro CP1525/CM1415 C/M/Y CF371AM, 1500104110 (оригинал)</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/1500104110.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: CF371AM; Совместимость: HP CLJ Pro CP1525/CM1415 C/M/Y; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">HP</param>
+<param name="Партномер">CF371AM</param>
+<param name="Совместимость">HP CLJ Pro CP1525/CM1415 C/M/Y</param>
+<param name="Коды расходников">128A</param>
+</offer>
+
+<offer id="VT131A" available="true">
+<categoryId></categoryId>
+<vendorCode>VT131A</vendorCode>
+<name>Набор картриджей 131A для HP LJ Pro 200 color M251/MFP M276, 1,8К C/M/Y U0SL1AM, U0SL1AM (оригинал)</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/U0SL1AM.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: U0SL1AM; Совместимость: HP LJ Pro 200 color M251/MFP M276, 1,8К C/M/Y; Ресурс: 1,8K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">HP</param>
+<param name="Партномер">U0SL1AM</param>
+<param name="Совместимость">HP LJ Pro 200 color M251/MFP M276, 1,8К C/M/Y</param>
+<param name="Ресурс">1,8K</param>
+<param name="Коды расходников">131A, M276</param>
 </offer>
 
 <offer id="VT131X" available="true">
@@ -4484,6 +4557,83 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Черный</param>
 <param name="Партномер">HB-CAN-PGI-450PGBK XL-Bk</param>
 <param name="Коды расходников">PGI-450PGBK XL, HB-PGI-450XL</param>
+</offer>
+
+<offer id="VT150138101" available="true">
+<categoryId></categoryId>
+<vendorCode>VT150138101</vendorCode>
+<name>Комплект ПЗК Hi-Black (PGI-450/CLI-451 XL) для Canon PIXMA MG5440, 5 цв, 150138101</name>
+<price>5900</price>
+<picture>https://b2b.vtt.ru/images/150138101.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138101_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138101_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138101_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138101_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138101_6.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138101_7.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138101_8.jpg</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Чернила; Партномер: HB-450/451XL; Совместимость: Canon PIXMA MG5440, 5 цв; Цвет: 5 Color]]></description>
+<param name="Тип">Чернила</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Canon</param>
+<param name="Цвет">5 Color</param>
+<param name="Партномер">HB-450/451XL</param>
+<param name="Совместимость">Canon PIXMA MG5440, 5 цв</param>
+<param name="Коды расходников">MG5440</param>
+</offer>
+
+<offer id="VT150138102" available="true">
+<categoryId></categoryId>
+<vendorCode>VT150138102</vendorCode>
+<name>Комплект ПЗК Hi-Black (PGI-425/CLI-426 XL) для Canon PIXMA IP4840, 6 цв, 150138102</name>
+<price>6900</price>
+<picture>https://b2b.vtt.ru/images/150138102.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138102_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138102_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138102_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138102_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138102_6.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138102_7.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138102_8.jpg</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Чернила; Партномер: HB-425/426XL; Совместимость: Canon PIXMA IP4840, 6 цв; Цвет: 6 Color]]></description>
+<param name="Тип">Чернила</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Canon</param>
+<param name="Цвет">6 Color</param>
+<param name="Партномер">HB-425/426XL</param>
+<param name="Совместимость">Canon PIXMA IP4840, 6 цв</param>
+<param name="Коды расходников">IP4840</param>
+</offer>
+
+<offer id="VT150138103" available="true">
+<categoryId></categoryId>
+<vendorCode>VT150138103</vendorCode>
+<name>Комплект ПЗК Hi-Black (PGI-470/CLI-471 XL) для Canon PIXMA MG6840, 5 цв, 150138103</name>
+<price>6900</price>
+<picture>https://b2b.vtt.ru/images/150138103.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138103_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138103_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138103_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138103_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138103_6.jpg</picture>
+<picture>https://b2b.vtt.ru/images/150138103_7.jpg</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Чернила; Партномер: HB-470/471XL; Совместимость: Canon PIXMA MG6840, 5 цв; Цвет: 5 Color]]></description>
+<param name="Тип">Чернила</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Canon</param>
+<param name="Цвет">5 Color</param>
+<param name="Партномер">HB-470/471XL</param>
+<param name="Совместимость">Canon PIXMA MG6840, 5 цв</param>
+<param name="Коды расходников">MG6840</param>
 </offer>
 
 <offer id="VT15013811" available="true">
@@ -7257,6 +7407,86 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Совместимость">Canon, Y</param>
 <param name="Ресурс">0,5 л</param>
 <param name="Коды расходников">150701093y</param>
+</offer>
+
+<offer id="VT1507010953" available="true">
+<categoryId></categoryId>
+<vendorCode>VT1507010953</vendorCode>
+<name>Комплект универсальных чернил Hi-Black для Canon (тип C-V1), на водной основе, 4 цвета, 1507010953</name>
+<price>5900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Чернила; Партномер: HiBl-CANUniv-4х100Ml; Совместимость: Canon (тип C-V1), на водной основе, 4 цвета; Ресурс: 100 мл; Цвет: Черный]]></description>
+<param name="Тип">Чернила</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Canon</param>
+<param name="Партномер">HiBl-CANUniv-4х100Ml</param>
+<param name="Совместимость">Canon (тип C-V1), на водной основе, 4 цвета</param>
+<param name="Ресурс">100 мл</param>
+<param name="Коды расходников">C-V1</param>
+<param name="Цвет">Черный</param>
+</offer>
+
+<offer id="VT1507010954" available="true">
+<categoryId></categoryId>
+<vendorCode>VT1507010954</vendorCode>
+<name>Комплект универсальных чернил Hi-Black для HP (тип H-V1), на водной основе, 4 цвета, 1507010954</name>
+<price>5900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Чернила; Партномер: HiBl-HPUniv-4х100Ml-; Совместимость: HP (тип H-V1), на водной основе, 4 цвета; Ресурс: 100 мл; Цвет: Черный]]></description>
+<param name="Тип">Чернила</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">HP</param>
+<param name="Партномер">HiBl-HPUniv-4х100Ml-</param>
+<param name="Совместимость">HP (тип H-V1), на водной основе, 4 цвета</param>
+<param name="Ресурс">100 мл</param>
+<param name="Коды расходников">HiBl-HPUniv-4х100Ml, H-V1</param>
+<param name="Цвет">Черный</param>
+</offer>
+
+<offer id="VT1507010955" available="true">
+<categoryId></categoryId>
+<vendorCode>VT1507010955</vendorCode>
+<name>Комплект универсальных чернил Hi-Black для Brother (тип B-V1), на водной основе, 4 цвета, 1507010955</name>
+<price>5900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Brother</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Чернила; Партномер: HiBl-BROUniv-4х100Ml; Совместимость: Brother (тип B-V1), на водной основе, 4 цвета; Ресурс: 100 мл; Цвет: Черный]]></description>
+<param name="Тип">Чернила</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Brother</param>
+<param name="Партномер">HiBl-BROUniv-4х100Ml</param>
+<param name="Совместимость">Brother (тип B-V1), на водной основе, 4 цвета</param>
+<param name="Ресурс">100 мл</param>
+<param name="Коды расходников">B-V1</param>
+<param name="Цвет">Черный</param>
+</offer>
+
+<offer id="VT1507010956" available="true">
+<categoryId></categoryId>
+<vendorCode>VT1507010956</vendorCode>
+<name>Комплект универсальных чернил Hi-Black для Epson (тип E-V1), на водной основе, 4 цвета, 1507010956</name>
+<price>5900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Чернила; Партномер: HiBl-EPSUniv-4х100Ml; Совместимость: Epson (тип E-V1), на водной основе, 4 цвета; Ресурс: 100 мл; Цвет: Черный]]></description>
+<param name="Тип">Чернила</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Epson</param>
+<param name="Партномер">HiBl-EPSUniv-4х100Ml</param>
+<param name="Совместимость">Epson (тип E-V1), на водной основе, 4 цвета</param>
+<param name="Ресурс">100 мл</param>
+<param name="Коды расходников">E-V1</param>
+<param name="Цвет">Черный</param>
 </offer>
 
 <offer id="VT1507060031U" available="true">
@@ -13799,6 +14029,135 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Коды расходников">711(CZ132A), HB-CZ132A</param>
 </offer>
 
+<offer id="VT2201219131" available="true">
+<categoryId></categoryId>
+<vendorCode>VT2201219131</vendorCode>
+<name>Комплект ПЗК Hi-Black (T0731-T0734) для Epson C79/C110, 4 цв, 2201219131</name>
+<price>7900</price>
+<picture>https://b2b.vtt.ru/images/2201219131.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219131_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219131_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219131_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219131_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219131_6.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219131_7.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219131_8.jpg</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Чернила; Партномер: HB-T0735; Совместимость: Epson C79/C110, 4 цв; Цвет: CMY+Bk]]></description>
+<param name="Тип">Чернила</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Epson</param>
+<param name="Цвет">CMY+Bk</param>
+<param name="Партномер">HB-T0735</param>
+<param name="Совместимость">Epson C79/C110, 4 цв</param>
+<param name="Коды расходников">T0735, T0731-T0734</param>
+</offer>
+
+<offer id="VT2201219132" available="true">
+<categoryId></categoryId>
+<vendorCode>VT2201219132</vendorCode>
+<name>Комплект ПЗК Hi-Black (T1281-T1284) для Epson Stylus SX125/SX130, 4 цв, 2201219132</name>
+<price>6900</price>
+<picture>https://b2b.vtt.ru/images/2201219132.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219132_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219132_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219132_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219132_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219132_6.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219132_7.jpg</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Чернила; Партномер: HB-T1285; Совместимость: Epson Stylus SX125/SX130, 4 цв; Цвет: CMY+Bk]]></description>
+<param name="Тип">Чернила</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Epson</param>
+<param name="Цвет">CMY+Bk</param>
+<param name="Партномер">HB-T1285</param>
+<param name="Совместимость">Epson Stylus SX125/SX130, 4 цв</param>
+<param name="Коды расходников">T1285, T1281-T1284</param>
+</offer>
+
+<offer id="VT2201219133" available="true">
+<categoryId></categoryId>
+<vendorCode>VT2201219133</vendorCode>
+<name>Комплект ПЗК Hi-Black (T0801-T0806) для Epson Stylus Photo P50/T59/R265, 6 цв, 2201219133</name>
+<price>9900</price>
+<picture>https://b2b.vtt.ru/images/2201219133.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219133_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219133_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219133_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219133_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219133_6.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219133_7.jpg</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Чернила; Партномер: HB-T0807; Совместимость: Epson Stylus Photo P50/T59/R265, 6 цв; Цвет: 6 Color]]></description>
+<param name="Тип">Чернила</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Epson</param>
+<param name="Цвет">6 Color</param>
+<param name="Партномер">HB-T0807</param>
+<param name="Совместимость">Epson Stylus Photo P50/T59/R265, 6 цв</param>
+<param name="Коды расходников">T0807, T0801-T0806</param>
+</offer>
+
+<offer id="VT2201219134" available="true">
+<categoryId></categoryId>
+<vendorCode>VT2201219134</vendorCode>
+<name>Комплект ПЗК Hi-Black (T0821-T0826) для Epson Stylus Photo R270/R290/R295, 6 цв, 2201219134</name>
+<price>9900</price>
+<picture>https://b2b.vtt.ru/images/2201219134.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219134_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219134_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219134_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219134_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219134_6.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219134_7.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219134_8.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219134_9.jpg</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Чернила; Партномер: HB-T0827; Совместимость: Epson Stylus Photo R270/R290/R295, 6 цв; Цвет: 6 Color]]></description>
+<param name="Тип">Чернила</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Epson</param>
+<param name="Цвет">6 Color</param>
+<param name="Партномер">HB-T0827</param>
+<param name="Совместимость">Epson Stylus Photo R270/R290/R295, 6 цв</param>
+<param name="Коды расходников">T0827, T0821-T0826</param>
+</offer>
+
+<offer id="VT2201219135" available="true">
+<categoryId></categoryId>
+<vendorCode>VT2201219135</vendorCode>
+<name>Комплект ПЗК Hi-Black (T0921-T0924) для Epson Stylus C91/CX4300/TX106, 4 цв, 2201219135</name>
+<price>7900</price>
+<picture>https://b2b.vtt.ru/images/2201219135.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219135_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219135_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219135_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219135_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219135_6.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219135_7.jpg</picture>
+<picture>https://b2b.vtt.ru/images/2201219135_8.jpg</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Чернила; Партномер: HB-T0925; Совместимость: Epson Stylus C91/CX4300/TX106, 4 цв; Цвет: CMY+Bk]]></description>
+<param name="Тип">Чернила</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Epson</param>
+<param name="Цвет">CMY+Bk</param>
+<param name="Партномер">HB-T0925</param>
+<param name="Совместимость">Epson Stylus C91/CX4300/TX106, 4 цв</param>
+<param name="Коды расходников">T0925, T0921-T0924</param>
+</offer>
+
 <offer id="VT22012192" available="true">
 <categoryId></categoryId>
 <vendorCode>VT22012192</vendorCode>
@@ -15729,6 +16088,23 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Коды расходников">057H, LBP228</param>
 </offer>
 
+<offer id="VT3020" available="true">
+<categoryId></categoryId>
+<vendorCode>VT3020</vendorCode>
+<name>Рефил Phaser 3020/ WC 3025, 1,5K (O)106R02774, 106R02774</name>
+<price>100</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Xerox</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Тонер; Партномер: 106R02774; Ресурс: 1,5K]]></description>
+<param name="Тип">Тонер</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Xerox</param>
+<param name="Партномер">106R02774</param>
+<param name="Ресурс">1,5K</param>
+</offer>
+
 <offer id="VT3021C002" available="true">
 <categoryId></categoryId>
 <vendorCode>VT3021C002</vendorCode>
@@ -16130,6 +16506,23 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">302NR93150</param>
+</offer>
+
+<offer id="VT302P193010" available="true">
+<categoryId></categoryId>
+<vendorCode>VT302P193010</vendorCode>
+<name>302P193010/302P193011 Драм юнит DK-6115 Kyocera M4125idn/M4132idn , 302P193010 (оригинал)</name>
+<price>129900</price>
+<picture>https://b2b.vtt.ru/images/302P193010.jpg</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Драм-юнит; Партномер: 302P193010; Оригинальность: Оригинал]]></description>
+<param name="Тип">Драм-юнит</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">302P193010</param>
+<param name="Коды расходников">DK-6115</param>
 </offer>
 
 <offer id="VT302P193020" available="true">
@@ -16635,6 +17028,58 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Коды расходников">DV-3110</param>
 </offer>
 
+<offer id="VT30C0T93020/DK-3210" available="true">
+<categoryId></categoryId>
+<vendorCode>VT30C0T93020/DK-3210</vendorCode>
+<name>30C0T93020/DK-3210 (E) Драм-юнит Kyocera Ecosys PA5000x/PA5500x/PA6000x/MA5500ifx/MA6000ifx 500K , 30C0T93020 (оригинал)</name>
+<price>100</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Драм-юнит; Партномер: 30C0T93020; Ресурс: 500K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Драм-юнит</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">30C0T93020</param>
+<param name="Ресурс">500K</param>
+<param name="Коды расходников">DK-3210</param>
+</offer>
+
+<offer id="VT30C0Y93010" available="true">
+<categoryId></categoryId>
+<vendorCode>VT30C0Y93010</vendorCode>
+<name>30C0Y93010/DK-3200 (E) Драм-юнит Kyocera Ecosys PA4500x/MA4500x/MA4500fx 300000стр. , 30C0Y93010 (оригинал)</name>
+<price>122900</price>
+<picture>https://b2b.vtt.ru/images/30C0Y93010.jpg</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Драм-юнит; Партномер: 30C0Y93010; Оригинальность: Оригинал]]></description>
+<param name="Тип">Драм-юнит</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">30C0Y93010</param>
+<param name="Коды расходников">DK-3200</param>
+</offer>
+
+<offer id="VT30C1093020" available="true">
+<categoryId></categoryId>
+<vendorCode>VT30C1093020</vendorCode>
+<name>30C1093020/DK-3220 (E) Драм-юнит Kyocera Ecosys MA4500ix/MA4500ifx 300000стр. , 30C1093020 (оригинал)</name>
+<price>133900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Драм-юнит; Партномер: 30C1093020; Оригинальность: Оригинал]]></description>
+<param name="Тип">Драм-юнит</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">30C1093020</param>
+<param name="Коды расходников">DK-3220</param>
+</offer>
+
 <offer id="VT312A" available="true">
 <categoryId></categoryId>
 <vendorCode>VT312A</vendorCode>
@@ -17009,20 +17454,21 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT3JA23AE" available="true">
 <categoryId></categoryId>
 <vendorCode>VT3JA23AE</vendorCode>
-<name>Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К голубой 3JA23AE, 3JA23AE (оригинал)</name>
-<price>19900</price>
-<picture>https://b2b.vtt.ru/images/3JA23AE.jpg</picture>
+<name>Картридж 963 для HP OfficeJet Pro 901x/902x/HP, 0,7К голубой 3JA23AE (уцен.срок годности), 3JA23AEyц (оригинал)</name>
+<price>16900</price>
+<picture>https://b2b.vtt.ru/images/3JA23AEуц.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 3JA23AE; Совместимость: HP OfficeJet Pro 901x/902x/HP; Ресурс: 0,7K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+Тип: Картридж; Партномер: 3JA23AE; Совместимость: HP OfficeJet Pro 901x/902x/HP, 0,7К голубой (уцен.срок годности), 3JA23AEуц; Ресурс: 0,7K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Голубой</param>
 <param name="Партномер">3JA23AE</param>
-<param name="Совместимость">HP OfficeJet Pro 901x/902x/HP</param>
+<param name="Совместимость">HP OfficeJet Pro 901x/902x/HP, 0,7К голубой (уцен.срок годности), 3JA23AEyц</param>
 <param name="Ресурс">0,7K</param>
+<param name="Коды расходников">3JA23AEyц</param>
 </offer>
 
 <offer id="VT3JA25AE" available="true">
@@ -17212,6 +17658,24 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Черный</param>
 <param name="Партномер">3YM61AE</param>
 <param name="Совместимость">HP DJ 2320/2710/2720, 120стр</param>
+</offer>
+
+<offer id="VT3YP61AE" available="true">
+<categoryId></categoryId>
+<vendorCode>VT3YP61AE</vendorCode>
+<name>Комплект печатающих головок M0H50A+M0H51A HP GT5810/GT5820 черный, трехцветный 3YP61AE, 3YP61AE (оригинал)</name>
+<price>24900</price>
+<picture>https://b2b.vtt.ru/images/3YP61AE.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Печатающая головка; Партномер: 3YP61AE; Цвет: Черный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Печатающая головка</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">HP</param>
+<param name="Партномер">3YP61AE</param>
+<param name="Коды расходников">M0H50A, M0H51A</param>
+<param name="Цвет">Черный</param>
 </offer>
 
 <offer id="VT401070571" available="true">
@@ -17901,6 +18365,24 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">15K</param>
 <param name="Цвет">Черный</param>
 <param name="Партномер">N-TK-410</param>
+</offer>
+
+<offer id="VT407249" available="true">
+<categoryId></categoryId>
+<vendorCode>VT407249</vendorCode>
+<name>LE Принт-картридж SP311LE Ricoh 311DN/311DNw/311SFN/311SFNw, 2К 407249, 407249 (оригинал)</name>
+<price>78900</price>
+<picture>https://b2b.vtt.ru/images/407249.jpg</picture>
+<vendor>Ricoh</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Принт-картридж; Партномер: 407249; Ресурс: 2K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Принт-картридж</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Ricoh</param>
+<param name="Партномер">407249</param>
+<param name="Ресурс">2K</param>
+<param name="Коды расходников">SP311LE, 311DN, 311SFN</param>
 </offer>
 
 <offer id="VT407341" available="true">
@@ -19968,6 +20450,25 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Коды расходников">WT-1110</param>
 </offer>
 
+<offer id="VT410X" available="true">
+<categoryId></categoryId>
+<vendorCode>VT410X</vendorCode>
+<name>Набор картриджей 410X для HP Color LaserJet Pro M377/M452/MFP M477, 5К C/M/Y CF252XM, CF252XM (оригинал)</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/CF252XM.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: CF252XM; Совместимость: HP Color LaserJet Pro M377/M452/MFP M477, 5К C/M/Y; Ресурс: 5K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">HP</param>
+<param name="Партномер">CF252XM</param>
+<param name="Совместимость">HP Color LaserJet Pro M377/M452/MFP M477, 5К C/M/Y</param>
+<param name="Ресурс">5K</param>
+<param name="Коды расходников">410X, M477</param>
+</offer>
+
 <offer id="VT415A" available="true">
 <categoryId></categoryId>
 <vendorCode>VT415A</vendorCode>
@@ -20006,6 +20507,22 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Совместимость">HP LJ M454/MFP M479</param>
 <param name="Ресурс">6K</param>
 <param name="Коды расходников">415X, M479</param>
+</offer>
+
+<offer id="VT416890/D2426400" available="true">
+<categoryId></categoryId>
+<vendorCode>VT416890/D2426400</vendorCode>
+<name>416890/D2426400 Бокс сбора тонера Ricoh MP C2003/C2004/C2503/C2504/C303/C3004/C3503/C3504/C4503 , 416890 (оригинал)</name>
+<price>100</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Ricoh</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Тонер; Партномер: 416890; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Ricoh</param>
+<param name="Партномер">416890</param>
 </offer>
 
 <offer id="VT418425/D0BQ6400" available="true">
@@ -20505,6 +21022,25 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Желтый</param>
 </offer>
 
+<offer id="VT53659847" available="true">
+<categoryId></categoryId>
+<vendorCode>VT53659847</vendorCode>
+<name>Заправочный комплект Pantum (TN-420X) для M6700/P3010 Bk, 6K, 2 тонера+ 1чип, Bk, 53659847 (оригинал)</name>
+<price>21900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Pantum</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Тонер; Партномер: TN-420X; Совместимость: Pantum M6700/P3010 Bk, 6K, 2 тонера+ 1чип, Bk; Ресурс: 6K; Цвет: Черный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Pantum</param>
+<param name="Партномер">TN-420X</param>
+<param name="Совместимость">Pantum M6700/P3010 Bk, 6K, 2 тонера+ 1чип, Bk</param>
+<param name="Ресурс">6K</param>
+<param name="Цвет">Черный</param>
+</offer>
+
 <offer id="VT56A" available="true">
 <categoryId></categoryId>
 <vendorCode>VT56A</vendorCode>
@@ -20603,19 +21139,19 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT6510" available="true">
 <categoryId></categoryId>
 <vendorCode>VT6510</vendorCode>
-<name>Фотобарабан Xerox Phaser 6510/ WC 6515, 48К пурпурный 108R01418, 108R01418 (оригинал)</name>
+<name>Тонер-картридж Xerox Phaser 6510/ WC 6515, 1К пурпурный 106R03482, 106R03482 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/108R01418.jpg</picture>
+<picture>https://b2b.vtt.ru/images/106R03482.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Фотобарабан; Партномер: 108R01418; Ресурс: 48K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Фотобарабан</param>
+Тип: Тонер-картридж; Партномер: 106R03482; Ресурс: 1K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Цвет">Пурпурный</param>
-<param name="Партномер">108R01418</param>
-<param name="Ресурс">48K</param>
+<param name="Партномер">106R03482</param>
+<param name="Ресурс">1K</param>
 </offer>
 
 <offer id="VT6510/WC" available="true">
@@ -21283,19 +21819,19 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT7120/7125/7220/7225" available="true">
 <categoryId></categoryId>
 <vendorCode>VT7120/7125/7220/7225</vendorCode>
-<name>Тонер-картридж Xerox WC 7120/7125/7220/7225, 15К малиновый 006R01463, 98968044 (оригинал)</name>
+<name>Тонер-картридж Xerox WC 7120/7125/7220/7225, 15К жёлтый 006R01462, 98968047 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/98968044.jpg</picture>
+<picture>https://b2b.vtt.ru/images/98968047.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 006R01463; Ресурс: 15K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+Тип: Тонер-картридж; Партномер: 006R01462; Ресурс: 15K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
-<param name="Партномер">006R01463</param>
+<param name="Партномер">006R01462</param>
 <param name="Ресурс">15K</param>
-<param name="Цвет">Пурпурный</param>
+<param name="Цвет">Желтый</param>
 </offer>
 
 <offer id="VT718" available="true">
@@ -21390,6 +21926,23 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Партномер">N-101R00474</param>
 </offer>
 
+<offer id="VT729" available="true">
+<categoryId></categoryId>
+<vendorCode>VT729</vendorCode>
+<name>Комплект для замены печатающей головки HP 729 F9J81A, F9J81A (оригинал)</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/F9J81A.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Печатающая головка; Партномер: F9J81A; Совместимость: HP замены печатающей головки HP 729; Оригинальность: Оригинал]]></description>
+<param name="Тип">Печатающая головка</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">HP</param>
+<param name="Партномер">F9J81A</param>
+<param name="Совместимость">HP замены печатающей головки HP 729</param>
+</offer>
+
 <offer id="VT730" available="true">
 <categoryId></categoryId>
 <vendorCode>VT730</vendorCode>
@@ -21449,20 +22002,20 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT771" available="true">
 <categoryId></categoryId>
 <vendorCode>VT771</vendorCode>
-<name>Печатающая головка HP 771 для HP DJ Z6200 CE017A черный матовый/хроматический красный, CE017A (оригинал)</name>
+<name>Печатающая головка HP 771 для HP DJ Z6200 (O)CE018A пурпурный/желтый, CE018A</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/CE017A.jpg</picture>
+<picture>https://b2b.vtt.ru/images/CE018A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Печатающая головка; Партномер: CE017A; Совместимость: HP DJ Z6200 черный матовый/хроматический; Цвет: Черный; Оригинальность: Оригинал]]></description>
+Тип: Печатающая головка; Партномер: CE018A; Совместимость: HP DJ Z6200 (O) пурпурный/; Цвет: Желтый]]></description>
 <param name="Тип">Печатающая головка</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Партномер">CE017A</param>
-<param name="Совместимость">HP DJ Z6200 черный матовый/хроматический</param>
+<param name="Партномер">CE018A</param>
+<param name="Совместимость">HP DJ Z6200 (O) пурпурный/</param>
 <param name="Коды расходников">Z6200</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 </offer>
 
 <offer id="VT7970267" available="true">
@@ -22717,6 +23270,25 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Коды расходников">123 (F6V19AE), HB-F6V19AE, 123XL</param>
 </offer>
 
+<offer id="VT84654742" available="true">
+<categoryId></categoryId>
+<vendorCode>VT84654742</vendorCode>
+<name>Комплект струйных картриджей Hi-Black (№123XL) для HP F6V19AE(Bk)+F6V18AE(3-color), 84654742</name>
+<price>17900</price>
+<picture>https://b2b.vtt.ru/images/84654742.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: HB-HP-SET-123XL(Bk+C; Совместимость: HP F6V19AE(Bk)+F6V18AE(3-сolor); Цвет: Черный]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">HP</param>
+<param name="Партномер">HB-HP-SET-123XL(Bk+C</param>
+<param name="Совместимость">HP F6V19AE(Bk)+F6V18AE(3-color)</param>
+<param name="Коды расходников">F6V18AE, 123XL, F6V19AE</param>
+<param name="Цвет">Черный</param>
+</offer>
+
 <offer id="VT848K65678/948K21190/848K65673" available="true">
 <categoryId></categoryId>
 <vendorCode>VT848K65678/948K21190/848K65673</vendorCode>
@@ -22828,6 +23400,25 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">1,6K</param>
 <param name="Коды расходников">85A, M1132MFP</param>
 <param name="Цвет">Черный</param>
+</offer>
+
+<offer id="VT8888010" available="true">
+<categoryId></categoryId>
+<vendorCode>VT8888010</vendorCode>
+<name>Набор картриджей 305A для HP CLJ Pro 300Color M351/Pro400ColorM451(O) C/M/Y, CF370AM, 8888010</name>
+<price>287900</price>
+<picture>https://b2b.vtt.ru/images/8888010.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: CF370AM; Совместимость: HP CLJ Pro 300Color M351/Pro400ColorM451(O) C/M/Y; Цвет: CMY]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">HP</param>
+<param name="Цвет">CMY</param>
+<param name="Партномер">CF370AM</param>
+<param name="Совместимость">HP CLJ Pro 300Color M351/Pro400ColorM451(O) C/M/Y</param>
+<param name="Коды расходников">305A, M351</param>
 </offer>
 
 <offer id="VT8888082" available="true">
@@ -22947,6 +23538,26 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Color</param>
 <param name="Партномер">HB-CL-746XL</param>
 <param name="Коды расходников">746XL</param>
+</offer>
+
+<offer id="VT8888083" available="true">
+<categoryId></categoryId>
+<vendorCode>VT8888083</vendorCode>
+<name>Комплект струйных картриджей Hi-Black для Canon HB-445XL(Bk)+HB-446XL(color), 8888083</name>
+<price>20900</price>
+<picture>https://b2b.vtt.ru/images/8888083.jpg</picture>
+<picture>https://b2b.vtt.ru/images/8888083_2.jpg</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: HB-CAN-SET-445XL+446; Совместимость: Canon HB-445XL(Bk)+HB-446XL(color); Цвет: Color]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Canon</param>
+<param name="Цвет">Color</param>
+<param name="Партномер">HB-CAN-SET-445XL+446</param>
+<param name="Совместимость">Canon HB-445XL(Bk)+HB-446XL(color)</param>
+<param name="Коды расходников">HB-445XL, HB-446XL</param>
 </offer>
 
 <offer id="VT888810" available="true">
@@ -23975,6 +24586,24 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Совместимость">HP Officejet Pro 8100/8600,1К BK</param>
 <param name="Ресурс">8600,1K</param>
 <param name="Цвет">Черный</param>
+</offer>
+
+<offer id="VT9505037" available="true">
+<categoryId></categoryId>
+<vendorCode>VT9505037</vendorCode>
+<name>LE Принт-картридж SP200HE Ricoh серий SP20x/21x, 2,6К 407262, 9505037 (оригинал)</name>
+<price>71900</price>
+<picture>https://b2b.vtt.ru/images/9505037.jpg</picture>
+<vendor>Ricoh</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Принт-картридж; Партномер: 407262; Ресурс: 2,6K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Принт-картридж</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Ricoh</param>
+<param name="Партномер">407262</param>
+<param name="Ресурс">2,6K</param>
+<param name="Коды расходников">SP200HE</param>
 </offer>
 
 <offer id="VT9505038" available="true">
@@ -27544,6 +28173,23 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">7K</param>
 <param name="Коды расходников">307A</param>
 <param name="Цвет">Черный</param>
+</offer>
+
+<offer id="VT9891971161" available="true">
+<categoryId></categoryId>
+<vendorCode>VT9891971161</vendorCode>
+<name>C1Q10A Комплект для замены печатающей головки 711 Designjet DesignJet T120/T520 , 9891971161 (оригинал)</name>
+<price>200900</price>
+<picture>https://b2b.vtt.ru/images/9891971161.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Печатающая головка; Партномер: C1Q10A; Совместимость: HP замены печатающей головки 711 Designjet DesignJet T120/T520; Оригинальность: Оригинал]]></description>
+<param name="Тип">Печатающая головка</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">HP</param>
+<param name="Партномер">C1Q10A</param>
+<param name="Совместимость">HP замены печатающей головки 711 Designjet DesignJet T120/T520</param>
 </offer>
 
 <offer id="VT9892564901" available="true">
@@ -36472,6 +37118,23 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Черный</param>
 </offer>
 
+<offer id="VT9901584" available="true">
+<categoryId></categoryId>
+<vendorCode>VT9901584</vendorCode>
+<name>Фотопроводниковый блок тип 1515 Ricoh Aficio 1515/PS/F/MF/MP161/L/LN/SPF/171, 45K 4118, 9901584 (оригинал)</name>
+<price>156900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Ricoh</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Драм-юнит; Партномер: 411844; Ресурс: 45K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Драм-юнит</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Ricoh</param>
+<param name="Партномер">411844</param>
+<param name="Ресурс">45K</param>
+</offer>
+
 <offer id="VT991118121" available="true">
 <categoryId></categoryId>
 <vendorCode>VT991118121</vendorCode>
@@ -36956,6 +37619,25 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Желтый</param>
 <param name="Партномер">C13T66444A</param>
 <param name="Ресурс">70 мл</param>
+</offer>
+
+<offer id="VT991153137" available="true">
+<categoryId></categoryId>
+<vendorCode>VT991153137</vendorCode>
+<name>Набор картриджей 125A для HP CLJ CM1300/CM1312/CP1210/CP1215, 1,4K C/M/Y, CF373AM, 991153137 (оригинал)</name>
+<price>171900</price>
+<picture>https://b2b.vtt.ru/images/991153137.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: CF373AM; Совместимость: HP CLJ CM1300/CM1312/CP1210/CP1215, 1,4K C/M/Y; Ресурс: 1,4K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">HP</param>
+<param name="Партномер">CF373AM</param>
+<param name="Совместимость">HP CLJ CM1300/CM1312/CP1210/CP1215, 1,4K C/M/Y</param>
+<param name="Ресурс">1,4K</param>
+<param name="Коды расходников">125A</param>
 </offer>
 
 <offer id="VT99116372" available="true">
@@ -40269,6 +40951,25 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Коды расходников">312A</param>
 </offer>
 
+<offer id="VT99901002400" available="true">
+<categoryId></categoryId>
+<vendorCode>VT99901002400</vendorCode>
+<name>Набор картриджей 312A для HP CLJ Pro MFP M476dn/dw/nw, 2,7К C/M/Y, CF440AM, 99901002400 (оригинал)</name>
+<price>339900</price>
+<picture>https://b2b.vtt.ru/images/99901002400.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: CF440AM; Совместимость: HP CLJ Pro MFP M476dn/dw/nw, 2,7К C/M/Y; Ресурс: 2,7K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">HP</param>
+<param name="Партномер">CF440AM</param>
+<param name="Совместимость">HP CLJ Pro MFP M476dn/dw/nw, 2,7К C/M/Y</param>
+<param name="Ресурс">2,7K</param>
+<param name="Коды расходников">312A</param>
+</offer>
+
 <offer id="VT99901002451" available="true">
 <categoryId></categoryId>
 <vendorCode>VT99901002451</vendorCode>
@@ -41762,18 +42463,20 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTB600/B605/B610/B615" available="true">
 <categoryId></categoryId>
 <vendorCode>VTB600/B605/B610/B615</vendorCode>
-<name>Барабан XEROX VL B600/B605/B610/B615, 60К 101R00582, 101R00582 (оригинал)</name>
+<name>Барабан NetProduct для Xerox VersaLink B600/B605/B610/B615, 60К, N-OPC-XRB600</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/101R00582.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Барабан; Партномер: 101R00582; Ресурс: 60K; Оригинальность: Оригинал]]></description>
+Тип: Барабан; Партномер: N-OPC-XR-VLINK-B600; Совместимость: Xerox VersaLink B600/B605/B610/B615; Ресурс: 60K]]></description>
 <param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
-<param name="Партномер">101R00582</param>
+<param name="Партномер">N-OPC-XR-VLINK-B600</param>
+<param name="Совместимость">Xerox VersaLink B600/B605/B610/B615</param>
 <param name="Ресурс">60K</param>
+<param name="Коды расходников">N-OPC-XRB600</param>
 </offer>
 
 <offer id="VTBPDR20SA" available="true">
@@ -48502,6 +49205,26 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Коды расходников">MX-2310U</param>
 </offer>
 
+<offer id="VTCET171024" available="true">
+<categoryId></categoryId>
+<vendorCode>VTCET171024</vendorCode>
+<name>Комплект цветных девелоперов для SHARP MX-2310U (CET) CMY, 585г, CET171024, CET171024</name>
+<price>59900</price>
+<picture>https://b2b.vtt.ru/images/CET171024.jpg</picture>
+<vendor>Sharp</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Девелопер; Партномер: CET171024; Совместимость: SHARP MX-2310U (CET) CMY, 585г; Ресурс: 60000; Цвет: CMY]]></description>
+<param name="Тип">Девелопер</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Sharp</param>
+<param name="Ресурс">60000</param>
+<param name="Цвет">CMY</param>
+<param name="Партномер">CET171024</param>
+<param name="Совместимость">SHARP MX-2310U (CET) CMY, 585г</param>
+<param name="Коды расходников">MX-2310U</param>
+</offer>
+
 <offer id="VTCET171029" available="true">
 <categoryId></categoryId>
 <vendorCode>VTCET171029</vendorCode>
@@ -54229,6 +54952,23 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Коды расходников">302J393032, 302J393033</param>
 </offer>
 
+<offer id="VTDK-3210-OEM" available="true">
+<categoryId></categoryId>
+<vendorCode>VTDK-3210-OEM</vendorCode>
+<name>DK-3210 (E) Драм-юнит (тех. упак.) Kyocera Ecosys PA5000x/PA5500x/PA6000x/MA5500ifx/MA6000ifx, DK-3210-OEM</name>
+<price>137900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Драм-юнит; Партномер: 30C0T93020/DK-3210]]></description>
+<param name="Тип">Драм-юнит</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">30C0T93020/DK-3210</param>
+<param name="Коды расходников">DK-3210-OEM, DK-3210</param>
+</offer>
+
 <offer id="VTDK-450/302J593011/302J593010" available="true">
 <categoryId></categoryId>
 <vendorCode>VTDK-450/302J593011/302J593010</vendorCode>
@@ -55401,6 +56141,25 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Черный</param>
 <param name="Партномер">HB-40STB20</param>
 <param name="Совместимость">F+ imaging P40dn/M40adn</param>
+</offer>
+
+<offer id="VTHB-440XL-441XL-set" available="true">
+<categoryId></categoryId>
+<vendorCode>VTHB-440XL-441XL-set</vendorCode>
+<name>Комплект струйных картриджей Hi-Black №440XL-441XL для Canon PIXMA MG2140/3140 (Bk+ Color), HB-440XL-441XL-set</name>
+<price>23900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: HB440XL-441XLset; Совместимость: Canon PIXMA MG2140/3140 (Bk+ Color); Цвет: Черный]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Canon</param>
+<param name="Партномер">HB440XL-441XLset</param>
+<param name="Совместимость">Canon PIXMA MG2140/3140 (Bk+ Color)</param>
+<param name="Коды расходников">HB-440XL-441XL-set, 440XL-441XL, HB-440XL-441XL</param>
+<param name="Цвет">Черный</param>
 </offer>
 
 <offer id="VTHB-60STB15" available="true">
@@ -56752,6 +57511,50 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Коды расходников">HB-PG540XL-Bk, CC-K445BX, HB-PG-540XL, HB-PG540XL</param>
 </offer>
 
+<offer id="VTHB-PGI520-CLI521-set" available="true">
+<categoryId></categoryId>
+<vendorCode>VTHB-PGI520-CLI521-set</vendorCode>
+<name>Комплект струйных картриджей Hi-Black HB-PGI520-CLI521 для Canon PIXMA iP3600 (Bk,C,M,Y), HB-PGI520-CLI521-set</name>
+<price>5900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: HB-PGI520-CLI521-set; Совместимость: Canon PIXMA iP3600 (Bk,C,M,Y); Цвет: CMY+Bk]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Canon</param>
+<param name="Цвет">CMY+Bk</param>
+<param name="Партномер">HB-PGI520-CLI521-set</param>
+<param name="Совместимость">Canon PIXMA iP3600 (Bk,C,M,Y)</param>
+<param name="Коды расходников">PGI520-CLI521, HB-PGI520-CLI521</param>
+</offer>
+
+<offer id="VTHB-T0487-set" available="true">
+<categoryId></categoryId>
+<vendorCode>VTHB-T0487-set</vendorCode>
+<name>Комплект струйных картриджей Hi-Black HB-T0487 (T0481-T0486) для Epson Stylus Photo R200, HB-T0487-set</name>
+<price>6900</price>
+<picture>https://b2b.vtt.ru/images/HB-T0487-set.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-T0487-set_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-T0487-set_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-T0487-set_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-T0487-set_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-T0487-set_6.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-T0487-set_7.jpg</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: HB-T0487-set; Совместимость: Epson Stylus Photo R200; Цвет: 6 Color]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Epson</param>
+<param name="Цвет">6 Color</param>
+<param name="Партномер">HB-T0487-set</param>
+<param name="Совместимость">Epson Stylus Photo R200</param>
+<param name="Коды расходников">T0487, HB-T0487, T0481-T0486, R200</param>
+</offer>
+
 <offer id="VTHB-T06" available="true">
 <categoryId></categoryId>
 <vendorCode>VTHB-T06</vendorCode>
@@ -56769,6 +57572,70 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Черный</param>
 <param name="Партномер">HB-T06</param>
 <param name="Совместимость">Canon IR 1643/1643i/1643iF, 20,5K (без чипа)</param>
+</offer>
+
+<offer id="VTHB-T0735-set" available="true">
+<categoryId></categoryId>
+<vendorCode>VTHB-T0735-set</vendorCode>
+<name>Комплект струйных картриджей Hi-Black HB-T0735 (T0731-T0734) для Epson Stylus C79/C110, (Bk,C,M,Y), HB-T0735-set</name>
+<price>5900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: HB-T0735-set; Совместимость: Epson Stylus C79/C110, (Bk,C,M,Y); Цвет: CMY+Bk]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Epson</param>
+<param name="Цвет">CMY+Bk</param>
+<param name="Партномер">HB-T0735-set</param>
+<param name="Совместимость">Epson Stylus C79/C110, (Bk,C,M,Y)</param>
+<param name="Коды расходников">T0735, HB-T0735, T0731-T0734</param>
+</offer>
+
+<offer id="VTHB-T0827-set" available="true">
+<categoryId></categoryId>
+<vendorCode>VTHB-T0827-set</vendorCode>
+<name>Комплект струйных картриджей Hi-Black HB-T0827 (T0821-T0826) для Epson Stylus R270 (Bk,C,M,Y,LC,LM), HB-T0827-set</name>
+<price>6900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: HB-T0827-set; Совместимость: Epson Stylus R270 (Bk,C,M,Y,LC,LM); Цвет: 6 Color]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Epson</param>
+<param name="Цвет">6 Color</param>
+<param name="Партномер">HB-T0827-set</param>
+<param name="Совместимость">Epson Stylus R270 (Bk,C,M,Y,LC,LM)</param>
+<param name="Коды расходников">T0827, HB-T0827, T0821-T0826, R270</param>
+</offer>
+
+<offer id="VTHB-T1285-set" available="true">
+<categoryId></categoryId>
+<vendorCode>VTHB-T1285-set</vendorCode>
+<name>Комплект струйных картриджей Hi-Black HB-T1285 (T1281-T1284) для Epson Stylus S22/SX125, (Bk,C,M,Y), HB-T1285-set</name>
+<price>5900</price>
+<picture>https://b2b.vtt.ru/images/HB-T1285-set.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-T1285-set_2.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-T1285-set_3.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-T1285-set_4.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-T1285-set_5.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-T1285-set_6.jpg</picture>
+<picture>https://b2b.vtt.ru/images/HB-T1285-set_7.jpg</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: HB-T1285-set; Совместимость: Epson Stylus S22/SX125, (Bk,C,M,Y); Ресурс: 0,32K; Цвет: CMY+Bk]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Epson</param>
+<param name="Ресурс">0,32K</param>
+<param name="Цвет">CMY+Bk</param>
+<param name="Партномер">HB-T1285-set</param>
+<param name="Совместимость">Epson Stylus S22/SX125, (Bk,C,M,Y)</param>
+<param name="Коды расходников">T1285, HB-T1285, T1281-T1284</param>
 </offer>
 
 <offer id="VTHB-THM130" available="true">
@@ -58390,19 +59257,18 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTL4150/4160/L6160/L6170/L6190" available="true">
 <categoryId></categoryId>
 <vendorCode>VTL4150/4160/L6160/L6170/L6190</vendorCode>
-<name>Чернила Epson EcoTank L4150/4160/L6160/L6170/L6190, 70мл малиновые C13T03V34A, C13T03V34A (оригинал)</name>
+<name>Чернила Epson EcoTank L4150/4160/L6160/L6170/L6190 4 цвета мультипак C13T03V64A, C13T03V64A (оригинал)</name>
 <price>100</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: C13T03V34A; Ресурс: 70 мл; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+Тип: Чернила; Партномер: C13T03V64A; Цвет: CMY+Bk; Оригинальность: Оригинал]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Пурпурный</param>
-<param name="Партномер">C13T03V34A</param>
-<param name="Ресурс">70 мл</param>
+<param name="Цвет">CMY+Bk</param>
+<param name="Партномер">C13T03V64A</param>
 </offer>
 
 <offer id="VTL7160/7180" available="true">
@@ -58426,19 +59292,19 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTL800/L1800/L810/L850" available="true">
 <categoryId></categoryId>
 <vendorCode>VTL800/L1800/L810/L850</vendorCode>
-<name>Чернила Epson L800/L1800/L810/L850 C13T67344A/C13T673498, yellow, 70ml, 991132104 (оригинал)</name>
+<name>Чернила Epson L800/L1800/L810/L850 C13T67354A/C13T673598, light cyan, 70ml, 991132105 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/991132104.jpg</picture>
+<picture>https://b2b.vtt.ru/images/991132105.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: C13T67344A; Ресурс: 70 мл; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+Тип: Чернила; Партномер: C13T67354A; Ресурс: 70 мл; Цвет: Голубой; Оригинальность: Оригинал]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Желтый</param>
-<param name="Партномер">C13T67344A</param>
+<param name="Партномер">C13T67354A</param>
 <param name="Ресурс">70 мл</param>
+<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VTLJ700MFP/M712" available="true">
@@ -59916,6 +60782,25 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Черный</param>
 </offer>
 
+<offer id="VTPC-211PRB" available="true">
+<categoryId></categoryId>
+<vendorCode>VTPC-211PRB</vendorCode>
+<name>Заправочный комплект Pantum PC-211PRB (аналог PC-211RB) для P2200/P2500/M6500/M6600 1600 стр.+ чип, PC-211PRB</name>
+<price>8900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Pantum</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Тонер; Партномер: PC-211PRB; Совместимость: Pantum P2200/P2500/M6500/M6600 1600 стр.+ чип; Цвет: Черный]]></description>
+<param name="Тип">Тонер</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Pantum</param>
+<param name="Цвет">Черный</param>
+<param name="Партномер">PC-211PRB</param>
+<param name="Совместимость">Pantum P2200/P2500/M6500/M6600 1600 стр.+ чип</param>
+<param name="Коды расходников">PC-211RB</param>
+</offer>
+
 <offer id="VTPFI-107MBK" available="true">
 <categoryId></categoryId>
 <vendorCode>VTPFI-107MBK</vendorCode>
@@ -60256,6 +61141,22 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Коды расходников">PFI-5100Y, PRO-310, HB-PFI5100Y</param>
 </offer>
 
+<offer id="VTPG-510/CL-511" available="true">
+<categoryId></categoryId>
+<vendorCode>VTPG-510/CL-511</vendorCode>
+<name>Набор картриджей CANON PG-510/CL-511 2970B010, 2970B010 (оригинал)</name>
+<price>100</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: 2970B010; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Canon</param>
+<param name="Партномер">2970B010</param>
+</offer>
+
 <offer id="VTQY6-1901" available="true">
 <categoryId></categoryId>
 <vendorCode>VTQY6-1901</vendorCode>
@@ -60292,20 +61193,20 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTSC2020" available="true">
 <categoryId></categoryId>
 <vendorCode>VTSC2020</vendorCode>
-<name>Тонер-картридж Xerox DC SC2020, 3K желтый 006R01696, 006R01696 (оригинал)</name>
+<name>Тонер-картридж Xerox DC SC2020, 3K голубой 006R01694, 006R01694 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/006R01696.jpg</picture>
+<picture>https://b2b.vtt.ru/images/006R01694.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 006R01696; Ресурс: 3K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+Тип: Тонер-картридж; Партномер: 006R01694; Ресурс: 3K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
-<param name="Партномер">006R01696</param>
+<param name="Партномер">006R01694</param>
 <param name="Ресурс">3K</param>
 <param name="Коды расходников">SC2020</param>
-<param name="Цвет">Желтый</param>
+<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VTSHARP35" available="true">
@@ -60324,6 +61225,60 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Партномер">MX237GT</param>
 <param name="Ресурс">20K</param>
 <param name="Коды расходников">SHARP35</param>
+</offer>
+
+<offer id="VTSP201E" available="true">
+<categoryId></categoryId>
+<vendorCode>VTSP201E</vendorCode>
+<name>LE Принт-картридж SP201E Ricoh серии SP220 1К 407999, 407999 (оригинал)</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/407999.jpg</picture>
+<vendor>Ricoh</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Принт-картридж; Партномер: 407999; Ресурс: 1K; Цвет: Черный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Принт-картридж</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Ricoh</param>
+<param name="Цвет">Черный</param>
+<param name="Партномер">407999</param>
+<param name="Ресурс">1K</param>
+<param name="Коды расходников">SP201E, SP220</param>
+</offer>
+
+<offer id="VTSP311HE" available="true">
+<categoryId></categoryId>
+<vendorCode>VTSP311HE</vendorCode>
+<name>LE Принт-картридж SP311HE Ricoh SP311/325, 3,5К 407246, 407246 (оригинал)</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/407246.jpg</picture>
+<vendor>Ricoh</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Принт-картридж; Партномер: 407246; Ресурс: 3,5K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Принт-картридж</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Ricoh</param>
+<param name="Партномер">407246</param>
+<param name="Ресурс">3,5K</param>
+<param name="Коды расходников">SP311HE</param>
+</offer>
+
+<offer id="VTSX230/235W/SX420W/SX425W" available="true">
+<categoryId></categoryId>
+<vendorCode>VTSX230/235W/SX420W/SX425W</vendorCode>
+<name>Комплект картриджей Epson Stylus SX230/235W/SX420W/SX425W C13T12954010/12, BK,C,M,Y, 99635151 (оригинал)</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/99635151.jpg</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Картридж; Партномер: C13T12954012; Цвет: Черный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
+<param name="Технология печати">Струйная</param>
+<param name="Для бренда">Epson</param>
+<param name="Партномер">C13T12954012</param>
+<param name="Цвет">Черный</param>
 </offer>
 
 <offer id="VTSX230/235W/SX420W/SX425W/BX305F" available="true">
@@ -60364,18 +61319,18 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTT610/T1100/T1200/T1300/T2300" available="true">
 <categoryId></categoryId>
 <vendorCode>VTT610/T1100/T1200/T1300/T2300</vendorCode>
-<name>Печатающая головка №72 HP DJ T610/T1100/T1200/T1300/T2300 matte black &amp; yellow C9384A, 98900206 (оригинал)</name>
+<name>Печатающая головка №72 HP DJ T610/T1100/T1200/T1300/T2300 magenta &amp; cyan C9383A, 98900205 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/98900206.jpg</picture>
+<picture>https://b2b.vtt.ru/images/98900205.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Печатающая головка; Партномер: C9384A; Цвет: Черный; Оригинальность: Оригинал]]></description>
+Тип: Печатающая головка; Партномер: C9383A; Цвет: Голубой; Оригинальность: Оригинал]]></description>
 <param name="Тип">Печатающая головка</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Партномер">C9384A</param>
-<param name="Цвет">Черный</param>
+<param name="Партномер">C9383A</param>
+<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VTTK-1170" available="true">
@@ -61094,6 +62049,44 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">3K</param>
 <param name="Коды расходников">TL5120P, TL-5120</param>
 <param name="Цвет">Черный</param>
+</offer>
+
+<offer id="VTTN-C2310HC" available="true">
+<categoryId></categoryId>
+<vendorCode>VTTN-C2310HC</vendorCode>
+<name>Заправочный комплект TN-C2310HC для Pantum серии 2300, 1600 стр. , TN-C2310HC (оригинал)</name>
+<price>8900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Pantum</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Тонер; Партномер: TNC2310HC; Совместимость: Pantum серии 2300, 1600 стр; Цвет: Черный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Pantum</param>
+<param name="Цвет">Черный</param>
+<param name="Партномер">TNC2310HC</param>
+<param name="Совместимость">Pantum серии 2300, 1600 стр</param>
+<param name="Коды расходников">TN-C2310HC</param>
+</offer>
+
+<offer id="VTW1103AD" available="true">
+<categoryId></categoryId>
+<vendorCode>VTW1103AD</vendorCode>
+<name>Заправочный комплект тонера 103AD HP Neverstop Laser 1000a/1000w/1200a/1200w, 2X2,5К W1103AD, W1103AD</name>
+<price>19900</price>
+<picture>https://b2b.vtt.ru/images/W1103AD.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Тонер; Партномер: W1103AD; Ресурс: 2,5K; Цвет: Черный]]></description>
+<param name="Тип">Тонер</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">HP</param>
+<param name="Цвет">Черный</param>
+<param name="Партномер">W1103AD</param>
+<param name="Ресурс">2,5K</param>
+<param name="Коды расходников">103AD, 2X2</param>
 </offer>
 
 <offer id="VTW1104A" available="true">
