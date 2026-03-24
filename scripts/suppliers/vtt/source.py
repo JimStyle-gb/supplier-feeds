@@ -3,10 +3,11 @@
 Path: scripts/suppliers/vtt/source.py
 
 VTT source layer.
-v8:
+v9:
 - same category-first coverage;
 - keeps stronger HTTP pooling / keep-alive reuse;
-- adds early prefix filter on LISTING titles before opening product cards;
+- broadens allowed title prefixes to avoid losing useful products;
+- adds safer early prefix filter on LISTING titles before opening product cards;
 - normalizes listing titles by removing leading codes and originality markers;
 - keeps full fallback behavior if listing title is missing.
 """
@@ -55,11 +56,13 @@ DEFAULT_ALLOWED_TITLE_PREFIXES: list[str] = [
     "Драм-картридж",
     "Драм-юнит",
     "Драм-юниты",
+    "Драм юнит",
     "Кабель сетевой",
     "Картридж",
     "Картриджи",
     "Термоблок",
     "Тонер-картридж",
+    "Тонер-катридж",
     "Чернила",
     "Печатающая головка",
     "Копи-картридж",
@@ -71,6 +74,13 @@ DEFAULT_ALLOWED_TITLE_PREFIXES: list[str] = [
     "Фотобарабан",
     "Барабан",
     "Тонер",
+    "Комплект",
+    "Набор",
+    "Заправочный комплект",
+    "Модуль фоторецептора",
+    "Фотопроводниковый блок",
+    "Бокс сбора тонера",
+    "Рефил",
 ]
 
 UA = (
@@ -107,6 +117,7 @@ _TITLE_LEAD_CODE_RE = re.compile(
     re.I,
 )
 _ORIGINAL_MARK_RE = re.compile(r"""(?<!\w)\((?:O|О|OEM)\)(?!\w)|\bоригинал(?:ьн(?:ый|ая|ое|ые))?\b""", re.I)
+_LEAD_MARK_RE = re.compile(r"""^(?:\((?:E|LE)\)|LE\b|E\b)\s*""", re.I)
 
 
 def _product_path_re(path: str) -> bool:
@@ -305,6 +316,11 @@ def _normalize_listing_title(title: str) -> str:
     title = _norm_ws(title)
     title = _ORIGINAL_MARK_RE.sub("", title)
     title = _TITLE_LEAD_CODE_RE.sub("", title)
+    while True:
+        new_title = _LEAD_MARK_RE.sub("", title).strip(" ,.-")
+        if new_title == title:
+            break
+        title = new_title
     title = _norm_ws(title).strip(" ,.-")
     return title
 
@@ -315,9 +331,11 @@ def _title_matches_allowed(title: str, prefixes: list[str]) -> bool:
     if not title:
         return True  # не режем товар, если не смогли достать заголовок с листинга
     low = title.casefold()
+    compact = low.replace("-", " ")
     for prefix in prefixes:
         p = prefix.casefold()
-        if low.startswith(p):
+        pp = p.replace("-", " ")
+        if low.startswith(p) or compact.startswith(pp):
             return True
     return False
 
