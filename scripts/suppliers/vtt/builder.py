@@ -3,7 +3,7 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v11:
+v12:
 - keeps RAW params clean before core;
 - removes duplicate leading/trailing codes from title;
 - treats (O)/(О)/OEM as original marker;
@@ -19,6 +19,8 @@ v11:
 - keeps Canon/HP device model rows in compatibility without collapsing to vendor only;
 - cleans Epson/InkTec compatibility tails like color / volume / orig.fasovka;
 - removes trailing alt-partnumber tails from title where they are just supplier noise;
+- keeps HP/Xerox model rows like T920/T1500 and WC 7525/... from over-cutting;
+- skips title-side device models after "для" when building "Коды расходников";
 - does not change price/photo logic.
 """
 
@@ -106,7 +108,7 @@ SERVICE_DESC_RE = re.compile(
 ORIGINAL_MARK_RE = re.compile(r"(?<!\w)\((?:O|О|OEM)\)(?!\w)|\bоригинал(?:ьн(?:ый|ая|ое|ые))?\b", re.I)
 ORIG_PACK_RE = re.compile(r"(?:\(?\s*ориг\.?\s*фасовк[а-я]*\s*\)?|\(?\s*original\s*pack(?:ing)?\s*\)?)", re.I)
 TRAIL_PART_RE = re.compile(r"(?:,?\s*[A-Z0-9][A-Z0-9\-./]{2,})+$", re.I)
-ALT_PART_TAIL_RE = TRAIL_PART_RE
+ALT_PART_TAIL_RE = re.compile(r"(?:[,\s]+(?:№\s*)?(?:[A-Z]+\d|\d+[A-Z])[A-Z0-9-]{1,})+$", re.I)
 COLOR_TAIL_RE = re.compile(
     r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|"
     r"cyan|yellow|magenta|grey|gray|red|blue|"
@@ -269,11 +271,11 @@ def _cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "
         if sku:
             compat = re.sub(rf"(?<!\w){re.escape(sku)}(?!\w)", "", compat, flags=re.I).strip(" ,.;/")
 
-        # Объем/ресурс с пробелами после запятой тоже режем.
+        # Объем/ресурс.
         compat = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*(?:мл|ml|л|l))\s*$", "", compat, flags=re.I).strip(" ,.;/")
         compat = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", compat, flags=re.I).strip(" ,.;/")
 
-        # Цветовые хвосты, включая короткие обозначения для чернил.
+        # Цветовые хвосты.
         compat = re.sub(
             r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|"
             r"cyan|yellow|magenta|grey|gray|red|blue|light\s*cyan|light\s*magenta|"
@@ -288,10 +290,14 @@ def _cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "
             flags=re.I,
         ).strip(" ,.;/")
 
-        # Убираем только хвостовой part-like код в верхнем регистре/цифрах.
-        # Device-модели Canon/HP/Epson с нижним регистром не трогаем.
-        compat = re.sub(r"(?:,|\s)+[A-Z0-9-]*\d[A-Z0-9-]*\s*$", "", compat).strip(" ,.;/")
-        compat = ALT_PART_TAIL_RE.sub("", compat).strip(" ,.;/")
+        # Убираем только хвостовой alt part-number, если он отделен пробелом/запятой.
+        # Важное отличие: не режем модели после "/" вроде T920/T1500 и WC 7525/7530...
+        compat = re.sub(
+            r"(?:,|\s)+(?:№\s*)?(?:[A-Z]+\d|\d+[A-Z])[A-Z0-9-]{1,}\s*$",
+            "",
+            compat,
+            flags=re.I,
+        ).strip(" ,.;/")
 
         compat = re.sub(r"\s*,\s*", ", ", compat)
         compat = re.sub(r"\s*/\s*", "/", compat)
@@ -301,7 +307,6 @@ def _cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "
     if vendor and compat and not compat.upper().startswith(vendor.upper()):
         compat = f"{vendor} {compat}"
     return _norm_ws(compat)
-
 
 
 def _extract_part_number(raw: dict, params: Sequence[tuple[str, str]], title: str) -> str:
@@ -368,8 +373,13 @@ def _collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, 
     out: list[str] = []
     seen: set[str] = set()
     compat_low = _norm_ws(compat).casefold()
+    title_tail = ""
+    raw_title = _norm_ws(raw.get("name"))
+    m = re.search(r"\bдля\s+(.+)$", raw_title, re.I)
+    if m:
+        title_tail = _norm_ws(m.group(1)).casefold()
 
-    def add(val: str) -> None:
+    def add(val: str, *, from_title_codes: bool = False) -> None:
         for part in re.split(r"\s*,\s*", _s(val)):
             code = part.strip().strip(".-/")
             if not _should_keep_code(code, resource):
@@ -377,6 +387,9 @@ def _collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, 
             if part_number and code.casefold() == part_number.casefold():
                 continue
             if compat_low and re.search(rf"(?<!\w){re.escape(code.casefold())}(?!\w)", compat_low):
+                continue
+            # Коды, встречающиеся в хвосте названия после "для", чаще являются моделями устройств.
+            if from_title_codes and title_tail and re.search(rf"(?<!\w){re.escape(code.casefold())}(?!\w)", title_tail):
                 continue
             if code not in seen:
                 seen.add(code)
@@ -389,8 +402,9 @@ def _collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, 
         if _s(key) in CODE_SOURCE_KEYS:
             add(_s(value))
     for code in raw.get("title_codes") or []:
-        add(_s(code))
+        add(_s(code), from_title_codes=True)
     return out
+
 
 def _infer_type_by_title(title: str) -> str:
     low = title.casefold()
