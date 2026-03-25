@@ -3,7 +3,7 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v12:
+v13:
 - keeps RAW params clean before core;
 - removes duplicate leading/trailing codes from title;
 - treats (O)/(О)/OEM as original marker;
@@ -20,7 +20,9 @@ v12:
 - cleans Epson/InkTec compatibility tails like color / volume / orig.fasovka;
 - removes trailing alt-partnumber tails from title where they are just supplier noise;
 - keeps HP/Xerox model rows like T920/T1500 and WC 7525/... from over-cutting;
-- skips title-side device models after "для" when building "Коды расходников";
+- keeps Canon/Xerox model rows without cutting trailing numeric device models;
+- skips title-side device models like SC2020 in "Коды расходников";
+- strips trailing alt part-number tails like 2200C004/ from title;
 - does not change price/photo logic.
 """
 
@@ -108,7 +110,7 @@ SERVICE_DESC_RE = re.compile(
 ORIGINAL_MARK_RE = re.compile(r"(?<!\w)\((?:O|О|OEM)\)(?!\w)|\bоригинал(?:ьн(?:ый|ая|ое|ые))?\b", re.I)
 ORIG_PACK_RE = re.compile(r"(?:\(?\s*ориг\.?\s*фасовк[а-я]*\s*\)?|\(?\s*original\s*pack(?:ing)?\s*\)?)", re.I)
 TRAIL_PART_RE = re.compile(r"(?:,?\s*[A-Z0-9][A-Z0-9\-./]{2,})+$", re.I)
-ALT_PART_TAIL_RE = re.compile(r"(?:[,\s]+(?:№\s*)?(?:[A-Z]+\d|\d+[A-Z])[A-Z0-9-]{1,})+$", re.I)
+ALT_PART_TAIL_RE = re.compile(r"(?:[,\s]+(?:№\s*)?(?:[A-Z]+\d|\d+[A-Z])[A-Z0-9-]{1,}/?)+$", re.I)
 COLOR_TAIL_RE = re.compile(
     r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|"
     r"cyan|yellow|magenta|grey|gray|red|blue|"
@@ -122,6 +124,7 @@ COLOR_TAIL_RE = re.compile(
 VOLUME_TAIL_RE = re.compile(r"(?:,?\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l))+$", re.I)
 RESOURCE_TAIL_RE = re.compile(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])+$", re.I)
 DUPLICATE_LEAD_RE = re.compile(r"^([A-Z0-9][A-Z0-9\-./]{2,})\s*,\s*\1\b", re.I)
+TITLE_START_CODE_RE = re.compile(r"^(?:Тонер-картридж|Картридж|Копи-картридж|Принт-картридж|Драм-картридж|Драм-юнит|Девелопер|Чернила|Печатающая головка|Контейнер|Барабан|Фотобарабан)\s+([A-Z0-9][A-Z0-9\-./]{1,})\b", re.I)
 TRAIL_DUP_PART_RE = re.compile(r"(?:,?\s*[A-Z0-9][A-Z0-9\-./]{2,})+$", re.I)
 
 
@@ -271,9 +274,10 @@ def _cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "
         if sku:
             compat = re.sub(rf"(?<!\w){re.escape(sku)}(?!\w)", "", compat, flags=re.I).strip(" ,.;/")
 
-        # Объем/ресурс.
-        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*(?:мл|ml|л|l))\s*$", "", compat, flags=re.I).strip(" ,.;/")
-        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        # Объем/ресурс. Важно: не разрешаем пробел после запятой в числе,
+        # чтобы не срезать модели вида ".../7835, 26К" как "7835,26K".
+        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l))\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", compat, flags=re.I).strip(" ,.;/")
 
         # Цветовые хвосты.
         compat = re.sub(
@@ -290,14 +294,10 @@ def _cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "
             flags=re.I,
         ).strip(" ,.;/")
 
-        # Убираем только хвостовой alt part-number, если он отделен пробелом/запятой.
-        # Важное отличие: не режем модели после "/" вроде T920/T1500 и WC 7525/7530...
-        compat = re.sub(
-            r"(?:,|\s)+(?:№\s*)?(?:[A-Z]+\d|\d+[A-Z])[A-Z0-9-]{1,}\s*$",
-            "",
-            compat,
-            flags=re.I,
-        ).strip(" ,.;/")
+        # Убираем только хвостовой alt part-number в ВЕРХНЕМ регистре/цифрах.
+        # Device-модели с нижним регистром (LBP312x, MF421dw) и чисто цифровые
+        # модели после "/" не режем.
+        compat = re.sub(r"(?:,|\s)+(?:№\s*)?(?:[A-Z]+\d|\d+[A-Z])[A-Z0-9-]{1,}/?\s*$", "", compat).strip(" ,.;/")
 
         compat = re.sub(r"\s*,\s*", ", ", compat)
         compat = re.sub(r"\s*/\s*", "/", compat)
@@ -373,11 +373,16 @@ def _collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, 
     out: list[str] = []
     seen: set[str] = set()
     compat_low = _norm_ws(compat).casefold()
-    title_tail = ""
     raw_title = _norm_ws(raw.get("name"))
+    title_tail = ""
     m = re.search(r"\bдля\s+(.+)$", raw_title, re.I)
     if m:
         title_tail = _norm_ws(m.group(1)).casefold()
+
+    title_start_code = ""
+    m = TITLE_START_CODE_RE.search(raw_title)
+    if m:
+        title_start_code = _norm_ws(m.group(1)).strip(".-/")
 
     def add(val: str, *, from_title_codes: bool = False) -> None:
         for part in re.split(r"\s*,\s*", _s(val)):
@@ -388,9 +393,16 @@ def _collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, 
                 continue
             if compat_low and re.search(rf"(?<!\w){re.escape(code.casefold())}(?!\w)", compat_low):
                 continue
-            # Коды, встречающиеся в хвосте названия после "для", чаще являются моделями устройств.
-            if from_title_codes and title_tail and re.search(rf"(?<!\w){re.escape(code.casefold())}(?!\w)", title_tail):
-                continue
+            if from_title_codes:
+                # Коды из хвоста после "для" чаще являются моделями устройств.
+                if title_tail and re.search(rf"(?<!\w){re.escape(code.casefold())}(?!\w)", title_tail):
+                    continue
+                # Без "для" берем только стартовый расходный код после типа
+                # (например 041H/052H), а device-модели вроде SC2020 отбрасываем.
+                if title_start_code and code.casefold() != title_start_code.casefold():
+                    continue
+                if not title_start_code:
+                    continue
             if code not in seen:
                 seen.add(code)
                 out.append(code)
@@ -641,7 +653,17 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(part_number)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
         if sku:
             title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(sku)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
-        title_no_suffix = ALT_PART_TAIL_RE.sub("", title_no_suffix).strip(" ,")
+        # Сначала снимаем ресурс/цветовой хвост, потом alt part-number вроде 2200C004/
+        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
+        title_no_suffix = re.sub(
+            r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|"
+            r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
+            r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$",
+            "",
+            title_no_suffix,
+            flags=re.I,
+        ).strip(" ,")
+        title_no_suffix = ALT_PART_TAIL_RE.sub("", title_no_suffix).strip(" ,/")
         title_no_suffix = DUPLICATE_LEAD_RE.sub(r"\1", title_no_suffix).strip(" ,")
         title = _append_original_suffix(_norm_ws(title_no_suffix), original_flag)
 
