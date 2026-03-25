@@ -3,7 +3,7 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v10:
+v11:
 - keeps RAW params clean before core;
 - removes duplicate leading/trailing codes from title;
 - treats (O)/(О)/OEM as original marker;
@@ -16,7 +16,9 @@ v10:
 - keeps compatibility model rows like T920/T1500 and MF421dw/... without over-cutting;
 - removes trailing supplier SKU from title where it is just an internal tail;
 - fixes duplicate raw "Ресурс" param;
-- safer compatibility cleanup for HP/Canon cases without over-cutting model rows;
+- keeps Canon/HP device model rows in compatibility without collapsing to vendor only;
+- cleans Epson/InkTec compatibility tails like color / volume / orig.fasovka;
+- removes trailing alt-partnumber tails from title where they are just supplier noise;
 - does not change price/photo logic.
 """
 
@@ -254,6 +256,7 @@ def _cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "
         return ""
 
     compat = ORIGINAL_MARK_RE.sub("", compat)
+    compat = ORIG_PACK_RE.sub("", compat).strip(" ,.;/")
 
     changed = True
     while changed and compat:
@@ -264,11 +267,15 @@ def _cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "
         if sku:
             compat = re.sub(rf"(?<!\w){re.escape(sku)}(?!\w)", "", compat, flags=re.I).strip(" ,.;/")
 
-        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l))\s*$", "", compat, flags=re.I).strip(" ,.;/")
-        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        # Объем/ресурс с пробелами после запятой тоже режем.
+        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*(?:мл|ml|л|l))\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", compat, flags=re.I).strip(" ,.;/")
+
+        # Цветовые хвосты, включая короткие обозначения для чернил.
         compat = re.sub(
             r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|"
-            r"cyan|yellow|magenta|grey|gray|red|blue|"
+            r"cyan|yellow|magenta|grey|gray|red|blue|light\s*cyan|light\s*magenta|"
+            r"bk|c|m|y|cl|ml|lc|lm|"
             r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|"
             r"голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|"
             r"желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
@@ -279,17 +286,21 @@ def _cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "
             flags=re.I,
         ).strip(" ,.;/")
 
-        # Убираем только part-like хвост из ВЕРХНЕГО регистра/цифр.
-        # Device-модели с маленькими буквами (LBP312x, MF421dw) не трогаем.
-        compat = re.sub(r"(?:,|\s)+[A-Z0-9-]*\d[A-Z0-9-]*\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        # Убираем только хвостовой part-like код в верхнем регистре/цифрах.
+        # Device-модели Canon/HP/Epson с нижним регистром не трогаем.
+        compat = re.sub(r"(?:,|\s)+[A-Z0-9-]*\d[A-Z0-9-]*\s*$", "", compat).strip(" ,.;/")
+        compat = ALT_PART_TAIL_RE.sub("", compat).strip(" ,.;/")
 
         compat = re.sub(r"\s*,\s*", ", ", compat)
+        compat = re.sub(r"\s*/\s*", "/", compat)
         compat = re.sub(r"\s{2,}", " ", compat).strip(" ,.;/")
         changed = compat != before
 
     if vendor and compat and not compat.upper().startswith(vendor.upper()):
         compat = f"{vendor} {compat}"
     return _norm_ws(compat)
+
+
 
 def _extract_part_number(raw: dict, params: Sequence[tuple[str, str]], title: str) -> str:
     for key, value in params:
@@ -327,6 +338,8 @@ def _extract_compat(title: str, vendor: str, params: Sequence[tuple[str, str]], 
             if compat:
                 return compat
     return ""
+
+
 
 def _should_keep_code(code: str, resource: str = "") -> bool:
     code = code.strip(".-/")
@@ -612,6 +625,7 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(part_number)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
         if sku:
             title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(sku)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
+        title_no_suffix = ALT_PART_TAIL_RE.sub("", title_no_suffix).strip(" ,")
         title_no_suffix = DUPLICATE_LEAD_RE.sub(r"\1", title_no_suffix).strip(" ,")
         title = _append_original_suffix(_norm_ws(title_no_suffix), original_flag)
 
