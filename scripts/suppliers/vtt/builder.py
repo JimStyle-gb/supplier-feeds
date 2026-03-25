@@ -3,7 +3,7 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v14:
+v15:
 - keeps RAW params clean before core;
 - removes duplicate leading/trailing codes from title;
 - treats (O)/(О)/OEM as original marker;
@@ -23,8 +23,7 @@ v14:
 - keeps Canon/Xerox model rows without cutting trailing numeric device models;
 - skips title-side device models like SC2020 in "Коды расходников";
 - strips trailing alt part-number tails like 2200C004/ from title;
-- removes leftover resource/color tails after alt-part cleanup in title;
-- drops single-letter Hi-Black color tails like ", Y" from title;
+- fixes leftover tails like "9,2К", "0,6К", "0,3К, Color" in Canon/HP names and compat;
 - does not change price/photo logic.
 """
 
@@ -276,18 +275,17 @@ def _cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "
         if sku:
             compat = re.sub(rf"(?<!\w){re.escape(sku)}(?!\w)", "", compat, flags=re.I).strip(" ,.;/")
 
-        # Объем/ресурс. Важно: не разрешаем пробел после запятой в числе,
-        # чтобы не срезать модели вида ".../7835, 26К" как "7835,26K".
-        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l))\s*$", "", compat, flags=re.I).strip(" ,.;/")
-        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        # Объем/ресурс. Разрешаем пробел после запятой, чтобы чистить "9, 2К" / "0, 3К".
+        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*(?:мл|ml|л|l))\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", compat, flags=re.I).strip(" ,.;/")
 
         # Цветовые хвосты.
         compat = re.sub(
             r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|"
-            r"cyan|yellow|magenta|grey|gray|red|blue|light\s*cyan|light\s*magenta|"
+            r"cyan|yellow|magenta|grey|gray|red|blue|color|colour|light\s*cyan|light\s*magenta|"
             r"bk|c|m|y|cl|ml|lc|lm|"
             r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|"
-            r"голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|"
+            r"голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|цветн(?:ой|ая|ое)?|"
             r"желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
             r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|"
             r"сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$",
@@ -297,9 +295,10 @@ def _cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "
         ).strip(" ,.;/")
 
         # Убираем только хвостовой alt part-number в ВЕРХНЕМ регистре/цифрах.
-        # Device-модели с нижним регистром (LBP312x, MF421dw) и чисто цифровые
-        # модели после "/" не режем.
         compat = re.sub(r"(?:,|\s)+(?:№\s*)?(?:[A-Z]+\d|\d+[A-Z])[A-Z0-9-]{1,}/?\s*$", "", compat).strip(" ,.;/")
+
+        # Если после чистки остался обрубок десятичного ресурса ("..., 0" / "... 9"), убираем его только как одноцифровой хвост.
+        compat = re.sub(r"(?:,?\s*[0-9])\s*$", "", compat).strip(" ,.;/")
 
         compat = re.sub(r"\s*,\s*", ", ", compat)
         compat = re.sub(r"\s*/\s*", "/", compat)
@@ -655,24 +654,24 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(part_number)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
         if sku:
             title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(sku)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
-        # Снимаем ресурс/цветовой хвост, затем alt part-number вроде 2200C004/,
-        # потом повторно добираем оставшийся ресурс/цвет (например "9,2К черный").
-        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
+        # Сначала снимаем ресурс/цветовой хвост, потом alt part-number вроде 2200C004/,
+        # потом еще раз добираем оставшийся хвост ресурса/цвета.
+        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
         title_no_suffix = re.sub(
-            r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|"
+            r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|color|colour|"
             r"bk|c|m|y|cl|ml|lc|lm|"
-            r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
+            r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|цветн(?:ой|ая|ое)?|желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
             r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$",
             "",
             title_no_suffix,
             flags=re.I,
         ).strip(" ,")
         title_no_suffix = ALT_PART_TAIL_RE.sub("", title_no_suffix).strip(" ,/")
-        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
+        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
         title_no_suffix = re.sub(
-            r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|"
+            r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|color|colour|"
             r"bk|c|m|y|cl|ml|lc|lm|"
-            r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
+            r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|цветн(?:ой|ая|ое)?|желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
             r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$",
             "",
             title_no_suffix,
