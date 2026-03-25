@@ -3,7 +3,7 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v9:
+v10:
 - keeps RAW params clean before core;
 - removes duplicate leading/trailing codes from title;
 - treats (O)/(О)/OEM as original marker;
@@ -15,6 +15,8 @@ v9:
 - normalizes resource values like 10000 -> 10K;
 - keeps compatibility model rows like T920/T1500 and MF421dw/... without over-cutting;
 - removes trailing supplier SKU from title where it is just an internal tail;
+- fixes duplicate raw "Ресурс" param;
+- safer compatibility cleanup for HP/Canon cases without over-cutting model rows;
 - does not change price/photo logic.
 """
 
@@ -246,31 +248,44 @@ def _extract_resource(title: str, params: Sequence[tuple[str, str]], desc: str) 
         return f"{m.group(1)} л"
     return ""
 
-def _cleanup_compat(value: str, vendor: str, part_number: str = "") -> str:
+def _cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "") -> str:
     compat = _norm_ws(value).strip(" ,.;/")
     if not compat:
         return ""
 
     compat = ORIGINAL_MARK_RE.sub("", compat)
-    if part_number:
-        compat = re.sub(rf"(?<!\w){re.escape(part_number)}(?!\w)", "", compat, flags=re.I)
 
-    # Убираем только явные хвосты, не трогая сам модельный ряд.
-    for _ in range(4):
+    changed = True
+    while changed and compat:
         before = compat
-        compat = re.sub(r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|"
-                        r"cyan|yellow|magenta|grey|gray|red|blue|"
-                        r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|"
-                        r"голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|"
-                        r"желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
-                        r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|"
-                        r"сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$", "", compat, flags=re.I).strip(" ,.;/")
+
+        if part_number:
+            compat = re.sub(rf"(?<!\w){re.escape(part_number)}(?!\w)", "", compat, flags=re.I).strip(" ,.;/")
+        if sku:
+            compat = re.sub(rf"(?<!\w){re.escape(sku)}(?!\w)", "", compat, flags=re.I).strip(" ,.;/")
+
         compat = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l))\s*$", "", compat, flags=re.I).strip(" ,.;/")
         compat = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", compat, flags=re.I).strip(" ,.;/")
-        compat = re.sub(r"(?:,|\s)+[A-Z]{1,}\d[A-Z0-9-]*/?\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        compat = re.sub(
+            r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|"
+            r"cyan|yellow|magenta|grey|gray|red|blue|"
+            r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|"
+            r"голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|"
+            r"желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
+            r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|"
+            r"сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$",
+            "",
+            compat,
+            flags=re.I,
+        ).strip(" ,.;/")
+
+        # Убираем только part-like хвост из ВЕРХНЕГО регистра/цифр.
+        # Device-модели с маленькими буквами (LBP312x, MF421dw) не трогаем.
+        compat = re.sub(r"(?:,|\s)+[A-Z0-9-]*\d[A-Z0-9-]*\s*$", "", compat, flags=re.I).strip(" ,.;/")
+
+        compat = re.sub(r"\s*,\s*", ", ", compat)
         compat = re.sub(r"\s{2,}", " ", compat).strip(" ,.;/")
-        if compat == before:
-            break
+        changed = compat != before
 
     if vendor and compat and not compat.upper().startswith(vendor.upper()):
         compat = f"{vendor} {compat}"
@@ -286,24 +301,21 @@ def _extract_part_number(raw: dict, params: Sequence[tuple[str, str]], title: st
     return _first_code(title)
 
 
-def _extract_compat(title: str, vendor: str, params: Sequence[tuple[str, str]], desc: str, part_number: str) -> str:
+def _extract_compat(title: str, vendor: str, params: Sequence[tuple[str, str]], desc: str, part_number: str, sku: str = "") -> str:
     # 1) Явный supplier-param приоритетнее.
     for key, value in params:
         k = _s(key).casefold()
         if any(x in k for x in ("совмест", "для устройств", "для принтеров", "подходит")):
-            val = _cleanup_compat(_s(value), vendor, part_number)
+            val = _cleanup_compat(_s(value), vendor, part_number, sku)
             if val:
                 return val
 
-    # 2) Из названия берем только участок после "для" и режем по явным хвостам.
+    # 2) Из названия берем только участок после "для".
     clean_title = _norm_ws(title)
     m = re.search(r"\bдля\s+(.+)$", clean_title, re.I)
     if m:
         tail = _norm_ws(m.group(1))
-        # сначала вырезаем точный part number и внутренний sku-подобный хвост
-        if part_number:
-            tail = re.sub(rf"(?<!\w){re.escape(part_number)}(?!\w)", "", tail, flags=re.I)
-        tail = _cleanup_compat(tail, vendor, part_number)
+        tail = _cleanup_compat(tail, vendor, part_number, sku)
         if tail:
             return tail
 
@@ -311,7 +323,7 @@ def _extract_compat(title: str, vendor: str, params: Sequence[tuple[str, str]], 
     if desc:
         m = re.search(r"(?:совместим(?:ость|ые)?|подходит для|для принтеров|для устройств)\s*[:\-]?\s*([^.;\n]+)", desc, re.I)
         if m:
-            compat = _cleanup_compat(m.group(1), vendor, part_number)
+            compat = _cleanup_compat(m.group(1), vendor, part_number, sku)
             if compat:
                 return compat
     return ""
@@ -558,6 +570,7 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number
             color_found = value or color_found
         if key.casefold() == "ресурс":
             resource = resource or _format_resource_value(_norm_ws(value))
+            continue
         if key in {"Модель", "Партномер"}:
             continue
         add(key, value)
@@ -602,7 +615,7 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         title_no_suffix = DUPLICATE_LEAD_RE.sub(r"\1", title_no_suffix).strip(" ,")
         title = _append_original_suffix(_norm_ws(title_no_suffix), original_flag)
 
-    compat = _extract_compat(clean_title, vendor, raw.get("params") or [], _s(raw.get("description_body")), part_number)
+    compat = _extract_compat(clean_title, vendor, raw.get("params") or [], _s(raw.get("description_body")), part_number, sku)
     resource = _extract_resource(clean_title, raw.get("params") or [], _s(raw.get("description_body")))
     codes = _collect_codes(raw, raw.get("params") or [], resource, part_number, compat)
     params = _merge_params(raw, vendor, type_name, tech, part_number, codes, clean_title, compat, resource)
