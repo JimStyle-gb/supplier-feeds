@@ -1,0 +1,35 @@
+supplier: vtt
+id_prefix: VT
+source_kind: html_site_parsing
+source_of_truth_for_params: page_params_first
+desc_extract_mode: only_fill_missing
+raw_must_be_clean: true
+
+always_true_available: true
+
+param_priority:
+  - Тип
+  - Для бренда
+  - Партномер
+  - Коды расходников
+  - Совместимость
+  - Технология печати
+  - Цвет
+  - Ресурс
+  - Объем
+
+core_rules:
+  # Для VTT raw уже должен приходить чистым supplier-result.
+  drop_desc_specs_pairs: true
+  enable_enrich_from_desc: false
+  enable_enrich_from_name_desc: false
+  enable_auto_compat: false
+  enable_apply_color_from_name: false
+  enable_split_params_for_chars: false
+  enable_clean_params: false
+
+quality_gate:
+  enforce: false
+  max_cosmetic_offers: 5
+  max_cosmetic_issues: 5
+  report_path: docs/raw/vtt_quality_gate.txt
