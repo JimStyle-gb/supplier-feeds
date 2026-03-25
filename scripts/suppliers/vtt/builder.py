@@ -105,6 +105,7 @@ SERVICE_DESC_RE = re.compile(
 )
 ORIGINAL_MARK_RE = re.compile(r"(?<!\w)\((?:O|О|OEM)\)(?!\w)|\bоригинал(?:ьн(?:ый|ая|ое|ые))?\b", re.I)
 TRAIL_PART_RE = re.compile(r"(?:,?\s*[A-Z0-9][A-Z0-9\-./]{2,})+$", re.I)
+ALT_PART_TAIL_RE = TRAIL_PART_RE
 COLOR_TAIL_RE = re.compile(
     r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|"
     r"cyan|yellow|magenta|grey|gray|red|blue|"
