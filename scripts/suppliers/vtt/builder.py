@@ -3,10 +3,11 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v19:
+v20:
 - keeps modular structure;
 - restores v22-safe title cleanup;
 - fixes only title-side regressions in the builder layer;
+- repeats resource/color cleanup after alt-part removal for HP 651 / Canon 052H tails;
 - compat-specific cleanup stays in compat.py.
 """
 
@@ -124,11 +125,14 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         # v22-safe title cleanup:
         # remove only explicit resource/color tails and true alt-part tails,
         # without cutting model rows like T1500 / 7835 / C70 / SC2020.
-        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
+        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
         title_no_suffix = _TITLE_COLOR_TAIL_RE.sub("", title_no_suffix).strip(" ,")
         title_no_suffix = ALT_PART_TAIL_RE.sub("", title_no_suffix).strip(" ,/")
-        title_no_suffix = re.sub(r"(?:,\s*|\s+)(?:0|1|2|3|4|5|6|7|8|9)\s*$", "", title_no_suffix).strip(" ,")
-        title_no_suffix = re.sub(r"(?:,\s*|\s+)(?:bk|c|m|y|cl|ml|lc|lm)\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
+        # После удаления хвостового supplier-code добираем остатки вида "9,2К черный" / "0,3К color".
+        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
+        title_no_suffix = _TITLE_COLOR_TAIL_RE.sub("", title_no_suffix).strip(" ,")
+        title_no_suffix = re.sub(r"(?:,\s*)(?:0|1|2|3|4|5|6|7|8|9)\s*$", "", title_no_suffix).strip(" ,")
+        title_no_suffix = re.sub(r"(?:,\s*)(?:bk|c|m|y|cl|ml|lc|lm)\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
         title_no_suffix = DUPLICATE_LEAD_RE.sub(r"\1", title_no_suffix).strip(" ,")
         title = append_original_suffix(norm_ws(title_no_suffix), original_flag)
 
