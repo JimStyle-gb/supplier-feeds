@@ -39,7 +39,7 @@ from .filtering import (
     title_matches_allowed,
 )
 from .models import ParsedProductPage, ProductIndexItem, VTTConfig
-from .normalize import canon_vendor, norm_ws
+from .normalize import norm_ws
 from .params_page import (
     extract_images_from_html,
     extract_meta_desc,
