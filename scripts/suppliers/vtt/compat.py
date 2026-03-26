@@ -3,12 +3,11 @@
 Path: scripts/suppliers/vtt/compat.py
 
 VTT compat layer.
-v4:
-- restores v22-safe compatibility cleanup;
-- keeps model rows like T920/T1500, WC 7525/.../7835, Color C60/C70, DC SC2020;
-- removes only true trailing resource/color/packaging/supplier tails;
-- keeps "Коды расходников" from device-model pollution.
-- preserves device models like LBP312x and SC2020 while still removing numeric-leading supplier tails like 2200C004.
+v5:
+- preserves device/model rows;
+- fixes Canon 041/041H and 052H compat tails;
+- fixes HP 651 compat tails;
+- keeps codes free from device-model pollution.
 """
 
 from __future__ import annotations
@@ -20,7 +19,7 @@ from .normalize import ORIGINAL_MARK_RE, first_code, norm_ws, safe_str
 
 CODE_SOURCE_KEYS = {"Каталожный номер", "OEM-номер", "Партс-номер", "Партномер", "Аналоги"}
 
-ORIG_PACK_RE = re.compile(r"(?:\(?\s*ориг\.?\s*фасовк[а-я]*\s*\)?|\(?\s*original\s*pack(?:ing)?\s*\)?)", re.I)
+ORIG_PACK_RE = re.compile(r"(?:\(?\s*ориг\.?\s*фасовк[а-я]*\s*\)?|\(?\s*original\s*pack(?:ing)?\s*\)?|\(?\s*уцен[^)]*\)?)", re.I)
 TITLE_START_CODE_RE = re.compile(
     r"^(?:Тонер-картридж|Картридж|Копи-картридж|Принт-картридж|Драм-картридж|Драм-юнит|Девелопер|Чернила|Печатающая головка|Контейнер|Барабан|Фотобарабан)\s+([A-Z0-9][A-Z0-9\-./]{1,})\b",
     re.I,
@@ -38,9 +37,20 @@ _COLOR_TAIL_RE = re.compile(
     re.I,
 )
 
-# True supplier alt-part / inner SKU tails only. Do NOT cut model rows like T1500 or C70.
+# remove only true detached supplier tails; do not touch model rows like T1500/C70/SC2020
 ALT_PART_TAIL_RE = re.compile(r"(?:,\s*|\s+)(?:№\s*)?\d+[A-Z][A-Z0-9-]{2,}/?\s*$")
 
+def _canonicalize_known_compat(title: str, compat: str, vendor: str) -> str:
+    title_n = norm_ws(title)
+    compat_n = norm_ws(compat)
+
+    if "LBP312x" in title_n and (not compat_n or compat_n == "Canon"):
+        return "Canon LBP312x"
+    if "MF421dw/MF426dw/MF428x/MF429x" in title_n:
+        return "Canon MF421dw/MF426dw/MF428x/MF429x"
+    if "HP DJ 5645" in title_n and compat_n.startswith("HP DJ 5645"):
+        return "HP DJ 5645"
+    return compat_n
 
 def cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "") -> str:
     compat = norm_ws(value).strip(" ,.;/")
@@ -59,18 +69,12 @@ def cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = ""
         if sku:
             compat = re.sub(rf"(?<!\w){re.escape(sku)}(?!\w)", "", compat, flags=re.I).strip(" ,.;/")
 
-        # volume/resource tails
-        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l))\s*$", "", compat, flags=re.I).strip(" ,.;/")
-        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", compat, flags=re.I).strip(" ,.;/")
-        # color tails
+        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*(?:мл|ml|л|l))\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", compat, flags=re.I).strip(" ,.;/")
         compat = _COLOR_TAIL_RE.sub("", compat).strip(" ,.;/")
-        # supplier alt-part tails like 2200C004 or B3P22A only if detached as their own last token
         compat = ALT_PART_TAIL_RE.sub("", compat).strip(" ,.;/")
-        # orphan single-digit decimal remnants after removing "0,6K"/"9,2K"
-        compat = re.sub(r"(?:,\s*)(?:0|1|2|3|4|5|6|7|8|9)\s*$", "", compat).strip(" ,.;/")
-        # single-letter color remnants after comma
-        compat = re.sub(r"(?:,\s*)(?:bk|c|m|y|cl|ml|lc|lm)\s*$", "", compat, flags=re.I).strip(" ,.;/")
-
+        compat = re.sub(r"(?:,\s*|\s+)(?:0|1|2|3|4|5|6|7|8|9)\s*$", "", compat).strip(" ,.;/")
+        compat = re.sub(r"(?:,\s*|\s+)(?:bk|c|m|y|cl|ml|lc|lm)\s*$", "", compat, flags=re.I).strip(" ,.;/")
         compat = re.sub(r"\s*,\s*", ", ", compat)
         compat = re.sub(r"\s*/\s*", "/", compat)
         compat = re.sub(r"\s{2,}", " ", compat).strip(" ,.;/")
@@ -79,7 +83,6 @@ def cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = ""
     if vendor and compat and not compat.upper().startswith(vendor.upper()):
         compat = f"{vendor} {compat}"
     return norm_ws(compat)
-
 
 def extract_part_number(raw: dict, params: Sequence[tuple[str, str]], title: str) -> str:
     for key, value in params:
@@ -90,30 +93,33 @@ def extract_part_number(raw: dict, params: Sequence[tuple[str, str]], title: str
         return sku
     return first_code(title)
 
-
 def extract_compat(title: str, vendor: str, params: Sequence[tuple[str, str]], desc: str, part_number: str, sku: str = "") -> str:
+    best = ""
     for key, value in params:
         k = safe_str(key).casefold()
         if any(x in k for x in ("совмест", "для устройств", "для принтеров", "подходит")):
             val = cleanup_compat(safe_str(value), vendor, part_number, sku)
             if val:
-                return val
+                best = val
+                break
 
-    clean_title = norm_ws(title)
-    m = re.search(r"\bдля\s+(.+)$", clean_title, re.I)
-    if m:
-        tail = cleanup_compat(norm_ws(m.group(1)), vendor, part_number, sku)
-        if tail:
-            return tail
+    if not best:
+        clean_title = norm_ws(title)
+        m = re.search(r"\bдля\s+(.+)$", clean_title, re.I)
+        if m:
+            tail = cleanup_compat(norm_ws(m.group(1)), vendor, part_number, sku)
+            if tail:
+                best = tail
 
-    if desc:
+    if not best and desc:
         m = re.search(r"(?:совместим(?:ость|ые)?|подходит для|для принтеров|для устройств)\s*[:\-]?\s*([^.;\n]+)", desc, re.I)
         if m:
             compat = cleanup_compat(m.group(1), vendor, part_number, sku)
             if compat:
-                return compat
-    return ""
+                best = compat
 
+    best = _canonicalize_known_compat(title, best, vendor)
+    return best
 
 def should_keep_code(code: str, resource: str = "") -> bool:
     code = code.strip(".-/")
@@ -131,7 +137,6 @@ def should_keep_code(code: str, resource: str = "") -> bool:
         if code_norm == res_norm:
             return False
     return True
-
 
 def collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, part_number: str, compat: str) -> list[str]:
     out: list[str] = []
