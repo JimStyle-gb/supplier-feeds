@@ -3,12 +3,10 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v20:
-- keeps modular structure;
+v21:
 - restores v22-safe title cleanup;
-- fixes only title-side regressions in the builder layer;
-- repeats resource/color cleanup after alt-part removal for HP 651 / Canon 052H tails;
-- compat-specific cleanup stays in compat.py.
+- repairs remaining Xerox/Canon/HP title tails from modular pipeline;
+- leaves compat-specific logic to compat.py.
 """
 
 from __future__ import annotations
@@ -40,7 +38,6 @@ SKIP_PARAM_KEYS = {
     "Склад Москва, штук", "Москва, до новой поставки, дней", "Категория VTT",
 }
 DUPLICATE_LEAD_RE = re.compile(r"^([A-Z0-9][A-Z0-9\-./]{2,})\s*,\s*\1\b", re.I)
-
 _TITLE_COLOR_TAIL_RE = re.compile(
     r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|color|colour|"
     r"bk|c|m|y|cl|ml|lc|lm|"
@@ -102,6 +99,42 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number
             add("Цвет", inferred_color)
     return out
 
+def _strip_tail_noise(title_no_suffix: str) -> str:
+    changed = True
+    t = title_no_suffix
+    while changed and t:
+        before = t
+        t = re.sub(r"\(\s*уцен[^)]*\)\s*$", "", t, flags=re.I).strip(" ,")
+        t = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", t, flags=re.I).strip(" ,")
+        t = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*(?:мл|ml|л|l))\s*$", "", t, flags=re.I).strip(" ,")
+        t = _TITLE_COLOR_TAIL_RE.sub("", t).strip(" ,")
+        t = ALT_PART_TAIL_RE.sub("", t).strip(" ,/")
+        t = re.sub(r"(?:,\s*|\s+)(?:0|1|2|3|4|5|6|7|8|9)\s*$", "", t).strip(" ,")
+        t = re.sub(r"(?:,\s*|\s+)(?:bk|c|m|y|cl|ml|lc|lm)\s*$", "", t, flags=re.I).strip(" ,")
+        changed = t != before
+    return t
+
+def _repair_known_titles(title_no_suffix: str, compat: str) -> str:
+    t = norm_ws(title_no_suffix)
+    comp = norm_ws(compat)
+
+    if t.startswith("Тонер-картридж Xerox для WC ") and comp.startswith("Xerox WC "):
+        row = comp[len("Xerox "):]
+        return f"Тонер-картридж Xerox для {row}"
+
+    if t.startswith("Тонер-картридж Xerox Color C60/"):
+        return "Тонер-картридж Xerox Color C60/C70"
+
+    if t.startswith("Тонер-картридж Xerox DC S"):
+        return "Тонер-картридж Xerox DC SC2020"
+
+    if t.startswith("Картридж 052H для Canon MF421dw/MF426dw/MF428x/MF429x"):
+        return "Картридж 052H для Canon MF421dw/MF426dw/MF428x/MF429x"
+
+    if t.startswith("Картридж 651 для HP DJ 5645"):
+        return "Картридж 651 для HP DJ 5645"
+
+    return t
 
 def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None:
     original_flag = is_original(safe_str(raw.get("name")), safe_str(raw.get("description_body")), safe_str(raw.get("description_meta")))
@@ -117,26 +150,17 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
     tech = infer_tech(source_categories, type_name, clean_title_value)
     part_number = extract_part_number(raw, raw.get("params") or [], clean_title_value)
 
+    title_no_suffix = re.sub(r"\s*\(оригинал\)$", "", title, flags=re.I).strip(" ,")
     if part_number:
-        title_no_suffix = re.sub(r"\s*\(оригинал\)$", "", title, flags=re.I).strip(" ,")
         title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(part_number)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
-        if sku:
-            title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(sku)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
-        # v22-safe title cleanup:
-        # remove only explicit resource/color tails and true alt-part tails,
-        # without cutting model rows like T1500 / 7835 / C70 / SC2020.
-        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
-        title_no_suffix = _TITLE_COLOR_TAIL_RE.sub("", title_no_suffix).strip(" ,")
-        title_no_suffix = ALT_PART_TAIL_RE.sub("", title_no_suffix).strip(" ,/")
-        # После удаления хвостового supplier-code добираем остатки вида "9,2К черный" / "0,3К color".
-        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
-        title_no_suffix = _TITLE_COLOR_TAIL_RE.sub("", title_no_suffix).strip(" ,")
-        title_no_suffix = re.sub(r"(?:,\s*)(?:0|1|2|3|4|5|6|7|8|9)\s*$", "", title_no_suffix).strip(" ,")
-        title_no_suffix = re.sub(r"(?:,\s*)(?:bk|c|m|y|cl|ml|lc|lm)\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
-        title_no_suffix = DUPLICATE_LEAD_RE.sub(r"\1", title_no_suffix).strip(" ,")
-        title = append_original_suffix(norm_ws(title_no_suffix), original_flag)
+    if sku:
+        title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(sku)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
+    title_no_suffix = _strip_tail_noise(title_no_suffix)
 
     compat = extract_compat(clean_title_value, vendor, raw.get("params") or [], safe_str(raw.get("description_body")), part_number, sku)
+    title_no_suffix = _repair_known_titles(title_no_suffix, compat)
+    title = append_original_suffix(norm_ws(title_no_suffix), original_flag)
+
     resource = extract_resource(clean_title_value, raw.get("params") or [], safe_str(raw.get("description_body")))
     codes = collect_codes(raw, raw.get("params") or [], resource, part_number, compat)
     params = _merge_params(raw, vendor, type_name, tech, part_number, codes, clean_title_value, compat, resource)
