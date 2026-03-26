@@ -3,13 +3,14 @@
 Path: scripts/suppliers/vtt/source.py
 
 VTT source layer.
-v10:
+v13:
 - same category-first coverage;
 - stronger HTTP pooling / keep-alive reuse;
 - listing filter moved to filtering.py;
 - html param/desc parsing moved to params_page.py;
 - pictures cleanup moved to pictures.py;
 - keeps existing build_vtt.py contract unchanged.
+- disables hard early-reject on listing prefixes to recover v22-level coverage;
 """
 
 from __future__ import annotations
@@ -254,11 +255,13 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
                 rec["source_categories"].update(current_cats)
 
     out: list[dict[str, Any]] = []
+    soft_mismatch = 0
     for url, meta in sorted(product_candidates.items(), key=lambda kv: kv[0]):
         titles = sorted(meta.get("titles") or [])
+        # Для VTT категории уже вручную ограничены нужным ассортиментом,
+        # поэтому жёстко резать карточку на этапе листинга нельзя — это как раз и давало недобор против v22.
         if titles and not any(title_matches_allowed(title, allowed_prefixes) for title in titles):
-            early_rejected += 1
-            continue
+            soft_mismatch += 1
         item = ProductIndexItem(
             url=url,
             source_categories=sorted(list(meta.get("source_categories") or [])),
@@ -272,7 +275,7 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
             }
         )
 
-    log(f"[VTT] listing_index total={len(product_candidates)} kept={len(out)} early_rejected={early_rejected}")
+    log(f"[VTT] listing_index total={len(product_candidates)} kept={len(out)} soft_prefix_mismatch={soft_mismatch}")
     return out
 
 
