@@ -3,11 +3,12 @@
 Path: scripts/suppliers/vtt/compat.py
 
 VTT compat layer.
-v6:
+v7:
 - preserves device/model rows;
 - explicitly restores Xerox WC 7525/.../7835 row when title contains it;
 - fixes Canon 041/041H and 052H compat tails;
 - fixes HP 651 compat tails, including orphan decimal remnants;
+- cleans Hi-Black 727 compat back to plain HP DJ T920/T1500;
 - keeps codes free from device-model pollution.
 """
 
@@ -47,10 +48,14 @@ def _canonicalize_known_compat(title: str, compat: str, vendor: str) -> str:
 
     if "WC 7525/7530/7535/7545/7556/7830/7835" in title_n:
         return "Xerox WC 7525/7530/7535/7545/7556/7830/7835"
+    if "WC 7525/7530/7535/7545/7556/7830/7835" in title_n:
+        return "Xerox WC 7525/7530/7535/7545/7556/7830/7835"
     if "LBP312x" in title_n and (not compat_n or compat_n == "Canon"):
         return "Canon LBP312x"
     if "MF421dw/MF426dw/MF428x/MF429x" in title_n:
         return "Canon MF421dw/MF426dw/MF428x/MF429x"
+    if "Hi-Black" in title_n and "HP DJ T920/T1500" in title_n:
+        return "HP DJ T920/T1500"
     if "HP DJ 5645" in title_n and compat_n.startswith("HP DJ 5645"):
         return "HP DJ 5645"
     return compat_n
