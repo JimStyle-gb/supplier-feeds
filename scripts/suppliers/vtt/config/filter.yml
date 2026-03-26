@@ -1,0 +1,51 @@
+supplier: vtt
+mode: include
+
+category_codes:
+  - DRM_CRT
+  - DRM_UNIT
+  - CARTLAS_ORIG
+  - CARTLAS_COPY
+  - CARTLAS_PRINT
+  - CARTLAS_TNR
+  - CARTINJ_PRNTHD
+  - CARTINJ_Refill
+  - CARTINJ_ORIG
+  - CARTMAT_CART
+  - TNR_WASTETON
+  - DEV_DEV
+  - TNR_REFILL
+  - INK_COMMON
+  - PARTSPRINT_DEVUN
+
+allowed_title_prefixes:
+  - Drum
+  - Девелопер
+  - Драм-картридж
+  - Драм-юнит
+  - Драм-юниты
+  - Драм юнит
+  - Кабель сетевой
+  - Картридж
+  - Картриджи
+  - Термоблок
+  - Тонер-картридж
+  - Тонер-катридж
+  - Чернила
+  - Печатающая головка
+  - Копи-картридж
+  - Принт-картридж
+  - Контейнер
+  - Блок
+  - Бункер
+  - Носитель
+  - Фотобарабан
+  - Барабан
+  - Тонер
+  - Комплект
+  - Набор
+  - Заправочный комплект
+  - Модуль фоторецептора
+  - Фотопроводниковый блок
+  - Бокс сбора тонера
+  - Рефил
