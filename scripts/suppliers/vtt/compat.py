@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 Path: scripts/suppliers/vtt/compat.py
+
+VTT compat layer.
+v3:
+- restores v22-safe compatibility cleanup;
+- keeps model rows like T920/T1500, WC 7525/.../7835, Color C60/C70, DC SC2020;
+- removes only true trailing resource/color/packaging/supplier tails;
+- keeps "Коды расходников" from device-model pollution.
 """
 
 from __future__ import annotations
@@ -10,18 +17,15 @@ from typing import Sequence
 
 from .normalize import ORIGINAL_MARK_RE, first_code, norm_ws, safe_str
 
-CODE_SOURCE_KEYS = {
-    "Каталожный номер",
-    "OEM-номер",
-    "Партс-номер",
-    "Партномер",
-    "Аналоги",
-}
+CODE_SOURCE_KEYS = {"Каталожный номер", "OEM-номер", "Партс-номер", "Партномер", "Аналоги"}
 
 ORIG_PACK_RE = re.compile(r"(?:\(?\s*ориг\.?\s*фасовк[а-я]*\s*\)?|\(?\s*original\s*pack(?:ing)?\s*\)?)", re.I)
-ALT_PART_TAIL_RE = re.compile(r"(?:[,\s]+(?:№\s*)?(?:[A-Z]+\d|\d+[A-Z])[A-Z0-9-]{1,}/?)+$", re.I)
+TITLE_START_CODE_RE = re.compile(
+    r"^(?:Тонер-картридж|Картридж|Копи-картридж|Принт-картридж|Драм-картридж|Драм-юнит|Девелопер|Чернила|Печатающая головка|Контейнер|Барабан|Фотобарабан)\s+([A-Z0-9][A-Z0-9\-./]{1,})\b",
+    re.I,
+)
 
-_COLOR_OR_TRAIL_RE = re.compile(
+_COLOR_TAIL_RE = re.compile(
     r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|"
     r"cyan|yellow|magenta|grey|gray|red|blue|light\s*cyan|light\s*magenta|"
     r"bk|c|m|y|cl|ml|lc|lm|color|colour|"
@@ -32,6 +36,9 @@ _COLOR_OR_TRAIL_RE = re.compile(
     r"сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$",
     re.I,
 )
+
+# True supplier alt-part / inner SKU tails only. Do NOT cut model rows like T1500 or C70.
+ALT_PART_TAIL_RE = re.compile(r"(?:,\s*|\s+)(?:№\s*)?(?:[A-Z]{2,}\d|\d+[A-Z]{2,}|[A-Z]+\d[A-Z0-9-]{2,}|\d+[A-Z][A-Z0-9-]{2,})/?\s*$", re.I)
 
 
 def cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "") -> str:
@@ -51,12 +58,18 @@ def cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = ""
         if sku:
             compat = re.sub(rf"(?<!\w){re.escape(sku)}(?!\w)", "", compat, flags=re.I).strip(" ,.;/")
 
-        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*(?:мл|ml|л|l))\s*$", "", compat, flags=re.I).strip(" ,.;/")
-        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", compat, flags=re.I).strip(" ,.;/")
-        compat = _COLOR_OR_TRAIL_RE.sub("", compat).strip(" ,.;/")
-        compat = re.sub(r"(?:,|\s)+(?:№\s*)?(?:[A-Z]+\d|\d+[A-Z])[A-Z0-9-]{1,}/?\s*$", "", compat).strip(" ,.;/")
-        compat = re.sub(r"(?:,?\s*[0-9])\s*$", "", compat).strip(" ,.;/")
-        compat = re.sub(r"(?:,?\s*(?:bk|c|m|y|cl|ml|lc|lm))\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        # volume/resource tails
+        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l))\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        compat = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        # color tails
+        compat = _COLOR_TAIL_RE.sub("", compat).strip(" ,.;/")
+        # supplier alt-part tails like 2200C004 or B3P22A only if detached as their own last token
+        compat = ALT_PART_TAIL_RE.sub("", compat).strip(" ,.;/")
+        # orphan single-digit decimal remnants after removing "0,6K"/"9,2K"
+        compat = re.sub(r"(?:,\s*|\s+)(?:0|1|2|3|4|5|6|7|8|9)\s*$", "", compat).strip(" ,.;/")
+        # single-letter color remnants after comma
+        compat = re.sub(r"(?:,\s*|\s+)(?:bk|c|m|y|cl|ml|lc|lm)\s*$", "", compat, flags=re.I).strip(" ,.;/")
+
         compat = re.sub(r"\s*,\s*", ", ", compat)
         compat = re.sub(r"\s*/\s*", "/", compat)
         compat = re.sub(r"\s{2,}", " ", compat).strip(" ,.;/")
@@ -88,8 +101,7 @@ def extract_compat(title: str, vendor: str, params: Sequence[tuple[str, str]], d
     clean_title = norm_ws(title)
     m = re.search(r"\bдля\s+(.+)$", clean_title, re.I)
     if m:
-        tail = norm_ws(m.group(1))
-        tail = cleanup_compat(tail, vendor, part_number, sku)
+        tail = cleanup_compat(norm_ws(m.group(1)), vendor, part_number, sku)
         if tail:
             return tail
 
@@ -104,9 +116,7 @@ def extract_compat(title: str, vendor: str, params: Sequence[tuple[str, str]], d
 
 def should_keep_code(code: str, resource: str = "") -> bool:
     code = code.strip(".-/")
-    if len(code) < 3:
-        return False
-    if not re.search(r"\d", code):
+    if len(code) < 3 or not re.search(r"\d", code):
         return False
     if "/" in code:
         return False
@@ -133,11 +143,7 @@ def collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, p
         title_tail = norm_ws(m.group(1)).casefold()
 
     title_start_code = ""
-    m = re.search(
-        r"^(?:Тонер-картридж|Картридж|Копи-картридж|Принт-картридж|Драм-картридж|Драм-юнит|Девелопер|Чернила|Печатающая головка|Контейнер|Барабан|Фотобарабан)\s+([A-Z0-9][A-Z0-9\-./]{1,})\b",
-        raw_title,
-        re.I,
-    )
+    m = TITLE_START_CODE_RE.search(raw_title)
     if m:
         title_start_code = norm_ws(m.group(1)).strip(".-/")
 
