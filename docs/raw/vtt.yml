@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-26 21:35:15">
+<yml_catalog date="2026-03-26 22:34:44">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-03-26 21:35:15
+Время сборки (Алматы)                      | 2026-03-26 22:34:44
 Ближайшая сборка (Алматы)                  | 2026-03-26 05:00:00
-Сколько товаров у поставщика до фильтра    | 3236
-Сколько товаров у поставщика после фильтра | 3191
-Сколько товаров есть в наличии (true)      | 3191
+Сколько товаров у поставщика до фильтра    | 3223
+Сколько товаров у поставщика после фильтра | 3178
+Сколько товаров есть в наличии (true)      | 3178
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -396,40 +396,40 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1005401" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1005401</vendorCode>
-<name>Картридж Hi-Black (B3P19A) для HP DJ T920/T1500</name>
+<name>Картридж Hi-Black 727 для HP DJ T920/T1500 B3P19A</name>
 <price>14900</price>
 <picture>https://b2b.vtt.ru/images/1005401.jpg</picture>
 <picture>https://b2b.vtt.ru/images/1005401_2.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№727(B3P19A)-С; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№727(B3P19A)-С; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Партномер">HB-HP№727(B3P19A)-С</param>
+<param name="Партномер">B3P19A</param>
 <param name="Совместимость">HP DJ T920/T1500</param>
 <param name="Ресурс">130 мл</param>
 <param name="Коды расходников">727(B3P19A)</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VT1005402" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1005402</vendorCode>
-<name>Картридж Hi-Black (B3P20A) для HP DJ T920/T1500</name>
+<name>Картридж Hi-Black 727 для HP DJ T920/T1500 B3P20A</name>
 <price>14900</price>
 <picture>https://b2b.vtt.ru/images/1005402.jpg</picture>
 <picture>https://b2b.vtt.ru/images/1005402_2.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№727(B3P20A)-M; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№727(B3P20A)-M; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
-<param name="Партномер">HB-HP№727(B3P20A)-M</param>
+<param name="Цвет">Пурпурный</param>
+<param name="Партномер">B3P20A</param>
 <param name="Совместимость">HP DJ T920/T1500</param>
 <param name="Ресурс">130 мл</param>
 <param name="Коды расходников">727(B3P20A)</param>
@@ -438,19 +438,19 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1005403" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1005403</vendorCode>
-<name>Картридж Hi-Black (B3P21A) для HP DJ T920/T1500</name>
+<name>Картридж Hi-Black 727 для HP DJ T920/T1500 B3P21A</name>
 <price>14900</price>
 <picture>https://b2b.vtt.ru/images/1005403.jpg</picture>
 <picture>https://b2b.vtt.ru/images/1005403_2.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№727(B3P21A)-Y; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№727(B3P21A)-Y; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
-<param name="Партномер">HB-HP№727(B3P21A)-Y</param>
+<param name="Цвет">Желтый</param>
+<param name="Партномер">B3P21A</param>
 <param name="Совместимость">HP DJ T920/T1500</param>
 <param name="Ресурс">130 мл</param>
 <param name="Коды расходников">727(B3P21A)</param>
@@ -459,7 +459,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1005404" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1005404</vendorCode>
-<name>Картридж Hi-Black (B3P22A) для HP DJ T920/T1500</name>
+<name>Картридж Hi-Black 727 для HP DJ T920/T1500 B3P22A</name>
 <price>14900</price>
 <picture>https://b2b.vtt.ru/images/1005404.jpg</picture>
 <picture>https://b2b.vtt.ru/images/1005404_2.jpg</picture>
@@ -471,7 +471,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Черный</param>
-<param name="Партномер">HB-HP№727(B3P22A)-MBk</param>
+<param name="Партномер">B3P22A</param>
 <param name="Совместимость">HP DJ T920/T1500</param>
 <param name="Ресурс">130 мл</param>
 <param name="Коды расходников">727(B3P22A)</param>
@@ -480,7 +480,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1005405" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1005405</vendorCode>
-<name>Картридж Hi-Black (B3P23A) для HP DJ T920/T1500</name>
+<name>Картридж Hi-Black 727 для HP DJ T920/T1500 B3P23A</name>
 <price>14900</price>
 <picture>https://b2b.vtt.ru/images/1005405.jpg</picture>
 <picture>https://b2b.vtt.ru/images/1005405_2.jpg</picture>
@@ -492,7 +492,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Черный</param>
-<param name="Партномер">HB-HP№727(B3P23A)-PBk</param>
+<param name="Партномер">B3P23A</param>
 <param name="Совместимость">HP DJ T920/T1500</param>
 <param name="Ресурс">130 мл</param>
 <param name="Коды расходников">727(B3P23A)</param>
@@ -501,7 +501,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1005406" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1005406</vendorCode>
-<name>Картридж Hi-Black (B3P24A) для HP DJ T920/T1500</name>
+<name>Картридж Hi-Black 727 для HP DJ T920/T1500 B3P24A</name>
 <price>14900</price>
 <picture>https://b2b.vtt.ru/images/1005406.jpg</picture>
 <picture>https://b2b.vtt.ru/images/1005406_2.jpg</picture>
@@ -1207,11 +1207,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PFI-102C-C; Совместимость: Canon IPF-510/600/710; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PFI-102C-C; Совместимость: Canon IPF-510/600/710; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-CAN-PFI-102C-C</param>
 <param name="Совместимость">Canon IPF-510/600/710</param>
 <param name="Коды расходников">PFI-102C</param>
@@ -1227,11 +1227,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PFI-102M-M; Совместимость: Canon IPF-510/600/710; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PFI-102M-M; Совместимость: Canon IPF-510/600/710; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-CAN-PFI-102M-M</param>
 <param name="Совместимость">Canon IPF-510/600/710</param>
 <param name="Коды расходников">PFI-102M</param>
@@ -1247,11 +1247,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PFI-102Y-Y; Совместимость: Canon IPF-510/600/710; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PFI-102Y-Y; Совместимость: Canon IPF-510/600/710; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-CAN-PFI-102Y-Y</param>
 <param name="Совместимость">Canon IPF-510/600/710</param>
 <param name="Коды расходников">PFI-102Y</param>
@@ -1305,14 +1305,14 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№72(C9371A)-С; Совместимость: HP DesignJet T610/1000/1100/1120/1200/1300/2300; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№72(C9371A)-С; Совместимость: HP DesignJet T610/1000/1100/1120/1200/1300/2300; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Партномер">HB-HP№72(C9371A)-С</param>
 <param name="Совместимость">HP DesignJet T610/1000/1100/1120/1200/1300/2300</param>
 <param name="Коды расходников">72(C9371A)</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VT1100043" available="true">
@@ -1324,11 +1324,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№72(C9372A)-M; Совместимость: HP DesignJet T610/1000/1100/1120/1200/1300/2300; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№72(C9372A)-M; Совместимость: HP DesignJet T610/1000/1100/1120/1200/1300/2300; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№72(C9372A)-M</param>
 <param name="Совместимость">HP DesignJet T610/1000/1100/1120/1200/1300/2300</param>
 <param name="Коды расходников">72(C9372A)</param>
@@ -1343,11 +1343,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№72(C9373A)-Y; Совместимость: HP DesignJet T610/1000/1100/1120/1200/1300/2300; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№72(C9373A)-Y; Совместимость: HP DesignJet T610/1000/1100/1120/1200/1300/2300; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№72(C9373A)-Y</param>
 <param name="Совместимость">HP DesignJet T610/1000/1100/1120/1200/1300/2300</param>
 <param name="Коды расходников">72(C9373A)</param>
@@ -1438,11 +1438,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№70(C9453A)-M; Совместимость: HP DesignJet z2100/3100/3200/5200; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№70(C9453A)-M; Совместимость: HP DesignJet z2100/3100/3200/5200; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№70(C9453A)-M</param>
 <param name="Совместимость">HP DesignJet z2100/3100/3200/5200</param>
 <param name="Коды расходников">70(C9453A)</param>
@@ -1457,11 +1457,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№70(C9454A)-Y; Совместимость: HP DesignJet z2100/3100/3200/5200; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№70(C9454A)-Y; Совместимость: HP DesignJet z2100/3100/3200/5200; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№70(C9454A)-Y</param>
 <param name="Совместимость">HP DesignJet z2100/3100/3200/5200</param>
 <param name="Коды расходников">70(C9454A)</param>
@@ -1533,11 +1533,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PFI-107C-C; Совместимость: Canon iPF680/685/780/785; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PFI-107C-C; Совместимость: Canon iPF680/685/780/785; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-CAN-PFI-107C-C</param>
 <param name="Совместимость">Canon iPF680/685/780/785</param>
 <param name="Коды расходников">PFI-107C</param>
@@ -1552,11 +1552,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PFI-107M-M; Совместимость: Canon iPF680/685/780/785; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PFI-107M-M; Совместимость: Canon iPF680/685/780/785; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-CAN-PFI-107M-M</param>
 <param name="Совместимость">Canon iPF680/685/780/785</param>
 <param name="Коды расходников">PFI-107M</param>
@@ -1571,11 +1571,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PFI-107Y-Y; Совместимость: Canon iPF680/685/780/785; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PFI-107Y-Y; Совместимость: Canon iPF680/685/780/785; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-CAN-PFI-107Y-Y</param>
 <param name="Совместимость">Canon iPF680/685/780/785</param>
 <param name="Коды расходников">PFI-107Y</param>
@@ -1631,11 +1631,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-471XLC-C; Совместимость: Canon MG5740/MG6840/MG7740; Ресурс: 0,68K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-471XLC-C; Совместимость: Canon MG5740/MG6840/MG7740; Ресурс: 0,68K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-CAN-CLI-471XLC-C</param>
 <param name="Совместимость">Canon MG5740/MG6840/MG7740</param>
 <param name="Ресурс">0,68K</param>
@@ -1652,11 +1652,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-471XLM-M; Совместимость: Canon MG5740/MG6840/MG7740; Ресурс: 0,65K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-471XLM-M; Совместимость: Canon MG5740/MG6840/MG7740; Ресурс: 0,65K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-CAN-CLI-471XLM-M</param>
 <param name="Совместимость">Canon MG5740/MG6840/MG7740</param>
 <param name="Ресурс">0,65K</param>
@@ -1673,11 +1673,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-471XLY-Y; Совместимость: Canon MG5740/MG6840/MG7740; Ресурс: 0,68K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-471XLY-Y; Совместимость: Canon MG5740/MG6840/MG7740; Ресурс: 0,68K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-CAN-CLI-471XLY-Y</param>
 <param name="Совместимость">Canon MG5740/MG6840/MG7740</param>
 <param name="Ресурс">0,68K</param>
@@ -1736,11 +1736,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PGI-2400XLC-C; Совместимость: Canon MAXIFY iB4040/МВ5040/МВ5340; Ресурс: 1,8K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PGI-2400XLC-C; Совместимость: Canon MAXIFY iB4040/МВ5040/МВ5340; Ресурс: 1,8K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-CAN-PGI-2400XLC-C</param>
 <param name="Совместимость">Canon MAXIFY iB4040/МВ5040/МВ5340</param>
 <param name="Ресурс">1,8K</param>
@@ -1756,11 +1756,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PGI-2400XLM-M; Совместимость: Canon MAXIFY iB4040/МВ5040/МВ5340; Ресурс: 1,3K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PGI-2400XLM-M; Совместимость: Canon MAXIFY iB4040/МВ5040/МВ5340; Ресурс: 1,3K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-CAN-PGI-2400XLM-M</param>
 <param name="Совместимость">Canon MAXIFY iB4040/МВ5040/МВ5340</param>
 <param name="Ресурс">1,3K</param>
@@ -1776,11 +1776,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PGI-2400XLY-Y; Совместимость: Canon MAXIFY iB4040/МВ5040/МВ5340; Ресурс: 1,52K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PGI-2400XLY-Y; Совместимость: Canon MAXIFY iB4040/МВ5040/МВ5340; Ресурс: 1,52K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-CAN-PGI-2400XLY-Y</param>
 <param name="Совместимость">Canon MAXIFY iB4040/МВ5040/МВ5340</param>
 <param name="Ресурс">1,52K</param>
@@ -3051,11 +3051,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-8C-C; Совместимость: Canon PIXMA iP4200/iP6600D/MP500; Ресурс: 1,1K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-8C-C; Совместимость: Canon PIXMA iP4200/iP6600D/MP500; Ресурс: 1,1K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-CAN-CLI-8C-C</param>
 <param name="Совместимость">Canon PIXMA iP4200/iP6600D/MP500</param>
 <param name="Ресурс">1,1K</param>
@@ -3071,11 +3071,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-8M-M; Совместимость: Canon PIXMA iP4200/iP6600D/MP500; Ресурс: 0,9K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-8M-M; Совместимость: Canon PIXMA iP4200/iP6600D/MP500; Ресурс: 0,9K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-CAN-CLI-8M-M</param>
 <param name="Совместимость">Canon PIXMA iP4200/iP6600D/MP500</param>
 <param name="Ресурс">0,9K</param>
@@ -3091,11 +3091,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-8Y-Y; Совместимость: Canon PIXMA iP4200/iP6600D/MP500; Ресурс: 0,95K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-8Y-Y; Совместимость: Canon PIXMA iP4200/iP6600D/MP500; Ресурс: 0,95K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-CAN-CLI-8Y-Y</param>
 <param name="Совместимость">Canon PIXMA iP4200/iP6600D/MP500</param>
 <param name="Ресурс">0,95K</param>
@@ -3192,11 +3192,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-426C-C; Совместимость: Canon PIXMA MG5140/5240/6140/8140; Ресурс: 0,65K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-426C-C; Совместимость: Canon PIXMA MG5140/5240/6140/8140; Ресурс: 0,65K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-CAN-CLI-426C-C</param>
 <param name="Совместимость">Canon PIXMA MG5140/5240/6140/8140</param>
 <param name="Ресурс">0,65K</param>
@@ -3212,11 +3212,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-426M-M; Совместимость: Canon PIXMA MG5140/5240/6140/8140; Ресурс: 0,58K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-426M-M; Совместимость: Canon PIXMA MG5140/5240/6140/8140; Ресурс: 0,58K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-CAN-CLI-426M-M</param>
 <param name="Совместимость">Canon PIXMA MG5140/5240/6140/8140</param>
 <param name="Ресурс">0,58K</param>
@@ -3232,11 +3232,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-426Y-Y; Совместимость: Canon PIXMA MG5140/5240/6140/8140; Ресурс: 0,515K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-426Y-Y; Совместимость: Canon PIXMA MG5140/5240/6140/8140; Ресурс: 0,515K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-CAN-CLI-426Y-Y</param>
 <param name="Совместимость">Canon PIXMA MG5140/5240/6140/8140</param>
 <param name="Ресурс">0,515K</param>
@@ -3333,11 +3333,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№951XL(CN046AE)-C; Совместимость: HP Officejet Pro 8100/8600, №951XL; Ресурс: 1,5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№951XL(CN046AE)-C; Совместимость: HP Officejet Pro 8100/8600, №951XL; Ресурс: 1,5K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-HP№951XL(CN046AE)-C</param>
 <param name="Совместимость">HP Officejet Pro 8100/8600, №951XL</param>
 <param name="Ресурс">1,5K</param>
@@ -3354,11 +3354,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№951XL(CN047AE)-M; Совместимость: HP Officejet Pro 8100/8600, №951XL; Ресурс: 1,5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№951XL(CN047AE)-M; Совместимость: HP Officejet Pro 8100/8600, №951XL; Ресурс: 1,5K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№951XL(CN047AE)-M</param>
 <param name="Совместимость">HP Officejet Pro 8100/8600, №951XL</param>
 <param name="Ресурс">1,5K</param>
@@ -3375,11 +3375,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№951XL(CN048AE)-Y; Совместимость: HP Officejet Pro 8100/8600, №951XL; Ресурс: 1,5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№951XL(CN048AE)-Y; Совместимость: HP Officejet Pro 8100/8600, №951XL; Ресурс: 1,5K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№951XL(CN048AE)-Y</param>
 <param name="Совместимость">HP Officejet Pro 8100/8600, №951XL</param>
 <param name="Ресурс">1,5K</param>
@@ -3416,7 +3416,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№178XL(CB323HE)-С; Совместимость: HP Photosmart C5383/C6383/B8553/D5463, №178XL; Ресурс: 0,95K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№178XL(CB323HE)-С; Совместимость: HP Photosmart C5383/C6383/B8553/D5463, №178XL; Ресурс: 0,95K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -3424,7 +3424,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Совместимость">HP Photosmart C5383/C6383/B8553/D5463, №178XL</param>
 <param name="Ресурс">0,95K</param>
 <param name="Коды расходников">178XL(CB323HE)</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VT15011974293" available="true">
@@ -3436,11 +3436,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№178XL(CB324HE)-M; Совместимость: HP Photosmart C5383/C6383/B8553/D5463, №178XL; Ресурс: 0,95K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№178XL(CB324HE)-M; Совместимость: HP Photosmart C5383/C6383/B8553/D5463, №178XL; Ресурс: 0,95K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№178XL(CB324HE)-M</param>
 <param name="Совместимость">HP Photosmart C5383/C6383/B8553/D5463, №178XL</param>
 <param name="Ресурс">0,95K</param>
@@ -3456,11 +3456,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№178XL(CB325HE)-Y; Совместимость: HP Photosmart C5383/C6383/B8553/D5463, №178XL; Ресурс: 0,95K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№178XL(CB325HE)-Y; Совместимость: HP Photosmart C5383/C6383/B8553/D5463, №178XL; Ресурс: 0,95K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№178XL(CB325HE)-Y</param>
 <param name="Совместимость">HP Photosmart C5383/C6383/B8553/D5463, №178XL</param>
 <param name="Ресурс">0,95K</param>
@@ -3498,7 +3498,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№920XL(CD972AE)-С; Совместимость: HP Officejet 6000/6500/7000, №920XL; Ресурс: 0,98K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№920XL(CD972AE)-С; Совместимость: HP Officejet 6000/6500/7000, №920XL; Ресурс: 0,98K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -3506,7 +3506,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Совместимость">HP Officejet 6000/6500/7000, №920XL</param>
 <param name="Ресурс">0,98K</param>
 <param name="Коды расходников">920XL(CD972AE)</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VT15011974297" available="true">
@@ -3519,11 +3519,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№920XL(CD973AE)-M; Совместимость: HP Officejet 6000/6500/7000, №920XL; Ресурс: 0,98K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№920XL(CD973AE)-M; Совместимость: HP Officejet 6000/6500/7000, №920XL; Ресурс: 0,98K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№920XL(CD973AE)-M</param>
 <param name="Совместимость">HP Officejet 6000/6500/7000, №920XL</param>
 <param name="Ресурс">0,98K</param>
@@ -3540,11 +3540,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№920XL(CD974AE)-Y; Совместимость: HP Officejet 6000/6500/7000, №920XL; Ресурс: 0,98K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№920XL(CD974AE)-Y; Совместимость: HP Officejet 6000/6500/7000, №920XL; Ресурс: 0,98K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№920XL(CD974AE)-Y</param>
 <param name="Совместимость">HP Officejet 6000/6500/7000, №920XL</param>
 <param name="Ресурс">0,98K</param>
@@ -3834,11 +3834,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№11(C4837A)-M; Совместимость: HP DJ 2000C/CN/2500C/2200/2250/500/800, №11; Ресурс: 2K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№11(C4837A)-M; Совместимость: HP DJ 2000C/CN/2500C/2200/2250/500/800, №11; Ресурс: 2K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№11(C4837A)-M</param>
 <param name="Совместимость">HP DJ 2000C/CN/2500C/2200/2250/500/800, №11</param>
 <param name="Ресурс">2K</param>
@@ -3854,11 +3854,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№11(C4838A)-Y; Совместимость: HP DJ 2000C/CN/2500C/2200/2250/500/800, №11; Ресурс: 2,55K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№11(C4838A)-Y; Совместимость: HP DJ 2000C/CN/2500C/2200/2250/500/800, №11; Ресурс: 2,55K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№11(C4838A)-Y</param>
 <param name="Совместимость">HP DJ 2000C/CN/2500C/2200/2250/500/800, №11</param>
 <param name="Ресурс">2,55K</param>
@@ -3874,11 +3874,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№11(C4836A)-C; Совместимость: HP DJ 2000C/CN/2500C/2200/2250/500/800, №11; Ресурс: 2,35K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№11(C4836A)-C; Совместимость: HP DJ 2000C/CN/2500C/2200/2250/500/800, №11; Ресурс: 2,35K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-HP№11(C4836A)-C</param>
 <param name="Совместимость">HP DJ 2000C/CN/2500C/2200/2250/500/800, №11</param>
 <param name="Ресурс">2,35K</param>
@@ -4056,11 +4056,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№933XL(CN054AE)-C; Совместимость: HP Officejet 6100/6600/6700, №933XL; Ресурс: 1K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№933XL(CN054AE)-C; Совместимость: HP Officejet 6100/6600/6700, №933XL; Ресурс: 1K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-HP№933XL(CN054AE)-C</param>
 <param name="Совместимость">HP Officejet 6100/6600/6700, №933XL</param>
 <param name="Ресурс">1K</param>
@@ -4077,11 +4077,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№933XL(CN055AE)-M; Совместимость: HP Officejet 6100/6600/6700, №933XL; Ресурс: 1K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№933XL(CN055AE)-M; Совместимость: HP Officejet 6100/6600/6700, №933XL; Ресурс: 1K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№933XL(CN055AE)-M</param>
 <param name="Совместимость">HP Officejet 6100/6600/6700, №933XL</param>
 <param name="Ресурс">1K</param>
@@ -4098,11 +4098,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№933XL(CN056AE)-Y; Совместимость: HP Officejet 6100/6600/6700, №933XL; Ресурс: 1K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№933XL(CN056AE)-Y; Совместимость: HP Officejet 6100/6600/6700, №933XL; Ресурс: 1K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№933XL(CN056AE)-Y</param>
 <param name="Совместимость">HP Officejet 6100/6600/6700, №933XL</param>
 <param name="Ресурс">1K</param>
@@ -4154,11 +4154,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№655(CZ110AE)-C; Совместимость: HP DJ IA 3525/5525/4615/4525, №655; Ресурс: 0,77K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№655(CZ110AE)-C; Совместимость: HP DJ IA 3525/5525/4615/4525, №655; Ресурс: 0,77K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-HP№655(CZ110AE)-C</param>
 <param name="Совместимость">HP DJ IA 3525/5525/4615/4525, №655</param>
 <param name="Ресурс">0,77K</param>
@@ -4182,11 +4182,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№655(CZ111AE)-M; Совместимость: HP DJ IA 3525/5525/4615/4525, №655; Ресурс: 0,77K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№655(CZ111AE)-M; Совместимость: HP DJ IA 3525/5525/4615/4525, №655; Ресурс: 0,77K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№655(CZ111AE)-M</param>
 <param name="Совместимость">HP DJ IA 3525/5525/4615/4525, №655</param>
 <param name="Ресурс">0,77K</param>
@@ -4210,11 +4210,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№655(CZ112AE)-Y; Совместимость: HP DJ IA 3525/5525/4615/4525, №655; Ресурс: 0,77K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№655(CZ112AE)-Y; Совместимость: HP DJ IA 3525/5525/4615/4525, №655; Ресурс: 0,77K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№655(CZ112AE)-Y</param>
 <param name="Совместимость">HP DJ IA 3525/5525/4615/4525, №655</param>
 <param name="Ресурс">0,77K</param>
@@ -4271,11 +4271,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№82(C4911A)-C; Совместимость: HP DJ 500/800, №82; Ресурс: 1,4K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№82(C4911A)-C; Совместимость: HP DJ 500/800, №82; Ресурс: 1,4K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-HP№82(C4911A)-C</param>
 <param name="Совместимость">HP DJ 500/800, №82</param>
 <param name="Ресурс">1,4K</param>
@@ -4291,11 +4291,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№82(C4912A)-M; Совместимость: HP DJ 500/800, №82; Ресурс: 1,4K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№82(C4912A)-M; Совместимость: HP DJ 500/800, №82; Ресурс: 1,4K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№82(C4912A)-M</param>
 <param name="Совместимость">HP DJ 500/800, №82</param>
 <param name="Ресурс">1,4K</param>
@@ -4311,11 +4311,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№82(C4913A)-Y; Совместимость: HP DJ 500/800, №82; Ресурс: 1,4K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№82(C4913A)-Y; Совместимость: HP DJ 500/800, №82; Ресурс: 1,4K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№82(C4913A)-Y</param>
 <param name="Совместимость">HP DJ 500/800, №82</param>
 <param name="Ресурс">1,4K</param>
@@ -4489,11 +4489,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0804Y-Y; Совместимость: Epson Stylus Photo P50/PX660/700W/800FW/R265; Ресурс: 0,64K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0804Y-Y; Совместимость: Epson Stylus Photo P50/PX660/700W/800FW/R265; Ресурс: 0,64K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-T0804Y-Y</param>
 <param name="Совместимость">Epson Stylus Photo P50/PX660/700W/800FW/R265</param>
 <param name="Ресурс">0,64K</param>
@@ -4509,11 +4509,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0803M-M; Совместимость: Epson Stylus Photo P50/PX660/700W/800FW/R265; Ресурс: 0,445K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0803M-M; Совместимость: Epson Stylus Photo P50/PX660/700W/800FW/R265; Ресурс: 0,445K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-T0803M-M</param>
 <param name="Совместимость">Epson Stylus Photo P50/PX660/700W/800FW/R265</param>
 <param name="Ресурс">0,445K</param>
@@ -4529,11 +4529,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0802C-C; Совместимость: Epson Stylus Photo P50/PX660/700W/800FW/R265; Ресурс: 0,925K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0802C-C; Совместимость: Epson Stylus Photo P50/PX660/700W/800FW/R265; Ресурс: 0,925K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-EPS-T0802C-C</param>
 <param name="Совместимость">Epson Stylus Photo P50/PX660/700W/800FW/R265</param>
 <param name="Ресурс">0,925K</param>
@@ -4683,11 +4683,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-451C XL-C; Совместимость: Canon PIXMA iP7240/MG6340/MG5440; Ресурс: 0,665K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-451C XL-C; Совместимость: Canon PIXMA iP7240/MG6340/MG5440; Ресурс: 0,665K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-CAN-CLI-451C XL-C</param>
 <param name="Совместимость">Canon PIXMA iP7240/MG6340/MG5440</param>
 <param name="Ресурс">0,665K</param>
@@ -4703,11 +4703,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-451M XL-M; Совместимость: Canon PIXMA iP7240/MG6340/MG5440; Ресурс: 0,66K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-451M XL-M; Совместимость: Canon PIXMA iP7240/MG6340/MG5440; Ресурс: 0,66K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-CAN-CLI-451M XL-M</param>
 <param name="Совместимость">Canon PIXMA iP7240/MG6340/MG5440</param>
 <param name="Ресурс">0,66K</param>
@@ -4723,11 +4723,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-451Y XL-Y; Совместимость: Canon PIXMA iP7240/MG6340/MG5440; Ресурс: 0,685K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-451Y XL-Y; Совместимость: Canon PIXMA iP7240/MG6340/MG5440; Ресурс: 0,685K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-CAN-CLI-451Y XL-Y</param>
 <param name="Совместимость">Canon PIXMA iP7240/MG6340/MG5440</param>
 <param name="Ресурс">0,685K</param>
@@ -5874,11 +5874,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PFI-120C-C; Совместимость: Canon TM-200/205/300/255/350/355; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PFI-120C-C; Совместимость: Canon TM-200/205/300/255/350/355; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-CAN-PFI-120C-C</param>
 <param name="Совместимость">Canon TM-200/205/300/255/350/355</param>
 <param name="Коды расходников">PFI-120C</param>
@@ -5893,11 +5893,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PFI-120M-M; Совместимость: Canon TM-200/205/300/305; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PFI-120M-M; Совместимость: Canon TM-200/205/300/305; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-CAN-PFI-120M-M</param>
 <param name="Совместимость">Canon TM-200/205/300/305</param>
 <param name="Коды расходников">PFI-120M</param>
@@ -5931,11 +5931,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PFI-120Y-Y; Совместимость: Canon TM-200/205/300//255/350/355; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PFI-120Y-Y; Совместимость: Canon TM-200/205/300//255/350/355; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-CAN-PFI-120Y-Y</param>
 <param name="Совместимость">Canon TM-200/205/300//255/350/355</param>
 <param name="Коды расходников">PFI-120Y</param>
@@ -5991,11 +5991,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PGI-1400XLC-C; Совместимость: Canon MAXIFY MB2050/MB2350/MB2040/MB2340; Ресурс: 1,2K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PGI-1400XLC-C; Совместимость: Canon MAXIFY MB2050/MB2350/MB2040/MB2340; Ресурс: 1,2K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-CAN-PGI-1400XLC-C</param>
 <param name="Совместимость">Canon MAXIFY MB2050/MB2350/MB2040/MB2340</param>
 <param name="Ресурс">1,2K</param>
@@ -6012,11 +6012,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PGI-1400XLM-M; Совместимость: Canon MAXIFY MB2050/MB2350/MB2040/MB2340; Ресурс: 0,9K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PGI-1400XLM-M; Совместимость: Canon MAXIFY MB2050/MB2350/MB2040/MB2340; Ресурс: 0,9K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-CAN-PGI-1400XLM-M</param>
 <param name="Совместимость">Canon MAXIFY MB2050/MB2350/MB2040/MB2340</param>
 <param name="Ресурс">0,9K</param>
@@ -6032,11 +6032,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PGI1400XLY-Y; Совместимость: Canon MAXIFY MB2050/MB2350/MB2040/MB2340; Ресурс: 1K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PGI1400XLY-Y; Совместимость: Canon MAXIFY MB2050/MB2350/MB2040/MB2340; Ресурс: 1K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-CAN-PGI1400XLY-Y</param>
 <param name="Совместимость">Canon MAXIFY MB2050/MB2350/MB2040/MB2340</param>
 <param name="Ресурс">1K</param>
@@ -6074,11 +6074,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№973X(F6T81AE)-C; Совместимость: HP PW Pro477dw/452dw 973X; Ресурс: 7K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№973X(F6T81AE)-C; Совместимость: HP PW Pro477dw/452dw 973X; Ресурс: 7K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-HP№973X(F6T81AE)-C</param>
 <param name="Совместимость">HP PW Pro477dw/452dw 973X</param>
 <param name="Ресурс">7K</param>
@@ -6095,11 +6095,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№973X(F6T83AE)-Y; Совместимость: HP PW Pro477dw/452dw, 973X; Ресурс: 7K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№973X(F6T83AE)-Y; Совместимость: HP PW Pro477dw/452dw, 973X; Ресурс: 7K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№973X(F6T83AE)-Y</param>
 <param name="Совместимость">HP PW Pro477dw/452dw, 973X</param>
 <param name="Ресурс">7K</param>
@@ -6116,11 +6116,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№973X(F6T82AE)-M; Совместимость: HP PW Pro477dw/452dw, 973X; Ресурс: 7K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№973X(F6T82AE)-M; Совместимость: HP PW Pro477dw/452dw, 973X; Ресурс: 7K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№973X(F6T82AE)-M</param>
 <param name="Совместимость">HP PW Pro477dw/452dw, 973X</param>
 <param name="Ресурс">7K</param>
@@ -6208,19 +6208,19 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT15020920501" available="true">
 <categoryId></categoryId>
 <vendorCode>VT15020920501</vendorCode>
-<name>Картридж Hi-Black (HB-C2P25AE) для HP OJ Pro 6230/6830, №935XL</name>
+<name>Картридж Hi-Black для HP OJ Pro 6230/6830 C2P25AE</name>
 <price>6900</price>
 <picture>https://b2b.vtt.ru/images/15020920501.jpg</picture>
 <picture>https://b2b.vtt.ru/images/15020920501_2.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№935XL(C2P25AE)-M; Совместимость: HP OJ Pro 6230/6830, №935XL; Ресурс: 1K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№935XL(C2P25AE)-M; Совместимость: HP OJ Pro 6230/6830, №935XL; Ресурс: 1K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
-<param name="Партномер">HB-HP№935XL(C2P25AE)-M</param>
+<param name="Цвет">Пурпурный</param>
+<param name="Партномер">C2P25AE</param>
 <param name="Совместимость">HP OJ Pro 6230/6830, №935XL</param>
 <param name="Ресурс">1K</param>
 <param name="Коды расходников">935XL(C2P25AE)</param>
@@ -6229,19 +6229,19 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT15020920511" available="true">
 <categoryId></categoryId>
 <vendorCode>VT15020920511</vendorCode>
-<name>Картридж Hi-Black (HB-C2P26AE) для HP OJ Pro 6230/6830, №935XL</name>
+<name>Картридж Hi-Black для HP OJ Pro 6230/6830 C2P26AE</name>
 <price>6900</price>
 <picture>https://b2b.vtt.ru/images/15020920511.jpg</picture>
 <picture>https://b2b.vtt.ru/images/15020920511_2.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№935XL(C2P26AE)-Y; Совместимость: HP OJ Pro 6230/6830, №935XL; Ресурс: 1K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№935XL(C2P26AE)-Y; Совместимость: HP OJ Pro 6230/6830, №935XL; Ресурс: 1K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
-<param name="Партномер">HB-HP№935XL(C2P26AE)-Y</param>
+<param name="Цвет">Желтый</param>
+<param name="Партномер">C2P26AE</param>
 <param name="Совместимость">HP OJ Pro 6230/6830, №935XL</param>
 <param name="Ресурс">1K</param>
 <param name="Коды расходников">935XL(C2P26AE)</param>
@@ -6289,7 +6289,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1502092058" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1502092058</vendorCode>
-<name>Картридж Hi-Black 46 для HP DJ 2020/2520, CZ637AE</name>
+<name>Картридж Hi-Black 46 для HP DJ 2020/2520 CZ637AE</name>
 <price>9900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
@@ -6299,7 +6299,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Партномер">1502092058</param>
+<param name="Партномер">CZ637AE</param>
 <param name="Совместимость">HP DJ 2020/2520, CZ637AE</param>
 <param name="Ресурс">1,6K</param>
 <param name="Коды расходников">46 (CZ637A)</param>
@@ -6309,27 +6309,27 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1502092059" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1502092059</vendorCode>
-<name>Картридж Hi-Black 46 для HP DJ 2020/2520, CZ638AE</name>
+<name>Картридж Hi-Black 46 для HP DJ 2020/2520 CZ638AE</name>
 <price>9900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 1502092059; Совместимость: HP DJ 2020/2520, CZ638AE; Ресурс: 0,75K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: 1502092059; Совместимость: HP DJ 2020/2520, CZ638AE; Ресурс: 0,75K; Цвет: Цветной]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Партномер">1502092059</param>
+<param name="Партномер">CZ638AE</param>
 <param name="Совместимость">HP DJ 2020/2520, CZ638AE</param>
 <param name="Ресурс">0,75K</param>
 <param name="Коды расходников">46 (CZ638A)</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Цветной</param>
 </offer>
 
 <offer id="VT1502092081" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1502092081</vendorCode>
-<name>Картридж Hi-Black (HB-C2P23AE) для HP OJ Pro 6230/6830, №934XL</name>
+<name>Картридж Hi-Black для HP OJ Pro 6230/6830 C2P23AE</name>
 <price>5900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
@@ -6340,7 +6340,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Черный</param>
-<param name="Партномер">HB-HP№934XL(C2P23AE)-Bk</param>
+<param name="Партномер">C2P23AE</param>
 <param name="Совместимость">HP OJ Pro 6230/6830, №934XL</param>
 <param name="Ресурс">1,3K</param>
 <param name="Коды расходников">934XL(C2P23AE)</param>
@@ -6349,18 +6349,18 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VT1502092091" available="true">
 <categoryId></categoryId>
 <vendorCode>VT1502092091</vendorCode>
-<name>Картридж Hi-Black (HB-C2P24AE) для HP OJ Pro 6230/6830, №935XL</name>
+<name>Картридж Hi-Black для HP OJ Pro 6230/6830 C2P24AE</name>
 <price>5900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№935XL(C2P24AE)-C; Совместимость: HP OJ Pro 6230/6830, №935XL; Ресурс: 1K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№935XL(C2P24AE)-C; Совместимость: HP OJ Pro 6230/6830, №935XL; Ресурс: 1K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
-<param name="Партномер">HB-HP№935XL(C2P24AE)-C</param>
+<param name="Цвет">Голубой</param>
+<param name="Партномер">C2P24AE</param>
 <param name="Совместимость">HP OJ Pro 6230/6830, №935XL</param>
 <param name="Ресурс">1K</param>
 <param name="Коды расходников">935XL(C2P24AE)</param>
@@ -6399,7 +6399,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Черный</param>
-<param name="Партномер">HB-HP№728XXL(F9J68A)-MBk</param>
+<param name="Партномер">F9J68A</param>
 <param name="Совместимость">HP DJ T730/T</param>
 <param name="Ресурс">300 мл</param>
 <param name="Коды расходников">728XXL(F9J68A)</param>
@@ -6415,11 +6415,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№728XL(F9J65A)-Y; Совместимость: HP DJ T730/T830, 130ml, №728XL; Ресурс: 130 мл; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№728XL(F9J65A)-Y; Совместимость: HP DJ T730/T830, 130ml, №728XL; Ресурс: 130 мл; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№728XL(F9J65A)-Y</param>
 <param name="Совместимость">HP DJ T730/T830, 130ml, №728XL</param>
 <param name="Ресурс">130 мл</param>
@@ -6436,11 +6436,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№728XL(F9J66A)-M; Совместимость: HP DJ T730/T830, 130ml, №728XL; Ресурс: 130 мл; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№728XL(F9J66A)-M; Совместимость: HP DJ T730/T830, 130ml, №728XL; Ресурс: 130 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№728XL(F9J66A)-M</param>
 <param name="Совместимость">HP DJ T730/T830, 130ml, №728XL</param>
 <param name="Ресурс">130 мл</param>
@@ -6457,15 +6457,15 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№728XL(F9J67A)-С; Совместимость: HP DJ T730/T830, 130ml, №728XL; Ресурс: 130 мл; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№728XL(F9J67A)-С; Совместимость: HP DJ T730/T830, 130ml, №728XL; Ресурс: 130 мл; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Партномер">HB-HP№728XL(F9J67A)-С</param>
+<param name="Партномер">F9J67A</param>
 <param name="Совместимость">HP DJ T730/T830, 130ml, №728XL</param>
 <param name="Ресурс">130 мл</param>
 <param name="Коды расходников">728XL(F9J67A)</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VT150215726" available="true">
@@ -6773,11 +6773,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-V1-Univ-100Ml-C; Совместимость: Epson (Тип E-V1); Ресурс: 100 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-EPS-V1-Univ-100Ml-C; Совместимость: Epson (Тип E-V1); Ресурс: 100 мл; Цвет: Голубой]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-EPS-V1-Univ-100Ml-C</param>
 <param name="Совместимость">Epson (Тип E-V1)</param>
 <param name="Ресурс">100 мл</param>
@@ -6792,11 +6792,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-V1-Univ-100Ml-M; Совместимость: Epson (Тип E-V1); Ресурс: 100 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-EPS-V1-Univ-100Ml-M; Совместимость: Epson (Тип E-V1); Ресурс: 100 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-EPS-V1-Univ-100Ml-M</param>
 <param name="Совместимость">Epson (Тип E-V1)</param>
 <param name="Ресурс">100 мл</param>
@@ -6811,11 +6811,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-V1-Univ-100Ml-Y; Совместимость: Epson (Тип E-V1); Ресурс: 100 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-EPS-V1-Univ-100Ml-Y; Совместимость: Epson (Тип E-V1); Ресурс: 100 мл; Цвет: Желтый]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-EPS-V1-Univ-100Ml-Y</param>
 <param name="Совместимость">Epson (Тип E-V1)</param>
 <param name="Ресурс">100 мл</param>
@@ -6887,11 +6887,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-BRO-V1-Univ-100Ml-M; Совместимость: Brother (Тип B-V1); Ресурс: 100 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-BRO-V1-Univ-100Ml-M; Совместимость: Brother (Тип B-V1); Ресурс: 100 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-BRO-V1-Univ-100Ml-M</param>
 <param name="Совместимость">Brother (Тип B-V1)</param>
 <param name="Ресурс">100 мл</param>
@@ -6906,11 +6906,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-BRO-V1-Univ-100Ml-Y; Совместимость: Brother (Тип B-V1); Ресурс: 100 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-BRO-V1-Univ-100Ml-Y; Совместимость: Brother (Тип B-V1); Ресурс: 100 мл; Цвет: Желтый]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-BRO-V1-Univ-100Ml-Y</param>
 <param name="Совместимость">Brother (Тип B-V1)</param>
 <param name="Ресурс">100 мл</param>
@@ -6925,11 +6925,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-BRO-V1-Univ-100Ml-C; Совместимость: Brother (Тип B-V1); Ресурс: 100 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-BRO-V1-Univ-100Ml-C; Совместимость: Brother (Тип B-V1); Ресурс: 100 мл; Цвет: Голубой]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-BRO-V1-Univ-100Ml-C</param>
 <param name="Совместимость">Brother (Тип B-V1)</param>
 <param name="Ресурс">100 мл</param>
@@ -6983,11 +6983,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-HP-V1-Univ-100Ml-C; Совместимость: HP (Тип H-V1); Ресурс: 100 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-HP-V1-Univ-100Ml-C; Совместимость: HP (Тип H-V1); Ресурс: 100 мл; Цвет: Голубой]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-HP-V1-Univ-100Ml-C</param>
 <param name="Совместимость">HP (Тип H-V1)</param>
 <param name="Ресурс">100 мл</param>
@@ -7003,11 +7003,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-HP-V1-Univ-500Ml-C; Совместимость: HP (Тип H-V1); Ресурс: 500 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-HP-V1-Univ-500Ml-C; Совместимость: HP (Тип H-V1); Ресурс: 500 мл; Цвет: Голубой]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-HP-V1-Univ-500Ml-C</param>
 <param name="Совместимость">HP (Тип H-V1)</param>
 <param name="Ресурс">500 мл</param>
@@ -7022,11 +7022,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-HP-V1-Univ-100Ml-M; Совместимость: HP (Тип H-V1); Ресурс: 100 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-HP-V1-Univ-100Ml-M; Совместимость: HP (Тип H-V1); Ресурс: 100 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-HP-V1-Univ-100Ml-M</param>
 <param name="Совместимость">HP (Тип H-V1)</param>
 <param name="Ресурс">100 мл</param>
@@ -7042,11 +7042,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-HP-V1-Univ-500Ml-M; Совместимость: HP (Тип H-V1); Ресурс: 500 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-HP-V1-Univ-500Ml-M; Совместимость: HP (Тип H-V1); Ресурс: 500 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-HP-V1-Univ-500Ml-M</param>
 <param name="Совместимость">HP (Тип H-V1)</param>
 <param name="Ресурс">500 мл</param>
@@ -7061,11 +7061,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-HP-V1-Univ-100Ml-Y; Совместимость: HP (Тип H-V1); Ресурс: 100 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-HP-V1-Univ-100Ml-Y; Совместимость: HP (Тип H-V1); Ресурс: 100 мл; Цвет: Желтый]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-HP-V1-Univ-100Ml-Y</param>
 <param name="Совместимость">HP (Тип H-V1)</param>
 <param name="Ресурс">100 мл</param>
@@ -7081,11 +7081,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-HP-V1-Univ-500Ml-Y; Совместимость: HP (Тип H-V1); Ресурс: 500 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-HP-V1-Univ-500Ml-Y; Совместимость: HP (Тип H-V1); Ресурс: 500 мл; Цвет: Желтый]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-HP-V1-Univ-500Ml-Y</param>
 <param name="Совместимость">HP (Тип H-V1)</param>
 <param name="Ресурс">500 мл</param>
@@ -7101,11 +7101,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-V1-Univ-500Ml-C; Совместимость: Canon, (Тип C-V1); Ресурс: 500 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-CAN-V1-Univ-500Ml-C; Совместимость: Canon, (Тип C-V1); Ресурс: 500 мл; Цвет: Голубой]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-CAN-V1-Univ-500Ml-C</param>
 <param name="Совместимость">Canon, (Тип C-V1)</param>
 <param name="Ресурс">500 мл</param>
@@ -7120,11 +7120,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-V1-Univ-100Ml-C; Совместимость: Canon (Тип C-V1); Ресурс: 100 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-CAN-V1-Univ-100Ml-C; Совместимость: Canon (Тип C-V1); Ресурс: 100 мл; Цвет: Голубой]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-CAN-V1-Univ-100Ml-C</param>
 <param name="Совместимость">Canon (Тип C-V1)</param>
 <param name="Ресурс">100 мл</param>
@@ -7140,11 +7140,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-V1-Univ-500Ml-M; Совместимость: Canon (Тип C-V1); Ресурс: 500 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-CAN-V1-Univ-500Ml-M; Совместимость: Canon (Тип C-V1); Ресурс: 500 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-CAN-V1-Univ-500Ml-M</param>
 <param name="Совместимость">Canon (Тип C-V1)</param>
 <param name="Ресурс">500 мл</param>
@@ -7159,11 +7159,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-V1-Univ-100Ml-M; Совместимость: Canon (Тип C-V1); Ресурс: 100 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-CAN-V1-Univ-100Ml-M; Совместимость: Canon (Тип C-V1); Ресурс: 100 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-CAN-V1-Univ-100Ml-M</param>
 <param name="Совместимость">Canon (Тип C-V1)</param>
 <param name="Ресурс">100 мл</param>
@@ -7178,11 +7178,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-V1-Univ-100Ml-Y; Совместимость: Canon (Тип C-V1); Ресурс: 100 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-CAN-V1-Univ-100Ml-Y; Совместимость: Canon (Тип C-V1); Ресурс: 100 мл; Цвет: Желтый]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-CAN-V1-Univ-100Ml-Y</param>
 <param name="Совместимость">Canon (Тип C-V1)</param>
 <param name="Ресурс">100 мл</param>
@@ -7198,11 +7198,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-V1-Univ-500Ml-Y; Совместимость: Canon (Тип C-V1); Ресурс: 500 мл; Цвет: Черный]]></description>
+Тип: Чернила; Партномер: HiBl-CAN-V1-Univ-500Ml-Y; Совместимость: Canon (Тип C-V1); Ресурс: 500 мл; Цвет: Желтый]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-CAN-V1-Univ-500Ml-Y</param>
 <param name="Совместимость">Canon (Тип C-V1)</param>
 <param name="Ресурс">500 мл</param>
@@ -8648,20 +8648,20 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT15070602550</vendorCode>
 <name>Чернила InkTec (C5026) для Canon PIXMA iP4820/MG5120 (CLI-226/426), Y, 0,1 л.</name>
-<price>3900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<price>4900</price>
+<picture>https://b2b.vtt.ru/images/15070602550.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: IT-CAN-C5026-100Ml-Y; Совместимость: Canon PIXMA iP4820/MG5120 (CLI-226/426); Ресурс: 0,1 л; Цвет: Желтый]]></description>
+Тип: Чернила; Партномер: IT-CAN-C5026-100Ml-Y-WatB; Совместимость: Canon PIXMA iP4820/MG5120 (CLI-226/426); Ресурс: 0,1 л; Цвет: Желтый]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Желтый</param>
-<param name="Партномер">IT-CAN-C5026-100Ml-Y</param>
+<param name="Партномер">IT-CAN-C5026-100Ml-Y-WatB</param>
 <param name="Совместимость">Canon PIXMA iP4820/MG5120 (CLI-226/426)</param>
 <param name="Ресурс">0,1 л</param>
-<param name="Коды расходников">15070602550уц, C5026-LY</param>
+<param name="Коды расходников">C5026-LY</param>
 </offer>
 
 <offer id="VT150706025500" available="true">
@@ -9203,11 +9203,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0482C-C; Совместимость: Epson Stylus Photo R200/R300/RX500/RX600; Ресурс: 0,46K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0482C-C; Совместимость: Epson Stylus Photo R200/R300/RX500/RX600; Ресурс: 0,46K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-EPS-T0482C-C</param>
 <param name="Совместимость">Epson Stylus Photo R200/R300/RX500/RX600</param>
 <param name="Ресурс">0,46K</param>
@@ -9228,11 +9228,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0483M-M; Совместимость: Epson Stylus Photo R200/R300/RX500/RX600; Ресурс: 0,46K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0483M-M; Совместимость: Epson Stylus Photo R200/R300/RX500/RX600; Ресурс: 0,46K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-T0483M-M</param>
 <param name="Совместимость">Epson Stylus Photo R200/R300/RX500/RX600</param>
 <param name="Ресурс">0,46K</param>
@@ -9253,11 +9253,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0484Y-Y; Совместимость: Epson Stylus Photo R200/R300/RX500/RX600; Ресурс: 0,46K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0484Y-Y; Совместимость: Epson Stylus Photo R200/R300/RX500/RX600; Ресурс: 0,46K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-T0484Y-Y</param>
 <param name="Совместимость">Epson Stylus Photo R200/R300/RX500/RX600</param>
 <param name="Ресурс">0,46K</param>
@@ -9343,11 +9343,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0633M-M; Совместимость: Epson Stylus C67/87/CX3700/4100/4700; Ресурс: 0,45K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0633M-M; Совместимость: Epson Stylus C67/87/CX3700/4100/4700; Ресурс: 0,45K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-T0633M-M</param>
 <param name="Совместимость">Epson Stylus C67/87/CX3700/4100/4700</param>
 <param name="Ресурс">0,45K</param>
@@ -9363,11 +9363,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0634Y-Y; Совместимость: Epson Stylus C67/87/CX3700/4100/4700; Ресурс: 0,45K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0634Y-Y; Совместимость: Epson Stylus C67/87/CX3700/4100/4700; Ресурс: 0,45K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-T0634Y-Y</param>
 <param name="Совместимость">Epson Stylus C67/87/CX3700/4100/4700</param>
 <param name="Ресурс">0,45K</param>
@@ -9403,11 +9403,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0552C-C; Совместимость: Epson Stylus Photo R240/RX420/RX520; Ресурс: 0,4K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0552C-C; Совместимость: Epson Stylus Photo R240/RX420/RX520; Ресурс: 0,4K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-EPS-T0552C-C</param>
 <param name="Совместимость">Epson Stylus Photo R240/RX420/RX520</param>
 <param name="Ресурс">0,4K</param>
@@ -9423,11 +9423,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0553M-M; Совместимость: Epson Stylus Photo R240/RX420/RX520; Ресурс: 0,3K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0553M-M; Совместимость: Epson Stylus Photo R240/RX420/RX520; Ресурс: 0,3K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-T0553M-M</param>
 <param name="Совместимость">Epson Stylus Photo R240/RX420/RX520</param>
 <param name="Ресурс">0,3K</param>
@@ -9443,11 +9443,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0554Y-Y; Совместимость: Epson Stylus Photo R240/RX420/RX520; Ресурс: 0,35K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0554Y-Y; Совместимость: Epson Stylus Photo R240/RX420/RX520; Ресурс: 0,35K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-T0554Y-Y</param>
 <param name="Совместимость">Epson Stylus Photo R240/RX420/RX520</param>
 <param name="Ресурс">0,35K</param>
@@ -9490,11 +9490,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-103-70Ml-C; Совместимость: Epson L3100/3101/3110/3150, C13T00S24A; Ресурс: 7,5K; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-103-70Ml-C; Совместимость: Epson L3100/3101/3110/3150, C13T00S24A; Ресурс: 7,5K; Цвет: Голубой]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-EPS-103-70Ml-C</param>
 <param name="Совместимость">Epson L3100/3101/3110/3150, C13T00S24A</param>
 <param name="Ресурс">7,5K</param>
@@ -9513,11 +9513,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-103-70Ml-M; Совместимость: Epson L3100/3101/3110/3150, C13T00S34A; Ресурс: 7,5K; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-103-70Ml-M; Совместимость: Epson L3100/3101/3110/3150, C13T00S34A; Ресурс: 7,5K; Цвет: Пурпурный]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-EPS-103-70Ml-M</param>
 <param name="Совместимость">Epson L3100/3101/3110/3150, C13T00S34A</param>
 <param name="Ресурс">7,5K</param>
@@ -9536,11 +9536,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-103-70Ml-Y; Совместимость: Epson L3100/3101/3110/3150, C13T00S44A; Ресурс: 7,5K; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-103-70Ml-Y; Совместимость: Epson L3100/3101/3110/3150, C13T00S44A; Ресурс: 7,5K; Цвет: Желтый]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-EPS-103-70Ml-Y</param>
 <param name="Совместимость">Epson L3100/3101/3110/3150, C13T00S44A</param>
 <param name="Ресурс">7,5K</param>
@@ -9582,11 +9582,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-664-70Ml-C; Совместимость: Epson L130/L310/L405/L655, C13T66424A; Ресурс: 6,5K; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-664-70Ml-C; Совместимость: Epson L130/L310/L405/L655, C13T66424A; Ресурс: 6,5K; Цвет: Голубой]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-EPS-664-70Ml-C</param>
 <param name="Совместимость">Epson L130/L310/L405/L655, C13T66424A</param>
 <param name="Ресурс">6,5K</param>
@@ -9605,11 +9605,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-664-70Ml-M; Совместимость: Epson L130/L310/L405/L655, C13T66434A; Ресурс: 6,5K; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-664-70Ml-M; Совместимость: Epson L130/L310/L405/L655, C13T66434A; Ресурс: 6,5K; Цвет: Пурпурный]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-EPS-664-70Ml-M</param>
 <param name="Совместимость">Epson L130/L310/L405/L655, C13T66434A</param>
 <param name="Ресурс">6,5K</param>
@@ -9628,11 +9628,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-664-70Ml-Y; Совместимость: Epson L130/L310/L405/L655, C13T66444A; Ресурс: 6,5K; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-664-70Ml-Y; Совместимость: Epson L130/L310/L405/L655, C13T66444A; Ресурс: 6,5K; Цвет: Желтый]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-EPS-664-70Ml-Y</param>
 <param name="Совместимость">Epson L130/L310/L405/L655, C13T66444A</param>
 <param name="Ресурс">6,5K</param>
@@ -9674,11 +9674,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-673-70Ml-C; Совместимость: Epson L800/L801/L810/L850, C13T67324A; Ресурс: 5,4K; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-673-70Ml-C; Совместимость: Epson L800/L801/L810/L850, C13T67324A; Ресурс: 5,4K; Цвет: Голубой]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-EPS-673-70Ml-C</param>
 <param name="Совместимость">Epson L800/L801/L810/L850, C13T67324A</param>
 <param name="Ресурс">5,4K</param>
@@ -9697,11 +9697,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-673-70Ml-M; Совместимость: Epson L800/L801/L810/L850, C13T67334A; Ресурс: 5,4K; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-673-70Ml-M; Совместимость: Epson L800/L801/L810/L850, C13T67334A; Ресурс: 5,4K; Цвет: Пурпурный]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-EPS-673-70Ml-M</param>
 <param name="Совместимость">Epson L800/L801/L810/L850, C13T67334A</param>
 <param name="Ресурс">5,4K</param>
@@ -9720,11 +9720,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-673-70Ml-Y; Совместимость: Epson L800/L801/L810/L850, C13T67344A; Ресурс: 5,4K; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-673-70Ml-Y; Совместимость: Epson L800/L801/L810/L850, C13T67344A; Ресурс: 5,4K; Цвет: Желтый]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-EPS-673-70Ml-Y</param>
 <param name="Совместимость">Epson L800/L801/L810/L850, C13T67344A</param>
 <param name="Ресурс">5,4K</param>
@@ -9816,11 +9816,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-E101-70Ml-С; Совместимость: Epson EcoTank L4150/4160; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-E101-70Ml-С; Совместимость: Epson EcoTank L4150/4160; Ресурс: 70 мл; Цвет: Голубой]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-EPS-E101-70Ml-С</param>
 <param name="Совместимость">Epson EcoTank L4150/4160</param>
 <param name="Ресурс">70 мл</param>
@@ -9841,11 +9841,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-E101-70Ml-M; Совместимость: Epson EcoTank L4150/4160; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-E101-70Ml-M; Совместимость: Epson EcoTank L4150/4160; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-EPS-E101-70Ml-M</param>
 <param name="Совместимость">Epson EcoTank L4150/4160</param>
 <param name="Ресурс">70 мл</param>
@@ -9866,11 +9866,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-E101-70Ml-Y; Совместимость: Epson EcoTank L4150/4160; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-E101-70Ml-Y; Совместимость: Epson EcoTank L4150/4160; Ресурс: 70 мл; Цвет: Желтый]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-EPS-E101-70Ml-Y</param>
 <param name="Совместимость">Epson EcoTank L4150/4160</param>
 <param name="Ресурс">70 мл</param>
@@ -9918,11 +9918,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-BR-5000-45Ml-C; Совместимость: Brother DCPT300/500W/700W; Ресурс: 45 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-BR-5000-45Ml-C; Совместимость: Brother DCPT300/500W/700W; Ресурс: 45 мл; Цвет: Голубой]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-BR-5000-45Ml-C</param>
 <param name="Совместимость">Brother DCPT300/500W/700W</param>
 <param name="Ресурс">45 мл</param>
@@ -9944,11 +9944,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-BR-5000-45Ml-M; Совместимость: Brother DCPT300/500W/700W; Ресурс: 45 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-BR-5000-45Ml-M; Совместимость: Brother DCPT300/500W/700W; Ресурс: 45 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-BR-5000-45Ml-M</param>
 <param name="Совместимость">Brother DCPT300/500W/700W</param>
 <param name="Ресурс">45 мл</param>
@@ -9970,11 +9970,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-BR-5000-45Ml-Y; Совместимость: Brother DCPT300/500W/700W; Ресурс: 45 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-BR-5000-45Ml-Y; Совместимость: Brother DCPT300/500W/700W; Ресурс: 45 мл; Цвет: Желтый]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-BR-5000-45Ml-Y</param>
 <param name="Совместимость">Brother DCPT300/500W/700W</param>
 <param name="Ресурс">45 мл</param>
@@ -10021,11 +10021,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-CAN-490-70Ml-C; Совместимость: Canon G1400/2400/3400; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-CAN-490-70Ml-C; Совместимость: Canon G1400/2400/3400; Ресурс: 70 мл; Цвет: Голубой]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-CAN-490-70Ml-C</param>
 <param name="Совместимость">Canon G1400/2400/3400</param>
 <param name="Ресурс">70 мл</param>
@@ -10047,11 +10047,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-CAN-490-70Ml-M; Совместимость: Canon G1400/2400/3400; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-CAN-490-70Ml-M; Совместимость: Canon G1400/2400/3400; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-CAN-490-70Ml-M</param>
 <param name="Совместимость">Canon G1400/2400/3400</param>
 <param name="Ресурс">70 мл</param>
@@ -10073,11 +10073,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-CAN-490-70Ml-Y; Совместимость: Canon G1400/2400/3400; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-CAN-490-70Ml-Y; Совместимость: Canon G1400/2400/3400; Ресурс: 70 мл; Цвет: Желтый]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-CAN-490-70Ml-Y</param>
 <param name="Совместимость">Canon G1400/2400/3400</param>
 <param name="Ресурс">70 мл</param>
@@ -10117,11 +10117,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-CAN-41-70Ml-C; Совместимость: Canon G1430/2430/3430; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-CAN-41-70Ml-C; Совместимость: Canon G1430/2430/3430; Ресурс: 70 мл; Цвет: Голубой]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-CAN-41-70Ml-C</param>
 <param name="Совместимость">Canon G1430/2430/3430</param>
 <param name="Ресурс">70 мл</param>
@@ -10139,11 +10139,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-CAN-41-70Ml-M; Совместимость: Canon G1430/2430/3430; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-CAN-41-70Ml-M; Совместимость: Canon G1430/2430/3430; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-CAN-41-70Ml-M</param>
 <param name="Совместимость">Canon G1430/2430/3430</param>
 <param name="Ресурс">70 мл</param>
@@ -10161,11 +10161,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-CAN-41-70Ml-Y; Совместимость: Canon G1430/2430/3430; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-CAN-41-70Ml-Y; Совместимость: Canon G1430/2430/3430; Ресурс: 70 мл; Цвет: Желтый]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-CAN-41-70Ml-Y</param>
 <param name="Совместимость">Canon G1430/2430/3430</param>
 <param name="Ресурс">70 мл</param>
@@ -10187,11 +10187,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-HP-52-70Ml-C; Совместимость: HP Ink Tank 410/Smart Tank 515; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-HP-52-70Ml-C; Совместимость: HP Ink Tank 410/Smart Tank 515; Ресурс: 70 мл; Цвет: Голубой]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-HP-52-70Ml-C</param>
 <param name="Совместимость">HP Ink Tank 410/Smart Tank 515</param>
 <param name="Ресурс">70 мл</param>
@@ -10213,11 +10213,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-HP-52-70Ml-M; Совместимость: HP Ink Tank 410/Smart Tank 515; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-HP-52-70Ml-M; Совместимость: HP Ink Tank 410/Smart Tank 515; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-HP-52-70Ml-M</param>
 <param name="Совместимость">HP Ink Tank 410/Smart Tank 515</param>
 <param name="Ресурс">70 мл</param>
@@ -10239,11 +10239,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-HP-52-70Ml-Y; Совместимость: HP Ink Tank 410/Smart Tank 515; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-HP-52-70Ml-Y; Совместимость: HP Ink Tank 410/Smart Tank 515; Ресурс: 70 мл; Цвет: Желтый]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-HP-52-70Ml-Y</param>
 <param name="Совместимость">HP Ink Tank 410/Smart Tank 515</param>
 <param name="Ресурс">70 мл</param>
@@ -10339,11 +10339,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-112-70Ml-C; Совместимость: Epson L6550/6570, C, pig; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-112-70Ml-C; Совместимость: Epson L6550/6570, C, pig; Ресурс: 70 мл; Цвет: Голубой]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-EPS-112-70Ml-C</param>
 <param name="Совместимость">Epson L6550/6570, C, pig</param>
 <param name="Ресурс">70 мл</param>
@@ -10364,11 +10364,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-112-70Ml-M; Совместимость: Epson L6550/6570, M, pig; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-112-70Ml-M; Совместимость: Epson L6550/6570, M, pig; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-EPS-112-70Ml-M</param>
 <param name="Совместимость">Epson L6550/6570, M, pig</param>
 <param name="Ресурс">70 мл</param>
@@ -10389,11 +10389,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-112-70Ml-Y; Совместимость: Epson L6550/6570, Y, pig; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-112-70Ml-Y; Совместимость: Epson L6550/6570, Y, pig; Ресурс: 70 мл; Цвет: Желтый]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-EPS-112-70Ml-Y</param>
 <param name="Совместимость">Epson L6550/6570, Y, pig</param>
 <param name="Ресурс">70 мл</param>
@@ -10439,11 +10439,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-108-70Ml-C; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-108-70Ml-C; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Голубой]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HiBl-EPS-108-70Ml-C</param>
 <param name="Совместимость">Epson L8050/L18050</param>
 <param name="Ресурс">70 мл</param>
@@ -10464,11 +10464,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-108-70Ml-M; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-108-70Ml-M; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HiBl-EPS-108-70Ml-M</param>
 <param name="Совместимость">Epson L8050/L18050</param>
 <param name="Ресурс">70 мл</param>
@@ -10489,11 +10489,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-108-70Ml-Y; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Черный]]></description>
+Тип: Контейнер для отработанного тонера; Партномер: HiBl-EPS-108-70Ml-Y; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Желтый]]></description>
 <param name="Тип">Контейнер для отработанного тонера</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HiBl-EPS-108-70Ml-Y</param>
 <param name="Совместимость">Epson L8050/L18050</param>
 <param name="Ресурс">70 мл</param>
@@ -10578,11 +10578,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0822C-C; Совместимость: Epson Stylus R270/295/390/RX590/T50; Ресурс: 0,61K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0822C-C; Совместимость: Epson Stylus R270/295/390/RX590/T50; Ресурс: 0,61K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-EPS-T0822C-C</param>
 <param name="Совместимость">Epson Stylus R270/295/390/RX590/T50</param>
 <param name="Ресурс">0,61K</param>
@@ -10620,11 +10620,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-EPT9452-C; Совместимость: Epson WF-WF-C5290/С5790; Ресурс: 5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-EPT9452-C; Совместимость: Epson WF-WF-C5290/С5790; Ресурс: 5K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-EPS-EPT9452-C</param>
 <param name="Совместимость">Epson WF-WF-C5290/С5790</param>
 <param name="Ресурс">5K</param>
@@ -10641,11 +10641,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-EPT9453-M; Совместимость: Epson WF-WF-C5290/С5790; Ресурс: 5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-EPT9453-M; Совместимость: Epson WF-WF-C5290/С5790; Ресурс: 5K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-EPT9453-M</param>
 <param name="Совместимость">Epson WF-WF-C5290/С5790</param>
 <param name="Ресурс">5K</param>
@@ -10662,11 +10662,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-EPT9454-Y; Совместимость: Epson WF-WF-C5290/С5790; Ресурс: 5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-EPT9454-Y; Совместимость: Epson WF-WF-C5290/С5790; Ресурс: 5K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-EPT9454-Y</param>
 <param name="Совместимость">Epson WF-WF-C5290/С5790</param>
 <param name="Ресурс">5K</param>
@@ -10967,11 +10967,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0823M-M; Совместимость: Epson Stylus R270/295/390/RX590/T50; Ресурс: 0,61K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0823M-M; Совместимость: Epson Stylus R270/295/390/RX590/T50; Ресурс: 0,61K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-T0823M-M</param>
 <param name="Совместимость">Epson Stylus R270/295/390/RX590/T50</param>
 <param name="Ресурс">0,61K</param>
@@ -11007,11 +11007,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T7892-C; Совместимость: Epson WorkForce Pro WF-5690DWF/5620DWF/5190DW/5110DW; Ресурс: 2,9K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T7892-C; Совместимость: Epson WorkForce Pro WF-5690DWF/5620DWF/5190DW/5110DW; Ресурс: 2,9K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-EPS-T7892-C</param>
 <param name="Совместимость">Epson WorkForce Pro WF-5690DWF/5620DWF/5190DW/5110DW</param>
 <param name="Ресурс">2,9K</param>
@@ -11027,11 +11027,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T7893-M; Совместимость: Epson WorkForce Pro WF-5690DWF/5620DWF/5190DW/5110DW; Ресурс: 2,9K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T7893-M; Совместимость: Epson WorkForce Pro WF-5690DWF/5620DWF/5190DW/5110DW; Ресурс: 2,9K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-T7893-M</param>
 <param name="Совместимость">Epson WorkForce Pro WF-5690DWF/5620DWF/5190DW/5110DW</param>
 <param name="Ресурс">2,9K</param>
@@ -11047,11 +11047,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T7894-Y; Совместимость: Epson WorkForce Pro WF-5690DWF/5620DWF/5190DW/5110DW; Ресурс: 2,9K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T7894-Y; Совместимость: Epson WorkForce Pro WF-5690DWF/5620DWF/5190DW/5110DW; Ресурс: 2,9K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-T7894-Y</param>
 <param name="Совместимость">Epson WorkForce Pro WF-5690DWF/5620DWF/5190DW/5110DW</param>
 <param name="Ресурс">2,9K</param>
@@ -11067,11 +11067,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0824Y-Y; Совместимость: Epson Stylus R270/295/390/RX590/T50; Ресурс: 0,61K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0824Y-Y; Совместимость: Epson Stylus R270/295/390/RX590/T50; Ресурс: 0,61K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-T0824Y-Y</param>
 <param name="Совместимость">Epson Stylus R270/295/390/RX590/T50</param>
 <param name="Ресурс">0,61K</param>
@@ -11146,11 +11146,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0732/1052C-C; Совместимость: Epson Stylus C79/C110/T40W/TX200/400/TX600FW; Ресурс: 0,36K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0732/1052C-C; Совместимость: Epson Stylus C79/C110/T40W/TX200/400/TX600FW; Ресурс: 0,36K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-EPS-T0732/1052C-C</param>
 <param name="Совместимость">Epson Stylus C79/C110/T40W/TX200/400/TX600FW</param>
 <param name="Ресурс">0,36K</param>
@@ -11165,11 +11165,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0733/1053M-M; Совместимость: Epson Stylus C79/C110/T40W/TX200/400/TX600FW; Ресурс: 0,36K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0733/1053M-M; Совместимость: Epson Stylus C79/C110/T40W/TX200/400/TX600FW; Ресурс: 0,36K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-T0733/1053M-M</param>
 <param name="Совместимость">Epson Stylus C79/C110/T40W/TX200/400/TX600FW</param>
 <param name="Ресурс">0,36K</param>
@@ -11184,11 +11184,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0734/1054Y-Y; Совместимость: Epson Stylus C79/C110/T40W/TX200/400/TX600FW; Ресурс: 0,36K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0734/1054Y-Y; Совместимость: Epson Stylus C79/C110/T40W/TX200/400/TX600FW; Ресурс: 0,36K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-T0734/1054Y-Y</param>
 <param name="Совместимость">Epson Stylus C79/C110/T40W/TX200/400/TX600FW</param>
 <param name="Ресурс">0,36K</param>
@@ -13912,11 +13912,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№711(CZ130A)-C; Совместимость: HP DJ T120/T520, №; Ресурс: 26 мл; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№711(CZ130A)-C; Совместимость: HP DJ T120/T520, №; Ресурс: 26 мл; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-HP№711(CZ130A)-C</param>
 <param name="Совместимость">HP DJ T120/T520, №</param>
 <param name="Ресурс">26 мл</param>
@@ -13932,11 +13932,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№711(CZ131A)-M; Совместимость: HP DJ T120/T520, №; Ресурс: 26 мл; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№711(CZ131A)-M; Совместимость: HP DJ T120/T520, №; Ресурс: 26 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№711(CZ131A)-M</param>
 <param name="Совместимость">HP DJ T120/T520, №</param>
 <param name="Ресурс">26 мл</param>
@@ -13952,11 +13952,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№711(CZ132A)-Y; Совместимость: HP DJ T120/T520, №; Ресурс: 26 мл; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№711(CZ132A)-Y; Совместимость: HP DJ T120/T520, №; Ресурс: 26 мл; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№711(CZ132A)-Y</param>
 <param name="Совместимость">HP DJ T120/T520, №</param>
 <param name="Ресурс">26 мл</param>
@@ -17332,8 +17332,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT3JA23AE</vendorCode>
 <name>Картридж 963 для HP OfficeJet Pro 901x/902x/HP (оригинал)</name>
-<price>17900</price>
-<picture>https://b2b.vtt.ru/images/3JA23AEуц.jpg</picture>
+<price>20900</price>
+<picture>https://b2b.vtt.ru/images/3JA23AE.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17345,7 +17345,6 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Партномер">3JA23AE</param>
 <param name="Совместимость">HP OfficeJet Pro 901x/902x/HP</param>
 <param name="Ресурс">0,7K</param>
-<param name="Коды расходников">3JA23AEyц</param>
 </offer>
 
 <offer id="VT3JA25AE" available="true">
@@ -25172,11 +25171,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-521M-M; Совместимость: Canon PIXMA iP3600/iP4600/MP540; Ресурс: 0,65K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-521M-M; Совместимость: Canon PIXMA iP3600/iP4600/MP540; Ресурс: 0,65K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-CAN-CLI-521M-M</param>
 <param name="Совместимость">Canon PIXMA iP3600/iP4600/MP540</param>
 <param name="Ресурс">0,65K</param>
@@ -25192,11 +25191,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-521Y-Y; Совместимость: Canon PIXMA iP3600/iP4600/MP540; Ресурс: 0,8K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-521Y-Y; Совместимость: Canon PIXMA iP3600/iP4600/MP540; Ресурс: 0,8K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-CAN-CLI-521Y-Y</param>
 <param name="Совместимость">Canon PIXMA iP3600/iP4600/MP540</param>
 <param name="Ресурс">0,8K</param>
@@ -25212,11 +25211,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-CLI-521C-C; Совместимость: Canon PIXMA iP3600/iP4600/MP540; Ресурс: 0,56K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-CLI-521C-C; Совместимость: Canon PIXMA iP3600/iP4600/MP540; Ресурс: 0,56K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-CAN-CLI-521C-C</param>
 <param name="Совместимость">Canon PIXMA iP3600/iP4600/MP540</param>
 <param name="Ресурс">0,56K</param>
@@ -25611,11 +25610,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-BR-LC1100Y/LC980-Y; Совместимость: Brother DCP-145C/195C/MFC-165C/MFC-250; Ресурс: 0,65K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-BR-LC1100Y/LC980-Y; Совместимость: Brother DCP-145C/195C/MFC-165C/MFC-250; Ресурс: 0,65K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-BR-LC1100Y/LC980-Y</param>
 <param name="Совместимость">Brother DCP-145C/195C/MFC-165C/MFC-250</param>
 <param name="Ресурс">0,65K</param>
@@ -25630,11 +25629,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-BR-LC1100C/LC980-C; Совместимость: Brother DCP-145C/195C/MFC-165C/MFC-250; Ресурс: 0,95K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-BR-LC1100C/LC980-C; Совместимость: Brother DCP-145C/195C/MFC-165C/MFC-250; Ресурс: 0,95K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-BR-LC1100C/LC980-C</param>
 <param name="Совместимость">Brother DCP-145C/195C/MFC-165C/MFC-250</param>
 <param name="Ресурс">0,95K</param>
@@ -25649,11 +25648,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-BR-LC1100M/LC980-M; Совместимость: Brother DCP-145C/DCP-165С/195C/MFC-165C/MFC-250; Ресурс: 0,8K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-BR-LC1100M/LC980-M; Совместимость: Brother DCP-145C/DCP-165С/195C/MFC-165C/MFC-250; Ресурс: 0,8K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-BR-LC1100M/LC980-M</param>
 <param name="Совместимость">Brother DCP-145C/DCP-165С/195C/MFC-165C/MFC-250</param>
 <param name="Ресурс">0,8K</param>
@@ -27983,11 +27982,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№953XL(F6U16AE)-C; Совместимость: HP OJP 8710/8715/8720/8730/8210/8725, №953XL, NEW; Ресурс: 1,6K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№953XL(F6U16AE)-C; Совместимость: HP OJP 8710/8715/8720/8730/8210/8725, №953XL, NEW; Ресурс: 1,6K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-HP№953XL(F6U16AE)-C</param>
 <param name="Совместимость">HP OJP 8710/8715/8720/8730/8210/8725, №953XL, NEW</param>
 <param name="Ресурс">1,6K</param>
@@ -28004,11 +28003,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№953XL(F6U17AE)-M; Совместимость: HP OJP 8710/8715/8720/8730/8210/8725, №953XL, NEW; Ресурс: 1,6K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№953XL(F6U17AE)-M; Совместимость: HP OJP 8710/8715/8720/8730/8210/8725, №953XL, NEW; Ресурс: 1,6K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№953XL(F6U17AE)-M</param>
 <param name="Совместимость">HP OJP 8710/8715/8720/8730/8210/8725, №953XL, NEW</param>
 <param name="Ресурс">1,6K</param>
@@ -28025,11 +28024,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№953XL(F6U18AE)-Y; Совместимость: HP OJP 8710/8715/8720/8730/8210/8725 №953XL, NEW; Ресурс: 1,6K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№953XL(F6U18AE)-Y; Совместимость: HP OJP 8710/8715/8720/8730/8210/8725 №953XL, NEW; Ресурс: 1,6K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№953XL(F6U18AE)-Y</param>
 <param name="Совместимость">HP OJP 8710/8715/8720/8730/8210/8725 №953XL, NEW</param>
 <param name="Ресурс">1,6K</param>
@@ -28063,13 +28062,13 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№3ED67A-С; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№3ED67A-С; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Партномер">HB-HP№3ED67A-С</param>
 <param name="Коды расходников">3ED67A</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VT98927109489" available="true">
@@ -28081,11 +28080,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№3ED68A-M; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№3ED68A-M; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP№3ED68A-M</param>
 <param name="Коды расходников">3ED68A</param>
 </offer>
@@ -28099,11 +28098,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№3ED69A-Y; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP№3ED69A-Y; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP№3ED69A-Y</param>
 <param name="Коды расходников">3ED69A</param>
 </offer>
@@ -38518,11 +38517,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0922C-C; Совместимость: Epson Stylus C91/CX4300/T26/TX106/109; Ресурс: 0,5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0922C-C; Совместимость: Epson Stylus C91/CX4300/T26/TX106/109; Ресурс: 0,5K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-EPS-T0922C-C</param>
 <param name="Совместимость">Epson Stylus C91/CX4300/T26/TX106/109</param>
 <param name="Ресурс">0,5K</param>
@@ -38538,11 +38537,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0923M-M; Совместимость: Epson Stylus C91/CX4300/T26/TX106/109; Ресурс: 0,29K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0923M-M; Совместимость: Epson Stylus C91/CX4300/T26/TX106/109; Ресурс: 0,29K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-T0923M-M</param>
 <param name="Совместимость">Epson Stylus C91/CX4300/T26/TX106/109</param>
 <param name="Ресурс">0,29K</param>
@@ -38558,11 +38557,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T0924Y-Y; Совместимость: Epson Stylus C91/CX4300/T26/TX106/109; Ресурс: 0,49K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T0924Y-Y; Совместимость: Epson Stylus C91/CX4300/T26/TX106/109; Ресурс: 0,49K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-T0924Y-Y</param>
 <param name="Совместимость">Epson Stylus C91/CX4300/T26/TX106/109</param>
 <param name="Ресурс">0,49K</param>
@@ -38598,11 +38597,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T1712C-C; Совместимость: Epson XP-33/103/203/207/306/406; Ресурс: 0,55K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T1712C-C; Совместимость: Epson XP-33/103/203/207/306/406; Ресурс: 0,55K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-EPS-T1712C-C</param>
 <param name="Совместимость">Epson XP-33/103/203/207/306/406</param>
 <param name="Ресурс">0,55K</param>
@@ -38618,11 +38617,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T1713M-M; Совместимость: Epson XP-33/103/203/207/306/406; Ресурс: 0,5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T1713M-M; Совместимость: Epson XP-33/103/203/207/306/406; Ресурс: 0,5K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-T1713M-M</param>
 <param name="Совместимость">Epson XP-33/103/203/207/306/406</param>
 <param name="Ресурс">0,5K</param>
@@ -38638,11 +38637,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T1714Y-Y; Совместимость: Epson XP-33/103/203/207/306/406; Ресурс: 0,6K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T1714Y-Y; Совместимость: Epson XP-33/103/203/207/306/406; Ресурс: 0,6K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-T1714Y-Y</param>
 <param name="Совместимость">Epson XP-33/103/203/207/306/406</param>
 <param name="Ресурс">0,6K</param>
@@ -38701,11 +38700,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T1292C-C; Совместимость: Epson Stylus SX230/235W/SX420W/SX425W/BX305F; Ресурс: 0,5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T1292C-C; Совместимость: Epson Stylus SX230/235W/SX420W/SX425W/BX305F; Ресурс: 0,5K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-EPS-T1292C-C</param>
 <param name="Совместимость">Epson Stylus SX230/235W/SX420W/SX425W/BX305F</param>
 <param name="Ресурс">0,5K</param>
@@ -38721,11 +38720,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T1293M-M; Совместимость: Epson Stylus SX230/235W/SX420W/SX425W/BX305F; Ресурс: 0,38K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T1293M-M; Совместимость: Epson Stylus SX230/235W/SX420W/SX425W/BX305F; Ресурс: 0,38K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-T1293M-M</param>
 <param name="Совместимость">Epson Stylus SX230/235W/SX420W/SX425W/BX305F</param>
 <param name="Ресурс">0,38K</param>
@@ -38741,11 +38740,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T1294Y-Y; Совместимость: Epson Stylus SX230/235W/SX420W/SX425W/BX305F; Ресурс: 0,63K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T1294Y-Y; Совместимость: Epson Stylus SX230/235W/SX420W/SX425W/BX305F; Ресурс: 0,63K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-T1294Y-Y</param>
 <param name="Совместимость">Epson Stylus SX230/235W/SX420W/SX425W/BX305F</param>
 <param name="Ресурс">0,63K</param>
@@ -38764,11 +38763,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T1282C-C; Совместимость: Epson Stylus S22/SX125/SX420W/SX425W/BX305F; Ресурс: 0,26K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T1282C-C; Совместимость: Epson Stylus S22/SX125/SX420W/SX425W/BX305F; Ресурс: 0,26K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-EPS-T1282C-C</param>
 <param name="Совместимость">Epson Stylus S22/SX125/SX420W/SX425W/BX305F</param>
 <param name="Ресурс">0,26K</param>
@@ -38787,11 +38786,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T1283M-M; Совместимость: Epson Stylus S22/SX125/SX420W/SX425W/BX305F; Ресурс: 0,16K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T1283M-M; Совместимость: Epson Stylus S22/SX125/SX420W/SX425W/BX305F; Ресурс: 0,16K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-T1283M-M</param>
 <param name="Совместимость">Epson Stylus S22/SX125/SX420W/SX425W/BX305F</param>
 <param name="Ресурс">0,16K</param>
@@ -38810,11 +38809,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T1284Y-Y; Совместимость: Epson Stylus S22/SX125/SX420W/SX425W/BX305F; Ресурс: 0,32K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-T1284Y-Y; Совместимость: Epson Stylus S22/SX125/SX420W/SX425W/BX305F; Ресурс: 0,32K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-T1284Y-Y</param>
 <param name="Совместимость">Epson Stylus S22/SX125/SX420W/SX425W/BX305F</param>
 <param name="Ресурс">0,32K</param>
@@ -38868,11 +38867,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PFI-320-C; Совместимость: Canon imagePROGRAF TM-200/200MFP/205/300/300FMP/305, С; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PFI-320-C; Совместимость: Canon imagePROGRAF TM-200/200MFP/205/300/300FMP/305, С; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-CAN-PFI-320-C</param>
 <param name="Совместимость">Canon imagePROGRAF TM-200/200MFP/205/300/300FMP/305, С</param>
 <param name="Коды расходников">PFI-320C</param>
@@ -38887,11 +38886,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PFI-320-M; Совместимость: Canon imagePROGRAF TM-200/200MFP/205/300/300FMP/305, М; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PFI-320-M; Совместимость: Canon imagePROGRAF TM-200/200MFP/205/300/300FMP/305, М; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-CAN-PFI-320-M</param>
 <param name="Совместимость">Canon imagePROGRAF TM-200/200MFP/205/300/300FMP/305, М</param>
 <param name="Коды расходников">PFI-320M</param>
@@ -38906,11 +38905,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CAN-PFI-320-Y; Совместимость: Canon imagePROGRAF TM-200/200MFP/205/300/300FMP/305; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-CAN-PFI-320-Y; Совместимость: Canon imagePROGRAF TM-200/200MFP/205/300/300FMP/305; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-CAN-PFI-320-Y</param>
 <param name="Совместимость">Canon imagePROGRAF TM-200/200MFP/205/300/300FMP/305</param>
 <param name="Коды расходников">PFI-320Y</param>
@@ -39059,11 +39058,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-C13T944240-C; Совместимость: Epson WorkForce Pro WF-C5210DW/C5290DW/C5710DWF/C5790DWF; Ресурс: 3K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-C13T944240-C; Совместимость: Epson WorkForce Pro WF-C5210DW/C5290DW/C5710DWF/C5790DWF; Ресурс: 3K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-EPS-C13T944240-C</param>
 <param name="Совместимость">Epson WorkForce Pro WF-C5210DW/C5290DW/C5710DWF/C5790DWF</param>
 <param name="Ресурс">3K</param>
@@ -39079,11 +39078,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-C13T944340-M; Совместимость: Epson WorkForce Pro WF-C5210DW/C5290DW/C5710DWF/C5790DWF; Ресурс: 3K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-C13T944340-M; Совместимость: Epson WorkForce Pro WF-C5210DW/C5290DW/C5710DWF/C5790DWF; Ресурс: 3K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-EPS-C13T944340-M</param>
 <param name="Совместимость">Epson WorkForce Pro WF-C5210DW/C5290DW/C5710DWF/C5790DWF</param>
 <param name="Ресурс">3K</param>
@@ -39099,11 +39098,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-C13T944440-Y; Совместимость: Epson WorkForce Pro WF-C5210DW/C5290DW/C5710DWF/C5790DWF; Ресурс: 3K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-EPS-C13T944440-Y; Совместимость: Epson WorkForce Pro WF-C5210DW/C5290DW/C5710DWF/C5790DWF; Ресурс: 3K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-EPS-C13T944440-Y</param>
 <param name="Совместимость">Epson WorkForce Pro WF-C5210DW/C5290DW/C5710DWF/C5790DWF</param>
 <param name="Ресурс">3K</param>
@@ -41948,18 +41947,18 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTB600/B605/B610/B615" available="true">
 <categoryId></categoryId>
 <vendorCode>VTB600/B605/B610/B615</vendorCode>
-<name>Барабан для Xerox VersaLink B600/B605/B610/B615, 60К (для производства), N-OPC-XRB600-PR</name>
+<name>Барабан NetProduct для Xerox VersaLink B600/B605/B610/B615, 60К, N-OPC-XRB600</name>
 <price>100</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Барабан; Партномер: N-OPC-XR-VLINK-B600-PR; Совместимость: Xerox VersaLink B600/B605/B610/B615, 60К (для производства), N-OPC-XRB600-PR; Ресурс: 60K]]></description>
+Тип: Барабан; Партномер: N-OPC-XR-VLINK-B600; Совместимость: Xerox VersaLink B600/B605/B610/B615, 60К, N-OPC-XRB600; Ресурс: 60K]]></description>
 <param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
-<param name="Партномер">N-OPC-XR-VLINK-B600-PR</param>
-<param name="Совместимость">Xerox VersaLink B600/B605/B610/B615, 60К (для производства), N-OPC-XRB600-PR</param>
+<param name="Партномер">N-OPC-XR-VLINK-B600</param>
+<param name="Совместимость">Xerox VersaLink B600/B605/B610/B615, 60К, N-OPC-XRB600</param>
 <param name="Ресурс">60K</param>
 </offer>
 
@@ -41977,24 +41976,6 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Партномер">BPDR20SA</param>
-<param name="Совместимость">Sharp C-CUBE</param>
-<param name="Ресурс">120K</param>
-</offer>
-
-<offer id="VTBPDU20SA" available="true">
-<categoryId></categoryId>
-<vendorCode>VTBPDU20SA</vendorCode>
-<name>Узел фотобарабана в сборе BPDU20SA для Sharp C-CUBE (оригинал)</name>
-<price>188900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Sharp</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Фотобарабан; Партномер: BPDU20SA; Совместимость: Sharp C-CUBE; Ресурс: 120K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Фотобарабан</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">Sharp</param>
-<param name="Партномер">BPDU20SA</param>
 <param name="Совместимость">Sharp C-CUBE</param>
 <param name="Ресурс">120K</param>
 </offer>
@@ -53630,22 +53611,6 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Партномер">CFRM-0021RS71</param>
 </offer>
 
-<offer id="VTCFRM-0021US74" available="true">
-<categoryId></categoryId>
-<vendorCode>VTCFRM-0021US74</vendorCode>
-<name>CFRM-0021US74 Узел барабана (без барабана) в сборе Sharp AR5618/5620/5623 (оригинал)</name>
-<price>100</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Sharp</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Барабан; Партномер: CFRM-0021US74; Оригинальность: Оригинал]]></description>
-<param name="Тип">Барабан</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">Sharp</param>
-<param name="Партномер">CFRM-0021US74</param>
-</offer>
-
 <offer id="VTCM1300/CM1312/CP1210/CP1215" available="true">
 <categoryId></categoryId>
 <vendorCode>VTCM1300/CM1312/CP1210/CP1215</vendorCode>
@@ -53733,22 +53698,6 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Ricoh</param>
 <param name="Партномер">D1272212</param>
-</offer>
-
-<offer id="VTD1882235/D1882252" available="true">
-<categoryId></categoryId>
-<vendorCode>VTD1882235/D1882252</vendorCode>
-<name>D1882235/D1882252 Узел фотобарабана в сборе Ricoh Aficio MP C2003/C2011/C2503 (оригинал)</name>
-<price>100</price>
-<picture>https://b2b.vtt.ru/images/D1882235.jpg</picture>
-<vendor>Ricoh</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Фотобарабан; Партномер: D1882235; Оригинальность: Оригинал]]></description>
-<param name="Тип">Фотобарабан</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">Ricoh</param>
-<param name="Партномер">D1882235</param>
 </offer>
 
 <offer id="VTDGP0575" available="true">
@@ -54252,60 +54201,6 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Коды расходников">302NR93010</param>
 </offer>
 
-<offer id="VTDK-5230" available="true">
-<categoryId></categoryId>
-<vendorCode>VTDK-5230</vendorCode>
-<name>DK-5230 Узел фотобарабана (Тех. упаковка) Kyocera P5021cdn/P5026cdn/M5521cdn/M5526cdw</name>
-<price>66900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Kyocera</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Фотобарабан; Партномер: DK-5230; Цвет: Черный]]></description>
-<param name="Тип">Фотобарабан</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">Kyocera</param>
-<param name="Партномер">DK-5230</param>
-<param name="Коды расходников">302R793010</param>
-<param name="Цвет">Черный</param>
-</offer>
-
-<offer id="VTDK-5231" available="true">
-<categoryId></categoryId>
-<vendorCode>VTDK-5231</vendorCode>
-<name>DK-5231 Узел фотобарабана (Тех. упаковка) Kyocera P5021cdn/P5026cdn/M5521cdn/M5526cdw</name>
-<price>81900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Kyocera</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Фотобарабан; Партномер: DK-5231; Цвет: Цветной]]></description>
-<param name="Тип">Фотобарабан</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">Kyocera</param>
-<param name="Партномер">DK-5231</param>
-<param name="Коды расходников">302R793020</param>
-<param name="Цвет">Цветной</param>
-</offer>
-
-<offer id="VTDK-5231_C" available="true">
-<categoryId></categoryId>
-<vendorCode>VTDK-5231_C</vendorCode>
-<name>DK-5231_C Узел фотобарабана (Совместимый) Kyocera P5021cdn/P5026cdn/M5521cdn/M5526cdw</name>
-<price>73900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Kyocera</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Фотобарабан; Партномер: DK-5231; Цвет: Цветной]]></description>
-<param name="Тип">Фотобарабан</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">Kyocera</param>
-<param name="Партномер">DK-5231</param>
-<param name="Коды расходников">DK-5231_C, 302R793020</param>
-<param name="Цвет">Цветной</param>
-</offer>
-
 <offer id="VTDK-5240" available="true">
 <categoryId></categoryId>
 <vendorCode>VTDK-5240</vendorCode>
@@ -54460,23 +54355,6 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Партномер">DV-1140</param>
 </offer>
 
-<offer id="VTDV-1140-DV-170-MAG" available="true">
-<categoryId></categoryId>
-<vendorCode>VTDV-1140-DV-170-MAG</vendorCode>
-<name>Магнитный вал блока проявки DV-1140/DV-170 (Совм.) Kyocera M2535dn/M2035dn/FS-1035MFP/FS-1135MFP</name>
-<price>18900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Kyocera</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Блок проявки; Партномер: DV-1140-DV-170-MAG]]></description>
-<param name="Тип">Блок проявки</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">Kyocera</param>
-<param name="Партномер">DV-1140-DV-170-MAG</param>
-<param name="Коды расходников">DV-1140</param>
-</offer>
-
 <offer id="VTDV-1140/302MK93010" available="true">
 <categoryId></categoryId>
 <vendorCode>VTDV-1140/302MK93010</vendorCode>
@@ -54509,23 +54387,6 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">DV-1150</param>
 <param name="Коды расходников">302RV93020, 302RV93030, 302RV93040, 302RV93120, 302S193010</param>
-</offer>
-
-<offer id="VTDV-1150_DV-1200_MAG" available="true">
-<categoryId></categoryId>
-<vendorCode>VTDV-1150_DV-1200_MAG</vendorCode>
-<name>Магнитный вал блока проявки DV-1150/DV-1200 (Совм.) Kyocera M2040dn/M2735dn/M2235dn/P2040dn/P2235d</name>
-<price>19900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Kyocera</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Блок проявки; Партномер: DV1150-DV1200-MAG]]></description>
-<param name="Тип">Блок проявки</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">Kyocera</param>
-<param name="Партномер">DV1150-DV1200-MAG</param>
-<param name="Коды расходников">DV-1150_DV-1200_MAG, DV-1150</param>
 </offer>
 
 <offer id="VTDV-1200" available="true">
@@ -54764,43 +54625,6 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Желтый</param>
 </offer>
 
-<offer id="VTDV-5230C" available="true">
-<categoryId></categoryId>
-<vendorCode>VTDV-5230C</vendorCode>
-<name>DV-5230C Узел проявки (Тех. упаковка) Kyocera P5021cdn/P5026cdn</name>
-<price>50900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Kyocera</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Блок проявки; Партномер: DV-5230C; Цвет: Голубой]]></description>
-<param name="Тип">Блок проявки</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">Kyocera</param>
-<param name="Партномер">DV-5230C</param>
-<param name="Коды расходников">302R793060</param>
-<param name="Цвет">Голубой</param>
-</offer>
-
-<offer id="VTDV-5230K" available="true">
-<categoryId></categoryId>
-<vendorCode>VTDV-5230K</vendorCode>
-<name>DV-5230K Узел проявки (Тех. упаковка) Kyocera P5021cdn/P5026cdn</name>
-<price>63900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Kyocera</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Блок проявки; Партномер: DV-5230K; Ресурс: 5230K; Цвет: Черный]]></description>
-<param name="Тип">Блок проявки</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">Kyocera</param>
-<param name="Партномер">DV-5230K</param>
-<param name="Ресурс">5230K</param>
-<param name="Коды расходников">302R793030</param>
-<param name="Цвет">Черный</param>
-</offer>
-
 <offer id="VTDV-5230K-ORIG" available="true">
 <categoryId></categoryId>
 <vendorCode>VTDV-5230K-ORIG</vendorCode>
@@ -54818,42 +54642,6 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">5230K</param>
 <param name="Коды расходников">DV-5230K-ORIG, DV-5230K, 302R793060</param>
 <param name="Цвет">Черный</param>
-</offer>
-
-<offer id="VTDV-5230M" available="true">
-<categoryId></categoryId>
-<vendorCode>VTDV-5230M</vendorCode>
-<name>DV-5230M Узел проявки (Тех. упаковка) Kyocera P5021cdn/P5026cdn</name>
-<price>54900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Kyocera</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Блок проявки; Партномер: DV-5230M; Цвет: Пурпурный]]></description>
-<param name="Тип">Блок проявки</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">Kyocera</param>
-<param name="Партномер">DV-5230M</param>
-<param name="Коды расходников">302R793050</param>
-<param name="Цвет">Пурпурный</param>
-</offer>
-
-<offer id="VTDV-5230Y" available="true">
-<categoryId></categoryId>
-<vendorCode>VTDV-5230Y</vendorCode>
-<name>DV-5230Y Узел проявки (Тех. упаковка) Kyocera P5021cdn/P5026cdn</name>
-<price>56900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Kyocera</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Блок проявки; Партномер: DV-5230Y; Цвет: Желтый]]></description>
-<param name="Тип">Блок проявки</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">Kyocera</param>
-<param name="Партномер">DV-5230Y</param>
-<param name="Коды расходников">302R793040</param>
-<param name="Цвет">Желтый</param>
 </offer>
 
 <offer id="VTDV-5310C" available="true">
@@ -55291,11 +55079,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-069H-C; Ресурс: 5,5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-069H-C; Ресурс: 5,5K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-069H-C</param>
 <param name="Ресурс">5,5K</param>
 <param name="Коды расходников">HB-CRG-069H C</param>
@@ -55314,11 +55102,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-069H-M; Ресурс: 5,5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-069H-M; Ресурс: 5,5K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-069H-M</param>
 <param name="Ресурс">5,5K</param>
 <param name="Коды расходников">HB-CRG-069H M</param>
@@ -55337,11 +55125,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-069H-Y; Ресурс: 5,5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-069H-Y; Ресурс: 5,5K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-069H-Y</param>
 <param name="Ресурс">5,5K</param>
 <param name="Коды расходников">HB-CRG-069H Y</param>
@@ -55429,11 +55217,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-075H-C; Ресурс: 2,5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-075H-C; Ресурс: 2,5K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-075H-C</param>
 <param name="Ресурс">2,5K</param>
 <param name="Коды расходников">HB-CRG-075H C</param>
@@ -55452,11 +55240,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-075H-M; Ресурс: 2,5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-075H-M; Ресурс: 2,5K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-075H-M</param>
 <param name="Ресурс">2,5K</param>
 <param name="Коды расходников">HB-CRG-075H M</param>
@@ -55475,11 +55263,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-075H-Y; Ресурс: 2,5K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-075H-Y; Ресурс: 2,5K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-075H-Y</param>
 <param name="Ресурс">2,5K</param>
 <param name="Коды расходников">HB-CRG-075H Y</param>
@@ -55625,11 +55413,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: HB-C-EXV65-C; Совместимость: Canon iR-C3322/C3326/C3326i; Ресурс: 11K; Цвет: Черный]]></description>
+Тип: Тонер-картридж; Партномер: HB-C-EXV65-C; Совместимость: Canon iR-C3322/C3326/C3326i; Ресурс: 11K; Цвет: Голубой]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-C-EXV65-C</param>
 <param name="Совместимость">Canon iR-C3322/C3326/C3326i</param>
 <param name="Ресурс">11K</param>
@@ -55644,11 +55432,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: HB-C-EXV65-M; Совместимость: Canon iR-C3322/C3326/C3326i; Ресурс: 11K; Цвет: Черный]]></description>
+Тип: Тонер-картридж; Партномер: HB-C-EXV65-M; Совместимость: Canon iR-C3322/C3326/C3326i; Ресурс: 11K; Цвет: Пурпурный]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-C-EXV65-M</param>
 <param name="Совместимость">Canon iR-C3322/C3326/C3326i</param>
 <param name="Ресурс">11K</param>
@@ -55663,11 +55451,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: HB-C-EXV65-Y; Совместимость: Canon iR-C3322/C3326/C3326i; Ресурс: 11K; Цвет: Черный]]></description>
+Тип: Тонер-картридж; Партномер: HB-C-EXV65-Y; Совместимость: Canon iR-C3322/C3326/C3326i; Ресурс: 11K; Цвет: Желтый]]></description>
 <param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-C-EXV65-Y</param>
 <param name="Совместимость">Canon iR-C3322/C3326/C3326i</param>
 <param name="Ресурс">11K</param>
@@ -56085,11 +55873,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP-655XL-C; Совместимость: HP DJ Ink Advantage 3525/5525/4615/4525, №655XL, C, HB-655XL-; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP-655XL-C; Совместимость: HP DJ Ink Advantage 3525/5525/4615/4525, №655XL, C, HB-655XL-; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Партномер">HB-HP-655XL-C</param>
 <param name="Совместимость">HP DJ Ink Advantage 3525/5525/4615/4525, №655XL, C, HB-655XL-</param>
 </offer>
@@ -56103,11 +55891,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP-655XL-M; Совместимость: HP DJ Ink Advantage 3525/5525/4615/4525, №655XL, M, HB-655XL-; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP-655XL-M; Совместимость: HP DJ Ink Advantage 3525/5525/4615/4525, №655XL, M, HB-655XL-; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Пурпурный</param>
 <param name="Партномер">HB-HP-655XL-M</param>
 <param name="Совместимость">HP DJ Ink Advantage 3525/5525/4615/4525, №655XL, M, HB-655XL-</param>
 </offer>
@@ -56121,11 +55909,11 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP-655XL-Y; Совместимость: HP DJ Ink Advantage 3525/5525/4615/4525, №655XL, Y, HB-655XL-; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: HB-HP-655XL-Y; Совместимость: HP DJ Ink Advantage 3525/5525/4615/4525, №655XL, Y, HB-655XL-; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Желтый</param>
 <param name="Партномер">HB-HP-655XL-Y</param>
 <param name="Совместимость">HP DJ Ink Advantage 3525/5525/4615/4525, №655XL, Y, HB-655XL-</param>
 </offer>
@@ -58631,18 +58419,19 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTL4150/4160/L6160/L6170/L6190" available="true">
 <categoryId></categoryId>
 <vendorCode>VTL4150/4160/L6160/L6170/L6190</vendorCode>
-<name>Чернила Epson EcoTank L4150/4160/L6160/L6170/L6190 4 цвета мультипак (оригинал)</name>
+<name>Чернила Epson EcoTank L4150/4160/L6160/L6170/L6190, 70мл голубые (оригинал)</name>
 <price>100</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: C13T03V64A; Цвет: CMY+Bk; Оригинальность: Оригинал]]></description>
+Тип: Чернила; Партномер: C13T03V24A; Ресурс: 70 мл; Цвет: Голубой; Оригинальность: Оригинал]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">CMY+Bk</param>
-<param name="Партномер">C13T03V64A</param>
+<param name="Цвет">Голубой</param>
+<param name="Партномер">C13T03V24A</param>
+<param name="Ресурс">70 мл</param>
 </offer>
 
 <offer id="VTL7160/7180" available="true">
@@ -58666,19 +58455,19 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTL800/L1800/L810/L850" available="true">
 <categoryId></categoryId>
 <vendorCode>VTL800/L1800/L810/L850</vendorCode>
-<name>Чернила Epson L800/L1800/L810/L850 C13T67354A/C13T673598, light cyan, 70ml, 991132105 (оригинал)</name>
+<name>Чернила Epson L800/L1800/L810/L850 C13T67344A/C13T673498, yellow, 70ml, 991132104 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/991132105.jpg</picture>
+<picture>https://b2b.vtt.ru/images/991132104.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: C13T67354A; Ресурс: 70 мл; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+Тип: Чернила; Партномер: C13T67344A; Ресурс: 70 мл; Цвет: Желтый; Оригинальность: Оригинал]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Партномер">C13T67354A</param>
+<param name="Цвет">Желтый</param>
+<param name="Партномер">C13T67344A</param>
 <param name="Ресурс">70 мл</param>
-<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VTLJ700MFP/M712" available="true">
@@ -61737,24 +61526,6 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Голубой</param>
 <param name="Партномер">Z7Y69A</param>
 <param name="Ресурс">720K</param>
-</offer>
-
-<offer id="VTZ7Y70A/JC96-11666A" available="true">
-<categoryId></categoryId>
-<vendorCode>VTZ7Y70A/JC96-11666A</vendorCode>
-<name>Z7Y70A/JC96-11666A Сервисный набор замены черного блока проявки HP CLJ E77422/E77428/E77822 (оригинал)</name>
-<price>100</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Тип: Блок проявки; Партномер: Z7Y70A; Ресурс: 300K; Цвет: Черный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Блок проявки</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Для бренда">HP</param>
-<param name="Цвет">Черный</param>
-<param name="Партномер">Z7Y70A</param>
-<param name="Ресурс">300K</param>
 </offer>
 
 <offer id="VTZ7Y72A/JC96-12502A" available="true">
