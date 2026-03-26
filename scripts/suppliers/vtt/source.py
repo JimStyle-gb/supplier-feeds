@@ -3,11 +3,12 @@
 Path: scripts/suppliers/vtt/source.py
 
 VTT source layer.
-v16:
+v17:
 - same category-first coverage;
 - keeps stronger HTTP pooling / keep-alive reuse;
-- restores exact working v22 index/coverage logic to recover missing offers;
-- keeps existing safe listing-title normalization and fallback behavior.
+- listing prefix check is advisory only;
+- intentionally reverts source/index behavior to the best modular coverage state seen so far;
+- keeps titles in index for diagnostics.
 """
 
 from __future__ import annotations
@@ -406,11 +407,11 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
                 rec["source_categories"].update(current_cats)
 
     out: list[dict[str, Any]] = []
+    soft_prefix_mismatch = 0
     for url, meta in sorted(product_candidates.items(), key=lambda kv: kv[0]):
         titles = sorted(meta.get("titles") or [])
         if titles and not any(_title_matches_allowed(title, allowed_prefixes) for title in titles):
-            early_rejected += 1
-            continue
+            soft_prefix_mismatch += 1
         out.append(
             {
                 "url": url,
@@ -419,7 +420,7 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
             }
         )
 
-    log(f"[VTT] listing_index total={len(product_candidates)} kept={len(out)} early_rejected={early_rejected}")
+    log(f"[VTT] listing_index total={len(product_candidates)} kept={len(out)} early_rejected={early_rejected} soft_prefix_mismatch={soft_prefix_mismatch}")
     return out
 
 
