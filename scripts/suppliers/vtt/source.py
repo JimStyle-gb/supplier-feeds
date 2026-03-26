@@ -3,55 +3,85 @@
 Path: scripts/suppliers/vtt/source.py
 
 VTT source layer.
-v13:
+v9:
 - same category-first coverage;
-- stronger HTTP pooling / keep-alive reuse;
-- listing filter moved to filtering.py;
-- html param/desc parsing moved to params_page.py;
-- pictures cleanup moved to pictures.py;
-- keeps existing build_vtt.py contract unchanged.
-- disables hard early-reject on listing prefixes to recover v22-level coverage;
+- keeps stronger HTTP pooling / keep-alive reuse;
+- broadens allowed title prefixes to avoid losing useful products;
+- adds safer early prefix filter on LISTING titles before opening product cards;
+- normalizes listing titles by removing leading codes and originality markers;
+- keeps full fallback behavior if listing title is missing.
 """
 
 from __future__ import annotations
 
+import html as ihtml
 import os
+import re
 import time
 from collections import deque
+from dataclasses import dataclass, field
 from datetime import datetime
 from html import unescape
 from typing import Any
-from urllib.parse import parse_qs, urljoin, urlparse
+from urllib.parse import parse_qs, urlencode, urljoin, urlparse, urlunparse
 
 import requests
+from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from .filtering import (
-    DEFAULT_ALLOWED_TITLE_PREFIXES,
-    DEFAULT_CATEGORY_CODES,
-    categories_from_cfg,
-    load_filter_config,
-    mk_category_url,
-    normalize_listing_title,
-    normalize_listing_url,
-    prefixes_from_cfg,
-    product_path_re,
-    title_matches_allowed,
-)
-from .models import ParsedProductPage, ProductIndexItem, VTTConfig
-from .normalize import norm_ws
-from .params_page import (
-    extract_images_from_html,
-    extract_meta_desc,
-    extract_params_and_desc,
-    extract_price_rub,
-    extract_sku,
-    extract_title,
-    extract_title_codes,
-    extract_vendor_from_title,
-    html_text_fast,
-)
+
+DEFAULT_CATEGORY_CODES: list[str] = [
+    "DRM_CRT",
+    "DRM_UNIT",
+    "CARTLAS_ORIG",
+    "CARTLAS_COPY",
+    "CARTLAS_PRINT",
+    "CARTLAS_TNR",
+    "CARTINJ_PRNTHD",
+    "CARTINJ_Refill",
+    "CARTINJ_ORIG",
+    "CARTMAT_CART",
+    "TNR_WASTETON",
+    "DEV_DEV",
+    "TNR_REFILL",
+    "INK_COMMON",
+    "PARTSPRINT_DEVUN",
+]
+
+# Ранний фильтр по смысловому началу названия на листинге.
+DEFAULT_ALLOWED_TITLE_PREFIXES: list[str] = [
+    "Drum",
+    "Девелопер",
+    "Драм-картридж",
+    "Драм-юнит",
+    "Драм-юниты",
+    "Драм юнит",
+    "Кабель сетевой",
+    "Картридж",
+    "Картриджи",
+    "Термоблок",
+    "Тонер-картридж",
+    "Тонер-катридж",
+    "Чернила",
+    "Печатающая головка",
+    "Копи-картридж",
+    "Принт-картридж",
+    "Контейнер",
+    "Блок",
+    "Бункер",
+    "Носитель",
+    "Фотобарабан",
+    "Барабан",
+    "Тонер",
+    "Комплект",
+    "Набор",
+    "Заправочный комплект",
+    "Модуль фоторецептора",
+    "Фотопроводниковый блок",
+    "Бокс сбора тонера",
+    "Рефил",
+]
 
 UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -59,9 +89,57 @@ UA = (
     "Chrome/124.0.0.0 Safari/537.36"
 )
 
-HREF_RE = __import__("re").compile(r"""href=["']([^"']+)["']""", __import__("re").I)
-ANCHOR_RE = __import__("re").compile(r"""<a\b[^>]*href=["']([^"']+)["'][^>]*>(.*?)</a>""", __import__("re").I | __import__("re").S)
-META_CSRF_RE = __import__("re").compile(r"""<meta[^>]+name=["']csrf-token["'][^>]+content=["']([^"']+)["']""", __import__("re").I)
+_HREF_RE = re.compile(r"""href=["']([^"']+)["']""", re.I)
+_ANCHOR_RE = re.compile(r"""<a\b[^>]*href=["']([^"']+)["'][^>]*>(.*?)</a>""", re.I | re.S)
+_META_CSRF_RE = re.compile(r"""<meta[^>]+name=["']csrf-token["'][^>]+content=["']([^"']+)["']""", re.I)
+_TITLE_RE = re.compile(r"<title>(.*?)</title>", re.I | re.S)
+_H1_RE = re.compile(r"<h1[^>]*>(.*?)</h1>", re.I | re.S)
+_META_DESC_RE = re.compile(r"""<meta[^>]+name=["']description["'][^>]+content=["']([^"']*)["']""", re.I)
+_SKU_RE = re.compile(r"""let\s+sku\s*=\s*["']([^"']+)["']""", re.I)
+_PRICE_RUB_RE = re.compile(r"""let\s+priceRUB\s*=\s*([0-9]+(?:\.[0-9]+)?)""", re.I)
+_PRICE_MAIN_RE = re.compile(r"""price_main[^>]*>\s*<b>([^<]+)</b>""", re.I | re.S)
+_IMAGE_RE = re.compile(
+    r"""(?:src|href|data-src|data-original|srcset)=["']([^"']+\.(?:jpg|jpeg|png|webp|gif)(?:\?[^"']*)?)["']""",
+    re.I,
+)
+_CODE_TOKEN_RE = re.compile(r"\b[A-Z0-9][A-Z0-9\-./]{2,}\b")
+_BAD_IMAGE_RE = re.compile(r"(favicon|yandex|counter|watch/|pixel|metrika|doubleclick)", re.I)
+_DESC_BLOCK_RE = re.compile(
+    r"""<div[^>]+class=["'][^"']*(?:description|catalog_item_descr)[^"']*["'][^>]*>(.*?)</div>""",
+    re.I | re.S,
+)
+_DT_DD_RE = re.compile(r"<dt[^>]*>(.*?)</dt>\s*<dd[^>]*>(.*?)</dd>", re.I | re.S)
+_TR_RE = re.compile(r"<tr[^>]*>(.*?)</tr>", re.I | re.S)
+_CELL_RE = re.compile(r"<(?:th|td)[^>]*>(.*?)</(?:th|td)>", re.I | re.S)
+_TAG_RE = re.compile(r"<[^>]+>")
+_TITLE_LEAD_CODE_RE = re.compile(
+    r"""^(?:[A-Z0-9][A-Z0-9\-./]{2,}(?:\s*,\s*[A-Z0-9][A-Z0-9\-./]{2,})*\s+)+""",
+    re.I,
+)
+_ORIGINAL_MARK_RE = re.compile(r"""(?<!\w)\((?:O|О|OEM)\)(?!\w)|\bоригинал(?:ьн(?:ый|ая|ое|ые))?\b""", re.I)
+_LEAD_MARK_RE = re.compile(r"""^(?:\((?:E|LE)\)|LE\b|E\b)\s*""", re.I)
+
+
+def _product_path_re(path: str) -> bool:
+    return bool(re.match(r"^/catalog/[^/?#]+/?$", path or "", re.I))
+
+
+@dataclass(slots=True)
+class VTTConfig:
+    base_url: str
+    start_url: str
+    login_url: str
+    login: str
+    password: str
+    timeout_s: int = 35
+    listing_request_delay_ms: int = 6
+    product_request_delay_ms: int = 0
+    max_listing_pages: int = 5000
+    max_workers: int = 20
+    max_crawl_minutes: float = 90.0
+    softfail: bool = False
+    categories: list[str] = field(default_factory=lambda: list(DEFAULT_CATEGORY_CODES))
+    allowed_title_prefixes: list[str] = field(default_factory=lambda: list(DEFAULT_ALLOWED_TITLE_PREFIXES))
 
 
 def log(msg: str) -> None:
@@ -73,8 +151,55 @@ def _sleep_ms(ms: int) -> None:
         time.sleep(ms / 1000.0)
 
 
-def _repo_root() -> str:
-    return str(__import__("pathlib").Path(__file__).resolve().parents[3])
+def _norm_ws(text: str) -> str:
+    return " ".join(str(text or "").replace("\xa0", " ").split()).strip()
+
+
+def _html_text_fast(fragment: str) -> str:
+    if not fragment:
+        return ""
+    text = _TAG_RE.sub(" ", fragment)
+    text = ihtml.unescape(text)
+    return _norm_ws(text)
+
+
+def _canon_vendor(vendor: str) -> str:
+    v = _norm_ws(vendor)
+    low = v.casefold()
+    mapping = {
+        "kyocera-mita": "Kyocera",
+        "kyocera mita": "Kyocera",
+        "konica-minolta": "Konica Minolta",
+        "konica minolta": "Konica Minolta",
+        "hewlett-packard": "HP",
+        "hewlett packard": "HP",
+    }
+    return mapping.get(low, v)
+
+
+def _normalize_listing_url(url: str) -> str:
+    p = urlparse(url)
+    qs = parse_qs(p.query)
+    items: list[tuple[str, str]] = []
+    for key in sorted(qs):
+        for value in sorted(qs[key]):
+            items.append((key, value))
+    return urlunparse((p.scheme, p.netloc, p.path, "", urlencode(items, doseq=True), ""))
+
+
+def _mk_category_url(base_url: str, code: str) -> str:
+    return urljoin(base_url, f"/catalog/?category={code}")
+
+
+def _safe_int_from_text(text: str) -> int:
+    s = _norm_ws(text).replace(" ", "").replace(",", ".")
+    m = re.search(r"(\d+(?:\.\d+)?)", s)
+    if not m:
+        return 0
+    try:
+        return int(round(float(m.group(1))))
+    except Exception:
+        return 0
 
 
 def _build_retry() -> Retry:
@@ -123,19 +248,12 @@ def clone_session_with_cookies(master: requests.Session, cfg: VTTConfig) -> requ
 def cfg_from_env() -> VTTConfig:
     base_url = (os.getenv("VTT_BASE_URL") or "https://b2b.vtt.ru/").strip()
     base_url = base_url.rstrip("/") + "/"
-
-    filter_cfg = load_filter_config(
-        __import__("pathlib").Path(__file__).resolve().parent / "config" / "filter.yml"
-    )
-
     cats = [x.strip() for x in (os.getenv("VTT_CATEGORY_CODES") or "").split(",") if x.strip()]
     if not cats:
-        cats = categories_from_cfg(filter_cfg) or list(DEFAULT_CATEGORY_CODES)
-
+        cats = list(DEFAULT_CATEGORY_CODES)
     prefixes = [x.strip() for x in (os.getenv("VTT_ALLOWED_TITLE_PREFIXES") or "").split(",") if x.strip()]
     if not prefixes:
-        prefixes = prefixes_from_cfg(filter_cfg) or list(DEFAULT_ALLOWED_TITLE_PREFIXES)
-
+        prefixes = list(DEFAULT_ALLOWED_TITLE_PREFIXES)
     return VTTConfig(
         base_url=base_url,
         start_url=urljoin(base_url, "/catalog/"),
@@ -173,7 +291,7 @@ def login(sess: requests.Session, cfg: VTTConfig) -> bool:
         return False
     home = _get(sess, cfg, urljoin(cfg.base_url, "/"), delay_ms=cfg.listing_request_delay_ms)
     html = home.text or ""
-    m = META_CSRF_RE.search(html)
+    m = _META_CSRF_RE.search(html)
     token = m.group(1).strip() if m else ""
     headers = {"Referer": urljoin(cfg.base_url, "/")}
     if token:
@@ -194,11 +312,39 @@ def login(sess: requests.Session, cfg: VTTConfig) -> bool:
         return False
 
 
+def _normalize_listing_title(title: str) -> str:
+    title = _norm_ws(title)
+    title = _ORIGINAL_MARK_RE.sub("", title)
+    title = _TITLE_LEAD_CODE_RE.sub("", title)
+    while True:
+        new_title = _LEAD_MARK_RE.sub("", title).strip(" ,.-")
+        if new_title == title:
+            break
+        title = new_title
+    title = _norm_ws(title).strip(" ,.-")
+    return title
+
+
+def _title_matches_allowed(title: str, prefixes: list[str]) -> bool:
+    if not prefixes:
+        return True
+    if not title:
+        return True  # не режем товар, если не смогли достать заголовок с листинга
+    low = title.casefold()
+    compact = low.replace("-", " ")
+    for prefix in prefixes:
+        p = prefix.casefold()
+        pp = p.replace("-", " ")
+        if low.startswith(p) or compact.startswith(pp):
+            return True
+    return False
+
+
 def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: list[str], deadline: datetime) -> list[dict[str, Any]]:
     allowed_categories = set(categories)
     allowed_prefixes = list(cfg.allowed_title_prefixes)
     base_netloc = urlparse(cfg.base_url).netloc
-    queue = deque(normalize_listing_url(mk_category_url(cfg.base_url, code)) for code in categories)
+    queue = deque(_normalize_listing_url(_mk_category_url(cfg.base_url, code)) for code in categories)
     seen_listings: set[str] = set()
     product_candidates: dict[str, dict[str, Any]] = {}
     early_rejected = 0
@@ -217,7 +363,7 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
 
         current_cats = {x.strip() for x in parse_qs(urlparse(resp.url).query).get("category", []) if x.strip()}
 
-        for href, inner in ANCHOR_RE.findall(html):
+        for href, inner in _ANCHOR_RE.findall(html):
             href = unescape((href or "").strip())
             if not href or href.startswith("#") or href.startswith("javascript:"):
                 continue
@@ -226,10 +372,13 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
             if p.netloc != base_netloc:
                 continue
 
-            if p.path.lower().startswith("/catalog/") and not p.query and product_path_re(p.path):
-                rec = product_candidates.setdefault(abs_url, {"source_categories": set(), "titles": set()})
+            if p.path.lower().startswith("/catalog/") and not p.query and _product_path_re(p.path):
+                rec = product_candidates.setdefault(
+                    abs_url,
+                    {"source_categories": set(), "titles": set()},
+                )
                 rec["source_categories"].update(current_cats)
-                title_text = normalize_listing_title(html_text_fast(inner))
+                title_text = _normalize_listing_title(_html_text_fast(inner))
                 if title_text:
                     rec["titles"].add(title_text)
                 continue
@@ -238,11 +387,12 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
                 qs = parse_qs(p.query)
                 cat_values = {x.strip() for x in qs.get("category", []) if x.strip()}
                 if cat_values and cat_values.issubset(allowed_categories):
-                    norm = normalize_listing_url(abs_url)
+                    norm = _normalize_listing_url(abs_url)
                     if norm not in seen_listings:
                         queue.append(norm)
 
-        for href in HREF_RE.findall(html):
+        # fallback on bare href scan for product links without anchor text
+        for href in _HREF_RE.findall(html):
             href = unescape((href or "").strip())
             if not href or href.startswith("#") or href.startswith("javascript:"):
                 continue
@@ -250,72 +400,188 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
             p = urlparse(abs_url)
             if p.netloc != base_netloc:
                 continue
-            if p.path.lower().startswith("/catalog/") and not p.query and product_path_re(p.path):
-                rec = product_candidates.setdefault(abs_url, {"source_categories": set(), "titles": set()})
+            if p.path.lower().startswith("/catalog/") and not p.query and _product_path_re(p.path):
+                rec = product_candidates.setdefault(
+                    abs_url,
+                    {"source_categories": set(), "titles": set()},
+                )
                 rec["source_categories"].update(current_cats)
 
     out: list[dict[str, Any]] = []
-    soft_mismatch = 0
     for url, meta in sorted(product_candidates.items(), key=lambda kv: kv[0]):
         titles = sorted(meta.get("titles") or [])
-        # Для VTT категории уже вручную ограничены нужным ассортиментом,
-        # поэтому жёстко резать карточку на этапе листинга нельзя — это как раз и давало недобор против v22.
-        if titles and not any(title_matches_allowed(title, allowed_prefixes) for title in titles):
-            soft_mismatch += 1
-        item = ProductIndexItem(
-            url=url,
-            source_categories=sorted(list(meta.get("source_categories") or [])),
-            listing_titles=titles,
-        )
+        if titles and not any(_title_matches_allowed(title, allowed_prefixes) for title in titles):
+            early_rejected += 1
+            continue
         out.append(
             {
-                "url": item.url,
-                "source_categories": item.source_categories,
-                "listing_titles": item.listing_titles,
+                "url": url,
+                "source_categories": sorted(list(meta.get("source_categories") or [])),
+                "listing_titles": titles,
             }
         )
 
-    log(f"[VTT] listing_index total={len(product_candidates)} kept={len(out)} soft_prefix_mismatch={soft_mismatch}")
+    log(f"[VTT] listing_index total={len(product_candidates)} kept={len(out)} early_rejected={early_rejected}")
     return out
 
 
+def _extract_title(html: str) -> str:
+    m = _H1_RE.search(html)
+    if m:
+        return _html_text_fast(m.group(1))
+    m = _TITLE_RE.search(html)
+    return _html_text_fast(m.group(1)) if m else ""
+
+
+def _extract_meta_desc(html: str) -> str:
+    m = _META_DESC_RE.search(html)
+    return _norm_ws(ihtml.unescape(m.group(1))) if m else ""
+
+
+def _extract_price_rub(html: str) -> int:
+    m = _PRICE_RUB_RE.search(html)
+    if m:
+        try:
+            return int(round(float(m.group(1))))
+        except Exception:
+            pass
+    m = _PRICE_MAIN_RE.search(html)
+    return _safe_int_from_text(m.group(1)) if m else 0
+
+
+def _extract_sku(html: str) -> str:
+    m = _SKU_RE.search(html)
+    return _norm_ws(m.group(1)) if m else ""
+
+
+def _extract_images_from_html(page_url: str, html: str) -> list[str]:
+    seen: set[str] = set()
+    out: list[str] = []
+    for raw in _IMAGE_RE.findall(html or ""):
+        url = urljoin(page_url, raw.strip())
+        if _BAD_IMAGE_RE.search(url):
+            continue
+        if url not in seen:
+            seen.add(url)
+            out.append(url)
+    return out
+
+
+def _extract_params_and_desc_fast(html: str) -> tuple[list[tuple[str, str]], str]:
+    params: list[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+
+    for key_html, val_html in _DT_DD_RE.findall(html or ""):
+        key = _html_text_fast(key_html).strip(":")
+        val = _html_text_fast(val_html)
+        if key and val and (key, val) not in seen:
+            seen.add((key, val))
+            params.append((key, val))
+
+    if not params:
+        for tr_html in _TR_RE.findall(html or ""):
+            cells = _CELL_RE.findall(tr_html)
+            if len(cells) < 2:
+                continue
+            key = _html_text_fast(cells[0]).strip(":")
+            val = _html_text_fast(cells[1])
+            if key and val and (key, val) not in seen:
+                seen.add((key, val))
+                params.append((key, val))
+
+    desc = ""
+    m = _DESC_BLOCK_RE.search(html or "")
+    if m:
+        desc = _html_text_fast(m.group(1))
+    return params, desc
+
+
+def _extract_params_and_desc(html: str) -> tuple[list[tuple[str, str]], str]:
+    params, desc = _extract_params_and_desc_fast(html)
+    if params or desc:
+        return params, desc
+
+    soup = BeautifulSoup(html or "", "lxml")
+    params = []
+    seen: set[tuple[str, str]] = set()
+
+    for box in soup.select("div.description.catalog_item_descr, div.description"):
+        dts = box.find_all("dt")
+        dds = box.find_all("dd")
+        if dts and dds:
+            for dt, dd in zip(dts, dds):
+                key = _norm_ws(dt.get_text(" ", strip=True)).strip(":")
+                val = _norm_ws(dd.get_text(" ", strip=True))
+                if key and val and (key, val) not in seen:
+                    seen.add((key, val))
+                    params.append((key, val))
+
+    if not params:
+        for table in soup.find_all("table"):
+            for tr in table.find_all("tr"):
+                cells = tr.find_all(["th", "td"])
+                if len(cells) < 2:
+                    continue
+                key = _norm_ws(cells[0].get_text(" ", strip=True)).strip(":")
+                val = _norm_ws(cells[1].get_text(" ", strip=True))
+                if key and val and (key, val) not in seen:
+                    seen.add((key, val))
+                    params.append((key, val))
+
+    if not desc:
+        m = _DESC_BLOCK_RE.search(html or "")
+        if m:
+            desc = _html_text_fast(m.group(1))
+    return params, desc
+
+
+def _extract_title_codes(title: str) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for code in _CODE_TOKEN_RE.findall(title or ""):
+        code = code.strip(".-/")
+        if len(code) < 3 or not re.search(r"\d", code):
+            continue
+        if code not in seen:
+            seen.add(code)
+            out.append(code)
+    return out
+
+
+def _extract_vendor_from_title(title: str) -> str:
+    upper = f" {title.upper()} "
+    for vendor in (
+        "HP", "CANON", "XEROX", "BROTHER", "KYOCERA", "SAMSUNG", "EPSON", "RICOH",
+        "KONICA MINOLTA", "PANTUM", "LEXMARK", "OKI", "SHARP", "PANASONIC",
+        "TOSHIBA", "DEVELOP", "GESTETNER", "RISO",
+    ):
+        if f" {vendor} " in upper:
+            return _canon_vendor(vendor.title() if vendor != "HP" else vendor)
+    return ""
+
+
 def parse_product_page_from_index(sess: requests.Session, cfg: VTTConfig, item: dict[str, Any]) -> dict[str, Any] | None:
-    url = norm_ws(item.get("url"))
+    url = _norm_ws(item.get("url"))
     if not url:
         return None
     resp = _get(sess, cfg, url, delay_ms=cfg.product_request_delay_ms)
     html = resp.text or ""
-    title = extract_title(html)
+    title = _extract_title(html)
     if not title:
         return None
-    params, desc_body = extract_params_and_desc(html)
-    parsed = ParsedProductPage(
-        url=resp.url,
-        name=title,
-        vendor=extract_vendor_from_title(title),
-        sku=extract_sku(html),
-        price_rub_raw=extract_price_rub(html),
-        pictures=extract_images_from_html(resp.url, html),
-        params=params,
-        description_meta=extract_meta_desc(html),
-        description_body=desc_body,
-        title_codes=extract_title_codes(title),
-        source_categories=list(item.get("source_categories") or []),
-        category_code=",".join(item.get("source_categories") or []),
-        listing_titles=list(item.get("listing_titles") or []),
-    )
+    params, desc_body = _extract_params_and_desc(html)
     return {
-        "url": parsed.url,
-        "name": parsed.name,
-        "vendor": parsed.vendor,
-        "sku": parsed.sku,
-        "price_rub_raw": parsed.price_rub_raw,
-        "pictures": parsed.pictures,
-        "params": parsed.params,
-        "description_meta": parsed.description_meta,
-        "description_body": parsed.description_body,
-        "title_codes": parsed.title_codes,
-        "source_categories": parsed.source_categories,
-        "category_code": parsed.category_code,
-        "listing_titles": parsed.listing_titles,
+        "url": resp.url,
+        "name": title,
+        "vendor": _extract_vendor_from_title(title),
+        "sku": _extract_sku(html),
+        "price_rub_raw": _extract_price_rub(html),
+        "pictures": _extract_images_from_html(resp.url, html),
+        "params": params,
+        "description_meta": _extract_meta_desc(html),
+        "description_body": desc_body,
+        "title_codes": _extract_title_codes(title),
+        "source_categories": list(item.get("source_categories") or []),
+        "category_code": ",".join(item.get("source_categories") or []),
+        "listing_titles": list(item.get("listing_titles") or []),
     }
