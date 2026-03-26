@@ -3,24 +3,22 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v17:
-- same v22 logic baseline preserved;
-- responsibility split across normalize / compat / desc_clean / desc_extract / pictures modules;
-- keeps RAW as supplier-clean result before shared core.
+v19:
+- keeps modular structure;
+- restores v22-safe title cleanup;
+- fixes only title-side regressions in the builder layer;
+- compat-specific cleanup stays in compat.py.
 """
 
 from __future__ import annotations
 
 import re
-from typing import Sequence
 
 from cs.core import OfferOut, compute_price
 
-from .compat import CODE_SOURCE_KEYS, collect_codes, extract_compat, extract_part_number
+from .compat import ALT_PART_TAIL_RE, CODE_SOURCE_KEYS, collect_codes, extract_compat, extract_part_number
 from .desc_extract import build_native_description, extract_resource
 from .normalize import (
-    CATEGORY_TYPE_MAP,
-    TECH_BY_CATEGORY,
     append_original_suffix,
     clean_title,
     guess_vendor,
@@ -35,43 +33,28 @@ from .normalize import (
 )
 from .pictures import PLACEHOLDER, clean_picture_urls
 
-
 SKIP_PARAM_KEYS = {
-    "Артикул",
-    "Штрих-код",
-    "Вендор",
-    "Категория",
-    "Подкатегория",
-    "В упаковке, штук",
-    "Местный склад, штук",
-    "Местный, до новой поставки, дней",
-    "Склад Москва, штук",
-    "Москва, до новой поставки, дней",
-    "Категория VTT",
+    "Артикул", "Штрих-код", "Вендор", "Категория", "Подкатегория",
+    "В упаковке, штук", "Местный склад, штук", "Местный, до новой поставки, дней",
+    "Склад Москва, штук", "Москва, до новой поставки, дней", "Категория VTT",
 }
-
-ALT_PART_TAIL_RE = re.compile(r"(?:[,\s]+(?:№\s*)?(?:[A-Z]+\d|\d+[A-Z])[A-Z0-9-]{1,}/?)+$", re.I)
 DUPLICATE_LEAD_RE = re.compile(r"^([A-Z0-9][A-Z0-9\-./]{2,})\s*,\s*\1\b", re.I)
 
+_TITLE_COLOR_TAIL_RE = re.compile(
+    r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|color|colour|"
+    r"bk|c|m|y|cl|ml|lc|lm|"
+    r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|цветн(?:ой|ая|ое)?|желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
+    r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$",
+    re.I,
+)
 
-def _merge_params(
-    raw: dict,
-    vendor: str,
-    type_name: str,
-    tech: str,
-    part_number: str,
-    codes: list[str],
-    title: str,
-    compat: str,
-    resource: str,
-) -> list[tuple[str, str]]:
+def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number: str, codes: list[str], title: str, compat: str, resource: str) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     color_found = ""
 
     def add(k: str, v: str) -> None:
-        key = norm_ws(k)
-        val = norm_ws(v)
+        key = norm_ws(k); val = norm_ws(v)
         if not key or not val:
             return
         sig = (key.casefold(), val.casefold())
@@ -87,8 +70,7 @@ def _merge_params(
     if tech:
         add("Технология печати", tech)
     if vendor and type_name and any(
-        x in type_name.casefold()
-        for x in ("картридж", "драм", "девелопер", "чернила", "тонер", "головка", "блок", "барабан", "контейнер", "носитель")
+        x in type_name.casefold() for x in ("картридж", "драм", "девелопер", "чернила", "тонер", "головка", "блок", "барабан", "контейнер", "носитель")
     ):
         add("Для бренда", vendor)
 
@@ -113,12 +95,10 @@ def _merge_params(
         add("Ресурс", resource)
     if codes:
         add("Коды расходников", ", ".join(codes))
-
     if not color_found:
         inferred_color = infer_color_from_title(title)
         if inferred_color:
             add("Цвет", inferred_color)
-
     return out
 
 
@@ -141,29 +121,14 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(part_number)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
         if sku:
             title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(sku)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
-        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
-        title_no_suffix = re.sub(
-            r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|color|colour|"
-            r"bk|c|m|y|cl|ml|lc|lm|"
-            r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|цветн(?:ой|ая|ое)?|желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
-            r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$",
-            "",
-            title_no_suffix,
-            flags=re.I,
-        ).strip(" ,")
+        # v22-safe title cleanup:
+        # remove only explicit resource/color tails and true alt-part tails,
+        # without cutting model rows like T1500 / 7835 / C70 / SC2020.
+        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
+        title_no_suffix = _TITLE_COLOR_TAIL_RE.sub("", title_no_suffix).strip(" ,")
         title_no_suffix = ALT_PART_TAIL_RE.sub("", title_no_suffix).strip(" ,/")
-        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
-        title_no_suffix = re.sub(
-            r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|color|colour|"
-            r"bk|c|m|y|cl|ml|lc|lm|"
-            r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|цветн(?:ой|ая|ое)?|желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
-            r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$",
-            "",
-            title_no_suffix,
-            flags=re.I,
-        ).strip(" ,")
-        title_no_suffix = re.sub(r"(?:,?\s*[0-9])\s*$", "", title_no_suffix).strip(" ,")
-        title_no_suffix = re.sub(r"(?:,?\s*(?:bk|c|m|y|cl|ml|lc|lm))\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
+        title_no_suffix = re.sub(r"(?:,\s*|\s+)(?:0|1|2|3|4|5|6|7|8|9)\s*$", "", title_no_suffix).strip(" ,")
+        title_no_suffix = re.sub(r"(?:,\s*|\s+)(?:bk|c|m|y|cl|ml|lc|lm)\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
         title_no_suffix = DUPLICATE_LEAD_RE.sub(r"\1", title_no_suffix).strip(" ,")
         title = append_original_suffix(norm_ws(title_no_suffix), original_flag)
 
