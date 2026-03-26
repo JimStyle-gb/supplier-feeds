@@ -3,13 +3,12 @@
 Path: scripts/suppliers/vtt/source.py
 
 VTT source layer.
-v9:
+v15:
 - same category-first coverage;
 - keeps stronger HTTP pooling / keep-alive reuse;
-- broadens allowed title prefixes to avoid losing useful products;
-- adds safer early prefix filter on LISTING titles before opening product cards;
-- normalizes listing titles by removing leading codes and originality markers;
-- keeps full fallback behavior if listing title is missing.
+- listing prefix check is now advisory only;
+- no hard reject on listing title mismatch, to restore coverage close to v22 baseline;
+- keeps titles in index for diagnostics.
 """
 
 from __future__ import annotations
@@ -408,11 +407,11 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
                 rec["source_categories"].update(current_cats)
 
     out: list[dict[str, Any]] = []
+    soft_prefix_mismatch = 0
     for url, meta in sorted(product_candidates.items(), key=lambda kv: kv[0]):
         titles = sorted(meta.get("titles") or [])
         if titles and not any(_title_matches_allowed(title, allowed_prefixes) for title in titles):
-            early_rejected += 1
-            continue
+            soft_prefix_mismatch += 1
         out.append(
             {
                 "url": url,
@@ -421,7 +420,7 @@ def collect_product_index(sess: requests.Session, cfg: VTTConfig, categories: li
             }
         )
 
-    log(f"[VTT] listing_index total={len(product_candidates)} kept={len(out)} early_rejected={early_rejected}")
+    log(f"[VTT] listing_index total={len(product_candidates)} kept={len(out)} early_rejected={early_rejected} soft_prefix_mismatch={soft_prefix_mismatch}")
     return out
 
 
