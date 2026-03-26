@@ -3,9 +3,10 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v21:
+v22:
 - restores v22-safe title cleanup;
-- repairs remaining Xerox/Canon/HP title tails from modular pipeline;
+- explicitly repairs Xerox WC 7525/.../7835 title row from compat;
+- removes remaining Canon 052H and HP 651 title tails after compat cleanup;
 - leaves compat-specific logic to compat.py.
 """
 
@@ -110,6 +111,7 @@ def _strip_tail_noise(title_no_suffix: str) -> str:
         t = _TITLE_COLOR_TAIL_RE.sub("", t).strip(" ,")
         t = ALT_PART_TAIL_RE.sub("", t).strip(" ,/")
         t = re.sub(r"(?:,\s*|\s+)(?:0|1|2|3|4|5|6|7|8|9)\s*$", "", t).strip(" ,")
+        t = re.sub(r"(?:,?\s*0[.,]\s*[36]\s*[KКkк])\s*$", "", t, flags=re.I).strip(" ,")
         t = re.sub(r"(?:,\s*|\s+)(?:bk|c|m|y|cl|ml|lc|lm)\s*$", "", t, flags=re.I).strip(" ,")
         changed = t != before
     return t
@@ -120,6 +122,8 @@ def _repair_known_titles(title_no_suffix: str, compat: str) -> str:
 
     if t.startswith("Тонер-картридж Xerox для WC ") and comp.startswith("Xerox WC "):
         row = comp[len("Xerox "):]
+        if "/7835" in row:
+            return "Тонер-картридж Xerox для WC 7525/7530/7535/7545/7556/7830/7835"
         return f"Тонер-картридж Xerox для {row}"
 
     if t.startswith("Тонер-картридж Xerox Color C60/"):
