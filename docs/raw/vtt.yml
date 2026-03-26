@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-26 22:34:44">
+<yml_catalog date="2026-03-26 23:18:18">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-03-26 22:34:44
+Время сборки (Алматы)                      | 2026-03-26 23:18:18
 Ближайшая сборка (Алматы)                  | 2026-03-26 05:00:00
-Сколько товаров у поставщика до фильтра    | 3223
-Сколько товаров у поставщика после фильтра | 3178
-Сколько товаров есть в наличии (true)      | 3178
+Сколько товаров у поставщика до фильтра    | 3236
+Сколько товаров у поставщика после фильтра | 3191
+Сколько товаров есть в наличии (true)      | 3191
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -403,7 +403,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№727(B3P19A)-С; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Голубой]]></description>
+Тип: Картридж; Партномер: B3P19A; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -424,7 +424,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№727(B3P20A)-M; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Пурпурный]]></description>
+Тип: Картридж; Партномер: B3P20A; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -445,7 +445,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№727(B3P21A)-Y; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Желтый]]></description>
+Тип: Картридж; Партномер: B3P21A; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -466,7 +466,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№727(B3P22A)-MBk; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: B3P22A; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Черный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -487,7 +487,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№727(B3P23A)-PBk; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: B3P23A; Совместимость: HP DJ T920/T1500; Ресурс: 130 мл; Цвет: Черный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -6215,7 +6215,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№935XL(C2P25AE)-M; Совместимость: HP OJ Pro 6230/6830, №935XL; Ресурс: 1K; Цвет: Пурпурный]]></description>
+Тип: Картридж; Партномер: C2P25AE; Совместимость: HP OJ Pro 6230/6830, №935XL; Ресурс: 1K; Цвет: Пурпурный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -6236,7 +6236,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№935XL(C2P26AE)-Y; Совместимость: HP OJ Pro 6230/6830, №935XL; Ресурс: 1K; Цвет: Желтый]]></description>
+Тип: Картридж; Партномер: C2P26AE; Совместимость: HP OJ Pro 6230/6830, №935XL; Ресурс: 1K; Цвет: Желтый]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -6295,7 +6295,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 1502092058; Совместимость: HP DJ 2020/2520, CZ637AE; Ресурс: 1,6K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: CZ637AE; Совместимость: HP DJ 2020/2520, CZ637AE; Ресурс: 1,6K; Цвет: Черный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -6315,7 +6315,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 1502092059; Совместимость: HP DJ 2020/2520, CZ638AE; Ресурс: 0,75K; Цвет: Цветной]]></description>
+Тип: Картридж; Партномер: CZ638AE; Совместимость: HP DJ 2020/2520, CZ638AE; Ресурс: 0,75K; Цвет: Цветной]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -6335,7 +6335,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№934XL(C2P23AE)-Bk; Совместимость: HP OJ Pro 6230/6830, №934XL; Ресурс: 1,3K; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: C2P23AE; Совместимость: HP OJ Pro 6230/6830, №934XL; Ресурс: 1,3K; Цвет: Черный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -6355,7 +6355,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№935XL(C2P24AE)-C; Совместимость: HP OJ Pro 6230/6830, №935XL; Ресурс: 1K; Цвет: Голубой]]></description>
+Тип: Картридж; Партномер: C2P24AE; Совместимость: HP OJ Pro 6230/6830, №935XL; Ресурс: 1K; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -6394,7 +6394,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№728XXL(F9J68A)-MBk; Совместимость: HP DJ T730/T; Ресурс: 300 мл; Цвет: Черный]]></description>
+Тип: Картридж; Партномер: F9J68A; Совместимость: HP DJ T730/T; Ресурс: 300 мл; Цвет: Черный]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -6457,7 +6457,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-HP№728XL(F9J67A)-С; Совместимость: HP DJ T730/T830, 130ml, №728XL; Ресурс: 130 мл; Цвет: Голубой]]></description>
+Тип: Картридж; Партномер: F9J67A; Совместимость: HP DJ T730/T830, 130ml, №728XL; Ресурс: 130 мл; Цвет: Голубой]]></description>
 <param name="Тип">Картридж</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
@@ -8648,20 +8648,20 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT15070602550</vendorCode>
 <name>Чернила InkTec (C5026) для Canon PIXMA iP4820/MG5120 (CLI-226/426), Y, 0,1 л.</name>
-<price>4900</price>
-<picture>https://b2b.vtt.ru/images/15070602550.jpg</picture>
+<price>3900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: IT-CAN-C5026-100Ml-Y-WatB; Совместимость: Canon PIXMA iP4820/MG5120 (CLI-226/426); Ресурс: 0,1 л; Цвет: Желтый]]></description>
+Тип: Чернила; Партномер: IT-CAN-C5026-100Ml-Y; Совместимость: Canon PIXMA iP4820/MG5120 (CLI-226/426); Ресурс: 0,1 л; Цвет: Желтый]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Желтый</param>
-<param name="Партномер">IT-CAN-C5026-100Ml-Y-WatB</param>
+<param name="Партномер">IT-CAN-C5026-100Ml-Y</param>
 <param name="Совместимость">Canon PIXMA iP4820/MG5120 (CLI-226/426)</param>
 <param name="Ресурс">0,1 л</param>
-<param name="Коды расходников">C5026-LY</param>
+<param name="Коды расходников">15070602550уц, C5026-LY</param>
 </offer>
 
 <offer id="VT150706025500" available="true">
@@ -17332,8 +17332,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <categoryId></categoryId>
 <vendorCode>VT3JA23AE</vendorCode>
 <name>Картридж 963 для HP OfficeJet Pro 901x/902x/HP (оригинал)</name>
-<price>20900</price>
-<picture>https://b2b.vtt.ru/images/3JA23AE.jpg</picture>
+<price>17900</price>
+<picture>https://b2b.vtt.ru/images/3JA23AEуц.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17345,6 +17345,7 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Партномер">3JA23AE</param>
 <param name="Совместимость">HP OfficeJet Pro 901x/902x/HP</param>
 <param name="Ресурс">0,7K</param>
+<param name="Коды расходников">3JA23AEyц</param>
 </offer>
 
 <offer id="VT3JA25AE" available="true">
@@ -41947,18 +41948,18 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTB600/B605/B610/B615" available="true">
 <categoryId></categoryId>
 <vendorCode>VTB600/B605/B610/B615</vendorCode>
-<name>Барабан NetProduct для Xerox VersaLink B600/B605/B610/B615, 60К, N-OPC-XRB600</name>
+<name>Барабан для Xerox VersaLink B600/B605/B610/B615, 60К (для производства), N-OPC-XRB600-PR</name>
 <price>100</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Барабан; Партномер: N-OPC-XR-VLINK-B600; Совместимость: Xerox VersaLink B600/B605/B610/B615, 60К, N-OPC-XRB600; Ресурс: 60K]]></description>
+Тип: Барабан; Партномер: N-OPC-XR-VLINK-B600-PR; Совместимость: Xerox VersaLink B600/B605/B610/B615, 60К (для производства), N-OPC-XRB600-PR; Ресурс: 60K]]></description>
 <param name="Тип">Барабан</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
-<param name="Партномер">N-OPC-XR-VLINK-B600</param>
-<param name="Совместимость">Xerox VersaLink B600/B605/B610/B615, 60К, N-OPC-XRB600</param>
+<param name="Партномер">N-OPC-XR-VLINK-B600-PR</param>
+<param name="Совместимость">Xerox VersaLink B600/B605/B610/B615, 60К (для производства), N-OPC-XRB600-PR</param>
 <param name="Ресурс">60K</param>
 </offer>
 
@@ -41976,6 +41977,24 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Партномер">BPDR20SA</param>
+<param name="Совместимость">Sharp C-CUBE</param>
+<param name="Ресурс">120K</param>
+</offer>
+
+<offer id="VTBPDU20SA" available="true">
+<categoryId></categoryId>
+<vendorCode>VTBPDU20SA</vendorCode>
+<name>Узел фотобарабана в сборе BPDU20SA для Sharp C-CUBE (оригинал)</name>
+<price>188900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Sharp</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Фотобарабан; Партномер: BPDU20SA; Совместимость: Sharp C-CUBE; Ресурс: 120K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Фотобарабан</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Sharp</param>
+<param name="Партномер">BPDU20SA</param>
 <param name="Совместимость">Sharp C-CUBE</param>
 <param name="Ресурс">120K</param>
 </offer>
@@ -53611,6 +53630,22 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Партномер">CFRM-0021RS71</param>
 </offer>
 
+<offer id="VTCFRM-0021US74" available="true">
+<categoryId></categoryId>
+<vendorCode>VTCFRM-0021US74</vendorCode>
+<name>CFRM-0021US74 Узел барабана (без барабана) в сборе Sharp AR5618/5620/5623 (оригинал)</name>
+<price>100</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Sharp</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Барабан; Партномер: CFRM-0021US74; Оригинальность: Оригинал]]></description>
+<param name="Тип">Барабан</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Sharp</param>
+<param name="Партномер">CFRM-0021US74</param>
+</offer>
+
 <offer id="VTCM1300/CM1312/CP1210/CP1215" available="true">
 <categoryId></categoryId>
 <vendorCode>VTCM1300/CM1312/CP1210/CP1215</vendorCode>
@@ -53698,6 +53733,22 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Ricoh</param>
 <param name="Партномер">D1272212</param>
+</offer>
+
+<offer id="VTD1882235/D1882252" available="true">
+<categoryId></categoryId>
+<vendorCode>VTD1882235/D1882252</vendorCode>
+<name>D1882235/D1882252 Узел фотобарабана в сборе Ricoh Aficio MP C2003/C2011/C2503 (оригинал)</name>
+<price>100</price>
+<picture>https://b2b.vtt.ru/images/D1882235.jpg</picture>
+<vendor>Ricoh</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Фотобарабан; Партномер: D1882235; Оригинальность: Оригинал]]></description>
+<param name="Тип">Фотобарабан</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Ricoh</param>
+<param name="Партномер">D1882235</param>
 </offer>
 
 <offer id="VTDGP0575" available="true">
@@ -54201,6 +54252,60 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Коды расходников">302NR93010</param>
 </offer>
 
+<offer id="VTDK-5230" available="true">
+<categoryId></categoryId>
+<vendorCode>VTDK-5230</vendorCode>
+<name>DK-5230 Узел фотобарабана (Тех. упаковка) Kyocera P5021cdn/P5026cdn/M5521cdn/M5526cdw</name>
+<price>66900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Фотобарабан; Партномер: DK-5230; Цвет: Черный]]></description>
+<param name="Тип">Фотобарабан</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">DK-5230</param>
+<param name="Коды расходников">302R793010</param>
+<param name="Цвет">Черный</param>
+</offer>
+
+<offer id="VTDK-5231" available="true">
+<categoryId></categoryId>
+<vendorCode>VTDK-5231</vendorCode>
+<name>DK-5231 Узел фотобарабана (Тех. упаковка) Kyocera P5021cdn/P5026cdn/M5521cdn/M5526cdw</name>
+<price>81900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Фотобарабан; Партномер: DK-5231; Цвет: Цветной]]></description>
+<param name="Тип">Фотобарабан</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">DK-5231</param>
+<param name="Коды расходников">302R793020</param>
+<param name="Цвет">Цветной</param>
+</offer>
+
+<offer id="VTDK-5231_C" available="true">
+<categoryId></categoryId>
+<vendorCode>VTDK-5231_C</vendorCode>
+<name>DK-5231_C Узел фотобарабана (Совместимый) Kyocera P5021cdn/P5026cdn/M5521cdn/M5526cdw</name>
+<price>73900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Фотобарабан; Партномер: DK-5231; Цвет: Цветной]]></description>
+<param name="Тип">Фотобарабан</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">DK-5231</param>
+<param name="Коды расходников">DK-5231_C, 302R793020</param>
+<param name="Цвет">Цветной</param>
+</offer>
+
 <offer id="VTDK-5240" available="true">
 <categoryId></categoryId>
 <vendorCode>VTDK-5240</vendorCode>
@@ -54355,6 +54460,23 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Партномер">DV-1140</param>
 </offer>
 
+<offer id="VTDV-1140-DV-170-MAG" available="true">
+<categoryId></categoryId>
+<vendorCode>VTDV-1140-DV-170-MAG</vendorCode>
+<name>Магнитный вал блока проявки DV-1140/DV-170 (Совм.) Kyocera M2535dn/M2035dn/FS-1035MFP/FS-1135MFP</name>
+<price>18900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Блок проявки; Партномер: DV-1140-DV-170-MAG]]></description>
+<param name="Тип">Блок проявки</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">DV-1140-DV-170-MAG</param>
+<param name="Коды расходников">DV-1140</param>
+</offer>
+
 <offer id="VTDV-1140/302MK93010" available="true">
 <categoryId></categoryId>
 <vendorCode>VTDV-1140/302MK93010</vendorCode>
@@ -54387,6 +54509,23 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">DV-1150</param>
 <param name="Коды расходников">302RV93020, 302RV93030, 302RV93040, 302RV93120, 302S193010</param>
+</offer>
+
+<offer id="VTDV-1150_DV-1200_MAG" available="true">
+<categoryId></categoryId>
+<vendorCode>VTDV-1150_DV-1200_MAG</vendorCode>
+<name>Магнитный вал блока проявки DV-1150/DV-1200 (Совм.) Kyocera M2040dn/M2735dn/M2235dn/P2040dn/P2235d</name>
+<price>19900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Блок проявки; Партномер: DV1150-DV1200-MAG]]></description>
+<param name="Тип">Блок проявки</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">DV1150-DV1200-MAG</param>
+<param name="Коды расходников">DV-1150_DV-1200_MAG, DV-1150</param>
 </offer>
 
 <offer id="VTDV-1200" available="true">
@@ -54625,6 +54764,43 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Желтый</param>
 </offer>
 
+<offer id="VTDV-5230C" available="true">
+<categoryId></categoryId>
+<vendorCode>VTDV-5230C</vendorCode>
+<name>DV-5230C Узел проявки (Тех. упаковка) Kyocera P5021cdn/P5026cdn</name>
+<price>50900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Блок проявки; Партномер: DV-5230C; Цвет: Голубой]]></description>
+<param name="Тип">Блок проявки</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">DV-5230C</param>
+<param name="Коды расходников">302R793060</param>
+<param name="Цвет">Голубой</param>
+</offer>
+
+<offer id="VTDV-5230K" available="true">
+<categoryId></categoryId>
+<vendorCode>VTDV-5230K</vendorCode>
+<name>DV-5230K Узел проявки (Тех. упаковка) Kyocera P5021cdn/P5026cdn</name>
+<price>63900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Блок проявки; Партномер: DV-5230K; Ресурс: 5230K; Цвет: Черный]]></description>
+<param name="Тип">Блок проявки</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">DV-5230K</param>
+<param name="Ресурс">5230K</param>
+<param name="Коды расходников">302R793030</param>
+<param name="Цвет">Черный</param>
+</offer>
+
 <offer id="VTDV-5230K-ORIG" available="true">
 <categoryId></categoryId>
 <vendorCode>VTDV-5230K-ORIG</vendorCode>
@@ -54642,6 +54818,42 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Ресурс">5230K</param>
 <param name="Коды расходников">DV-5230K-ORIG, DV-5230K, 302R793060</param>
 <param name="Цвет">Черный</param>
+</offer>
+
+<offer id="VTDV-5230M" available="true">
+<categoryId></categoryId>
+<vendorCode>VTDV-5230M</vendorCode>
+<name>DV-5230M Узел проявки (Тех. упаковка) Kyocera P5021cdn/P5026cdn</name>
+<price>54900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Блок проявки; Партномер: DV-5230M; Цвет: Пурпурный]]></description>
+<param name="Тип">Блок проявки</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">DV-5230M</param>
+<param name="Коды расходников">302R793050</param>
+<param name="Цвет">Пурпурный</param>
+</offer>
+
+<offer id="VTDV-5230Y" available="true">
+<categoryId></categoryId>
+<vendorCode>VTDV-5230Y</vendorCode>
+<name>DV-5230Y Узел проявки (Тех. упаковка) Kyocera P5021cdn/P5026cdn</name>
+<price>56900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Kyocera</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Блок проявки; Партномер: DV-5230Y; Цвет: Желтый]]></description>
+<param name="Тип">Блок проявки</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">Kyocera</param>
+<param name="Партномер">DV-5230Y</param>
+<param name="Коды расходников">302R793040</param>
+<param name="Цвет">Желтый</param>
 </offer>
 
 <offer id="VTDV-5310C" available="true">
@@ -58419,19 +58631,18 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTL4150/4160/L6160/L6170/L6190" available="true">
 <categoryId></categoryId>
 <vendorCode>VTL4150/4160/L6160/L6170/L6190</vendorCode>
-<name>Чернила Epson EcoTank L4150/4160/L6160/L6170/L6190, 70мл голубые (оригинал)</name>
+<name>Чернила Epson EcoTank L4150/4160/L6160/L6170/L6190 4 цвета мультипак (оригинал)</name>
 <price>100</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: C13T03V24A; Ресурс: 70 мл; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+Тип: Чернила; Партномер: C13T03V64A; Цвет: CMY+Bk; Оригинальность: Оригинал]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Голубой</param>
-<param name="Партномер">C13T03V24A</param>
-<param name="Ресурс">70 мл</param>
+<param name="Цвет">CMY+Bk</param>
+<param name="Партномер">C13T03V64A</param>
 </offer>
 
 <offer id="VTL7160/7180" available="true">
@@ -58455,19 +58666,19 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <offer id="VTL800/L1800/L810/L850" available="true">
 <categoryId></categoryId>
 <vendorCode>VTL800/L1800/L810/L850</vendorCode>
-<name>Чернила Epson L800/L1800/L810/L850 C13T67344A/C13T673498, yellow, 70ml, 991132104 (оригинал)</name>
+<name>Чернила Epson L800/L1800/L810/L850 C13T67354A/C13T673598, light cyan, 70ml, 991132105 (оригинал)</name>
 <price>100</price>
-<picture>https://b2b.vtt.ru/images/991132104.jpg</picture>
+<picture>https://b2b.vtt.ru/images/991132105.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: C13T67344A; Ресурс: 70 мл; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+Тип: Чернила; Партномер: C13T67354A; Ресурс: 70 мл; Цвет: Голубой; Оригинальность: Оригинал]]></description>
 <param name="Тип">Чернила</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
-<param name="Цвет">Желтый</param>
-<param name="Партномер">C13T67344A</param>
+<param name="Партномер">C13T67354A</param>
 <param name="Ресурс">70 мл</param>
+<param name="Цвет">Голубой</param>
 </offer>
 
 <offer id="VTLJ700MFP/M712" available="true">
@@ -61526,6 +61737,24 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <param name="Цвет">Голубой</param>
 <param name="Партномер">Z7Y69A</param>
 <param name="Ресурс">720K</param>
+</offer>
+
+<offer id="VTZ7Y70A/JC96-11666A" available="true">
+<categoryId></categoryId>
+<vendorCode>VTZ7Y70A/JC96-11666A</vendorCode>
+<name>Z7Y70A/JC96-11666A Сервисный набор замены черного блока проявки HP CLJ E77422/E77428/E77822 (оригинал)</name>
+<price>100</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Тип: Блок проявки; Партномер: Z7Y70A; Ресурс: 300K; Цвет: Черный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Блок проявки</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Для бренда">HP</param>
+<param name="Цвет">Черный</param>
+<param name="Партномер">Z7Y70A</param>
+<param name="Ресурс">300K</param>
 </offer>
 
 <offer id="VTZ7Y72A/JC96-12502A" available="true">
