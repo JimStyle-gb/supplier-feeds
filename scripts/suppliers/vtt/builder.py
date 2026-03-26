@@ -3,11 +3,13 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v23:
+v24:
 - restores v22-safe title cleanup;
 - explicitly repairs Xerox WC 7525/.../7835 title row from compat;
 - removes remaining Canon 052H and HP 651 title tails after compat cleanup;
 - fixes Hi-Black 727 titles and color override from explicit title color;
+- uses OEM-like display part number for Hi-Black/internal numeric cases;
+- keeps title short for SEO: type + family/code + compatibility + originality;
 - leaves compat-specific logic to compat.py.
 """
 
@@ -17,7 +19,7 @@ import re
 
 from cs.core import OfferOut, compute_price
 
-from .compat import ALT_PART_TAIL_RE, CODE_SOURCE_KEYS, collect_codes, extract_compat, extract_part_number
+from .compat import ALT_PART_TAIL_RE, CODE_SOURCE_KEYS, collect_codes, derive_display_part_number, derive_hiblack_color, extract_compat, extract_part_number
 from .desc_extract import build_native_description, extract_resource
 from .normalize import (
     append_original_suffix,
@@ -48,7 +50,7 @@ _TITLE_COLOR_TAIL_RE = re.compile(
     re.I,
 )
 
-def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number: str, codes: list[str], title: str, compat: str, resource: str) -> list[tuple[str, str]]:
+def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number: str, display_part_number: str, codes: list[str], title: str, compat: str, resource: str) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     color_found = ""
@@ -87,8 +89,8 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number
             continue
         add(key, value)
 
-    if part_number:
-        add("Партномер", part_number)
+    if display_part_number:
+        add("Партномер", display_part_number)
     if compat:
         add("Совместимость", compat)
     if resource:
@@ -97,22 +99,23 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number
         add("Коды расходников", ", ".join(codes))
 
     inferred_color = infer_color_from_title(title)
-    # Для Hi-Black и прочих title-explicit cases доверяем явному цвету из title сильнее,
-    # если raw param дал generic/ошибочное значение.
-    if inferred_color:
+    hiblack_color = derive_hiblack_color(title=title, raw_part_number=part_number)
+    final_color = hiblack_color or inferred_color
+
+    if final_color:
         replaced = False
-        if color_found and inferred_color != color_found and ("Hi-Black" in title or any(x in title for x in ("Cyan", "Magenta", "Yellow", "Grey", "Gray", "Photoblack", "Mattblack"))):
+        if color_found and final_color != color_found and ("Hi-Black" in title or any(x in title for x in ("Cyan", "Magenta", "Yellow", "Grey", "Gray", "Photoblack", "Mattblack"))):
             out2: list[tuple[str, str]] = []
             for k, v in out:
                 if k == "Цвет" and not replaced:
-                    out2.append(("Цвет", inferred_color))
+                    out2.append(("Цвет", final_color))
                     replaced = True
                 else:
                     out2.append((k, v))
             out = out2
-            color_found = inferred_color
+            color_found = final_color
         elif not color_found:
-            add("Цвет", inferred_color)
+            add("Цвет", final_color)
 
     return out
 
@@ -158,8 +161,22 @@ def _repair_known_titles(title_no_suffix: str, compat: str) -> str:
         m = re.search(r"Hi-Black\s*\(([^)]+)\)", t)
         oem = m.group(1).strip() if m else ""
         if oem:
-            return f"Картридж Hi-Black ({oem}) для HP DJ T920/T1500"
-        return "Картридж Hi-Black для HP DJ T920/T1500"
+            return f"Картридж Hi-Black 727 для HP DJ T920/T1500 {oem}"
+        return "Картридж Hi-Black 727 для HP DJ T920/T1500"
+
+    if "Hi-Black 46" in t and "HP DJ 2020/2520" in t:
+        m = re.search(r"\b(CZ63[78]AE)\b", t, re.I)
+        oem = m.group(1).upper() if m else ""
+        if oem:
+            return f"Картридж Hi-Black 46 для HP DJ 2020/2520 {oem}"
+        return "Картридж Hi-Black 46 для HP DJ 2020/2520"
+
+    if "Hi-Black" in t and "HP OJ Pro 6230/6830" in t:
+        m = re.search(r"\b(C2P\d{2}AE)\b", t, re.I)
+        oem = m.group(1).upper() if m else ""
+        if oem:
+            return f"Картридж Hi-Black для HP OJ Pro 6230/6830 {oem}"
+        return "Картридж Hi-Black для HP OJ Pro 6230/6830"
 
     return t
 
@@ -190,7 +207,8 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
 
     resource = extract_resource(clean_title_value, raw.get("params") or [], safe_str(raw.get("description_body")))
     codes = collect_codes(raw, raw.get("params") or [], resource, part_number, compat)
-    params = _merge_params(raw, vendor, type_name, tech, part_number, codes, clean_title_value, compat, resource)
+    display_part_number = derive_display_part_number(title=title, raw_part_number=part_number, codes=codes)
+    params = _merge_params(raw, vendor, type_name, tech, part_number, display_part_number, codes, clean_title_value, compat, resource)
 
     raw_price = int(raw.get("price_rub_raw") or 0)
     price = compute_price(raw_price)
