@@ -3,12 +3,13 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v24:
+v25:
 - restores v22-safe title cleanup;
 - explicitly repairs Xerox WC 7525/.../7835 title row from compat;
 - removes remaining Canon 052H and HP 651 title tails after compat cleanup;
 - fixes Hi-Black 727 titles and color override from explicit title color;
 - uses OEM-like display part number for Hi-Black/internal numeric cases;
+- keeps description in sync with display part number used in params;
 - keeps title short for SEO: type + family/code + compatibility + originality;
 - leaves compat-specific logic to compat.py.
 """
@@ -225,7 +226,7 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
     desc = build_native_description(
         title=title,
         type_name=type_name,
-        part_number=part_number,
+        part_number=(display_part_number or part_number),
         compat=compat,
         resource=resource,
         color=color,
