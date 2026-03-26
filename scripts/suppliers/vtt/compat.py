@@ -3,11 +3,12 @@
 Path: scripts/suppliers/vtt/compat.py
 
 VTT compat layer.
-v3:
+v4:
 - restores v22-safe compatibility cleanup;
 - keeps model rows like T920/T1500, WC 7525/.../7835, Color C60/C70, DC SC2020;
 - removes only true trailing resource/color/packaging/supplier tails;
 - keeps "Коды расходников" from device-model pollution.
+- preserves device models like LBP312x and SC2020 while still removing numeric-leading supplier tails like 2200C004.
 """
 
 from __future__ import annotations
@@ -38,7 +39,7 @@ _COLOR_TAIL_RE = re.compile(
 )
 
 # True supplier alt-part / inner SKU tails only. Do NOT cut model rows like T1500 or C70.
-ALT_PART_TAIL_RE = re.compile(r"(?:,\s*|\s+)(?:№\s*)?(?:[A-Z]{2,}\d|\d+[A-Z]{2,}|[A-Z]+\d[A-Z0-9-]{2,}|\d+[A-Z][A-Z0-9-]{2,})/?\s*$", re.I)
+ALT_PART_TAIL_RE = re.compile(r"(?:,\s*|\s+)(?:№\s*)?\d+[A-Z][A-Z0-9-]{2,}/?\s*$")
 
 
 def cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = "") -> str:
@@ -66,9 +67,9 @@ def cleanup_compat(value: str, vendor: str, part_number: str = "", sku: str = ""
         # supplier alt-part tails like 2200C004 or B3P22A only if detached as their own last token
         compat = ALT_PART_TAIL_RE.sub("", compat).strip(" ,.;/")
         # orphan single-digit decimal remnants after removing "0,6K"/"9,2K"
-        compat = re.sub(r"(?:,\s*|\s+)(?:0|1|2|3|4|5|6|7|8|9)\s*$", "", compat).strip(" ,.;/")
+        compat = re.sub(r"(?:,\s*)(?:0|1|2|3|4|5|6|7|8|9)\s*$", "", compat).strip(" ,.;/")
         # single-letter color remnants after comma
-        compat = re.sub(r"(?:,\s*|\s+)(?:bk|c|m|y|cl|ml|lc|lm)\s*$", "", compat, flags=re.I).strip(" ,.;/")
+        compat = re.sub(r"(?:,\s*)(?:bk|c|m|y|cl|ml|lc|lm)\s*$", "", compat, flags=re.I).strip(" ,.;/")
 
         compat = re.sub(r"\s*,\s*", ", ", compat)
         compat = re.sub(r"\s*/\s*", "/", compat)
