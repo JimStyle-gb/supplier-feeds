@@ -3,12 +3,14 @@
 Path: scripts/suppliers/vtt/compat.py
 
 VTT compat layer.
-v7:
+v8:
 - preserves device/model rows;
 - explicitly restores Xerox WC 7525/.../7835 row when title contains it;
 - fixes Canon 041/041H and 052H compat tails;
 - fixes HP 651 compat tails, including orphan decimal remnants;
 - cleans Hi-Black 727 compat back to plain HP DJ T920/T1500;
+- canonicalizes Hi-Black 46 and 934/935 families to plain device compatibility;
+- adds helpers to derive display part number / color for Hi-Black cases;
 - keeps codes free from device-model pollution.
 """
 
@@ -147,6 +149,65 @@ def should_keep_code(code: str, resource: str = "") -> bool:
             return False
     return True
 
+
+
+def _extract_oem_from_text(text: str) -> str:
+    t = norm_ws(text)
+    m = re.search(r"\((C2P\d{2}AE|CZ63[78]AE|B3P1[9-9]A|B3P2[0-3]A|F9J6[7-8]A)\)", t, re.I)
+    if m:
+        return m.group(1).upper()
+    m = re.search(r"\b(C2P\d{2}AE|CZ63[78]AE|B3P1[9-9]A|B3P2[0-3]A|F9J6[7-8]A)\b", t, re.I)
+    if m:
+        return m.group(1).upper()
+    return ""
+
+def derive_display_part_number(*, title: str, raw_part_number: str, codes: list[str]) -> str:
+    title_n = norm_ws(title)
+    raw_n = norm_ws(raw_part_number)
+
+    # If supplier partnumber is internal numeric id, prefer OEM-like code from title/codes.
+    if re.fullmatch(r"\d{7,}", raw_n):
+        oem = _extract_oem_from_text(title_n) or _extract_oem_from_text(", ".join(codes))
+        if oem:
+            return oem
+
+    # Hi-Black internal HB-* codes: prefer OEM-like code from title/codes.
+    if raw_n.startswith("HB-"):
+        oem = _extract_oem_from_text(raw_n) or _extract_oem_from_text(title_n) or _extract_oem_from_text(", ".join(codes))
+        if oem:
+            return oem
+
+    return raw_n
+
+def derive_hiblack_color(*, title: str, raw_part_number: str) -> str:
+    t = norm_ws(title)
+    p = norm_ws(raw_part_number)
+    combined = f"{t} {p}".upper()
+
+    # OEM mappings for common Hi-Black HP plotter/office families.
+    if "B3P19A" in combined or p.endswith("-С") or p.endswith("-C"):
+        return "Голубой"
+    if "B3P20A" in combined or p.endswith("-M"):
+        return "Пурпурный"
+    if "B3P21A" in combined or p.endswith("-Y"):
+        return "Желтый"
+    if "B3P22A" in combined:
+        return "Черный"
+    if "B3P23A" in combined:
+        return "Черный"
+    if "CZ637AE" in combined or "CZ637A" in combined:
+        return "Черный"
+    if "CZ638AE" in combined or "CZ638A" in combined:
+        return "Цветной"
+    if "C2P23AE" in combined or "934XL" in combined:
+        return "Черный"
+    if "C2P24AE" in combined or "935XL" in combined:
+        return "Голубой"
+    if "C2P25AE" in combined or "935XL" in combined and p.endswith("-M"):
+        return "Пурпурный"
+    if "C2P26AE" in combined or "935XL" in combined and p.endswith("-Y"):
+        return "Желтый"
+    return ""
 def collect_codes(raw: dict, params: Sequence[tuple[str, str]], resource: str, part_number: str, compat: str) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
