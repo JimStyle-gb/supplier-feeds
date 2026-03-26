@@ -3,7 +3,7 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v16:
+v14:
 - keeps RAW params clean before core;
 - removes duplicate leading/trailing codes from title;
 - treats (O)/(О)/OEM as original marker;
@@ -25,8 +25,6 @@ v16:
 - strips trailing alt part-number tails like 2200C004/ from title;
 - removes leftover resource/color tails after alt-part cleanup in title;
 - drops single-letter Hi-Black color tails like ", Y" from title;
-- removes decimal resource tails with optional spaces after comma (e.g. "0, 3К", "9, 2К");
-- removes orphan single-digit tails after cleanup in HP/Canon cases;
 - does not change price/photo logic.
 """
 
@@ -658,30 +656,28 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         if sku:
             title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(sku)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
         # Снимаем ресурс/цветовой хвост, затем alt part-number вроде 2200C004/,
-        # потом повторно добираем оставшийся ресурс/цвет/буквенный хвост.
-        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
+        # потом повторно добираем оставшийся ресурс/цвет (например "9,2К черный").
+        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
         title_no_suffix = re.sub(
-            r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|color|colour|"
+            r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|"
             r"bk|c|m|y|cl|ml|lc|lm|"
-            r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|цветн(?:ой|ая|ое)?|желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
+            r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
             r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$",
             "",
             title_no_suffix,
             flags=re.I,
         ).strip(" ,")
         title_no_suffix = ALT_PART_TAIL_RE.sub("", title_no_suffix).strip(" ,/")
-        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\s*\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
+        title_no_suffix = re.sub(r"(?:,?\s*\d+(?:[.,]\d+)?\s*[KКkк])\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
         title_no_suffix = re.sub(
-            r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|color|colour|"
+            r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|"
             r"bk|c|m|y|cl|ml|lc|lm|"
-            r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|цветн(?:ой|ая|ое)?|желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
+            r"черн(?:ый|ая|ое)?|чёрн(?:ый|ая|ое)?|голуб(?:ой|ая|ое)?|син(?:ий|яя|ее)?|желт(?:ый|ая|ое)?|жёлт(?:ый|ая|ое)?|"
             r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$",
             "",
             title_no_suffix,
             flags=re.I,
         ).strip(" ,")
-        title_no_suffix = re.sub(r"(?:,?\s*[0-9])\s*$", "", title_no_suffix).strip(" ,")
-        title_no_suffix = re.sub(r"(?:,?\s*(?:bk|c|m|y|cl|ml|lc|lm))\s*$", "", title_no_suffix, flags=re.I).strip(" ,")
         title_no_suffix = DUPLICATE_LEAD_RE.sub(r"\1", title_no_suffix).strip(" ,")
         title = _append_original_suffix(_norm_ws(title_no_suffix), original_flag)
 
