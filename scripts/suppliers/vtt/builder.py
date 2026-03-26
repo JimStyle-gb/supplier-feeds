@@ -3,10 +3,11 @@
 Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
-v22:
+v23:
 - restores v22-safe title cleanup;
 - explicitly repairs Xerox WC 7525/.../7835 title row from compat;
 - removes remaining Canon 052H and HP 651 title tails after compat cleanup;
+- fixes Hi-Black 727 titles and color override from explicit title color;
 - leaves compat-specific logic to compat.py.
 """
 
@@ -94,10 +95,25 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number
         add("Ресурс", resource)
     if codes:
         add("Коды расходников", ", ".join(codes))
-    if not color_found:
-        inferred_color = infer_color_from_title(title)
-        if inferred_color:
+
+    inferred_color = infer_color_from_title(title)
+    # Для Hi-Black и прочих title-explicit cases доверяем явному цвету из title сильнее,
+    # если raw param дал generic/ошибочное значение.
+    if inferred_color:
+        replaced = False
+        if color_found and inferred_color != color_found and ("Hi-Black" in title or any(x in title for x in ("Cyan", "Magenta", "Yellow", "Grey", "Gray", "Photoblack", "Mattblack"))):
+            out2: list[tuple[str, str]] = []
+            for k, v in out:
+                if k == "Цвет" and not replaced:
+                    out2.append(("Цвет", inferred_color))
+                    replaced = True
+                else:
+                    out2.append((k, v))
+            out = out2
+            color_found = inferred_color
+        elif not color_found:
             add("Цвет", inferred_color)
+
     return out
 
 def _strip_tail_noise(title_no_suffix: str) -> str:
@@ -137,6 +153,13 @@ def _repair_known_titles(title_no_suffix: str, compat: str) -> str:
 
     if t.startswith("Картридж 651 для HP DJ 5645"):
         return "Картридж 651 для HP DJ 5645"
+
+    if "Hi-Black" in t and "HP DJ T920/T1500" in t:
+        m = re.search(r"Hi-Black\s*\(([^)]+)\)", t)
+        oem = m.group(1).strip() if m else ""
+        if oem:
+            return f"Картридж Hi-Black ({oem}) для HP DJ T920/T1500"
+        return "Картридж Hi-Black для HP DJ T920/T1500"
 
     return t
 
