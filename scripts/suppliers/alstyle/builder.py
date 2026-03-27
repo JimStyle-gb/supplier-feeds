@@ -4,8 +4,10 @@ Path: scripts/suppliers/alstyle/builder.py
 
 AlStyle supplier layer — сборка raw offer.
 
-v113:
+v114:
 - усиливает selective override для Совместимость;
+- для heavy_xerox_compat сжимает слишком длинные Xerox compatibility chains
+  на стороне supplier-layer, чтобы raw не тащил перегруженные series-хвосты в core;
 - грязная XML/merged Совместимость с протёкшими label-блоками
   ("Характеристики / Модель / Совместимые модели") теперь
   заменяется чистой desc-derived версией на финальном reconcile-pass;
@@ -215,6 +217,118 @@ def _best_desc_values(desc_params: list[tuple[str, str]]) -> dict[str, tuple[str
     return best
 
 
+_KNOWN_XEROX_PREFIXES = (
+    "Xerox VL ",
+    "Xerox AL ",
+    "Xerox WC Pro ",
+    "Xerox WC ",
+    "Xerox CC ",
+    "Xerox CQ ",
+    "Xerox DC ",
+    "Xerox DCP ",
+    "Xerox Versant ",
+    "Xerox Phaser ",
+    "VL ",
+    "AL ",
+    "WC Pro ",
+    "WC ",
+    "CC ",
+    "CQ ",
+    "DC ",
+    "DCP ",
+    "Versant ",
+    "Phaser ",
+)
+
+
+def _is_heavy_xerox_compat(value: str) -> bool:
+    s = norm_ws(value)
+    if len(s) < 180:
+        return False
+    families = {x.casefold() for x in _XEROX_HEAVY_COMPAT_RE.findall(s)}
+    return len(families) >= 3
+
+
+def _compact_xerox_family_names(value: str) -> str:
+    s = norm_ws(value).replace(";¶", "; ").replace("¶", " ")
+    replacements = (
+        (r"(?iu)\bXerox\s+VersaLink\s+", "Xerox VL "),
+        (r"(?iu)\bXerox\s+AltaLink\s+", "Xerox AL "),
+        (r"(?iu)\bXerox\s+WorkCentre\s+Pro\s+", "Xerox WC Pro "),
+        (r"(?iu)\bXerox\s+WorkCentre\s+", "Xerox WC "),
+        (r"(?iu)\bXerox\s+CopyCentre\s+", "Xerox CC "),
+        (r"(?iu)\bXerox\s+ColorQube\s+", "Xerox CQ "),
+        (r"(?iu)\bXerox\s+DocuColor\s+", "Xerox DC "),
+        (r"(?iu)\bXerox\s+Digital\s+Color\s+Press\s+", "Xerox DCP "),
+        (r"(?iu)\bXerox\s+Versant\s+", "Xerox Versant "),
+        (r"(?iu)\bXerox\s+Phaser\s+", "Xerox Phaser "),
+        (r"(?iu)\bVersaLink\s+", "VL "),
+        (r"(?iu)\bAltaLink\s+", "AL "),
+        (r"(?iu)\bWorkCentre\s+Pro\s+", "WC Pro "),
+        (r"(?iu)\bWorkCentre\s+", "WC "),
+        (r"(?iu)\bCopyCentre\s+", "CC "),
+        (r"(?iu)\bColorQube\s+", "CQ "),
+        (r"(?iu)\bDocuColor\s+", "DC "),
+        (r"(?iu)\bDigital\s+Color\s+Press\s+", "DCP "),
+    )
+    for pat, repl in replacements:
+        s = re.sub(pat, repl, s)
+
+    s = re.sub(r"(?iu)([,;])\s*Xerox\s+", r"\1 ", s)
+    s = re.sub(r"\s*/\s*", "/", s)
+    s = norm_ws(s).strip(" ,;")
+    return s
+
+
+def _split_xerox_prefix(group: str) -> tuple[str, str]:
+    for prefix in _KNOWN_XEROX_PREFIXES:
+        if group.startswith(prefix):
+            return prefix, group[len(prefix):]
+    return "", group
+
+
+def _summarize_heavy_xerox_compat(value: str) -> str:
+    compact = _compact_xerox_family_names(value)
+    if len(compact) <= 175:
+        return compact
+
+    groups = [norm_ws(x) for x in re.split(r"\s*[,;]\s*", compact) if norm_ws(x)]
+    if not groups:
+        return compact
+
+    for keep_groups, max_models in ((3, 8), (3, 6), (2, 8), (2, 6), (2, 4), (1, 10), (1, 8)):
+        out: list[str] = []
+        omitted_groups = len(groups) > keep_groups
+
+        for idx, group in enumerate(groups[:keep_groups]):
+            prefix, rest = _split_xerox_prefix(group)
+            tokens = [norm_ws(x) for x in rest.split("/") if norm_ws(x)]
+
+            deduped: list[str] = []
+            seen: set[str] = set()
+            for token in tokens:
+                sig = token.casefold()
+                if sig in seen:
+                    continue
+                seen.add(sig)
+                deduped.append(token)
+
+            omitted_models = len(deduped) > max_models
+            part = (prefix + "/".join(deduped[:max_models])).strip()
+            if omitted_models and idx == keep_groups - 1:
+                part += " и др."
+            out.append(part)
+
+        if omitted_groups and out and not out[-1].endswith("и др."):
+            out[-1] += " и др."
+
+        summary = "; ".join(x for x in out if x).strip(" ;")
+        if summary and len(summary) <= 175:
+            return summary
+
+    return compact[:172].rstrip(" ,;/") + "..."
+
+
 def _final_reconcile_params(
     params: list[tuple[str, str]],
     desc_params: list[tuple[str, str]],
@@ -241,17 +355,22 @@ def _final_reconcile_params(
 
         if k2.casefold() == "совместимость":
             if _is_dirty_value("Совместимость", v2):
-                out.append((k2, desc_v))
-                continue
-
-            if (
+                chosen = desc_v
+            elif (
                 _XEROX_HEAVY_COMPAT_RE.search(v2)
                 and _XEROX_HEAVY_COMPAT_RE.search(desc_v)
                 and len(desc_v) + 50 < len(v2)
                 and _compat_looks_clean(desc_v)
             ):
-                out.append((k2, desc_v))
-                continue
+                chosen = desc_v
+            else:
+                chosen = v2
+
+            if _is_heavy_xerox_compat(chosen):
+                chosen = _summarize_heavy_xerox_compat(chosen)
+
+            out.append((k2, chosen))
+            continue
 
         out.append((k2, v2))
 
@@ -461,6 +580,11 @@ def build_offer(
         inferred_compat = _infer_compat_from_name(name)
         if inferred_compat:
             params.append(("Совместимость", inferred_compat))
+
+    params = [
+        (k, _summarize_heavy_xerox_compat(v) if norm_ws(k).casefold() == "совместимость" and _is_heavy_xerox_compat(v) else v)
+        for k, v in params
+    ]
 
     price_in = normalize_price_in(src.purchase_price_text, src.price_text)
 
