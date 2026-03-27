@@ -142,37 +142,19 @@ _COMPAT_TYPE_HINTS = (
 )
 
 def _cs_is_consumable(name_full: str, params: list[tuple[str, str]]) -> bool:
-    # Совместимость генерируем/чистим только для расходников.
-    # Смотрим прежде всего 'Тип' из параметров, иначе — по названию.
-    t = ""
-    for k, v in (params or []):
-        if (k or "").strip().casefold() == "тип":
-            t = (v or "").strip()
-            break
-    hay = (t + " " + (name_full or "")).casefold()
-    return any(h in hay for h in _COMPAT_TYPE_HINTS)
+    """
+    Core больше не определяет "это расходник или нет" по name/params.
 
+    По правилу CS:
+    - любые supplier-specific heuristics по расходникам живут в adapter/compat.py;
+    - shared core не должен чинить raw и не должен ветвиться по логике "если это расходник".
 
-# Подсказки, что в строке есть именно модели устройств (а не коды расходника)
-_RE_COMPAT_DEVICE_HINT = re.compile(
-    r"(xerox|hp|hewlett|canon|kyocera|ricoh|konica|minolta|bizhub|epson|brother|samsung|pantum|oki|lexmark|sharp|panasonic|toshiba|sindoh|katyusha|катюша|fplus|f\+|avision|"
-    r"laserjet|deskjet|designjet|workcentre|phaser|versalink|altalink|"
-    r"taskalfa|ecosys|aficio|\bmp\b|\bhl\b|\bdcp\b|\bmfc\b|\bscx\b|\bml\b|\bclp\b|\bclx\b|"
-    r"wf[-\s]?\d|l\d{3,4})",
-    flags=re.IGNORECASE,
-)
+    Функция оставлена только для backward-safe совместимости со старым кодом.
+    """
+    _ = name_full
+    _ = params
+    return False
 
-# Токен, похожий на модель (должна быть цифра; длина >= 3)
-_RE_MODEL_TOKEN = re.compile(r"(?i)\b[0-9]*[A-ZА-Я]{0,4}\d{2,5}[A-ZА-Я0-9-]{0,6}\b")
-
-# Коды расходника (CF283A / TK-1150 / 106R02773 / C13T00R140) — НЕ модели устройств
-_RE_CONSUMABLE_CODE = re.compile(r"(?i)^(?:[A-Z]{1,4}\d{3,6}[A-Z]{0,3}|\d{6,9}|[A-Z]{1,3}-\d{3,6}|C\d{2}T[0-9A-Z]{5,8}|\d{3}R\d{5})$")
-
-
-# CS: если "Совместимость" содержит коды расходников (а не модели устройств) — переносим в отдельный параметр
-_CONSUMABLE_CODES_PARAM_NAME = "Коды расходников"
-
-# CS: токен похож на код расходника (а не модель принтера)
 def _cs_is_consumable_code_token(tok: str) -> bool:
     t = (tok or "").strip().strip(" ,;./()[]{}").upper()
     if not t:
@@ -234,46 +216,14 @@ def _cs_is_consumable_code_token(tok: str) -> bool:
     return False
 
 def _cs_looks_like_consumable_code_list(s: str) -> bool:
-    s = norm_ws(s)
-    if not s:
-        return False
-    toks = [t for t in re.split(r"[\s,/;]+", s) if t]
-    codes = [t for t in toks if _cs_is_consumable_code_token(t)]
-    # "в основном коды" (не модели устройств)
-    return len(codes) >= 2 and len(codes) >= max(2, int(len(toks) * 0.6))
+    """
+    Core не должен угадывать списки кодов расходников в тексте.
+    Это обязанность supplier-layer.
 
-
-
-# CS: извлечение кодов расходников из любого текста (name/compat/desc)
-_RE_CODE_NUM_SIGN = re.compile(r"(?i)№\s*\d{2,6}[A-Z]{0,4}\b")
-_RE_CODE_ANY = re.compile(
-    r"(?i)\b(?:"
-    r"\d{6,9}|"                  # 6–9 цифр
-    r"\d{3}R\d{5}|"               # Xerox 106R02773
-    r"C\d{2}T[0-9A-Z]{5,8}|"      # Epson C13T...
-    r"(?:CF|CE|CB|CC|Q|W)\d{3,5}[A-Z]{0,3}|"  # HP
-    r"(?:CZ|CN)\d{3}[A-Z]{1,2}|"  # HP ink CZ*** / CN***AE
-    r"\d{4}[A-Z]\d{3}[A-Z]{0,2}|"      # Canon OEM 0287C001
-    r"T\d{4,5}|"                  # Epson T0481...
-    r"TK-?\d{3,5}[A-Z]{0,3}|"     # Kyocera
-    r"(?:TN|DR)-?\d{3,5}[A-Z]{0,3}|"       # Brother
-    r"(?:MLT|CLT)-[A-Z]?\d{3,5}[A-Z]{0,3}|" # Samsung
-    r"\d{3,4}[AHX]"            # Short codes 710H/126A
-    r")\b"
-)
-_RE_CODE_SHORT_3DIG = re.compile(r"\b[6-7]\d{2}\b")  # Canon 716/725/727/728/737 и т.п.
-
-
-_RE_CODE_GROUPED_PREFIX = re.compile(
-    r"(?i)\b(?P<pfx>(?:CF|CE|CB|CC|Q|W))(?P<body>\d{3,5}(?:/\d{3,5}){1,8})(?P<suf>[A-Z]{0,3})\b"
-)
-
-_RE_CODE_GROUPED_GENERIC = re.compile(
-    r"(?i)\b(?P<pfx>(?:TK-?|TN-?|DR-?))(?P<body>\d{2,5}(?:/\d{2,5}){1,8})(?P<suf>[A-Z]{0,3})\b"
-)
-
-
-
+    Оставлено как backward-safe no-op.
+    """
+    _ = s
+    return False
 
 def _cs_expand_consumable_code_ranges(s: str) -> str:
     """Раскрывает диапазоны кодов вида T0481–T0486 → T0481 T0482 ... T0486.
@@ -345,160 +295,26 @@ def _cs_expand_grouped_consumable_codes(s: str) -> str:
     return s
 # CS: извлекаем коды расходников (в исходном порядке) из текста. Никаких моделей техники сюда не пускаем.
 def _cs_extract_consumable_codes_ordered(text: str, allow_short_3dig: bool = True) -> list[str]:
-    s = norm_ws(text)
-    if not s:
-        return []
-    s = _cs_expand_grouped_consumable_codes(s)
+    """
+    Core не извлекает коды расходников из текста.
+    Это делает supplier-layer в raw.
 
-    ctx = s.casefold()
-    ctx_hp_dj = ("designjet" in ctx) or (" hp " in f" {ctx} " and re.search(r"\bdj\b", ctx))
-    ctx_eps_sc = ("surecolor" in ctx) or ("sc-" in ctx) or bool(re.search(r"(?i)\bsc-?t\d{3,5}\b", s))
-    ctx_eps = ("epson" in ctx)
-    ctx_canon = bool(re.search(r"(?i)\bcanon\b|\bimagerunner\b|\bimage\s*runner\b", s))
+    Оставлено как backward-safe no-op.
+    """
+    _ = text
+    _ = allow_short_3dig
+    return []
 
-    out: list[str] = []
-    idx_map: dict[str, int] = {}
-
-    def _add(tok: str) -> None:
-        nonlocal out, idx_map
-        t = (tok or '').strip()
-        if not t:
-            return
-        # нормализуем для дедупа: убираем ведущий №, пробелы, приводим к UPPER
-        raw = t.replace(' ', '').upper()
-        base = raw.lstrip('№')
-        key = base.casefold()
-        if key in idx_map:
-            j = idx_map[key]
-            # если уже есть вариант с №, а пришёл без № — заменим (кроме чистых цифр)
-            if out[j].startswith('№') and (not raw.startswith('№')) and (not re.fullmatch(r'\d+', base)):
-                out[j] = base
-            return
-        idx_map[key] = len(out)
-        # храним без № для алфанумерических кодов, но чистые цифры оставляем как есть/с № если пришло
-        if raw.startswith('№') and (not re.fullmatch(r'\d+', base)):
-            out.append(base)
-        else:
-            out.append(raw if (raw.startswith('№') and re.fullmatch(r'\d+', base)) else base)
-
-
-    # №727 / № 727A
-    for m in _RE_CODE_NUM_SIGN.finditer(s):
-        tok = norm_ws(m.group(0)).replace(" ", "")
-        tok = tok.replace("#", "№")
-        _add(tok)
-
-    # Основные коды (CF283A, TK-1150, 106R02773, C13T..., MLT-D111S, 710H и т.п.)
-    for m in _RE_CODE_ANY.finditer(s):
-        tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
-        if not tok:
-            continue
-        # нормализация без-дефисных TK/TN/DR
-        tok = re.sub(r"^(TK)(\d{2,5})([A-Z]{0,3})$", r"TK-\2\3", tok)
-        tok = re.sub(r"^(TN)(\d{3,5})([A-Z]{0,3})$", r"TN-\2\3", tok)
-        tok = re.sub(r"^(DR)(\d{3,5})([A-Z]{0,3})$", r"DR-\2\3", tok)
-        # T-коды: в ряде контекстов это модели принтеров (DesignJet/SureColor), не коды расходников
-        if re.fullmatch(r"(?i)T\d{4,5}", tok):
-            dig = tok[1:]
-            if ctx_hp_dj:
-                continue
-            if (ctx_eps_sc or ctx_eps) and dig and dig[0] in "12357":
-                continue
-        _add(tok)
-
-    # ML-коды (часто приходят как HB-ML-1210D3 / ML-1710D3 / ML-D1630A)
-    for m in re.finditer(r"(?i)\b(?:HB-)?ML-?\d{3,5}D\d{1,2}\b", s):
-        tok = (m.group(0) or "").upper().replace("HB-", "")
-        _add(tok)
-    for m in re.finditer(r"(?i)\b(?:HB-)?ML-?D\d{3,5}[A-Z]{0,2}\b", s):
-        tok = (m.group(0) or "").upper().replace("HB-", "")
-        _add(tok)
-
-    # Canon T-коды (T06/T07/...) — только в канон-контексте, чтобы не путать с моделями принтеров
-    if ctx_canon:
-        for m in re.finditer(r"(?i)\bT0\d\b", s):
-            _add((m.group(0) or "").upper())
-
-    # Canon: C-EXV34 / NPG-59 / GPR-53
-    for m in re.finditer(r"(?i)\bC-?EXV\s*\d{1,3}\b", s):
-        tok = norm_ws(m.group(0)).upper().replace(' ', '')
-        tok = tok.replace('CEXV', 'C-EXV')
-        if tok.startswith('C-EXV'):
-            _add(tok)
-
-    for m in re.finditer(r"(?i)\b(?:NPG|GPR)\s*-\s*\d{1,3}\b", s):
-        tok = norm_ws(m.group(0)).upper().replace(' ', '')
-        tok = tok.replace('--', '-')
-        _add(tok)
-
-    # HP/Canon коды вида C7115A / C9730A / C8543X
-    # Важно: модели техники типа C2020 / C8030 / C2026MFP / C7000DN — это НЕ коды расходников.
-    for m in re.finditer(r"(?i)\bC\d{4}[A-Z]{0,3}\b", s):
-        tok = (m.group(0) or '').upper()
-        if tok.startswith('C11'):
-            continue
-        if re.fullmatch(r"C\d{4}", tok):
-            continue
-        if re.fullmatch(r"C\d{4}(?:DN|DW|DWF|FDN|FDW|MFP)$", tok):
-            continue
-        _add(tok)
-# HP ink: 3ED77A / 1VK08A (не всегда ловится _RE_CODE_ANY)
-    for m in re.finditer(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", s):
-        tok = (m.group(0) or "").strip(" ,;./()[]{}").upper()
-        _add(tok)
-
-    # Короткие 3-значные (Canon 716/725/727/728/737) — только если разрешено
-    if allow_short_3dig:
-        for m in _RE_CODE_SHORT_3DIG.finditer(s):
-            tok = (m.group(0) or "").strip()
-            if not tok:
-                continue
-            # если уже есть вариант с № — не дублируем голым числом
-            if tok and (tok.casefold() in idx_map):
-                continue
-            _add(tok)
-
-    return out
-
-
-# CS: удаляет из текста коды расходников (оставляя только возможные модели техники)
 def _cs_strip_consumable_codes_from_text(text: str, allow_short_3dig: bool = True) -> str:
-    s = norm_ws(text)
-    if not s:
-        return ""
-    s = _cs_expand_grouped_consumable_codes(s)
-    # CS v031: защищаем модели устройств с суффиксом x/xx (LBP-312x, FC-2xx/PC-7xx и т.п.)
-    # чтобы их не вырезало как "короткие коды" (пример: 312X может выглядеть как 051H/126A).
-    keep: dict[str, str] = {}
-    def _keep(m: re.Match) -> str:
-        key = f"__CS_KEEP_{len(keep)}__"
-        keep[key] = (m.group(0) or "")
-        return key
-    s = re.sub(r"(?i)\b(?:LBP|MF)\s*[-\s]*\d{2,4}x\b", _keep, s)
-    s = re.sub(r"(?i)\b(?:LBP|MF)\s*[-\s]*\d{1,4}xx\b", _keep, s)
-    s = re.sub(r"(?i)\b(?:FC|PC)\s*[-\s]*\d{1,3}xx\b", _keep, s)
-    s = _RE_CODE_NUM_SIGN.sub(" ", s)
-    s = _RE_CODE_ANY.sub(" ", s)
-    s = re.sub(r"(?i)\bC-?EXV\s*\d{1,3}\b", " ", s)
-    s = re.sub(r"(?i)\b(?:NPG|GPR)\s*-\s*\d{1,3}\b", " ", s)
-    def _repl_c(m: re.Match) -> str:
-        tok = (m.group(0) or "")
-        t = tok.upper()
-        # Модели техники: C7020, C8020MFP, C7000DN и т.п. — оставляем
-        if re.fullmatch(r"C\d{4}(?:DN|DW|DWF|FDN|FDW|MFP)$", t):
-            return tok
-        return " "
-    s = re.sub(r"(?i)\bC\d{4}[A-Z]{1,3}\b", _repl_c, s)  # CS: не трогаем модели техники типа C7020/C8020MFP
-    s = re.sub(r"(?i)\b\d[A-Z]{2}\d{2}[A-Z]{1,2}\b", " ", s)
-    if allow_short_3dig:
-        s = _RE_CODE_SHORT_3DIG.sub(" ", s)
-    if keep:
-        for k, v in keep.items():
-            s = s.replace(k, v)
-    return norm_ws(s)
+    """
+    Core не чистит текст от кодов расходников.
+    Если supplier-layer отдал raw с такими хвостами — это ошибка адаптера.
 
+    Оставлено как backward-safe pass-through.
+    """
+    _ = allow_short_3dig
+    return norm_ws(text)
 
-# CS: финальная чистка строки совместимости (ресурс/цвет/мл/маркетинг/мусор)
 def _cs_clean_compat_value(v: str) -> str:
     s = (v or "").strip()
     if not s:
@@ -722,188 +538,19 @@ def _cs_merge_compat_values(vals: list[str]) -> str:
 
 
 def ensure_compatibility_param(params: list[tuple[str, str]], name_full: str, native_desc: str) -> None:
-    # Adapter-first: 'Коды' и 'Совместимость' формируются в адаптерах.
-    # Core НЕ должен их создавать/переименовывать/чистить.
+    """
+    Adapter-first:
+    - "Коды", "Совместимость", device-model heuristics и cleanup совместимости
+      формируются только в supplier-layer;
+    - shared core ничего не создаёт и не чинит по совместимости.
+
+    Оставлено как backward-safe no-op.
+    """
+    _ = params
+    _ = name_full
+    _ = native_desc
     return
 
-
-    new_params: list[tuple[str, str]] = []
-    for k, v in list(params):
-        kk = (k or "").strip()
-        vv = (v or "").strip()
-        if not kk:
-            continue
-        kcf = kk.casefold()
-
-        # Убираем заголовки таблиц/мусор
-        if vv and vv.casefold() == "совместимые продукты":
-            continue
-
-        # Партномер/PN используем как источник кодов, но сам param сохраняем
-        if kcf in _PARTNUMBER_PARAM_NAMES:
-            if vv:
-                existing_codes_sources.append(vv)
-            new_params.append((kk, vv))
-            continue
-
-        # AkCent/таблицы: "модель устройства" -> "C11..." (SKU техники). Модель переносим в Совместимость, C11 выкидываем.
-        if vv and re.fullmatch(r"(?i)C11[A-Z0-9]{6,}", vv) and re.search(r"\d", kk) and re.search(r"[A-Za-zА-Яа-я]", kk):
-            found_raw.append(kk)
-            continue
-
-        # Уже существующие "Коды расходников" пересобираем заново (очищенно)
-        if kcf == _CONSUMABLE_CODES_PARAM_NAME.casefold():
-            if vv:
-                existing_codes_sources.append(vv)
-            continue
-
-        # Любые ключи совместимости/алиасы собираем как источники, но в исходном виде не оставляем
-        if kcf == _COMPAT_PARAM_NAME.casefold() or kcf in _COMPAT_ALIAS_NAMES:
-            if vv:
-                codes_sources.append(vv)
-                found_raw.append(vv)
-            continue
-
-        new_params.append((kk, vv))
-
-    is_consumable = _cs_is_consumable(name_full, new_params)
-
-    # Для НЕрасходников совместимость/коды не добавляем вообще
-    if not is_consumable:
-        params[:] = new_params
-        return
-
-    # 1) Коды расходников: из существующих кодов, из совместимости и из названия
-    codes: list[str] = []
-    for src in (existing_codes_sources + codes_sources + [name_full, native_desc]):
-        codes.extend(_cs_extract_consumable_codes_ordered(src, allow_short_3dig=True))
-    codes = _dedup_keep_order(codes)
-
-    # 2) Совместимость: чистим от кодов/служебки, оставляем только модели устройств
-    found_clean: list[str] = []
-    for vv in found_raw:
-        allow_short = _cs_looks_like_consumable_code_list(vv)
-        vv2 = _cs_strip_consumable_codes_from_text(vv, allow_short_3dig=allow_short)
-        vv2 = _cs_clean_compat_value(vv2)
-        if vv2 and _cs_looks_like_device_models(vv2):
-            found_clean.append(vv2)
-
-    merged = _cs_merge_compat_values(found_clean) if found_clean else ""
-    if merged:
-        new_params.append((_COMPAT_PARAM_NAME, merged))
-    else:
-        # 3) Если поставщик не дал пригодную совместимость — пробуем извлечь из name/desc
-        cand_list: list[str] = []
-        c1 = _cs_extract_compat_candidate(name_full)
-        if c1:
-            cand_list.append(c1)
-        c2 = _cs_extract_compat_candidate(native_desc)
-        if c2 and c2 != c1:
-            cand_list.append(c2)
-
-        for cand in cand_list:
-            allow_short = _cs_looks_like_consumable_code_list(cand)
-            cand2 = _cs_strip_consumable_codes_from_text(cand, allow_short_3dig=allow_short)
-            cand2 = _cs_clean_compat_value(cand2)
-            if cand2 and _cs_looks_like_device_models(cand2):
-                merged_cand = _cs_merge_compat_values([cand2])
-                if merged_cand:
-                    new_params.append((_COMPAT_PARAM_NAME, merged_cand))
-                break
-
-    if codes:
-        joined = ", ".join(codes).strip()
-        if joined and len(joined) <= 600:
-            new_params.append((_CONSUMABLE_CODES_PARAM_NAME, joined))
-
-    params[:] = new_params
-
-
-# Лимиты (по умолчанию):
-# - <name> держим коротким и читаемым (150 по решению пользователя)
-# - <keywords> по правилам YML обычно <= 1024
-CS_NAME_MAX_LEN = int((os.getenv("CS_NAME_MAX_LEN", "150") or "150").strip() or "150")
-
-CS_COMPAT_CLEAN_YIELD_PACK = (os.getenv("CS_COMPAT_CLEAN_YIELD_PACK", "1") or "1").strip().lower() not in ("0", "false", "no")
-CS_COMPAT_CLEAN_PAPER_OS_DIM = (os.getenv("CS_COMPAT_CLEAN_PAPER_OS_DIM", "1") or "1").strip().lower() not in ("0", "false", "no")
-CS_COMPAT_CLEAN_NOISE_WORDS = (os.getenv("CS_COMPAT_CLEAN_NOISE_WORDS", "1") or "1").strip().lower() not in ("0", "false", "no")
-CS_COMPAT_CLEAN_REPEAT_BLOCKS = (os.getenv("CS_COMPAT_CLEAN_REPEAT_BLOCKS", "1") or "1").strip().lower() not in ("0", "false", "no")
-
-
-
-
-# Заглушка картинки, если у оффера нет фото (можно переопределить env CS_PICTURE_PLACEHOLDER_URL)
-CS_PICTURE_PLACEHOLDER_URL = (os.getenv("CS_PICTURE_PLACEHOLDER_URL") or "https://placehold.co/800x800/png?text=No+Photo").strip()
-# Хвост городов (один и тот же для всех поставщиков)
-# WhatsApp блок (единый)
-CS_WA_BLOCK = (
-    "<!-- WhatsApp -->\n"
-    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
-    "<p style=\"text-align:center; margin:0 0 12px;\">"
-    "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
-    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; "
-    "border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);\">"
-    "&#128172; Написать в WhatsApp</a></p></div>"
-)
-
-# WhatsApp div (без комментария, чтобы комментарии строились шаблоном)
-CS_WA_DIV = (
-    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
-    "<p style=\"text-align:center; margin:0 0 12px;\">"
-    "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
-    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; "
-    "border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);\">"
-    "&#128172; Написать в WhatsApp</a></p></div>"
-)
-
-# Горизонтальная линия (2px)
-CS_HR_2PX = "<hr style=\"border:none; border-top:2px solid #E7D6B7; margin:12px 0;\" />"
-
-# Оплата/Доставка — КАНОНИЧЕСКИЙ текст (как в твоём эталоне)
-CS_PAY_BLOCK = (
-    "<!-- Оплата и доставка -->\n"
-    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
-    "<div style=\"background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;\">"
-    "<h3 style=\"margin:0 0 8px; font-size:17px;\">Оплата</h3>"
-    "<ul style=\"margin:0; padding-left:18px;\">"
-    "<li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>"
-    "<li><strong>Удалённая оплата</strong> по <span style=\"color:#8b0000;\"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>"
-    "</ul>"
-    "<hr style=\"border:none; border-top:1px solid #E7D6B7; margin:12px 0;\" />"
-    "<h3 style=\"margin:0 0 8px; font-size:17px;\">Доставка по Алматы и Казахстану</h3>"
-    "<ul style=\"margin:0; padding-left:18px;\">"
-    "<li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>"
-    "<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li>"
-    "<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>"
-    "<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>"
-    "</ul>"
-    "</div></div>"
-)
-
-# Параметры, которые нужно выкидывать из <param> и из "Характеристик"
-PARAM_DROP_DEFAULT = {
-    "Штрихкод",
-    "Штрих-код",
-    "Штрих код",
-    "EAN",
-    "EAN-13",
-    "EAN13",
-    "Barcode",
-    "GTIN",
-    "UPC",
-    "Артикул",
-    "Новинка",
-    "Снижена цена",
-    "Благотворительность",
-    "Код товара Kaspi",
-    "Код ТН ВЭД",
-    "Назначение",
-}
-# Кеш: служебные параметры в casefold (для clean_params/валидации)
-PARAM_DROP_DEFAULT_CF = {str(x).strip().casefold() for x in PARAM_DROP_DEFAULT}
-
-
-# Возвращает текущее время в Алматы
 def normalize_offer_name(name: str) -> str:
     # CS: лёгкая типографика имени (без изменения смысла)
     s = norm_ws(name)
