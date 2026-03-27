@@ -1109,7 +1109,7 @@ def _build_single_offer(
         "oid": oid,
         "name": name,
         "price_in": price_in,
-        "price": final_price,
+        "price": raw_price,
         "available": available,
         "params_count": len(merged_params),
         "extra_info_count": len(extra_info),
