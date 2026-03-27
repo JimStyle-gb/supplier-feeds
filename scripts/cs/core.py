@@ -3616,12 +3616,9 @@ class OfferOut:
                 continue
             params_xml += f"\n<param name=\"{kk}\">{vv}</param>"
 
-        # Политика availability по поставщику:
-        # - AlStyle (AS) и AkCent (AC): как у поставщика
-        # - CopyLine (CL), NVPrint (NP), VTT (VT): всегда true
+        # Core не знает поставщиков и не меняет availability.
+        # RAW обязан отдать уже правильное available для конкретного supplier-layer.
         avail_effective = bool(self.available)
-        if policy.always_true_available:
-            avail_effective = True
 
         out = (
             f"<offer id=\"{xml_escape_attr(self.oid)}\" available=\"{bool_to_xml(bool(avail_effective))}\">\n"
