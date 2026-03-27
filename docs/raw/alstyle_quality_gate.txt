@@ -2,20 +2,12 @@ QUALITY_GATE: PASS
 baseline_file: scripts/suppliers/alstyle/config/quality_baseline.yml
 freeze_current_as_baseline: no
 critical_count: 0
-cosmetic_total_count: 2
-cosmetic_offer_count: 2
+cosmetic_total_count: 0
+cosmetic_offer_count: 0
 known_cosmetic_count: 0
 known_cosmetic_offer_count: 0
-new_cosmetic_count: 2
-new_cosmetic_offer_count: 2
+new_cosmetic_count: 0
+new_cosmetic_offer_count: 0
 max_cosmetic_offers: 5
 max_cosmetic_issues: 5
-
-COSMETIC TOTAL:
-- [heavy_xerox_compat] AS113735 | Картридж скрепок для буклетирования Xerox 008R12897 | Xerox VersaLink B7025 / B7030 / B7035 / C8000DT / C9000DT / C7020 / C7025 / C7030, Xerox WorkCentre Pro 245 / 255 / 165 / 175 / 232 / 238 / 265 / 275 / 65 / 90 / 75, Xerox WorkCentre 5845 / 5855 / 576
-- [heavy_xerox_compat] AS143017 | Ролик автоподатчика (ADF) Xerox 604K75220 / 059K29520 / 604K75221 | Xerox WorkCentre Pro 4110 / 4112 / 4127 / 4595 / 4590;¶D95 / D110 / D125 / D127 / D136; DOCUCOLOR 240 / 242 / 250 / 252 / 260; WORKCENTRE 7655 / 7665 / 7675 / 7755 / 7765 / 7775 / DIGITAL COLOR PRESS 
-
-NEW COSMETIC VS BASELINE:
-- [heavy_xerox_compat] AS113735 | Картридж скрепок для буклетирования Xerox 008R12897 | Xerox VersaLink B7025 / B7030 / B7035 / C8000DT / C9000DT / C7020 / C7025 / C7030, Xerox WorkCentre Pro 245 / 255 / 165 / 175 / 232 / 238 / 265 / 275 / 65 / 90 / 75, Xerox WorkCentre 5845 / 5855 / 576
-- [heavy_xerox_compat] AS143017 | Ролик автоподатчика (ADF) Xerox 604K75220 / 059K29520 / 604K75221 | Xerox WorkCentre Pro 4110 / 4112 / 4127 / 4595 / 4590;¶D95 / D110 / D125 / D127 / D136; DOCUCOLOR 240 / 242 / 250 / 252 / 260; WORKCENTRE 7655 / 7665 / 7675 / 7755 / 7765 / 7775 / DIGITAL COLOR PRESS 
 
