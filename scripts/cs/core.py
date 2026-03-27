@@ -858,6 +858,28 @@ CS_COMPAT_CLEAN_REPEAT_BLOCKS = (os.getenv("CS_COMPAT_CLEAN_REPEAT_BLOCKS", "1")
 # Заглушка картинки, если у оффера нет фото (можно переопределить env CS_PICTURE_PLACEHOLDER_URL)
 CS_PICTURE_PLACEHOLDER_URL = (os.getenv("CS_PICTURE_PLACEHOLDER_URL") or "https://placehold.co/800x800/png?text=No+Photo").strip()
 
+
+PARAM_DROP_DEFAULT = {
+    "Штрихкод",
+    "Штрих-код",
+    "Штрих код",
+    "EAN",
+    "EAN-13",
+    "EAN13",
+    "Barcode",
+    "GTIN",
+    "UPC",
+    "Артикул",
+    "Новинка",
+    "Снижена цена",
+    "Благотворительность",
+    "Код товара Kaspi",
+    "Код ТН ВЭД",
+    "Назначение",
+}
+PARAM_DROP_DEFAULT_CF = {str(x).strip().casefold() for x in PARAM_DROP_DEFAULT}
+
+
 def enforce_name_policy(oid: str, name: str, params: list[tuple[str, str]]) -> str:
     # CS: глобальная политика имени — одинаково для всех поставщиков
     name = norm_ws(name)
