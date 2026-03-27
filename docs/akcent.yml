@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-27 02:35:18">
+<yml_catalog date="2026-03-27 17:31:11">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-27 02:35:18
+Время сборки (Алматы)                      | 2026-03-27 17:31:11
 Ближайшая сборка (Алматы)                  | 2026-03-28 02:00:00
-Сколько товаров у поставщика до фильтра    | 1867
-Сколько товаров у поставщика после фильтра | 170
-Сколько товаров есть в наличии (true)      | 170
+Сколько товаров у поставщика до фильтра    | 1898
+Сколько товаров у поставщика после фильтра | 166
+Сколько товаров есть в наличии (true)      | 166
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -350,7 +350,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Интерактивная панель SBID-QX275-P</name>
 <price>3093900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e07/9wuvjbzj3c2s8f7qeurp8w17priroset.jpg</picture>
-<vendor>SMART</vendor>
+<vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
@@ -380,7 +380,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Число касаний">20 (Win, Mac)</param>
 <param name="Энергопотребление">124 Вт</param>
 <param name="Яркость">400 cd/m²</param>
-<keywords>SMART, Интерактивная панель SBID-QX275-P, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>CS, Интерактивная панель SBID-QX275-P, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACSBID-MX265-V4" available="true">
@@ -1050,38 +1050,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Картридж Epson C13T69430N T3000/5000/7000 Т3200/5200/7200 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="ACC13T69440N" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T69440N</vendorCode>
-<name>Картридж Epson C13T69440N T3000/5000/7000, Т3200/5200/7200 желтый</name>
-<price>232900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/425/s87ply3o1mrfsaztv4enkhrxmbes9jtj.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Картридж Epson C13T69440N T3000/5000/7000, Т3200/5200/7200 желтый</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Оригинальный картридж Epson C13T69440N жёлтый цвета для Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000. Ресурс: 700 мл.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000</li><li><strong>Коды:</strong> C13T69440N</li><li><strong>Модель:</strong> C13T69440N</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Гарантия">3 мес.</param>
-<param name="Для бренда">Epson</param>
-<param name="Для устройства">Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000</param>
-<param name="Коды">C13T69440N</param>
-<param name="Модель">C13T69440N</param>
-<param name="Ресурс">700 мл</param>
-<param name="Тип">Картридж</param>
-<param name="Тип печати">Струйная</param>
-<param name="Цвет">Жёлтый</param>
-<keywords>Epson, Картридж Epson C13T69440N T3000/5000/7000 Т3200/5200/7200 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="ACC13T694500" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T694500</vendorCode>
@@ -1350,7 +1318,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Lunar A3 – ламинатор начального уровня для домашнего офиса и использования время от времени. Ламинатор Lunar A3 предназначен для работы с пленкой 75/80 мкм. Максимальный формат документа – А3. Ламинатор прост в управлении и не требует дополнительных настроек. Зеленый световой сигнал подскажет о готовности к работе через 6 минут после включения. Рычаг освобождения поможет изъять неправильно поданный документ. Корпус ламинатора не перегревается и безопасен при прикосновении. Ламинатор Lunar A3 позволяет надежно заламинировать документы, презентационные и рекламные материалы, фотографии, грамоты, рисунки, открытки, визитки, инструкции и многое другое.</p>
+<p>Тип: Ламинатор А3; Модель: Ламинатор Fellowes Lunar A3, 2х80 мкм, 30 см/мин</p>
 <h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Модель:</strong> Ламинатор Fellowes Lunar A3, 2х80 мкм, 30 см/мин</li><li><strong>Тип:</strong> Ламинатор А3</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -1376,7 +1344,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Lunar A4 – ламинатор начального уровня для домашнего офиса и использования время от времени. Ламинатор Lunar A4 предназначен для работы с пленкой 75/80 мкм. Максимальный формат документа – А4. Ламинатор прост в управлении и не требует дополнительных настроек. Зеленый световой сигнал подскажет о готовности к работе через 6 минут после включения. Рычаг освобождения поможет изъять неправильно поданный документ в ламинатор. Корпус ламинатора не перегревается и безопасен при прикосновении. Ламинатор Lunar A4 позволяет надежно заламинировать документы, презентационные и рекламные материалы, фотографии, грамоты, рисунки, открытки, визитки, инструкции и многое другое.</p>
+<p>Тип: Ламинатор А4; Модель: Ламинатор Fellowes Lunar A4, 2х80 мкм, 30 см/мин</p>
 <h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Модель:</strong> Ламинатор Fellowes Lunar A4, 2х80 мкм, 30 см/мин</li><li><strong>Тип:</strong> Ламинатор А4</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -1745,7 +1713,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Многофункциональное устройство 4-в-1 с возможностью печати документов формата А4, фронтальными чернильными емкостями и поддержкой печати по Wi-Fi и Ethernet. Принтер-сканер-копир-факс для сверхэкономичной печати документов Фронтальные лотки загрузки бумаги общей емкостью 500 листов Задний лоток подачи бумаги на 50 листов Фронтальные чернильные емкости Высокая скорость печати - до 25 стр./мин. ч/б ISO и 12 стр./мин. цвет (ISO) Печать по Wi-Fi Direct, Epson Connect, Ethernet Пигментные чернила всех цветов ЖК-дисплей диагональю 10,9 см с сенсорной панелью управления Набор контейнеров в комплекте поставки рассчитан на 7500 ч/б и 6000 цветных отпечатков Сменная емкость для отработанных чернил Автоматическая двусторонняя печать Автоподатчик для сканирования документов емкостью 50 листов</p>
+<p>Тип: МФУ Офис; Модель: МФУ Epson L6550 фабрика печати, факс,Wi-Fi</p>
 <h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Интерфейсы:</strong> Wi-Fi, Ethernet, USB</li><li><strong>Модель:</strong> МФУ Epson L6550 фабрика печати, факс,Wi-Fi</li><li><strong>Разрешение печати, dpi:</strong> 4800 x 2400</li><li><strong>Разрешение сканера, dpi:</strong> 1200 x 2400</li><li><strong>Скорость печати (A4):</strong> 32</li><li><strong>Тип:</strong> МФУ Офис</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -1877,7 +1845,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Компактное монохромное МФУ для малого офиса Компактное МФУ для сверхэкономичной печати черно-белых документов Принтер, сканер, копир. Формат А4 Рекордно низкая себестоимость печати благодаря использованию контейнеров с чернилами вместо картриджей Пигментные чернила Скорость печати до 32 стр./мин Время выхода первого отпечатка от 8 сек. Гарантия производителя 12 мес. или 100 000 отпечатков Ресурс контейнера с чернилами – 6 000 отпечатков Возможность подключения по сети Ethernet Фронтальные ёмкости и система Ink lock.</p>
+<p>Тип: МФУ Дом; Модель: МФУ Epson M2110 (CIS) фабрика печати</p>
 <h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Интерфейсы:</strong> USB, тип B</li><li><strong>Модель:</strong> МФУ Epson M2110 (CIS) фабрика печати</li><li><strong>Разрешение печати, dpi:</strong> 1440 x 720</li><li><strong>Разрешение сканера, dpi:</strong> 1200 x 2400</li><li><strong>Скорость печати (A4):</strong> 32</li><li><strong>Технология:</strong> печати Струйная Область применения Для дома Для офиса Назначение Для печати черно-белых документов Функ</li><li><strong>Тип:</strong> МФУ Дом</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -1908,7 +1876,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Компактное монохромное МФУ для малого офиса с Wi-Fi Компактное МФУ для сверхэкономичной печати черно-белых документов Принтер, сканер, копир. Формат А4 Рекордно низкая себестоимость печати благодаря использованию контейнеров с чернилами вместо картриджей Пигментные чернила Скорость печати до 32 стр./мин Время выхода первого отпечатка от 8 сек. Гарантия производителя 12 мес. или 100 000 отпечатков Ресурс контейнера с чернилами – 6 000 отпечатков Беспроводная печать по Wi-Fi Direct, Epson Connect Фронтальные ёмкости и система Ink lock.</p>
+<p>Тип: МФУ Дом; Модель: МФУ Epson M2120 (CIS) фабрика печати</p>
 <h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Интерфейсы:</strong> USB, тип B, Wi-Fi</li><li><strong>Модель:</strong> МФУ Epson M2120 (CIS) фабрика печати</li><li><strong>Разрешение печати, dpi:</strong> 1440 x 720</li><li><strong>Разрешение сканера, dpi:</strong> 1200 x 2400</li><li><strong>Скорость печати (A4):</strong> 32</li><li><strong>Технология:</strong> печати Струйная Область применения Для дома Для офиса Назначение Для печати черно-белых документов Функция копирования Да Функция сканирова</li><li><strong>Тип:</strong> МФУ Дом</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -1953,7 +1921,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>МФУ лазерное HP LaserJet Pro 3103fdn белый</name>
 <price>175900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f02/ehjk4ia05chnm4a1dxf7uas8f2dgm6so.png</picture>
-<vendor>HP</vendor>
+<vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
@@ -1968,7 +1936,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Модель">МФУ лазерное HP LaserJet Pro 3103fdn белый</param>
-<keywords>HP, МФУ лазерное HP LaserJet Pro 3103fdn белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>CS, МФУ лазерное HP LaserJet Pro 3103fdn белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC3G632A" available="true">
@@ -1977,7 +1945,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>МФУ лазерное HP LaserJet Pro 3103fdw белый</name>
 <price>181900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/cad/l0gy4ipfjya1so0am1h6l82v32rlzsdw.jpg</picture>
-<vendor>HP</vendor>
+<vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
@@ -1992,7 +1960,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Модель">МФУ лазерное HP LaserJet Pro 3103fdw белый</param>
-<keywords>HP, МФУ лазерное HP LaserJet Pro 3103fdw белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>CS, МФУ лазерное HP LaserJet Pro 3103fdw белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACG3410" available="true">
@@ -2001,7 +1969,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>МФУ струйное Canon Pixma G3410 Wi-Fi черный</name>
 <price>113900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/796/ar0ccj2dgy25e3hx3131je7rcv32aezp.png</picture>
-<vendor>Canon</vendor>
+<vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
@@ -2018,7 +1986,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Интерфейсы">позволит осуществлять печать с мобильных устройств и ноутбуков без проводов</param>
 <param name="Модель">МФУ струйное Canon Pixma G3410 Wi-Fi черный</param>
 <param name="Тип">МФУ Дом</param>
-<keywords>Canon, МФУ струйное Canon Pixma G3410 Wi-Fi черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>CS, МФУ струйное Canon Pixma G3410 Wi-Fi черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACG3430" available="true">
@@ -2027,7 +1995,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>МФУ струйное Canon Pixma G3430 Wi-Fi черный</name>
 <price>124900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e3d/0ybc2vf0m0o2mth2ouxempenflt5bds1.png</picture>
-<vendor>Canon</vendor>
+<vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
@@ -2043,7 +2011,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Модель">одновременно сочетает в себе функциональность принтера, копира и сканера. Термоструйная</param>
 <param name="Тип">МФУ Дом</param>
-<keywords>Canon, МФУ струйное Canon Pixma G3430 Wi-Fi черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>CS, МФУ струйное Canon Pixma G3430 Wi-Fi черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC5627501" available="true">
@@ -2113,7 +2081,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Высокопроизводительный принтер формата А0 для инженерных задач и печати рекламных материалов Скорость печати до 28 сек на отпечаток А1 Печатающая головка нового поколения Epson PrecisionCore TFP Картриджи емкостью 110,350 или 700 мл Пигментные чернила Epson UltraChrome XD Печать на листовых и рулонных носителях шириной печати 36 дюймов (914 мм.) Опциональный сканер формата 36” Поддержка PostScript 3 Опциональный жесткий диск емкостью 320 Гб Компактный дизайн, полностью фронтальное управление Качественные, яркие отпечатки, устойчивые к смазыванию и попаданию воды</p>
+<p>Тип: CAD; Модель: T5700D</p>
 <h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Интерфейсы:</strong> USB, Ethernet/Fast Ethernet</li><li><strong>Модель:</strong> T5700D</li><li><strong>Тип:</strong> CAD</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -2140,7 +2108,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Принтер А3+ формата с рекордно низкой себестоимостью печати «Фабрика печати Epson» А3+ формата Рекордно низкая себестоимость печати Встроенные емкости для чернил объёмом по 70мл. 2 емкости для черных чернил Скорость печати до 30 стр./мин. Гарантия производителя 12 мес. или 30000 отпечатков Стартовый набор из 5 контейнеров с чернилами по 70 мл. каждый Ресурс стартового комплекта чернил — около 7100 ч/б документов А4 и 5700 цветных документов А4</p>
+<p>Тип: Принтер для цветной печати; Модель: Принтер Epson L11050 фабрика печати</p>
 <h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Интерфейсы:</strong> USB</li><li><strong>Модель:</strong> Принтер Epson L11050 фабрика печати</li><li><strong>Разрешение печати, dpi:</strong> 5760 x 1440</li><li><strong>Скорость печати (A4):</strong> 30</li><li><strong>Технология:</strong> печати Струйн</li><li><strong>Тип:</strong> Принтер для цветной печати</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -2359,7 +2327,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Профессиональное решение для печати фотографий, репродукций и цветопроб формата до A3+ Пигментные чернила Epson UltraChrome Pro10, 10 цветов Новая 10-канальная печатающая головка Epson Micro Piezo™ Идеальное решение для печати фотографий, репродукций и цветопробы Высокое разрешение 5760×1440 dpi Повышенная пылезащита Интегрированный рулонодержатель Не требуется переключение между стандартным и матовым черным картриджами при смене носителя Печать на листовой, рулонной и плотной бумаге (до 1.5 мм) до формата А3+ (13 дюймов) Удобная панель управления с большим цветным сенсорным экраном 4.3” Самое компактное и легкое устройство в классе</p>
+<p>Модель: Принтер Epson SureColor SC-P700</p>
 <h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Модель:</strong> Принтер Epson SureColor SC-P700</li><li><strong>Разрешение:</strong> 5760×1440</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -2375,7 +2343,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Принтер лазерный HP LaserJet M111w белый</name>
 <price>73900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/3b7/dnber119p460k8m63fvjj0g37zaqf5mz.jpg</picture>
-<vendor>HP</vendor>
+<vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
@@ -2391,7 +2359,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Модель">M111W</param>
 <param name="Технология">печати, используемая в данном принтере, позволит распечатывать тексты и графики отличного качества. Устройство поддерживает печать на конвертах, обычной бумаге, открытках, этикетках</param>
-<keywords>HP, Принтер лазерный HP LaserJet M111w белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>CS, Принтер лазерный HP LaserJet M111w белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC51CB70080" available="true">
@@ -2410,7 +2378,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Ленточный принтер для офисной маркировки Портативный принтер для печати этикеток со встроенной клавиатурой; Работает с лентами шириной 6, 9, 12,18 мм; Идеально подходит для офисной маркировки, в т.ч. для картотек, хранилищ, финансовых департаментов и для печати штрих-кодов; Эргономичный и портативный; Выделенные кнопки позволяют быстро перейти к процессу печати и отрезу бумаги; Принтер способен создавать и воспроизводить из памяти до 50 сохраненных этикеток; Подсветка экрана позволяет видеть макет этикетки вне зависимости от условий освещенности</p>
+<p>Тип: Ленточный; Модель: Принтер ленточный Epson LW400</p>
 <h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Модель:</strong> Принтер ленточный Epson LW400</li><li><strong>Технология:</strong> печати Термотрансферная Длина носителя, метров 9 Ширина носителя, миллиметров 6 9 12 18</li><li><strong>Тип:</strong> Ленточный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -2594,7 +2562,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Проектор ViewSonic PX701-4K – это высококачественное решение для домашнего кинотеатра и профессиональных презентаций, которое обеспечит четкое изображение в 4K разрешении и превосходную яркость.</p>
+<p>Тип: Проектор домашний; Модель: Проектор для дом. кино ViewSonic PX701-4K</p>
 <h3>Характеристики</h3><ul><li><strong>3D:</strong> Нет</li><li><strong>DisplayPort:</strong> Нет</li><li><strong>DVI-D:</strong> Нет</li><li><strong>Ethernet:</strong> Нет</li><li><strong>HDBaseT:</strong> Нет</li><li><strong>HDMI:</strong> 2</li><li><strong>S-Video:</strong> Нет</li><li><strong>USB:</strong> Тип A</li><li><strong>VGA:</strong> Нет</li><li><strong>Wi-Fi:</strong> Нет</li><li><strong>Вес:</strong> 3.6 кг</li><li><strong>Гарантия:</strong> 24 мес.</li><li><strong>Интерактивный:</strong> Нет</li><li><strong>Контрастность:</strong> 12 000 : 1</li><li><strong>Модель:</strong> Проектор для дом. кино ViewSonic PX701-4K</li><li><strong>Проекционный коэффициент (Throw ratio):</strong> 1.5 - 1.65</li><li><strong>Разрешение:</strong> 4K Ultra HD (3840x2160)</li><li><strong>Срок службы лампы (норм./ эконом.) ч:</strong> 6000/20000</li><li><strong>Технология:</strong> DLP</li><li><strong>Тип:</strong> Проектор домашний</li><li><strong>Тип источника света:</strong> Ламповый источник света</li><li><strong>Уровень шума (норм./эконом.) Дб:</strong> 27</li><li><strong>Яркость (ANSI) лмн:</strong> 3200</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -2640,7 +2608,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Создать впечатление от большого экрана дома легко, если у вас есть проектор Epson CO-FD01, он также идеально подходит для офиса или класса. Вы можете получить впечатляющий 391-дюймовый дисплей и иметь Android TV. Он прост в настройке и имеет яркость 3000 люменов для четкого и яркого изображения. Долговечное решение со сроком службы лампы, обеспечивающим 18 лет развлечений. Источник света: лампа Тип лампы: UHE Типы проекции: фронтальная Тип матрицы: 3LCD Разрешение матрицы: 1920 × 1080 (FHD) Максимальное поддерживаемое разрешение: 1920 × 1080 (FHD) Яркость, ANSI: 3000 лм Контрастность: 350:1 Количество отображаемых цветов: 16.7 млн. Поддержка форматов изображения: 16:9 Проекционное отношение: 1.19..1.61:1 Коррекция трапецеидальных искажений (°): вертикальная ±30, горизонтальная ±30 Минимальное проекционное расстояние: 0.9 м Максимальное проекционное расстояние: 10.4 м Минимальная диагональ изображения: 0.66 м Максимальная диагональ изображения: 9.93 м Фокусировка: ручная Вертикальная развёртка: 100..120 Гц Интерфейсы и порты: 1 × HDMI 1 × USB-A 2.0 1 × USB-B 2.0 Функциональные особенности: поддержка MHL встроенный динамик…</p>
+<p>Создать впечатление от большого экрана дома легко, если у вас есть проектор Epson CO-FD01, он также идеально подходит для офиса или класса. Вы можете получить впечатляющий 391-дюймовый дисплей и иметь Android TV. Он прост в настройке и имеет яркость 3000 люменов для четкого и яркого изображения. Долговечное решение со сроком службы лампы, обеспечивающим 18 лет развлечений. Источник света: лампа Тип лампы: UHE Типы проекции: фронтальная Тип матрицы: 3LCD Разрешение матрицы: 1920 × 1080 (FHD) Максимальное поддерживаемое разрешение: 1920 × 1080 (FHD) Яркость, ANSI: 3000 лм Контрастность: 350:1 Количество отображаемых цветов: 16.7 млн. Поддержка форматов изображения: 16:9 Проекционное отношение: 1.19..1.61:1 Коррекция трапецеидальных искажений (°): вертикальная ±30, горизонтальная ±30 Минимальное проекционное расстояние: 0.9 м Максимальное проекционное расстояние: 10.4 м Минимальная диагональ изображения: 0.66 м Максимальная диагональ изображения: 9.93 м Фокусировка: ручная Вертикальная развёртка: 100..120 Гц Интерфейсы и порты: 1 × HDMI 1 × USB-A 2.0 1 × USB-B 2.0 Функциональные особенности: поддержка MHL встроенный динамик Характеристики встроенных динамиков: 1 × 5 Вт Безопасность…</p>
 <h3>Характеристики</h3><ul><li><strong>Вес:</strong> 2.4 кг</li><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Источник света:</strong> Лампа</li><li><strong>Контрастность:</strong> 350:1</li><li><strong>Модель:</strong> Проектор для дома Epson CO-FD01</li><li><strong>Тип:</strong> Проектор для дома</li><li><strong>Цвет:</strong> Белый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -2765,7 +2733,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Доступный яркий WXGA проектор Технология: LCD: 3 х 0.59" P-Si TFT Разрешение: WXGA (1280х800) Яркость: 3000 ANSI lm Цветовая яркость: 3000 ANSI lm Зум 1,35х (цифровой) Передача изображения по беспроводной сети Wi-fi (опционально) Функция Quick Corner Возможность просмотра изображений напрямую с USB носителей USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю Встроенный динамик 5 Вт Моментальное выключение Вес: 2,2 кг</p>
+<p>Тип: Проектор универсальный; Модель: Проектор универсальный Epson CO-WX02</p>
 <h3>Характеристики</h3><ul><li><strong>USB:</strong> Display 3-в-1 – передача изображения, звука и сигналов управления по</li><li><strong>Wi-Fi:</strong> (опционально) Функция Quick Corner Возможность просмотра изображений напрямую с</li><li><strong>Вес:</strong> 2.2 кг</li><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Модель:</strong> Проектор универсальный Epson CO-WX02</li><li><strong>Разрешение:</strong> WXGA (1280х800)</li><li><strong>Технология:</strong> LCD</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Яркость:</strong> 3000 ANSI lm</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -2797,7 +2765,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Epson EB-E24 — это компактный и надёжный 3LCD-проектор, созданный для проведения ярких презентаций, обучающих сессий и семинаров. Благодаря сочетанию высокой яркости и контрастности, устройство обеспечивает чёткое изображение даже при дневном освещении.</p>
+<p>Тип: Проектор универсальный; Модель: Проектор универсальный Epson EB-E24</p>
 <h3>Характеристики</h3><ul><li><strong>Вес:</strong> 2,4 кг</li><li><strong>Гарантия:</strong> 24 мес.</li><li><strong>Модель:</strong> Проектор универсальный Epson EB-E24</li><li><strong>Разрешение:</strong> XGA (1024×768)</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Яркость:</strong> 3600 люмен</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -2827,7 +2795,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Проектор Epson EB-W06 создавался с расчетом, чтобы установка и настройка были как можно более быстрыми. Набор функциональных возможностей проектора включает быструю коррекцию трапецеидальных искажений, долгий ресурс лампы и опциональную поддержку Wi-Fi, которая позволяет отображать контент с мобильных устройств с помощью приложения iProjection. Технология: LCD: 3 × 0.59" P-Si TFT Разрешение: WXGA (1280×800) Яркость: 3700 ANSI lm Цветовая яркость: 3700 ANSI lm Контрастность: 16000:1 Зум 1,2× (оптический) Передача изображения по беспроводной сети Wi-fi (опционально) Автоматическая коррекция вертикальных трапецеидальных искажений Быстрая коррекция горизонтальных трапецеидальных искажений ручкой-слайдером Функция Quick Corner Возможность просмотра изображений напрямую с USB носителей USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю Функция Split Screen Встроенный динамик 2 Вт Фронтальный вывод тепла Моментальное выключение Вес: 2,5 кг</p>
+<p>Тип: Проектор универсальный; Модель: Проектор универсальный Epson EB-W06</p>
 <h3>Характеристики</h3><ul><li><strong>DisplayPort:</strong> Нет</li><li><strong>DVI-D:</strong> Нет</li><li><strong>Ethernet:</strong> Нет</li><li><strong>HDBaseT:</strong> Нет</li><li><strong>HDMI:</strong> Есть</li><li><strong>S-Video:</strong> Нет</li><li><strong>USB:</strong> Тип A и B</li><li><strong>VGA:</strong> 1</li><li><strong>Wi-Fi:</strong> Опция</li><li><strong>Вес:</strong> 2.5 кг</li><li><strong>Гарантия:</strong> 24 мес.</li><li><strong>Интерактивный:</strong> Нет</li><li><strong>Коды:</strong> V12H005A01, V12H003B23, V12H003P13, V12H003P14, V13H134A32, V13H010L97</li><li><strong>Контрастность:</strong> 16 000 : 1</li><li><strong>Модель:</strong> Проектор универсальный Epson EB-W06</li><li><strong>Проекционный коэффициент (Throw ratio):</strong> 1 - 1.2</li><li><strong>Разрешение:</strong> 1280 x 800</li><li><strong>Разрешение:</strong> Оригинальное</li><li><strong>Срок службы лампы (норм./ эконом.) ч:</strong> 6000/12000</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Тип источника света:</strong> Ламповый источник света</li><li><strong>Уровень шума (норм./эконом.) Дб:</strong> 28</li><li><strong>Яркость:</strong> 3700 ANSI lm</li><li><strong>Яркость (ANSI) лмн:</strong> 3700</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -2875,7 +2843,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>pson EB-W51 — высококачественный, яркий, мобильный проектор для дома и офиса, построенный на базе технологии Epson 3LCD, с разрешением WXGA и набором дополнительных функций для большей гибкости и простоты использования. Смотрите кино на экране диагональю до 300 дюймов. Быстро начинайте деловую презентацию, не тратя время на предварительную настройку — проектор создавался с расчетом, чтобы установка была как можно более быстрой! Благодаря 4000 люмен яркости и технологии 3LCD, цвета на экране будут яркими и точными, а изображение — таким, как задумал режиссер. Пользователю остается лишь наслаждаться просмотром — ресурс одной лампы позволяет смотреть по фильму в день на протяжении 18 лет. Проектор универсальный Epson EB-W51. Технология: LCD: 3 × 0.59" P-Si TFT Разрешение: WXGA (1280×800) Яркость: 4000 ANSI lm Цветовая яркость: 4000 ANSI lm Контрастность…</p>
+<p>Тип: Проектор универсальный; Модель: Проектор универсальный Epson EB-W51; Цвет: Белый</p>
 <h3>Характеристики</h3><ul><li><strong>3D:</strong> Нет</li><li><strong>DisplayPort:</strong> Нет</li><li><strong>DVI-D:</strong> Нет</li><li><strong>Ethernet:</strong> Нет</li><li><strong>HDBaseT:</strong> Нет</li><li><strong>HDMI:</strong> Есть</li><li><strong>S-Video:</strong> Нет</li><li><strong>USB:</strong> Тип A и B</li><li><strong>VGA:</strong> 1</li><li><strong>Wi-Fi:</strong> Опция</li><li><strong>Вес:</strong> 2.5 кг</li><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Интерактивный:</strong> Нет</li><li><strong>Источник света:</strong> Лампа</li><li><strong>Коды:</strong> V12H005A01, V12H757040, V12H758040, V13H010L97, V13H134A32, V12H003B23, V12H003P13, V12H003P14</li><li><strong>Контрастность:</strong> 16 000 : 1</li><li><strong>Модель:</strong> Проектор универсальный Epson EB-W51</li><li><strong>Проекционный коэффициент (Throw ratio):</strong> 1 - 1.2</li><li><strong>Разрешение:</strong> 1280 x 800</li><li><strong>Разрешение:</strong> Оригинальное</li><li><strong>Срок службы лампы (норм./ эконом.) ч:</strong> 6000/12000</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Тип источника света:</strong> Ламповый источник света</li><li><strong>Уровень шума (норм./эконом.) Дб:</strong> 28</li><li><strong>Цвет:</strong> Белый</li><li><strong>Яркость:</strong> 4000 ANSI lm</li><li><strong>Яркость (ANSI) лмн:</strong> 4000</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -2908,34 +2876,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Яркость">4000 ANSI lm</param>
 <param name="Яркость (ANSI) лмн">4000</param>
 <keywords>Epson, Проектор универсальный Epson EB-W51, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="ACV11HB57042" available="true">
-<categoryId></categoryId>
-<vendorCode>ACV11HB57042</vendorCode>
-<name>Проектор универсальный Epson EB-W53 белый</name>
-<price>394900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Проектор универсальный Epson EB-W53 белый</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Проектор Epson EB-W53 — надёжное решение для офиса, учебных классов и домашних презентаций. Благодаря технологии 3LCD изображение получается ярким и реалистичным. Разрешение WXGA (1280×800) и яркость 4000 люмен позволяют выводить чёткую картинку даже в хорошо освещённом помещении. Контрастность 16 000:1 обеспечивает глубокие тёмные и насыщенные светлые оттенки. Лампа рассчитана на долгий срок службы — до 12 000 часов в экономичном режиме. Размер изображения может достигать 375 дюймов, что делает проектор удобным для демонстрации на большой аудитории. В устройстве есть два HDMI-входа и USB-разъёмы для подключения различных источников. Встроенный динамик мощностью 2 Вт подойдёт для простого звукового сопровождения. Поддерживается коррекция трапецеидальных искажений и функция разделения экрана, что облегчает настройку и расширяет возможности использования. Компактные размеры и вес всего 2,5 кг позволяют легко переносить проектор и использовать его в разных помещениях.</p>
-<h3>Характеристики</h3><ul><li><strong>Вес:</strong> 2,5 кг</li><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Модель:</strong> Проектор универсальный Epson EB-W53 белый</li><li><strong>Разрешение:</strong> WXGA (1280×800)</li><li><strong>Яркость:</strong> 4000 люмен</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Вес">2,5 кг</param>
-<param name="Гарантия">12 мес.</param>
-<param name="Модель">Проектор универсальный Epson EB-W53 белый</param>
-<param name="Разрешение">WXGA (1280×800)</param>
-<param name="Яркость">4000 люмен</param>
-<keywords>Epson, Проектор универсальный Epson EB-W53 белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACV11HB35240" available="true">
@@ -3009,7 +2949,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>БЕСПРОВОДНОЙ ручной сканер штрихкодов серии HN-13 отличаются лёгким и стильным дизайном, обеспечивает удобное считывание как традиционных бумажных, так и экранных штрихкодов. Он поддерживает различные POS-системы, включая Android, Windows и macOS, благодаря функции Plug-and-Play. Ручной сканер с функцией Plug-and-Play Поддержка POS-систем, таких как Android, Windows и Mac Полное сканирование штрихкодов Поддержка сканирования как одномерных, так и двухмерных штрихкодов Многонациональные клавиатуры и вывод символов Поддержка 84 национальных клавиатур и символов китайского, японского, корейского и тайского языков Версия ручного сканера штрихкодов с Bluetooth Беспроводная версия сканера с Bluetooth поддерживает беспроводную связь на расстоянии до 10 метров Полный набор дополнительных аксессуаров Дополнительные аксессуары включают последовательные кабели, адаптеры, подставки и Bluetooth-модули</p>
+<p>Модель: Сканер штрих-кода IDPRT HN-1358SR черный</p>
 <h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Интерфейсы:</strong> Type-C Материал корпуса: PC+ABS Уведомление: Звуковой сигнал, светодиод</li><li><strong>Модель:</strong> Сканер штрих-кода IDPRT HN-1358SR черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -3035,7 +2975,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>ПРОВОДНОЙ сканер штрих-кодов HN-3308SR — это ручной 2D-имидж сканер, который считывает как одномерные (1D), так и двумерные (2D, например, QR-коды) штрих-коды с помощью камеры (2D Imager), а не лазера, и обычно подключен к системе проводом (USB). Он относится к категории проводных и предназначен для ручного использования, считывая коды с высокой точностью.</p>
+<p>Модель: Сканер штрих-кода IDPRT HN-3308SR черный</p>
 <h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Модель:</strong> Сканер штрих-кода IDPRT HN-3308SR черный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -3950,37 +3890,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Чернила Epson C13T09C54A 108 EcoTank для L8050/18050 светло-голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="ACC13T09C64A" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T09C64A</vendorCode>
-<name>Чернила Epson C13T09C64A 108 EcoTank для L8050/18050 светло-пурпурный</name>
-<price>10900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/a93/mzpzbizytnn2r0vgj1f7iksyrrre3zcc.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Чернила Epson C13T09C64A 108 EcoTank для L8050/18050 светло-пурпурный</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Оригинальный чернила Epson C13T09C64A голубой цвета для L8050 / L18050.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> L8050 / L18050</li><li><strong>Коды:</strong> C13T09C64A</li><li><strong>Модель:</strong> C13T09C64A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Гарантия">3 мес.</param>
-<param name="Для бренда">Epson</param>
-<param name="Для устройства">L8050 / L18050</param>
-<param name="Коды">C13T09C64A</param>
-<param name="Модель">C13T09C64A</param>
-<param name="Тип">Чернила</param>
-<param name="Тип печати">Струйная</param>
-<param name="Цвет">Голубой</param>
-<keywords>Epson, Чернила Epson C13T09C64A 108 EcoTank для L8050/18050 светло-пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="ACC13T66414A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T66414A</vendorCode>
@@ -4267,32 +4176,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Светло-пурпурный</param>
 <keywords>Epson, Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="AC5050101" available="true">
-<categoryId></categoryId>
-<vendorCode>AC5050101</vendorCode>
-<name>Шредер Fellowes Powershred LX201 белый</name>
-<price>198900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/bb3/srjj8vt77lmeoqdjdg4ybapui7tj29c1.jpg</picture>
-<vendor>Fellowes</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Шредер Fellowes Powershred LX201 белый</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Шредер Powershred® LX201 белый Шредер нового поколения с непревзойденным удобством и эффективностью P-5 уровень секретности, резка листа А4 на 2200+ фрагментов Уничтожает до 12 листов одновременно Перекрестная резка - 2х12 мм Вместительная корзина 22 литров ≈ 350 листов А4 Гарантия 2 года на устройство и 5 лет на ножи Возможности уничтожения - скобы, карты, диски, скрепки Артикул fs-50500 Количество пользователей 1-3 Пользователя Рекомендуемое количество листов в день 1000 Рекомендуемое количество кредитных карт в день 25 Рекомендуемое количество CD дисков в день нет Загрузка, листов (A4, 70 гр./м²) 12 Тип Резки Перекрест. Размер резки, мм 2 x 12 Уровень секретности, DIN 66399 P-5 Количество фрагментов при резке листа А4, шт. ≥2000 Уровень секретности для кредитных карт, DIN 66399 T-5 Уровень секретности для CD дисков, DIN 66399 нет Ширина входа, мм 230 Скорость резки, м/мин 2 Рабочий цикл, мин 10 / 15 Уничтожение степлерных скоб да Уничтожение скрепок да Уничтожение кредитных карт да</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес.</li><li><strong>Модель:</strong> Шредер Fellowes Powershred LX201 белый</li><li><strong>Тип:</strong> Шредеры офисные</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Гарантия">24 мес.</param>
-<param name="Модель">Шредер Fellowes Powershred LX201 белый</param>
-<param name="Тип">Шредеры офисные</param>
-<keywords>Fellowes, Шредер Fellowes Powershred LX201 белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC4680101" available="true">
