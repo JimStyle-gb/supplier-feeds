@@ -376,6 +376,52 @@ def _normalize_epson_device_list(value: str) -> str:
     return " / ".join(parts)
 
 
+
+def _normalize_consumable_name(name: str, *, kind: str) -> str:
+    s = _clean_text(name)
+    if not s or kind != "consumable":
+        return s
+
+    # Склеенные коды + линейки/маркеры
+    s = re.sub(r"(?iu)(\bT\d[A-Z0-9]{4,10})(?=UltraChrome\b)", r"\1 ", s)
+    s = re.sub(r"(?iu)(\bC1[23][A-Z0-9]{6,10})(?=Singlepack\b)", r"\1 ", s)
+    s = re.sub(r"(?iu)(\bC1[23][A-Z0-9]{6,10})(?=Maintenance\s+Box\b)", r"\1 ", s)
+
+    # Единицы измерения
+    s = re.sub(r"(?iu)(\d)(ml)\b", r"\1 ml", s)
+    s = re.sub(r"(?iu)(\d)(мл)\b", r"\1 мл", s)
+
+    # Аккуратная нормализация служебных хвостов
+    s = re.sub(r"(?iu)\bSinglepack\b", "Singlepack", s)
+    s = re.sub(r"(?iu)\bMaintenance\s+Box\b", "Maintenance Box", s)
+    s = re.sub(r"(?iu)\bUltraChrome\b", "UltraChrome", s)
+
+    return _clean_text(s)
+
+
+def _original_consumable_prefix(subject: str) -> str:
+    low = _cf(subject)
+    if "емкость" in low or "ёмкость" in low:
+        return "Оригинальная"
+    if low == "чернила":
+        return "Оригинальные"
+    return "Оригинальный"
+
+
+def _color_phrase(color_value: str) -> str:
+    color = _clean_text(color_value)
+    if not color:
+        return ""
+    low = _cf(color)
+    if low.endswith(("ый", "ий", "ой")):
+        return f"{color[:-2]}ого цвета"
+    if low.endswith("ая"):
+        return f"{color[:-2]}ой цвета"
+    if low.endswith("ое"):
+        return f"{color[:-2]}ого цвета"
+    return f"{color} цвета"
+
+
 def _infer_consumable_type(name: str, desc: str, current_type: str) -> str:
     low = _cf(" ".join([name, desc, current_type]))
     name_cf = _cf(name)
@@ -533,17 +579,19 @@ def _build_consumable_short_desc(params: list[tuple[str, str]]) -> str:
         code_hint = codes_value.split('/')[0].strip()
 
     parts = []
+    original_prefix = _original_consumable_prefix(subject)
     if prefix and code_hint:
-        parts.append(f"Оригинальный {subject.lower()} {prefix} {code_hint}")
+        parts.append(f"{original_prefix} {subject.lower()} {prefix} {code_hint}")
     elif prefix:
-        parts.append(f"Оригинальный {subject.lower()} {prefix}")
+        parts.append(f"{original_prefix} {subject.lower()} {prefix}")
     elif code_hint:
         parts.append(f"{subject} {code_hint}")
     else:
         parts.append(subject)
 
-    if color_value:
-        parts[-1] += f" {color_value.lower()} цвета"
+    color_phrase = _color_phrase(color_value)
+    if color_phrase:
+        parts[-1] += f" {color_phrase}"
 
     if device_value:
         parts[-1] += f" для {device_value}"
