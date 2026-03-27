@@ -23,7 +23,6 @@ from __future__ import annotations
 import re
 
 from cs.core import OfferOut
-from cs.pricing import compute_price
 from cs.util import norm_ws
 from suppliers.alstyle.desc_clean import sanitize_native_desc
 from suppliers.alstyle.desc_extract import extract_desc_spec_pairs
@@ -464,13 +463,12 @@ def build_offer(
             params.append(("Совместимость", inferred_compat))
 
     price_in = normalize_price_in(src.purchase_price_text, src.price_text)
-    price = compute_price(price_in)
 
     offer = OfferOut(
         oid=oid,
         available=available,
         name=name,
-        price=price,
+        price=price_in,
         pictures=pictures,
         vendor=vendor,
         params=params,
