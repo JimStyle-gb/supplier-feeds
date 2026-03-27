@@ -3580,7 +3580,7 @@ class OfferOut:
     oid: str
     available: bool
     name: str
-    price: int
+    price: int | None
     pictures: list[str]
     vendor: str
     params: list[tuple[str, str]]
@@ -3606,6 +3606,7 @@ class OfferOut:
             _spec_pairs = []
         native_desc = strip_service_kv_lines(native_desc)
         vendor = pick_vendor(self.vendor, name_full, self.params, native_desc, public_vendor=public_vendor)
+        price_final = compute_price(self.price)
 
         # тройное обогащение: params + из описания
         params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in (self.params or [])]
@@ -3690,7 +3691,7 @@ class OfferOut:
             f"<categoryId></categoryId>\n"
             f"<vendorCode>{xml_escape_text(self.oid)}</vendorCode>\n"
             f"<name>{xml_escape_text(name_short)}</name>\n"
-            f"<price>{int(self.price)}</price>"
+            f"<price>{int(price_final)}</price>"
             f"{pics_xml}\n"
             f"<vendor>{xml_escape_text(vendor)}</vendor>\n"
             f"<currencyId>{xml_escape_text(currency_id)}</currencyId>\n"
