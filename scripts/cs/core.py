@@ -33,7 +33,6 @@ from .keywords import build_keywords, CS_KEYWORDS_MAX_LEN
 from .description import build_description, build_chars_block
 from .pricing import compute_price, CS_PRICE_TIERS
 from .meta import now_almaty, next_run_at_hour
-from .policy import SupplierPolicy, get_supplier_policy, _supplier_code_from_oid
 from .validators import validate_cs_yml
 from .util import norm_ws, safe_int, _truncate_text
 from .writer import (
@@ -3525,56 +3524,30 @@ def pick_vendor(
     *,
     public_vendor: str = "CS",
 ) -> str:
-    # CS: vendor выбираем единообразно для всех поставщиков:
-    # 1) если vendor_src задан адаптером — используем его,
-    # 2) иначе ищем бренд по имени товара,
-    # 3) затем по описанию,
-    # 4) затем по параметрам,
-    # 5) иначе fallback (public_vendor), который НЕ должен быть названием поставщика.
+    """
+    Общий vendor-guard без supplier-rescue.
+
+    Правило CS:
+    - core НЕ ищет vendor в name / description / params;
+    - core принимает vendor, который уже отдал адаптер;
+    - если vendor пустой/мусорный — применяет только общий fallback public_vendor.
+
+    Аргументы name/params/desc_html оставлены для back-compat сигнатуры,
+    чтобы не ломать существующие вызовы и адаптеры.
+    """
+    _ = name
+    _ = params
+    _ = desc_html
+
     v = norm_ws(vendor_src)
     if v:
         v2 = normalize_vendor(v)
         if v2 and (not _is_bad_vendor_token(v2)):
             return v2
 
-
-    # CS: спец-правило для SMART интерактивных панелей (модельный префикс SBID-)
-    if name and re.search(r"\bSBID-", name, flags=re.IGNORECASE):
-        return "SMART"
-
-    def _find_in(text: str) -> str:
-        if not text:
-            return ""
-        hay = text.lower()
-        best_canon = ""
-        best_pos = 10**9
-        for key, canon in CS_BRANDS_MAP.items():
-            m = re.search(rf"\b{re.escape(key)}\b", hay)
-            if m:
-                pos = m.start()
-                if pos < best_pos:
-                    best_pos = pos
-                    best_canon = canon
-        return best_canon
-
-    # 1) name
-    cand = _find_in(name or "")
-    if cand:
-        return cand
-
-    # 2) description (HTML)
-    cand = _find_in(desc_html or "")
-    if cand:
-        return cand
-
-    # 3) params
-    if params:
-        joined = " ".join([f"{k} {val}" for k, val in params])
-        cand = _find_in(joined)
-        if cand:
-            return cand
-
     return norm_ws(public_vendor)
+
+
 @dataclass
 class OfferOut:
     oid: str
@@ -3597,47 +3570,18 @@ class OfferOut:
         name_full = normalize_offer_name(self.name)
         name_full = sanitize_mixed_text(name_full)
         native_desc = fix_text(self.native_desc)
-        # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
-        native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
-        policy = get_supplier_policy(self.oid)
-        # AlStyle: инлайновые "Основные характеристики" часто ломают пары key/value.
-        # Чтобы не плодить мусорные params (80->Совместимость и т.п.), пары из desc НЕ переносим в params.
-        if policy.drop_desc_specs_pairs:
-            _spec_pairs = []
+        # RAW должен уже отдавать идеальные params и чистое supplier-description.
+        # Core НЕ переносит характеристики из description в params и не enrich'ит их из desc/name.
         native_desc = strip_service_kv_lines(native_desc)
         vendor = pick_vendor(self.vendor, name_full, self.params, native_desc, public_vendor=public_vendor)
         price_final = compute_price(self.price)
 
-        # тройное обогащение: params + из описания
+        # RAW обязан отдавать уже чистые и финальные supplier params.
+        # Core не чистит, не нормализует и не перестраивает параметры под поставщика.
         params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in (self.params or [])]
-        if _spec_pairs:
-            params.extend(_spec_pairs)
-        if policy.enable_enrich_from_desc:
-            enrich_params_from_desc(params, native_desc)
-        if policy.enable_enrich_from_name_desc:
-            enrich_params_from_name_and_desc(params, name_full, native_desc)
-        # CS: Совместимость — добавляем только безопасно и только где нужно.
-        if policy.enable_auto_compat:
-            ensure_compatibility_param(params, name_full, native_desc)
-
-        # финальная починка смешения кир/лат в params после всех enrich/compat
-        params = [(sanitize_mixed_text(k), sanitize_mixed_text(v)) for (k, v) in params]
-
-        # чистим и сортируем
-        # Важно: для AkCent (AC) адаптер уже отдаёт 'идеальные' params по schema, поэтому
-        # чистку/эвристики core (compat/dims/volume) отключаем, чтобы не терять валидные ключи.
-        if policy.enable_clean_params:
-            params = clean_params(params)
-        params = apply_supplier_param_rules(params, self.oid, name_full)
-        if policy.enable_apply_color_from_name:
-            params = apply_color_from_name(params, name_full)
         params_sorted = sort_params(params, priority=list(param_priority or []))
         chars_html = _cs_chars_block_html(params_sorted)
-
-                # выносим "параметры-фразы" в примечания и оставляем чистые характеристики
         notes: list[str] = []
-        if policy.enable_split_params_for_chars:
-            params_sorted, notes = split_params_for_chars(params_sorted)
 
         # CS: лимитируем <name> (умно для NVPrint)
         name_short = enforce_name_policy(self.oid, name_full, params_sorted)
@@ -3654,15 +3598,8 @@ class OfferOut:
         keywords = _truncate_text(keywords, int(CS_KEYWORDS_MAX_LEN or CS_KEYWORDS_MAX_LEN_FALLBACK))
         keywords = sanitize_mixed_text(keywords)
 
-        # Финальный санитайзер для AC/VT: добиваем смешение кир/лат в name/keywords/params.
-        # Применяем ПОСЛЕ всех enrich/merge, чтобы не возвращалось.
-        if _supplier_code_from_oid(self.oid) in ("AC", "VT"):
-            self.name = sanitize_mixed_text(self.name)
-            keywords = sanitize_mixed_text(keywords)
-            fixed_params: list[tuple[str, str]] = []
-            for pk, pv in params:
-                fixed_params.append((pk, sanitize_mixed_text(pv)))
-            params = fixed_params
+        # Core не знает поставщиков и не применяет supplier-specific санитайзеры.
+        # Любая такая очистка должна происходить только в RAW / supplier-layer.
 
         pics_xml = ""
         pics = normalize_pictures(self.pictures or [])
