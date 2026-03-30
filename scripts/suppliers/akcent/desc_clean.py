@@ -426,6 +426,9 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
         return text
 
     lead = _waste_tank_lead_sentence(name, params)
+    text = re.sub(r"(?iu)^технические\s+характеристики\s*", "", text).strip(" .;,-")
+    text = re.sub(r"(?iu)^описание\s*[:.-]?\s*", "", text).strip(" .;,-")
+
     generic_patterns = [
         r"(?iu)^(?:сменная\s+)?(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил\.?$",
         r"(?iu)^оригинальная\s+(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?\.?$",
@@ -434,9 +437,13 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
         return lead
 
     low = text.casefold().replace("ё", "е")
-    if (brand and _clean_text(brand).casefold().replace("ё", "е") not in low) or (model and _clean_text(model).casefold().replace("ё", "е") not in low):
-        if len(text) < 180:
-            return _clean_text(f"{lead} {text}")
+    brand_ok = not brand or _clean_text(brand).casefold().replace("ё", "е") in low
+    model_ok = not model or _clean_text(model).casefold().replace("ё", "е") in low
+
+    if (not brand_ok or not model_ok) and len(text) < 220:
+        if text and not text.endswith("."):
+            text += "."
+        return _clean_text(f"{lead} {text}")
 
     return text
 
