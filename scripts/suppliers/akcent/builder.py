@@ -30,6 +30,7 @@ from cs.core import OfferOut
 from cs.util import norm_ws
 from suppliers.akcent.compat import clean_device_value, reconcile_params
 from suppliers.akcent.desc_clean import (
+    build_consumable_short_desc as desc_build_consumable_short_desc,
     clean_description_text,
     finalize_waste_tank_desc as desc_finalize_waste_tank_desc,
     soften_consumable_body as desc_soften_consumable_body,
@@ -990,7 +991,7 @@ def _build_single_offer(
     cleaned_desc = desc_soften_consumable_body(cleaned_desc, merged_params, kind=kind)
     if kind == "consumable":
         cleaned_desc = desc_strip_name_prefix_from_desc(cleaned_desc, name)
-        short_desc = _build_consumable_short_desc(merged_params).strip()
+        short_desc = desc_build_consumable_short_desc(merged_params).strip()
         low_desc = _cf(cleaned_desc)
         if not cleaned_desc:
             cleaned_desc = short_desc
