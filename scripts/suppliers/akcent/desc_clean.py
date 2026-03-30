@@ -222,6 +222,224 @@ def _soft_wrap_lines(lines: Iterable[str]) -> list[str]:
 
 
 # Главная очистка description в multiline plain-text.
+
+
+def _param_value(params: list[tuple[str, str]], key: str) -> str:
+    key_cf = _clean_text(key).casefold().replace("ё", "е")
+    for k, v in params or []:
+        k_cf = _clean_text(k).casefold().replace("ё", "е")
+        if k_cf == key_cf:
+            return _clean_text(v)
+    return ""
+
+
+def _original_consumable_prefix(subject: str) -> str:
+    low = _clean_text(subject).casefold().replace("ё", "е")
+    if "емкость" in low or "ёмкость" in low:
+        return "Оригинальная"
+    if low == "чернила":
+        return "Оригинальные"
+    return "Оригинальный"
+
+
+def _color_phrase(color_value: str) -> str:
+    color = _clean_text(color_value)
+    if not color:
+        return ""
+    low = color.casefold().replace("ё", "е")
+    if low.endswith(("ый", "ий", "ой")):
+        return f"{color[:-2]}ого цвета"
+    if low.endswith("ая"):
+        return f"{color[:-2]}ой цвета"
+    if low.endswith("ое"):
+        return f"{color[:-2]}ого цвета"
+    return f"{color} цвета"
+
+
+def _build_consumable_short_desc(params: list[tuple[str, str]]) -> str:
+    type_value = _clean_text(_param_value(params, "Тип") or "Расходный материал")
+    brand_value = _clean_text(
+        _param_value(params, "Для бренда")
+        or _param_value(params, "Бренд")
+        or _param_value(params, "Производитель")
+    )
+    model_value = _clean_text(_param_value(params, "Модель"))
+    codes_value = _clean_text(_param_value(params, "Коды"))
+    color_value = _clean_text(_param_value(params, "Цвет"))
+    resource_value = _clean_text(_param_value(params, "Ресурс"))
+    device_value = _clean_text(_param_value(params, "Для устройства") or _param_value(params, "Совместимость"))
+
+    subject = type_value or "Расходный материал"
+    prefix = brand_value or ""
+
+    code_hint = ""
+    if model_value and codes_value and model_value in codes_value:
+        code_hint = model_value
+    elif model_value:
+        code_hint = model_value
+    elif codes_value:
+        code_hint = codes_value.split('/')[0].strip()
+
+    parts = []
+    original_prefix = _original_consumable_prefix(subject)
+    if prefix and code_hint:
+        parts.append(f"{original_prefix} {subject.lower()} {prefix} {code_hint}")
+    elif prefix:
+        parts.append(f"{original_prefix} {subject.lower()} {prefix}")
+    elif code_hint:
+        parts.append(f"{subject} {code_hint}")
+    else:
+        parts.append(subject)
+
+    color_phrase = _color_phrase(color_value)
+    if color_phrase:
+        parts[-1] += f" {color_phrase}"
+
+    if device_value:
+        parts[-1] += f" для {device_value}"
+
+    if resource_value:
+        parts[-1] += f". Ресурс: {resource_value}"
+
+    return _clean_text(parts[-1]).strip(". ") + "."
+
+
+def _normalize_epson_device_list(value: str) -> str:
+    s = _clean_text(value)
+    if not s:
+        return ""
+    s = re.sub(r"(?iu)\bMAINTENANCE\s+BOX\b", "Maintenance Box", s)
+    s = re.sub(r"(?iu)\bULTRACHROME\b", "UltraChrome", s)
+    s = re.sub(r"(?iu)\s*/\s*", " / ", s)
+    s = norm_ws(s)
+    return s
+
+
+def _normalize_consumable_device_value(value: str) -> str:
+    src = _clean_text(value)
+    if not src:
+        return ""
+    parts = re.split(r"(?iu)\s*(?:;|,|\n|/)\s*", src)
+    cleaned = [_normalize_epson_device_list(x) for x in parts]
+    cleaned = [x for x in cleaned if x]
+    out: list[str] = []
+    seen: set[str] = set()
+    for item in cleaned:
+        key = item.casefold().replace("ё", "е")
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(item)
+    return " / ".join(out)
+
+
+def _drop_consumable_device_narrative(clean_desc: str, params: list[tuple[str, str]], *, kind: str) -> str:
+    text = _clean_text(clean_desc)
+    if kind != "consumable" or not text:
+        return text
+    device_value = _normalize_consumable_device_value(_param_value(params, "Для устройства") or _param_value(params, "Совместимость"))
+    if not device_value:
+        return text
+
+    text = re.sub(r"(?iu)^\s*(?:поддерживаемые|совместимые)\s+модели\s*:?\s*", "", text)
+    text = text.strip(" .;,-")
+    if text.casefold().replace("ё", "е") == device_value.casefold().replace("ё", "е"):
+        return ""
+    return text
+
+
+def soften_consumable_body(clean_desc: str, params: list[tuple[str, str]], *, kind: str) -> str:
+    text = _drop_consumable_device_narrative(clean_desc, params, kind=kind)
+    text = _clean_text(text)
+    if not text:
+        return text
+
+    if kind != "consumable":
+        return text
+
+    text = _RE_INLINE_SUPPLIER_HEADER.sub(" ", text)
+    text = re.sub(r"(?iu)\s*[;|]\s*", ". ", text)
+    text = _clean_text(text)
+
+    if not text:
+        return _build_consumable_short_desc(params).strip()
+
+    low = text.casefold().replace("ё", "е")
+    if any(mark in low for mark in [
+        'вид струй', 'назначение', 'цвет печати', 'поддерживаемые модели',
+        'совместимые модели', 'совместимые продукты', 'ресурс '
+    ]):
+        return _build_consumable_short_desc(params).strip()
+
+    if re.fullmatch(r'(?iu)(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?', text):
+        return _build_consumable_short_desc(params).strip()
+    if re.fullmatch(r'(?iu)чернила(?:\s+[A-Z0-9-]+)?', text):
+        return _build_consumable_short_desc(params).strip()
+
+    return text
+
+
+def strip_name_prefix_from_desc(desc: str, name: str) -> str:
+    text = _clean_text(desc)
+    title = _clean_text(name)
+    if not text or not title:
+        return text
+    pat = re.compile(r"(?iu)^" + re.escape(title) + r"(?:[\s\-–—:,.]+)?")
+    stripped = pat.sub("", text, count=1).strip()
+    return stripped or text
+
+
+def _tail_after_model(name: str, model: str) -> str:
+    s = _clean_text(name)
+    m = _clean_text(model)
+    if not s or not m:
+        return ""
+    pat = re.compile(r"(?iu)^.*?\b" + re.escape(m) + r"\b")
+    tail = pat.sub("", s, count=1).strip(" ,;-–—")
+    tail = _clean_text(tail)
+    tail = re.sub(r"(?iu)\bMAINTENANCE\s+BOX\b", "Maintenance Box", tail)
+    return tail
+
+
+def _waste_tank_lead_sentence(name: str, params: list[tuple[str, str]]) -> str:
+    typ = _param_value(params, "Тип")
+    brand = _param_value(params, "Для бренда")
+    model = _param_value(params, "Модель")
+
+    if _clean_text(typ).casefold().replace("ё", "е") != _clean_text("Ёмкость для отработанных чернил").casefold().replace("ё", "е"):
+        return ""
+
+    base = f"Оригинальная ёмкость для отработанных чернил {brand} {model}".strip()
+    tail = _tail_after_model(name, model)
+    if tail:
+        return _clean_text(f"{base} для {tail}.")
+    return _clean_text(base + ".")
+
+
+def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]) -> str:
+    text = _clean_text(desc)
+    typ = _param_value(params, "Тип")
+    brand = _param_value(params, "Для бренда")
+    model = _param_value(params, "Модель")
+
+    if _clean_text(typ).casefold().replace("ё", "е") != _clean_text("Ёмкость для отработанных чернил").casefold().replace("ё", "е"):
+        return text
+
+    lead = _waste_tank_lead_sentence(name, params)
+    generic_patterns = [
+        r"(?iu)^(?:сменная\s+)?(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил\.?$",
+        r"(?iu)^оригинальная\s+(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?\.?$",
+    ]
+    if (not text) or any(re.fullmatch(p, text) for p in generic_patterns):
+        return lead
+
+    low = text.casefold().replace("ё", "е")
+    if (brand and _clean_text(brand).casefold().replace("ё", "е") not in low) or (model and _clean_text(model).casefold().replace("ё", "е") not in low):
+        if len(text) < 180:
+            return _clean_text(f"{lead} {text}")
+
+    return text
+
 def clean_description_text(
     description: str,
     *,
