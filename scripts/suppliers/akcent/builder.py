@@ -1048,6 +1048,62 @@ def _param_value(params: list[tuple[str, str]], key: str) -> str:
     return ""
 
 
+
+def _tail_after_model(name: str, model: str) -> str:
+    s = _clean_text(name)
+    m = _clean_text(model)
+    if not s or not m:
+        return ""
+    pat = re.compile(r"(?iu)^.*?\b" + re.escape(m) + r"\b")
+    tail = pat.sub("", s, count=1).strip(" ,;-–—")
+    tail = _clean_text(tail)
+    tail = re.sub(r"(?iu)\bMAINTENANCE\s+BOX\b", "Maintenance Box", tail)
+    return tail
+
+
+def _finalize_waste_tank_name(name: str, params: list[tuple[str, str]]) -> str:
+    s = _clean_text(name)
+    if not s:
+        return ""
+
+    typ = _param_value(params, "Тип")
+    brand = _param_value(params, "Для бренда")
+    model = _param_value(params, "Модель")
+
+    if _cf(typ) != _cf("Ёмкость для отработанных чернил"):
+        return s
+
+    base_parts = [x for x in (typ, brand, model) if _clean_text(x)]
+    rebuilt = " ".join(base_parts).strip()
+    tail = _tail_after_model(s, model)
+    if tail:
+        rebuilt += f", {tail}"
+    return _clean_text(rebuilt) or s
+
+
+def _finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]) -> str:
+    text = _clean_text(desc)
+    typ = _param_value(params, "Тип")
+    brand = _param_value(params, "Для бренда")
+    model = _param_value(params, "Модель")
+
+    if _cf(typ) != _cf("Ёмкость для отработанных чернил"):
+        return text
+
+    generic_patterns = [
+        r"(?iu)^(?:сменная\s+)?(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил\.?$",
+        r"(?iu)^оригинальная\s+(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?\.?$",
+    ]
+    if (not text) or any(re.fullmatch(p, text) for p in generic_patterns):
+        base = f"Оригинальная ёмкость для отработанных чернил {brand} {model}".strip()
+        tail = _tail_after_model(name, model)
+        if tail:
+            return _clean_text(f"{base} {tail}.")
+        return _clean_text(base + ".")
+
+    return text
+
+
 def _finalize_consumable_name(name: str, params: list[tuple[str, str]]) -> str:
     s = _clean_text(name)
     if not s:
@@ -1220,6 +1276,9 @@ def _build_single_offer(
 
     if kind == "consumable":
         name = _finalize_consumable_name(name, merged_params)
+        name = _finalize_waste_tank_name(name, merged_params)
+        cleaned_desc = _finalize_waste_tank_desc(cleaned_desc, name, merged_params)
+        native_desc = _merge_native_desc(cleaned_desc, extra_info)
 
     offer = OfferOut(
         oid=oid,
