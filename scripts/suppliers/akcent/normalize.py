@@ -131,6 +131,103 @@ def _strip_prefix_from_name(name: str) -> str:
     return s
 
 
+
+
+def _param_value(params: list[tuple[str, str]], key: str) -> str:
+    key_cf = _clean_spaces(key).casefold().replace("ё", "е")
+    for k, v in params or []:
+        k_cf = _clean_spaces(k).casefold().replace("ё", "е")
+        if k_cf == key_cf:
+            return _clean_spaces(v)
+    return ""
+
+
+def _tail_after_model(name: str, model: str) -> str:
+    s = _clean_spaces(name)
+    m = _clean_spaces(model)
+    if not s or not m:
+        return ""
+    pat = re.compile(r"(?iu)^.*?\b" + re.escape(m) + r"\b")
+    tail = pat.sub("", s, count=1).strip(" ,;-–—")
+    tail = _clean_spaces(tail)
+    tail = re.sub(r"(?iu)\bMAINTENANCE\s+BOX\b", "Maintenance Box", tail)
+    return tail
+
+
+def normalize_consumable_name(name: str, *, kind: str) -> str:
+    s = _clean_spaces(name)
+    if not s or kind != "consumable":
+        return s
+
+    s = re.sub(r"(?iu)(\bT\d[A-Z0-9]{4,10})(?=UltraChrome\b)", r"\1 ", s)
+    s = re.sub(r"(?iu)(\bC1[23][A-Z0-9]{6,10})(?=Singlepack\b)", r"\1 ", s)
+    s = re.sub(r"(?iu)(\bC1[23][A-Z0-9]{6,10})(?=Maintenance\s+Box\b)", r"\1 ", s)
+    s = re.sub(r"(?iu)(\d)(ml)\b", r"\1 ml", s)
+    s = re.sub(r"(?iu)(\d)(мл)\b", r"\1 мл", s)
+    s = re.sub(r"(?iu)\bMAINTENANCE\s+BOX\b", "Maintenance Box", s)
+    s = re.sub(r"(?iu)\bUltraChrome\b", "UltraChrome", s)
+    return _clean_spaces(s)
+
+
+def finalize_consumable_name(name: str, params: list[tuple[str, str]]) -> str:
+    s = _clean_spaces(name)
+    if not s:
+        return ""
+
+    typ = _param_value(params, "Тип")
+    brand = _param_value(params, "Для бренда")
+    model = _param_value(params, "Модель")
+    color = _param_value(params, "Цвет")
+    resource = _param_value(params, "Ресурс")
+
+    if _clean_spaces(typ).casefold().replace("ё", "е") not in {"картридж", "чернила", "экономичный набор"}:
+        return s
+
+    parts = []
+    if typ:
+        parts.append(typ)
+    if brand:
+        parts.append(brand)
+    if model:
+        parts.append(model)
+
+    rebuilt = " ".join(parts).strip()
+    extras: list[str] = []
+
+    m = re.search(r"(?iu)\bUltraChrome(?:\s+[A-Z0-9/+-]+)?", s)
+    if m:
+        extras.append(_clean_spaces(m.group(0)))
+
+    if color:
+        extras.append(color.lower())
+    if resource:
+        extras.append(resource)
+
+    if extras:
+        rebuilt += ", " + ", ".join([x for x in extras if _clean_spaces(x)])
+
+    return _clean_spaces(rebuilt) or s
+
+
+def finalize_waste_tank_name(name: str, params: list[tuple[str, str]]) -> str:
+    s = _clean_spaces(name)
+    if not s:
+        return ""
+
+    typ = _param_value(params, "Тип")
+    brand = _param_value(params, "Для бренда")
+    model = _param_value(params, "Модель")
+
+    if _clean_spaces(typ).casefold().replace("ё", "е") != _clean_spaces("Ёмкость для отработанных чернил").casefold().replace("ё", "е"):
+        return s
+
+    base_parts = [x for x in (typ, brand, model) if _clean_spaces(x)]
+    rebuilt = " ".join(base_parts).strip()
+    tail = _tail_after_model(s, model)
+    if tail:
+        rebuilt += f", {tail}"
+    return _clean_spaces(rebuilt) or s
+
 # ----------------------------- public API -----------------------------
 
 
@@ -324,107 +421,6 @@ def normalize_article(article: str = "", *, name: str = "", model: str = "") -> 
 def normalize_stock_text(stock_text: str) -> str:
     """Оставляет stock в компактном виде для диагностики."""
     return _clean_spaces(stock_text)
-
-
-
-
-def _param_value(params: list[tuple[str, str]], key: str) -> str:
-    key_cf = str(key or "").strip().casefold()
-    for k, v in params or []:
-        if str(k or "").strip().casefold() == key_cf:
-            return _clean_spaces(str(v or ""))
-    return ""
-
-
-def _normalize_consumable_name(name: str, *, kind: str) -> str:
-    s = _clean_spaces(name)
-    if not s or kind != "consumable":
-        return s
-
-    s = re.sub(r"(?iu)(\bT\d[A-Z0-9]{4,10})(?=UltraChrome\b)", r"\1 ", s)
-    s = re.sub(r"(?iu)(\bC1[23][A-Z0-9]{6,10})(?=Singlepack\b)", r"\1 ", s)
-    s = re.sub(r"(?iu)(\bC1[23][A-Z0-9]{6,10})(?=Maintenance\s+Box\b)", r"\1 ", s)
-
-    s = re.sub(r"(?iu)(\d)(ml)\b", r"\1 ml", s)
-    s = re.sub(r"(?iu)(\d)(мл)\b", r"\1 мл", s)
-
-    s = re.sub(r"(?iu)\bSinglepack\b", "Singlepack", s)
-    s = re.sub(r"(?iu)\bMaintenance\s+Box\b", "Maintenance Box", s)
-    s = re.sub(r"(?iu)\bUltraChrome\b", "UltraChrome", s)
-
-    return _clean_spaces(s)
-
-
-def _tail_after_model(name: str, model: str) -> str:
-    s = _clean_spaces(name)
-    m = _clean_spaces(model)
-    if not s or not m:
-        return ""
-    pat = re.compile(r"(?iu)^.*?\b" + re.escape(m) + r"\b")
-    tail = pat.sub("", s, count=1).strip(" ,;-–—")
-    tail = _clean_spaces(tail)
-    tail = re.sub(r"(?iu)\bMAINTENANCE\s+BOX\b", "Maintenance Box", tail)
-    return tail
-
-
-def _finalize_consumable_name(name: str, params: list[tuple[str, str]]) -> str:
-    s = _clean_spaces(name)
-    if not s:
-        return ""
-
-    typ = _param_value(params, "Тип")
-    brand = _param_value(params, "Для бренда")
-    model = _param_value(params, "Модель")
-    color = _param_value(params, "Цвет")
-    resource = _param_value(params, "Ресурс")
-
-    if str(typ or "").strip().casefold() not in {"картридж", "чернила", "экономичный набор"}:
-        return s
-
-    parts = []
-    if typ:
-        parts.append(typ)
-    if brand:
-        parts.append(brand)
-    if model:
-        parts.append(model)
-
-    rebuilt = " ".join(parts).strip()
-    extras: list[str] = []
-
-    m = re.search(r"(?iu)\bUltraChrome(?:\s+[A-Z0-9/+-]+)?", s)
-    if m:
-        extras.append(_clean_spaces(m.group(0)))
-
-    if color:
-        extras.append(color.lower())
-    if resource:
-        extras.append(resource)
-
-    if extras:
-        rebuilt += ", " + ", ".join([x for x in extras if _clean_spaces(x)])
-
-    return _clean_spaces(rebuilt) or s
-
-
-def _finalize_waste_tank_name(name: str, params: list[tuple[str, str]]) -> str:
-    s = _clean_spaces(name)
-    if not s:
-        return ""
-
-    typ = _param_value(params, "Тип")
-    brand = _param_value(params, "Для бренда")
-    model = _param_value(params, "Модель")
-
-    if str(typ or "").strip().casefold() != "ёмкость для отработанных чернил":
-        return s
-
-    base_parts = [x for x in (typ, brand, model) if _clean_spaces(x)]
-    rebuilt = " ".join(base_parts).strip()
-    tail = _tail_after_model(s, model)
-    if tail:
-        rebuilt += f", {tail}"
-    return _clean_spaces(rebuilt) or s
 
 
 def normalize_source_basics(
