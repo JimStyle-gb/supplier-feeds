@@ -1038,6 +1038,18 @@ def _render_extra_info(extra_info: list[tuple[str, str]], *, limit: int = 12) ->
     return "Дополнительно:\n" + "\n".join(items)
 
 
+
+def _strip_name_prefix_from_desc(desc: str, name: str) -> str:
+    text = _clean_text(desc)
+    title = _clean_text(name)
+    if not text or not title:
+        return text
+    # Если supplier description начинается с полного name, убираем этот дубль.
+    pat = re.compile(r"(?iu)^" + re.escape(title) + r"(?:[\s\-–—:,.]+)?")
+    stripped = pat.sub("", text, count=1).strip()
+    return stripped or text
+
+
 def _merge_native_desc(clean_desc: str, extra_info: list[tuple[str, str]]) -> str:
     base = _clean_text(clean_desc)
     extra_block = _render_extra_info(extra_info)
@@ -1144,6 +1156,16 @@ def _build_single_offer(
 
     pictures = _collect_pictures(_iter_picture_urls(src), placeholder_picture=placeholder_picture)
     cleaned_desc = _soften_consumable_body(cleaned_desc, merged_params, kind=kind)
+    if kind == "consumable":
+        cleaned_desc = _strip_name_prefix_from_desc(cleaned_desc, name)
+        short_desc = _build_consumable_short_desc(merged_params).strip()
+        low_desc = _cf(cleaned_desc)
+        if not cleaned_desc:
+            cleaned_desc = short_desc
+        elif len(cleaned_desc) < 24:
+            cleaned_desc = short_desc
+        elif re.fullmatch(r"(?iu)(?:сменная\s+)?(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил\.?$", cleaned_desc):
+            cleaned_desc = short_desc
     native_desc = _merge_native_desc(cleaned_desc, extra_info)
     raw_price = price_in if isinstance(price_in, int) else 0
 
