@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-30 16:59:25">
+<yml_catalog date="2026-03-30 17:54:51">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-30 16:59:25
+Время сборки (Алматы)                      | 2026-03-30 17:54:51
 Ближайшая сборка (Алматы)                  | 2026-03-31 02:00:00
-Сколько товаров у поставщика до фильтра    | 1884
-Сколько товаров у поставщика после фильтра | 166
-Сколько товаров есть в наличии (true)      | 166
+Сколько товаров у поставщика до фильтра    | 1876
+Сколько товаров у поставщика после фильтра | 170
+Сколько товаров есть в наличии (true)      | 170
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -48,14 +48,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC12C890191" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC12C890191</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600</name>
+<name>Ёмкость для отработанных чернил Epson C12C890191, SP7600/SP9600</name>
 <price>33900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/0da/ngp3geaciumv7smu310c7f3i1y7cedmm.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600</h3>
+<h3>Ёмкость для отработанных чернил Epson C12C890191, SP7600/SP9600</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -77,14 +77,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC12C934591" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC12C934591</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX Maintenance Box</name>
+<name>Ёмкость для отработанных чернил Epson C12C934591, WF-78XX/ET-166XX Maintenance Box</name>
 <price>21900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/245/g5dm2vx8ypcll0npk4ae89s9od8448oo.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX Maintenance Box</h3>
+<h3>Ёмкость для отработанных чернил Epson C12C934591, WF-78XX/ET-166XX Maintenance Box</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -106,14 +106,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC13T04D000" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T04D000</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C13T04D000 EcoTank Maintenance Box (5clr)</name>
+<name>Ёмкость для отработанных чернил Epson C13T04D000, EcoTank Maintenance Box (5clr)</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/30f/g1i10ltyntmx0oyac7qfmc4hijadomyg.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Ёмкость для отработанных чернил Epson C13T04D000 EcoTank Maintenance Box (5clr)</h3>
+<h3>Ёмкость для отработанных чернил Epson C13T04D000, EcoTank Maintenance Box (5clr)</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -135,14 +135,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC13T04D100" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T04D100</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C13T04D100 EcoTank Maintenance Box (4clr)</name>
+<name>Ёмкость для отработанных чернил Epson C13T04D100, EcoTank Maintenance Box (4clr)</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f31/oszqwery6i95bz8l7jfzvpibl2260obe.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Ёмкость для отработанных чернил Epson C13T04D100 EcoTank Maintenance Box (4clr)</h3>
+<h3>Ёмкость для отработанных чернил Epson C13T04D100, EcoTank Maintenance Box (4clr)</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -164,14 +164,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC13T619300" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T619300</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C13T619300 T3000/5000/7000, Т3200/5200/7200</name>
+<name>Ёмкость для отработанных чернил Epson C13T619300, T3000/5000/7000, Т3200/5200/7200</name>
 <price>61900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/998/8rq8oj23l7fep0amvc3cn6nvz6owlmmk.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Ёмкость для отработанных чернил Epson C13T619300 T3000/5000/7000, Т3200/5200/7200</h3>
+<h3>Ёмкость для отработанных чернил Epson C13T619300, T3000/5000/7000, Т3200/5200/7200</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -194,14 +194,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC13T671400" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T671400</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C13T671400 WorkForce Pro WF-C869R Maintenance Box (80K)</name>
+<name>Ёмкость для отработанных чернил Epson C13T671400, WorkForce Pro WF-C869R Maintenance Box (80K)</name>
 <price>59900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/94b/23nc7h0t6dsigfnw39h01wamhjk05rkj.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Ёмкость для отработанных чернил Epson C13T671400 WorkForce Pro WF-C869R Maintenance Box (80K)</h3>
+<h3>Ёмкость для отработанных чернил Epson C13T671400, WorkForce Pro WF-C869R Maintenance Box (80K)</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -223,14 +223,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC13T699700" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T699700</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000</name>
+<name>Ёмкость для отработанных чернил Epson C13T699700, SC-P6000/7000/8000/9000</name>
 <price>28900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/30f/g1i10ltyntmx0oyac7qfmc4hijadomyg.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000</h3>
+<h3>Ёмкость для отработанных чернил Epson C13T699700, SC-P6000/7000/8000/9000</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -251,14 +251,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC33S021601" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC33S021601</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance Box</name>
+<name>Ёмкость для отработанных чернил Epson C33S021601, SJMB4000 C4000e Maintenance Box</name>
 <price>24900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/93a/rjszo6e7gjv3nl9122h7l7sui2jhglrv.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Ёмкость для отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance Box</h3>
+<h3>Ёмкость для отработанных чернил Epson C33S021601, SJMB4000 C4000e Maintenance Box</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -482,6 +482,126 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
 <keywords>Epson, Картридж Epson C13T27914022 чёрный Около 2200 стр, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="ACC13T40D140" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T40D140</vendorCode>
+<name>Картридж Epson C13T40D140, UltraChrome XD2, чёрный</name>
+<price>66900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Картридж Epson C13T40D140, UltraChrome XD2, чёрный</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Оригинальный картридж Epson C13T40D140 Чёрного цвета для Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N.</p>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N</li><li><strong>Коды:</strong> C13T40D140</li><li><strong>Модель:</strong> C13T40D140</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Для бренда">Epson</param>
+<param name="Для устройства">Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N</param>
+<param name="Коды">C13T40D140</param>
+<param name="Модель">C13T40D140</param>
+<param name="Тип">Картридж</param>
+<param name="Тип печати">Струйная</param>
+<param name="Цвет">Чёрный</param>
+<keywords>Epson, Картридж Epson C13T40D140 UltraChrome XD2 чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="ACC13T40D240" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T40D240</vendorCode>
+<name>Картридж Epson C13T40D240, UltraChrome XD2, голубой</name>
+<price>46900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Картридж Epson C13T40D240, UltraChrome XD2, голубой</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Голубой картридж повышенной емкости (50 мл) (C13T40D240) Epson SureColor SC-T3100 C11CF11302A0 - Epson SureColor SC-T3100N (без стенда) C11CF11301A0 - Epson SureColor SC-T5100 C11CF12301A0 - Epson SureColor SC-T5100N (без стенда) C11CF12302A0</p>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N</li><li><strong>Коды:</strong> C13T40D240</li><li><strong>Модель:</strong> C13T40D240</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Для бренда">Epson</param>
+<param name="Для устройства">Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N</param>
+<param name="Коды">C13T40D240</param>
+<param name="Модель">C13T40D240</param>
+<param name="Тип">Картридж</param>
+<param name="Тип печати">Струйная</param>
+<param name="Цвет">Голубой</param>
+<keywords>Epson, Картридж Epson C13T40D240 UltraChrome XD2 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="ACC13T40D34N" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T40D34N</vendorCode>
+<name>Картридж Epson C13T40D34N, UltraChrome XD2, пурпурный</name>
+<price>46900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Картридж Epson C13T40D34N, UltraChrome XD2, пурпурный</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Оригинальный картридж Epson C13T40D34N Пурпурного цвета для Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N.</p>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N</li><li><strong>Коды:</strong> C13T40D34N</li><li><strong>Модель:</strong> C13T40D34N</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Для бренда">Epson</param>
+<param name="Для устройства">Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N</param>
+<param name="Коды">C13T40D34N</param>
+<param name="Модель">C13T40D34N</param>
+<param name="Тип">Картридж</param>
+<param name="Тип печати">Струйная</param>
+<param name="Цвет">Пурпурный</param>
+<keywords>Epson, Картридж Epson C13T40D34N UltraChrome XD2 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="ACC13T40D440" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T40D440</vendorCode>
+<name>Картридж Epson C13T40D440, UltraChrome XD2, жёлтый</name>
+<price>46900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Картридж Epson C13T40D440, UltraChrome XD2, жёлтый</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Оригинальный картридж Epson C13T40D440 Жёлтого цвета для Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N.</p>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N</li><li><strong>Коды:</strong> C13T40D440</li><li><strong>Модель:</strong> C13T40D440</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Для бренда">Epson</param>
+<param name="Для устройства">Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N</param>
+<param name="Коды">C13T40D440</param>
+<param name="Модель">C13T40D440</param>
+<param name="Тип">Картридж</param>
+<param name="Тип печати">Струйная</param>
+<param name="Цвет">Жёлтый</param>
+<keywords>Epson, Картридж Epson C13T40D440 UltraChrome XD2 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T41F34N" available="true">
