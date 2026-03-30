@@ -1081,6 +1081,22 @@ def _finalize_waste_tank_name(name: str, params: list[tuple[str, str]]) -> str:
     return _clean_text(rebuilt) or s
 
 
+
+def _waste_tank_lead_sentence(name: str, params: list[tuple[str, str]]) -> str:
+    typ = _param_value(params, "Тип")
+    brand = _param_value(params, "Для бренда")
+    model = _param_value(params, "Модель")
+
+    if _cf(typ) != _cf("Ёмкость для отработанных чернил"):
+        return ""
+
+    base = f"Оригинальная ёмкость для отработанных чернил {brand} {model}".strip()
+    tail = _tail_after_model(name, model)
+    if tail:
+        return _clean_text(f"{base} для {tail}.")
+    return _clean_text(base + ".")
+
+
 def _finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]) -> str:
     text = _clean_text(desc)
     typ = _param_value(params, "Тип")
@@ -1090,16 +1106,19 @@ def _finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]
     if _cf(typ) != _cf("Ёмкость для отработанных чернил"):
         return text
 
+    lead = _waste_tank_lead_sentence(name, params)
     generic_patterns = [
         r"(?iu)^(?:сменная\s+)?(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил\.?$",
         r"(?iu)^оригинальная\s+(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?\.?$",
     ]
     if (not text) or any(re.fullmatch(p, text) for p in generic_patterns):
-        base = f"Оригинальная ёмкость для отработанных чернил {brand} {model}".strip()
-        tail = _tail_after_model(name, model)
-        if tail:
-            return _clean_text(f"{base} {tail}.")
-        return _clean_text(base + ".")
+        return lead
+
+    low = _cf(text)
+    # Если supplier desc слишком общий и не содержит бренд/модель, усиливаем лидом.
+    if (brand and _cf(brand) not in low) or (model and _cf(model) not in low):
+        if len(text) < 180:
+            return _clean_text(f"{lead} {text}")
 
     return text
 
