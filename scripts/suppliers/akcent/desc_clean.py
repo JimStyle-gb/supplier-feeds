@@ -304,6 +304,10 @@ def _build_consumable_short_desc(params: list[tuple[str, str]]) -> str:
     return _clean_text(parts[-1]).strip(". ") + "."
 
 
+def build_consumable_short_desc(params: list[tuple[str, str]]) -> str:
+    return _build_consumable_short_desc(params)
+
+
 def _normalize_epson_device_list(value: str) -> str:
     s = _clean_text(value)
     if not s:
