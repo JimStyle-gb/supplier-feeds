@@ -517,6 +517,30 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
     return out
 
 
+
+def _original_consumable_prefix(subject: str) -> str:
+    low = _cf(subject)
+    if "емкость" in low or "ёмкость" in low:
+        return "Оригинальная"
+    if low == "чернила":
+        return "Оригинальные"
+    return "Оригинальный"
+
+
+def _color_phrase(color_value: str) -> str:
+    color = _clean_text(color_value)
+    if not color:
+        return ""
+    low = _cf(color)
+    if low.endswith(("ый", "ий", "ой")):
+        return f"{color[:-2]}ого цвета"
+    if low.endswith("ая"):
+        return f"{color[:-2]}ой цвета"
+    if low.endswith("ое"):
+        return f"{color[:-2]}ого цвета"
+    return f"{color} цвета"
+
+
 def _build_consumable_short_desc(params: list[tuple[str, str]]) -> str:
     type_value = _clean_text(_first_value(params, "Тип") or "Расходный материал")
     brand_value = _clean_text(
