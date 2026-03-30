@@ -662,6 +662,12 @@ def _soften_consumable_body(clean_desc: str, params: list[tuple[str, str]], *, k
     ]):
         return _build_consumable_short_desc(params).strip()
 
+    # Слишком общий текст для расходки лучше заменить на короткое собранное описание
+    if re.fullmatch(r'(?iu)(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?', text):
+        return _build_consumable_short_desc(params).strip()
+    if re.fullmatch(r'(?iu)чернила(?:\s+[A-Z0-9-]+)?', text):
+        return _build_consumable_short_desc(params).strip()
+
     return text
 
 
@@ -1050,6 +1056,7 @@ def _build_single_offer(
 ) -> tuple[OfferOut | None, dict[str, Any]]:
     raw_name = _clean_text(_get_field(src, "name"))
     kind = detect_kind_by_name(raw_name, schema_cfg)
+    raw_name = _normalize_consumable_name(raw_name, kind=kind)
     allow_keys = resolve_allowed_keys(schema_cfg, kind)
 
     dealer_text, price_text, rrp_text = _read_price_triplet(src)
