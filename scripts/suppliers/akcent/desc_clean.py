@@ -405,6 +405,16 @@ def _tail_after_model(name: str, model: str) -> str:
     return tail
 
 
+
+
+def _device_sentence_from_params(params: list[tuple[str, str]]) -> str:
+    device_value = _normalize_consumable_device_value(
+        _param_value(params, "Для устройства") or _param_value(params, "Совместимость")
+    )
+    if not device_value:
+        return ""
+    return _clean_text(f"Подходит для устройств: {device_value}.")
+
 def _waste_tank_lead_sentence(name: str, params: list[tuple[str, str]]) -> str:
     typ = _param_value(params, "Тип")
     brand = _param_value(params, "Для бренда")
@@ -430,25 +440,44 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
         return text
 
     lead = _waste_tank_lead_sentence(name, params)
+    device_sentence = _device_sentence_from_params(params)
+
     text = re.sub(r"(?iu)^технические\s+характеристики\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)^описание\s*[:.-]?\s*", "", text).strip(" .;,-")
+    text = re.sub(r"(?iu)^емкость\s+для\s+отработанных\s+чернил\s+для\s*:?\s*", "", text).strip(" .;,-")
 
     generic_patterns = [
         r"(?iu)^(?:сменная\s+)?(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил\.?$",
         r"(?iu)^оригинальная\s+(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?\.?$",
     ]
     if (not text) or any(re.fullmatch(p, text) for p in generic_patterns):
+        if device_sentence:
+            return _clean_text(f"{lead} {device_sentence}")
         return lead
 
     low = text.casefold().replace("ё", "е")
     brand_ok = not brand or _clean_text(brand).casefold().replace("ё", "е") in low
     model_ok = not model or _clean_text(model).casefold().replace("ё", "е") in low
 
-    if (not brand_ok or not model_ok) and len(text) < 220:
-        if text and not text.endswith("."):
-            text += "."
-        return _clean_text(f"{lead} {text}")
+    weak_supplier = (
+        len(text) < 220
+        and (
+            (not brand_ok)
+            or (not model_ok)
+            or "сменная емкость для отработанных чернил" in low
+            or "сменная ёмкость для отработанных чернил" in low
+        )
+    )
+    if weak_supplier:
+        extra = text
+        if extra and not extra.endswith("."):
+            extra += "."
+        if device_sentence and "подходит для устройств" not in extra.casefold():
+            return _clean_text(f"{lead} {device_sentence} {extra}")
+        return _clean_text(f"{lead} {extra}")
 
+    if text and not text.endswith("."):
+        text += "."
     return text
 
 def clean_description_text(
