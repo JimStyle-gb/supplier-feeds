@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-30 16:28:21">
+<yml_catalog date="2026-03-30 16:59:25">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-30 16:28:21
+Время сборки (Алматы)                      | 2026-03-30 16:59:25
 Ближайшая сборка (Алматы)                  | 2026-03-31 02:00:00
 Сколько товаров у поставщика до фильтра    | 1884
 Сколько товаров у поставщика после фильтра | 166
@@ -16,14 +16,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC13T55KD00" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T55KD00</vendorCode>
-<name>C13T55KD00 Singlepack (Фиолетовый) T55KD00 UltraChrome HDX/HD 700 ml</name>
+<name>Картридж Epson C13T55KD00, UltraChrome HDX/HD, фиолетовый, 700 мл</name>
 <price>185900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/923/0p8oyvwd4ts90r6c77nk7geyql2ycozc.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>C13T55KD00 Singlepack (Фиолетовый) T55KD00 UltraChrome HDX/HD 700 ml</h3>
+<h3>Картридж Epson C13T55KD00, UltraChrome HDX/HD, фиолетовый, 700 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -42,7 +42,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Фиолетовый</param>
-<keywords>Epson, C13T55KD00 Singlepack (Фиолетовый) T55KD00 UltraChrome HDX/HD 700 ml, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T55KD00 UltraChrome HDX/HD фиолетовый 700 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC12C890191" available="true">
@@ -425,14 +425,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC13T26704010" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T26704010</vendorCode>
-<name>Картридж Epson C13T26704010 Tri-colour Ink for WorkForce WF-100W</name>
+<name>Картридж Epson C13T26704010, голубой, пурпурный, жёлтый</name>
 <price>16900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/d17/61ur7ef45o23cxywmiut8mauostfvc2d.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T26704010 Tri-colour Ink for WorkForce WF-100W</h3>
+<h3>Картридж Epson C13T26704010, голубой, пурпурный, жёлтый</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -449,20 +449,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой, Пурпурный, Жёлтый</param>
-<keywords>Epson, Картридж Epson C13T26704010 Tri-colour Ink for WorkForce WF-100W, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T26704010 голубой пурпурный жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T27914022" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T27914022</vendorCode>
-<name>Картридж Epson C13T27914022 для WF-7620DTWF черный new</name>
+<name>Картридж Epson C13T27914022, чёрный, Около 2200 стр</name>
 <price>35900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/33a/zrin66p4e0ph45k5j2s4zpt0ob35a7ez.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T27914022 для WF-7620DTWF черный new</h3>
+<h3>Картридж Epson C13T27914022, чёрный, Около 2200 стр</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -481,20 +481,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Картридж Epson C13T27914022 для WF-7620DTWF черный new, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T27914022 чёрный Около 2200 стр, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T41F34N" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T41F34N</vendorCode>
-<name>Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный</name>
+<name>Картридж Epson T3400N, UltraChrome XD2, пурпурный, 350 мл</name>
 <price>129900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e70/ha6pr3zmtf38bhrv50v66sjlwu4yo2qx.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный</h3>
+<h3>Картридж Epson T3400N, UltraChrome XD2, пурпурный, 350 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -512,20 +512,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
-<keywords>Epson, Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson T3400N UltraChrome XD2 пурпурный 350 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T41F440" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T41F440</vendorCode>
-<name>Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350 ml жёлтый</name>
+<name>Картридж Epson C13T41F440, UltraChrome XD2, жёлтый, 350 мл</name>
 <price>129900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/036/0muav07pep31608slkpjvyqved8ch8i7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350 ml жёлтый</h3>
+<h3>Картридж Epson C13T41F440, UltraChrome XD2, жёлтый, 350 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -543,20 +543,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
-<keywords>Epson, Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350 ml жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T41F440 UltraChrome XD2 жёлтый 350 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T54LA00" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T54LA00</vendorCode>
-<name>Картридж Epson C13T54LA00 UltraChrome DG2 (800 мл) белый</name>
+<name>Картридж Epson C13T54LA00, UltraChrome DG2</name>
 <price>246900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/fb9/uh5radjjf1dy6ee64oybwb3kunqrps23.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T54LA00 UltraChrome DG2 (800 мл) белый</h3>
+<h3>Картридж Epson C13T54LA00, UltraChrome DG2</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -572,20 +572,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">C13T54LA00</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
-<keywords>Epson, Картридж Epson C13T54LA00 UltraChrome DG2 (800 мл) белый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T54LA00 UltraChrome DG2, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606100" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T606100</vendorCode>
-<name>Картридж Epson C13T606100 SP-4880 фото черный</name>
+<name>Картридж Epson C13T606100, чёрный, 220 мл</name>
 <price>98900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/69f/3i7dwmk3xbjrvnu94z0ymh4nv6qwn4b2.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T606100 SP-4880 фото черный</h3>
+<h3>Картридж Epson C13T606100, чёрный, 220 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -604,20 +604,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Картридж Epson C13T606100 SP-4880 фото черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606100 чёрный 220 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606200" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T606200</vendorCode>
-<name>Картридж Epson C13T606200 SP-4880 голубой</name>
+<name>Картридж Epson C13T606200, голубой, 220 мл</name>
 <price>98900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/cd7/kdicu9rqhttusr3jq8dz31ouh2wngc6u.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T606200 SP-4880 голубой</h3>
+<h3>Картридж Epson C13T606200, голубой, 220 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -636,20 +636,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
-<keywords>Epson, Картридж Epson C13T606200 SP-4880 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606200 голубой 220 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606300" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T606300</vendorCode>
-<name>Картридж Epson C13T606300 SP-4880 пурпурный</name>
+<name>Картридж Epson C13T606300, пурпурный, 220 мл</name>
 <price>98900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/092/t45iu6cbnnse2rcdozfet03ly03etqxq.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T606300 SP-4880 пурпурный</h3>
+<h3>Картридж Epson C13T606300, пурпурный, 220 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -668,20 +668,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
-<keywords>Epson, Картридж Epson C13T606300 SP-4880 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606300 пурпурный 220 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606400" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T606400</vendorCode>
-<name>Картридж Epson C13T606400 SP-4880 желтый</name>
+<name>Картридж Epson C13T606400, жёлтый, 220 мл</name>
 <price>98900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/d50/w5rp3l5v37a58pgjho709245w3z4nxly.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T606400 SP-4880 желтый</h3>
+<h3>Картридж Epson C13T606400, жёлтый, 220 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -700,20 +700,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
-<keywords>Epson, Картридж Epson C13T606400 SP-4880 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606400 жёлтый 220 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606500" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T606500</vendorCode>
-<name>Картридж Epson C13T606500 SP-4880 светло-голубой</name>
+<name>Картридж Epson C13T606500, светло-голубой, 220 мл</name>
 <price>98900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/eb5/3gcomagb6du43id6yintt3p35e55i0ba.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T606500 SP-4880 светло-голубой</h3>
+<h3>Картридж Epson C13T606500, светло-голубой, 220 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -732,20 +732,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Светло-голубой</param>
-<keywords>Epson, Картридж Epson C13T606500 SP-4880 светло-голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606500 светло-голубой 220 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606B00" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T606B00</vendorCode>
-<name>Картридж Epson C13T606B00 SP-4800 220 ml пурпурный new</name>
+<name>Картридж Epson C13T606B00</name>
 <price>98900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/13f/4e003pi2n3p83pjenshmqjhzv915k6lk.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T606B00 SP-4800 220 ml пурпурный new</h3>
+<h3>Картридж Epson C13T606B00</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -761,20 +761,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Коды">C13T606B00</param>
 <param name="Модель">C13T606B00</param>
 <param name="Тип">Картридж</param>
-<keywords>Epson, Картридж Epson C13T606B00 SP-4800 220 ml пурпурный new, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606B00, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606C00" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T606C00</vendorCode>
-<name>Картридж Epson C13T606C00 SP-4800 пурпурный светлый</name>
+<name>Картридж Epson C13T606C00, пурпурный, 221 мл</name>
 <price>98900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f63/1hvub90u75dpgwxok3yvafqrkd03d05b.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T606C00 SP-4800 пурпурный светлый</h3>
+<h3>Картридж Epson C13T606C00, пурпурный, 221 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -792,20 +792,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
-<keywords>Epson, Картридж Epson C13T606C00 SP-4800 пурпурный светлый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T606C00 пурпурный 221 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T614200" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T614200</vendorCode>
-<name>Картридж Epson C13T614200 SP-4450 голубой</name>
+<name>Картридж Epson C13T614200, голубой, 220 мл</name>
 <price>98900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/0a3/c6b6nj5lk6o83vmwqi63h3ly86la319c.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T614200 SP-4450 голубой</h3>
+<h3>Картридж Epson C13T614200, голубой, 220 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -824,20 +824,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
-<keywords>Epson, Картридж Epson C13T614200 SP-4450 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T614200 голубой 220 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T614300" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T614300</vendorCode>
-<name>Картридж Epson C13T614300 SP-4450 пурпурный</name>
+<name>Картридж Epson C13T614300, пурпурный, 220 мл</name>
 <price>98900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/92e/6lre3y03wilvfhahf72ikw7wbntrw074.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T614300 SP-4450 пурпурный</h3>
+<h3>Картридж Epson C13T614300, пурпурный, 220 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -856,20 +856,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
-<keywords>Epson, Картридж Epson C13T614300 SP-4450 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T614300 пурпурный 220 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T614400" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T614400</vendorCode>
-<name>Картридж Epson C13T614400 SP-4450 желтый</name>
+<name>Картридж Epson C13T614400, жёлтый, 220 мл</name>
 <price>98900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ce9/elde0uyltfwb6ya6a32fpy08hpejfcjy.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T614400 SP-4450 желтый</h3>
+<h3>Картридж Epson C13T614400, жёлтый, 220 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -888,20 +888,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
-<keywords>Epson, Картридж Epson C13T614400 SP-4450 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T614400 жёлтый 220 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T61480N" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T61480N</vendorCode>
-<name>Картридж Epson C13T61480N SP-4450 220 ml черный матовый</name>
+<name>Картридж Epson C13T61480N, чёрный, 220 мл</name>
 <price>98900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/47b/jh69vmx5on79kujy67xqii7xa756lneh.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T61480N SP-4450 220 ml черный матовый</h3>
+<h3>Картридж Epson C13T61480N, чёрный, 220 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -920,20 +920,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Картридж Epson C13T61480N SP-4450 220 ml черный матовый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T61480N чёрный 220 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T69240N" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T69240N</vendorCode>
-<name>Картридж Epson C13T69240N T3000/5000/7000, Т3200/5200/7200 желтый</name>
+<name>Картридж Epson C13T69240N, жёлтый, 110 мл</name>
 <price>55900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/de9/36c2zgvz4emnvyp6pwm4otykefl7m33a.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T69240N T3000/5000/7000, Т3200/5200/7200 желтый</h3>
+<h3>Картридж Epson C13T69240N, жёлтый, 110 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -951,20 +951,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
-<keywords>Epson, Картридж Epson C13T69240N T3000/5000/7000 Т3200/5200/7200 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T69240N жёлтый 110 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T692500" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T692500</vendorCode>
-<name>Картридж Epson C13T692500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
+<name>Картридж Epson C13T692500, чёрный, 110 мл</name>
 <price>55900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f32/d6kc9861zmzsv9tdipqapk7yhso4p8qz.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T692500 T3000/5000/7000, Т3200/5200/7200 матовый черный</h3>
+<h3>Картридж Epson C13T692500, чёрный, 110 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -983,20 +983,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Картридж Epson C13T692500 T3000/5000/7000 Т3200/5200/7200 матовый черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T692500 чёрный 110 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T694100" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T694100</vendorCode>
-<name>Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный</name>
+<name>Картридж Epson C13T694100, чёрный, 700 мл</name>
 <price>232900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f6b/tc1jcv3quat1vv5xtm2vl3z0vkhx4ju1.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный</h3>
+<h3>Картридж Epson C13T694100, чёрный, 700 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -1015,20 +1015,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Картридж Epson C13T694100 T3000/5000/7000 Т3200/5200/7200 фото черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T694100 чёрный 700 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T69430N" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T69430N</vendorCode>
-<name>Картридж Epson C13T69430N T3000/5000/7000, Т3200/5200/7200 пурпурный</name>
+<name>Картридж Epson C13T69430N, пурпурный, 700 мл</name>
 <price>232900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/376/ekuy4ocvzyl60ruii4q0p0cvmew7688i.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T69430N T3000/5000/7000, Т3200/5200/7200 пурпурный</h3>
+<h3>Картридж Epson C13T69430N, пурпурный, 700 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -1047,20 +1047,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
-<keywords>Epson, Картридж Epson C13T69430N T3000/5000/7000 Т3200/5200/7200 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T69430N пурпурный 700 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T694500" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T694500</vendorCode>
-<name>Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
+<name>Картридж Epson C13T694500, чёрный, 700 мл</name>
 <price>232900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/860/sprl22huykjcd4jt6m78i3su9rqt9ddg.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный</h3>
+<h3>Картридж Epson C13T694500, чёрный, 700 мл</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -1079,20 +1079,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Картридж Epson C13T694500 T3000/5000/7000 Т3200/5200/7200 матовый черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T694500 чёрный 700 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T913200" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T913200</vendorCode>
-<name>Картридж Epson C13T913200 SC-P5000 200 ml Cyan голубой</name>
+<name>Картридж Epson C13T913200</name>
 <price>80900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T913200 SC-P5000 200 ml Cyan голубой</h3>
+<h3>Картридж Epson C13T913200</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -1108,20 +1108,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Коды">C13T913200</param>
 <param name="Модель">C13T913200</param>
 <param name="Тип">Картридж</param>
-<keywords>Epson, Картридж Epson C13T913200 SC-P5000 200 ml Cyan голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T913200, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T913400" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T913400</vendorCode>
-<name>Картридж Epson C13T913400 SC-P5000 200 ml Yellow желтый</name>
+<name>Картридж Epson C13T913400</name>
 <price>80900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T913400 SC-P5000 200 ml Yellow желтый</h3>
+<h3>Картридж Epson C13T913400</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -1135,20 +1135,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Коды">C13T913400</param>
 <param name="Модель">C13T913400</param>
 <param name="Тип">Картридж</param>
-<keywords>Epson, Картридж Epson C13T913400 SC-P5000 200 ml Yellow желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T913400, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T913500" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T913500</vendorCode>
-<name>Картридж Epson C13T913500 SC-P5000 200 ml Light Cyan светло голубой</name>
+<name>Картридж Epson C13T913500</name>
 <price>80900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T913500 SC-P5000 200 ml Light Cyan светло голубой</h3>
+<h3>Картридж Epson C13T913500</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -1162,20 +1162,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Коды">C13T913500</param>
 <param name="Модель">C13T913500</param>
 <param name="Тип">Картридж</param>
-<keywords>Epson, Картридж Epson C13T913500 SC-P5000 200 ml Light Cyan светло голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T913500, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T913B00" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T913B00</vendorCode>
-<name>Картридж Epson C13T913B00 SC-P5000 200 ml Green зеленый</name>
+<name>Картридж Epson C13T913B00</name>
 <price>80900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T913B00 SC-P5000 200 ml Green зеленый</h3>
+<h3>Картридж Epson C13T913B00</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -1189,20 +1189,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Коды">C13T913B00</param>
 <param name="Модель">C13T913B00</param>
 <param name="Тип">Картридж</param>
-<keywords>Epson, Картридж Epson C13T913B00 SC-P5000 200 ml Green зеленый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T913B00, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T965140" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T965140</vendorCode>
-<name>Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl.</name>
+<name>Картридж Epson C13T965140, чёрный</name>
 <price>172900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/efd/7p50yhyf71p121c50sp2jllm3jajgi1a.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl.</h3>
+<h3>Картридж Epson C13T965140, чёрный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -1219,7 +1219,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl., доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Картридж Epson C13T965140 чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACFS-45700" available="true">
@@ -3013,14 +3013,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC13T00Q140" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T00Q140</vendorCode>
-<name>Чернила Epson C13T00Q140 для L7160/L7180 черный пигмент</name>
+<name>Чернила Epson C13T00Q140, чёрный</name>
 <price>17900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/5be/g7r262swlnn594yh3p8y1mr3qpao8hg8.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T00Q140 для L7160/L7180 черный пигмент</h3>
+<h3>Чернила Epson C13T00Q140, чёрный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3037,20 +3037,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Чернила Epson C13T00Q140 для L7160/L7180 черный пигмент, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00Q140 чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00R140" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T00R140</vendorCode>
-<name>Чернила Epson C13T00R140 для L7160/L7180 чёрный</name>
+<name>Чернила Epson C13T00R140, чёрный</name>
 <price>11900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/171/30kpzfmqnye41kfjo6ydbmx29d2ueo28.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T00R140 для L7160/L7180 чёрный</h3>
+<h3>Чернила Epson C13T00R140, чёрный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3067,20 +3067,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Чернила Epson C13T00R140 для L7160/L7180 чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00R140 чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00R240" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T00R240</vendorCode>
-<name>Чернила Epson C13T00R240 для L7160/L7180 голубой</name>
+<name>Чернила Epson C13T00R240, голубой</name>
 <price>11900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/34d/k2the9pje50zsf7i8ocprculdka2lp9p.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T00R240 для L7160/L7180 голубой</h3>
+<h3>Чернила Epson C13T00R240, голубой</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3097,20 +3097,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
-<keywords>Epson, Чернила Epson C13T00R240 для L7160/L7180 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00R240 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00R340" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T00R340</vendorCode>
-<name>Чернила Epson C13T00R340 для L7160/L7180 пурпурный</name>
+<name>Чернила Epson C13T00R340, пурпурный</name>
 <price>11900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/495/m33z7fmi8xcmw22k8ru4zdqxhgp42urr.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T00R340 для L7160/L7180 пурпурный</h3>
+<h3>Чернила Epson C13T00R340, пурпурный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3127,20 +3127,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
-<keywords>Epson, Чернила Epson C13T00R340 для L7160/L7180 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00R340 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00R440" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T00R440</vendorCode>
-<name>Чернила Epson C13T00R440 для L7160/L7180 жёлтый</name>
+<name>Чернила Epson C13T00R440, жёлтый</name>
 <price>11900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f56/wda6uwd3qr8t9xc86thgwsl70gnqt9sk.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T00R440 для L7160/L7180 жёлтый</h3>
+<h3>Чернила Epson C13T00R440, жёлтый</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3157,20 +3157,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
-<keywords>Epson, Чернила Epson C13T00R440 для L7160/L7180 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00R440 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00S14A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T00S14A</vendorCode>
-<name>Чернила Epson C13T00S14A 103 EcoTank для L3100/L3101/L3110/L3150 черный</name>
+<name>Чернила Epson C13T00S14A, чёрный</name>
 <price>6900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/2e5/fjshhbmsq2nxhvexmnk5b2e0riwjh87x.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T00S14A 103 EcoTank для L3100/L3101/L3110/L3150 черный</h3>
+<h3>Чернила Epson C13T00S14A, чёрный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3188,20 +3188,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Чернила Epson C13T00S14A 103 EcoTank для L3100/L3101/L3110/L3150 черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00S14A чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00S24A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T00S24A</vendorCode>
-<name>Чернила Epson C13T00S24A для 103 EcoTank L3100/L3101/L3110/L3150 голубой</name>
+<name>Чернила Epson C13T00S24A, голубой</name>
 <price>7900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/1c3/ul3vtp797mlmfocm523eysi522s3ajcx.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T00S24A для 103 EcoTank L3100/L3101/L3110/L3150 голубой</h3>
+<h3>Чернила Epson C13T00S24A, голубой</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3219,20 +3219,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
-<keywords>Epson, Чернила Epson C13T00S24A для 103 EcoTank L3100/L3101/L3110/L3150 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00S24A голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00S34A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T00S34A</vendorCode>
-<name>Чернила Epson C13T00S34A 103 EcoTank для L3100/L3101/L3110/L3150 пурпурный</name>
+<name>Чернила Epson C13T00S34A, пурпурный</name>
 <price>7900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/525/ommic7rlfwlhpzomjeaco1doghaioso0.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T00S34A 103 EcoTank для L3100/L3101/L3110/L3150 пурпурный</h3>
+<h3>Чернила Epson C13T00S34A, пурпурный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3250,20 +3250,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
-<keywords>Epson, Чернила Epson C13T00S34A 103 EcoTank для L3100/L3101/L3110/L3150 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00S34A пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00S44A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T00S44A</vendorCode>
-<name>Чернила Epson C13T00S44A 103 EcoTank для L3100/L3101/L3110/L3150 жёлтый</name>
+<name>Чернила Epson C13T00S44A, жёлтый</name>
 <price>7900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/124/ykw2bnxw2hbrejn6qy99pv91w4bbibsi.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T00S44A 103 EcoTank для L3100/L3101/L3110/L3150 жёлтый</h3>
+<h3>Чернила Epson C13T00S44A, жёлтый</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3281,20 +3281,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
-<keywords>Epson, Чернила Epson C13T00S44A 103 EcoTank для L3100/L3101/L3110/L3150 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T00S44A жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T01L14A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T01L14A</vendorCode>
-<name>Чернила Epson C13T01L14A EcoTank MX1XX Series Black Bottle L 40 ml</name>
+<name>Чернила Epson C13T01L14A, чёрный, 2000 стр</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/dc8/4tqpp6ggzm8pv3gkmh0u59wx99xr6fph.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T01L14A EcoTank MX1XX Series Black Bottle L 40 ml</h3>
+<h3>Чернила Epson C13T01L14A, чёрный, 2000 стр</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3312,20 +3312,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Чернила Epson C13T01L14A EcoTank MX1XX Series Black Bottle L 40 ml, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T01L14A чёрный 2000 стр, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T03P14A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03P14A</vendorCode>
-<name>Чернила Epson C13T03P14A EcoTank MX1XX Series Black Bottle XL</name>
+<name>Чернила Epson C13T03P14A, чёрный</name>
 <price>12900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a54/x2lxblrbufmcvalac6ro2yp0b8w5p06x.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T03P14A EcoTank MX1XX Series Black Bottle XL</h3>
+<h3>Чернила Epson C13T03P14A, чёрный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3342,20 +3342,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Чернила Epson C13T03P14A EcoTank MX1XX Series Black Bottle XL, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T03P14A чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T03V14A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03V14A</vendorCode>
-<name>Чернила Epson C13T03V14A 101 EcoTank 127 ml для L4150/L4160 черный</name>
+<name>Чернила Epson C13T03V14A, чёрный</name>
 <price>7900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/080/cpjr7wywzvots6neetfveriegriakis7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T03V14A 101 EcoTank 127 ml для L4150/L4160 черный</h3>
+<h3>Чернила Epson C13T03V14A, чёрный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3372,20 +3372,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Чернила Epson C13T03V14A 101 EcoTank 127 ml для L4150/L4160 черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T03V14A чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T03V24A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03V24A</vendorCode>
-<name>Чернила Epson C13T03V24A 101 EcoTank 70 ml для L4150/L4160 голубой</name>
+<name>Чернила Epson C13T03V24A, голубой</name>
 <price>6900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/067/mv6xcpxgfsibti10it8qzuqneiv7dy2g.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T03V24A 101 EcoTank 70 ml для L4150/L4160 голубой</h3>
+<h3>Чернила Epson C13T03V24A, голубой</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3402,20 +3402,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
-<keywords>Epson, Чернила Epson C13T03V24A 101 EcoTank 70 ml для L4150/L4160 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T03V24A голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T03V34A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03V34A</vendorCode>
-<name>Чернила Epson C13T03V34A 101 EcoTank 70 ml для L4150/L4160 пурпурный</name>
+<name>Чернила Epson C13T03V34A, пурпурный</name>
 <price>6900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/92a/1szzxd7papua43jm6lzdhy7675qvmbd7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T03V34A 101 EcoTank 70 ml для L4150/L4160 пурпурный</h3>
+<h3>Чернила Epson C13T03V34A, пурпурный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3432,20 +3432,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
-<keywords>Epson, Чернила Epson C13T03V34A 101 EcoTank 70 ml для L4150/L4160 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T03V34A пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T03V44A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03V44A</vendorCode>
-<name>Чернила Epson C13T03V44A 101 EcoTank 70 ml для L4150/L4160 жёлтый</name>
+<name>Чернила Epson C13T03V44A, жёлтый</name>
 <price>6900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b6a/r1dta6v7ccxev403hxh7auxv6jck57z7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T03V44A 101 EcoTank 70 ml для L4150/L4160 жёлтый</h3>
+<h3>Чернила Epson C13T03V44A, жёлтый</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3462,20 +3462,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
-<keywords>Epson, Чернила Epson C13T03V44A 101 EcoTank 70 ml для L4150/L4160 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T03V44A жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T06C24A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T06C24A</vendorCode>
-<name>Чернила Epson C13T06C24A для L15150 голубой</name>
+<name>Чернила Epson C13T06C24A, голубой</name>
 <price>12900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ef0/l9ohcs1isco4ubnx602lloygyw2r6ht1.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T06C24A для L15150 голубой</h3>
+<h3>Чернила Epson C13T06C24A, голубой</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3492,20 +3492,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
-<keywords>Epson, Чернила Epson C13T06C24A для L15150 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T06C24A голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T06C34A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T06C34A</vendorCode>
-<name>Чернила Epson C13T06C34A для L15150 пурпурный</name>
+<name>Чернила Epson C13T06C34A, пурпурный</name>
 <price>12900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e8b/96f5kjwflydggjecimcvhazh5at3xmje.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T06C34A для L15150 пурпурный</h3>
+<h3>Чернила Epson C13T06C34A, пурпурный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3522,20 +3522,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
-<keywords>Epson, Чернила Epson C13T06C34A для L15150 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T06C34A пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T06C44A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T06C44A</vendorCode>
-<name>Чернила Epson C13T06C44A для L15150 жёлтый</name>
+<name>Чернила Epson C13T06C44A, жёлтый</name>
 <price>12900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/5ac/6n2qe98dchu0scr2sy19v18ldjcrz4mp.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T06C44A для L15150 жёлтый</h3>
+<h3>Чернила Epson C13T06C44A, жёлтый</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3552,20 +3552,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
-<keywords>Epson, Чернила Epson C13T06C44A для L15150 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T06C44A жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T07C14A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T07C14A</vendorCode>
-<name>Чернила Epson C13T07C14A для L8160/L8180 черный пигмент</name>
+<name>Чернила Epson C13T07C14A, чёрный</name>
 <price>13900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/507/np5ot8ocjpa3g6x2gp3j6rzlcyanvtvm.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T07C14A для L8160/L8180 черный пигмент</h3>
+<h3>Чернила Epson C13T07C14A, чёрный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3582,20 +3582,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Чернила Epson C13T07C14A для L8160/L8180 черный пигмент, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T07C14A чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T07D14A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T07D14A</vendorCode>
-<name>Чернила Epson C13T07D14A для L8160/L8180 водорастворимые фото черный</name>
+<name>Чернила Epson C13T07D14A, чёрный</name>
 <price>13900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/44a/nkssx7fia3coxvqwu7pjr66b5z2bzqbg.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T07D14A для L8160/L8180 водорастворимые фото черный</h3>
+<h3>Чернила Epson C13T07D14A, чёрный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3612,20 +3612,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Чернила Epson C13T07D14A для L8160/L8180 водорастворимые фото черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T07D14A чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T07D24A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T07D24A</vendorCode>
-<name>Чернила Epson C13T07D24A для L8160/L8180 голубые</name>
+<name>Чернила Epson C13T07D24A, голубые</name>
 <price>13900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/92c/dih505d1wmcd1r40oxf6e0wtgspw3wyn.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T07D24A для L8160/L8180 голубые</h3>
+<h3>Чернила Epson C13T07D24A, голубые</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3642,20 +3642,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубые</param>
-<keywords>Epson, Чернила Epson C13T07D24A для L8160/L8180 голубые, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T07D24A голубые, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T07D34A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T07D34A</vendorCode>
-<name>Чернила Epson C13T07D34A для L8160/L8180 пурпурные</name>
+<name>Чернила Epson C13T07D34A, пурпурный</name>
 <price>13900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/851/z9v31jmzw1z6np3z6gefxxzampq72pe7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T07D34A для L8160/L8180 пурпурные</h3>
+<h3>Чернила Epson C13T07D34A, пурпурный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3672,20 +3672,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
-<keywords>Epson, Чернила Epson C13T07D34A для L8160/L8180 пурпурные, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T07D34A пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T07D44A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T07D44A</vendorCode>
-<name>Чернила Epson C13T07D44A для L8160/L8180 жёлтые</name>
+<name>Чернила Epson C13T07D44A, жёлтый</name>
 <price>13900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/9b5/koysq8lm6yfauc7ysv1c6qwdu9175na1.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T07D44A для L8160/L8180 жёлтые</h3>
+<h3>Чернила Epson C13T07D44A, жёлтый</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3702,20 +3702,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
-<keywords>Epson, Чернила Epson C13T07D44A для L8160/L8180 жёлтые, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T07D44A жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T07D54A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T07D54A</vendorCode>
-<name>Чернила Epson C13T07D54A для L8160/L8180 серые</name>
+<name>Чернила Epson C13T07D54A, серый</name>
 <price>13900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/590/xz6gg25v8vmul5fvujxnbve67xbyjh5q.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T07D54A для L8160/L8180 серые</h3>
+<h3>Чернила Epson C13T07D54A, серый</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3732,20 +3732,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Серый</param>
-<keywords>Epson, Чернила Epson C13T07D54A для L8160/L8180 серые, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T07D54A серый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T09C14A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T09C14A</vendorCode>
-<name>Чернила Epson C13T09C14A 108 EcoTank для L8050/18050 чёрный</name>
+<name>Чернила Epson C13T09C14A, чёрный</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a93/mzpzbizytnn2r0vgj1f7iksyrrre3zcc.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T09C14A 108 EcoTank для L8050/18050 чёрный</h3>
+<h3>Чернила Epson C13T09C14A, чёрный</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3763,20 +3763,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Чернила Epson C13T09C14A 108 EcoTank для L8050/18050 чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T09C14A чёрный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T09C24A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T09C24A</vendorCode>
-<name>Чернила Epson C13T09C24A 108 EcoTank для L8050/18050 голубой</name>
+<name>Чернила Epson C13T09C24A, голубой</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a93/mzpzbizytnn2r0vgj1f7iksyrrre3zcc.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T09C24A 108 EcoTank для L8050/18050 голубой</h3>
+<h3>Чернила Epson C13T09C24A, голубой</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3794,20 +3794,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
-<keywords>Epson, Чернила Epson C13T09C24A 108 EcoTank для L8050/18050 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T09C24A голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T09C34A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T09C34A</vendorCode>
-<name>Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный</name>
+<name>Чернила Epson C13T09C34A, голубой</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a93/mzpzbizytnn2r0vgj1f7iksyrrre3zcc.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный</h3>
+<h3>Чернила Epson C13T09C34A, голубой</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3825,20 +3825,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
-<keywords>Epson, Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T09C34A голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T09C44A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T09C44A</vendorCode>
-<name>Чернила Epson C13T09C44A 108 EcoTank для L8050/18050 жёлтый</name>
+<name>Чернила Epson C13T09C44A, голубой</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a93/mzpzbizytnn2r0vgj1f7iksyrrre3zcc.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T09C44A 108 EcoTank для L8050/18050 жёлтый</h3>
+<h3>Чернила Epson C13T09C44A, голубой</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3856,20 +3856,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
-<keywords>Epson, Чернила Epson C13T09C44A 108 EcoTank для L8050/18050 жёлтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T09C44A голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T09C54A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T09C54A</vendorCode>
-<name>Чернила Epson C13T09C54A 108 EcoTank для L8050/18050 светло-голубой</name>
+<name>Чернила Epson C13T09C54A, голубой</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a93/mzpzbizytnn2r0vgj1f7iksyrrre3zcc.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T09C54A 108 EcoTank для L8050/18050 светло-голубой</h3>
+<h3>Чернила Epson C13T09C54A, голубой</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3887,20 +3887,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
-<keywords>Epson, Чернила Epson C13T09C54A 108 EcoTank для L8050/18050 светло-голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T09C54A голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T66414A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T66414A</vendorCode>
-<name>Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 черный</name>
+<name>Чернила Epson C13T66414A, чёрный, 4000 – 7100 страниц формата A4*</name>
 <price>6900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b3f/pehmw1vtx06oqazg3ibl4v153m7dyo9v.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 черный</h3>
+<h3>Чернила Epson C13T66414A, чёрный, 4000 – 7100 страниц формата A4*</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3919,20 +3919,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T66414A чёрный 4000 – 7100 страниц формата A4*, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T66434A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T66434A</vendorCode>
-<name>Чернила Epson C13T66434A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 пурпурный</name>
+<name>Чернила Epson C13T66434A, пурпурный, 5700 – 6500 страниц формата A4*</name>
 <price>7900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b49/mfc9kpbqs9r4mg824ar7b142osgpep83.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T66434A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 пурпурный</h3>
+<h3>Чернила Epson C13T66434A, пурпурный, 5700 – 6500 страниц формата A4*</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3951,20 +3951,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
-<keywords>Epson, Чернила Epson C13T66434A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T66434A пурпурный 5700 – 6500 страниц формата A4*, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T66444A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T66444A</vendorCode>
-<name>Чернила Epson C13T66444A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 желтый</name>
+<name>Чернила Epson C13T66444A, жёлтый, 5700 – 6500 страниц формата A4*</name>
 <price>7900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/988/z033wmjmp9ke1sn6vxdzibh85h0xy46b.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T66444A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 желтый</h3>
+<h3>Чернила Epson C13T66444A, жёлтый, 5700 – 6500 страниц формата A4*</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -3983,20 +3983,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
-<keywords>Epson, Чернила Epson C13T66444A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T66444A жёлтый 5700 – 6500 страниц формата A4*, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T67314A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T67314A</vendorCode>
-<name>Чернила Epson C13T67314A L800/1800/810/850 черный</name>
+<name>Чернила Epson C13T67314A, чёрный, 1500 – 1800 фотографий формата 10х15*</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b49/x6or3rcoo0k023zcxmd1kh5y29for43t.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T67314A L800/1800/810/850 черный</h3>
+<h3>Чернила Epson C13T67314A, чёрный, 1500 – 1800 фотографий формата 10х15*</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -4015,20 +4015,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
-<keywords>Epson, Чернила Epson C13T67314A L800/1800/810/850 черный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T67314A чёрный 1500 – 1800 фотографий формата 10х15*, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T67324A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T67324A</vendorCode>
-<name>Чернила Epson C13T67324A L800/1800/810/850 голубой</name>
+<name>Чернила Epson C13T67324A, голубой, 1500 – 1800 фотографий формата 10х15*</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/506/kg5fr62gbodetiyo0gq1x3v1ziyi3n7f.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T67324A L800/1800/810/850 голубой</h3>
+<h3>Чернила Epson C13T67324A, голубой, 1500 – 1800 фотографий формата 10х15*</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -4047,20 +4047,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Голубой</param>
-<keywords>Epson, Чернила Epson C13T67324A L800/1800/810/850 голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T67324A голубой 1500 – 1800 фотографий формата 10х15*, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T67334A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T67334A</vendorCode>
-<name>Чернила Epson C13T67334A L800/1800/810/850 пурпурный</name>
+<name>Чернила Epson C13T67334A, пурпурный, 1500 – 1800 фотографий формата 10х15*</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/634/q90d6gfzv6wfhkxqqcis8rabbrjnpjfp.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T67334A L800/1800/810/850 пурпурный</h3>
+<h3>Чернила Epson C13T67334A, пурпурный, 1500 – 1800 фотографий формата 10х15*</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -4079,20 +4079,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Пурпурный</param>
-<keywords>Epson, Чернила Epson C13T67334A L800/1800/810/850 пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T67334A пурпурный 1500 – 1800 фотографий формата 10х15*, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T67344A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T67344A</vendorCode>
-<name>Чернила Epson C13T67344A L800/1800/810/850 желтый</name>
+<name>Чернила Epson C13T67344A, жёлтый, 1500 – 1800 фотографий формата 10х15*</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b16/jx3l2rjlrtcaj7b1hslhofpmtnd5g7wv.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T67344A L800/1800/810/850 желтый</h3>
+<h3>Чернила Epson C13T67344A, жёлтый, 1500 – 1800 фотографий формата 10х15*</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -4111,20 +4111,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Жёлтый</param>
-<keywords>Epson, Чернила Epson C13T67344A L800/1800/810/850 желтый, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T67344A жёлтый 1500 – 1800 фотографий формата 10х15*, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T67354A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T67354A</vendorCode>
-<name>Чернила Epson C13T67354A L800/1800/810/850 светло-голубой</name>
+<name>Чернила Epson C13T67354A, светло-голубой, 1500 – 1800 фотографий формата 10х15*</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ea7/ndjyxwsyf9b8grmrygxt2k6tbdg3qx8f.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T67354A L800/1800/810/850 светло-голубой</h3>
+<h3>Чернила Epson C13T67354A, светло-голубой, 1500 – 1800 фотографий формата 10х15*</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -4143,20 +4143,20 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Светло-голубой</param>
-<keywords>Epson, Чернила Epson C13T67354A L800/1800/810/850 светло-голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T67354A светло-голубой 1500 – 1800 фотографий формата 10х15*, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T67364A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T67364A</vendorCode>
-<name>Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный</name>
+<name>Чернила Epson C13T67364A, светло-пурпурный, 1500 – 1800 фотографий формата 10х15*</name>
 <price>10900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/cfd/sdlwf2vghm3xgltoc59rn0utwsu3edyn.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный</h3>
+<h3>Чернила Epson C13T67364A, светло-пурпурный, 1500 – 1800 фотографий формата 10х15*</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -4175,7 +4175,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Светло-пурпурный</param>
-<keywords>Epson, Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Чернила Epson C13T67364A светло-пурпурный 1500 – 1800 фотографий формата 10х15*, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC4680101" available="true">
@@ -4466,14 +4466,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC13T03V64A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03V64A</vendorCode>
-<name>Экономичный набор из четырех контейнеров с чернилами, серия 101</name>
+<name>Экономичный набор Epson Экономичный набор из четырех контейнеров с чернилами, серия 101</name>
 <price>18900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/7c2/0l2thxbkhhc5kc45gz2mrxqjz7q83tas.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Экономичный набор из четырех контейнеров с чернилами, серия 101</h3>
+<h3>Экономичный набор Epson Экономичный набор из четырех контейнеров с чернилами, серия 101</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
@@ -4487,33 +4487,33 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Для бренда">Epson</param>
 <param name="Модель">Экономичный набор из четырех контейнеров с чернилами, серия 101</param>
 <param name="Тип">Экономичный набор</param>
-<keywords>Epson, Экономичный набор из четырех контейнеров с чернилами серия 101, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>Epson, Экономичный набор Epson Экономичный набор из четырех контейнеров с чернилами серия 101, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T00S64A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T00S64A</vendorCode>
-<name>Экономичный набор из четырех контейнеров с чернилами, серия 103</name>
+<name>Экономичный набор Экономичный набор из четырех контейнеров с чернилами, серия 103</name>
 <price>19900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/791/yxb66jypq1bhzpjx8gp8edrxzte3uzpd.jpg</picture>
 <vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
-<h3>Экономичный набор из четырех контейнеров с чернилами, серия 103</h3>
+<h3>Экономичный набор Экономичный набор из четырех контейнеров с чернилами, серия 103</h3>
 <!-- WhatsApp -->
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Экономичный набор Экономичный набор из четырех контейнеров с чернилами, серия 103.</p>
+<p>Тип: Экономичный набор; Модель: Экономичный набор из четырех контейнеров с чернилами, серия 103</p>
 <h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Модель:</strong> Экономичный набор из четырех контейнеров с чернилами, серия 103</li><li><strong>Тип:</strong> Экономичный набор</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Модель">Экономичный набор из четырех контейнеров с чернилами, серия 103</param>
 <param name="Тип">Экономичный набор</param>
-<keywords>CS, Экономичный набор из четырех контейнеров с чернилами серия 103, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>CS, Экономичный набор Экономичный набор из четырех контейнеров с чернилами серия 103, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSAB167V2" available="true">
