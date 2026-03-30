@@ -1039,6 +1039,55 @@ def _render_extra_info(extra_info: list[tuple[str, str]], *, limit: int = 12) ->
 
 
 
+
+def _param_value(params: list[tuple[str, str]], key: str) -> str:
+    key_cf = _cf(key)
+    for k, v in params or []:
+        if _cf(k) == key_cf:
+            return _clean_text(v)
+    return ""
+
+
+def _finalize_consumable_name(name: str, params: list[tuple[str, str]]) -> str:
+    s = _clean_text(name)
+    if not s:
+        return ""
+
+    typ = _param_value(params, "Тип")
+    brand = _param_value(params, "Для бренда")
+    model = _param_value(params, "Модель")
+    color = _param_value(params, "Цвет")
+    resource = _param_value(params, "Ресурс")
+
+    if _cf(typ) not in {"картридж", "чернила", "экономичный набор"}:
+        return s
+
+    parts = []
+    if typ:
+        parts.append(typ)
+    if brand:
+        parts.append(brand)
+    if model:
+        parts.append(model)
+
+    rebuilt = " ".join(parts).strip()
+    extras: list[str] = []
+
+    m = re.search(r"(?iu)\bUltraChrome(?:\s+[A-Z0-9/+-]+)?", s)
+    if m:
+        extras.append(_clean_text(m.group(0)))
+
+    if color:
+        extras.append(color.lower())
+    if resource:
+        extras.append(resource)
+
+    if extras:
+        rebuilt += ", " + ", ".join([x for x in extras if _clean_text(x)])
+
+    return _clean_text(rebuilt) or s
+
+
 def _strip_name_prefix_from_desc(desc: str, name: str) -> str:
     text = _clean_text(desc)
     title = _clean_text(name)
@@ -1168,6 +1217,9 @@ def _build_single_offer(
             cleaned_desc = short_desc
     native_desc = _merge_native_desc(cleaned_desc, extra_info)
     raw_price = price_in if isinstance(price_in, int) else 0
+
+    if kind == "consumable":
+        name = _finalize_consumable_name(name, merged_params)
 
     offer = OfferOut(
         oid=oid,
