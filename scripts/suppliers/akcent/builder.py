@@ -31,7 +31,12 @@ from cs.util import norm_ws
 from suppliers.akcent.compat import clean_device_value, reconcile_params
 from suppliers.akcent.desc_clean import clean_description_text
 from suppliers.akcent.desc_extract import extract_desc_params
-from suppliers.akcent.normalize import normalize_source_basics
+from suppliers.akcent.normalize import (
+    _finalize_consumable_name,
+    _finalize_waste_tank_name,
+    _normalize_consumable_name,
+    normalize_source_basics,
+)
 from suppliers.akcent.params_xml import collect_xml_params, detect_kind_by_name, resolve_allowed_keys
 
 try:
@@ -377,49 +382,7 @@ def _normalize_epson_device_list(value: str) -> str:
 
 
 
-def _normalize_consumable_name(name: str, *, kind: str) -> str:
-    s = _clean_text(name)
-    if not s or kind != "consumable":
-        return s
 
-    # Склеенные коды + линейки/маркеры
-    s = re.sub(r"(?iu)(\bT\d[A-Z0-9]{4,10})(?=UltraChrome\b)", r"\1 ", s)
-    s = re.sub(r"(?iu)(\bC1[23][A-Z0-9]{6,10})(?=Singlepack\b)", r"\1 ", s)
-    s = re.sub(r"(?iu)(\bC1[23][A-Z0-9]{6,10})(?=Maintenance\s+Box\b)", r"\1 ", s)
-
-    # Единицы измерения
-    s = re.sub(r"(?iu)(\d)(ml)\b", r"\1 ml", s)
-    s = re.sub(r"(?iu)(\d)(мл)\b", r"\1 мл", s)
-
-    # Аккуратная нормализация служебных хвостов
-    s = re.sub(r"(?iu)\bSinglepack\b", "Singlepack", s)
-    s = re.sub(r"(?iu)\bMaintenance\s+Box\b", "Maintenance Box", s)
-    s = re.sub(r"(?iu)\bUltraChrome\b", "UltraChrome", s)
-
-    return _clean_text(s)
-
-
-def _original_consumable_prefix(subject: str) -> str:
-    low = _cf(subject)
-    if "емкость" in low or "ёмкость" in low:
-        return "Оригинальная"
-    if low == "чернила":
-        return "Оригинальные"
-    return "Оригинальный"
-
-
-def _color_phrase(color_value: str) -> str:
-    color = _clean_text(color_value)
-    if not color:
-        return ""
-    low = _cf(color)
-    if low.endswith(("ый", "ий", "ой")):
-        return f"{color[:-2]}ого цвета"
-    if low.endswith("ая"):
-        return f"{color[:-2]}ой цвета"
-    if low.endswith("ое"):
-        return f"{color[:-2]}ого цвета"
-    return f"{color} цвета"
 
 
 def _infer_consumable_type(name: str, desc: str, current_type: str) -> str:
@@ -1061,26 +1024,6 @@ def _tail_after_model(name: str, model: str) -> str:
     return tail
 
 
-def _finalize_waste_tank_name(name: str, params: list[tuple[str, str]]) -> str:
-    s = _clean_text(name)
-    if not s:
-        return ""
-
-    typ = _param_value(params, "Тип")
-    brand = _param_value(params, "Для бренда")
-    model = _param_value(params, "Модель")
-
-    if _cf(typ) != _cf("Ёмкость для отработанных чернил"):
-        return s
-
-    base_parts = [x for x in (typ, brand, model) if _clean_text(x)]
-    rebuilt = " ".join(base_parts).strip()
-    tail = _tail_after_model(s, model)
-    if tail:
-        rebuilt += f", {tail}"
-    return _clean_text(rebuilt) or s
-
-
 
 def _waste_tank_lead_sentence(name: str, params: list[tuple[str, str]]) -> str:
     typ = _param_value(params, "Тип")
@@ -1122,45 +1065,6 @@ def _finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]
 
     return text
 
-
-def _finalize_consumable_name(name: str, params: list[tuple[str, str]]) -> str:
-    s = _clean_text(name)
-    if not s:
-        return ""
-
-    typ = _param_value(params, "Тип")
-    brand = _param_value(params, "Для бренда")
-    model = _param_value(params, "Модель")
-    color = _param_value(params, "Цвет")
-    resource = _param_value(params, "Ресурс")
-
-    if _cf(typ) not in {"картридж", "чернила", "экономичный набор"}:
-        return s
-
-    parts = []
-    if typ:
-        parts.append(typ)
-    if brand:
-        parts.append(brand)
-    if model:
-        parts.append(model)
-
-    rebuilt = " ".join(parts).strip()
-    extras: list[str] = []
-
-    m = re.search(r"(?iu)\bUltraChrome(?:\s+[A-Z0-9/+-]+)?", s)
-    if m:
-        extras.append(_clean_text(m.group(0)))
-
-    if color:
-        extras.append(color.lower())
-    if resource:
-        extras.append(resource)
-
-    if extras:
-        rebuilt += ", " + ", ".join([x for x in extras if _clean_text(x)])
-
-    return _clean_text(rebuilt) or s
 
 
 def _strip_name_prefix_from_desc(desc: str, name: str) -> str:
