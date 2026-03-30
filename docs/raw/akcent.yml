@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-30 15:44:20">
+<yml_catalog date="2026-03-30 16:08:38">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-30 15:44:20
+Время сборки (Алматы)                      | 2026-03-30 16:08:38
 Ближайшая сборка (Алматы)                  | 2026-03-31 02:00:00
 Сколько товаров у поставщика до фильтра    | 1895
 Сколько товаров у поставщика после фильтра | 166
@@ -16,7 +16,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC13T55KD00" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T55KD00</vendorCode>
-<name>C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</name>
+<name>C13T55KD00 Singlepack (Фиолетовый) T55KD00 UltraChrome HDX/HD 700 ml</name>
 <price>163693</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/923/0p8oyvwd4ts90r6c77nk7geyql2ycozc.jpg</picture>
 <vendor>Epson</vendor>
@@ -30,8 +30,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">700 мл</param>
 <param name="Модель">C13T55KD00</param>
 <param name="Для бренда">Epson</param>
+<param name="Коды">C13T55KD00</param>
 <param name="Тип печати">Струйная</param>
-<param name="Коды">C13T55KD00 / T55KD00</param>
 </offer>
 
 <offer id="ACC12C890191" available="true">
@@ -55,13 +55,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC12C934591" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC12C934591</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX MAINTENANCE BOX</name>
+<name>Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX Maintenance Box</name>
 <price>16751</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/245/g5dm2vx8ypcll0npk4ae89s9od8448oo.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Емкость для отработанных чернил L15150]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C12C934591.]]></description>
 <param name="Коды">C12C934591</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
@@ -79,7 +79,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Емкость для отработанных чернил]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C13T04D000.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
@@ -97,7 +97,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Емкость для отработанных чернил]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C13T04D100.]]></description>
 <param name="Коды">C13T04D100</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
@@ -134,7 +134,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Емкость для отработанных чернил]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C13T671400.]]></description>
 <param name="Коды">C13T671400</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
@@ -163,7 +163,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC33S021601" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC33S021601</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance box</name>
+<name>Ёмкость для отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance Box</name>
 <price>19294</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/93a/rjszo6e7gjv3nl9122h7l7sui2jhglrv.jpg</picture>
 <vendor>Epson</vendor>
@@ -342,7 +342,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <offer id="ACC13T41F440" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T41F440</vendorCode>
-<name>Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350ml жёлтый</name>
+<name>Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350 ml жёлтый</name>
 <price>113269</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/036/0muav07pep31608slkpjvyqved8ch8i7.jpg</picture>
 <vendor>Epson</vendor>
@@ -485,7 +485,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <offer id="ACC13T606B00" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T606B00</vendorCode>
-<name>Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</name>
+<name>Картридж Epson C13T606B00 SP-4800 220 ml пурпурный new</name>
 <price>85502</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/13f/4e003pi2n3p83pjenshmqjhzv915k6lk.jpg</picture>
 <vendor>Epson</vendor>
@@ -586,7 +586,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <offer id="ACC13T61480N" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T61480N</vendorCode>
-<name>Картридж Epson C13T61480N SP-4450 220ml черный матовый</name>
+<name>Картридж Epson C13T61480N SP-4450 220 ml черный матовый</name>
 <price>85502</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/47b/jh69vmx5on79kujy67xqii7xa756lneh.jpg</picture>
 <vendor>Epson</vendor>
@@ -711,7 +711,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <offer id="ACC13T913200" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T913200</vendorCode>
-<name>Картридж Epson C13T913200 SC-P5000 200ml Cyan голубой</name>
+<name>Картридж Epson C13T913200 SC-P5000 200 ml Cyan голубой</name>
 <price>70885</price>
 <picture>https://b2b.ak-cent.kz</picture>
 <vendor>Epson</vendor>
@@ -729,7 +729,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <offer id="ACC13T913400" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T913400</vendorCode>
-<name>Картридж Epson C13T913400 SC-P5000 200ml Yellow желтый</name>
+<name>Картридж Epson C13T913400 SC-P5000 200 ml Yellow желтый</name>
 <price>70885</price>
 <picture>https://b2b.ak-cent.kz</picture>
 <vendor>Epson</vendor>
@@ -745,7 +745,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <offer id="ACC13T913500" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T913500</vendorCode>
-<name>Картридж Epson C13T913500 SC-P5000 200ml Light Cyan светло голубой</name>
+<name>Картридж Epson C13T913500 SC-P5000 200 ml Light Cyan светло голубой</name>
 <price>70885</price>
 <picture>https://b2b.ak-cent.kz</picture>
 <vendor>Epson</vendor>
@@ -761,7 +761,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <offer id="ACC13T913B00" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T913B00</vendorCode>
-<name>Картридж Epson C13T913B00 SC-P5000 200ml Green зеленый</name>
+<name>Картридж Epson C13T913B00 SC-P5000 200 ml Green зеленый</name>
 <price>70885</price>
 <picture>https://b2b.ak-cent.kz</picture>
 <vendor>Epson</vendor>
@@ -2356,7 +2356,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <offer id="ACC13T03V14A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03V14A</vendorCode>
-<name>Чернила Epson C13T03V14A 101 EcoTank 127ml для L4150/L4160 черный</name>
+<name>Чернила Epson C13T03V14A 101 EcoTank 127 ml для L4150/L4160 черный</name>
 <price>4706</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/080/cpjr7wywzvots6neetfveriegriakis7.jpg</picture>
 <vendor>Epson</vendor>
@@ -2375,7 +2375,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <offer id="ACC13T03V24A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03V24A</vendorCode>
-<name>Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой</name>
+<name>Чернила Epson C13T03V24A 101 EcoTank 70 ml для L4150/L4160 голубой</name>
 <price>3224</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/067/mv6xcpxgfsibti10it8qzuqneiv7dy2g.jpg</picture>
 <vendor>Epson</vendor>
@@ -2394,7 +2394,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <offer id="ACC13T03V34A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03V34A</vendorCode>
-<name>Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный</name>
+<name>Чернила Epson C13T03V34A 101 EcoTank 70 ml для L4150/L4160 пурпурный</name>
 <price>3224</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/92a/1szzxd7papua43jm6lzdhy7675qvmbd7.jpg</picture>
 <vendor>Epson</vendor>
@@ -2413,7 +2413,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <offer id="ACC13T03V44A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03V44A</vendorCode>
-<name>Чернила Epson C13T03V44A 101 EcoTank 70ml для L4150/L4160 жёлтый</name>
+<name>Чернила Epson C13T03V44A 101 EcoTank 70 ml для L4150/L4160 жёлтый</name>
 <price>3224</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b6a/r1dta6v7ccxev403hxh7auxv6jck57z7.jpg</picture>
 <vendor>Epson</vendor>
