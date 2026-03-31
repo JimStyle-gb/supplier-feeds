@@ -1,6 +1,6 @@
 QUALITY_GATE_THRESHOLD: PASS
 QUALITY_GATE_EFFECTIVE: PASS
-enforce: false
+enforce: true
 critical_count: 0
 cosmetic_total_count: 0
 cosmetic_offer_count: 0
