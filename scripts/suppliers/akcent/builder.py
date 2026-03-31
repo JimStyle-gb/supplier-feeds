@@ -28,7 +28,17 @@ from typing import Any, Iterable
 
 from cs.core import OfferOut
 from cs.util import norm_ws
-from suppliers.akcent.compat import clean_device_value, reconcile_params
+from suppliers.akcent.compat import (
+    clean_device_value,
+    extract_consumable_device_candidate as compat_extract_consumable_device_candidate,
+    extract_direct_epson_device_list as compat_extract_direct_epson_device_list,
+    extract_explicit_epson_devices as compat_extract_explicit_epson_devices,
+    extract_models_from_text as compat_extract_models_from_text,
+    looks_generic_device_value as compat_looks_generic_device_value,
+    normalize_consumable_device_params as compat_normalize_consumable_device_params,
+    normalize_epson_device_list as compat_normalize_epson_device_list,
+    reconcile_params,
+)
 from suppliers.akcent.desc_clean import (
     build_consumable_short_desc as desc_build_consumable_short_desc,
     clean_description_text,
@@ -58,333 +68,6 @@ _RE_DROP_CONSUMABLE_DESC_LINE = re.compile(
     r"(?iu)\b(?:поддерживаемые\s+модели(?:\s+принтеров|\s+устройств|\s+техники)?|"
     r"совместимые\s+модели(?:\s+техники)?|совместимые\s+продукты(?:\s+для)?|для)\s*:"
 )
-
-_RE_DEVICE_MODEL = re.compile(
-    r"(?iu)"
-    r"(?:(SureColor|WorkForce\s+Pro|WorkForce|EcoTank|Stylus\s+Pro|Expression|PIXMA|LaserJet)\s+)?"
-    r"("
-    r"(?:SC-[A-Z0-9-]+|WF-[A-Z0-9-]+|ET-\d+[A-Z0-9-]*|"
-    r"L\d{4,5}[A-Z0-9-]*|T\d{4,5}[A-Z0-9-]*(?:\s*w/\s*o\s*stand)?|"
-    r"P\d{4,5}[A-Z0-9-]*|B\d{4,5}[A-Z0-9-]*|C\d{4,5}[A-Z0-9-]*|"
-    r"M\d{4,5}[A-Z0-9-]*|DCP-[A-Z0-9-]+|MFC-[A-Z0-9-]+)"
-    r")"
-)
-
-
-def _dedupe_text_items(items: Iterable[str]) -> list[str]:
-    out: list[str] = []
-    seen: set[str] = set()
-    for item in items:
-        x = _clean_text(item)
-        if not x:
-            continue
-        key = _cf(x)
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(x)
-    return out
-
-
-def _normalize_consumable_device_value(value: str) -> str:
-    src = _clean_text(value)
-    if not src:
-        return ""
-
-    src = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", src)
-    src = re.sub(r"(?iu)\bsurecolor\b", "SureColor", src)
-    src = re.sub(r"(?iu)\bworkforce\s+pro\b", "WorkForce Pro", src)
-    src = re.sub(r"(?iu)\bworkforce\b", "WorkForce", src)
-    src = re.sub(r"(?iu)\becotank\b", "EcoTank", src)
-    src = re.sub(r"(?iu)\bstylus\s+pro\b", "Stylus Pro", src)
-    src = re.sub(r"(?iu)\bexpression\b", "Expression", src)
-    src = re.sub(r"(?iu)\bpixma\b", "PIXMA", src)
-    src = re.sub(r"(?iu)\blaserjet\b", "LaserJet", src)
-    src = re.sub(r"(?iu)\b([A-Z]{1,3})-\s+([A-Z0-9])", r"\1-\2", src)
-
-    chunks: list[str] = []
-    last_family = ""
-    for m in _RE_DEVICE_MODEL.finditer(src):
-        family = _clean_text(m.group(1))
-        model = _clean_text(m.group(2))
-        if not model:
-            continue
-        model = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", model)
-        model = _clean_text(model)
-        if family:
-            last_family = family
-        elif last_family and re.match(r"(?iu)^(?:P|T|WF|ET|L|SC-|B|C|M)\d", model):
-            family = last_family
-        item = f"{family} {model}".strip() if family else model
-        chunks.append(item)
-
-    if chunks:
-        cleaned = _dedupe_text_items(chunks)
-        return " / ".join(cleaned)
-
-    fallback = _clean_text(clean_device_value(src))
-    fallback = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", fallback)
-    parts = [x for x in re.split(r"\s*(?:,|/)\s*", fallback) if _clean_text(x)]
-    cleaned = _dedupe_text_items(parts)
-    return " / ".join(cleaned) if cleaned else ""
-
-
-def _normalize_consumable_device_params(params: list[tuple[str, str]], *, kind: str) -> list[tuple[str, str]]:
-    if kind != "consumable" or not params:
-        return list(params or [])
-
-    out: list[tuple[str, str]] = []
-    seen: set[tuple[str, str]] = set()
-
-    for key, value in params:
-        k = _clean_text(key)
-        v = _clean_text(value)
-        if not k or not v:
-            continue
-        if _cf(k) in {"для устройства", "совместимость"}:
-            v2 = _normalize_consumable_device_value(v)
-            if v2:
-                _append_unique_param(out, seen, k, v2)
-            continue
-        _append_unique_param(out, seen, k, v)
-
-    return out
-
-
-_RE_CONSUMABLE_MODEL_TAIL = re.compile(
-    r"(?iu)(?:поддерживаемые\s+модели(?:\s+принтеров|\s+устройств|\s+техники)?|совместимые\s+модели(?:\s+техники)?|совместимые\s+продукты(?:\s+для)?)\s*:?[ \t]*(.+)$"
-)
-_RE_FOR_DEVICE_TAIL = re.compile(
-    r"(?iu)(?:^|\b)(?:для|for)\s+((?:Epson\s+)?(?:WorkForce|SureColor|EcoTank|Stylus(?:\s+Pro)?)\b.+)$"
-)
-_RE_L_SERIES_PACK = re.compile(r"(?iu)\bL(\d{3,5}(?:/\d{3,5})+)\b")
-_RE_CODE_TOKEN = re.compile(r"(?iu)C(?:11|12|13|33)[A-Z0-9]{5,10}|T[0-9A-Z]{5,10}")
-_RE_WORKFORCE_MODEL = re.compile(r"(?iu)(?:Epson\s+)?WorkForce\s+[A-Z0-9-]+")
-_RE_SURECOLOR_MODEL = re.compile(r"(?iu)(?:Epson\s+)?SureColor\s+SC-[A-Z0-9-]+")
-_RE_ECOTANK_MODEL = re.compile(r"(?iu)(?:Epson\s+)?EcoTank\s+[A-Z0-9-]+")
-_RE_STYLUS_MODEL = re.compile(r"(?iu)(?:Epson\s+)?Stylus(?:\s+Pro)?\s+[A-Z0-9-]+")
-_RE_GENERIC_EPS_MODEL = re.compile(r"(?iu)(?:WF|SC|ET|L)-?[A-Z0-9]{2,}")
-
-
-def _title_eps_family(value: str) -> str:
-    v = _clean_text(value)
-    if not v:
-        return ""
-    v = re.sub(r"(?iu)epson", "Epson", v)
-    v = re.sub(r"(?iu)surecolor", "SureColor", v)
-    v = re.sub(r"(?iu)workforce", "WorkForce", v)
-    v = re.sub(r"(?iu)ecotank", "EcoTank", v)
-    v = re.sub(r"(?iu)stylus", "Stylus", v)
-    v = re.sub(r"(?iu)w/?o\s*stand", "", v)
-    return _clean_text(v)
-
-
-def _extract_models_from_text(text: str) -> str:
-    src = _clean_text(text)
-    if not src:
-        return ""
-
-    items: list[str] = []
-    for rx in (_RE_SURECOLOR_MODEL, _RE_WORKFORCE_MODEL, _RE_ECOTANK_MODEL, _RE_STYLUS_MODEL):
-        items.extend([_title_eps_family(m.group(0)) for m in rx.finditer(src)])
-
-    if not items:
-        for m in _RE_GENERIC_EPS_MODEL.finditer(src):
-            token = _clean_text(m.group(0)).upper().replace('SC ', 'SC-').replace('WF ', 'WF-').replace('ET ', 'ET-').replace('L ', 'L')
-            token = token.replace('SC- ', 'SC-').replace('WF- ', 'WF-').replace('ET- ', 'ET-')
-            if token.startswith('SC-'):
-                items.append(f"Epson SureColor {token}")
-            elif token.startswith('WF-'):
-                items.append(f"Epson WorkForce {token}")
-            elif token.startswith('ET-'):
-                items.append(f"Epson EcoTank {token}")
-            elif token.startswith('L') and len(token) > 1 and token[1:].isdigit():
-                items.append(f"Epson {token}")
-
-    return " / ".join(_dedupe_text_items([x for x in items if x]))
-
-
-def _extract_explicit_epson_devices(text: str) -> str:
-    src = _clean_text(text)
-    if not src:
-        return ""
-
-    items: list[str] = []
-    for rx in (
-        re.compile(r"(?iu)(?:Epson\s+)?WorkForce\s+WF-[A-Z0-9-]+"),
-        re.compile(r"(?iu)(?:Epson\s+)?SureColor\s+SC-[A-Z0-9-]+"),
-        re.compile(r"(?iu)(?:Epson\s+)?EcoTank\s+ET-[A-Z0-9-]+"),
-        re.compile(r"(?iu)(?:Epson\s+)?Stylus(?:\s+Pro)?\s+[A-Z0-9-]+"),
-    ):
-        items.extend([_title_eps_family(m.group(0)) for m in rx.finditer(src)])
-
-    if not items:
-        for m in re.finditer(r"(?iu)(?:WF|SC|ET)-?[A-Z0-9]{2,}", src):
-            token = _clean_text(m.group(0)).upper().replace('SC ', 'SC-').replace('WF ', 'WF-').replace('ET ', 'ET-')
-            token = token.replace('SC- ', 'SC-').replace('WF- ', 'WF-').replace('ET- ', 'ET-')
-            if token.startswith('WF-'):
-                items.append(f"Epson WorkForce {token}")
-            elif token.startswith('SC-'):
-                items.append(f"Epson SureColor {token}")
-            elif token.startswith('ET-'):
-                items.append(f"Epson EcoTank {token}")
-
-    return " / ".join(_dedupe_text_items([x for x in items if x]))
-
-
-def _extract_direct_epson_device_list(text: str) -> str:
-    src = _clean_text(text)
-    if not src:
-        return ""
-
-    items: list[str] = []
-    patterns = (
-        re.compile(r"(?iu)(?:Epson\s+)?WorkForce\s+WF-[A-Z0-9-]+"),
-        re.compile(r"(?iu)(?:Epson\s+)?SureColor\s+SC-[A-Z0-9-]+"),
-        re.compile(r"(?iu)(?:Epson\s+)?EcoTank\s+ET-[A-Z0-9-]+"),
-        re.compile(r"(?iu)(?:Epson\s+)?Stylus(?:\s+Pro)?\s+[A-Z0-9-]+"),
-    )
-    for rx in patterns:
-        for m in rx.finditer(src):
-            items.append(_title_eps_family(m.group(0)))
-
-    # fallback for compact lists like "WF-7620DTWF WF-7610DWF WF-7110DTW"
-    if not items:
-        last_family = ""
-        for token in re.findall(r"(?iu)(?:WF|SC|ET)-?[A-Z0-9-]{2,}", src):
-            t = _clean_text(token).upper().replace('SC ', 'SC-').replace('WF ', 'WF-').replace('ET ', 'ET-')
-            if t.startswith('WF-'):
-                items.append(f"Epson WorkForce {t}")
-                last_family = 'WF'
-            elif t.startswith('SC-'):
-                items.append(f"Epson SureColor {t}")
-                last_family = 'SC'
-            elif t.startswith('ET-'):
-                items.append(f"Epson EcoTank {t}")
-                last_family = 'ET'
-            elif last_family == 'WF' and re.match(r"^[A-Z0-9-]{4,}$", t):
-                items.append(f"Epson WorkForce WF-{t}")
-            elif last_family == 'SC' and re.match(r"^[A-Z0-9-]{4,}$", t):
-                items.append(f"Epson SureColor SC-{t}")
-            elif last_family == 'ET' and re.match(r"^[A-Z0-9-]{4,}$", t):
-                items.append(f"Epson EcoTank ET-{t}")
-
-    return " / ".join(_dedupe_text_items([x for x in items if x]))
-
-
-def _extract_consumable_device_candidate(name: str, desc: str) -> str:
-    text = _clean_text(desc)
-    for line in text.split("\n"):
-        line = _clean_text(line)
-        if not line:
-            continue
-
-        m = _RE_CONSUMABLE_MODEL_TAIL.search(line)
-        if m:
-            cand = _normalize_consumable_device_value(m.group(1))
-            models = _extract_models_from_text(cand)
-            if models:
-                return models
-            if cand:
-                return cand
-
-        m_for = _RE_FOR_DEVICE_TAIL.search(line)
-        if m_for:
-            cand = _normalize_consumable_device_value(m_for.group(1))
-            models = _extract_models_from_text(cand)
-            if models:
-                return models
-
-    models = _extract_models_from_text(text)
-    if models:
-        return models
-
-    # fallback for Epson L-series inks from name like L800/1800/810/850
-    m2 = _RE_L_SERIES_PACK.search(_clean_text(name))
-    if m2:
-        nums = [x for x in m2.group(1).split('/') if _clean_text(x)]
-        items = [f"Epson L{n}" for n in nums]
-        return " / ".join(_dedupe_text_items(items))
-
-    return ""
-
-
-def _looks_generic_device_value(value: str) -> bool:
-    low = _cf(value)
-    if not low:
-        return True
-    if any(x in low for x in ["широкоформатный принтер", "принтер", "мфу", "фотопечать", "устройств epson"]):
-        return True
-    return not bool(_RE_DEVICE_MODEL.search(value))
-
-
-_RE_PRIMARY_CONSUMABLE_CODE = re.compile(r"(?iu)\bC(?:11|12|13|33)[A-Z0-9]{5,10}\b")
-_RE_SECONDARY_T_CODE = re.compile(r"(?iu)\bT[0-9A-Z]{5,10}\b")
-
-
-def _pick_name_primary_code(name: str) -> str:
-    m = _RE_PRIMARY_CONSUMABLE_CODE.search(_clean_text(name))
-    return _clean_text(m.group(0)).upper() if m else ""
-
-
-def _pick_secondary_t_code(name: str, desc: str, primary: str) -> str:
-    joined = " / ".join([_clean_text(name), _clean_text(desc)]).upper()
-
-    # only real T-codes are allowed: must start with T and contain digits immediately after T
-    # this prevents false positives like MAINTENANCE -> TENANCE
-    raw_tokens = re.findall(r"(?iu)T\d[A-Z0-9]{4,10}", joined)
-    for token in raw_tokens:
-        code = _clean_text(token).upper()
-        code = re.split(r"(?iu)(?:ULTRACHROME|SINGLEPACK|INK|CARTRIDGE|BLACK|CYAN|MAGENTA|YELLOW|PHOTO|HDX|HD)", code)[0]
-        code = _clean_text(code)
-        m = re.match(r"(?iu)^T\d[A-Z0-9]{4,10}$", code)
-        if m:
-            code = _clean_text(m.group(0)).upper()
-            if code and code != primary:
-                return code
-
-    # glued tokens like T55KD00UltraChrome / T41F340M are allowed only when digit follows T
-    glued = re.search(r"(?iu)(T\d[A-Z0-9]{4,10})(?=ULTRACHROME|SINGLEPACK|INK|CARTRIDGE|BLACK|CYAN|MAGENTA|YELLOW|PHOTO|HDX|HD|$)", joined)
-    if glued:
-        code = _clean_text(glued.group(1)).upper()
-        if code and code != primary:
-            return code
-
-    return ""
-
-
-def _should_force_consumable_model(current_model: str, primary_code: str, name: str) -> bool:
-    cur = _clean_text(current_model).upper()
-    if not primary_code:
-        return False
-    if not cur:
-        return True
-    if cur == primary_code:
-        return False
-    if ' ' in _clean_text(current_model):
-        return True
-    if cur.startswith('C11') or cur.startswith('C12') or cur.startswith('C13') or cur.startswith('C33'):
-        return True
-    if cur in _clean_text(name).upper() and cur != primary_code:
-        return True
-    return False
-
-
-def _normalize_epson_device_list(value: str) -> str:
-    src = _clean_text(value)
-    if not src:
-        return ""
-    src = re.sub(r"(?iu)\bSC-\s+", "SC-", src)
-    src = re.sub(r"(?iu)\bWF-\s+", "WF-", src)
-    src = re.sub(r"(?iu)\bET-\s+", "ET-", src)
-    src = re.sub(r"(?iu)(?<!Epson\s)\bSureColor\b", "Epson SureColor", src)
-    src = re.sub(r"(?iu)(?<!Epson\s)\bWorkForce\b", "Epson WorkForce", src)
-    src = re.sub(r"(?iu)(?<!Epson\s)\bEcoTank\b", "Epson EcoTank", src)
-    src = re.sub(r"(?iu)(?<!Epson\s)\bStylus(?:\s+Pro)?\b", lambda m: 'Epson ' + _clean_text(m.group(0)), src)
-    # keep only model-like fragments when possible
-    models = _extract_models_from_text(src) or src
-    parts = _dedupe_text_items([_clean_text(x) for x in re.split(r"\s*/\s*", models) if _clean_text(x)])
-    return " / ".join(parts)
 
 def _infer_consumable_type(name: str, desc: str, current_type: str) -> str:
     low = _cf(" ".join([name, desc, current_type]))
@@ -453,15 +136,15 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
         out = _set_single_param(out, "Тип", "Чернила")
 
     current_device = _first_value(out, "Для устройства") or _first_value(out, "Совместимость")
-    better_device = _extract_consumable_device_candidate(name, desc)
+    better_device = compat_extract_consumable_device_candidate(name, desc)
     if not better_device:
-        better_device = _extract_direct_epson_device_list(" ".join([desc or "", name or ""]))
+        better_device = compat_extract_direct_epson_device_list(" ".join([desc or "", name or ""]))
     if not better_device:
-        better_device = _extract_explicit_epson_devices(" ".join([desc or "", name or ""]))
+        better_device = compat_extract_explicit_epson_devices(" ".join([desc or "", name or ""]))
     if not better_device:
-        better_device = _extract_models_from_text(" ".join([name or "", desc or ""]))
-    better_device = _normalize_epson_device_list(better_device)
-    if better_device and (_looks_generic_device_value(current_device) or len(better_device) >= len(current_device)):
+        better_device = compat_extract_models_from_text(" ".join([name or "", desc or ""]))
+    better_device = compat_normalize_epson_device_list(better_device)
+    if better_device and (compat_looks_generic_device_value(current_device) or len(better_device) >= len(current_device)):
         out = _set_single_param(out, "Для устройства", better_device)
 
     model = _first_value(out, "Модель")
@@ -497,20 +180,20 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
 
     # some descriptions are just pure model lists; preserve them as device list
     if not _has_key(out, "Для устройства"):
-        models = _normalize_epson_device_list(
-            _extract_direct_epson_device_list(desc)
-            or _extract_explicit_epson_devices(desc)
-            or _extract_models_from_text(desc)
+        models = compat_normalize_epson_device_list(
+            compat_extract_direct_epson_device_list(desc)
+            or compat_extract_explicit_epson_devices(desc)
+            or compat_extract_models_from_text(desc)
         )
         if models:
             out = _set_single_param(out, "Для устройства", models)
 
     # if device list was still missed, try simpler extraction from body/name again
     if not _has_key(out, "Для устройства"):
-        desc_models = _normalize_epson_device_list(
-            _extract_direct_epson_device_list(desc or name)
-            or _extract_explicit_epson_devices(desc or name)
-            or _extract_models_from_text(desc or name)
+        desc_models = compat_normalize_epson_device_list(
+            compat_extract_direct_epson_device_list(desc or name)
+            or compat_extract_explicit_epson_devices(desc or name)
+            or compat_extract_models_from_text(desc or name)
         )
         if desc_models:
             out = _set_single_param(out, "Для устройства", desc_models)
@@ -982,7 +665,7 @@ def _build_single_offer(
         model=model,
         kind=kind,
     )
-    merged_params = _normalize_consumable_device_params(merged_params, kind=kind)
+    merged_params = compat_normalize_consumable_device_params(merged_params, kind=kind)
     merged_params = _repair_consumable_params(merged_params, name=name, desc=cleaned_desc, kind=kind)
     merged_params = _dedupe_type_params(merged_params)
     merged_params = _filter_allowed(merged_params, allow_keys)
