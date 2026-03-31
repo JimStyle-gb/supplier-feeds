@@ -3,8 +3,8 @@ name: Build_AkCent
 on:
   workflow_dispatch:
   schedule:
-    # Алматы UTC+5 → 02:00 local = 21:00 UTC предыдущего дня
-    - cron: '0 21 * * *'
+    # Алматы UTC+5 → 01:00 local = 20:00 UTC предыдущего дня
+    - cron: '0 20 * * *'
 
 permissions:
   contents: write
@@ -62,6 +62,7 @@ jobs:
               "scripts/cs/util.py",
               "scripts/cs/validators.py",
               "scripts/cs/writer.py",
+              "scripts/cs/qg_report.py",
               "scripts/build_akcent.py",
               "scripts/suppliers/__init__.py",
               "scripts/suppliers/akcent/__init__.py",
@@ -102,7 +103,7 @@ jobs:
           import pathlib
           import re
           t = pathlib.Path('scripts/build_akcent.py').read_text(encoding='utf-8', errors='ignore')
-          m = re.search(r"BUILD_AKCENT_VERSION\s*=\s*[\"\']([^\"\']+)[\"\']", t)
+          m = re.search(r'BUILD_AKCENT_VERSION\s*=\s*["\']([^"\']+)["\']', t)
           print('AKCENT_VERSION', m.group(1) if m else 'UNKNOWN')
           PY
 
@@ -157,23 +158,22 @@ jobs:
 
           TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
           NOW_HMS=$(TZ='Asia/Almaty' date '+%H%M%S')
-          if [ "$NOW_HMS" -ge "020000" ]; then
+          if [ "$NOW_HMS" -ge "010000" ]; then
             NEXT_DATE=$(TZ='Asia/Almaty' date -d 'tomorrow' '+%Y-%m-%d')
           else
             NEXT_DATE="$TODAY"
           fi
-          NEXT_RUN="${NEXT_DATE} 02:00:00"
+          NEXT_RUN="${NEXT_DATE} 01:00:00"
 
           for F in docs/akcent.yml docs/raw/akcent.yml; do
             if [ ! -f "$F" ]; then
               continue
             fi
 
-            sed -i -E "s/^<yml_catalog date=\"[^\"]+\">/<yml_catalog date=\"${TS}\">/" "$F" || true
+            sed -i -E 's/^<yml_catalog date="[^"]+">/<yml_catalog date="'"${TS}"'">/' "$F" || true
 
             tmp="$F.__tmp"
             : > "$tmp"
-
             while IFS= read -r ln; do
               if [[ "$ln" == Время\ сборки\ \(Алматы\)* ]]; then
                 left="${ln%%|*}"
@@ -189,7 +189,6 @@ jobs:
                 fi
               fi
             done < "$F"
-
             mv "$tmp" "$F"
           done
 
