@@ -3,7 +3,8 @@ name: Build_AlStyle
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 20 * * *'
+    # Алматы UTC+5 → 02:00 local = 21:00 UTC предыдущего дня
+    - cron: '0 21 * * *'
 
 permissions:
   contents: write
@@ -40,6 +41,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+      - name: Prepare folders
+        run: |
+          mkdir -p docs docs/raw scripts/suppliers/alstyle/config
+
       - name: Smoke test (py_compile existing files only)
         run: |
           python - <<'PY'
@@ -57,6 +62,7 @@ jobs:
               "scripts/cs/util.py",
               "scripts/cs/validators.py",
               "scripts/cs/writer.py",
+              "scripts/cs/qg_report.py",
               "scripts/build_alstyle.py",
               "scripts/suppliers/__init__.py",
               "scripts/suppliers/alstyle/__init__.py",
@@ -91,6 +97,16 @@ jobs:
               sys.exit(1)
           PY
 
+      - name: Show build version
+        run: |
+          python - <<'PY'
+          import pathlib
+          import re
+          t = pathlib.Path('scripts/build_alstyle.py').read_text(encoding='utf-8', errors='ignore')
+          m = re.search(r'BUILD_ALSTYLE_VERSION\s*=\s*["\']([^"\']+)["\']', t)
+          print('ALSTYLE_VERSION', m.group(1) if m else 'UNKNOWN')
+          PY
+
       - name: Snapshot previous feed
         run: |
           mkdir -p /tmp docs docs/raw
@@ -101,6 +117,8 @@ jobs:
           fi
 
       - name: Build feed (alstyle)
+        env:
+          TZ: Asia/Almaty
         run: |
           python scripts/build_alstyle.py
 
@@ -138,28 +156,24 @@ jobs:
             NOTE=" (не было изменений)"
           fi
 
-          NOW_HMS=$(TZ='Asia/Almaty' date '+%H%M%S')
           TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
-          if [ "$NOW_HMS" -ge "010000" ]; then
+          NOW_HMS=$(TZ='Asia/Almaty' date '+%H%M%S')
+          if [ "$NOW_HMS" -ge "020000" ]; then
             NEXT_DATE=$(TZ='Asia/Almaty' date -d 'tomorrow' '+%Y-%m-%d')
           else
             NEXT_DATE="$TODAY"
           fi
-          NEXT_RUN="${NEXT_DATE} 01:00:00"
-
-          echo "FEED_META_TS=${TS}${NOTE}"
-          echo "FEED_META_NEXT_RUN=${NEXT_RUN}"
+          NEXT_RUN="${NEXT_DATE} 02:00:00"
 
           for F in docs/alstyle.yml docs/raw/alstyle.yml; do
             if [ ! -f "$F" ]; then
               continue
             fi
 
-            sed -i -E "s/^<yml_catalog date=\"[^\"]+\">/<yml_catalog date=\"${TS}\">/" "$F" || true
+            sed -i -E 's/^<yml_catalog date="[^"]+">/<yml_catalog date="'"${TS}"'">/' "$F" || true
 
             tmp="$F.__tmp"
             : > "$tmp"
-
             while IFS= read -r ln; do
               if [[ "$ln" == Время\ сборки\ \(Алматы\)* ]]; then
                 left="${ln%%|*}"
@@ -175,7 +189,6 @@ jobs:
                 fi
               fi
             done < "$F"
-
             mv "$tmp" "$F"
           done
 
