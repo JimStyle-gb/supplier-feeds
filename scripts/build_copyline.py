@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 """
 Path: scripts/build_copyline.py
-CopyLine adapter stage-4.
+CopyLine adapter under CS-template.
 
-Вынесено в supplier-layer:
-- source.py
-- filtering.py
-- pictures.py
-- normalize.py
-- params_page.py
-- desc_clean.py
-- desc_extract.py
-- compat.py
-- builder.py
+Что делает:
+- грузит supplier config;
+- читает индекс товаров;
+- фильтрует ассортимент;
+- собирает raw offers из page-payload;
+- пишет raw/final feed;
+- запускает supplier-side quality gate.
 """
 
 from __future__ import annotations
 
 import os
+from pathlib import Path
+
+import yaml
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
-from typing import List
+from typing import Any, List
 
 from cs.core import get_public_vendor, next_run_dom_at_hour, now_almaty, write_cs_feed, write_cs_feed_raw
 from suppliers.copyline.builder import build_offer_from_page
@@ -39,18 +39,27 @@ COPYLINE_FILTER_YML = os.getenv("COPYLINE_FILTER_YML", "scripts/suppliers/copyli
 COPYLINE_POLICY_YML = os.getenv("COPYLINE_POLICY_YML", "scripts/suppliers/copyline/config/policy.yml")
 COPYLINE_QG_BASELINE = os.getenv("COPYLINE_QG_BASELINE", "scripts/suppliers/copyline/config/quality_gate_baseline.yml")
 COPYLINE_QG_REPORT = os.getenv("COPYLINE_QG_REPORT", "docs/raw/copyline_quality_gate.txt")
+BUILD_COPYLINE_VERSION = "build_copyline_v6_roles_cleanup"
 
 
-def main() -> int:
-    build_time = now_almaty().replace(tzinfo=None)
-    next_run = next_run_dom_at_hour(build_time, 3, (1, 10, 20))
+def _read_yaml(path: str) -> dict[str, Any]:
+    p = Path(path)
+    if not p.exists():
+        return {}
+    try:
+        return yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+    except Exception:
+        return {}
 
-    index = fetch_product_index()
-    before = len(index)
 
-    filter_cfg = load_filter_config(COPYLINE_FILTER_YML)
-    filtered_index, filter_report = filter_product_index(index, include_prefixes=filter_cfg.get("include_prefixes") or [])
+def _load_policy_param_priority(path: str) -> tuple[str, ...]:
+    data = _read_yaml(path)
+    raw = data.get("param_priority") or []
+    out = [str(x).strip() for x in raw if str(x).strip()]
+    return tuple(out)
 
+
+def _build_offers(filtered_index: list[dict]) -> list:
     out_offers: List = []
     seen_oids: set[str] = set()
     deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
@@ -64,14 +73,55 @@ def main() -> int:
             if not page:
                 continue
             offer = build_offer_from_page(page, fallback_title=(futures[fut].get("title") or ""))
-            if not offer:
-                continue
-            if offer.oid in seen_oids:
+            if not offer or offer.oid in seen_oids:
                 continue
             seen_oids.add(offer.oid)
             out_offers.append(offer)
 
     out_offers.sort(key=lambda o: o.oid)
+    return out_offers
+
+
+def _print_summary(*, before: int, out_offers: list, filter_report: dict, qg: dict) -> None:
+    after = len(out_offers)
+    in_true = sum(1 for o in out_offers if o.available)
+    in_false = after - in_true
+
+    print("=" * 72)
+    print("[CopyLine] build summary")
+    print("=" * 72)
+    print(f"version: {BUILD_COPYLINE_VERSION}")
+    print(f"before: {before}")
+    print(f"after:  {after}")
+    print(f"raw_out_file: {RAW_OUT_FILE}")
+    print(f"out_file: {OUT_FILE}")
+    print("-" * 72)
+    print("filter_report:")
+    for k, v in filter_report.items():
+        print(f"  {k}: {v}")
+    print("-" * 72)
+    print(f"quality_gate_ok:   {qg.get('ok')}")
+    print(f"quality_gate_report: {qg.get('report_path')}")
+    print(f"availability_true:  {in_true}")
+    print(f"availability_false: {in_false}")
+    print("=" * 72)
+
+
+
+def main() -> int:
+    build_time = now_almaty().replace(tzinfo=None)
+    next_run = next_run_dom_at_hour(build_time, 3, (1, 10, 20))
+
+    index = fetch_product_index()
+    before = len(index)
+
+    filter_cfg = load_filter_config(COPYLINE_FILTER_YML)
+    filtered_index, filter_report = filter_product_index(
+        index,
+        include_prefixes=filter_cfg.get("include_prefixes") or [],
+    )
+
+    out_offers = _build_offers(filtered_index)
 
     write_cs_feed_raw(
         out_offers,
@@ -95,19 +145,8 @@ def main() -> int:
         before=before,
         encoding=OUTPUT_ENCODING,
         public_vendor=public_vendor,
-        param_priority=(
-            "Тип",
-            "Для бренда",
-            "Коды расходников",
-            "Совместимость",
-            "Технология печати",
-            "Цвет",
-            "Количество страниц (5% заполнение)",
-            "Ресурс",
-            "Модель",
-        ),
+        param_priority=_load_policy_param_priority(COPYLINE_POLICY_YML),
     )
-
 
     qg = run_quality_gate(
         feed_path=RAW_OUT_FILE,
@@ -116,28 +155,7 @@ def main() -> int:
         report_path=COPYLINE_QG_REPORT,
     )
 
-    after = len(out_offers)
-    in_true = sum(1 for o in out_offers if o.available)
-    in_false = after - in_true
-
-    print("=" * 72)
-    print("[CopyLine] build summary")
-    print("=" * 72)
-    print("version: build_copyline_v5_config_quality_gate")
-    print(f"before: {before}")
-    print(f"after:  {after}")
-    print(f"raw_out_file: {RAW_OUT_FILE}")
-    print(f"out_file: {OUT_FILE}")
-    print("-" * 72)
-    print("filter_report:")
-    for k, v in filter_report.items():
-        print(f"  {k}: {v}")
-    print("-" * 72)
-    print(f"quality_gate_ok:   {qg.get('ok')}")
-    print(f"quality_gate_report: {qg.get('report_path')}")
-    print(f"availability_true:  {in_true}")
-    print(f"availability_false: {in_false}")
-    print("=" * 72)
+    _print_summary(before=before, out_offers=out_offers, filter_report=filter_report, qg=qg)
     if not qg.get("ok", True):
         return 1
     return 0
