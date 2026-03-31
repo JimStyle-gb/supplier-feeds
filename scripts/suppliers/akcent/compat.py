@@ -212,6 +212,64 @@ def clean_codes_value(value: str) -> str:
     return ", ".join(codes)
 
 
+
+
+_RE_PRIMARY_CONSUMABLE_CODE = re.compile(r"(?iu)\bC(?:11|12|13|33)[A-Z0-9]{5,10}\b")
+_RE_SECONDARY_T_CODE = re.compile(r"(?iu)\bT[0-9A-Z]{5,10}\b")
+
+
+def pick_name_primary_code(name: str) -> str:
+    m = _RE_PRIMARY_CONSUMABLE_CODE.search(_clean_text(name))
+    return _clean_text(m.group(0)).upper() if m else ""
+
+
+def pick_secondary_t_code(name: str, desc: str, primary: str) -> str:
+    joined = " / ".join([_clean_text(name), _clean_text(desc)]).upper()
+
+    raw_tokens = re.findall(r"(?iu)\bT\d[A-Z0-9]{4,10}\b", joined)
+    for token in raw_tokens:
+        code = _clean_text(token).upper()
+        code = re.split(
+            r"(?iu)(?:ULTRACHROME|SINGLEPACK|INK|CARTRIDGE|BLACK|CYAN|MAGENTA|YELLOW|PHOTO|HDX|HD)",
+            code,
+        )[0]
+        code = _clean_text(code)
+        m = re.match(r"(?iu)^T\d[A-Z0-9]{4,10}$", code)
+        if m:
+            code = _clean_text(m.group(0)).upper()
+            if code and code != primary:
+                return code
+
+    glued = re.search(
+        r"(?iu)(T\d[A-Z0-9]{4,10})(?=ULTRACHROME|SINGLEPACK|INK|CARTRIDGE|BLACK|CYAN|MAGENTA|YELLOW|PHOTO|HDX|HD|$)",
+        joined,
+    )
+    if glued:
+        code = _clean_text(glued.group(1)).upper()
+        if code and code != primary:
+            return code
+
+    return ""
+
+
+def should_force_consumable_model(current_model: str, primary_code: str, name: str) -> bool:
+    cur = _clean_text(current_model).upper()
+    if not primary_code:
+        return False
+    if not cur:
+        return True
+    if cur == primary_code:
+        return False
+    if " " in _clean_text(current_model):
+        return True
+    if cur.startswith(("C11", "C12", "C13", "C33")):
+        return True
+    if cur in _clean_text(name).upper() and cur != primary_code:
+        return True
+    return False
+
+
+
 # -----------------------------
 # Совместимость / Для устройства
 # -----------------------------
@@ -641,6 +699,9 @@ def reconcile_params(
 __all__ = [
     "extract_codes_from_text",
     "extract_primary_code_from_name",
+    "pick_name_primary_code",
+    "pick_secondary_t_code",
+    "should_force_consumable_model",
     "clean_codes_value",
     "clean_compat_value",
     "clean_device_value",
