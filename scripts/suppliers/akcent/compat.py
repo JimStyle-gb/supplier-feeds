@@ -251,6 +251,281 @@ def clean_device_value(value: str) -> str:
     return ", ".join(items)
 
 
+
+
+# -----------------------------
+# Consumable device normalization / extraction
+# -----------------------------
+
+_RE_DEVICE_MODEL = re.compile(
+    r"(?iu)"
+    r"(?:(SureColor|WorkForce\s+Pro|WorkForce|EcoTank|Stylus\s+Pro|Expression|PIXMA|LaserJet)\s+)?"
+    r"("
+    r"(?:SC-[A-Z0-9-]+|WF-[A-Z0-9-]+|ET-\d+[A-Z0-9-]*|"
+    r"L\d{4,5}[A-Z0-9-]*|T\d{4,5}[A-Z0-9-]*(?:\s*w/\s*o\s*stand)?|"
+    r"P\d{4,5}[A-Z0-9-]*|B\d{4,5}[A-Z0-9-]*|C\d{4,5}[A-Z0-9-]*|"
+    r"M\d{4,5}[A-Z0-9-]*|DCP-[A-Z0-9-]+|MFC-[A-Z0-9-]+)"
+    r")"
+)
+
+_RE_CONSUMABLE_MODEL_TAIL = re.compile(
+    r"(?iu)(?:поддерживаемые\s+модели(?:\s+принтеров|\s+устройств|\s+техники)?|"
+    r"совместимые\s+модели(?:\s+техники)?|совместимые\s+продукты(?:\s+для)?)\s*:?[ \t]*(.+)$"
+)
+_RE_FOR_DEVICE_TAIL = re.compile(
+    r"(?iu)(?:^|\b)(?:для|for)\s+((?:Epson\s+)?(?:WorkForce|SureColor|EcoTank|Stylus(?:\s+Pro)?)\b.+)$"
+)
+_RE_L_SERIES_PACK = re.compile(r"(?iu)\bL(\d{3,5}(?:/\d{3,5})+)\b")
+_RE_WORKFORCE_MODEL = re.compile(r"(?iu)\b(?:Epson\s+)?WorkForce\s+[A-Z0-9-]+\b")
+_RE_SURECOLOR_MODEL = re.compile(r"(?iu)\b(?:Epson\s+)?SureColor\s+SC-[A-Z0-9-]+\b")
+_RE_ECOTANK_MODEL = re.compile(r"(?iu)\b(?:Epson\s+)?EcoTank\s+[A-Z0-9-]+\b")
+_RE_STYLUS_MODEL = re.compile(r"(?iu)\b(?:Epson\s+)?Stylus(?:\s+Pro)?\s+[A-Z0-9-]+\b")
+_RE_GENERIC_EPS_MODEL = re.compile(r"(?iu)\b(?:WF|SC|ET|L)-?[A-Z0-9]{2,}\b")
+
+
+def _dedupe_text_items(items: Iterable[str]) -> List[str]:
+    return _dedupe_keep_order(items)
+
+
+def _clean_text(value: object) -> str:
+    return _norm_spaces(str(value or ""))
+
+
+def _title_eps_family(value: str) -> str:
+    v = _clean_text(value)
+    if not v:
+        return ""
+    v = re.sub(r"(?iu)\bepson\b", "Epson", v)
+    v = re.sub(r"(?iu)\bsurecolor\b", "SureColor", v)
+    v = re.sub(r"(?iu)\bworkforce\b", "WorkForce", v)
+    v = re.sub(r"(?iu)\becotank\b", "EcoTank", v)
+    v = re.sub(r"(?iu)\bstylus\b", "Stylus", v)
+    v = re.sub(r"(?iu)\bw/?o\s*stand\b", "", v)
+    return _clean_text(v)
+
+
+def extract_models_from_text(text: str) -> str:
+    src = _clean_text(text)
+    if not src:
+        return ""
+
+    items: List[str] = []
+    for rx in (_RE_SURECOLOR_MODEL, _RE_WORKFORCE_MODEL, _RE_ECOTANK_MODEL, _RE_STYLUS_MODEL):
+        items.extend([_title_eps_family(m.group(0)) for m in rx.finditer(src)])
+
+    if not items:
+        for m in _RE_GENERIC_EPS_MODEL.finditer(src):
+            token = _clean_text(m.group(0)).upper().replace('SC ', 'SC-').replace('WF ', 'WF-').replace('ET ', 'ET-').replace('L ', 'L')
+            token = token.replace('SC- ', 'SC-').replace('WF- ', 'WF-').replace('ET- ', 'ET-')
+            if token.startswith('SC-'):
+                items.append(f"Epson SureColor {token}")
+            elif token.startswith('WF-'):
+                items.append(f"Epson WorkForce {token}")
+            elif token.startswith('ET-'):
+                items.append(f"Epson EcoTank {token}")
+            elif token.startswith('L') and len(token) > 1 and token[1:].isdigit():
+                items.append(f"Epson {token}")
+
+    return " / ".join(_dedupe_text_items([x for x in items if x]))
+
+
+def extract_explicit_epson_devices(text: str) -> str:
+    src = _clean_text(text)
+    if not src:
+        return ""
+
+    items: List[str] = []
+    for rx in (
+        re.compile(r"(?iu)(?:Epson\s+)?WorkForce\s+WF-[A-Z0-9-]+"),
+        re.compile(r"(?iu)(?:Epson\s+)?SureColor\s+SC-[A-Z0-9-]+"),
+        re.compile(r"(?iu)(?:Epson\s+)?EcoTank\s+ET-[A-Z0-9-]+"),
+        re.compile(r"(?iu)(?:Epson\s+)?Stylus(?:\s+Pro)?\s+[A-Z0-9-]+"),
+    ):
+        items.extend([_title_eps_family(m.group(0)) for m in rx.finditer(src)])
+
+    if not items:
+        for m in re.finditer(r"(?iu)\b(?:WF|SC|ET)-?[A-Z0-9]{2,}\b", src):
+            token = _clean_text(m.group(0)).upper().replace('SC ', 'SC-').replace('WF ', 'WF-').replace('ET ', 'ET-')
+            token = token.replace('SC- ', 'SC-').replace('WF- ', 'WF-').replace('ET- ', 'ET-')
+            if token.startswith('WF-'):
+                items.append(f"Epson WorkForce {token}")
+            elif token.startswith('SC-'):
+                items.append(f"Epson SureColor {token}")
+            elif token.startswith('ET-'):
+                items.append(f"Epson EcoTank {token}")
+
+    return " / ".join(_dedupe_text_items([x for x in items if x]))
+
+
+def extract_direct_epson_device_list(text: str) -> str:
+    src = _clean_text(text)
+    if not src:
+        return ""
+
+    items: List[str] = []
+    patterns = (
+        re.compile(r"(?iu)(?:Epson\s+)?WorkForce\s+WF-[A-Z0-9-]+"),
+        re.compile(r"(?iu)(?:Epson\s+)?SureColor\s+SC-[A-Z0-9-]+"),
+        re.compile(r"(?iu)(?:Epson\s+)?EcoTank\s+ET-[A-Z0-9-]+"),
+        re.compile(r"(?iu)(?:Epson\s+)?Stylus(?:\s+Pro)?\s+[A-Z0-9-]+"),
+    )
+    for rx in patterns:
+        for m in rx.finditer(src):
+            items.append(_title_eps_family(m.group(0)))
+
+    if not items:
+        last_family = ""
+        for token in re.findall(r"(?iu)\b(?:WF|SC|ET)-?[A-Z0-9-]{2,}\b", src):
+            t = _clean_text(token).upper().replace('SC ', 'SC-').replace('WF ', 'WF-').replace('ET ', 'ET-')
+            if t.startswith('WF-'):
+                items.append(f"Epson WorkForce {t}")
+                last_family = 'WF'
+            elif t.startswith('SC-'):
+                items.append(f"Epson SureColor {t}")
+                last_family = 'SC'
+            elif t.startswith('ET-'):
+                items.append(f"Epson EcoTank {t}")
+                last_family = 'ET'
+            elif last_family == 'WF' and re.match(r"^[A-Z0-9-]{4,}$", t):
+                items.append(f"Epson WorkForce WF-{t}")
+            elif last_family == 'SC' and re.match(r"^[A-Z0-9-]{4,}$", t):
+                items.append(f"Epson SureColor SC-{t}")
+            elif last_family == 'ET' and re.match(r"^[A-Z0-9-]{4,}$", t):
+                items.append(f"Epson EcoTank ET-{t}")
+
+    return " / ".join(_dedupe_text_items([x for x in items if x]))
+
+
+def normalize_consumable_device_value(value: str) -> str:
+    src = _clean_text(value)
+    if not src:
+        return ""
+
+    src = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", src)
+    src = re.sub(r"(?iu)\bsurecolor\b", "SureColor", src)
+    src = re.sub(r"(?iu)\bworkforce\s+pro\b", "WorkForce Pro", src)
+    src = re.sub(r"(?iu)\bworkforce\b", "WorkForce", src)
+    src = re.sub(r"(?iu)\becotank\b", "EcoTank", src)
+    src = re.sub(r"(?iu)\bstylus\s+pro\b", "Stylus Pro", src)
+    src = re.sub(r"(?iu)\bexpression\b", "Expression", src)
+    src = re.sub(r"(?iu)\bpixma\b", "PIXMA", src)
+    src = re.sub(r"(?iu)\blaserjet\b", "LaserJet", src)
+    src = re.sub(r"(?iu)\b([A-Z]{1,3})-\s+([A-Z0-9])", r"\1-\2", src)
+
+    chunks: List[str] = []
+    last_family = ""
+    for m in _RE_DEVICE_MODEL.finditer(src):
+        family = _clean_text(m.group(1))
+        model = _clean_text(m.group(2))
+        if not model:
+            continue
+        model = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", model)
+        model = _clean_text(model)
+        if family:
+            last_family = family
+        elif last_family and re.match(r"(?iu)^(?:P|T|WF|ET|L|SC-|B|C|M)\d", model):
+            family = last_family
+        item = f"{family} {model}".strip() if family else model
+        chunks.append(item)
+
+    if chunks:
+        return " / ".join(_dedupe_text_items(chunks))
+
+    fallback = _clean_text(clean_device_value(src))
+    fallback = re.sub(r"(?iu)\bw/\s*o\s*stand\b", "", fallback)
+    parts = [x for x in re.split(r"\s*(?:,|/)\s*", fallback) if _clean_text(x)]
+    cleaned = _dedupe_text_items(parts)
+    return " / ".join(cleaned) if cleaned else ""
+
+
+def looks_generic_device_value(value: str) -> bool:
+    low = _cf(value)
+    if not low:
+        return True
+    if any(x in low for x in ["широкоформатный принтер", "принтер", "мфу", "фотопечать", "устройств epson"]):
+        return True
+    return not bool(_RE_DEVICE_MODEL.search(value))
+
+
+def normalize_epson_device_list(value: str) -> str:
+    src = _clean_text(value)
+    if not src:
+        return ""
+    src = re.sub(r"(?iu)\bSC-\s+", "SC-", src)
+    src = re.sub(r"(?iu)\bWF-\s+", "WF-", src)
+    src = re.sub(r"(?iu)\bET-\s+", "ET-", src)
+    src = re.sub(r"(?iu)(?<!Epson\s)\bSureColor\b", "Epson SureColor", src)
+    src = re.sub(r"(?iu)(?<!Epson\s)\bWorkForce\b", "Epson WorkForce", src)
+    src = re.sub(r"(?iu)(?<!Epson\s)\bEcoTank\b", "Epson EcoTank", src)
+    src = re.sub(r"(?iu)(?<!Epson\s)\bStylus(?:\s+Pro)?\b", lambda m: 'Epson ' + _clean_text(m.group(0)), src)
+    models = extract_models_from_text(src) or src
+    parts = _dedupe_text_items([_clean_text(x) for x in re.split(r"\s*/\s*", models) if _clean_text(x)])
+    return " / ".join(parts)
+
+
+def extract_consumable_device_candidate(name: str, desc: str) -> str:
+    text = _clean_text(desc)
+    for line in text.split("\n"):
+        line = _clean_text(line)
+        if not line:
+            continue
+
+        m = _RE_CONSUMABLE_MODEL_TAIL.search(line)
+        if m:
+            cand = normalize_consumable_device_value(m.group(1))
+            models = extract_models_from_text(cand)
+            if models:
+                return models
+            if cand:
+                return cand
+
+        m_for = _RE_FOR_DEVICE_TAIL.search(line)
+        if m_for:
+            cand = normalize_consumable_device_value(m_for.group(1))
+            models = extract_models_from_text(cand)
+            if models:
+                return models
+
+    models = extract_models_from_text(text)
+    if models:
+        return models
+
+    m2 = _RE_L_SERIES_PACK.search(_clean_text(name))
+    if m2:
+        nums = [x for x in m2.group(1).split('/') if _clean_text(x)]
+        items = [f"Epson L{n}" for n in nums]
+        return " / ".join(_dedupe_text_items(items))
+
+    return ""
+
+
+def normalize_consumable_device_params(params: Sequence[Tuple[str, str]], *, kind: str) -> List[Tuple[str, str]]:
+    if kind != "consumable" or not params:
+        return list(params or [])
+
+    out: List[Tuple[str, str]] = []
+    seen: set[Tuple[str, str]] = set()
+
+    for key, value in params:
+        k = _clean_text(key)
+        v = _clean_text(value)
+        if not k or not v:
+            continue
+        if _cf(k) in {"для устройства", "совместимость"}:
+            v2 = normalize_consumable_device_value(v)
+            if v2:
+                pair = (k, v2)
+                if pair not in seen:
+                    seen.add(pair)
+                    out.append(pair)
+            continue
+        pair = (k, v)
+        if pair not in seen:
+            seen.add(pair)
+            out.append(pair)
+
+    return out
+
 # -----------------------------
 # Сборка supplier-side cleanup
 # -----------------------------
@@ -369,6 +644,14 @@ __all__ = [
     "clean_codes_value",
     "clean_compat_value",
     "clean_device_value",
+    "extract_models_from_text",
+    "extract_explicit_epson_devices",
+    "extract_direct_epson_device_list",
+    "extract_consumable_device_candidate",
+    "normalize_consumable_device_value",
+    "normalize_consumable_device_params",
+    "normalize_epson_device_list",
+    "looks_generic_device_value",
     "reconcile_consumable_params",
     "reconcile_params",
 ]
