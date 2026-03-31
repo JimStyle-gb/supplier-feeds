@@ -5,7 +5,7 @@ CopyLine builder layer.
 
 Что делает:
 - собирает raw OfferOut из уже распарсенного page-payload;
-- объединяет page params + desc params;
+- объединяет page params и desc params;
 - делает только supplier-side cleanup/reconcile;
 - не считает shared pricing внутри supplier-layer.
 """
@@ -152,8 +152,7 @@ def _has_consumable_type(params: Sequence[Tuple[str, str]]) -> bool:
 
 
 
-
-def _resolve_title_vendor_model(*, page: dict, fallback_title: str) -> tuple[str, str, str, str, list[tuple[str, str]]]:
+def _resolve_page_basics(page: dict, *, fallback_title: str) -> tuple[str, str, str, str, str, list[tuple[str, str]]]:
     sku = safe_str(page.get("sku"))
     source_title = safe_str(page.get("title") or fallback_title)
     page_desc = safe_str(page.get("desc"))
@@ -183,13 +182,13 @@ def _repair_model_param(params: Sequence[Tuple[str, str]], model: str) -> list[T
 
     if _is_numeric_model(current_model) and not _is_allowed_numeric_code(current_model):
         first_code = _first_code_from_params(merged)
-        new_params: list[Tuple[str, str]] = []
+        out: list[Tuple[str, str]] = []
         for key, value in merged:
             if safe_str(key) != "Модель":
-                new_params.append((key, value))
+                out.append((key, value))
         if first_code:
-            new_params.append(("Модель", first_code))
-        return new_params
+            out.append(("Модель", first_code))
+        return out
 
     if not current_model:
         first_code = _first_code_from_params(merged)
@@ -219,13 +218,13 @@ def _finalize_params(params: Sequence[Tuple[str, str]], vendor: str) -> list[Tup
 
 def _build_pictures(page: dict) -> list[str]:
     pictures = prefer_full_product_pictures(page.get("pics") or [])
-    pictures = full_only_if_present(pictures)
-    return pictures
+    return full_only_if_present(pictures)
+
 
 
 def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut | None:
-    sku, title, vendor, model, cleaned_desc, page_params_raw = _resolve_title_vendor_model(
-        page=page,
+    sku, title, vendor, model, cleaned_desc, page_params_raw = _resolve_page_basics(
+        page,
         fallback_title=fallback_title,
     )
     if not sku or not title:
