@@ -3,8 +3,8 @@
 Path: scripts/suppliers/copyline/filtering.py
 CopyLine filtering layer.
 
-Фильтрация ассортимента по префиксам названия.
-Пока это прямой перенос рабочей логики из монолита, но уже в отдельный модуль.
+Фильтрация ассортимента по строгим префиксам названия.
+Модуль отвечает только за include-filter и отчёт по фильтрации.
 """
 
 from __future__ import annotations
