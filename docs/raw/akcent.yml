@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-31 12:09:44">
+<yml_catalog date="2026-03-31 13:12:55">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-31 12:09:44
+Время сборки (Алматы)                      | 2026-03-31 13:12:55
 Ближайшая сборка (Алматы)                  | 2026-04-01 02:00:00
-Сколько товаров у поставщика до фильтра    | 1875
+Сколько товаров у поставщика до фильтра    | 1874
 Сколько товаров у поставщика после фильтра | 172
 Сколько товаров есть в наличии (true)      | 172
 Сколько товаров нет в наличии (false)      | 0
@@ -288,7 +288,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Комбинированный картридж с голубыми, пурпурными и желтыми чернилами (C13T26704010) для Epson WorkForce WF-100W C11CE05403]]></description>
+Оригинальный картридж Epson C13T26704010 Голубой, Пурпурный, Жёлтого цвета для Epson WorkForce WF-100W.]]></description>
 <param name="Цвет">Голубой, Пурпурный, Жёлтый</param>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
@@ -424,7 +424,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Фото черный картридж 110ml, для: Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000]]></description>
+Оригинальный картридж Epson C13T41F440 Жёлтого цвета для Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000. Ресурс: 350 мл.]]></description>
 <param name="Тип">Картридж</param>
 <param name="Тип печати">Струйная</param>
 <param name="Ресурс">350 мл</param>
@@ -2309,7 +2309,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с голубыми чернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404]]></description>
+Оригинальные чернила Epson C13T00R240 Голубого цвета для Epson L7160 / Epson L7180.]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2329,7 +2329,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с пурпурнымичернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404]]></description>
+Оригинальные чернила Epson C13T00R340 Пурпурного цвета для Epson L7160 / Epson L7180.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2349,7 +2349,7 @@ LI4278 выводит процесс сканирования одномерны
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с желтыми чернилами Epson L7160 C11CG15404 Epson L7180 C11CG16404]]></description>
+Оригинальные чернила Epson C13T00R440 Жёлтого цвета для Epson L7160 / Epson L7180.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
@@ -2490,7 +2490,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с голубыми чернилами для: L4150/L4160]]></description>
+Оригинальные чернила Epson C13T03V14A Чёрного цвета для Epson L4150 / Epson L4160.]]></description>
 <param name="Цвет">Чёрный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2510,7 +2510,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с голубыми чернилами для: L4150/L4160]]></description>
+Оригинальные чернила Epson C13T03V24A Голубого цвета для Epson L4150 / Epson L4160.]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2530,7 +2530,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с пурпурными чернилами для: L4150/L4160]]></description>
+Оригинальные чернила Epson C13T03V34A Пурпурного цвета для Epson L4150 / Epson L4160.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2550,7 +2550,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с жёлтыми чернилами для: L4150/L4160]]></description>
+Оригинальные чернила Epson C13T03V44A Жёлтого цвета для Epson L4150 / Epson L4160.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
@@ -2570,7 +2570,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с черными чернилами]]></description>
+Оригинальные чернила Epson C13T06C24A Голубого цвета для Epson L15150.]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2590,7 +2590,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с черными чернилами]]></description>
+Оригинальные чернила Epson C13T06C34A Пурпурного цвета для Epson L15150.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2610,7 +2610,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с черными чернилами]]></description>
+Оригинальные чернила Epson C13T06C44A Жёлтого цвета для Epson L15150.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
@@ -2670,7 +2670,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с голубыми чернилами (C13T07D24A)]]></description>
+Оригинальные чернила Epson C13T07D24A Голубые цвета для Epson L8160 / Epson L8180.]]></description>
 <param name="Цвет">Голубые</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2690,7 +2690,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с пурпурными чернилами (C13T07D34A)]]></description>
+Оригинальные чернила Epson C13T07D34A Пурпурного цвета для Epson L8160 / Epson L8180.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2710,7 +2710,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальные водорастворимые чернила Epson 115 желтого цвета емкостью 70 мл для струйных МФУ Epson L8160/L8180]]></description>
+Оригинальные чернила Epson C13T07D44A Жёлтого цвета для Epson L8160 / Epson L8180.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
@@ -2730,7 +2730,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с серыми чернилами (C13T07D54A)]]></description>
+Оригинальные чернила Epson C13T07D54A Серого цвета для Epson L8160 / Epson L8180.]]></description>
 <param name="Цвет">Серый</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2871,7 +2871,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с пурпурными чернилами для: Epson L100 Epson L200 Epson L110 Epson L210 Epson L300 Epson L355 Epson L550]]></description>
+Оригинальные чернила Epson C13T66434A Пурпурного цвета для Epson L100 / Epson L200 / Epson L110 / Epson L210 / Epson L300 / Epson L355 / Epson L550. Ресурс: 5700 – 6500 страниц формата A4*.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2892,7 +2892,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с желтыми чернилами для: Epson L100 Epson L200 Epson L110 Epson L210 Epson L300 Epson L355 Epson L550]]></description>
+Оригинальные чернила Epson C13T66444A Жёлтого цвета для Epson L100 / Epson L200 / Epson L110 / Epson L210 / Epson L300 / Epson L355 / Epson L550. Ресурс: 5700 – 6500 страниц формата A4*.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
@@ -2934,7 +2934,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с голубыми чернилами для: Epson L800 Высококачественная фотопечать Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил. Раскройте свой творческий потенциал Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1. Оригинальные расходные материалы Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов]]></description>
+Оригинальные чернила Epson C13T67324A Голубого цвета для Epson L800. Ресурс: 1500 – 1800 фотографий формата 10х15*.]]></description>
 <param name="Цвет">Голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2955,7 +2955,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с пурпурными чернилами для: Высококачественная фотопечать Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил. Раскройте свой творческий потенциал Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1. Оригинальные расходные материалы Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов]]></description>
+Оригинальные чернила Epson C13T67334A Пурпурного цвета для Epson L800 / Epson L1800 / Epson L810 / Epson L850. Ресурс: 1500 – 1800 фотографий формата 10х15*.]]></description>
 <param name="Цвет">Пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -2976,7 +2976,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер с желтыми чернилами для: Epson L800 Высококачественная фотопечать Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил. Раскройте свой творческий потенциал Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1. Оригинальные расходные материалы Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов]]></description>
+Оригинальные чернила Epson C13T67344A Жёлтого цвета для Epson L800. Ресурс: 1500 – 1800 фотографий формата 10х15*.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
 <param name="Тип печати">Струйная</param>
@@ -2997,7 +2997,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер со светло-голубыми чернилами для: Epson L800 Высококачественная фотопечать Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил. Раскройте свой творческий потенциал Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1. Оригинальные расходные материалы Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов]]></description>
+Оригинальные чернила Epson C13T67354A Светло-голубого цвета для Epson L800. Ресурс: 1500 – 1800 фотографий формата 10х15*.]]></description>
 <param name="Цвет">Светло-голубой</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
@@ -3018,7 +3018,7 @@ Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405]]></descrip
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Контейнер со светло-пурпурными чернилами для: Epson L800 Высококачественная фотопечать Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил. Раскройте свой творческий потенциал Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1. Оригинальные расходные материалы Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов]]></description>
+Оригинальные чернила Epson C13T67364A Светло-пурпурного цвета для Epson L800. Ресурс: 1500 – 1800 фотографий формата 10х15*.]]></description>
 <param name="Цвет">Светло-пурпурный</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Чернила</param>
