@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-31 10:26:41">
+<yml_catalog date="2026-03-31 10:51:23">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-31 10:26:41
+Время сборки (Алматы)                      | 2026-03-31 10:51:23
 Ближайшая сборка (Алматы)                  | 2026-04-01 02:00:00
-Сколько товаров у поставщика до фильтра    | 1878
+Сколько товаров у поставщика до фильтра    | 1875
 Сколько товаров у поставщика после фильтра | 172
 Сколько товаров есть в наличии (true)      | 172
 Сколько товаров нет в наличии (false)      | 0
@@ -43,7 +43,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C12C890191 для SP7600/SP9600. Информация о необходимости замены появится на панели управление принтера.]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C12C890191 для SP7600/SP9600. Замену выполняют после уведомления устройства.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
@@ -61,7 +61,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C12C934591 для WF-78XX/ET-166XX Maintenance Box.]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C12C934591 для WF-78XX/ET-166XX Maintenance Box. Сервисный контейнер для сбора отработанных чернил.]]></description>
 <param name="Коды">C12C934591</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
@@ -79,7 +79,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C13T04D000 для EcoTank Maintenance Box (5clr).]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C13T04D000 для EcoTank Maintenance Box (5clr). Сервисный контейнер для сбора отработанных чернил.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
@@ -97,7 +97,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C13T04D100 для EcoTank Maintenance Box (4clr).]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C13T04D100 для EcoTank Maintenance Box (4clr). Сервисный контейнер для сбора отработанных чернил.]]></description>
 <param name="Коды">C13T04D100</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
@@ -109,13 +109,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <offer id="ACC13T619300" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T619300</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C13T619300, T3000/5000/7000, Т3200/5200/7200</name>
+<name>Ёмкость для отработанных чернил Epson C13T619300, T3000/5000/7000, T3200/5200/7200</name>
 <price>52248</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/998/8rq8oj23l7fep0amvc3cn6nvz6owlmmk.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C13T619300 для T3000/5000/7000, Т3200/5200/7200. Подходит для устройств: SureColor SC-T3000 / SureColor T3000 / SureColor SC-T5000 / SureColor SC-T7000 / SureColor SC-F6000 / SC-B6000.]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C13T619300 для T3000/5000/7000, T3200/5200/7200. Подходит для устройств: SureColor SC-T3000 / SureColor T3000 / SureColor SC-T5000 / SureColor SC-T7000 / SureColor SC-F6000 / SC-B6000.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
@@ -134,7 +134,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C13T671400 для WorkForce Pro WF-C869R Maintenance Box (80K).]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C13T671400 для WorkForce Pro WF-C869R Maintenance Box (80K). Сервисный контейнер для сбора отработанных чернил.]]></description>
 <param name="Коды">C13T671400</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
@@ -152,7 +152,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C13T699700 для SC-P6000/7000/8000/9000. Информация о необходимости замены появится на панели управление принтера.]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C13T699700 для SC-P6000/7000/8000/9000. Замену выполняют после уведомления устройства.]]></description>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
@@ -169,7 +169,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C33S021601 для SJMB4000 C4000e Maintenance Box.]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C33S021601 для SJMB4000 C4000e Maintenance Box. Сервисный контейнер для сбора отработанных чернил.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Модель">C33S021601</param>
