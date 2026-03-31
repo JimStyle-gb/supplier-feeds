@@ -175,7 +175,6 @@ def _drop_consumable_device_narrative(clean_desc: str, params: list[tuple[str, s
     device_value = _normalize_consumable_device_value(_param_value(params, "Для устройства") or _param_value(params, "Совместимость"))
     if not device_value:
         return text
-
     text = re.sub(r"(?iu)^\s*(?:поддерживаемые|совместимые)\s+модели\s*:?\s*", "", text)
     text = text.strip(" .;,-")
     if text.casefold().replace("ё", "е") == device_value.casefold().replace("ё", "е"):
@@ -195,7 +194,6 @@ def _looks_wrong_ink_color_text(text: str, params: list[tuple[str, str]]) -> boo
     def has_any(markers: list[str]) -> bool:
         return any(m in low for m in markers)
 
-    # current real regressions: yellow/magenta inks came with "черными чернилами"
     if has_any(["черн", "чёрн"]) and not any(x in color for x in ["черн", "чёрн"]):
         return True
     if has_any(["желт", "жёлт"]) and not any(x in color for x in ["желт", "жёлт"]):
@@ -212,32 +210,25 @@ def _soften_consumable_body(clean_desc: str, params: list[tuple[str, str]], *, k
     text = _clean_text(text)
     if not text:
         return text
-
     if kind != "consumable":
         return text
-
     text = _RE_INLINE_SUPPLIER_HEADER.sub(" ", text)
     text = re.sub(r"(?iu)\s*[;|]\s*", ". ", text)
     text = _clean_text(text)
-
     if not text:
         return _build_consumable_short_desc(params).strip()
-
     low = text.casefold().replace("ё", "е")
     if any(mark in low for mark in [
         'вид струй', 'назначение', 'цвет печати', 'поддерживаемые модели',
         'совместимые модели', 'совместимые продукты', 'ресурс '
     ]):
         return _build_consumable_short_desc(params).strip()
-
     if re.fullmatch(r'(?iu)(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?', text):
         return _build_consumable_short_desc(params).strip()
     if re.fullmatch(r'(?iu)чернила(?:\s+[A-Z0-9-]+)?', text):
         return _build_consumable_short_desc(params).strip()
-
     if _looks_wrong_ink_color_text(text, params):
         return _build_consumable_short_desc(params).strip()
-
     return text
 
 
@@ -348,7 +339,6 @@ def _finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]
     if text and not text.endswith("."):
         text += "."
     return text
-
 
 def _infer_consumable_type(name: str, desc: str, current_type: str) -> str:
     low = _cf(" ".join([name, desc, current_type]))
