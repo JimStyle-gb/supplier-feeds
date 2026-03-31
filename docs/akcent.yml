@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-31 02:44:41">
+<yml_catalog date="2026-03-31 09:30:57">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-31 02:44:41
+Время сборки (Алматы)                      | 2026-03-31 09:30:57
 Ближайшая сборка (Алматы)                  | 2026-04-01 02:00:00
-Сколько товаров у поставщика до фильтра    | 1876
-Сколько товаров у поставщика после фильтра | 170
-Сколько товаров есть в наличии (true)      | 170
+Сколько товаров у поставщика до фильтра    | 1878
+Сколько товаров у поставщика после фильтра | 172
+Сколько товаров есть в наличии (true)      | 172
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -489,7 +489,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T40D140</vendorCode>
 <name>Картридж Epson C13T40D140, UltraChrome XD2, чёрный</name>
 <price>66900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/1be/kbmgx69ifrh2v8f9bx486rkzp5tki8h7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -519,7 +519,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T40D240</vendorCode>
 <name>Картридж Epson C13T40D240, UltraChrome XD2, голубой</name>
 <price>46900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/0ce/w9qa3jwmjsck3c54ehu1ony9bsm8luz0.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -549,7 +549,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T40D34N</vendorCode>
 <name>Картридж Epson C13T40D34N, UltraChrome XD2, пурпурный</name>
 <price>46900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/3a0/6c7sl4blrwmypfoa1v0uglqixutj7xe8.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -579,7 +579,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T40D440</vendorCode>
 <name>Картридж Epson C13T40D440, UltraChrome XD2, жёлтый</name>
 <price>46900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/134/gj92y6ngwgx4a2mk8vguo42xjl555jea.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -853,6 +853,70 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Светло-голубой</param>
 <keywords>Epson, Картридж Epson C13T606500 светло-голубой 220 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="ACC13T606600" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T606600</vendorCode>
+<name>Картридж Epson C13T606600, светло-пурпурный, 220 мл</name>
+<price>98900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Картридж Epson C13T606600, светло-пурпурный, 220 мл</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Светло-пурпурный картридж Vivid Light Magenta для: Epson Stylus Pro 4880</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson Stylus Pro 4880</li><li><strong>Коды:</strong> C13T606600</li><li><strong>Модель:</strong> C13T606600</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Светло-пурпурный</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">3 мес.</param>
+<param name="Для бренда">Epson</param>
+<param name="Для устройства">Epson Stylus Pro 4880</param>
+<param name="Коды">C13T606600</param>
+<param name="Модель">C13T606600</param>
+<param name="Ресурс">220 мл</param>
+<param name="Тип">Картридж</param>
+<param name="Тип печати">Струйная</param>
+<param name="Цвет">Светло-пурпурный</param>
+<keywords>Epson, Картридж Epson C13T606600 светло-пурпурный 220 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="ACC13T606700" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T606700</vendorCode>
+<name>Картридж Epson C13T606700, серый, 220 мл</name>
+<price>98900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Картридж Epson C13T606700, серый, 220 мл</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Серый картридж для: Epson Stylus Pro 4800 Epson Stylus Pro 4880</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson Stylus Pro 4800 / Epson Stylus Pro 4880</li><li><strong>Коды:</strong> C13T606700</li><li><strong>Модель:</strong> C13T606700</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Серый</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">3 мес.</param>
+<param name="Для бренда">Epson</param>
+<param name="Для устройства">Epson Stylus Pro 4800 / Epson Stylus Pro 4880</param>
+<param name="Коды">C13T606700</param>
+<param name="Модель">C13T606700</param>
+<param name="Ресурс">220 мл</param>
+<param name="Тип">Картридж</param>
+<param name="Тип печати">Струйная</param>
+<param name="Цвет">Серый</param>
+<keywords>Epson, Картридж Epson C13T606700 серый 220 мл, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T606B00" available="true">

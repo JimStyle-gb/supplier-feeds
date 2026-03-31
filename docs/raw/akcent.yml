@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-31 02:44:41">
+<yml_catalog date="2026-03-31 09:30:57">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-31 02:44:41
+Время сборки (Алматы)                      | 2026-03-31 09:30:57
 Ближайшая сборка (Алматы)                  | 2026-04-01 02:00:00
-Сколько товаров у поставщика до фильтра    | 1876
-Сколько товаров у поставщика после фильтра | 170
-Сколько товаров есть в наличии (true)      | 170
+Сколько товаров у поставщика до фильтра    | 1878
+Сколько товаров у поставщика после фильтра | 172
+Сколько товаров есть в наличии (true)      | 172
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -324,7 +324,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendorCode>ACC13T40D140</vendorCode>
 <name>Картридж Epson C13T40D140, UltraChrome XD2, чёрный</name>
 <price>57001</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/1be/kbmgx69ifrh2v8f9bx486rkzp5tki8h7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -343,7 +343,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendorCode>ACC13T40D240</vendorCode>
 <name>Картридж Epson C13T40D240, UltraChrome XD2, голубой</name>
 <price>39460</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/0ce/w9qa3jwmjsck3c54ehu1ony9bsm8luz0.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -362,7 +362,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendorCode>ACC13T40D34N</vendorCode>
 <name>Картридж Epson C13T40D34N, UltraChrome XD2, пурпурный</name>
 <price>39460</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/3a0/6c7sl4blrwmypfoa1v0uglqixutj7xe8.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -381,7 +381,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <vendorCode>ACC13T40D440</vendorCode>
 <name>Картридж Epson C13T40D440, UltraChrome XD2, жёлтый</name>
 <price>39460</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/134/gj92y6ngwgx4a2mk8vguo42xjl555jea.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -556,6 +556,48 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Для устройства">Epson Stylus Pro 4800 / Epson Stylus Pro 4880</param>
 <param name="Модель">C13T606500</param>
 <param name="Коды">C13T606500</param>
+</offer>
+
+<offer id="ACC13T606600" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T606600</vendorCode>
+<name>Картридж Epson C13T606600, светло-пурпурный, 220 мл</name>
+<price>85502</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Светло-пурпурный картридж Vivid Light Magenta для: Epson Stylus Pro 4880]]></description>
+<param name="Цвет">Светло-пурпурный</param>
+<param name="Гарантия">3 мес.</param>
+<param name="Тип">Картридж</param>
+<param name="Тип печати">Струйная</param>
+<param name="Ресурс">220 мл</param>
+<param name="Для бренда">Epson</param>
+<param name="Для устройства">Epson Stylus Pro 4880</param>
+<param name="Модель">C13T606600</param>
+<param name="Коды">C13T606600</param>
+</offer>
+
+<offer id="ACC13T606700" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T606700</vendorCode>
+<name>Картридж Epson C13T606700, серый, 220 мл</name>
+<price>85502</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Серый картридж для: Epson Stylus Pro 4800 Epson Stylus Pro 4880]]></description>
+<param name="Цвет">Серый</param>
+<param name="Гарантия">3 мес.</param>
+<param name="Тип">Картридж</param>
+<param name="Тип печати">Струйная</param>
+<param name="Ресурс">220 мл</param>
+<param name="Для бренда">Epson</param>
+<param name="Для устройства">Epson Stylus Pro 4800 / Epson Stylus Pro 4880</param>
+<param name="Модель">C13T606700</param>
+<param name="Коды">C13T606700</param>
 </offer>
 
 <offer id="ACC13T606B00" available="true">
