@@ -23,6 +23,8 @@ import xml.etree.ElementTree as ET
 
 import yaml
 
+from cs.qg_report import write_quality_gate_report
+
 _WS_RE = re.compile(r"\s+")
 _DESC_HEADER_RE = re.compile(r"(?iu)^\s*(?:Технические\s+характеристики|Характеристики|Основные\s+характеристики)\s*:?")
 _COMPAT_FAMILY_RE = re.compile(r"(?iu)\b(?:LaserJet|Color\s+LaserJet|WorkForce|SureColor|EcoTank|Kyocera|Brother|Pantum|Xerox|Canon|Samsung|Toshiba|Ricoh|Panasonic|Konica-Minolta)\b")
@@ -285,6 +287,14 @@ def collect_quality_issues(feed_path: str) -> list[QualityIssue]:
 
 
 def run_quality_gate(*, feed_path: str, policy_path: str, baseline_path: str | None = None, report_path: str | None = None) -> dict:
+    """
+    CopyLine quality gate с единым форматом отчёта.
+
+    Важно:
+    - supplier-specific логика поиска ошибок не меняется;
+    - меняется только единый текстовый вывод и подсчёт known/new для отчёта;
+    - baseline у CopyLine по-прежнему хранит сигнатуры cosmetic-срабатываний.
+    """
     policy = _read_yaml(policy_path)
     qcfg = (policy.get("quality_gate") or {}) if isinstance(policy, dict) else {}
     enforce = bool(qcfg.get("enforce", True))
@@ -304,6 +314,9 @@ def run_quality_gate(*, feed_path: str, policy_path: str, baseline_path: str | N
     current_cosmetic = [_offer_sig(x) for x in cosmetic]
     new_cosmetic = [sig for sig in current_cosmetic if sig not in known]
 
+    known_cosmetic_issues = [x for x in cosmetic if _offer_sig(x) in known]
+    new_cosmetic_issues = [x for x in cosmetic if _offer_sig(x) not in known]
+
     cosmetic_offer_count = len({x.oid for x in cosmetic})
     cosmetic_issue_count = len(cosmetic)
     critical_count = len(critical)
@@ -317,31 +330,20 @@ def run_quality_gate(*, feed_path: str, policy_path: str, baseline_path: str | N
     effective_ok = threshold_ok if enforce else True
 
     if report_path:
-        p = Path(report_path)
-        p.parent.mkdir(parents=True, exist_ok=True)
-        lines = []
-        lines.append(f"QUALITY_GATE_THRESHOLD: {'PASS' if threshold_ok else 'FAIL'}")
-        lines.append(f"QUALITY_GATE_EFFECTIVE: {'PASS' if effective_ok else 'FAIL'}")
-        lines.append(f"enforce: {str(enforce).lower()}")
-        lines.append(f"critical_count: {critical_count}")
-        lines.append(f"cosmetic_total_count: {cosmetic_issue_count}")
-        lines.append(f"cosmetic_offer_count: {cosmetic_offer_count}")
-        lines.append(f"max_cosmetic_offers: {max_cosmetic_offers}")
-        lines.append(f"max_cosmetic_issues: {max_cosmetic_issues}")
-        lines.append("")
-        if critical:
-            lines.append("CRITICAL:")
-            for x in critical:
-                lines.append(f"- {x.oid} | {x.rule} | {x.details}")
-            lines.append("")
-        if cosmetic:
-            lines.append("COSMETIC:")
-            for x in cosmetic:
-                lines.append(f"- {x.oid} | {x.rule} | {x.details}")
-            lines.append("")
-        lines.append(f"known_cosmetic: {len(known)}")
-        lines.append(f"new_cosmetic: {len(new_cosmetic)}")
-        p.write_text("\n".join(lines).strip() + "\n", encoding="utf-8")
+        write_quality_gate_report(
+            report_path,
+            passed=effective_ok,
+            enforce=enforce,
+            baseline_path=baseline_path or "",
+            freeze_current_as_baseline=False,
+            critical=critical,
+            cosmetic=cosmetic,
+            known_cosmetic=known_cosmetic_issues,
+            new_cosmetic=new_cosmetic_issues,
+            max_cosmetic_offers=max_cosmetic_offers,
+            max_cosmetic_issues=max_cosmetic_issues,
+            accepted_cosmetic=None,
+        )
 
     return {
         "ok": effective_ok,
@@ -349,9 +351,11 @@ def run_quality_gate(*, feed_path: str, policy_path: str, baseline_path: str | N
         "critical_count": critical_count,
         "cosmetic_total_count": cosmetic_issue_count,
         "cosmetic_offer_count": cosmetic_offer_count,
+        "known_cosmetic_count": len(known_cosmetic_issues),
         "new_cosmetic_count": len(new_cosmetic),
         "max_cosmetic_offers": max_cosmetic_offers,
         "max_cosmetic_issues": max_cosmetic_issues,
         "enforce": enforce,
         "report_path": report_path or "",
+        "baseline_path": baseline_path or "",
     }
