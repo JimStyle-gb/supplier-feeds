@@ -30,6 +30,7 @@ from cs.core import OfferOut
 from cs.util import norm_ws
 from suppliers.akcent.compat import (
     clean_device_value,
+    extract_codes_from_text as compat_extract_codes_from_text,
     extract_consumable_device_candidate as compat_extract_consumable_device_candidate,
     extract_direct_epson_device_list as compat_extract_direct_epson_device_list,
     extract_explicit_epson_devices as compat_extract_explicit_epson_devices,
@@ -37,7 +38,10 @@ from suppliers.akcent.compat import (
     looks_generic_device_value as compat_looks_generic_device_value,
     normalize_consumable_device_params as compat_normalize_consumable_device_params,
     normalize_epson_device_list as compat_normalize_epson_device_list,
+    pick_name_primary_code as compat_pick_name_primary_code,
+    pick_secondary_t_code as compat_pick_secondary_t_code,
     reconcile_params,
+    should_force_consumable_model as compat_should_force_consumable_model,
 )
 from suppliers.akcent.desc_clean import (
     build_consumable_short_desc as desc_build_consumable_short_desc,
@@ -148,8 +152,8 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
         out = _set_single_param(out, "Для устройства", better_device)
 
     model = _first_value(out, "Модель")
-    name_primary = _pick_name_primary_code(name)
-    if name_primary and _should_force_consumable_model(model, name_primary, name):
+    name_primary = compat_pick_name_primary_code(name)
+    if name_primary and compat_should_force_consumable_model(model, name_primary, name):
         out = _set_single_param(out, "Модель", name_primary)
         model = name_primary
 
@@ -160,18 +164,14 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
         model or "",
         desc or "",
     ])
-    codes: list[str] = []
-    for m in _RE_CODE_TOKEN.finditer(code_src):
-        c = _clean_text(m.group(0)).upper()
-        if c and c not in codes:
-            codes.append(c)
+    codes = compat_extract_codes_from_text(code_src)
     if name_primary and name_primary not in codes:
         codes.insert(0, name_primary)
     if codes:
         primary = codes[0]
-        if _should_force_consumable_model(_first_value(out, "Модель"), primary, name):
+        if compat_should_force_consumable_model(_first_value(out, "Модель"), primary, name):
             out = _set_single_param(out, "Модель", primary)
-        secondary_t = _pick_secondary_t_code(name, desc, primary)
+        secondary_t = compat_pick_secondary_t_code(name, desc, primary)
         if secondary_t:
             out = _set_single_param(out, "Коды", f"{primary} / {secondary_t}")
         else:
