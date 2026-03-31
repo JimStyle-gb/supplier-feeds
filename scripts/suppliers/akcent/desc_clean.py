@@ -439,28 +439,34 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
     if _clean_text(typ).casefold().replace("ё", "е") != _clean_text("Ёмкость для отработанных чернил").casefold().replace("ё", "е"):
         return text
 
-    lead = _waste_tank_lead_sentence(name, params)
+    tail = _tail_after_model(name, model)
+    base = _clean_text(f"Оригинальная ёмкость для отработанных чернил {brand} {model}")
+    lead = _clean_text(f"{base} для {tail}.") if tail else _clean_text(base + ".")
     device_sentence = _device_sentence_from_params(params)
 
+    # Базовая очистка supplier-текста
     text = re.sub(r"(?iu)^технические\s+характеристики\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)^описание\s*[:.-]?\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)^емкость\s+для\s+отработанных\s+чернил\s+для\s*:?\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)^сменная\s+емкость\s+для\s+отработанных\s+чернил\.?\s*", "", text).strip(" .;,-")
+    text = re.sub(r"(?iu)\bсменная\s+емкость\s+для\s+отработанных\s+чернил\.?\s*", "", text).strip(" .;,-")
+    text = re.sub(r"(?iu)\bподходит\s+для\s+устройств\s*:\s*", "", text).strip(" .;,-")
 
     generic_patterns = [
         r"(?iu)^(?:сменная\s+)?(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил\.?$",
         r"(?iu)^оригинальная\s+(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?\.?$",
     ]
 
+    # Пустое/общее описание → строим нормальный товарный текст
     if (not text) or any(re.fullmatch(p, text) for p in generic_patterns):
-        if device_sentence:
+        if device_sentence and tail:
             return _clean_text(f"{lead} {device_sentence}")
         return lead
 
     low = text.casefold().replace("ё", "е")
-    brand_ok = not brand or _clean_text(brand).casefold().replace("ё", "е") in low
-    model_ok = not model or _clean_text(model).casefold().replace("ё", "е") in low
 
+    # Если supplier-текст сам тащит длинный список устройств, а у нас уже есть нормальный device-list —
+    # оставляем только lead + device_sentence, без сырого хвоста.
     if device_sentence and (
         "surecolor" in low
         or "workforce" in low
@@ -471,11 +477,12 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
     ):
         return _clean_text(f"{lead} {device_sentence}")
 
-    if (not brand_ok or not model_ok) and len(text) < 220:
+    # Если текст просто служебный и короткий — усиливаем lead, но без повторов.
+    if len(text) < 180:
         if text and not text.endswith("."):
             text += "."
-        if device_sentence and "подходит для устройств" not in text.casefold():
-            return _clean_text(f"{lead} {device_sentence} {text}")
+        if text.casefold().replace("ё", "е").startswith(base.casefold().replace("ё", "е")):
+            return text
         return _clean_text(f"{lead} {text}")
 
     if text and not text.endswith("."):
