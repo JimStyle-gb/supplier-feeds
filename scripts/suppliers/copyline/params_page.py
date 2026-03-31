@@ -8,6 +8,10 @@ CopyLine page-params layer.
 - поднять supplier-specific поля до raw;
 - не тянуть device-list в Коды расходников;
 - корректно поднимать single-tail и multi-tail вида Canon 725 / Canon 712/713/725.
+
+Важно:
+- этот модуль является главным extractor-слоем для codes/compat/cable-patterns;
+- desc_extract.py использует его shared helper-ы и не дублирует крупные regex-блоки.
 """
 
 from __future__ import annotations
@@ -58,7 +62,7 @@ STOP_HEADERS_RX = re.compile(
     r"(?:^|\b)(?:Производитель|Размер(?:\s+упаковки)?|Вес(?:\s+в\s+упаковке)?|Технические\s+характеристики|"
     r"Основные\s+характеристики|Характеристики|Артикул|Код\s+товара|Ресурс|Количество\s+страниц|"
     r"Цвет(?:\s+печати)?|Технология\s+печати|Тип\s+кабеля|Количество\s+пар|Толщина\s+проводников|"
-    r"Категория|Назначение|Материал\s+изоляции|Бухта)\b",
+    r"Категория|Материал\s+изоляции|Бухта)\b",
     re.I,
 )
 
@@ -717,3 +721,23 @@ def extract_page_params(
         out.append(("Цвет", "Чёрный"))
 
     return _dedupe_params(out)
+
+
+__all__ = [
+    "extract_page_params",
+    "safe_str",
+    "_norm_spaces",
+    "_title_kind",
+    "_extract_codes",
+    "_extract_compat_from_desc",
+    "_extract_ink_title_compat",
+    "_extract_riso_title_compat",
+    "_extract_epson_desc_compat",
+    "_extract_panasonic_integral_compat",
+    "CABLE_TYPE_RX",
+    "CABLE_CATEGORY_RX",
+    "CABLE_DIM_RX",
+    "CABLE_MATERIAL_RX",
+    "CABLE_SPOOL_RX",
+    "CABLE_PARAM_KEYS",
+]
