@@ -4,14 +4,11 @@ Path: scripts/suppliers/copyline/params_page.py
 CopyLine page-params layer.
 
 Задача:
+- быть главным extractor-модулем для page/body parsing;
 - нормализовать page params из HTML-таблиц/описания;
 - поднять supplier-specific поля до raw;
 - не тянуть device-list в Коды расходников;
 - корректно поднимать single-tail и multi-tail вида Canon 725 / Canon 712/713/725.
-
-Важно:
-- этот модуль является главным extractor-слоем для codes/compat/cable-patterns;
-- desc_extract.py использует его shared helper-ы и не дублирует крупные regex-блоки.
 """
 
 from __future__ import annotations
@@ -724,20 +721,18 @@ def extract_page_params(
 
 
 __all__ = [
-    "extract_page_params",
-    "safe_str",
-    "_norm_spaces",
-    "_title_kind",
-    "_extract_codes",
-    "_extract_compat_from_desc",
-    "_extract_ink_title_compat",
-    "_extract_riso_title_compat",
-    "_extract_epson_desc_compat",
-    "_extract_panasonic_integral_compat",
+    "CODE_RX",
+    "COMPAT_PATTERNS",
+    "STOP_HEADERS_RX",
+    "COMPAT_GUARD_RX",
     "CABLE_TYPE_RX",
     "CABLE_CATEGORY_RX",
     "CABLE_DIM_RX",
     "CABLE_MATERIAL_RX",
     "CABLE_SPOOL_RX",
-    "CABLE_PARAM_KEYS",
+    "safe_str",
+    "_norm_spaces",
+    "_trim_compat_tail",
+    "_extract_compat_from_desc",
+    "_extract_codes",
 ]
