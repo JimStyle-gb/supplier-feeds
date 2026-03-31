@@ -16,7 +16,7 @@ AkCent adapter (AC) — thin orchestrator under CS-template.
 Важно:
 - supplier-specific логика остаётся только в suppliers/akcent/*;
 - build_akcent.py не знает regexp-логики AkCent;
-- orchestrator остаётся thin и backward-safe.
+- orchestrator остаётся thin и шаблонным.
 """
 
 from __future__ import annotations
@@ -29,11 +29,7 @@ from typing import Any
 import yaml
 
 from cs.core import get_public_vendor, write_cs_feed, write_cs_feed_raw
-
-try:
-    from cs.meta import next_run_at_hour, now_almaty
-except Exception:
-    from cs.core import next_run_at_hour, now_almaty  # type: ignore
+from cs.meta import next_run_at_hour, now_almaty
 
 from suppliers.akcent.builder import build_offers
 from suppliers.akcent.diagnostics import print_build_summary
@@ -42,7 +38,7 @@ from suppliers.akcent.quality_gate import run_quality_gate
 from suppliers.akcent.source import fetch_source_root, iter_source_offers
 
 
-BUILD_AKCENT_VERSION = "build_akcent_v67_supplier_layer_roles_clean"
+BUILD_AKCENT_VERSION = "build_akcent_v68_daily_0100_meta_cleanup"
 
 AKCENT_URL_DEFAULT = "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml"
 AKCENT_OUT_DEFAULT = "docs/akcent.yml"
