@@ -18,47 +18,16 @@ AkCent supplier layer — source reader.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from typing import Any, Iterable
 import xml.etree.ElementTree as ET
 
 import requests
 
+from cs.util import norm_ws
+from suppliers.akcent.models import SourceOffer
+
 
 DEFAULT_TIMEOUT = 90
-
-
-# Внутренняя модель source-layer
-@dataclass(slots=True)
-class SourceOffer:
-    raw_id: str
-    offer_id: str
-    article: str
-    category_id: str
-    name: str
-    type_text: str
-    available_attr: str
-    available_tag: str
-    vendor: str
-    model: str
-    description: str
-    manufacturer_warranty: str
-    stock_text: str
-    dealer_price_text: str
-    rrp_price_text: str
-    price_text: str
-    url: str
-    picture_urls: list[str] = field(default_factory=list)
-    raw_params: list[tuple[str, str]] = field(default_factory=list)
-    offer_el: Any | None = None
-
-
-# Безопасная нормализация текста
-
-def norm_ws(value: Any) -> str:
-    if value is None:
-        return ""
-    return " ".join(str(value).replace("\xa0", " ").split()).strip()
 
 
 # Текст дочернего элемента
