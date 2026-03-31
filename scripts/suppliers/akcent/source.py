@@ -55,20 +55,6 @@ def iter_child_texts(parent: ET.Element | None, tag: str) -> Iterable[str]:
     return out
 
 
-# Картинки без дублей
-
-def collect_picture_urls(offer_el: ET.Element) -> list[str]:
-    out: list[str] = []
-    seen: set[str] = set()
-    for raw in iter_child_texts(offer_el, "picture"):
-        url = raw.strip()
-        if not url:
-            continue
-        if url in seen:
-            continue
-        seen.add(url)
-        out.append(url)
-    return out
 
 
 # Родные Param поставщика как есть
