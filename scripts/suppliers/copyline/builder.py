@@ -7,6 +7,7 @@ CopyLine builder layer.
 - собирает raw OfferOut из уже распарсенного page-payload;
 - объединяет page params и desc params;
 - делает только supplier-side cleanup/reconcile;
+- использует shared normalize/vendor-detection вместо дублирования;
 - не считает shared pricing внутри supplier-layer.
 """
 
@@ -19,29 +20,11 @@ from cs.core import OfferOut
 from suppliers.copyline.compat import reconcile_copyline_params
 from suppliers.copyline.desc_clean import clean_description
 from suppliers.copyline.desc_extract import extract_desc_params
-from suppliers.copyline.normalize import normalize_source_basics
+from suppliers.copyline.normalize import detect_vendor, normalize_source_basics
 from suppliers.copyline.params_page import extract_page_params
 from suppliers.copyline.pictures import full_only_if_present, prefer_full_product_pictures
 
 
-BRAND_HINTS: tuple[tuple[str, str], ...] = (
-    (r"\bKonica[- ]?Minolta\b", "Konica-Minolta"),
-    (r"\bToshiba\b", "Toshiba"),
-    (r"\bRicoh\b", "Ricoh"),
-    (r"\bRICOH\b", "Ricoh"),
-    (r"\bPanasonic\b", "Panasonic"),
-    (r"\bКАТЮША\b", "КАТЮША"),
-    (r"\bKATYUSHA\b", "КАТЮША"),
-    (r"\bXerox\b", "Xerox"),
-    (r"\bCanon\b", "Canon"),
-    (r"\bSamsung\b", "Samsung"),
-    (r"\bKyocera\b", "Kyocera"),
-    (r"\bBrother\b", "Brother"),
-    (r"\bEpson\b", "Epson"),
-    (r"\bLexmark\b", "Lexmark"),
-    (r"\bRISO\b", "RISO"),
-    (r"\bHP\b", "HP"),
-)
 
 CODE_SCORE_PATTERNS: tuple[tuple[re.Pattern[str], int], ...] = (
     (re.compile(r"^(?:CF|CE|CB|CC|Q|W)\d", re.I), 100),
@@ -113,23 +96,6 @@ def _first_code_from_params(params: Sequence[Tuple[str, str]]) -> str:
     return best_code
 
 
-def _infer_vendor_from_text(text: str) -> str:
-    text = safe_str(text)
-    if not text:
-        return ""
-    for pattern, vendor in BRAND_HINTS:
-        if re.search(pattern, text, flags=re.I):
-            return vendor
-    return ""
-
-
-def _infer_vendor_from_compat(params: Sequence[Tuple[str, str]]) -> str:
-    compat = ""
-    for key, value in params:
-        if safe_str(key) == "Совместимость":
-            compat = safe_str(value)
-            break
-    return _infer_vendor_from_text(compat)
 
 
 def _drop_weak_params(params: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
@@ -200,11 +166,9 @@ def _repair_model_param(params: Sequence[Tuple[str, str]], model: str) -> list[T
 
 def _resolve_vendor(title: str, vendor: str, params: Sequence[Tuple[str, str]]) -> str:
     resolved = safe_str(vendor)
-    if not resolved:
-        resolved = _infer_vendor_from_compat(params)
-    if not resolved:
-        resolved = _infer_vendor_from_text(title)
-    return resolved
+    if resolved:
+        return resolved
+    return detect_vendor(title=title, params=params)
 
 
 def _finalize_params(params: Sequence[Tuple[str, str]], vendor: str) -> list[Tuple[str, str]]:
