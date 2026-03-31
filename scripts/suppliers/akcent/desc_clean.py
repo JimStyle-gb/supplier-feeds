@@ -402,10 +402,16 @@ def _tail_after_model(name: str, model: str) -> str:
     tail = pat.sub("", s, count=1).strip(" ,;-–—")
     tail = _clean_text(tail)
     tail = re.sub(r"(?iu)\bMAINTENANCE\s+BOX\b", "Maintenance Box", tail)
+    tail = re.sub(r"(?u)\bТ(?=\d)", "T", tail)
     return tail
 
 
 
+
+
+
+def _waste_tank_generic_second_sentence() -> str:
+    return "Сервисный контейнер для сбора отработанных чернил."
 
 def _device_sentence_from_params(params: list[tuple[str, str]]) -> str:
     device_value = _normalize_consumable_device_value(
@@ -443,34 +449,44 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
     base = _clean_text(f"Оригинальная ёмкость для отработанных чернил {brand} {model}")
     lead = _clean_text(f"{base} для {tail}.") if tail else _clean_text(base + ".")
     device_sentence = _device_sentence_from_params(params)
+    generic_second = _waste_tank_generic_second_sentence()
 
     text = re.sub(r"(?iu)^технические\s+характеристики\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)^описание\s*[:.-]?\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)^емкость\s+для\s+отработанных\s+чернил\s+для\s*:?\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)^сменная\s+емкость\s+для\s+отработанных\s+чернил\.?\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)\bсменная\s+емкость\s+для\s+отработанных\s+чернил\.?\s*", "", text).strip(" .;,-")
-    text = re.sub(r"(?iu)\bподходит\s+для\s+устройств\s*:\s*", "", text).strip(" .;,-")
+    text = re.sub(r"(?iu)^информация\s+о\s+необходимости\s+замены\s+появится\s+на\s+панели\s+управлени[ея]\s+принтера\.?\s*",
+                  "Замену выполняют после уведомления устройства.", text).strip(" .;,-")
+    text = re.sub(r"(?iu)\bинформация\s+о\s+необходимости\s+замены\s+появится\s+на\s+панели\s+управлени[ея]\s+принтера\.?\s*",
+                  " Замену выполняют после уведомления устройства.", text).strip()
 
     generic_patterns = [
         r"(?iu)^(?:сменная\s+)?(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил\.?$",
         r"(?iu)^оригинальная\s+(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?\.?$",
     ]
 
+    # Пустое/общее описание: делаем сильнее, чем просто одна фраза.
     if (not text) or any(re.fullmatch(p, text) for p in generic_patterns):
+        parts = [lead]
         if device_sentence and tail:
-            return _clean_text(f"{lead} {device_sentence}")
-        return lead
+            parts.append(device_sentence)
+        parts.append(generic_second)
+        return _clean_text(" ".join(parts))
 
     low = text.casefold().replace("ё", "е")
     base_low = base.casefold().replace("ё", "е")
     text_low = text.casefold().replace("ё", "е")
 
-    # Если supplier дал только слабую однофразную базу без tail/device — усиливаем её.
+    # Слабая однофразная база без device/context.
     if text_low.rstrip(".") == base_low.rstrip("."):
+        parts = [lead]
         if device_sentence and tail:
-            return _clean_text(f"{lead} {device_sentence}")
-        return lead
+            parts.append(device_sentence)
+        parts.append(generic_second)
+        return _clean_text(" ".join(parts))
 
+    # Если уже есть нормальный device-list в params, не тащим второй сырой список.
     if device_sentence and (
         "surecolor" in low
         or "workforce" in low
@@ -481,9 +497,12 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
     ):
         return _clean_text(f"{lead} {device_sentence}")
 
+    # Короткий service-style текст усиливаем, но без дублей.
     if len(text) < 180:
         if text and not text.endswith("."):
             text += "."
+        if "замену выполняют после уведомления устройства" in text.casefold():
+            return _clean_text(f"{lead} {text}")
         if text.casefold().replace("ё", "е").startswith(base_low):
             return text
         return _clean_text(f"{lead} {text}")
