@@ -3,7 +3,7 @@
 Path: scripts/suppliers/copyline/filtering.py
 CopyLine filtering layer.
 
-Фильтрация ассортимента по строгим префиксам названия.
+Фильтрация ассортимента по префиксам названия.
 Модуль отвечает только за include-filter и отчёт по фильтрации.
 """
 
