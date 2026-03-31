@@ -67,6 +67,10 @@ _RE_EXTRA_SECTION_LINE = re.compile(
 )
 _RE_BULLET_LEAD = re.compile(r"^[•·▪◦*\-–—]+\s*")
 
+_RE_INLINE_SUPPLIER_HEADER = re.compile(
+    r"(?iu)^(?:основные\s+преимущества|общие\s+характеристики|общие\s+характерстики)\s*:\s*"
+)
+
 
 # ----------------------------- small helpers -----------------------------
 
