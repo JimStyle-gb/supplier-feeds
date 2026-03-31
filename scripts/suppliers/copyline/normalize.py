@@ -5,7 +5,7 @@ CopyLine normalize layer.
 
 Задача:
 - нормализовать title/vendor/model и description-basics;
-- не держать supplier extractor-комбайн внутри normalize;
+- не держать второй extractor-комбайн внутри normalize;
 - использовать extractor-patterns из params_page там, где это возможно.
 """
 
