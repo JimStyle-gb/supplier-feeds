@@ -25,6 +25,8 @@ import xml.etree.ElementTree as ET
 
 import yaml
 
+from cs.qg_report import write_quality_gate_report
+
 
 _COMPAT_LABEL_LEAK_RE = re.compile(
     r"(?iu)\b(?:Характеристики|Модель|Совместимые\s+модели|Технология\s+печати|Цвет(?:\s+печати)?)\b"
@@ -181,65 +183,23 @@ def _write_report(
     passed: bool,
     baseline_path: str,
     frozen: bool,
+    enforce: bool,
 ) -> None:
-    p = Path(path)
-    p.parent.mkdir(parents=True, exist_ok=True)
-
-    cosmetic_offer_count = len({x.oid for x in cosmetic})
-    known_offer_count = len({x.oid for x in known_cosmetic})
-    new_offer_count = len({x.oid for x in new_cosmetic})
-
-    lines: list[str] = []
-    lines.append(f"QUALITY_GATE: {'PASS' if passed else 'FAIL'}")
-    lines.append(f"baseline_file: {baseline_path}")
-    lines.append(f"freeze_current_as_baseline: {'yes' if frozen else 'no'}")
-    lines.append(f"critical_count: {len(critical)}")
-    lines.append(f"cosmetic_total_count: {len(cosmetic)}")
-    lines.append(f"cosmetic_offer_count: {cosmetic_offer_count}")
-    lines.append(f"known_cosmetic_count: {len(known_cosmetic)}")
-    lines.append(f"known_cosmetic_offer_count: {known_offer_count}")
-    lines.append(f"new_cosmetic_count: {len(new_cosmetic)}")
-    lines.append(f"new_cosmetic_offer_count: {new_offer_count}")
-    lines.append(f"max_cosmetic_offers: {max_cosmetic_offers}")
-    lines.append(f"max_cosmetic_issues: {max_cosmetic_issues}")
-    lines.append("")
-
-    if accepted_cosmetic:
-        lines.append("BASELINE COSMETIC SNAPSHOT:")
-        for rule in sorted(accepted_cosmetic):
-            oids = sorted(accepted_cosmetic[rule])
-            lines.append(f"- {rule}: {len(oids)} offer(s)")
-            for oid in oids[:50]:
-                lines.append(f"  - {oid}")
-            if len(oids) > 50:
-                lines.append(f"  - ... +{len(oids) - 50}")
-        lines.append("")
-
-    if critical:
-        lines.append("CRITICAL:")
-        for issue in critical:
-            lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name} | {issue.details}")
-        lines.append("")
-
-    if cosmetic:
-        lines.append("COSMETIC TOTAL:")
-        for issue in cosmetic:
-            lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name} | {issue.details}")
-        lines.append("")
-
-    if new_cosmetic:
-        lines.append("NEW COSMETIC VS BASELINE:")
-        for issue in new_cosmetic:
-            lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name} | {issue.details}")
-        lines.append("")
-
-    if known_cosmetic:
-        lines.append("KNOWN COSMETIC FROM BASELINE:")
-        for issue in known_cosmetic:
-            lines.append(f"- [{issue.rule}] {issue.oid} | {issue.name}")
-        lines.append("")
-
-    p.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    """Единый writer отчёта."""
+    write_quality_gate_report(
+        path,
+        passed=passed,
+        enforce=enforce,
+        baseline_path=baseline_path,
+        freeze_current_as_baseline=frozen,
+        critical=critical,
+        cosmetic=cosmetic,
+        known_cosmetic=known_cosmetic,
+        new_cosmetic=new_cosmetic,
+        max_cosmetic_offers=max_cosmetic_offers,
+        max_cosmetic_issues=max_cosmetic_issues,
+        accepted_cosmetic=accepted_cosmetic,
+    )
 
 
 def run_quality_gate(
@@ -285,6 +245,7 @@ def run_quality_gate(
             passed=(len(critical) == 0),
             baseline_path=baseline_path,
             frozen=True,
+            enforce=enforce,
         )
         return (len(critical) == 0), (
             f"[quality_gate] BASELINE_FROZEN | "
@@ -326,6 +287,7 @@ def run_quality_gate(
         passed=(passed or not enforce),
         baseline_path=baseline_path,
         frozen=False,
+        enforce=enforce,
     )
 
     summary = (
