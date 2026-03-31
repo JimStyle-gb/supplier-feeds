@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-31 11:49:46">
+<yml_catalog date="2026-03-31 12:09:44">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-31 11:49:46
+Время сборки (Алматы)                      | 2026-03-31 12:09:44
 Ближайшая сборка (Алматы)                  | 2026-04-01 02:00:00
 Сколько товаров у поставщика до фильтра    | 1875
 Сколько товаров у поставщика после фильтра | 172
@@ -30,7 +30,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">700 мл</param>
 <param name="Модель">C13T55KD00</param>
 <param name="Для бренда">Epson</param>
-<param name="Коды">C13T55KD00 / T55KD00</param>
+<param name="Коды">C13T55KD00</param>
 <param name="Тип печати">Струйная</param>
 </offer>
 
@@ -68,7 +68,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C12C934591</param>
-<param name="Для устройства">Epson L15150</param>
 </offer>
 
 <offer id="ACC13T04D000" available="true">
@@ -86,7 +85,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C13T04D000</param>
-<param name="Для устройства">Epson EcoTank Maintenance</param>
 <param name="Коды">C13T04D000</param>
 </offer>
 
@@ -106,7 +104,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C13T04D100</param>
-<param name="Для устройства">Epson EcoTank Maintenance</param>
 </offer>
 
 <offer id="ACC13T619300" available="true">
@@ -137,14 +134,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C13T671400 для WorkForce Pro WF-C869R Maintenance Box (80K). Подходит для устройств: Epson WorkForce WF-C869R. Контейнер предназначен для сбора отработанных чернил и заменяется после уведомления принтера.]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C13T671400 для WorkForce Pro WF-C869R Maintenance Box (80K). Контейнер предназначен для сбора отработанных чернил и заменяется после уведомления принтера.]]></description>
 <param name="Коды">C13T671400</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Модель">C13T671400</param>
-<param name="Для устройства">Epson WorkForce WF-C869R</param>
 </offer>
 
 <offer id="ACC13T699700" available="true">
@@ -162,7 +158,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Для бренда">Epson</param>
 <param name="Модель">C13T699700</param>
 <param name="Коды">C13T699700</param>
-<param name="Для устройства">Epson SureColor SC-P6000</param>
 </offer>
 
 <offer id="ACC33S021601" available="true">
@@ -340,7 +335,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Для бренда">Epson</param>
 <param name="Модель">C13T40D140</param>
 <param name="Для устройства">Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N</param>
-<param name="Коды">C13T40D140 / T40D140</param>
+<param name="Коды">C13T40D140</param>
 </offer>
 
 <offer id="ACC13T40D240" available="true">
@@ -359,7 +354,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Для бренда">Epson</param>
 <param name="Модель">C13T40D240</param>
 <param name="Для устройства">Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N</param>
-<param name="Коды">C13T40D240 / T40D240</param>
+<param name="Коды">C13T40D240</param>
 </offer>
 
 <offer id="ACC13T40D34N" available="true">
@@ -378,7 +373,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Для бренда">Epson</param>
 <param name="Модель">C13T40D34N</param>
 <param name="Для устройства">Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N</param>
-<param name="Коды">C13T40D34N / T40D340</param>
+<param name="Коды">C13T40D34N</param>
 </offer>
 
 <offer id="ACC13T40D440" available="true">
@@ -397,7 +392,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Цвет">Жёлтый</param>
 <param name="Модель">C13T40D440</param>
 <param name="Для устройства">Epson SureColor SC-T3100 / Epson SureColor SC-T3100N / Epson SureColor SC-T5100 / Epson SureColor SC-T5100N</param>
-<param name="Коды">C13T40D440 / T40D440</param>
+<param name="Коды">C13T40D440</param>
 </offer>
 
 <offer id="ACC13T41F34N" available="true">
@@ -417,7 +412,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Для бренда">Epson</param>
 <param name="Для устройства">SureColor SC-T3400 / SC-T3400N / SC-T3405 / SC-T3405N / SC-T5400 / SC-T5400M / SC-T5405</param>
 <param name="Модель">T3400N</param>
-<param name="Коды">C13T41F34N / T41F340</param>
+<param name="Коды">C13T41F34N</param>
 </offer>
 
 <offer id="ACC13T41F440" available="true">
@@ -437,7 +432,7 @@ Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DT
 <param name="Цвет">Жёлтый</param>
 <param name="Для устройства">Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000</param>
 <param name="Модель">C13T41F440</param>
-<param name="Коды">C13T41F440 / T41F440</param>
+<param name="Коды">C13T41F440</param>
 </offer>
 
 <offer id="ACC13T54LA00" available="true">
