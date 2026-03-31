@@ -2,19 +2,12 @@
 """
 Path: scripts/suppliers/copyline/normalize.py
 CopyLine normalize layer.
-
-Задача:
-- нормализовать title/vendor/model и description-basics;
-- не держать второй extractor-комбайн внутри normalize;
-- использовать extractor-patterns из params_page там, где это возможно.
 """
 
 from __future__ import annotations
 
 import re
 from typing import Sequence, Tuple
-
-from suppliers.copyline.params_page import CODE_RX
 
 VENDOR_PRIORITY: list[str] = [
     "HP",
@@ -25,7 +18,7 @@ VENDOR_PRIORITY: list[str] = [
     "Epson",
     "Pantum",
     "Ricoh",
-    "Konica-Minolta",
+    "Konica Minolta",
     "Lexmark",
     "Samsung",
     "OKI",
@@ -57,6 +50,37 @@ _CONSUMABLE_TITLE_PREFIXES = (
     "термоэлемент",
 )
 
+CODE_PATTERNS: list[re.Pattern[str]] = [
+    re.compile(r"\bCF\d{3,4}[A-Z]?\b", re.I),
+    re.compile(r"\bCE\d{3,4}[A-Z]?\b", re.I),
+    re.compile(r"\bCB\d{3,4}[A-Z]?\b", re.I),
+    re.compile(r"\bCC\d{3,4}[A-Z]?\b", re.I),
+    re.compile(r"\bQ\d{4}[A-Z]?\b", re.I),
+    re.compile(r"\bW\d{4}[A-Z0-9]{1,4}\b", re.I),
+    re.compile(r"\bMLT-[A-Z]\d{3,5}[A-Z0-9/]*\b", re.I),
+    re.compile(r"\bCLT-[A-Z]\d{3,5}[A-Z]?\b", re.I),
+    re.compile(r"\bTK-?\d{3,5}[A-Z0-9]*\b", re.I),
+    re.compile(r"\b106R\d{5}\b", re.I),
+    re.compile(r"\b006R\d{5}\b", re.I),
+    re.compile(r"\b108R\d{5}\b", re.I),
+    re.compile(r"\b113R\d{5}\b", re.I),
+    re.compile(r"\b013R\d{5}\b", re.I),
+    re.compile(r"\b016\d{6}\b", re.I),
+    re.compile(r"\bML-D\d+[A-Z]?\b", re.I),
+    re.compile(r"\bML-\d{4,5}[A-Z]\d?\b", re.I),
+    re.compile(r"\bKX-FA\d+[A-Z]?\b", re.I),
+    re.compile(r"\bKX-FAT\d+[A-Z]?\b", re.I),
+    re.compile(r"\bT-\d{3,6}[A-Z]?\b", re.I),
+    re.compile(r"\bC13T\d{5,8}[A-Z0-9]*\b", re.I),
+    re.compile(r"\bC12C\d{5,8}[A-Z0-9]*\b", re.I),
+    re.compile(r"\bC33S\d{5,8}[A-Z0-9]*\b", re.I),
+    re.compile(r"\bC-?EXV\d+[A-Z]*\b", re.I),
+    re.compile(r"\bUAE-\d+[A-Z0-9-]*\b", re.I),
+    re.compile(r"\bDR-\d+[A-Z0-9-]*\b", re.I),
+    re.compile(r"\bTN-\d+[A-Z0-9-]*\b", re.I),
+    re.compile(r"\b(?:50F\d[0-9A-Z]{2,4}|55B\d[0-9A-Z]{2,4}|56F\d[0-9A-Z]{2,4})\b", re.I),
+    re.compile(r"\b0?71H\b", re.I),
+]
 
 
 def safe_str(x: object) -> str:
@@ -162,9 +186,10 @@ def _search_code(text: str) -> str:
         return ""
     hay = re.sub(r"\b(113R|108R|106R|006R|013R|016|C13T|C12C|C33S)\s+(\d{4,8}[A-Z0-9]*)\b", r"\1\2", hay, flags=re.I)
     hay = re.sub(r"\b(CLT|MLT|KX|TK|TN|DR|T|C)\s*-\s*([A-Z0-9]{2,})\b", r"\1-\2", hay, flags=re.I)
-    m = CODE_RX.search(hay)
-    if m:
-        return _normalize_code_token(m.group(0))
+    for rx in CODE_PATTERNS:
+        m = rx.search(hay)
+        if m:
+            return _normalize_code_token(m.group(0))
     return ""
 
 
