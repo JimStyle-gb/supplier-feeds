@@ -13,6 +13,7 @@ AkCent supplier layer — source reader.
 - тут нет фильтрации ассортимента;
 - тут нет нормализации vendor/model/price;
 - тут нет supplier-specific эвристик;
+- тут нет picture-normalization;
 - source.py только честно читает исходник.
 """
 
@@ -156,7 +157,7 @@ def parse_offer(offer_el: ET.Element) -> SourceOffer:
         rrp_price_text=rrp_price_text,
         price_text=price_text,
         url=url,
-        picture_urls=collect_picture_urls(offer_el),
+        picture_urls=[],
         raw_params=collect_raw_params(offer_el),
         offer_el=offer_el,
     )
