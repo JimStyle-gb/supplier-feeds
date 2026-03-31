@@ -29,7 +29,6 @@ from typing import Any, Iterable
 from cs.core import OfferOut
 from cs.util import norm_ws
 from suppliers.akcent.compat import (
-    clean_device_value,
     extract_codes_from_text as compat_extract_codes_from_text,
     extract_consumable_device_candidate as compat_extract_consumable_device_candidate,
     extract_direct_epson_device_list as compat_extract_direct_epson_device_list,
@@ -39,17 +38,10 @@ from suppliers.akcent.compat import (
     normalize_consumable_device_params as compat_normalize_consumable_device_params,
     normalize_epson_device_list as compat_normalize_epson_device_list,
     pick_name_primary_code as compat_pick_name_primary_code,
-    pick_secondary_t_code as compat_pick_secondary_t_code,
     reconcile_params,
     should_force_consumable_model as compat_should_force_consumable_model,
 )
-from suppliers.akcent.desc_clean import (
-    build_consumable_short_desc as desc_build_consumable_short_desc,
-    clean_description_text,
-    finalize_waste_tank_desc as desc_finalize_waste_tank_desc,
-    soften_consumable_body as desc_soften_consumable_body,
-    strip_name_prefix_from_desc as desc_strip_name_prefix_from_desc,
-)
+from suppliers.akcent.desc_clean import clean_description_text, strip_name_prefix_from_desc as desc_strip_name_prefix_from_desc
 from suppliers.akcent.desc_extract import extract_desc_params
 from suppliers.akcent.normalize import (
     finalize_consumable_name as norm_finalize_consumable_name,
@@ -58,11 +50,7 @@ from suppliers.akcent.normalize import (
     normalize_source_basics,
 )
 from suppliers.akcent.params_xml import collect_xml_params, detect_kind_by_name, resolve_allowed_keys
-
-try:
-    from suppliers.akcent.pictures import collect_picture_urls as _collect_picture_urls  # type: ignore
-except Exception:
-    _collect_picture_urls = None
+from suppliers.akcent.pictures import collect_picture_urls
 
 
 _RE_WS = re.compile(r"\s+")
@@ -72,6 +60,295 @@ _RE_DROP_CONSUMABLE_DESC_LINE = re.compile(
     r"(?iu)\b(?:поддерживаемые\s+модели(?:\s+принтеров|\s+устройств|\s+техники)?|"
     r"совместимые\s+модели(?:\s+техники)?|совместимые\s+продукты(?:\s+для)?|для)\s*:"
 )
+
+
+
+_RE_INLINE_SUPPLIER_HEADER = re.compile(
+    r"(?iu)^(?:основные\s+преимущества|общие\s+характеристики|общие\s+характерстики)\s*:\s*"
+)
+
+
+def _param_value(params: list[tuple[str, str]], key: str) -> str:
+    key_cf = _clean_text(key).casefold().replace("ё", "е")
+    for k, v in params or []:
+        k_cf = _clean_text(k).casefold().replace("ё", "е")
+        if k_cf == key_cf:
+            return _clean_text(v)
+    return ""
+
+
+def _original_consumable_prefix(subject: str) -> str:
+    low = _clean_text(subject).casefold().replace("ё", "е")
+    if "емкость" in low or "ёмкость" in low:
+        return "Оригинальная"
+    if low == "чернила":
+        return "Оригинальные"
+    return "Оригинальный"
+
+
+def _color_phrase(color_value: str) -> str:
+    color = _clean_text(color_value)
+    if not color:
+        return ""
+    low = color.casefold().replace("ё", "е")
+    if low.endswith(("ый", "ий", "ой")):
+        return f"{color[:-2]}ого цвета"
+    if low.endswith("ая"):
+        return f"{color[:-2]}ой цвета"
+    if low.endswith("ое"):
+        return f"{color[:-2]}ого цвета"
+    return f"{color} цвета"
+
+
+def _build_consumable_short_desc(params: list[tuple[str, str]]) -> str:
+    type_value = _clean_text(_param_value(params, "Тип") or "Расходный материал")
+    brand_value = _clean_text(
+        _param_value(params, "Для бренда")
+        or _param_value(params, "Бренд")
+        or _param_value(params, "Производитель")
+    )
+    model_value = _clean_text(_param_value(params, "Модель"))
+    codes_value = _clean_text(_param_value(params, "Коды"))
+    color_value = _clean_text(_param_value(params, "Цвет"))
+    resource_value = _clean_text(_param_value(params, "Ресурс"))
+    device_value = _clean_text(_param_value(params, "Для устройства") or _param_value(params, "Совместимость"))
+
+    subject = type_value or "Расходный материал"
+    prefix = brand_value or ""
+
+    code_hint = ""
+    if model_value and codes_value and model_value in codes_value:
+        code_hint = model_value
+    elif model_value:
+        code_hint = model_value
+    elif codes_value:
+        code_hint = codes_value.split('/')[0].strip()
+
+    parts = []
+    original_prefix = _original_consumable_prefix(subject)
+    if prefix and code_hint:
+        parts.append(f"{original_prefix} {subject.lower()} {prefix} {code_hint}")
+    elif prefix:
+        parts.append(f"{original_prefix} {subject.lower()} {prefix}")
+    elif code_hint:
+        parts.append(f"{subject} {code_hint}")
+    else:
+        parts.append(subject)
+
+    color_phrase = _color_phrase(color_value)
+    if color_phrase:
+        parts[-1] += f" {color_phrase}"
+
+    if device_value:
+        parts[-1] += f" для {device_value}"
+
+    if resource_value:
+        parts[-1] += f". Ресурс: {resource_value}"
+
+    return _clean_text(parts[-1]).strip(". ") + "."
+
+
+def _normalize_consumable_device_value(value: str) -> str:
+    src = _clean_text(value)
+    if not src:
+        return ""
+    src = re.sub(r"(?iu)\bMAINTENANCE\s+BOX\b", "Maintenance Box", src)
+    src = re.sub(r"(?iu)\bULTRACHROME\b", "UltraChrome", src)
+    parts = re.split(r"(?iu)\s*(?:;|,|\n|/)\s*", src)
+    cleaned = [norm_ws(x) for x in parts]
+    cleaned = [x for x in cleaned if x]
+    out: list[str] = []
+    seen: set[str] = set()
+    for item in cleaned:
+        key = item.casefold().replace("ё", "е")
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(item)
+    return " / ".join(out)
+
+
+def _drop_consumable_device_narrative(clean_desc: str, params: list[tuple[str, str]], *, kind: str) -> str:
+    text = _clean_text(clean_desc)
+    if kind != "consumable" or not text:
+        return text
+    device_value = _normalize_consumable_device_value(_param_value(params, "Для устройства") or _param_value(params, "Совместимость"))
+    if not device_value:
+        return text
+
+    text = re.sub(r"(?iu)^\s*(?:поддерживаемые|совместимые)\s+модели\s*:?\s*", "", text)
+    text = text.strip(" .;,-")
+    if text.casefold().replace("ё", "е") == device_value.casefold().replace("ё", "е"):
+        return ""
+    return text
+
+
+def _looks_wrong_ink_color_text(text: str, params: list[tuple[str, str]]) -> bool:
+    color = _cf(_param_value(params, "Цвет"))
+    typ = _cf(_param_value(params, "Тип"))
+    low = _cf(text)
+    if "чернила" not in typ and "картридж" not in typ:
+        return False
+    if not color or not low:
+        return False
+
+    def has_any(markers: list[str]) -> bool:
+        return any(m in low for m in markers)
+
+    # current real regressions: yellow/magenta inks came with "черными чернилами"
+    if has_any(["черн", "чёрн"]) and not any(x in color for x in ["черн", "чёрн"]):
+        return True
+    if has_any(["желт", "жёлт"]) and not any(x in color for x in ["желт", "жёлт"]):
+        return True
+    if has_any(["пурпур", "magenta"]) and not any(x in color for x in ["пурпур", "magenta"]):
+        return True
+    if has_any(["cyan", "циан", "голуб"]) and not any(x in color for x in ["cyan", "циан", "голуб"]):
+        return True
+    return False
+
+
+def _soften_consumable_body(clean_desc: str, params: list[tuple[str, str]], *, kind: str) -> str:
+    text = _drop_consumable_device_narrative(clean_desc, params, kind=kind)
+    text = _clean_text(text)
+    if not text:
+        return text
+
+    if kind != "consumable":
+        return text
+
+    text = _RE_INLINE_SUPPLIER_HEADER.sub(" ", text)
+    text = re.sub(r"(?iu)\s*[;|]\s*", ". ", text)
+    text = _clean_text(text)
+
+    if not text:
+        return _build_consumable_short_desc(params).strip()
+
+    low = text.casefold().replace("ё", "е")
+    if any(mark in low for mark in [
+        'вид струй', 'назначение', 'цвет печати', 'поддерживаемые модели',
+        'совместимые модели', 'совместимые продукты', 'ресурс '
+    ]):
+        return _build_consumable_short_desc(params).strip()
+
+    if re.fullmatch(r'(?iu)(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?', text):
+        return _build_consumable_short_desc(params).strip()
+    if re.fullmatch(r'(?iu)чернила(?:\s+[A-Z0-9-]+)?', text):
+        return _build_consumable_short_desc(params).strip()
+
+    if _looks_wrong_ink_color_text(text, params):
+        return _build_consumable_short_desc(params).strip()
+
+    return text
+
+
+def _tail_after_model(name: str, model: str) -> str:
+    s = _clean_text(name)
+    m = _clean_text(model)
+    if not s or not m:
+        return ""
+    pat = re.compile(r"(?iu)^.*?\b" + re.escape(m) + r"\b")
+    tail = pat.sub("", s, count=1).strip(" ,;-–—")
+    tail = _clean_text(tail)
+    tail = re.sub(r"(?iu)\bMAINTENANCE\s+BOX\b", "Maintenance Box", tail)
+    tail = re.sub(r"(?u)\bТ(?=\d)", "T", tail)
+    return tail
+
+
+def _waste_tank_generic_second_sentence() -> str:
+    return "Контейнер предназначен для сбора отработанных чернил и заменяется после уведомления принтера."
+
+
+def _device_sentence_from_params(params: list[tuple[str, str]]) -> str:
+    device_value = _normalize_consumable_device_value(
+        _param_value(params, "Для устройства") or _param_value(params, "Совместимость")
+    )
+    if not device_value:
+        return ""
+    return _clean_text(f"Подходит для устройств: {device_value}.")
+
+
+def _finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]) -> str:
+    text = _clean_text(desc)
+    typ = _param_value(params, "Тип")
+    brand = _param_value(params, "Для бренда")
+    model = _param_value(params, "Модель")
+
+    if _clean_text(typ).casefold().replace("ё", "е") != _clean_text("Ёмкость для отработанных чернил").casefold().replace("ё", "е"):
+        return text
+
+    tail = _tail_after_model(name, model)
+    base = _clean_text(f"Оригинальная ёмкость для отработанных чернил {brand} {model}")
+    lead = _clean_text(f"{base} для {tail}.") if tail else _clean_text(base + ".")
+    device_sentence = _device_sentence_from_params(params)
+    generic_second = _waste_tank_generic_second_sentence()
+
+    text = re.sub(r"(?iu)^технические\s+характеристики\s*", "", text).strip(" .;,-")
+    text = re.sub(r"(?iu)^описание\s*[:.-]?\s*", "", text).strip(" .;,-")
+    text = re.sub(r"(?iu)^емкость\s+для\s+отработанных\s+чернил\s+для\s*:?\s*", "", text).strip(" .;,-")
+    text = re.sub(r"(?iu)^сменная\s+емкость\s+для\s+отработанных\s+чернил\.?\s*", "", text).strip(" .;,-")
+    text = re.sub(r"(?iu)\bсменная\s+емкость\s+для\s+отработанных\s+чернил\.?\s*", "", text).strip(" .;,-")
+    text = re.sub(
+        r"(?iu)^информация\s+о\s+необходимости\s+замены\s+появится\s+на\s+панели\s+управлени[ея]\s+принтера\.?\s*",
+        generic_second,
+        text,
+    ).strip(" .;,-")
+    text = re.sub(
+        r"(?iu)\bинформация\s+о\s+необходимости\s+замены\s+появится\s+на\s+панели\s+управлени[ея]\s+принтера\.?\s*",
+        " " + generic_second,
+        text,
+    ).strip()
+
+    generic_patterns = [
+        r"(?iu)^(?:сменная\s+)?(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил\.?$",
+        r"(?iu)^оригинальная\s+(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?\.?$",
+    ]
+
+    if (not text) or any(re.fullmatch(p, text) for p in generic_patterns):
+        parts = [lead, generic_second]
+        if device_sentence and tail and len(device_sentence) > 80:
+            parts.insert(1, device_sentence)
+        return _clean_text(" ".join(parts))
+
+    low = text.casefold().replace("ё", "е")
+    base_low = base.casefold().replace("ё", "е")
+    text_low = text.casefold().replace("ё", "е")
+    generic_second_low = generic_second.casefold().replace("ё", "е")
+    tail_low = _clean_text(tail).casefold().replace("ё", "е")
+    device_low = _clean_text(device_sentence).casefold().replace("ё", "е")
+
+    if text_low.rstrip(".") == base_low.rstrip("."):
+        parts = [lead, generic_second]
+        if device_sentence and tail and len(device_sentence) > 80:
+            parts.insert(1, device_sentence)
+        return _clean_text(" ".join(parts))
+
+    if device_sentence and (
+        "surecolor" in low
+        or "workforce" in low
+        or "sc-" in low
+        or "wf-" in low
+        or "et-" in low
+        or "для:" in low
+    ):
+        return _clean_text(f"{lead} {device_sentence} {generic_second}")
+
+    if len(text) < 180:
+        if text and not text.endswith("."):
+            text += "."
+        if generic_second_low in text.casefold().replace("ё", "е"):
+            return _clean_text(f"{lead} {generic_second}")
+        if tail_low and tail_low in text_low:
+            return _clean_text(f"{lead} {generic_second}")
+        if device_low and device_low in text_low:
+            return _clean_text(f"{lead} {generic_second}")
+        if text.casefold().replace("ё", "е").startswith(base_low):
+            return _clean_text(f"{lead} {generic_second}")
+        return _clean_text(f"{lead} {text}")
+
+    if text and not text.endswith("."):
+        text += "."
+    return text
+
 
 def _infer_consumable_type(name: str, desc: str, current_type: str) -> str:
     low = _cf(" ".join([name, desc, current_type]))
@@ -222,72 +499,6 @@ def _get_field(obj: Any, *names: str) -> Any:
 def _get_offer_el(src: Any) -> ET.Element | None:
     el = _get_field(src, "offer_el", "el", "xml_offer")
     return el if isinstance(el, ET.Element) else None
-
-
-def _iter_picture_urls(src: Any) -> list[str]:
-    direct = _get_field(src, "picture_urls", "pictures", "picture_list")
-    out: list[str] = []
-    seen: set[str] = set()
-
-    if isinstance(direct, (list, tuple)):
-        for raw in direct:
-            s = _clean_text(raw).replace(" ", "%20")
-            if not s:
-                continue
-            key = s.casefold()
-            if key in seen:
-                continue
-            seen.add(key)
-            out.append(s)
-
-    for raw in (
-        _get_field(src, "picture_url"),
-        _get_field(src, "picture"),
-        _get_field(src, "image"),
-    ):
-        s = _clean_text(raw).replace(" ", "%20")
-        if not s:
-            continue
-        key = s.casefold()
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(s)
-
-    offer_el = _get_offer_el(src)
-    if offer_el is not None:
-        for pic_el in offer_el.findall("picture"):
-            s = _clean_text("".join(pic_el.itertext())).replace(" ", "%20")
-            if not s:
-                continue
-            key = s.casefold()
-            if key in seen:
-                continue
-            seen.add(key)
-            out.append(s)
-
-    return out
-
-
-def _collect_pictures(urls: list[str], *, placeholder_picture: str) -> list[str]:
-    if _collect_picture_urls is not None:
-        return _collect_picture_urls(urls, placeholder_picture=placeholder_picture)
-
-    out: list[str] = []
-    seen: set[str] = set()
-    for raw in urls or []:
-        s = _clean_text(raw).replace(" ", "%20")
-        if not s:
-            continue
-        key = s.casefold()
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(s)
-    if not out and placeholder_picture:
-        out = [placeholder_picture]
-    return out
-
 
 def _read_price_triplet(src: Any) -> tuple[str, str, str]:
     dealer = _clean_text(
@@ -672,11 +883,11 @@ def _build_single_offer(
     merged_params = _dedupe_type_params(merged_params)
     merged_params = _filter_allowed(merged_params, allow_keys)
 
-    pictures = _collect_pictures(_iter_picture_urls(src), placeholder_picture=placeholder_picture)
-    cleaned_desc = desc_soften_consumable_body(cleaned_desc, merged_params, kind=kind)
+    pictures = collect_picture_urls(src, placeholder_picture=placeholder_picture)
+    cleaned_desc = _soften_consumable_body(cleaned_desc, merged_params, kind=kind)
     if kind == "consumable":
         cleaned_desc = desc_strip_name_prefix_from_desc(cleaned_desc, name)
-        short_desc = desc_build_consumable_short_desc(merged_params).strip()
+        short_desc = _build_consumable_short_desc(merged_params).strip()
         low_desc = _cf(cleaned_desc)
         if not cleaned_desc:
             cleaned_desc = short_desc
@@ -690,7 +901,7 @@ def _build_single_offer(
     if kind == "consumable":
         name = norm_finalize_consumable_name(name, merged_params)
         name = norm_finalize_waste_tank_name(name, merged_params)
-        cleaned_desc = desc_finalize_waste_tank_desc(cleaned_desc, name, merged_params)
+        cleaned_desc = _finalize_waste_tank_desc(cleaned_desc, name, merged_params)
         native_desc = _merge_native_desc(cleaned_desc, extra_info)
 
     offer = OfferOut(
