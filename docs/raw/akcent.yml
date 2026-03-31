@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-03-31 09:53:32">
+<yml_catalog date="2026-03-31 10:26:41">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-03-31 09:53:32 (не было изменений)
+Время сборки (Алматы)                      | 2026-03-31 10:26:41
 Ближайшая сборка (Алматы)                  | 2026-04-01 02:00:00
 Сколько товаров у поставщика до фильтра    | 1878
 Сколько товаров у поставщика после фильтра | 172
@@ -61,7 +61,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C12C934591.]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C12C934591 для WF-78XX/ET-166XX Maintenance Box.]]></description>
 <param name="Коды">C12C934591</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
@@ -79,7 +79,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C13T04D000.]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C13T04D000 для EcoTank Maintenance Box (5clr).]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Тип печати">Струйная</param>
@@ -97,7 +97,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C13T04D100.]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C13T04D100 для EcoTank Maintenance Box (4clr).]]></description>
 <param name="Коды">C13T04D100</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
@@ -134,7 +134,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C13T671400.]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C13T671400 для WorkForce Pro WF-C869R Maintenance Box (80K).]]></description>
 <param name="Коды">C13T671400</param>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
@@ -169,7 +169,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальная ёмкость для отработанных чернил Epson C33S021601.]]></description>
+Оригинальная ёмкость для отработанных чернил Epson C33S021601 для SJMB4000 C4000e Maintenance Box.]]></description>
 <param name="Гарантия">3 мес.</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
 <param name="Модель">C33S021601</param>
