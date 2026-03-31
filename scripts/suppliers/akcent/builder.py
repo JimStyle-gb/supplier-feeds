@@ -140,16 +140,22 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
         out = _set_single_param(out, "Тип", "Чернила")
 
     current_device = _first_value(out, "Для устройства") or _first_value(out, "Совместимость")
-    better_device = compat_extract_consumable_device_candidate(name, desc)
-    if not better_device:
-        better_device = compat_extract_direct_epson_device_list(" ".join([desc or "", name or ""]))
-    if not better_device:
-        better_device = compat_extract_explicit_epson_devices(" ".join([desc or "", name or ""]))
-    if not better_device:
-        better_device = compat_extract_models_from_text(" ".join([name or "", desc or ""]))
-    better_device = compat_normalize_epson_device_list(better_device)
-    if better_device and (compat_looks_generic_device_value(current_device) or len(better_device) >= len(current_device)):
-        out = _set_single_param(out, "Для устройства", better_device)
+    final_type = _clean_text(_first_value(out, "Тип"))
+    is_waste_tank = "емкость для отработанных чернил" in _cf(final_type or name)
+
+    # Для waste tank не синтезируем "Для устройства" из хвостов/desc:
+    # это дало регрессии вроде "Epson EcoTank Maintenance".
+    if not is_waste_tank:
+        better_device = compat_extract_consumable_device_candidate(name, desc)
+        if not better_device:
+            better_device = compat_extract_direct_epson_device_list(" ".join([desc or "", name or ""]))
+        if not better_device:
+            better_device = compat_extract_explicit_epson_devices(" ".join([desc or "", name or ""]))
+        if not better_device:
+            better_device = compat_extract_models_from_text(" ".join([name or "", desc or ""]))
+        better_device = compat_normalize_epson_device_list(better_device)
+        if better_device and (compat_looks_generic_device_value(current_device) or len(better_device) >= len(current_device)):
+            out = _set_single_param(out, "Для устройства", better_device)
 
     model = _first_value(out, "Модель")
     name_primary = compat_pick_name_primary_code(name)
@@ -171,31 +177,27 @@ def _repair_consumable_params(params: list[tuple[str, str]], *, name: str, desc:
         primary = codes[0]
         if compat_should_force_consumable_model(_first_value(out, "Модель"), primary, name):
             out = _set_single_param(out, "Модель", primary)
-        secondary_t = compat_pick_secondary_t_code(name, desc, primary)
-        if secondary_t:
-            out = _set_single_param(out, "Коды", f"{primary} / {secondary_t}")
-        else:
-            # for consumables we keep only the primary item code unless a valid secondary T-code exists
-            out = _set_single_param(out, "Коды", primary)
+        # Для AkCent держим только основной supplier/item code.
+        out = _set_single_param(out, "Коды", primary)
 
-    # some descriptions are just pure model lists; preserve them as device list
-    if not _has_key(out, "Для устройства"):
+    # Для waste tank не создаём "Для устройства" автоматически из тела/хвостов.
+    # Для остальных consumable допускаем только осторожный fallback.
+    if not is_waste_tank and not _has_key(out, "Для устройства"):
         models = compat_normalize_epson_device_list(
             compat_extract_direct_epson_device_list(desc)
             or compat_extract_explicit_epson_devices(desc)
             or compat_extract_models_from_text(desc)
         )
-        if models:
+        if models and not compat_looks_generic_device_value(models):
             out = _set_single_param(out, "Для устройства", models)
 
-    # if device list was still missed, try simpler extraction from body/name again
-    if not _has_key(out, "Для устройства"):
+    if not is_waste_tank and not _has_key(out, "Для устройства"):
         desc_models = compat_normalize_epson_device_list(
             compat_extract_direct_epson_device_list(desc or name)
             or compat_extract_explicit_epson_devices(desc or name)
             or compat_extract_models_from_text(desc or name)
         )
-        if desc_models:
+        if desc_models and not compat_looks_generic_device_value(desc_models):
             out = _set_single_param(out, "Для устройства", desc_models)
 
     return out
