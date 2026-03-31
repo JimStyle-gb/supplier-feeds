@@ -3,8 +3,8 @@ name: Build_CopyLine
 on:
   workflow_dispatch:
   schedule:
-    # Алматы UTC+5 → 03:00 local = 22:00 UTC предыдущего дня
-    - cron: '0 22 * * *'
+    # Алматы UTC+5 → 04:00 local = 23:00 UTC предыдущего дня
+    - cron: '0 23 * * *'
 
 permissions:
   contents: write
@@ -62,6 +62,7 @@ jobs:
               "scripts/cs/util.py",
               "scripts/cs/validators.py",
               "scripts/cs/writer.py",
+              "scripts/cs/qg_report.py",
               "scripts/build_copyline.py",
               "scripts/suppliers/__init__.py",
               "scripts/suppliers/copyline/__init__.py",
@@ -102,7 +103,7 @@ jobs:
           import pathlib
           import re
           t = pathlib.Path('scripts/build_copyline.py').read_text(encoding='utf-8', errors='ignore')
-          m = re.search(r"BUILD_COPYLINE_VERSION\s*=\s*[\"\']([^\"\']+)[\"\']", t)
+          m = re.search(r'BUILD_COPYLINE_VERSION\s*=\s*["\']([^"\']+)["\']', t)
           print('COPYLINE_VERSION', m.group(1) if m else 'UNKNOWN')
           PY
 
@@ -115,28 +116,13 @@ jobs:
             : > /tmp/prev_feed.yml
           fi
 
-      - name: "Gate by day-of-month (Asia/Almaty: 1/10/20)"
-        id: gate
-        if: github.event_name == 'schedule'
-        run: |
-          day=$(TZ=Asia/Almaty date +%d)
-          if [ "$day" = "01" ] || [ "$day" = "10" ] || [ "$day" = "20" ]; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-            echo "Almaty day=$day -> run=true"
-          else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-            echo "Almaty day=$day -> run=false"
-          fi
-
       - name: Build feed (copyline)
-        if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         env:
           TZ: Asia/Almaty
         run: |
           python scripts/build_copyline.py
 
       - name: Diagnostics
-        if: always() && (github.event_name != 'schedule' || steps.gate.outputs.run == 'true')
         run: |
           git status --porcelain || true
           git diff --stat || true
@@ -145,26 +131,7 @@ jobs:
           [ -f docs/raw/copyline_watch.txt ] && sed -n '1,200p' docs/raw/copyline_watch.txt || true
           [ -f docs/raw/copyline_quality_gate.txt ] && sed -n '1,260p' docs/raw/copyline_quality_gate.txt || true
 
-      - name: Show CopyLine quality gate report
-        if: always() && (github.event_name != 'schedule' || steps.gate.outputs.run == 'true')
-        run: |
-          echo "==== copyline_quality_gate.txt ===="
-          if [ -f docs/raw/copyline_quality_gate.txt ]; then
-            cat docs/raw/copyline_quality_gate.txt
-          else
-            echo "Report file not found"
-          fi
-
-      - name: Upload CopyLine quality gate report
-        if: always() && (github.event_name != 'schedule' || steps.gate.outputs.run == 'true')
-        uses: actions/upload-artifact@v4
-        with:
-          name: copyline-quality-gate-report
-          path: docs/raw/copyline_quality_gate.txt
-          if-no-files-found: warn
-
       - name: Update FEED_META build time + next run
-        if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         run: |
           norm_hash() {
             local f="$1"
@@ -189,30 +156,21 @@ jobs:
             NOTE=" (не было изменений)"
           fi
 
-          NOW_EPOCH=$(TZ='Asia/Almaty' date +%s)
-          NEXT_RUN=""
-          for i in $(seq 0 45); do
-            CAND_DATE=$(TZ='Asia/Almaty' date -d "+${i} day" '+%Y-%m-%d')
-            DOM=$(TZ='Asia/Almaty' date -d "${CAND_DATE}" '+%d')
-            if [ "$DOM" != "01" ] && [ "$DOM" != "10" ] && [ "$DOM" != "20" ]; then
-              continue
-            fi
-            CAND_EPOCH=$(TZ='Asia/Almaty' date -d "${CAND_DATE} 03:00:00" +%s)
-            if [ "$CAND_EPOCH" -gt "$NOW_EPOCH" ]; then
-              NEXT_RUN=$(TZ='Asia/Almaty' date -d "@${CAND_EPOCH}" '+%Y-%m-%d %H:%M:%S')
-              break
-            fi
-          done
-          if [ -z "$NEXT_RUN" ]; then
-            NEXT_RUN=$(TZ='Asia/Almaty' date -d '+50 day' '+%Y-%m-%d')" 03:00:00"
+          TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
+          NOW_HMS=$(TZ='Asia/Almaty' date '+%H%M%S')
+          if [ "$NOW_HMS" -ge "040000" ]; then
+            NEXT_DATE=$(TZ='Asia/Almaty' date -d 'tomorrow' '+%Y-%m-%d')
+          else
+            NEXT_DATE="$TODAY"
           fi
+          NEXT_RUN="${NEXT_DATE} 04:00:00"
 
           for F in docs/copyline.yml docs/raw/copyline.yml; do
             if [ ! -f "$F" ]; then
               continue
             fi
 
-            sed -i -E "s/^<yml_catalog date=\"[^\"]+\">/<yml_catalog date=\"${TS}\">/" "$F" || true
+            sed -i -E 's/^<yml_catalog date="[^"]+">/<yml_catalog date="'"${TS}"'">/' "$F" || true
 
             tmp="$F.__tmp"
             : > "$tmp"
@@ -237,7 +195,6 @@ jobs:
           echo "CS_NO_CHANGES=$NO_CHANGES" >> "$GITHUB_ENV"
 
       - name: Commit & push docs/copyline.yml
-        if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         run: |
           git add docs/copyline.yml docs/raw/copyline.yml
           if [ -f docs/raw/copyline_watch.txt ]; then
