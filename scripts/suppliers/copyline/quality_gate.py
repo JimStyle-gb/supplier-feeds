@@ -9,6 +9,7 @@ Final quality gate for CopyLine freeze-finalize stage.
 - сломанная нормализация compat;
 - пустой vendor при очевидном бренде;
 - неожиданные cable-поля у не-кабелей.
+- gate согласован с CS-правилом: param `Назначение` не используется.
 """
 
 from __future__ import annotations
