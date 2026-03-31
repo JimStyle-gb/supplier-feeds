@@ -1,4 +1,9 @@
-supplier: copyline
+schema_version: 2
+supplier: CopyLine
+timezone: Asia/Almaty
+# Новое единое расписание проекта: CopyLine запускается ежедневно в 04:00 по Алматы.
+next_run_hour_local: 4
+schedule_hour_almaty: 4
 id_prefix: CL
 source_kind: html_site_parsing
 source_of_truth_for_params: page_params_first
@@ -19,8 +24,12 @@ param_priority:
   - Ресурс
   - Модель
 quality_gate:
+  enabled: true
   enforce: true
   max_cosmetic_offers: 5
   max_cosmetic_issues: 5
+  report_file: docs/raw/copyline_quality_gate.txt
+  baseline_file: scripts/suppliers/copyline/config/quality_gate_baseline.yml
+  # legacy keys for backward-safe compatibility with older local scripts
   report_path: docs/raw/copyline_quality_gate.txt
   baseline_path: scripts/suppliers/copyline/config/quality_gate_baseline.yml
