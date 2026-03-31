@@ -411,7 +411,7 @@ def _tail_after_model(name: str, model: str) -> str:
 
 
 def _waste_tank_generic_second_sentence() -> str:
-    return "Сервисный контейнер для сбора отработанных чернил."
+    return "Используется для сбора отработанных чернил и подлежит замене после уведомления принтера."
 
 def _device_sentence_from_params(params: list[tuple[str, str]]) -> str:
     device_value = _normalize_consumable_device_value(
@@ -456,17 +456,22 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
     text = re.sub(r"(?iu)^емкость\s+для\s+отработанных\s+чернил\s+для\s*:?\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)^сменная\s+емкость\s+для\s+отработанных\s+чернил\.?\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)\bсменная\s+емкость\s+для\s+отработанных\s+чернил\.?\s*", "", text).strip(" .;,-")
-    text = re.sub(r"(?iu)^информация\s+о\s+необходимости\s+замены\s+появится\s+на\s+панели\s+управлени[ея]\s+принтера\.?\s*",
-                  "Замену выполняют после уведомления устройства.", text).strip(" .;,-")
-    text = re.sub(r"(?iu)\bинформация\s+о\s+необходимости\s+замены\s+появится\s+на\s+панели\s+управлени[ея]\s+принтера\.?\s*",
-                  " Замену выполняют после уведомления устройства.", text).strip()
+    text = re.sub(
+        r"(?iu)^информация\s+о\s+необходимости\s+замены\s+появится\s+на\s+панели\s+управлени[ея]\s+принтера\.?\s*",
+        "Используется для сбора отработанных чернил и подлежит замене после уведомления принтера.",
+        text,
+    ).strip(" .;,-")
+    text = re.sub(
+        r"(?iu)\bинформация\s+о\s+необходимости\s+замены\s+появится\s+на\s+панели\s+управлени[ея]\s+принтера\.?\s*",
+        " Используется для сбора отработанных чернил и подлежит замене после уведомления принтера.",
+        text,
+    ).strip()
 
     generic_patterns = [
         r"(?iu)^(?:сменная\s+)?(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил\.?$",
         r"(?iu)^оригинальная\s+(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?\.?$",
     ]
 
-    # Пустое/общее описание: делаем сильнее, чем просто одна фраза.
     if (not text) or any(re.fullmatch(p, text) for p in generic_patterns):
         parts = [lead]
         if device_sentence and tail:
@@ -477,8 +482,9 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
     low = text.casefold().replace("ё", "е")
     base_low = base.casefold().replace("ё", "е")
     text_low = text.casefold().replace("ё", "е")
+    generic_second_low = generic_second.casefold().replace("ё", "е")
 
-    # Слабая однофразная база без device/context.
+    # Слабая однофразная база без контекста.
     if text_low.rstrip(".") == base_low.rstrip("."):
         parts = [lead]
         if device_sentence and tail:
@@ -501,8 +507,8 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
     if len(text) < 180:
         if text and not text.endswith("."):
             text += "."
-        if "замену выполняют после уведомления устройства" in text.casefold():
-            return _clean_text(f"{lead} {text}")
+        if generic_second_low in text.casefold().replace("ё", "е"):
+            return _clean_text(f"{lead} {generic_second}")
         if text.casefold().replace("ё", "е").startswith(base_low):
             return text
         return _clean_text(f"{lead} {text}")
