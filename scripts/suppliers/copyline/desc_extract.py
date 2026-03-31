@@ -4,9 +4,9 @@ Path: scripts/suppliers/copyline/desc_extract.py
 CopyLine description-extract layer.
 
 Задача:
-- поднимать missing params только из cleaned body-description;
-- работать в режиме only-fill-missing;
-- не дублировать большой extractor-layer из params_page.py;
+- only-fill-missing слой поверх params_page extractor;
+- поднимать missing params из body-description;
+- не держать второй дублирующий regex/extractor-комбайн;
 - не тянуть device-list в Коды расходников.
 """
 
@@ -19,17 +19,12 @@ from suppliers.copyline.params_page import (
     CABLE_CATEGORY_RX,
     CABLE_DIM_RX,
     CABLE_MATERIAL_RX,
-    CABLE_PARAM_KEYS,
     CABLE_SPOOL_RX,
     CABLE_TYPE_RX,
     _extract_codes,
     _extract_compat_from_desc,
-    _extract_epson_desc_compat,
-    _extract_ink_title_compat,
-    _extract_panasonic_integral_compat,
-    _extract_riso_title_compat,
     _norm_spaces,
-    _title_kind,
+    _trim_compat_tail,
     safe_str,
 )
 
@@ -49,7 +44,17 @@ TECH_PAIR_HEADERS = {
     "бухта": "Бухта",
 }
 
-CABLE_KEYS = set(CABLE_PARAM_KEYS)
+CABLE_KEYS = {
+    "Тип кабеля",
+    "Количество пар",
+    "Толщина проводников",
+    "Категория",
+    "Материал изоляции",
+    "Бухта",
+}
+
+CABLE_CONTEXT_RX = re.compile(r"(?:кабель\s+сетевой|витая\s+пара)", re.I)
+TITLE_CABLE_RX = re.compile(r"^кабель\s+сетевой", re.I)
 
 
 def _dedupe(items: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
@@ -57,7 +62,7 @@ def _dedupe(items: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
     seen: set[tuple[str, str]] = set()
     for k, v in items:
         k2 = safe_str(k)
-        v2 = _norm_spaces(v)
+        v2 = safe_str(v)
         if not k2 or not v2:
             continue
         sig = (k2.casefold(), v2.casefold())
@@ -69,9 +74,13 @@ def _dedupe(items: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
 
 
 def _is_cable_context(title: str, text: str) -> bool:
-    return _title_kind(title) == "Кабель сетевой" or bool(
-        re.search(r"(?:кабель\s+сетевой|витая\s+пара)", safe_str(text), re.I)
-    )
+    title = safe_str(title)
+    text = safe_str(text)
+    if TITLE_CABLE_RX.search(title):
+        return True
+    if CABLE_CONTEXT_RX.search(text):
+        return True
+    return False
 
 
 def _extract_inline_pair(line: str, *, is_cable: bool) -> tuple[str, str] | None:
@@ -106,7 +115,7 @@ def _extract_cable_params_from_text(text: str, *, is_cable: bool) -> list[Tuple[
     m = CABLE_DIM_RX.search(text)
     if m:
         out.append(("Количество пар", m.group(1)))
-        out.append(("Толщина проводников", m.group(2).replace(".", ",")))
+        out.append(("Толщина проводников", m.group(2).replace('.', ',')))
 
     m = CABLE_MATERIAL_RX.search(text)
     if m:
@@ -146,31 +155,8 @@ def _extract_line_pairs(description: str, *, title: str) -> list[Tuple[str, str]
     return out
 
 
-def _extract_missing_compat(title: str, description: str) -> str:
-    compat = _extract_compat_from_desc(description)
-    if compat:
-        return compat
-
-    kind = _title_kind(title)
-    if kind == "Чернила":
-        compat = (
-            _extract_ink_title_compat(title)
-            or _extract_riso_title_compat(title)
-            or _extract_epson_desc_compat(title, description)
-        )
-        if compat:
-            return compat
-
-    return _extract_panasonic_integral_compat(description)
-
-
-def extract_desc_params(
-    *,
-    title: str,
-    description: str,
-    existing_params: Sequence[Tuple[str, str]] | None = None,
-) -> List[Tuple[str, str]]:
-    """Поднять только missing params из body-description."""
+def extract_desc_params(*, title: str, description: str, existing_params: Sequence[Tuple[str, str]] | None = None) -> List[Tuple[str, str]]:
+    """Поднять missing params из body-description."""
     existing_params = existing_params or []
     existing_keys = {safe_str(k).casefold() for k, _ in existing_params if safe_str(k)}
     out: list[Tuple[str, str]] = []
@@ -180,7 +166,11 @@ def extract_desc_params(
             continue
         out.append((k, v))
 
-    compat = _extract_missing_compat(title, description)
+    compat = _extract_compat_from_desc(description)
+    if not compat and re.search(r"(?:Panasonic|INTEGRAL)", title + " " + description, re.I):
+        m = re.search(r"(?:для|used in|совместим(?:ость)? с)\s+((?:Panasonic|INTEGRAL)[^.;\n]{3,180})", _norm_spaces(description), re.I)
+        if m:
+            compat = _trim_compat_tail(m.group(1))
     if compat and "совместимость" not in existing_keys:
         out.append(("Совместимость", compat))
 
