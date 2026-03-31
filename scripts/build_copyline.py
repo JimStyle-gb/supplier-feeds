@@ -4,8 +4,8 @@ Path: scripts/build_copyline.py
 CopyLine adapter under CS-template.
 
 Что делает:
-- грузит supplier config;
-- читает индекс товаров;
+- читает supplier config;
+- загружает индекс товаров;
 - фильтрует ассортимент;
 - собирает raw offers из page-payload;
 - пишет raw/final feed;
@@ -16,11 +16,11 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-
-import yaml
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from typing import Any, List
+
+import yaml
 
 from cs.core import get_public_vendor, next_run_dom_at_hour, now_almaty, write_cs_feed, write_cs_feed_raw
 from suppliers.copyline.builder import build_offer_from_page
@@ -39,8 +39,7 @@ COPYLINE_FILTER_YML = os.getenv("COPYLINE_FILTER_YML", "scripts/suppliers/copyli
 COPYLINE_POLICY_YML = os.getenv("COPYLINE_POLICY_YML", "scripts/suppliers/copyline/config/policy.yml")
 COPYLINE_QG_BASELINE = os.getenv("COPYLINE_QG_BASELINE", "scripts/suppliers/copyline/config/quality_gate_baseline.yml")
 COPYLINE_QG_REPORT = os.getenv("COPYLINE_QG_REPORT", "docs/raw/copyline_quality_gate.txt")
-BUILD_COPYLINE_VERSION = "build_copyline_v6_roles_cleanup"
-
+BUILD_COPYLINE_VERSION = "build_copyline_v7_roles_cleanup"
 
 def _read_yaml(path: str) -> dict[str, Any]:
     p = Path(path)
@@ -55,8 +54,7 @@ def _read_yaml(path: str) -> dict[str, Any]:
 def _load_policy_param_priority(path: str) -> tuple[str, ...]:
     data = _read_yaml(path)
     raw = data.get("param_priority") or []
-    out = [str(x).strip() for x in raw if str(x).strip()]
-    return tuple(out)
+    return tuple(str(x).strip() for x in raw if str(x).strip())
 
 
 def _build_offers(filtered_index: list[dict]) -> list:
