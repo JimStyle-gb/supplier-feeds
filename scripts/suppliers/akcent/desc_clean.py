@@ -411,7 +411,7 @@ def _tail_after_model(name: str, model: str) -> str:
 
 
 def _waste_tank_generic_second_sentence() -> str:
-    return "Используется для сбора отработанных чернил и подлежит замене после уведомления принтера."
+    return "Контейнер предназначен для сбора отработанных чернил и заменяется после уведомления принтера."
 
 def _device_sentence_from_params(params: list[tuple[str, str]]) -> str:
     device_value = _normalize_consumable_device_value(
@@ -458,12 +458,12 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
     text = re.sub(r"(?iu)\bсменная\s+емкость\s+для\s+отработанных\s+чернил\.?\s*", "", text).strip(" .;,-")
     text = re.sub(
         r"(?iu)^информация\s+о\s+необходимости\s+замены\s+появится\s+на\s+панели\s+управлени[ея]\s+принтера\.?\s*",
-        "Используется для сбора отработанных чернил и подлежит замене после уведомления принтера.",
+        generic_second,
         text,
     ).strip(" .;,-")
     text = re.sub(
         r"(?iu)\bинформация\s+о\s+необходимости\s+замены\s+появится\s+на\s+панели\s+управлени[ея]\s+принтера\.?\s*",
-        " Используется для сбора отработанных чернил и подлежит замене после уведомления принтера.",
+        " " + generic_second,
         text,
     ).strip()
 
@@ -472,27 +472,30 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
         r"(?iu)^оригинальная\s+(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?\.?$",
     ]
 
+    # Пустое/общее описание: единый сильный шаблон.
     if (not text) or any(re.fullmatch(p, text) for p in generic_patterns):
-        parts = [lead]
-        if device_sentence and tail:
-            parts.append(device_sentence)
-        parts.append(generic_second)
+        parts = [lead, generic_second]
+        # Device sentence добавляем только если он реально полезнее tail и не дублирует его.
+        if device_sentence and tail and len(device_sentence) > 80:
+            parts.insert(1, device_sentence)
         return _clean_text(" ".join(parts))
 
     low = text.casefold().replace("ё", "е")
     base_low = base.casefold().replace("ё", "е")
     text_low = text.casefold().replace("ё", "е")
     generic_second_low = generic_second.casefold().replace("ё", "е")
+    tail_low = _clean_text(tail).casefold().replace("ё", "е")
+    device_low = _clean_text(device_sentence).casefold().replace("ё", "е")
 
     # Слабая однофразная база без контекста.
     if text_low.rstrip(".") == base_low.rstrip("."):
-        parts = [lead]
-        if device_sentence and tail:
-            parts.append(device_sentence)
-        parts.append(generic_second)
+        parts = [lead, generic_second]
+        if device_sentence and tail and len(device_sentence) > 80:
+            parts.insert(1, device_sentence)
         return _clean_text(" ".join(parts))
 
-    # Если уже есть нормальный device-list в params, не тащим второй сырой список.
+    # Если уже есть нормальный device-list в params, а text тащит второй сырой список —
+    # оставляем lead + device_sentence + generic_second.
     if device_sentence and (
         "surecolor" in low
         or "workforce" in low
@@ -501,7 +504,7 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
         or "et-" in low
         or "для:" in low
     ):
-        return _clean_text(f"{lead} {device_sentence}")
+        return _clean_text(f"{lead} {device_sentence} {generic_second}")
 
     # Короткий service-style текст усиливаем, но без дублей.
     if len(text) < 180:
@@ -509,8 +512,12 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
             text += "."
         if generic_second_low in text.casefold().replace("ё", "е"):
             return _clean_text(f"{lead} {generic_second}")
+        if tail_low and tail_low in text_low:
+            return _clean_text(f"{lead} {generic_second}")
+        if device_low and device_low in text_low:
+            return _clean_text(f"{lead} {generic_second}")
         if text.casefold().replace("ё", "е").startswith(base_low):
-            return text
+            return _clean_text(f"{lead} {generic_second}")
         return _clean_text(f"{lead} {text}")
 
     if text and not text.endswith("."):
