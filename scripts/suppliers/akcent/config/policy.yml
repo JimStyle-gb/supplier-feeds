@@ -1,8 +1,9 @@
 schema_version: 2
 supplier: AkCent
 timezone: Asia/Almaty
-next_run_hour_local: 2
-schedule_hour_almaty: 2
+# Новое единое расписание проекта: AkCent запускается ежедневно в 01:00 по Алматы.
+next_run_hour_local: 1
+schedule_hour_almaty: 1
 id_prefix: AC
 placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
 
