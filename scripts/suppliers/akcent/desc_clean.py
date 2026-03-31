@@ -444,7 +444,6 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
     lead = _clean_text(f"{base} для {tail}.") if tail else _clean_text(base + ".")
     device_sentence = _device_sentence_from_params(params)
 
-    # Базовая очистка supplier-текста
     text = re.sub(r"(?iu)^технические\s+характеристики\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)^описание\s*[:.-]?\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)^емкость\s+для\s+отработанных\s+чернил\s+для\s*:?\s*", "", text).strip(" .;,-")
@@ -457,16 +456,21 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
         r"(?iu)^оригинальная\s+(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?\.?$",
     ]
 
-    # Пустое/общее описание → строим нормальный товарный текст
     if (not text) or any(re.fullmatch(p, text) for p in generic_patterns):
         if device_sentence and tail:
             return _clean_text(f"{lead} {device_sentence}")
         return lead
 
     low = text.casefold().replace("ё", "е")
+    base_low = base.casefold().replace("ё", "е")
+    text_low = text.casefold().replace("ё", "е")
 
-    # Если supplier-текст сам тащит длинный список устройств, а у нас уже есть нормальный device-list —
-    # оставляем только lead + device_sentence, без сырого хвоста.
+    # Если supplier дал только слабую однофразную базу без tail/device — усиливаем её.
+    if text_low.rstrip(".") == base_low.rstrip("."):
+        if device_sentence and tail:
+            return _clean_text(f"{lead} {device_sentence}")
+        return lead
+
     if device_sentence and (
         "surecolor" in low
         or "workforce" in low
@@ -477,11 +481,10 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
     ):
         return _clean_text(f"{lead} {device_sentence}")
 
-    # Если текст просто служебный и короткий — усиливаем lead, но без повторов.
     if len(text) < 180:
         if text and not text.endswith("."):
             text += "."
-        if text.casefold().replace("ё", "е").startswith(base.casefold().replace("ё", "е")):
+        if text.casefold().replace("ё", "е").startswith(base_low):
             return text
         return _clean_text(f"{lead} {text}")
 
