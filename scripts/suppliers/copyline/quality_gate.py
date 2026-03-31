@@ -27,7 +27,7 @@ _DESC_HEADER_RE = re.compile(r"(?iu)^\s*(?:Технические\s+характ
 _COMPAT_FAMILY_RE = re.compile(r"(?iu)\b(?:LaserJet|Color\s+LaserJet|WorkForce|SureColor|EcoTank|Kyocera|Brother|Pantum|Xerox|Canon|Samsung|Toshiba|Ricoh|Panasonic|Konica-Minolta)\b")
 _PLACEHOLDER_RE = re.compile(r"(?i)placehold\.co/800x800/png\?text=No\+Photo")
 _CONSUMABLE_NAME_RE = re.compile(r"(?iu)^(?:Картридж|Тонер-картридж|Драм-картридж|Drum|Чернила|Девелопер)")
-_CABLE_KEYS = {"Тип кабеля", "Количество пар", "Толщина проводников", "Категория", "Назначение", "Материал изоляции", "Бухта"}
+_CABLE_KEYS = {"Тип кабеля", "Количество пар", "Толщина проводников", "Категория", "Материал изоляции", "Бухта"}
 _BRAND_PREFIX_RE = re.compile(r"(?iu)^(?:HP|HEWLETT\s*PACKARD|CANON|XEROX|SAMSUNG|TOSHIBA|RICOH|PANASONIC|KONICA-?MINOLTA|BROTHER|KYOCERA)\s+")
 
 _TITLE_CODE_RX = re.compile(
