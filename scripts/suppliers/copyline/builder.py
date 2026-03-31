@@ -2,6 +2,12 @@
 """
 Path: scripts/suppliers/copyline/builder.py
 CopyLine builder layer.
+
+Что делает:
+- собирает raw OfferOut из уже распарсенного page-payload;
+- объединяет page params + desc params;
+- делает только supplier-side cleanup/reconcile;
+- не считает shared pricing внутри supplier-layer.
 """
 
 from __future__ import annotations
@@ -145,15 +151,11 @@ def _has_consumable_type(params: Sequence[Tuple[str, str]]) -> bool:
     return any(safe_str(k) == "Тип" and safe_str(v) in consumable_types for k, v in params)
 
 
-def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut | None:
+
+
+def _resolve_title_vendor_model(*, page: dict, fallback_title: str) -> tuple[str, str, str, str, list[tuple[str, str]]]:
     sku = safe_str(page.get("sku"))
-    if not sku:
-        return None
-
     source_title = safe_str(page.get("title") or fallback_title)
-    if not source_title:
-        return None
-
     page_desc = safe_str(page.get("desc"))
     page_params_raw = list(page.get("params") or [])
 
@@ -166,57 +168,86 @@ def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut |
     title = safe_str(basics.get("title") or source_title)
     vendor = safe_str(basics.get("vendor"))
     model = safe_str(basics.get("model"))
-
     cleaned_desc = clean_description(safe_str(basics.get("description") or page_desc))
-    page_params = extract_page_params(title=title, description=cleaned_desc, page_params=page_params_raw)
-    desc_params = extract_desc_params(title=title, description=cleaned_desc, existing_params=page_params)
+    return sku, title, vendor, model, cleaned_desc, page_params_raw
 
-    params = _merge_params(page_params, desc_params)
-    if model:
-        params = _merge_params(params, [("Модель", model)])
+
+def _repair_model_param(params: Sequence[Tuple[str, str]], model: str) -> list[Tuple[str, str]]:
+    merged = _merge_params(params, [("Модель", model)]) if model else list(params)
 
     current_model = ""
-    for key, value in params:
+    for key, value in merged:
         if safe_str(key) == "Модель":
             current_model = safe_str(value)
             break
+
     if _is_numeric_model(current_model) and not _is_allowed_numeric_code(current_model):
-        first_code = _first_code_from_params(params)
+        first_code = _first_code_from_params(merged)
         new_params: list[Tuple[str, str]] = []
-        for key, value in params:
+        for key, value in merged:
             if safe_str(key) != "Модель":
                 new_params.append((key, value))
         if first_code:
             new_params.append(("Модель", first_code))
-        params = new_params
-    elif not current_model:
-        first_code = _first_code_from_params(params)
+        return new_params
+
+    if not current_model:
+        first_code = _first_code_from_params(merged)
         if first_code:
-            params = _merge_params(params, [("Модель", first_code)])
+            return _merge_params(merged, [("Модель", first_code)])
 
-    if not vendor:
-        vendor = _infer_vendor_from_compat(params)
-    if not vendor:
-        vendor = _infer_vendor_from_text(title)
+    return merged
 
-    if vendor and _has_consumable_type(params):
-        params = _merge_params(params, [("Для бренда", vendor)])
 
-    params = _drop_weak_params(params)
-    params = reconcile_copyline_params(params)
+def _resolve_vendor(title: str, vendor: str, params: Sequence[Tuple[str, str]]) -> str:
+    resolved = safe_str(vendor)
+    if not resolved:
+        resolved = _infer_vendor_from_compat(params)
+    if not resolved:
+        resolved = _infer_vendor_from_text(title)
+    return resolved
 
+
+def _finalize_params(params: Sequence[Tuple[str, str]], vendor: str) -> list[Tuple[str, str]]:
+    merged = list(params)
+    if vendor and _has_consumable_type(merged):
+        merged = _merge_params(merged, [("Для бренда", vendor)])
+    merged = _drop_weak_params(merged)
+    merged = reconcile_copyline_params(merged)
+    return merged
+
+
+def _build_pictures(page: dict) -> list[str]:
     pictures = prefer_full_product_pictures(page.get("pics") or [])
     pictures = full_only_if_present(pictures)
+    return pictures
 
+
+def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut | None:
+    sku, title, vendor, model, cleaned_desc, page_params_raw = _resolve_title_vendor_model(
+        page=page,
+        fallback_title=fallback_title,
+    )
+    if not sku or not title:
+        return None
+
+    page_params = extract_page_params(title=title, description=cleaned_desc, page_params=page_params_raw)
+    desc_params = extract_desc_params(title=title, description=cleaned_desc, existing_params=page_params)
+
+    params = _merge_params(page_params, desc_params)
+    params = _repair_model_param(params, model)
+    vendor = _resolve_vendor(title, vendor, params)
+    params = _finalize_params(params, vendor)
+
+    pictures = _build_pictures(page)
     raw_price = int(page.get("price_raw") or 0)
-    price = raw_price
     available = bool(page.get("available", True))
 
     return OfferOut(
         oid=_mk_oid(sku),
         available=available,
         name=title,
-        price=price,
+        price=raw_price,
         pictures=pictures,
         vendor=vendor,
         params=params,
