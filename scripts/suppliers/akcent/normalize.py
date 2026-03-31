@@ -151,6 +151,8 @@ def _tail_after_model(name: str, model: str) -> str:
     tail = pat.sub("", s, count=1).strip(" ,;-–—")
     tail = _clean_spaces(tail)
     tail = re.sub(r"(?iu)\bMAINTENANCE\s+BOX\b", "Maintenance Box", tail)
+    # Аккуратно приводим кириллическую Т перед цифрами к латинской T.
+    tail = re.sub(r"(?u)\bТ(?=\d)", "T", tail)
     return tail
 
 
