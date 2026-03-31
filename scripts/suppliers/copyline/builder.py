@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 from typing import Sequence, Tuple
 
-from cs.core import OfferOut, compute_price
+from cs.core import OfferOut
 from suppliers.copyline.compat import reconcile_copyline_params
 from suppliers.copyline.desc_clean import clean_description
 from suppliers.copyline.desc_extract import extract_desc_params
@@ -209,7 +209,7 @@ def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut |
     pictures = full_only_if_present(pictures)
 
     raw_price = int(page.get("price_raw") or 0)
-    price = compute_price(raw_price)
+    price = raw_price
     available = bool(page.get("available", True))
 
     return OfferOut(
