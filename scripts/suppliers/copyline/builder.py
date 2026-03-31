@@ -98,6 +98,8 @@ def _first_code_from_params(params: Sequence[Tuple[str, str]]) -> str:
 
 
 
+
+
 def _drop_weak_params(params: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
     bad_values = {"-", "—", "нет", "n/a", "null"}
     out: list[Tuple[str, str]] = []
