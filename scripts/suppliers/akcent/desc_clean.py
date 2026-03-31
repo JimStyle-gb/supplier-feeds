@@ -445,11 +445,13 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
     text = re.sub(r"(?iu)^технические\s+характеристики\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)^описание\s*[:.-]?\s*", "", text).strip(" .;,-")
     text = re.sub(r"(?iu)^емкость\s+для\s+отработанных\s+чернил\s+для\s*:?\s*", "", text).strip(" .;,-")
+    text = re.sub(r"(?iu)^сменная\s+емкость\s+для\s+отработанных\s+чернил\.?\s*", "", text).strip(" .;,-")
 
     generic_patterns = [
         r"(?iu)^(?:сменная\s+)?(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил\.?$",
         r"(?iu)^оригинальная\s+(?:емкость|ёмкость)\s+для\s+отработанных\s+чернил(?:\s+[A-Z0-9-]+)?\.?$",
     ]
+
     if (not text) or any(re.fullmatch(p, text) for p in generic_patterns):
         if device_sentence:
             return _clean_text(f"{lead} {device_sentence}")
@@ -459,22 +461,22 @@ def finalize_waste_tank_desc(desc: str, name: str, params: list[tuple[str, str]]
     brand_ok = not brand or _clean_text(brand).casefold().replace("ё", "е") in low
     model_ok = not model or _clean_text(model).casefold().replace("ё", "е") in low
 
-    weak_supplier = (
-        len(text) < 220
-        and (
-            (not brand_ok)
-            or (not model_ok)
-            or "сменная емкость для отработанных чернил" in low
-            or "сменная ёмкость для отработанных чернил" in low
-        )
-    )
-    if weak_supplier:
-        extra = text
-        if extra and not extra.endswith("."):
-            extra += "."
-        if device_sentence and "подходит для устройств" not in extra.casefold():
-            return _clean_text(f"{lead} {device_sentence} {extra}")
-        return _clean_text(f"{lead} {extra}")
+    if device_sentence and (
+        "surecolor" in low
+        or "workforce" in low
+        or "sc-" in low
+        or "wf-" in low
+        or "et-" in low
+        or "для:" in low
+    ):
+        return _clean_text(f"{lead} {device_sentence}")
+
+    if (not brand_ok or not model_ok) and len(text) < 220:
+        if text and not text.endswith("."):
+            text += "."
+        if device_sentence and "подходит для устройств" not in text.casefold():
+            return _clean_text(f"{lead} {device_sentence} {text}")
+        return _clean_text(f"{lead} {text}")
 
     if text and not text.endswith("."):
         text += "."
