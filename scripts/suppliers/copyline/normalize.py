@@ -118,8 +118,24 @@ def _looks_consumable_title(title: str) -> bool:
     return any(t.startswith(prefix) for prefix in _CONSUMABLE_TITLE_PREFIXES)
 
 
-def normalize_title(title: str) -> str:
+
+_TITLE_COLOR_MAP = {
+    "yellow": "Желтый",
+    "magenta": "Пурпурный",
+    "black": "Чёрный",
+    "cyan": "Голубой",
+}
+
+
+def _localize_title_color_tokens(title: str) -> str:
     s = _norm_spaces(title)
+    for en, ru in _TITLE_COLOR_MAP.items():
+        s = re.sub(rf"(?<![A-Za-zА-Яа-яЁё]){en}(?![A-Za-zА-Яа-яЁё])", ru, s, flags=re.I)
+    return s
+
+
+def normalize_title(title: str) -> str:
+    s = _localize_title_color_tokens(title)
     s = re.sub(r"\s{2,}", " ", s)
     return s[:240]
 
