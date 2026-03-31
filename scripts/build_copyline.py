@@ -39,7 +39,8 @@ COPYLINE_FILTER_YML = os.getenv("COPYLINE_FILTER_YML", "scripts/suppliers/copyli
 COPYLINE_POLICY_YML = os.getenv("COPYLINE_POLICY_YML", "scripts/suppliers/copyline/config/policy.yml")
 COPYLINE_QG_BASELINE = os.getenv("COPYLINE_QG_BASELINE", "scripts/suppliers/copyline/config/quality_gate_baseline.yml")
 COPYLINE_QG_REPORT = os.getenv("COPYLINE_QG_REPORT", "docs/raw/copyline_quality_gate.txt")
-BUILD_COPYLINE_VERSION = "build_copyline_v7_roles_cleanup"
+BUILD_COPYLINE_VERSION = "build_copyline_v8_roles_cleanup"
+
 
 def _read_yaml(path: str) -> dict[str, Any]:
     p = Path(path)
