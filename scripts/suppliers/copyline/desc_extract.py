@@ -53,6 +53,25 @@ CABLE_KEYS = {
     "Бухта",
 }
 
+
+_COLOR_PATTERNS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (re.compile(r"(?iu)\bч[её]рн(?:ый|ая|ое|ого|ому|ым|ом)?\b|\bblack\b"), "Чёрный"),
+    (re.compile(r"(?iu)\bпурпурн(?:ый|ая|ое|ого|ому|ым|ом)?\b|\bmagenta\b"), "Пурпурный"),
+    (re.compile(r"(?iu)\bжелт(?:ый|ая|ое|ого|ому|ым|ом)?\b|\byellow\b"), "Желтый"),
+    (re.compile(r"(?iu)\bголуб(?:ой|ая|ое|ого|ому|ым|ом)?\b|\bcyan\b"), "Голубой"),
+    (re.compile(r"(?iu)\bсин(?:ий|яя|ее|его|ему|им|ем)\b|\bblue\b"), "Синий"),
+)
+
+
+def _extract_color_from_text(title: str, description: str) -> str:
+    text = _norm_spaces(f"{safe_str(title)} {safe_str(description)}")
+    if not text:
+        return ""
+    for rx, value in _COLOR_PATTERNS:
+        if rx.search(text):
+            return value
+    return ""
+
 CABLE_CONTEXT_RX = re.compile(r"(?:кабель\s+сетевой|витая\s+пара)", re.I)
 TITLE_CABLE_RX = re.compile(r"^кабель\s+сетевой", re.I)
 
@@ -165,6 +184,10 @@ def extract_desc_params(*, title: str, description: str, existing_params: Sequen
         if k.casefold() in existing_keys:
             continue
         out.append((k, v))
+
+    color = _extract_color_from_text(title, description)
+    if color and "цвет" not in existing_keys:
+        out.append(("Цвет", color))
 
     compat = _extract_compat_from_desc(description)
     if not compat and re.search(r"(?:Panasonic|INTEGRAL)", title + " " + description, re.I):
