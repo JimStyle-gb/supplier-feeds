@@ -42,7 +42,7 @@ from suppliers.akcent.quality_gate import run_quality_gate
 from suppliers.akcent.source import fetch_source_root, iter_source_offers
 
 
-BUILD_AKCENT_VERSION = "build_akcent_v66_supplier_layer_bootstrap"
+BUILD_AKCENT_VERSION = "build_akcent_v67_supplier_layer_roles_clean"
 
 AKCENT_URL_DEFAULT = "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml"
 AKCENT_OUT_DEFAULT = "docs/akcent.yml"
