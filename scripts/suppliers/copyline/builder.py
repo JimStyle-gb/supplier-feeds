@@ -8,6 +8,10 @@ CopyLine builder layer.
 - объединяет page params и desc params;
 - делает только supplier-side cleanup/reconcile;
 - не считает shared pricing внутри supplier-layer.
+
+Важно:
+- по правилу проекта для CopyLine available всегда должно быть true;
+- это supplier-specific правило, поэтому оно живёт здесь, а не в shared core.
 """
 
 from __future__ import annotations
@@ -53,6 +57,8 @@ CODE_SCORE_PATTERNS: tuple[tuple[re.Pattern[str], int], ...] = (
 )
 
 
+# ----------------------------- basic helpers -----------------------------
+
 def safe_str(x: object) -> str:
     return str(x).strip() if x is not None else ""
 
@@ -67,16 +73,16 @@ def _merge_params(*blocks: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
     out: list[Tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     for block in blocks:
-        for k, v in block or []:
-            key = safe_str(k)
-            val = safe_str(v)
-            if not key or not val:
+        for key, value in block or []:
+            k = safe_str(key)
+            v = safe_str(value)
+            if not k or not v:
                 continue
-            sig = (key.casefold(), val.casefold())
+            sig = (k.casefold(), v.casefold())
             if sig in seen:
                 continue
             seen.add(sig)
-            out.append((key, val))
+            out.append((k, v))
     return out
 
 
@@ -89,11 +95,11 @@ def _is_allowed_numeric_code(value: str) -> bool:
 
 
 def _code_score(code: str) -> int:
-    code = safe_str(code)
+    token = safe_str(code)
     for rx, score in CODE_SCORE_PATTERNS:
-        if rx.search(code):
+        if rx.search(token):
             return score
-    if _is_allowed_numeric_code(code):
+    if _is_allowed_numeric_code(token):
         return 95
     return 10
 
@@ -114,11 +120,11 @@ def _first_code_from_params(params: Sequence[Tuple[str, str]]) -> str:
 
 
 def _infer_vendor_from_text(text: str) -> str:
-    text = safe_str(text)
-    if not text:
+    hay = safe_str(text)
+    if not hay:
         return ""
     for pattern, vendor in BRAND_HINTS:
-        if re.search(pattern, text, flags=re.I):
+        if re.search(pattern, hay, flags=re.I):
             return vendor
     return ""
 
@@ -135,22 +141,23 @@ def _infer_vendor_from_compat(params: Sequence[Tuple[str, str]]) -> str:
 def _drop_weak_params(params: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
     bad_values = {"-", "—", "нет", "n/a", "null"}
     out: list[Tuple[str, str]] = []
-    for k, v in params:
-        key = safe_str(k)
-        val = safe_str(v)
-        if not key or not val:
+    for key, value in params:
+        k = safe_str(key)
+        v = safe_str(value)
+        if not k or not v:
             continue
-        if val.casefold() in bad_values:
+        if v.casefold() in bad_values:
             continue
-        out.append((key, val))
+        out.append((k, v))
     return out
 
 
 def _has_consumable_type(params: Sequence[Tuple[str, str]]) -> bool:
     consumable_types = {"Картридж", "Тонер-картридж", "Драм-картридж", "Девелопер", "Чернила"}
-    return any(safe_str(k) == "Тип" and safe_str(v) in consumable_types for k, v in params)
+    return any(safe_str(key) == "Тип" and safe_str(value) in consumable_types for key, value in params)
 
 
+# ----------------------------- resolve helpers -----------------------------
 
 def _resolve_page_basics(page: dict, *, fallback_title: str) -> tuple[str, str, str, str, str, list[tuple[str, str]]]:
     sku = safe_str(page.get("sku"))
@@ -221,6 +228,13 @@ def _build_pictures(page: dict) -> list[str]:
     return full_only_if_present(pictures)
 
 
+def _resolve_available(_: dict) -> bool:
+    # ВАЖНО: по текущему правилу проекта CopyLine всегда должен выходить available=true.
+    # Это supplier-policy, поэтому фиксируем здесь, а не в shared core.
+    return True
+
+
+# ----------------------------- main builder -----------------------------
 
 def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut | None:
     sku, title, vendor, model, cleaned_desc, page_params_raw = _resolve_page_basics(
@@ -240,7 +254,7 @@ def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut |
 
     pictures = _build_pictures(page)
     raw_price = int(page.get("price_raw") or 0)
-    available = bool(page.get("available", True))
+    available = _resolve_available(page)
 
     return OfferOut(
         oid=_mk_oid(sku),
