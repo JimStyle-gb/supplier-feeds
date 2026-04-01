@@ -4,20 +4,11 @@ Path: scripts/suppliers/alstyle/builder.py
 
 AlStyle supplier layer — сборка raw offer.
 
-v114:
-- усиливает selective override для Совместимость;
-- для heavy_xerox_compat сжимает слишком длинные Xerox compatibility chains
-  на стороне supplier-layer, чтобы raw не тащил перегруженные series-хвосты в core;
-- грязная XML/merged Совместимость с протёкшими label-блоками
-  ("Характеристики / Модель / Совместимые модели") теперь
-  заменяется чистой desc-derived версией на финальном reconcile-pass;
-- для тяжёлых Xerox compatibility chains можно предпочесть
-  более короткую и чистую desc-derived версию;
-- сохраняет safe-override только для:
-  Совместимость / Цвет / Технология / Ресурс;
-- сохраняет fallback Модель из name;
-- сохраняет fallback Совместимость из name только для Xerox init kits;
-- core не трогает.
+v116:
+- использует helper из desc_extract.py, который возвращает body без явного spec-хвоста;
+- params по-прежнему извлекаются как раньше по полному cleaned text;
+- это убирает tech_block_leak_in_body, не ломая уже поднятые params;
+- сохраняет selective override для Совместимость и остальную логику supplier-layer.
 """
 
 from __future__ import annotations
@@ -27,7 +18,7 @@ import re
 from cs.core import OfferOut
 from cs.util import norm_ws
 from suppliers.alstyle.desc_clean import sanitize_native_desc
-from suppliers.alstyle.desc_extract import extract_desc_spec_pairs
+from suppliers.alstyle.desc_extract import extract_desc_body_and_spec_pairs
 from suppliers.alstyle.models import SourceOffer
 from suppliers.alstyle.normalize import (
     build_offer_oid,
@@ -568,7 +559,7 @@ def build_offer(
     desc_src = sanitize_native_desc(src.description or "", name=name)
 
     xml_params = collect_xml_params(src.offer_el, schema_cfg) if src.offer_el is not None else []
-    desc_params = extract_desc_spec_pairs(desc_src, schema_cfg)
+    desc_body, desc_params = extract_desc_body_and_spec_pairs(desc_src, schema_cfg)
     params = merge_params(xml_params, desc_params)
 
     if not _has_param(params, "Модель"):
@@ -596,7 +587,7 @@ def build_offer(
         pictures=pictures,
         vendor=vendor,
         params=params,
-        native_desc=desc_src,
+        native_desc=(desc_body or desc_src),
     )
     return offer, available
 
