@@ -1,10 +1,10 @@
 VTT quality gate
 ========================================================================
-generated_at_almaty: 2026-03-26 23:18:18
+generated_at_almaty: 2026-04-01 08:44:49
 feed_path: docs/raw/vtt.yml
-offers: 3191
-feed_size_bytes: 3136507
-feed_sha1_12: 25049de9861c
+offers: 3115
+feed_size_bytes: 3070120
+feed_sha1_12: 0f50a868c290
 critical_count: 0
 cosmetic_count: 1
 ------------------------------------------------------------------------
