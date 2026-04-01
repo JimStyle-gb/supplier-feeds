@@ -251,6 +251,7 @@ def run_quality_gate(
     max_new_cosmetic_issues: int = 5,
     enforce: bool = True,
     freeze_current_as_baseline: bool = False,
+    **_legacy_unused: object,
 ) -> tuple[bool, str]:
     """
     ВАЖНО:
