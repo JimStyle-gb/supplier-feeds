@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 Path: scripts/suppliers/akcent/quality_gate.py
-v28:
-- переводит AkCent quality gate report на единый shared writer cs.qg_report;
-- делает docs/raw/akcent_quality_gate.txt стилистически таким же, как у AlStyle / CopyLine;
-- сохраняет backward-safe run_quality_gate(...) для current build_akcent.py.
+v29:
+- финальный unified-report fix для AkCent;
+- docs/raw/akcent_quality_gate.txt теперь пишется тем же shared writer, что у остальных;
+- backward-safe run_quality_gate(...) совместим с current build_akcent.py;
+- не меняет правила gate, меняет только интерфейс и стиль отчёта.
 
 AkCent supplier layer — quality gate первого контура.
 
