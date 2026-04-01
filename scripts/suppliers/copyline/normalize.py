@@ -2,6 +2,22 @@
 """
 Path: scripts/suppliers/copyline/normalize.py
 CopyLine normalize layer.
+
+Роль модуля:
+- только базовая supplier-нормализация;
+- нормализует title;
+- мягко определяет vendor и model;
+- готовит very-light extraction body без narrative-cleaning.
+
+Важно:
+- здесь НЕТ owner-логики по display description;
+- здесь НЕТ срезания теххвоста/"Характеристики"/"Технические характеристики";
+- здесь НЕТ supplier-side semantic merge params.
+
+Идея:
+- text-for-data и text-for-display должны быть разведены;
+- normalize.py готовит только basics + extraction-body;
+- финальный narrative должен собираться позже в desc_clean.py.
 """
 
 from __future__ import annotations
@@ -28,13 +44,6 @@ VENDOR_PRIORITY: list[str] = [
     "Toshiba",
 ]
 
-_DESC_CUT_HEADERS = (
-    "Технические характеристики",
-    "Характеристика",
-    "Основные характеристики",
-    "Характеристики",
-)
-
 _CONSUMABLE_TITLE_PREFIXES = (
     "картридж",
     "тонер-картридж",
@@ -49,6 +58,13 @@ _CONSUMABLE_TITLE_PREFIXES = (
     "термоблок",
     "термоэлемент",
 )
+
+_TITLE_COLOR_MAP = {
+    "yellow": "Желтый",
+    "magenta": "Пурпурный",
+    "black": "Чёрный",
+    "cyan": "Голубой",
+}
 
 CODE_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"\bCF\d{3,4}[A-Z]?\b", re.I),
@@ -84,15 +100,23 @@ CODE_PATTERNS: list[re.Pattern[str]] = [
 
 
 def safe_str(x: object) -> str:
+    """Безопасно привести значение к строке."""
     return str(x).strip() if x is not None else ""
 
 
+
 def _norm_spaces(s: str) -> str:
+    """Мягкая нормализация пробелов и переводов строк без narrative-cleaning."""
     s = safe_str(s)
+    if not s:
+        return ""
     s = s.replace("\xa0", " ")
-    s = re.sub(r"[ \t\r\f\v]+", " ", s)
-    s = re.sub(r"\s*\n\s*", "\n", s)
+    s = re.sub(r"\r\n?", "\n", s)
+    s = re.sub(r"[ \t\f\v]+", " ", s)
+    s = re.sub(r" *\n *", "\n", s)
+    s = re.sub(r"\n{3,}", "\n\n", s)
     return s.strip()
+
 
 
 def _normalize_code_token(s: str) -> str:
@@ -105,26 +129,21 @@ def _normalize_code_token(s: str) -> str:
     return s
 
 
+
 def _looks_numeric_sku(s: str) -> bool:
     return bool(re.fullmatch(r"\d+", safe_str(s)))
+
 
 
 def _is_allowed_numeric_code(s: str) -> bool:
     return bool(re.fullmatch(r"016\d{6}", _normalize_code_token(s)))
 
 
+
 def _looks_consumable_title(title: str) -> bool:
     t = safe_str(title).lower()
     return any(t.startswith(prefix) for prefix in _CONSUMABLE_TITLE_PREFIXES)
 
-
-
-_TITLE_COLOR_MAP = {
-    "yellow": "Желтый",
-    "magenta": "Пурпурный",
-    "black": "Чёрный",
-    "cyan": "Голубой",
-}
 
 
 def _localize_title_color_tokens(title: str) -> str:
@@ -134,10 +153,47 @@ def _localize_title_color_tokens(title: str) -> str:
     return s
 
 
+
 def normalize_title(title: str) -> str:
+    """Нормализовать title без supplier-side смысловой правки."""
     s = _localize_title_color_tokens(title)
     s = re.sub(r"\s{2,}", " ", s)
     return s[:240]
+
+
+
+def _drop_title_echo_from_desc(title: str, description: str) -> str:
+    """Убрать только очевидный дубль заголовка в первой строке extraction-body."""
+    desc = _norm_spaces(description)
+    if not desc:
+        return ""
+    lines = [ln.strip() for ln in desc.split("\n")]
+    if not lines:
+        return desc
+
+    first = safe_str(lines[0])
+    norm_title = normalize_title(title)
+    if first and norm_title and first.casefold() == norm_title.casefold():
+        lines = lines[1:]
+    return "\n".join([ln for ln in lines if safe_str(ln)]).strip()
+
+
+
+def build_extract_description(*, title: str, description_text: str) -> str:
+    """
+    Подготовить body для extraction.
+
+    Здесь НЕЛЬЗЯ:
+    - срезать теххвост;
+    - выкидывать секции "Характеристики" / "Описание";
+    - схлопывать всё в короткий narrative.
+    """
+    s = _drop_title_echo_from_desc(title, description_text)
+    s = _norm_spaces(s)
+    if not s:
+        return ""
+    return s[:6000]
+
 
 
 def _first_vendor_from_text(texts: Sequence[str]) -> str:
@@ -164,20 +220,23 @@ def _first_vendor_from_text(texts: Sequence[str]) -> str:
     return ""
 
 
+
 def detect_vendor(*, title: str = "", description: str = "", params: Sequence[Tuple[str, str]] | None = None) -> str:
+    """Мягко определить vendor по title/description/params."""
     params = params or []
     param_texts: list[str] = []
-    for k, v in params:
-        k2 = safe_str(k)
-        v2 = safe_str(v)
-        if not k2 or not v2:
+    for key, value in params:
+        key2 = safe_str(key)
+        value2 = safe_str(value)
+        if not key2 or not value2:
             continue
-        if k2.casefold() in {"производитель", "vendor", "brand", "для бренда"}:
-            direct = _first_vendor_from_text([v2])
+        if key2.casefold() in {"производитель", "vendor", "brand", "для бренда"}:
+            direct = _first_vendor_from_text([value2])
             if direct:
                 return direct
-        param_texts.append(v2)
+        param_texts.append(value2)
     return _first_vendor_from_text([title, description, *param_texts])
+
 
 
 def _search_code(text: str) -> str:
@@ -187,52 +246,52 @@ def _search_code(text: str) -> str:
     hay = re.sub(r"\b(113R|108R|106R|006R|013R|016|C13T|C12C|C33S)\s+(\d{4,8}[A-Z0-9]*)\b", r"\1\2", hay, flags=re.I)
     hay = re.sub(r"\b(CLT|MLT|KX|TK|TN|DR|T|C)\s*-\s*([A-Z0-9]{2,})\b", r"\1-\2", hay, flags=re.I)
     for rx in CODE_PATTERNS:
-        m = rx.search(hay)
-        if m:
-            return _normalize_code_token(m.group(0))
+        match = rx.search(hay)
+        if match:
+            return _normalize_code_token(match.group(0))
     return ""
 
 
+
+def _description_head_for_model(description: str) -> str:
+    """Взять только head текста для поиска модели без device-хвостов."""
+    s = _norm_spaces(description)
+    if not s:
+        return ""
+    head = re.split(
+        r"(?:используется\s+в|для\s+принтеров|совместимость\s+с\s+устройствами|применяется\s+в)",
+        s,
+        maxsplit=1,
+        flags=re.I,
+    )[0]
+    return head.strip()
+
+
+
 def detect_model(*, title: str = "", description: str = "", sku: str = "") -> str:
+    """Определить model/code по title → description head → sku."""
     model = _search_code(title)
     if model:
         return model
 
-    head = re.split(r"(?:используется\s+в|для\s+принтеров|совместимость\s+с\s+устройствами|применяется\s+в)", description, maxsplit=1, flags=re.I)[0]
-    model = _search_code(head)
+    model = _search_code(_description_head_for_model(description))
     if model:
         return model
 
-    s = _normalize_code_token(sku)
-    if not s:
+    sku_norm = _normalize_code_token(sku)
+    if not sku_norm:
         return ""
-    if _looks_numeric_sku(s) and not _is_allowed_numeric_code(s):
+    if _looks_numeric_sku(sku_norm) and not _is_allowed_numeric_code(sku_norm):
         return ""
     if _looks_consumable_title(title):
         for rx in CODE_PATTERNS:
-            if rx.fullmatch(s):
-                return s
+            if rx.fullmatch(sku_norm):
+                return sku_norm
         return ""
-    if re.fullmatch(r"[A-Z0-9._/-]{3,40}", s) and (not _looks_numeric_sku(s) or _is_allowed_numeric_code(s)):
-        return s
+    if re.fullmatch(r"[A-Z0-9._/-]{3,40}", sku_norm) and (not _looks_numeric_sku(sku_norm) or _is_allowed_numeric_code(sku_norm)):
+        return sku_norm
     return ""
 
-
-def clean_description(text: str) -> str:
-    s = _norm_spaces(text)
-    if not s:
-        return ""
-    for header in _DESC_CUT_HEADERS:
-        m = re.search(rf"(^|\n){re.escape(header)}\s*:?", s, flags=re.I)
-        if m:
-            s = s[: m.start()].strip()
-            break
-    lines = [x.strip(" -•") for x in s.split("\n") if x.strip(" -•")]
-    if not lines:
-        return ""
-    out = " ".join(lines)
-    out = re.sub(r"\s{2,}", " ", out).strip()
-    return out[:1200]
 
 
 def normalize_source_basics(
@@ -242,13 +301,22 @@ def normalize_source_basics(
     description_text: str,
     params: Sequence[Tuple[str, str]] | None = None,
 ) -> dict:
+    """
+    Вернуть базовую нормализацию для builder.
+
+    Backward-safe:
+    - сохраняем ключ `description`, но теперь это extraction-body,
+      а не narrative-cleaned display body;
+    - дополнительно явно отдаём `extract_desc`.
+    """
     norm_title = normalize_title(title)
-    clean_desc = clean_description(description_text)
-    vendor = detect_vendor(title=norm_title, description=clean_desc or description_text, params=params)
-    model = detect_model(title=norm_title, description=description_text, sku=sku)
+    extract_desc = build_extract_description(title=norm_title, description_text=description_text)
+    vendor = detect_vendor(title=norm_title, description=extract_desc or description_text, params=params)
+    model = detect_model(title=norm_title, description=extract_desc or description_text, sku=sku)
     return {
         "title": norm_title,
         "vendor": vendor,
         "model": model,
-        "description": clean_desc,
+        "extract_desc": extract_desc,
+        "description": extract_desc,
     }
