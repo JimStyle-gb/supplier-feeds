@@ -1,7 +1,7 @@
 # Итог проверки quality gate
 QUALITY_GATE: PASS
 # PASS = можно выпускать | FAIL = есть блокирующие проблемы
-enforce: false
+enforce: true
 # true = quality gate реально валит сборку
 report_file: docs/raw/alstyle_quality_gate.txt
 # Куда записан этот отчёт
