@@ -4,11 +4,13 @@ Path: scripts/suppliers/alstyle/builder.py
 
 AlStyle supplier layer — сборка raw offer.
 
-v116:
-- использует helper из desc_extract.py, который возвращает body без явного spec-хвоста;
-- params по-прежнему извлекаются как раньше по полному cleaned text;
-- это убирает tech_block_leak_in_body, не ломая уже поднятые params;
-- сохраняет selective override для Совместимость и остальную логику supplier-layer.
+v117:
+- сохраняет логику v116;
+- добавляет мягкий косметический post-clean для SHIP-кабелей,
+  чтобы убрать дубль названия в начале body и хвост "Это ...";
+- добавляет безопасный fallback-description для XG PC Game,
+  если supplier-body пустой или почти пустой;
+- не трогает params, pricing и quality gate.
 """
 
 from __future__ import annotations
@@ -87,6 +89,87 @@ _COMPAT_BRAND_HINT_RE = re.compile(
 _XEROX_HEAVY_COMPAT_RE = re.compile(
     r"(?iu)\b(?:VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser|DocuColor|Versant)\b"
 )
+
+
+_XG_PC_NAME_RE = re.compile(r"(?iu)^XG\s+PC\s+Game\b")
+_SHIP_CABLE_NAME_RE = re.compile(r"(?iu)^Кабель\s+сетевой(?:\s+самонесущий)?\s+SHIP\b")
+_SHORT_SHIP_TITLE_RE = re.compile(r"(?iu)^(Кабель\s+сетевой(?:\s+самонесущий)?\s+SHIP\s+[A-Z0-9-]+)")
+
+
+def _polish_ship_cable_desc(name: str, desc: str) -> str:
+    """
+    Косметика только для SHIP-кабелей:
+    - убираем повтор короткого названия в начале body;
+    - убираем лишний старт "Это ...";
+    - слегка нормализуем самые частые кривые формы.
+
+    ВАЖНО:
+    не трогаем content, если это не SHIP cable narrative.
+    """
+    title = norm_ws(name)
+    body = norm_ws(desc)
+    if not title or not body:
+        return body
+    if not _SHIP_CABLE_NAME_RE.match(title):
+        return body
+
+    short_title = title
+    m = _SHORT_SHIP_TITLE_RE.match(title)
+    if m:
+        short_title = norm_ws(m.group(1))
+
+    patterns = [
+        rf"(?iu)^{re.escape(title)}\s*(?:[\r\n]+|\s+)?Это\s+",
+        rf"(?iu)^{re.escape(short_title)}\s*(?:[\r\n]+|\s+)?Это\s+",
+        rf"(?iu)^{re.escape(title)}\s*(?:[\r\n]+|\s+)?",
+        rf"(?iu)^{re.escape(short_title)}\s*(?:[\r\n]+|\s+)?",
+    ]
+
+    cleaned = body
+    for pat in patterns:
+        new_val = re.sub(pat, "", cleaned, count=1).strip()
+        if new_val != cleaned:
+            cleaned = new_val
+            break
+
+    cleaned = re.sub(r"(?iu)^Это\s+", "", cleaned).strip()
+    cleaned = re.sub(r"(?iu)\bне\s+экранированный\b", "неэкранированный", cleaned)
+    cleaned = re.sub(r"(?iu)\b([24])\s*-\s*х\b", r"\1-х", cleaned)
+    cleaned = re.sub(r"(?iu)\b100\s+метровый\b", "100-метровый", cleaned)
+    cleaned = re.sub(r"(?iu)\s+\.(?=\S)", ". ", cleaned)
+    cleaned = re.sub(r"\s{2,}", " ", cleaned).strip()
+
+    if cleaned:
+        cleaned = cleaned[:1].upper() + cleaned[1:]
+
+    return cleaned or body
+
+
+def _build_xg_fallback_desc(name: str) -> str:
+    title = norm_ws(name)
+    if not title:
+        return ""
+    return (
+        f"{title} — игровой системный блок для игр, работы и повседневных задач.\n"
+        "Точная комплектация и наличие уточняются по текущей конфигурации.\n"
+        "Подробности уточняйте в WhatsApp."
+    )
+
+
+def _final_polish_native_desc(name: str, vendor: str, desc_text: str) -> str:
+    body = norm_ws(desc_text)
+    vendor2 = norm_ws(vendor)
+    title = norm_ws(name)
+
+    # XG PC Game: если supplier-body пустой или почти пустой, даём аккуратный fallback.
+    if _XG_PC_NAME_RE.match(title) and len(body) < 24:
+        return _build_xg_fallback_desc(title)
+
+    # SHIP cables: только косметическая полировка narrative.
+    if _SHIP_CABLE_NAME_RE.match(title):
+        return _polish_ship_cable_desc(title, body)
+
+    return body
 
 
 def _is_dirty_value(key: str, value: str) -> bool:
@@ -587,7 +670,7 @@ def build_offer(
         pictures=pictures,
         vendor=vendor,
         params=params,
-        native_desc=(desc_body or desc_src),
+        native_desc=_final_polish_native_desc(name, vendor, (desc_body or desc_src)),
     )
     return offer, available
 
