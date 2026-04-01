@@ -5,9 +5,10 @@ Path: scripts/suppliers/alstyle/params_xml.py
 XML params pipeline для AlStyle.
 Только cleanup родных XML <param>.
 
-v124:
+v125:
 - сохраняет текущий post-clean для Совместимость / Модель / Ёмкость;
 - добавляет страховку для мусорных вариантов ключа Мощность (Bt/Bт/Вt);
+- жёстко режет служебные marketplace-ключи, чтобы они не ехали в raw/final;
 - не меняет core и не меняет общую selective-clean логику.
 """
 
@@ -60,6 +61,10 @@ _DANGLING_BRAND_TAIL_RE = re.compile(
     r"(?iu)(?:\s*/\s*|\s+)(Canon|Xerox|HP|Epson|Brother|Kyocera|Ricoh|Pantum|Lexmark)\s*$"
 )
 _DANGLING_CONNECTOR_RE = re.compile(r"(?iu)(?:\s*/\s*|\s*,\s*|-+\s*)$")
+
+_MARKETPLACE_KEY_RE = re.compile(
+    r"(?iu)(?:^\(?\s*маркетплейсы\s*\)?|\bмаркетплейсы\b|\bсклад\s+отгрузки\b|\bожидаемая\s+дата\s+прихода\b|\bожидаемое\s+количество\s+прихода\b)"
+)
 
 
 def key_quality_ok(k: str, *, require_letter: bool, max_len: int, max_words: int) -> bool:
@@ -315,6 +320,10 @@ def collect_xml_params(offer_el: ET.Element, schema: dict[str, Any]) -> list[tup
         if kcf in aliases:
             k = aliases[kcf]
             kcf = k.casefold()
+
+        # Служебные marketplace-поля не должны уезжать ни в raw, ни в final.
+        if _MARKETPLACE_KEY_RE.search(k):
+            continue
 
         if not key_quality_ok(k, require_letter=require_letter, max_len=max_len, max_words=max_words):
             continue
