@@ -5,10 +5,16 @@ CopyLine page-params layer.
 
 Задача:
 - быть главным extractor-модулем для page/body parsing;
+- принимать раздельные сырьевые каналы (table params / desc pairs / text-body);
 - нормализовать page params из HTML-таблиц/описания;
 - поднять supplier-specific поля до raw;
 - не тянуть device-list в Коды расходников;
 - корректно поднимать single-tail и multi-tail вида Canon 725 / Canon 712/713/725.
+
+Важно:
+- модуль backward-safe: умеет работать и со старым page_params, и с новыми
+  raw_desc_pairs/raw_table_params;
+- семантическое слияние каналов выполняется здесь, а не в source.py.
 """
 
 from __future__ import annotations
@@ -666,21 +672,66 @@ def _extract_cable_params_from_text(title: str, description: str) -> list[Tuple[
     return out
 
 
+def _normalize_param_block(block: Sequence[Tuple[str, str]] | None) -> list[Tuple[str, str]]:
+    out: list[Tuple[str, str]] = []
+    for key, value in block or []:
+        k = safe_str(key)
+        v = safe_str(value)
+        if not k or not v:
+            continue
+        out.append((k, v))
+    return out
+
+
+def _merge_raw_param_channels(
+    *,
+    page_params: Sequence[Tuple[str, str]] | None = None,
+    raw_desc_pairs: Sequence[Tuple[str, str]] | None = None,
+    raw_table_params: Sequence[Tuple[str, str]] | None = None,
+) -> list[Tuple[str, str]]:
+    """Собрать сырьевые param-каналы в одном месте без потери backward-safe совместимости.
+
+    Приоритет каналов задаётся порядком:
+    1) raw_table_params — более структурный источник;
+    2) raw_desc_pairs — пары, поднятые из body;
+    3) page_params — legacy-канал, если builder/source ещё не разведены полностью.
+    """
+    merged: list[Tuple[str, str]] = []
+    merged.extend(_normalize_param_block(raw_table_params))
+    merged.extend(_normalize_param_block(raw_desc_pairs))
+    merged.extend(_normalize_param_block(page_params))
+    return merged
+
+
 def extract_page_params(
     *,
     title: str,
-    description: str,
+    description: str = "",
+    extract_desc: str | None = None,
     page_params: Sequence[Tuple[str, str]] | None = None,
+    raw_desc_pairs: Sequence[Tuple[str, str]] | None = None,
+    raw_table_params: Sequence[Tuple[str, str]] | None = None,
 ) -> List[Tuple[str, str]]:
-    """Нормализовать page params и поднять supplier-полезные значения."""
-    page_params = page_params or []
+    """Нормализовать page params и поднять supplier-полезные значения.
+
+    Поддерживает два режима: 
+    - legacy: title + description + page_params;
+    - новый: title + extract_desc + raw_desc_pairs + raw_table_params.
+    """
+    text_body = safe_str(extract_desc) or safe_str(description)
+    merged_page_params = _merge_raw_param_channels(
+        page_params=page_params,
+        raw_desc_pairs=raw_desc_pairs,
+        raw_table_params=raw_table_params,
+    )
+
     out: list[Tuple[str, str]] = []
 
     kind = _title_kind(title)
     if kind:
         out.append(("Тип", kind))
 
-    for key, value in page_params:
+    for key, value in merged_page_params:
         k = safe_str(key).casefold()
         v = safe_str(value)
         if not k or not v:
@@ -695,17 +746,17 @@ def extract_page_params(
         out.append((norm_key, v))
 
     if kind == "Кабель сетевой":
-        out.extend(_extract_cable_params_from_text(title, description))
+        out.extend(_extract_cable_params_from_text(title, text_body))
 
-    compat = _extract_compat_from_desc(description)
+    compat = _extract_compat_from_desc(text_body)
     if not compat and kind == "Чернила":
-        compat = _extract_ink_title_compat(title) or _extract_riso_title_compat(title) or _extract_epson_desc_compat(title, description)
+        compat = _extract_ink_title_compat(title) or _extract_riso_title_compat(title) or _extract_epson_desc_compat(title, text_body)
     if not compat:
-        compat = _extract_panasonic_integral_compat(description)
+        compat = _extract_panasonic_integral_compat(text_body)
     if compat:
         out.append(("Совместимость", compat))
 
-    codes = _extract_codes(title, description)
+    codes = _extract_codes(title, text_body)
     if codes:
         out.append(("Коды расходников", codes))
 
@@ -720,6 +771,13 @@ def extract_page_params(
     return _dedupe_params(out)
 
 
+# Public aliases for fill-missing layer / future cleanup
+trim_compat_tail = _trim_compat_tail
+extract_compat_from_text = _extract_compat_from_desc
+extract_codes_from_text = _extract_codes
+norm_spaces = _norm_spaces
+
+
 __all__ = [
     "CODE_RX",
     "COMPAT_PATTERNS",
@@ -731,8 +789,14 @@ __all__ = [
     "CABLE_MATERIAL_RX",
     "CABLE_SPOOL_RX",
     "safe_str",
+    "norm_spaces",
+    "trim_compat_tail",
+    "extract_compat_from_text",
+    "extract_codes_from_text",
+    # backward-safe private exports until desc_extract is narrowed
     "_norm_spaces",
     "_trim_compat_tail",
     "_extract_compat_from_desc",
     "_extract_codes",
+    "extract_page_params",
 ]
