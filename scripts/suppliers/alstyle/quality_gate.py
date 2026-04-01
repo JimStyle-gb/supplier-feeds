@@ -12,6 +12,7 @@ AlStyle quality gate:
 - freeze_current_as_baseline сохраняет текущее состояние
   как справочный baseline, но не выключает будущий контроль;
 - ship_title_prefix полностью убран как лишнее и неуниверсальное правило.
+- дополнительно ловит marketplace-leaks в params и в финальном description.
 """
 
 from __future__ import annotations
@@ -36,6 +37,13 @@ _XEROX_FAMILY_RE = re.compile(
     r"(?iu)\b(?:VersaLink|AltaLink|Versant|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser)\b"
 )
 _WS_RE = re.compile(r"\s+")
+
+_MARKETPLACE_PARAM_KEY_RE = re.compile(
+    r"(?iu)(?:^\(?\s*маркетплейсы\s*\)?|\bмаркетплейсы\b|\bсклад\s+отгрузки\b|\bожидаемая\s+дата\s+прихода\b|\bожидаемое\s+количество\s+прихода\b)"
+)
+_MARKETPLACE_DESC_RE = re.compile(
+    r"(?iu)(?:\(маркетплейсы\)|\bмаркетплейсы\b|\bсклад\s+отгрузки\b|\bожидаемая\s+дата\s+прихода\b|\bожидаемое\s+количество\s+прихода\b)"
+)
 
 
 @dataclass(frozen=True)
@@ -117,6 +125,8 @@ def _detect_issues(feed_path: str) -> list[QualityIssue]:
                     )
                 )
 
+        marketplace_keys = [key for key in params if _MARKETPLACE_PARAM_KEY_RE.search(key)]
+
         for key in params:
             if _BAD_POWER_KEY_RE.match(key):
                 issues.append(
@@ -128,6 +138,28 @@ def _detect_issues(feed_path: str) -> list[QualityIssue]:
                         details=key,
                     )
                 )
+
+        if marketplace_keys:
+            issues.append(
+                QualityIssue(
+                    severity="cosmetic",
+                    rule="marketplace_param_leak",
+                    oid=oid,
+                    name=name,
+                    details=", ".join(sorted(marketplace_keys)[:6]),
+                )
+            )
+
+        if _MARKETPLACE_DESC_RE.search(_norm_ws(desc_html)):
+            issues.append(
+                QualityIssue(
+                    severity="cosmetic",
+                    rule="marketplace_text_in_description",
+                    oid=oid,
+                    name=name,
+                    details=_norm_ws(desc_html)[:200],
+                )
+            )
 
         if "oaicite" in desc_html or "contentReference" in desc_html:
             issues.append(
