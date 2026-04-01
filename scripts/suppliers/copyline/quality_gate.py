@@ -3,6 +3,10 @@
 Path: scripts/suppliers/copyline/quality_gate.py
 
 Final quality gate for CopyLine freeze-finalize stage.
+v25:
+- исправляет вызов общего cs.qg_report.write_quality_gate_report под новый интерфейс;
+- убирает legacy-аргументы baseline_path/accepted_cosmetic, из-за которых падал build_copyline.py.
+
 Проверяет raw-feed и ловит уже финальные остаточные классы:
 - неполный mixed-brand / multi-code tail;
 - код есть в title, но не поднялся в params;
@@ -332,9 +336,10 @@ def run_quality_gate(*, feed_path: str, policy_path: str, baseline_path: str | N
     if report_path:
         write_quality_gate_report(
             report_path,
+            supplier="copyline",
             passed=effective_ok,
             enforce=enforce,
-            baseline_path=baseline_path or "",
+            baseline_file=baseline_path or "",
             freeze_current_as_baseline=False,
             critical=critical,
             cosmetic=cosmetic,
@@ -342,7 +347,6 @@ def run_quality_gate(*, feed_path: str, policy_path: str, baseline_path: str | N
             new_cosmetic=new_cosmetic_issues,
             max_cosmetic_offers=max_cosmetic_offers,
             max_cosmetic_issues=max_cosmetic_issues,
-            accepted_cosmetic=None,
         )
 
     return {
