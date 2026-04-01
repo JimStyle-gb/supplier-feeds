@@ -7,7 +7,8 @@ CopyLine description-extract layer.
 - only-fill-missing слой поверх params_page extractor;
 - поднимать missing params из body-description;
 - не держать второй дублирующий regex/extractor-комбайн;
-- не тянуть device-list в Коды расходников.
+- не тянуть device-list в Коды расходников;
+- использовать публичные helper-ы params_page, а не private-внутренности.
 """
 
 from __future__ import annotations
@@ -21,11 +22,11 @@ from suppliers.copyline.params_page import (
     CABLE_MATERIAL_RX,
     CABLE_SPOOL_RX,
     CABLE_TYPE_RX,
-    _extract_codes,
-    _extract_compat_from_desc,
-    _norm_spaces,
-    _trim_compat_tail,
+    extract_codes_from_text,
+    extract_compat_from_text,
+    norm_spaces,
     safe_str,
+    trim_compat_tail,
 )
 
 TECH_PAIR_HEADERS = {
@@ -93,7 +94,7 @@ def _extract_inline_pair(line: str, *, is_cable: bool) -> tuple[str, str] | None
             continue
         left, right = line.split(sep, 1)
         key = TECH_PAIR_HEADERS.get(safe_str(left).casefold(), "")
-        value = _norm_spaces(right)
+        value = norm_spaces(right)
         if not key or not value or len(value) > 240:
             continue
         if key in CABLE_KEYS and not is_cable:
@@ -105,7 +106,7 @@ def _extract_inline_pair(line: str, *, is_cable: bool) -> tuple[str, str] | None
 def _extract_cable_params_from_text(text: str, *, is_cable: bool) -> list[Tuple[str, str]]:
     if not is_cable:
         return []
-    text = _norm_spaces(text)
+    text = norm_spaces(text)
     out: list[Tuple[str, str]] = []
 
     m = CABLE_TYPE_RX.search(text)
@@ -145,7 +146,7 @@ def _extract_line_pairs(description: str, *, title: str) -> list[Tuple[str, str]
 
     for i in range(len(lines) - 1):
         k = lines[i].casefold()
-        v = _norm_spaces(lines[i + 1])
+        v = norm_spaces(lines[i + 1])
         norm_key = TECH_PAIR_HEADERS.get(k, "")
         if not norm_key:
             continue
@@ -160,7 +161,7 @@ def _extract_line_pairs(description: str, *, title: str) -> list[Tuple[str, str]
 
 
 def _extract_color_from_text(title: str, description: str) -> str:
-    text = _norm_spaces(f"{safe_str(title)} {safe_str(description)}")
+    text = norm_spaces(f"{safe_str(title)} {safe_str(description)}")
     if not text:
         return ""
     for rx, value in _COLOR_PATTERNS:
@@ -170,7 +171,7 @@ def _extract_color_from_text(title: str, description: str) -> str:
 
 
 def extract_desc_params(*, title: str, description: str, existing_params: Sequence[Tuple[str, str]] | None = None) -> List[Tuple[str, str]]:
-    """Поднять missing params из body-description."""
+    """Поднять только missing params из body-description."""
     existing_params = existing_params or []
     existing_keys = {safe_str(k).casefold() for k, _ in existing_params if safe_str(k)}
     out: list[Tuple[str, str]] = []
@@ -184,15 +185,19 @@ def extract_desc_params(*, title: str, description: str, existing_params: Sequen
     if color and "цвет" not in existing_keys:
         out.append(("Цвет", color))
 
-    compat = _extract_compat_from_desc(description)
+    compat = extract_compat_from_text(description)
     if not compat and re.search(r"(?:Panasonic|INTEGRAL)", title + " " + description, re.I):
-        m = re.search(r"(?:для|used in|совместим(?:ость)? с)\s+((?:Panasonic|INTEGRAL)[^.;\n]{3,180})", _norm_spaces(description), re.I)
+        m = re.search(
+            r"(?:для|used in|совместим(?:ость)? с)\s+((?:Panasonic|INTEGRAL)[^.;\n]{3,180})",
+            norm_spaces(description),
+            re.I,
+        )
         if m:
-            compat = _trim_compat_tail(m.group(1))
+            compat = trim_compat_tail(m.group(1))
     if compat and "совместимость" not in existing_keys:
         out.append(("Совместимость", compat))
 
-    codes = _extract_codes(title, description)
+    codes = extract_codes_from_text(title, description)
     if codes and "коды расходников" not in existing_keys:
         out.append(("Коды расходников", codes))
 
