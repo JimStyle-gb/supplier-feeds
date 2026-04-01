@@ -4,11 +4,8 @@ Path: scripts/suppliers/alstyle/builder.py
 
 AlStyle supplier layer — сборка raw offer.
 
-v115:
-- после desc->params extraction мягко обрезает протёкший техблок из final body,
-- не трогая уже поднятые params;
-- оставляет rollback-safe desc_clean.py без агрессивной ломки narrative;
-- сохраняет selective override для Совместимость;
+v114:
+- усиливает selective override для Совместимость;
 - для heavy_xerox_compat сжимает слишком длинные Xerox compatibility chains
   на стороне supplier-layer, чтобы raw не тащил перегруженные series-хвосты в core;
 - грязная XML/merged Совместимость с протёкшими label-блоками
@@ -99,67 +96,6 @@ _COMPAT_BRAND_HINT_RE = re.compile(
 _XEROX_HEAVY_COMPAT_RE = re.compile(
     r"(?iu)\b(?:VersaLink|AltaLink|WorkCentre(?:\s+Pro)?|CopyCentre|ColorQube|Phaser|DocuColor|Versant)\b"
 )
-
-
-_BODY_TECH_HEADER_RE = re.compile(
-    r"(?iu)(?:^|\n)(Характеристики|Основные\s+характеристики|Технические\s+характеристики)\s*$"
-)
-_BODY_INLINE_TECH_RE = re.compile(
-    r"(?iu)(?:^|\n)(Характеристики|Основные\s+характеристики|Технические\s+характеристики)\s*(?:\n|:)"
-)
-_BODY_TAIL_LABEL_RE = re.compile(
-    r"(?iu)^(?:"
-    r"Модель|Совместимость|Совместимые\s+модели|Применение|"
-    r"Количество\s+в\s+упаковке|Колличество\s+в\s+упаковке|"
-    r"Ресурс|Цвет|Технология(?:\s+печати)?|"
-    r"Емкость|Ёмкость|Степлирование|Дополнительные\s+опции|"
-    r"Производитель|Тип|Вес|Гарантия|Объём|Объем"
-    r")\s*:?",
-)
-
-def _trim_leaked_tech_block_from_body(desc_text: str, params: list[tuple[str, str]]) -> str:
-    """
-    После того как desc->params уже отработал, мягко режем хвост
-    вида "Характеристики ...", чтобы он не дублировался в final body.
-
-    ВАЖНО:
-    - params уже подняты выше, поэтому здесь чистим только narrative;
-    - не трогаем body, если не видно явного техблока.
-    """
-    body = norm_ws(desc_text)
-    if not body:
-        return ""
-
-    # Совсем короткий хвост "Характеристики…" в конце тоже убираем.
-    body = re.sub(r"(?iu)(?:\s|^)(Характеристики|Основные\s+характеристики|Технические\s+характеристики)(?:\.\.\.|…)\s*$", "", body).strip()
-
-    m = _BODY_TECH_HEADER_RE.search(body) or _BODY_INLINE_TECH_RE.search(body)
-    if not m:
-        return body
-
-    head = body[:m.start()].strip()
-    tail = body[m.start():].strip()
-    if not head:
-        return body
-
-    # Считаем только реальные label-like строки после заголовка.
-    tail_probe = tail.replace("\r", "\n")
-    tail_probe = re.sub(r"(?iu)(Совместимость|Применение|Количество\s+в\s+упаковке|Колличество\s+в\s+упаковке|Ресурс|Цвет|Технология(?:\s+печати)?|Емкость|Ёмкость|Степлирование|Дополнительные\s+опции|Модель)\s*:", r"\n\1:", tail_probe)
-    lines = [norm_ws(x) for x in tail_probe.split("\n") if norm_ws(x)]
-
-    label_hits = 0
-    param_keys = {norm_ws(k).casefold() for k, v in (params or []) if norm_ws(k) and norm_ws(v)}
-    for ln in lines[:12]:
-        if _BODY_TAIL_LABEL_RE.match(ln):
-            key = norm_ws(ln.split(":", 1)[0]).casefold()
-            if (not param_keys) or (key in param_keys):
-                label_hits += 1
-
-    # Режем только если это действительно техблок, а не случайное слово.
-    if label_hits >= 2:
-        return head
-
-    return body
 
 
 def _is_dirty_value(key: str, value: str) -> bool:
@@ -634,10 +570,6 @@ def build_offer(
     xml_params = collect_xml_params(src.offer_el, schema_cfg) if src.offer_el is not None else []
     desc_params = extract_desc_spec_pairs(desc_src, schema_cfg)
     params = merge_params(xml_params, desc_params)
-
-    # После extraction уже можно мягко срезать техблок из body,
-    # не рискуя потерять поднятые параметры.
-    desc_src = _trim_leaked_tech_block_from_body(desc_src, params)
 
     if not _has_param(params, "Модель"):
         inferred_model = _infer_model_from_name(name)
