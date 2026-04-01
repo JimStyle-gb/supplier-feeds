@@ -4,13 +4,13 @@ Path: scripts/suppliers/alstyle/builder.py
 
 AlStyle supplier layer — сборка raw offer.
 
-v117:
-- сохраняет логику v116;
-- добавляет мягкий косметический post-clean для SHIP-кабелей,
-  чтобы убрать дубль названия в начале body и хвост "Это ...";
-- добавляет безопасный fallback-description для XG PC Game,
-  если supplier-body пустой или почти пустой;
-- не трогает params, pricing и quality gate.
+v118:
+- сохраняет логику v117;
+- расширяет косметический post-clean для ветки
+  "Кабель сетевой самонесущий SHIP ...", если body стартует
+  с укороченного названия и хвоста "Это ...";
+- добавляет rollback-safe варианты префиксов для SHIP,
+  чтобы убрать остаточный хвост без риска для других карточек.
 """
 
 from __future__ import annotations
@@ -118,18 +118,43 @@ def _polish_ship_cable_desc(name: str, desc: str) -> str:
     if m:
         short_title = norm_ws(m.group(1))
 
-    patterns = [
-        rf"(?iu)^{re.escape(title)}\s*(?:[\r\n]+|\s+)?Это\s+",
-        rf"(?iu)^{re.escape(short_title)}\s*(?:[\r\n]+|\s+)?Это\s+",
-        rf"(?iu)^{re.escape(title)}\s*(?:[\r\n]+|\s+)?",
-        rf"(?iu)^{re.escape(short_title)}\s*(?:[\r\n]+|\s+)?",
-    ]
+    prefix_variants = [title, short_title]
+
+    # Для кейсов типа:
+    #   title = "Кабель сетевой самонесущий SHIP D226-P ..."
+    #   body  = "Кабель сетевой SHIP D226-P Это ..."
+    # или наоборот — держим несколько безопасных префиксов.
+    if "самонесущий" in short_title.casefold():
+        prefix_variants.append(re.sub(r"(?iu)\s+самонесущий\b", "", short_title).strip())
+    else:
+        prefix_variants.append(short_title.replace("Кабель сетевой SHIP", "Кабель сетевой самонесущий SHIP"))
+
+    uniq_prefixes: list[str] = []
+    seen_prefixes: set[str] = set()
+    for p in prefix_variants:
+        p2 = norm_ws(p)
+        if not p2:
+            continue
+        key = p2.casefold()
+        if key in seen_prefixes:
+            continue
+        seen_prefixes.add(key)
+        uniq_prefixes.append(p2)
 
     cleaned = body
-    for pat in patterns:
-        new_val = re.sub(pat, "", cleaned, count=1).strip()
-        if new_val != cleaned:
-            cleaned = new_val
+    for prefix in uniq_prefixes:
+        patterns = [
+            rf"(?iu)^{re.escape(prefix)}\s*(?:[-–—,:.]\s*)?(?:[\r\n]+|\s+)?Это\s+",
+            rf"(?iu)^{re.escape(prefix)}\s*(?:[-–—,:.]\s*)?(?:[\r\n]+|\s+)?",
+        ]
+        changed = False
+        for pat in patterns:
+            new_val = re.sub(pat, "", cleaned, count=1).strip()
+            if new_val != cleaned:
+                cleaned = new_val
+                changed = True
+                break
+        if changed:
             break
 
     cleaned = re.sub(r"(?iu)^Это\s+", "", cleaned).strip()
