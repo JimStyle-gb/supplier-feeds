@@ -40,6 +40,8 @@ _RULE_COMMENTS_RU: dict[str, str] = {
     "multi_code_parsing_incomplete": "Не все ожидаемые коды корректно разобрались",
     "compat_normalization_broken": "Совместимость нормализована с ошибкой",
     "unexpected_cable_param_on_non_cable": "Кабельный параметр попал в некабельный товар",
+    "marketplace_param_leak": "В параметры просочились служебные поля маркетплейса",
+    "marketplace_text_in_description": "В описание просочился служебный текст маркетплейса",
 }
 
 
