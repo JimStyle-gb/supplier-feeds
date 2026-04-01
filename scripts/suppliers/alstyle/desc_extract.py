@@ -4,17 +4,15 @@ Path: scripts/suppliers/alstyle/desc_extract.py
 
 AlStyle description -> params extraction.
 
-v125:
+v126:
 - сохраняет прошлые фиксы по Цвет / Технология / Совместимость / Ресурс;
 - режет грязные compatibility-candidates, если в value протекли label-блоки
   типа "Характеристики / Модель / Ресурс / Цвет / Технология";
 - больше не выбирает самую длинную Совместимость как "лучшую":
   для compatibility теперь предпочитается более короткая и чистая версия;
-- сохраняет поддержку валидных кодовых моделей:
-  604K85850
-  022N02905
-  607K15371 / 607K15370 / 624S00165
-  и коротких mixed-case model phrases вроде "Crystal Desk GT40".
+- сохраняет поддержку валидных кодовых моделей;
+- добавляет safe helper, который возвращает body без явного spec-блока,
+  не ломая уже рабочее извлечение params.
 """
 
 from __future__ import annotations
@@ -813,21 +811,78 @@ def validate_desc_pair(key: str, val: str, schema: dict[str, Any]) -> tuple[str,
     return (key, val2)
 
 
-def extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
-    text = clean_desc_text_for_extraction(desc_src)
-    if not text.strip():
-        return []
+
+def _normalize_body_lines(text: str) -> str:
+    lines = [norm_ws(x) for x in str(text or "").replace("\r", "\n").split("\n")]
+    out = [x for x in lines if x]
+    return "\n".join(out).strip()
+
+
+def _split_explicit_spec_block(desc_src: str) -> tuple[str, bool]:
+    """
+    Возвращает narrative-body без явного блока "Характеристики ...",
+    если такой блок реально найден в уже очищенном supplier-body.
+
+    ВАЖНО:
+    - режем только явный spec-header на отдельной строке;
+    - extraction params ниже всё равно идёт по полному cleaned text,
+      поэтому параметры не теряются.
+    """
+    src = str(desc_src or "").replace("\r", "\n")
+    if not src.strip():
+        return "", False
+
+    m = _DESC_SPEC_START_RE.search(src)
+    if not m:
+        return _normalize_body_lines(src), False
+
+    head = src[:m.start()].strip()
+    tail = src[m.end():]
+
+    stop = _DESC_SPEC_STOP_RE.search(tail)
+    if stop:
+        block = tail[:stop.start()].strip()
+        after = tail[stop.end():].strip()
+        # Если после spec-блока есть отдельный narrative-хвост — сохраняем его.
+        body = "\n".join(x for x in [head, after] if x).strip()
+    else:
+        block = tail.strip()
+        body = head
+
+    # Если spec-блок пустой или head слишком короткий — ничего не режем.
+    if not block or len(norm_ws(body)) < 20:
+        return _normalize_body_lines(src), False
+
+    return _normalize_body_lines(body), True
+
+
+def extract_desc_body_and_spec_pairs(desc_src: str, schema: dict[str, Any]) -> tuple[str, list[tuple[str, str]]]:
+    """
+    Возвращает:
+    - cleaned body без явного spec-хвоста (если он был),
+    - extracted params как и раньше.
+
+    Это безопаснее, чем ломать desc_clean.py или builder.py:
+    params извлекаются по полному cleaned text, а narrative режется отдельно.
+    """
+    cleaned_for_extract = clean_desc_text_for_extraction(desc_src)
+    if not cleaned_for_extract.strip():
+        return "", []
+
+    body_text, _trimmed = _split_explicit_spec_block(desc_src)
+    if not body_text:
+        body_text = _normalize_body_lines(desc_src)
 
     candidates: list[tuple[str, str]] = []
-    candidates.extend(extract_resource_pairs(text))
+    candidates.extend(extract_resource_pairs(cleaned_for_extract))
 
-    strict = extract_strict_kv_block(text)
+    strict = extract_strict_kv_block(cleaned_for_extract)
     if strict:
         candidates.extend(strict)
 
-    candidates.extend(extract_short_inline_pairs(text))
-    candidates.extend(extract_sentence_compat_pairs(text))
-    candidates.extend(extract_sentence_capacity_pairs(text))
+    candidates.extend(extract_short_inline_pairs(cleaned_for_extract))
+    candidates.extend(extract_sentence_compat_pairs(cleaned_for_extract))
+    candidates.extend(extract_sentence_capacity_pairs(cleaned_for_extract))
 
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
@@ -863,4 +918,9 @@ def extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tuple
         out = [x for x in out if x[0] != "Ресурс"]
         out.append(best_resource)
 
-    return out
+    return body_text, out
+
+def extract_desc_spec_pairs(desc_src: str, schema: dict[str, Any]) -> list[tuple[str, str]]:
+    # Backward-compatible wrapper для старого builder.py.
+    _body, pairs = extract_desc_body_and_spec_pairs(desc_src, schema)
+    return pairs
