@@ -1,13 +1,41 @@
+# Итог проверки quality gate
 QUALITY_GATE: PASS
+# PASS = можно выпускать | FAIL = есть блокирующие проблемы
+enforce: false
+# true = quality gate реально валит сборку
+report_file: docs/raw/akcent_quality_gate.txt
+# Куда записан этот отчёт
 baseline_file: scripts/suppliers/akcent/config/quality_baseline.yml
+# Базовый файл для сравнения известных cosmetic-проблем
 freeze_current_as_baseline: no
+# yes = текущие cosmetic-хвосты сохранены как baseline-снимок
 critical_count: 0
+# Сколько найдено критичных проблем
 cosmetic_total_count: 0
+# Общее число некритичных проблем
 cosmetic_offer_count: 0
+# В скольких товарах есть cosmetic-проблемы
 known_cosmetic_count: 0
+# Сколько cosmetic-проблем уже известны по baseline
 known_cosmetic_offer_count: 0
+# В скольких товарах есть уже известные cosmetic-проблемы
 new_cosmetic_count: 0
+# Сколько найдено новых cosmetic-проблем
 new_cosmetic_offer_count: 0
+# В скольких товарах появились новые cosmetic-проблемы
 max_cosmetic_offers: 5
+# Допустимый максимум товаров с cosmetic-проблемами
 max_cosmetic_issues: 5
+# Допустимый максимум cosmetic-проблем всего
 
+CRITICAL:
+# Ошибок в этой секции нет
+
+COSMETIC TOTAL:
+# Ошибок в этой секции нет
+
+NEW COSMETIC VS BASELINE:
+# Ошибок в этой секции нет
+
+KNOWN COSMETIC FROM BASELINE:
+# Ошибок в этой секции нет
