@@ -9,6 +9,11 @@ AlStyle quality gate:
   какие cosmetic уже известны, а какие новые;
 - сборка проходит, пока ОБЩЕЕ количество cosmetic
   не превышает порог.
+
+v4:
+- возвращена backward-safe совместимость с build_alstyle.py:
+  run_quality_gate(...) снова принимает enforce=...
+- сохранены новые проверки marketplace leak и tech-block leak.
 """
 
 from __future__ import annotations
@@ -110,10 +115,11 @@ def _detect_issues(feed_path: str) -> list[QualityIssue]:
         if "oaicite" in desc_html or "contentReference" in desc_html:
             issues.append(QualityIssue("critical", "desc_oaicite_leak", oid, name, "oaicite/contentReference"))
 
-        if _MARKETPLACE_RE.search(unescape(desc_html)):
+        desc_text = unescape(desc_html)
+        if _MARKETPLACE_RE.search(desc_text):
             issues.append(QualityIssue("critical", "marketplace_text_in_description", oid, name, "marketplace text in final description"))
 
-        if _TECH_BODY_LEAK_RE.search(unescape(desc_html)):
+        if _TECH_BODY_LEAK_RE.search(desc_text):
             issues.append(QualityIssue("cosmetic", "tech_block_leak_in_body", oid, name, "В обычный body протёк блок 'Характеристики'"))
 
     deduped: dict[tuple[str, str, str], QualityIssue] = {}
@@ -144,14 +150,23 @@ def _make_baseline_payload(cosmetic: list[QualityIssue]) -> dict:
 
 
 def run_quality_gate(
-    feed_path: str,
     *,
+    feed_path: str,
     baseline_path: str,
     report_path: str,
     max_new_cosmetic_offers: int = 5,
     max_new_cosmetic_issues: int = 5,
+    enforce: bool = True,
     freeze_current_as_baseline: bool = False,
 ) -> tuple[bool, str]:
+    """
+    ВАЖНО:
+    Для совместимости с build_alstyle.py сохраняем старые имена аргументов:
+      max_new_cosmetic_offers / max_new_cosmetic_issues / enforce
+
+    Здесь они трактуются как:
+      общий лимит cosmetic-товаров / общий лимит cosmetic-срабатываний.
+    """
     issues = _detect_issues(feed_path)
 
     critical = [x for x in issues if x.severity == "critical"]
@@ -182,11 +197,13 @@ def run_quality_gate(
         and cosmetic_offer_count <= int(max_new_cosmetic_offers)
     )
 
+    effective_passed = passed or (not enforce)
+
     write_quality_gate_report(
         report_path,
         supplier="alstyle",
-        passed=passed,
-        enforce=True,
+        passed=effective_passed,
+        enforce=bool(enforce),
         baseline_file=baseline_path,
         freeze_current_as_baseline=freeze_current_as_baseline,
         critical=critical,
@@ -197,4 +214,11 @@ def run_quality_gate(
         max_cosmetic_issues=int(max_new_cosmetic_issues),
     )
 
-    return passed, report_path
+    summary = (
+        f"[quality_gate] {'PASS' if effective_passed else 'FAIL'} | "
+        f"critical={len(critical)} | "
+        f"cosmetic_total={len(cosmetic)} | "
+        f"cosmetic_offers={cosmetic_offer_count} | "
+        f"report={report_path}"
+    )
+    return effective_passed, summary
