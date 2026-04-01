@@ -1,268 +1,227 @@
 # -*- coding: utf-8 -*-
 """
-Path: scripts/suppliers/copyline/builder.py
-CopyLine builder layer.
+Path: scripts/build_copyline.py
+CopyLine adapter under CS-template.
 
 Что делает:
-- собирает raw OfferOut из уже распарсенного page-payload;
-- объединяет page params и desc params;
-- делает только supplier-side cleanup/reconcile;
-- не считает shared pricing внутри supplier-layer.
+- читает supplier config;
+- загружает индекс товаров;
+- фильтрует ассортимент;
+- собирает raw offers из page-payload;
+- пишет raw/final feed;
+- запускает supplier-side quality gate.
 
 Важно:
-- по правилу проекта для CopyLine available всегда должно быть true;
-- это supplier-specific правило, поэтому оно живёт здесь, а не в shared core.
+- build_copyline.py больше не живёт по старой схеме 1/10/20;
+- next_run считается через общий cs.meta.next_run_at_hour();
+- orchestrator остаётся тонким и шаблонным относительно других поставщиков.
 """
 
 from __future__ import annotations
 
-import re
-from typing import Sequence, Tuple
+import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Any, List
 
-from cs.core import OfferOut
-from suppliers.copyline.compat import reconcile_copyline_params
-from suppliers.copyline.desc_clean import clean_description
-from suppliers.copyline.desc_extract import extract_desc_params
-from suppliers.copyline.normalize import normalize_source_basics
-from suppliers.copyline.params_page import extract_page_params
-from suppliers.copyline.pictures import full_only_if_present, prefer_full_product_pictures
+import yaml
 
-
-BRAND_HINTS: tuple[tuple[str, str], ...] = (
-    (r"\bKonica[- ]?Minolta\b", "Konica-Minolta"),
-    (r"\bToshiba\b", "Toshiba"),
-    (r"\bRicoh\b", "Ricoh"),
-    (r"\bRICOH\b", "Ricoh"),
-    (r"\bPanasonic\b", "Panasonic"),
-    (r"\bКАТЮША\b", "КАТЮША"),
-    (r"\bKATYUSHA\b", "КАТЮША"),
-    (r"\bXerox\b", "Xerox"),
-    (r"\bCanon\b", "Canon"),
-    (r"\bSamsung\b", "Samsung"),
-    (r"\bKyocera\b", "Kyocera"),
-    (r"\bBrother\b", "Brother"),
-    (r"\bEpson\b", "Epson"),
-    (r"\bLexmark\b", "Lexmark"),
-    (r"\bRISO\b", "RISO"),
-    (r"\bHP\b", "HP"),
-)
-
-CODE_SCORE_PATTERNS: tuple[tuple[re.Pattern[str], int], ...] = (
-    (re.compile(r"^(?:CF|CE|CB|CC|Q|W)\d", re.I), 100),
-    (re.compile(r"^(?:106R|006R|108R|113R|013R)\d", re.I), 100),
-    (re.compile(r"^016\d{6}$", re.I), 95),
-    (re.compile(r"^(?:MLT-|CLT-|TK-|KX-FA|KX-FAT|C-?EXV|DR-|TN-|C13T|C12C|C33S|T-)", re.I), 95),
-    (re.compile(r"^ML-D\d", re.I), 90),
-    (re.compile(r"^ML-\d{4,5}[A-Z]\d?$", re.I), 85),
-)
+from cs.core import get_public_vendor, write_cs_feed, write_cs_feed_raw
+from cs.meta import next_run_at_hour, now_almaty
+from suppliers.copyline.builder import build_offer_from_page
+from suppliers.copyline.filtering import filter_product_index, load_filter_config
+from suppliers.copyline.quality_gate import run_quality_gate
+from suppliers.copyline.source import fetch_product_index, parse_product_page
 
 
-# ----------------------------- basic helpers -----------------------------
+BUILD_COPYLINE_VERSION = "build_copyline_v9_daily_0400_template_align"
 
-def safe_str(x: object) -> str:
-    return str(x).strip() if x is not None else ""
+SUPPLIER_NAME_DEFAULT = "CopyLine"
+SUPPLIER_URL_DEFAULT = os.getenv("SUPPLIER_URL", "https://copyline.kz/goods.html")
+OUT_FILE_DEFAULT = os.getenv("OUT_FILE", "docs/copyline.yml")
+RAW_OUT_FILE_DEFAULT = os.getenv("RAW_OUT_FILE", "docs/raw/copyline.yml")
+OUTPUT_ENCODING_DEFAULT = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
+MAX_WORKERS = int(os.getenv("MAX_WORKERS", "6") or "6")
+MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "60") or "60")
+
+CFG_DIR_DEFAULT = "scripts/suppliers/copyline/config"
+FILTER_FILE_DEFAULT = "filter.yml"
+POLICY_FILE_DEFAULT = "policy.yml"
+
+COPYLINE_QG_BASELINE_DEFAULT = "scripts/suppliers/copyline/config/quality_gate_baseline.yml"
+COPYLINE_QG_REPORT_DEFAULT = "docs/raw/copyline_quality_gate.txt"
 
 
-def _mk_oid(sku: str) -> str:
-    sku = safe_str(sku)
-    sku = re.sub(r"[^A-Za-z0-9\-\._/]", "", sku)
-    return "CL" + sku
+# ----------------------------- config helpers -----------------------------
+
+def _read_yaml(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except Exception:
+        return {}
 
 
-def _merge_params(*blocks: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
-    out: list[Tuple[str, str]] = []
-    seen: set[tuple[str, str]] = set()
-    for block in blocks:
-        for key, value in block or []:
-            k = safe_str(key)
-            v = safe_str(value)
-            if not k or not v:
+def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any]]:
+    filter_cfg = _read_yaml(cfg_dir / FILTER_FILE_DEFAULT)
+    policy_cfg = _read_yaml(cfg_dir / POLICY_FILE_DEFAULT)
+    return filter_cfg, policy_cfg
+
+
+def _safe_int(value: Any, default: int) -> int:
+    try:
+        return int(value)
+    except Exception:
+        return default
+
+
+def _load_param_priority(policy_cfg: dict[str, Any]) -> tuple[str, ...]:
+    raw = policy_cfg.get("param_priority") or []
+    out: list[str] = []
+    for item in raw:
+        s = str(item or "").strip()
+        if s:
+            out.append(s)
+    return tuple(out)
+
+
+# ----------------------------- build helpers -----------------------------
+
+def _build_offers(filtered_index: list[dict[str, Any]]) -> list[Any]:
+    out_offers: List[Any] = []
+    seen_oids: set[str] = set()
+    deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
+
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
+        futures = {pool.submit(parse_product_page, item["url"]): item for item in filtered_index}
+        for future in as_completed(futures):
+            if datetime.utcnow() > deadline:
+                break
+            page = future.result()
+            if not page:
                 continue
-            sig = (k.casefold(), v.casefold())
-            if sig in seen:
+            offer = build_offer_from_page(page, fallback_title=(futures[future].get("title") or ""))
+            if not offer or offer.oid in seen_oids:
                 continue
-            seen.add(sig)
-            out.append((k, v))
-    return out
+            seen_oids.add(offer.oid)
+            out_offers.append(offer)
+
+    out_offers.sort(key=lambda offer: offer.oid)
+    return out_offers
 
 
-def _is_numeric_model(value: str) -> bool:
-    return bool(re.fullmatch(r"\d+", safe_str(value)))
+def _print_summary(*, before: int, out_offers: list[Any], filter_report: dict[str, Any], qg: dict[str, Any], out_file: str, raw_out_file: str) -> None:
+    after = len(out_offers)
+    in_true = sum(1 for offer in out_offers if offer.available)
+    in_false = after - in_true
+
+    print("=" * 72)
+    print("[CopyLine] build summary")
+    print("=" * 72)
+    print(f"version: {BUILD_COPYLINE_VERSION}")
+    print(f"before: {before}")
+    print(f"after:  {after}")
+    print(f"raw_out_file: {raw_out_file}")
+    print(f"out_file: {out_file}")
+    print("-" * 72)
+    print("filter_report:")
+    for key, value in filter_report.items():
+        print(f"  {key}: {value}")
+    print("-" * 72)
+    print(f"quality_gate_ok:   {qg.get('ok')}")
+    print(f"quality_gate_report: {qg.get('report_path') or qg.get('report_file')}")
+    print(f"availability_true:  {in_true}")
+    print(f"availability_false: {in_false}")
+    print("=" * 72)
 
 
-def _is_allowed_numeric_code(value: str) -> bool:
-    return bool(re.fullmatch(r"016\d{6}", safe_str(value)))
+def main() -> int:
+    cfg_dir = Path(os.getenv("COPYLINE_CFG_DIR", CFG_DIR_DEFAULT))
+    filter_cfg, policy_cfg = _load_supplier_config(cfg_dir)
 
+    supplier_name = str(policy_cfg.get("supplier") or SUPPLIER_NAME_DEFAULT).strip() or SUPPLIER_NAME_DEFAULT
+    supplier_url = os.getenv("SUPPLIER_URL", SUPPLIER_URL_DEFAULT)
+    out_file = os.getenv("OUT_FILE", OUT_FILE_DEFAULT)
+    raw_out_file = os.getenv("RAW_OUT_FILE", RAW_OUT_FILE_DEFAULT)
+    output_encoding = os.getenv("OUTPUT_ENCODING", OUTPUT_ENCODING_DEFAULT)
 
-def _code_score(code: str) -> int:
-    token = safe_str(code)
-    for rx, score in CODE_SCORE_PATTERNS:
-        if rx.search(token):
-            return score
-    if _is_allowed_numeric_code(token):
-        return 95
-    return 10
-
-
-def _first_code_from_params(params: Sequence[Tuple[str, str]]) -> str:
-    best_code = ""
-    best_score = -1
-    for key, value in params:
-        if safe_str(key) != "Коды расходников":
-            continue
-        parts = [x.strip() for x in re.split(r"\s*,\s*", safe_str(value)) if x.strip()]
-        for part in parts:
-            score = _code_score(part)
-            if score > best_score:
-                best_score = score
-                best_code = part
-    return best_code
-
-
-def _infer_vendor_from_text(text: str) -> str:
-    hay = safe_str(text)
-    if not hay:
-        return ""
-    for pattern, vendor in BRAND_HINTS:
-        if re.search(pattern, hay, flags=re.I):
-            return vendor
-    return ""
-
-
-def _infer_vendor_from_compat(params: Sequence[Tuple[str, str]]) -> str:
-    compat = ""
-    for key, value in params:
-        if safe_str(key) == "Совместимость":
-            compat = safe_str(value)
-            break
-    return _infer_vendor_from_text(compat)
-
-
-def _drop_weak_params(params: Sequence[Tuple[str, str]]) -> list[Tuple[str, str]]:
-    bad_values = {"-", "—", "нет", "n/a", "null"}
-    out: list[Tuple[str, str]] = []
-    for key, value in params:
-        k = safe_str(key)
-        v = safe_str(value)
-        if not k or not v:
-            continue
-        if v.casefold() in bad_values:
-            continue
-        out.append((k, v))
-    return out
-
-
-def _has_consumable_type(params: Sequence[Tuple[str, str]]) -> bool:
-    consumable_types = {"Картридж", "Тонер-картридж", "Драм-картридж", "Девелопер", "Чернила"}
-    return any(safe_str(key) == "Тип" and safe_str(value) in consumable_types for key, value in params)
-
-
-# ----------------------------- resolve helpers -----------------------------
-
-def _resolve_page_basics(page: dict, *, fallback_title: str) -> tuple[str, str, str, str, str, list[tuple[str, str]]]:
-    sku = safe_str(page.get("sku"))
-    source_title = safe_str(page.get("title") or fallback_title)
-    page_desc = safe_str(page.get("desc"))
-    page_params_raw = list(page.get("params") or [])
-
-    basics = normalize_source_basics(
-        title=source_title,
-        sku=sku,
-        description_text=page_desc,
-        params=page_params_raw,
+    # Час следующей сборки берём из supplier policy, а не из старого DOM-gate.
+    hour = _safe_int(
+        policy_cfg.get("schedule_hour_almaty")
+        or policy_cfg.get("next_run_hour_local"),
+        4,
     )
-    title = safe_str(basics.get("title") or source_title)
-    vendor = safe_str(basics.get("vendor"))
-    model = safe_str(basics.get("model"))
-    cleaned_desc = clean_description(safe_str(basics.get("description") or page_desc))
-    return sku, title, vendor, model, cleaned_desc, page_params_raw
 
+    build_time = now_almaty()
+    next_run = next_run_at_hour(build_time, hour=hour)
 
-def _repair_model_param(params: Sequence[Tuple[str, str]], model: str) -> list[Tuple[str, str]]:
-    merged = _merge_params(params, [("Модель", model)]) if model else list(params)
+    index = fetch_product_index()
+    before = len(index)
 
-    current_model = ""
-    for key, value in merged:
-        if safe_str(key) == "Модель":
-            current_model = safe_str(value)
-            break
-
-    if _is_numeric_model(current_model) and not _is_allowed_numeric_code(current_model):
-        first_code = _first_code_from_params(merged)
-        out: list[Tuple[str, str]] = []
-        for key, value in merged:
-            if safe_str(key) != "Модель":
-                out.append((key, value))
-        if first_code:
-            out.append(("Модель", first_code))
-        return out
-
-    if not current_model:
-        first_code = _first_code_from_params(merged)
-        if first_code:
-            return _merge_params(merged, [("Модель", first_code)])
-
-    return merged
-
-
-def _resolve_vendor(title: str, vendor: str, params: Sequence[Tuple[str, str]]) -> str:
-    resolved = safe_str(vendor)
-    if not resolved:
-        resolved = _infer_vendor_from_compat(params)
-    if not resolved:
-        resolved = _infer_vendor_from_text(title)
-    return resolved
-
-
-def _finalize_params(params: Sequence[Tuple[str, str]], vendor: str) -> list[Tuple[str, str]]:
-    merged = list(params)
-    if vendor and _has_consumable_type(merged):
-        merged = _merge_params(merged, [("Для бренда", vendor)])
-    merged = _drop_weak_params(merged)
-    merged = reconcile_copyline_params(merged)
-    return merged
-
-
-def _build_pictures(page: dict) -> list[str]:
-    pictures = prefer_full_product_pictures(page.get("pics") or [])
-    return full_only_if_present(pictures)
-
-
-def _resolve_available(_: dict) -> bool:
-    # ВАЖНО: по текущему правилу проекта CopyLine всегда должен выходить available=true.
-    # Это supplier-policy, поэтому фиксируем здесь, а не в shared core.
-    return True
-
-
-# ----------------------------- main builder -----------------------------
-
-def build_offer_from_page(page: dict, *, fallback_title: str = "") -> OfferOut | None:
-    sku, title, vendor, model, cleaned_desc, page_params_raw = _resolve_page_basics(
-        page,
-        fallback_title=fallback_title,
+    filtered_index, filter_report = filter_product_index(
+        index,
+        include_prefixes=filter_cfg.get("include_prefixes") or [],
     )
-    if not sku or not title:
-        return None
 
-    page_params = extract_page_params(title=title, description=cleaned_desc, page_params=page_params_raw)
-    desc_params = extract_desc_params(title=title, description=cleaned_desc, existing_params=page_params)
+    out_offers = _build_offers(filtered_index)
 
-    params = _merge_params(page_params, desc_params)
-    params = _repair_model_param(params, model)
-    vendor = _resolve_vendor(title, vendor, params)
-    params = _finalize_params(params, vendor)
-
-    pictures = _build_pictures(page)
-    raw_price = int(page.get("price_raw") or 0)
-    available = _resolve_available(page)
-
-    return OfferOut(
-        oid=_mk_oid(sku),
-        available=available,
-        name=title,
-        price=raw_price,
-        pictures=pictures,
-        vendor=vendor,
-        params=params,
-        native_desc=(cleaned_desc or title),
+    write_cs_feed_raw(
+        out_offers,
+        supplier=supplier_name,
+        supplier_url=supplier_url,
+        out_file=raw_out_file,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        encoding=output_encoding,
     )
+
+    public_vendor = get_public_vendor(supplier_name)
+    write_cs_feed(
+        out_offers,
+        supplier=supplier_name,
+        supplier_url=supplier_url,
+        out_file=out_file,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        encoding=output_encoding,
+        public_vendor=public_vendor,
+        param_priority=_load_param_priority(policy_cfg),
+    )
+
+    qg_cfg = policy_cfg.get("quality_gate") or {}
+    qg = run_quality_gate(
+        feed_path=raw_out_file,
+        policy_path=str(cfg_dir / POLICY_FILE_DEFAULT),
+        baseline_path=(
+            os.getenv("COPYLINE_QG_BASELINE")
+            or qg_cfg.get("baseline_file")
+            or qg_cfg.get("baseline_path")
+            or COPYLINE_QG_BASELINE_DEFAULT
+        ),
+        report_path=(
+            os.getenv("COPYLINE_QG_REPORT")
+            or qg_cfg.get("report_file")
+            or qg_cfg.get("report_path")
+            or COPYLINE_QG_REPORT_DEFAULT
+        ),
+    )
+
+    _print_summary(
+        before=before,
+        out_offers=out_offers,
+        filter_report=filter_report,
+        qg=qg,
+        out_file=out_file,
+        raw_out_file=raw_out_file,
+    )
+    if not qg.get("ok", True):
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
