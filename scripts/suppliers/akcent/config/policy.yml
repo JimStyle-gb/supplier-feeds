@@ -79,7 +79,7 @@ assortment_scope:
 
 quality_gate:
   enabled: true
-  enforce: false
+  enforce: true
   baseline_file: scripts/suppliers/akcent/config/quality_baseline.yml
   report_file: docs/raw/akcent_quality_gate.txt
   max_new_cosmetic_offers: 5
