@@ -30,12 +30,13 @@ import yaml
 from cs.core import get_public_vendor, write_cs_feed, write_cs_feed_raw
 from cs.meta import next_run_at_hour, now_almaty
 from suppliers.copyline.builder import build_offer_from_page
-from suppliers.copyline.filtering import filter_product_index, load_filter_config
+from suppliers.copyline.diagnostics import print_build_summary
+from suppliers.copyline.filtering import filter_product_index
 from suppliers.copyline.quality_gate import run_quality_gate
 from suppliers.copyline.source import fetch_product_index, parse_product_page
 
 
-BUILD_COPYLINE_VERSION = "build_copyline_v9_daily_0400_template_align"
+BUILD_COPYLINE_VERSION = "build_copyline_v10_diagnostics_split"
 
 SUPPLIER_NAME_DEFAULT = "CopyLine"
 SUPPLIER_URL_DEFAULT = os.getenv("SUPPLIER_URL", "https://copyline.kz/goods.html")
@@ -112,31 +113,6 @@ def _build_offers(filtered_index: list[dict[str, Any]]) -> list[Any]:
     return out_offers
 
 
-def _print_summary(*, before: int, out_offers: list[Any], filter_report: dict[str, Any], qg: dict[str, Any], out_file: str, raw_out_file: str) -> None:
-    after = len(out_offers)
-    in_true = sum(1 for offer in out_offers if offer.available)
-    in_false = after - in_true
-
-    print("=" * 72)
-    print("[CopyLine] build summary")
-    print("=" * 72)
-    print(f"version: {BUILD_COPYLINE_VERSION}")
-    print(f"before: {before}")
-    print(f"after:  {after}")
-    print(f"raw_out_file: {raw_out_file}")
-    print(f"out_file: {out_file}")
-    print("-" * 72)
-    print("filter_report:")
-    for key, value in filter_report.items():
-        print(f"  {key}: {value}")
-    print("-" * 72)
-    print(f"quality_gate_ok:   {qg.get('ok')}")
-    print(f"quality_gate_report: {qg.get('report_path') or qg.get('report_file')}")
-    print(f"availability_true:  {in_true}")
-    print(f"availability_false: {in_false}")
-    print("=" * 72)
-
-
 def main() -> int:
     cfg_dir = Path(os.getenv("COPYLINE_CFG_DIR", CFG_DIR_DEFAULT))
     filter_cfg, policy_cfg = _load_supplier_config(cfg_dir)
@@ -147,7 +123,6 @@ def main() -> int:
     raw_out_file = os.getenv("RAW_OUT_FILE", RAW_OUT_FILE_DEFAULT)
     output_encoding = os.getenv("OUTPUT_ENCODING", OUTPUT_ENCODING_DEFAULT)
 
-    # Час следующей сборки берём из supplier policy, а не из старого DOM-gate.
     hour = _safe_int(
         policy_cfg.get("schedule_hour_almaty")
         or policy_cfg.get("next_run_hour_local"),
@@ -210,7 +185,8 @@ def main() -> int:
         ),
     )
 
-    _print_summary(
+    print_build_summary(
+        version=BUILD_COPYLINE_VERSION,
         before=before,
         out_offers=out_offers,
         filter_report=filter_report,
