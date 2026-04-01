@@ -6,12 +6,20 @@ CopyLine source layer.
 Задача модуля:
 - скачать sitemap поставщика;
 - собрать product URLs;
-- распарсить карточку товара в сырой page-payload.
+- распарсить карточку товара в сырой page-payload;
+- сохранить provenance сырья без ранней semantic-свёртки.
 
 В этом модуле НЕТ supplier-business логики:
 - нет фильтра по ассортименту;
 - нет нормализации vendor/model;
-- нет CS-обогащения.
+- нет CS-обогащения;
+- нет выбора «какой источник параметров главнее».
+
+Важно:
+- source.py может делать low-level parsing HTML;
+- source.py не должен рано схлопывать происхождение фактов;
+- для backward-safe этапа сохраняем legacy-ключи desc/params,
+  но дополнительно отдаём raw_desc/raw_desc_pairs/raw_table_params.
 """
 
 from __future__ import annotations
@@ -140,6 +148,39 @@ def extract_kv_pairs_from_text(text: str) -> List[tuple[str, str]]:
         if key and value and len(key) <= 80 and len(value) <= 240:
             out.append((key, value))
     return out
+
+
+def _dedupe_pairs(items: List[tuple[str, str]]) -> List[tuple[str, str]]:
+    """Дедуп param-пары без потери их канала происхождения до merge-этапа."""
+    out: List[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for key, value in items:
+        k = safe_str(key)
+        v = safe_str(value)
+        if not k or not v:
+            continue
+        sig = (k.casefold(), v.casefold())
+        if sig in seen:
+            continue
+        seen.add(sig)
+        out.append((k, v))
+    return out
+
+
+def _extract_table_pairs(table) -> List[tuple[str, str]]:
+    """Вытащить сырые пары из HTML-таблицы без semantic-решений."""
+    out: List[tuple[str, str]] = []
+    if not table:
+        return out
+    for tr in table.find_all("tr"):
+        tds = tr.find_all(["td", "th"])
+        if len(tds) < 2:
+            continue
+        key = safe_str(tds[0].get_text(" ", strip=True))
+        value = safe_str(tds[1].get_text(" ", strip=True))
+        if key and value and len(key) <= 80 and len(value) <= 240:
+            out.append((key, value))
+    return _dedupe_pairs(out)
 
 
 def _abs_url(href: str) -> str:
@@ -308,7 +349,7 @@ def _extract_picture_candidates(s: BeautifulSoup) -> List[str]:
 
 
 def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
-    """Распарсить карточку товара в сырой payload."""
+    """Распарсить карточку товара в сырой payload с сохранением provenance."""
     data = http_get(url, tries=3)
     if not data:
         return None
@@ -334,41 +375,23 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
     h = s.find(["h1", "h2"], attrs={"itemprop": "name"}) or s.find("h1") or s.find("h2")
     title = title_clean(safe_str(h.get_text(" ", strip=True) if h else ""))
 
-    desc_txt = ""
-    params: List[tuple[str, str]] = []
+    raw_desc = ""
+    raw_desc_pairs: List[tuple[str, str]] = []
     block = (
         s.select_one('div[itemprop="description"].jshop_prod_description')
         or s.select_one("div.jshop_prod_description")
         or s.select_one('[itemprop="description"]')
     )
     if block:
-        desc_txt = block.get_text("\n", strip=True)
-        params.extend(extract_kv_pairs_from_text(desc_txt))
+        raw_desc = block.get_text("\n", strip=True)
+        raw_desc_pairs = _dedupe_pairs(extract_kv_pairs_from_text(raw_desc))
 
     table = s.find("table")
-    if table:
-        for tr in table.find_all("tr"):
-            tds = tr.find_all(["td", "th"])
-            if len(tds) < 2:
-                continue
-            key = safe_str(tds[0].get_text(" ", strip=True))
-            value = safe_str(tds[1].get_text(" ", strip=True))
-            if key and value and len(key) <= 80 and len(value) <= 240:
-                params.append((key, value))
+    raw_table_params = _extract_table_pairs(table)
 
-    # Дедуп params.
-    params_out: List[tuple[str, str]] = []
-    seen_params: set[tuple[str, str]] = set()
-    for key, value in params:
-        k = safe_str(key)
-        v = safe_str(value)
-        if not k or not v:
-            continue
-        sig = (k.casefold(), v.casefold())
-        if sig in seen_params:
-            continue
-        seen_params.add(sig)
-        params_out.append((k, v))
+    # Backward-safe legacy merge: старые builder/extractor слои пока ещё ждут единый params.
+    # Но теперь вместе с ним мы сохраняем отдельные каналы сырья.
+    legacy_params = _dedupe_pairs([*raw_desc_pairs, *raw_table_params])
 
     pictures = _extract_picture_candidates(s)
     price_raw = _parse_price_from_page(s)
@@ -378,8 +401,13 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
         "sku": sku,
         "url": url,
         "title": title,
-        "desc": desc_txt,
-        "params": params_out,
+        # Legacy keys
+        "desc": raw_desc,
+        "params": legacy_params,
+        # Provenance-preserving keys
+        "raw_desc": raw_desc,
+        "raw_desc_pairs": raw_desc_pairs,
+        "raw_table_params": raw_table_params,
         "pics": pictures,
         "pic": pictures[0] if pictures else "",
         "price_raw": price_raw,
