@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-01 04:33:29">
+<yml_catalog date="2026-04-01 11:50:53">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-04-01 04:33:29 (не было изменений)
+Время сборки (Алматы)                      | 2026-04-01 11:50:53
 Ближайшая сборка (Алматы)                  | 2026-04-02 04:00:00
 Сколько товаров у поставщика до фильтра    | 2691
 Сколько товаров у поставщика после фильтра | 1212
-Сколько товаров есть в наличии (true)      | 997
-Сколько товаров нет в наличии (false)      | 215
+Сколько товаров есть в наличии (true)      | 1212
+Сколько товаров нет в наличии (false)      | 0
 -->
 
 <offer id="CL100014" available="true">
@@ -66,7 +66,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100017" available="false">
+<offer id="CL100017" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100017</vendorCode>
 <name>Drum Unit для Canon C-EXV34 Чёрный OEM</name>
@@ -84,7 +84,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL100018" available="false">
+<offer id="CL100018" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100018</vendorCode>
 <name>Drum Unit для Canon C-EXV34 Голубой OEM</name>
@@ -433,7 +433,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL100065" available="false">
+<offer id="CL100065" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100065</vendorCode>
 <name>Тонер-картридж для Kyocera TK-825K Чёрный (15K)</name>
@@ -451,7 +451,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL100066" available="false">
+<offer id="CL100066" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100066</vendorCode>
 <name>Тонер-картридж для Kyocera TK-825C Голубой (7K)</name>
@@ -469,7 +469,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL100067" available="false">
+<offer id="CL100067" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100067</vendorCode>
 <name>Тонер-картридж для Kyocera TK-825M Пурпурный (7K)</name>
@@ -487,7 +487,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL100068" available="false">
+<offer id="CL100068" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100068</vendorCode>
 <name>Тонер-картридж для Kyocera TK-825Y Желтый (7K)</name>
@@ -505,7 +505,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL100070" available="false">
+<offer id="CL100070" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100070</vendorCode>
 <name>Тонер-картридж для Kyocera TK-440 (15K)</name>
@@ -522,7 +522,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL100071" available="false">
+<offer id="CL100071" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100071</vendorCode>
 <name>Тонер-картридж для Kyocera TK-500M Пурпурный (8K)</name>
@@ -540,7 +540,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL100072" available="false">
+<offer id="CL100072" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100072</vendorCode>
 <name>Тонер-картридж для Kyocera TK-500Y Желтый (8K)</name>
@@ -558,7 +558,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL100073" available="false">
+<offer id="CL100073" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100073</vendorCode>
 <name>Тонер-картридж для Kyocera TK-715 (34K)</name>
@@ -681,7 +681,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL100091" available="false">
+<offer id="CL100091" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100091</vendorCode>
 <name>Тонер-картридж для Canon C-EXV22</name>
@@ -966,7 +966,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL100207" available="false">
+<offer id="CL100207" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100207</vendorCode>
 <name>Картридж для HP CF380A (№312A) Чёрный Euro Print</name>
@@ -984,7 +984,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100208" available="false">
+<offer id="CL100208" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100208</vendorCode>
 <name>Картридж для HP CF381A (№312A) Голубой Euro Print</name>
@@ -1002,7 +1002,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100209" available="false">
+<offer id="CL100209" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100209</vendorCode>
 <name>Картридж для HP CF382A (№312A) Желтый Euro Print</name>
@@ -1020,7 +1020,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100210" available="false">
+<offer id="CL100210" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100210</vendorCode>
 <name>Картридж для HP CF383A (№312A) Пурпурный Euro Print</name>
@@ -1038,7 +1038,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100213" available="false">
+<offer id="CL100213" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100213</vendorCode>
 <name>Тонер-картридж 016194600 (10K) Желтый</name>
@@ -1056,7 +1056,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL100214" available="false">
+<offer id="CL100214" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100214</vendorCode>
 <name>Тонер-картридж 016194500 (10K) Пурпурный</name>
@@ -1074,7 +1074,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL100220" available="false">
+<offer id="CL100220" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100220</vendorCode>
 <name>Кабель сетевой FCH-5514 FTP Cat.5e 4x2x1/0,51 LSZH 305 м/б RIPO</name>
@@ -1186,7 +1186,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Samsung</param>
 </offer>
 
-<offer id="CL100232" available="false">
+<offer id="CL100232" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100232</vendorCode>
 <name>Картридж для Samsung ML-D2850A Euro Print</name>
@@ -1205,7 +1205,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Samsung</param>
 </offer>
 
-<offer id="CL100234" available="false">
+<offer id="CL100234" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100234</vendorCode>
 <name>Картридж для Samsung ML-3560D6 Euro Print</name>
@@ -1295,7 +1295,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100247" available="false">
+<offer id="CL100247" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100247</vendorCode>
 <name>Картридж для HP Q2610A Euro Print</name>
@@ -1366,7 +1366,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100288" available="false">
+<offer id="CL100288" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100288</vendorCode>
 <name>Тонер-картридж 006R01020 (6K)</name>
@@ -1472,7 +1472,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL100308" available="false">
+<offer id="CL100308" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100308</vendorCode>
 <name>Тонер-картридж для Kyocera TK-510K Чёрный (8K)</name>
@@ -1490,7 +1490,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL100309" available="false">
+<offer id="CL100309" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100309</vendorCode>
 <name>Тонер-картридж для Kyocera TK-510C Голубой (8K)</name>
@@ -1508,7 +1508,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL100310" available="false">
+<offer id="CL100310" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100310</vendorCode>
 <name>Тонер-картридж для Kyocera TK-510M Пурпурный (8K)</name>
@@ -1633,7 +1633,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100350" available="false">
+<offer id="CL100350" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100350</vendorCode>
 <name>Картридж для HP CF214X (№14X) Euro Print</name>
@@ -1888,7 +1888,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL100530" available="false">
+<offer id="CL100530" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100530</vendorCode>
 <name>Картридж для HP Q3960A (122A) Чёрный Retech</name>
@@ -1906,7 +1906,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100531" available="false">
+<offer id="CL100531" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100531</vendorCode>
 <name>Картридж для HP Q3961A (122A) Голубой Retech</name>
@@ -1924,7 +1924,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100532" available="false">
+<offer id="CL100532" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100532</vendorCode>
 <name>Картридж для HP Q3962A (122A) Желтый Retech</name>
@@ -1942,7 +1942,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100533" available="false">
+<offer id="CL100533" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100533</vendorCode>
 <name>Картридж для HP Q3963A (122A) Пурпурный Retech</name>
@@ -2198,7 +2198,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100692" available="false">
+<offer id="CL100692" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100692</vendorCode>
 <name>Картридж для HP Q3960A/Canon 701 Чёрный Euro Print</name>
@@ -2216,7 +2216,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100695" available="false">
+<offer id="CL100695" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100695</vendorCode>
 <name>Картридж для HP Q3963A/Canon 701 Пурпурный Euro Print</name>
@@ -2487,7 +2487,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Samsung</param>
 </offer>
 
-<offer id="CL100774" available="false">
+<offer id="CL100774" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100774</vendorCode>
 <name>Тонер-картридж для Kyocera TK-3110 for FS4100 (15K) (12100116C) INTEGRAL</name>
@@ -2504,7 +2504,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL100775" available="false">
+<offer id="CL100775" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100775</vendorCode>
 <name>Тонер-картридж для Kyocera TK-350 for FS3920DN/FS-3540MFP/FS-3640MFP (15K) (12100038C) 465 гр INTEGRAL</name>
@@ -2841,7 +2841,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL100920" available="false">
+<offer id="CL100920" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100920</vendorCode>
 <name>Картридж для HP CE285A/ Canon 725 Top print</name>
@@ -3033,7 +3033,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">и МФУ HP LJ Pro 400 M401, M425</param>
 </offer>
 
-<offer id="CL100964" available="false">
+<offer id="CL100964" available="true">
 <categoryId></categoryId>
 <vendorCode>CL100964</vendorCode>
 <name>Тонер-картридж для Canon C-EXV32 for IR 2535/2535i/2545/2545i (19,4K) (11500100) INTEGRAL</name>
@@ -3582,7 +3582,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL101233" available="false">
+<offer id="CL101233" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101233</vendorCode>
 <name>Drum Unit для Canon C-EXV5/GPR-8</name>
@@ -3836,7 +3836,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">HP LJ P1005, P1006, P1009</param>
 </offer>
 
-<offer id="CL101406" available="false">
+<offer id="CL101406" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101406</vendorCode>
 <name>Термоблок для HP LJ 1160/1320</name>
@@ -3923,7 +3923,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL101505" available="false">
+<offer id="CL101505" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101505</vendorCode>
 <name>Тонер-картридж для Canon C-EXV12</name>
@@ -4004,7 +4004,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL101560" available="false">
+<offer id="CL101560" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101560</vendorCode>
 <name>Чернила черные RISO RP S-3919</name>
@@ -4021,7 +4021,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">RISO</param>
 </offer>
 
-<offer id="CL101562" available="false">
+<offer id="CL101562" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101562</vendorCode>
 <name>Чернила черные RISO RZ/RV S-4253</name>
@@ -4055,7 +4055,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Lexmark</param>
 </offer>
 
-<offer id="CL101587" available="false">
+<offer id="CL101587" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101587</vendorCode>
 <name>Тонер-картридж 016194700 (10K) Чёрный</name>
@@ -4138,7 +4138,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Бухта">305 м/б</param>
 </offer>
 
-<offer id="CL101599" available="false">
+<offer id="CL101599" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101599</vendorCode>
 <name>Кабель сетевой UCE-5512 UTP Cat.5e 2x2x1/0,5 PE 305 м/б RIPO</name>
@@ -4193,7 +4193,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL101625" available="false">
+<offer id="CL101625" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101625</vendorCode>
 <name>Тонер-картридж для Kyocera TK-310/312 for FS2000D/FS-3900DN/FS-4000DN (12k) (12100027C) INTEGRAL</name>
@@ -4377,7 +4377,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL101785" available="false">
+<offer id="CL101785" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101785</vendorCode>
 <name>Тонер-картридж для Kyocera TK-130 for FS1028/1128/1300/1350 (7,2K) (12100034) 270 гр INTEGRAL</name>
@@ -4411,7 +4411,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL101788" available="false">
+<offer id="CL101788" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101788</vendorCode>
 <name>Тонер-картридж для Kyocera TK-330/332 for FS4000/LP3045 (20K) (12100028) 670 гр INTEGRAL</name>
@@ -4444,7 +4444,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL101791" available="false">
+<offer id="CL101791" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101791</vendorCode>
 <name>Тонер-картридж для Canon C-EXV11 for IR 2230/2270/2830/2870/3025/3225 (21K) (11500075) 1060 гр INTEGRAL</name>
@@ -4461,7 +4461,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL101792" available="false">
+<offer id="CL101792" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101792</vendorCode>
 <name>Тонер-картридж для Canon C-EXV12 for IR 3035/3045/3245/3530/3570/4570 (24K) (11500076) 1219 гр INTEGRAL</name>
@@ -4478,7 +4478,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL101793" available="false">
+<offer id="CL101793" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101793</vendorCode>
 <name>Тонер-картридж для Canon C-EXV37 for IR 1730/1740/1750 (15,1K) (11500110) 660 гр INTEGRAL</name>
@@ -4496,7 +4496,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL101797" available="false">
+<offer id="CL101797" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101797</vendorCode>
 <name>Тонер-картридж для Epson AcuLaser- M2400D/M2300/mx20 (C13S050582) (3K) (16700006) INTEGRAL</name>
@@ -4530,7 +4530,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Konica-Minolta</param>
 </offer>
 
-<offer id="CL101801" available="false">
+<offer id="CL101801" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101801</vendorCode>
 <name>Тонер-картридж для Panasonic DP-3510/4510 (13800002) INTEGRAL</name>
@@ -4547,7 +4547,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Panasonic</param>
 </offer>
 
-<offer id="CL101802" available="false">
+<offer id="CL101802" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101802</vendorCode>
 <name>Тонер-картридж для Panasonic FP-7718/7722 (13800004) 462 гр INTEGRAL</name>
@@ -4564,7 +4564,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Panasonic</param>
 </offer>
 
-<offer id="CL101803" available="false">
+<offer id="CL101803" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101803</vendorCode>
 <name>Тонер-картридж для Panasonic FP-7728/7735/7742/7750 (13800005) 660 гр INTEGRAL</name>
@@ -5198,7 +5198,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL101934" available="false">
+<offer id="CL101934" available="true">
 <categoryId></categoryId>
 <vendorCode>CL101934</vendorCode>
 <name>Картридж для HP C7115A/Q2613A/Q2624A/Canon EP-25 Euro Print</name>
@@ -5721,7 +5721,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Brother</param>
 </offer>
 
-<offer id="CL102307" available="false">
+<offer id="CL102307" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102307</vendorCode>
 <name>Термоблок для HP CLJ CM1312/CP1215</name>
@@ -5858,7 +5858,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL102335" available="false">
+<offer id="CL102335" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102335</vendorCode>
 <name>Drum Unit Kyocera DK-130 для FS-1100/1300</name>
@@ -5940,7 +5940,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Panasonic</param>
 </offer>
 
-<offer id="CL102358" available="false">
+<offer id="CL102358" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102358</vendorCode>
 <name>Картридж для HP CZ192A №93A Euro Print</name>
@@ -6181,7 +6181,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">и МФУ Samsung ML-2850, ML-2851, Xerox Phaser 3250</param>
 </offer>
 
-<offer id="CL102442" available="false">
+<offer id="CL102442" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102442</vendorCode>
 <name>Тонер-картридж для Panasonic KX-FA83A Euro Print</name>
@@ -6267,7 +6267,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL102548" available="false">
+<offer id="CL102548" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102548</vendorCode>
 <name>Тонер-картридж 016194400 (10K) Голубой</name>
@@ -6465,7 +6465,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL102618" available="false">
+<offer id="CL102618" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102618</vendorCode>
 <name>Картридж для HP CE310A (№126A)/Canon 729 Чёрный OEM</name>
@@ -6483,7 +6483,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL102619" available="false">
+<offer id="CL102619" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102619</vendorCode>
 <name>Картридж для HP CE311A (№126A)/Canon 729 Голубой OEM</name>
@@ -6501,7 +6501,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL102620" available="false">
+<offer id="CL102620" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102620</vendorCode>
 <name>Картридж для HP CE312A (№126A)/Canon 729 Желтый OEM</name>
@@ -6519,7 +6519,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL102621" available="false">
+<offer id="CL102621" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102621</vendorCode>
 <name>Картридж для HP CE313A (№126A)/Canon 729 Пурпурный OEM</name>
@@ -6537,7 +6537,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL102622" available="false">
+<offer id="CL102622" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102622</vendorCode>
 <name>Картридж для HP CE320A Чёрный OEM</name>
@@ -6555,7 +6555,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL102623" available="false">
+<offer id="CL102623" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102623</vendorCode>
 <name>Картридж для HP CE321A Голубой OEM</name>
@@ -6573,7 +6573,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL102624" available="false">
+<offer id="CL102624" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102624</vendorCode>
 <name>Картридж для HP CE322A Желтый OEM</name>
@@ -6591,7 +6591,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL102625" available="false">
+<offer id="CL102625" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102625</vendorCode>
 <name>Картридж для HP CE323A Пурпурный OEM</name>
@@ -6609,7 +6609,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL102626" available="false">
+<offer id="CL102626" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102626</vendorCode>
 <name>Чернила Epson universal Light Пурпурный 1л</name>
@@ -6625,7 +6625,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Epson</param>
 </offer>
 
-<offer id="CL102627" available="false">
+<offer id="CL102627" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102627</vendorCode>
 <name>Чернила Epson universal Light Голубой 1л</name>
@@ -6641,7 +6641,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Epson</param>
 </offer>
 
-<offer id="CL102628" available="false">
+<offer id="CL102628" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102628</vendorCode>
 <name>Чернила Epson universal Голубой 1л</name>
@@ -6657,7 +6657,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Epson</param>
 </offer>
 
-<offer id="CL102629" available="false">
+<offer id="CL102629" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102629</vendorCode>
 <name>Чернила Epson universal Желтый 1л</name>
@@ -6673,7 +6673,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Epson</param>
 </offer>
 
-<offer id="CL102630" available="false">
+<offer id="CL102630" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102630</vendorCode>
 <name>Чернила Epson universal Чёрный 1л</name>
@@ -6688,7 +6688,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Epson</param>
 </offer>
 
-<offer id="CL102631" available="false">
+<offer id="CL102631" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102631</vendorCode>
 <name>Чернила Epson universal Пурпурный 1л</name>
@@ -7119,7 +7119,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL102714" available="false">
+<offer id="CL102714" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102714</vendorCode>
 <name>Тонер-картридж для Kyocera TK-18/100 for FS1018/1020/KM1500/1815/1820 (12100018) 290гр INTEGRAL</name>
@@ -7155,7 +7155,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL102716" available="false">
+<offer id="CL102716" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102716</vendorCode>
 <name>Тонер-картридж 006R01399 (26K) Чёрный Euro Print</name>
@@ -7173,7 +7173,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL102717" available="false">
+<offer id="CL102717" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102717</vendorCode>
 <name>Тонер-картридж 006R01400 (15K) Желтый Euro Print</name>
@@ -7191,7 +7191,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL102718" available="false">
+<offer id="CL102718" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102718</vendorCode>
 <name>Тонер-картридж 006R01401 (15K) Пурпурный Euro Print</name>
@@ -7209,7 +7209,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL102719" available="false">
+<offer id="CL102719" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102719</vendorCode>
 <name>Тонер-картридж 006R01402 (15K) Голубой Euro Print</name>
@@ -7227,7 +7227,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL102720" available="false">
+<offer id="CL102720" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102720</vendorCode>
 <name>Драм-картридж для Xerox (013R00662) WC 7525/7530/7535/7545/7556/ 7830/7835/7845/7855 Чёрный/Голубой/Пурпурный/Желтый (125k)</name>
@@ -7656,7 +7656,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Konica-Minolta</param>
 </offer>
 
-<offer id="CL102800" available="false">
+<offer id="CL102800" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102800</vendorCode>
 <name>Тонер-картридж для Konica-Minolta TN-612K Чёрный (37.4K)</name>
@@ -7691,7 +7691,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Konica Minolta</param>
 </offer>
 
-<offer id="CL102802" available="false">
+<offer id="CL102802" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102802</vendorCode>
 <name>Drum Unit для Konica Minolta DR-311K Чёрный (70k)</name>
@@ -7958,7 +7958,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL102974" available="false">
+<offer id="CL102974" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102974</vendorCode>
 <name>Drum Unit для Canon C-EXV34 Пурпурный OEM</name>
@@ -7976,7 +7976,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL102975" available="false">
+<offer id="CL102975" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102975</vendorCode>
 <name>Drum Unit для Canon C-EXV34 Желтый OEM</name>
@@ -8026,7 +8026,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL102993" available="false">
+<offer id="CL102993" available="true">
 <categoryId></categoryId>
 <vendorCode>CL102993</vendorCode>
 <name>Картридж для Xerox PE220 (013R00621) Euro Print</name>
@@ -8327,7 +8327,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL103070" available="false">
+<offer id="CL103070" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103070</vendorCode>
 <name>Термоблок для HP LJ M1005</name>
@@ -8627,7 +8627,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL103102" available="false">
+<offer id="CL103102" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103102</vendorCode>
 <name>Тонер-картридж для Kyocera TK-500K Чёрный (8K)</name>
@@ -8645,7 +8645,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL103103" available="false">
+<offer id="CL103103" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103103</vendorCode>
 <name>Тонер-картридж для Kyocera TK-500C Голубой (8K)</name>
@@ -8699,7 +8699,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL103122" available="false">
+<offer id="CL103122" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103122</vendorCode>
 <name>Тонер-картридж для Kyocera TK-510Y Желтый (8K)</name>
@@ -8734,7 +8734,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Toshiba</param>
 </offer>
 
-<offer id="CL103124" available="false">
+<offer id="CL103124" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103124</vendorCode>
 <name>Тонер-картридж для Toshiba T-2320E</name>
@@ -8817,7 +8817,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Совместимость">и МФУ Samsung ML-1610, ML-2015, Xerox Phaser 3116, Xerox Phaser 3117, Xerox Phaser 3122</param>
 </offer>
 
-<offer id="CL103179" available="false">
+<offer id="CL103179" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103179</vendorCode>
 <name>Drum Unit Lexmark MS310/410/510/610 (50F0Z00)</name>
@@ -8834,7 +8834,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Lexmark</param>
 </offer>
 
-<offer id="CL103180" available="false">
+<offer id="CL103180" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103180</vendorCode>
 <name>Картридж для Xerox Phaser 3020/ WC3025 (106R02773) Euro Print</name>
@@ -9163,7 +9163,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL103444" available="false">
+<offer id="CL103444" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103444</vendorCode>
 <name>Тонер-картридж для Konica-Minolta TN-116/TN-118 Euro Print</name>
@@ -9333,7 +9333,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL103476" available="false">
+<offer id="CL103476" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103476</vendorCode>
 <name>Картридж для Samsung MLT-D203E Euro Print</name>
@@ -9439,7 +9439,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL103511" available="false">
+<offer id="CL103511" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103511</vendorCode>
 <name>Картридж для HP CC364A OEM</name>
@@ -9475,7 +9475,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL103517" available="false">
+<offer id="CL103517" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103517</vendorCode>
 <name>Картридж для HP CE285A/435A/436A/ Canon 725 ОЕМ</name>
@@ -9740,7 +9740,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Konica-Minolta</param>
 </offer>
 
-<offer id="CL103636" available="false">
+<offer id="CL103636" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103636</vendorCode>
 <name>Термоблок для HP LJ Enterprise M604/M605/M606</name>
@@ -9908,7 +9908,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Ricoh</param>
 </offer>
 
-<offer id="CL103710" available="false">
+<offer id="CL103710" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103710</vendorCode>
 <name>Тонер-картридж для Brother TN-2175 (2,6K) Euro Print</name>
@@ -10219,7 +10219,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Samsung</param>
 </offer>
 
-<offer id="CL103795" available="false">
+<offer id="CL103795" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103795</vendorCode>
 <name>Drum Unit Ricoh SP4500E</name>
@@ -10405,7 +10405,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL103854" available="false">
+<offer id="CL103854" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103854</vendorCode>
 <name>Картридж для HP CE270A (№650A) Чёрный OEM</name>
@@ -10423,7 +10423,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL103855" available="false">
+<offer id="CL103855" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103855</vendorCode>
 <name>Картридж для HP CE271A (№650A) Голубой OEM</name>
@@ -10441,7 +10441,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL103856" available="false">
+<offer id="CL103856" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103856</vendorCode>
 <name>Картридж для HP CE272A (№650A) Желтый OEM</name>
@@ -10459,7 +10459,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL103857" available="false">
+<offer id="CL103857" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103857</vendorCode>
 <name>Картридж для HP CE273A (№650A) Пурпурный OEM</name>
@@ -10512,7 +10512,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL103874" available="false">
+<offer id="CL103874" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103874</vendorCode>
 <name>Картридж для HP CF279A</name>
@@ -10617,7 +10617,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL103904" available="false">
+<offer id="CL103904" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103904</vendorCode>
 <name>Термоблок для HP CLJ CP5525/ M750</name>
@@ -10651,7 +10651,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL103913" available="false">
+<offer id="CL103913" available="true">
 <categoryId></categoryId>
 <vendorCode>CL103913</vendorCode>
 <name>Драм-картридж для Xerox (113R00773) Phaser 3610/WC 3615 (85k)</name>
@@ -11495,7 +11495,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL104100" available="false">
+<offer id="CL104100" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104100</vendorCode>
 <name>Картридж для Canon 046H Чёрный Euro Print</name>
@@ -11513,7 +11513,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL104101" available="false">
+<offer id="CL104101" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104101</vendorCode>
 <name>Картридж для Canon 046H Голубой Euro Print</name>
@@ -11531,7 +11531,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL104102" available="false">
+<offer id="CL104102" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104102</vendorCode>
 <name>Картридж для Canon 046H Пурпурный Euro Print</name>
@@ -11549,7 +11549,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL104103" available="false">
+<offer id="CL104103" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104103</vendorCode>
 <name>Картридж для Canon 046H Желтый Euro Print</name>
@@ -11874,7 +11874,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104123" available="false">
+<offer id="CL104123" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104123</vendorCode>
 <name>Картридж для HP CF310A (№826A) Чёрный Euro Print</name>
@@ -11892,7 +11892,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104124" available="false">
+<offer id="CL104124" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104124</vendorCode>
 <name>Картридж для HP CF311A (№826A) Голубой Euro Print</name>
@@ -11910,7 +11910,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104125" available="false">
+<offer id="CL104125" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104125</vendorCode>
 <name>Картридж для HP CF312A (№826A) Желтый Euro Print</name>
@@ -11928,7 +11928,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104126" available="false">
+<offer id="CL104126" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104126</vendorCode>
 <name>Картридж для HP CF313A (№826A) Пурпурный Euro Print</name>
@@ -12336,7 +12336,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL104237" available="false">
+<offer id="CL104237" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104237</vendorCode>
 <name>Тонер-картридж для Kyocera TK-560K Чёрный (12K)</name>
@@ -12355,7 +12355,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL104238" available="false">
+<offer id="CL104238" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104238</vendorCode>
 <name>Тонер-картридж для Kyocera TK-560C Голубой (10K)</name>
@@ -12374,7 +12374,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL104239" available="false">
+<offer id="CL104239" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104239</vendorCode>
 <name>Тонер-картридж для Kyocera TK-560M Пурпурный (10K)</name>
@@ -12393,7 +12393,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL104240" available="false">
+<offer id="CL104240" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104240</vendorCode>
 <name>Тонер-картридж для Kyocera TK-560Y Желтый (10K)</name>
@@ -12642,7 +12642,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104294" available="false">
+<offer id="CL104294" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104294</vendorCode>
 <name>Тонер-картридж для Ricoh SP C310E Чёрный (2.8K)</name>
@@ -12661,7 +12661,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Ricoh</param>
 </offer>
 
-<offer id="CL104295" available="false">
+<offer id="CL104295" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104295</vendorCode>
 <name>Тонер-картридж для Ricoh SP C310E Голубой (2.5K)</name>
@@ -12680,7 +12680,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Ricoh</param>
 </offer>
 
-<offer id="CL104296" available="false">
+<offer id="CL104296" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104296</vendorCode>
 <name>Тонер-картридж для Ricoh SP C310E Пурпурный (2.5K)</name>
@@ -12699,7 +12699,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Ricoh</param>
 </offer>
 
-<offer id="CL104297" available="false">
+<offer id="CL104297" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104297</vendorCode>
 <name>Тонер-картридж для Ricoh SP C310E Желтый (2.5K)</name>
@@ -12969,7 +12969,7 @@ URL поставщика                             | https://copyline.kz/goods
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL104364" available="false">
+<offer id="CL104364" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104364</vendorCode>
 <name>Тонер-картридж для Canon C-EXV53 (42,1K) Euro Print</name>
@@ -13349,7 +13349,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104476" available="false">
+<offer id="CL104476" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104476</vendorCode>
 <name>Картридж для HP CF401A (№201A) Голубой Euro Print NEW</name>
@@ -13700,7 +13700,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL104556" available="false">
+<offer id="CL104556" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104556</vendorCode>
 <name>Чернила Epson/ Canon/ HP/ Brother/ Lexmark комплект из 6-цветов 100 мл</name>
@@ -13784,7 +13784,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104572" available="false">
+<offer id="CL104572" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104572</vendorCode>
 <name>Картридж для Canon 051H Euro Print</name>
@@ -14071,7 +14071,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Совместимость">и МФУ HP LJ Enterprise 500 M525, M521</param>
 </offer>
 
-<offer id="CL104610" available="false">
+<offer id="CL104610" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104610</vendorCode>
 <name>Термоблок для HP LJ Pro M501/M506/M527</name>
@@ -14213,7 +14213,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104649" available="false">
+<offer id="CL104649" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104649</vendorCode>
 <name>Картридж для HP CF410X (№410X) Чёрный (6,5K) Sakura</name>
@@ -14232,7 +14232,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104651" available="false">
+<offer id="CL104651" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104651</vendorCode>
 <name>Картридж для HP CF412X (№410X) Желтый (5K) Sakura</name>
@@ -14667,7 +14667,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL104705" available="false">
+<offer id="CL104705" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104705</vendorCode>
 <name>Тонер-картридж 106R03765 (10,7K) Чёрный Euro Print</name>
@@ -14685,7 +14685,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL104706" available="false">
+<offer id="CL104706" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104706</vendorCode>
 <name>Тонер-картридж 106R03768 (10,1K) Голубой Euro Print</name>
@@ -14703,7 +14703,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL104707" available="false">
+<offer id="CL104707" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104707</vendorCode>
 <name>Тонер-картридж 106R03767 (10,1K) Пурпурный Euro Print</name>
@@ -14721,7 +14721,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL104708" available="false">
+<offer id="CL104708" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104708</vendorCode>
 <name>Тонер-картридж 106R03766 (10,1K) Желтый Euro Print</name>
@@ -14756,7 +14756,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL104710" available="false">
+<offer id="CL104710" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104710</vendorCode>
 <name>Drum Unit для Canon 051 для LBP-162/ MF-269/267/264 (23K) Euro Print</name>
@@ -15131,7 +15131,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104788" available="false">
+<offer id="CL104788" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104788</vendorCode>
 <name>Тонер-картридж 006R01462 Желтый OEM</name>
@@ -15167,7 +15167,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL104790" available="false">
+<offer id="CL104790" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104790</vendorCode>
 <name>Тонер-картридж 006R01464 Голубой OEM</name>
@@ -15278,7 +15278,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL104815" available="false">
+<offer id="CL104815" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104815</vendorCode>
 <name>Картридж HP CE410A (305A) Чёрный оригинал</name>
@@ -15296,7 +15296,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104817" available="false">
+<offer id="CL104817" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104817</vendorCode>
 <name>Картридж HP CE411A (305A) Голубой оригинал</name>
@@ -15314,7 +15314,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104818" available="false">
+<offer id="CL104818" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104818</vendorCode>
 <name>Картридж HP CE412A (305A) Желтый оригинал</name>
@@ -15332,7 +15332,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104819" available="false">
+<offer id="CL104819" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104819</vendorCode>
 <name>Картридж HP CE413A Пурпурный оригинал</name>
@@ -15401,7 +15401,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Ricoh</param>
 </offer>
 
-<offer id="CL104858" available="false">
+<offer id="CL104858" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104858</vendorCode>
 <name>Картридж для Lexmark MS/MX/317/417/517/617 с чипом (51B5H00) Sakura</name>
@@ -15574,7 +15574,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Epson</param>
 </offer>
 
-<offer id="CL104926" available="false">
+<offer id="CL104926" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104926</vendorCode>
 <name>Термоблок Xerox WC 3315/3325/ 3335/3345/ Phaser 3320/3330</name>
@@ -15691,7 +15691,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104945" available="false">
+<offer id="CL104945" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104945</vendorCode>
 <name>Картридж для HP CF540A (№203A) Чёрный OEM</name>
@@ -15709,7 +15709,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104946" available="false">
+<offer id="CL104946" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104946</vendorCode>
 <name>Картридж для HP CF541A (№203A) Голубой OEM</name>
@@ -15727,7 +15727,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104947" available="false">
+<offer id="CL104947" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104947</vendorCode>
 <name>Картридж для HP CF542A (№203A) Желтый OEM</name>
@@ -15745,7 +15745,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL104948" available="false">
+<offer id="CL104948" available="true">
 <categoryId></categoryId>
 <vendorCode>CL104948</vendorCode>
 <name>Картридж для HP CF543A (№203A) Пурпурный OEM</name>
@@ -16154,7 +16154,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Ricoh</param>
 </offer>
 
-<offer id="CL105003" available="false">
+<offer id="CL105003" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105003</vendorCode>
 <name>Драм-картридж для Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Чёрный (60k)</name>
@@ -16244,7 +16244,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105009" available="false">
+<offer id="CL105009" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105009</vendorCode>
 <name>Драм-картридж для Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Голубой (60k)</name>
@@ -16262,7 +16262,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105010" available="false">
+<offer id="CL105010" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105010</vendorCode>
 <name>Драм-картридж для Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Пурпурный (60k)</name>
@@ -16326,7 +16326,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105020" available="false">
+<offer id="CL105020" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105020</vendorCode>
 <name>Драм-картридж для Xerox (108R01121) Phaser 6600/ WC 6605/ VersaLink C400 Желтый (60k)</name>
@@ -16344,7 +16344,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105054" available="false">
+<offer id="CL105054" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105054</vendorCode>
 <name>Drum Unit Lexmark 52D0Z00 (100K) оригинал</name>
@@ -16362,7 +16362,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Lexmark</param>
 </offer>
 
-<offer id="CL105055" available="false">
+<offer id="CL105055" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105055</vendorCode>
 <name>Drum Unit Lexmark 50F0Z00 оригинал</name>
@@ -16654,7 +16654,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL105098" available="false">
+<offer id="CL105098" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105098</vendorCode>
 <name>Тонер-картридж 106R03693 (4.3K) Голубой Euro Print</name>
@@ -16673,7 +16673,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105099" available="false">
+<offer id="CL105099" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105099</vendorCode>
 <name>Тонер-картридж 106R03695 (4.3K) Желтый Euro Print</name>
@@ -16692,7 +16692,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105100" available="false">
+<offer id="CL105100" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105100</vendorCode>
 <name>Тонер-картридж 106R03694 (4.3K) Пурпурный Euro Print</name>
@@ -16711,7 +16711,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105110" available="false">
+<offer id="CL105110" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105110</vendorCode>
 <name>Картридж для Xerox PE220 (013R00621) OEM</name>
@@ -17130,7 +17130,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105175" available="false">
+<offer id="CL105175" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105175</vendorCode>
 <name>Тонер-картридж 106R01631 (1K) Голубой OEM</name>
@@ -17148,7 +17148,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105176" available="false">
+<offer id="CL105176" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105176</vendorCode>
 <name>Тонер-картридж 106R01632 (1K) Пурпурный OEM</name>
@@ -17166,7 +17166,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105177" available="false">
+<offer id="CL105177" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105177</vendorCode>
 <name>Тонер-картридж 106R01633 (1K) Желтый OEM</name>
@@ -17184,7 +17184,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105178" available="false">
+<offer id="CL105178" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105178</vendorCode>
 <name>Тонер-картридж 106R01634 (2K) Чёрный OEM</name>
@@ -17220,7 +17220,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105181" available="false">
+<offer id="CL105181" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105181</vendorCode>
 <name>Тонер-картридж 106R03396 (31K) OEM</name>
@@ -17237,7 +17237,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105182" available="false">
+<offer id="CL105182" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105182</vendorCode>
 <name>Тонер-картридж 106R03488 (5.5K) Чёрный OEM</name>
@@ -17255,7 +17255,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105183" available="false">
+<offer id="CL105183" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105183</vendorCode>
 <name>Тонер-картридж 106R03621 OEM (8.5K)</name>
@@ -17273,7 +17273,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105184" available="false">
+<offer id="CL105184" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105184</vendorCode>
 <name>Тонер-картридж 106R03693 (4.3K) Голубой OEM</name>
@@ -17291,7 +17291,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105185" available="false">
+<offer id="CL105185" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105185</vendorCode>
 <name>Тонер-картридж 106R03694 (4.3K) Пурпурный OEM</name>
@@ -17309,7 +17309,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105186" available="false">
+<offer id="CL105186" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105186</vendorCode>
 <name>Тонер-картридж 106R03695 (4.3K) Желтый OEM</name>
@@ -17327,7 +17327,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105190" available="false">
+<offer id="CL105190" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105190</vendorCode>
 <name>Тонер-картридж для Kyocera TK-1200 (3K) OEM</name>
@@ -17361,7 +17361,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Ricoh</param>
 </offer>
 
-<offer id="CL105205" available="false">
+<offer id="CL105205" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105205</vendorCode>
 <name>Картридж для HP CE321A/CB541A/CF211A Голубой OEM</name>
@@ -17379,7 +17379,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105206" available="false">
+<offer id="CL105206" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105206</vendorCode>
 <name>Картридж для HP CE322A/CB542A/CF212A Желтый OEM</name>
@@ -17397,7 +17397,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105207" available="false">
+<offer id="CL105207" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105207</vendorCode>
 <name>Картридж для HP CE323A/CB543A/CF213A Пурпурный OEM</name>
@@ -19195,7 +19195,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105655" available="false">
+<offer id="CL105655" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105655</vendorCode>
 <name>Тонер-картридж для Canon C-EXV65 Голубой (11K) Euro Print</name>
@@ -19213,7 +19213,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL105656" available="false">
+<offer id="CL105656" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105656</vendorCode>
 <name>Тонер-картридж для Canon C-EXV65 Желтый (11K) Euro Print</name>
@@ -19231,7 +19231,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL105657" available="false">
+<offer id="CL105657" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105657</vendorCode>
 <name>Тонер-картридж для Canon C-EXV65 Пурпурный (11K) Euro Print</name>
@@ -19249,7 +19249,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL105658" available="false">
+<offer id="CL105658" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105658</vendorCode>
 <name>Тонер-картридж для Canon C-EXV65 Чёрный (17,5K) Euro Print</name>
@@ -19284,7 +19284,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105660" available="false">
+<offer id="CL105660" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105660</vendorCode>
 <name>Картридж фотобарабана для HP CF358A (№828A) Чёрный (30K) Euro Print</name>
@@ -19302,7 +19302,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105663" available="false">
+<offer id="CL105663" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105663</vendorCode>
 <name>Картридж фотобарабана для HP CF364A (№828A) Желтый (30K) Euro Print</name>
@@ -19354,7 +19354,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105666" available="false">
+<offer id="CL105666" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105666</vendorCode>
 <name>Драм-картридж для Xerox (013R00687) VersaLink B7125/B7130/B7135 (80K) Euro Print</name>
@@ -19460,7 +19460,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105674" available="false">
+<offer id="CL105674" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105674</vendorCode>
 <name>Картридж для HP W2210A №207A (без чипа) Чёрный (1.35K) OEM</name>
@@ -19478,7 +19478,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105675" available="false">
+<offer id="CL105675" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105675</vendorCode>
 <name>Картридж для HP W2211A №207A (без чипа) Голубой (1.25K) OEM</name>
@@ -19496,7 +19496,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105676" available="false">
+<offer id="CL105676" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105676</vendorCode>
 <name>Картридж для HP W2212A №207A (без чипа) Желтый (1.25K) OEM</name>
@@ -19514,7 +19514,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105677" available="false">
+<offer id="CL105677" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105677</vendorCode>
 <name>Картридж для HP W2213A №207A (без чипа) Пурпурный (1.25K) OEM</name>
@@ -19550,7 +19550,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105718" available="false">
+<offer id="CL105718" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105718</vendorCode>
 <name>Тонер-картридж для Kyocera TK-3400 (12.5K)</name>
@@ -19586,7 +19586,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL105720" available="false">
+<offer id="CL105720" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105720</vendorCode>
 <name>Drum Unit для Konica Minolta DR-316K Чёрный (170k)</name>
@@ -19604,7 +19604,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Konica Minolta</param>
 </offer>
 
-<offer id="CL105721" available="false">
+<offer id="CL105721" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105721</vendorCode>
 <name>Drum Unit для Konica Minolta DR-316 C/M/Y (65k)</name>
@@ -19621,7 +19621,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Konica Minolta</param>
 </offer>
 
-<offer id="CL105722" available="false">
+<offer id="CL105722" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105722</vendorCode>
 <name>Drum Unit Kyocera DK-1150</name>
@@ -19657,7 +19657,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL105724" available="false">
+<offer id="CL105724" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105724</vendorCode>
 <name>Тонер-картридж 006R04368 Чёрный (8K) Euro Print</name>
@@ -19676,7 +19676,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105725" available="false">
+<offer id="CL105725" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105725</vendorCode>
 <name>Тонер-картридж 006R04369 (5.5K) Голубой Euro Print</name>
@@ -19694,7 +19694,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105726" available="false">
+<offer id="CL105726" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105726</vendorCode>
 <name>Тонер-картридж 006R04370 (5.5K) Пурпурный Euro Print</name>
@@ -19712,7 +19712,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105727" available="false">
+<offer id="CL105727" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105727</vendorCode>
 <name>Тонер-картридж 006R04371 (5.5K) Желтый Euro Print</name>
@@ -19950,7 +19950,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105740" available="false">
+<offer id="CL105740" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105740</vendorCode>
 <name>Картридж для Canon T13 ( 5640C006 ) (10,6K) Euro Print</name>
@@ -20103,7 +20103,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105771" available="false">
+<offer id="CL105771" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105771</vendorCode>
 <name>Тонер-картридж 006R04403 с чипом (3K) Euro Print</name>
@@ -20155,7 +20155,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Konica Minolta</param>
 </offer>
 
-<offer id="CL105778" available="false">
+<offer id="CL105778" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105778</vendorCode>
 <name>Drum Unit для Konica Minolta DR-313 C/M/Y (55k)</name>
@@ -20172,7 +20172,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Konica Minolta</param>
 </offer>
 
-<offer id="CL105779" available="false">
+<offer id="CL105779" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105779</vendorCode>
 <name>Тонер-картридж 006R04387 Чёрный (1,5K) Euro Print</name>
@@ -20190,7 +20190,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105780" available="false">
+<offer id="CL105780" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105780</vendorCode>
 <name>Тонер-картридж 006R04388 Голубой (1,5K) Euro Print</name>
@@ -20208,7 +20208,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105781" available="false">
+<offer id="CL105781" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105781</vendorCode>
 <name>Тонер-картридж 006R04389 Пурпурный (1,5K) Euro Print</name>
@@ -20226,7 +20226,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105782" available="false">
+<offer id="CL105782" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105782</vendorCode>
 <name>Тонер-картридж 006R04390 Желтый (1,5K) Euro Print</name>
@@ -20244,7 +20244,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105783" available="false">
+<offer id="CL105783" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105783</vendorCode>
 <name>Тонер-картридж 006R01683 (2*50K) Euro Print</name>
@@ -20261,7 +20261,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105784" available="false">
+<offer id="CL105784" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105784</vendorCode>
 <name>Картридж для PANTUM TL-420X (6K) Euro Print</name>
@@ -20278,7 +20278,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Pantum</param>
 </offer>
 
-<offer id="CL105785" available="false">
+<offer id="CL105785" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105785</vendorCode>
 <name>Drum Unit PANTUM DL-420 (12K) Euro Print</name>
@@ -20997,7 +20997,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL105942" available="false">
+<offer id="CL105942" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105942</vendorCode>
 <name>Тонер-картридж для Kyocera TK-5270K Чёрный (8K)</name>
@@ -21015,7 +21015,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL105943" available="false">
+<offer id="CL105943" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105943</vendorCode>
 <name>Тонер-картридж для Kyocera TK-5270Y Желтый (6K)</name>
@@ -21033,7 +21033,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL105944" available="false">
+<offer id="CL105944" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105944</vendorCode>
 <name>Тонер-картридж для Kyocera TK-5270C Голубой (6K)</name>
@@ -21051,7 +21051,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL105945" available="false">
+<offer id="CL105945" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105945</vendorCode>
 <name>Тонер-картридж для Kyocera TK-5270M Пурпурный (6K)</name>
@@ -21069,7 +21069,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Kyocera</param>
 </offer>
 
-<offer id="CL105946" available="false">
+<offer id="CL105946" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105946</vendorCode>
 <name>Тонер-картридж для Kyocera TK-3300 (14,5K)</name>
@@ -21104,7 +21104,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105951" available="false">
+<offer id="CL105951" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105951</vendorCode>
 <name>Картридж для HP W2220A №222A Чёрный (1.3K) Euro Print</name>
@@ -21122,7 +21122,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105952" available="false">
+<offer id="CL105952" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105952</vendorCode>
 <name>Картридж для HP W2221A №222A Голубой (1.2K) Euro Print</name>
@@ -21140,7 +21140,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105953" available="false">
+<offer id="CL105953" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105953</vendorCode>
 <name>Картридж для HP W2222A №222A Желтый (1.2K) Euro Print</name>
@@ -21158,7 +21158,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CL105954" available="false">
+<offer id="CL105954" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105954</vendorCode>
 <name>Картридж для HP W2223A №222A Пурпурный (1.2K) Euro Print</name>
@@ -21248,7 +21248,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CL105959" available="false">
+<offer id="CL105959" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105959</vendorCode>
 <name>Тонер-картридж 006R04827 Чёрный (2.2K) Euro Print</name>
@@ -21266,7 +21266,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105960" available="false">
+<offer id="CL105960" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105960</vendorCode>
 <name>Тонер-картридж 006R04825 Пурпурный (1.8K) Euro Print</name>
@@ -21284,7 +21284,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105961" available="false">
+<offer id="CL105961" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105961</vendorCode>
 <name>Тонер-картридж 006R04826 Желтый (1.8K) Euro Print</name>
@@ -21302,7 +21302,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105962" available="false">
+<offer id="CL105962" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105962</vendorCode>
 <name>Тонер-картридж 006R04824 Голубой (1.8K) Euro Print</name>
@@ -21320,7 +21320,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105963" available="false">
+<offer id="CL105963" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105963</vendorCode>
 <name>Тонер-картридж 006R04832 Голубой (5.5K) Euro Print</name>
@@ -21338,7 +21338,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105964" available="false">
+<offer id="CL105964" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105964</vendorCode>
 <name>Тонер-картридж 006R04833 Пурпурный (5.5K) Euro Print</name>
@@ -21356,7 +21356,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105965" available="false">
+<offer id="CL105965" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105965</vendorCode>
 <name>Тонер-картридж 006R04834 Желтый (5.5K) Euro Print</name>
@@ -21374,7 +21374,7 @@ Drum Unit SP400 используется в принтерах серий Ricoh 
 <param name="Для бренда">Xerox</param>
 </offer>
 
-<offer id="CL105966" available="false">
+<offer id="CL105966" available="true">
 <categoryId></categoryId>
 <vendorCode>CL105966</vendorCode>
 <name>Тонер-картридж 006R04835 Чёрный (8K) Euro Print</name>
