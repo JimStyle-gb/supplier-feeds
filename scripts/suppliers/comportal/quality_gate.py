@@ -3,10 +3,10 @@
 Path: scripts/suppliers/comportal/quality_gate.py
 Minimal quality gate for ComPortal.
 
-Задача:
-- проверить сырой final-raw feed до выпуска;
-- записать отчёт в docs/raw/comportal_quality_gate.txt;
-- вернуть ok/skipped/report_path для build_comportal.py
+Что улучшено:
+- возвращает critical_count / cosmetic_count;
+- возвращает первые critical issues прямо в build summary;
+- отчёт остаётся в docs/raw/comportal_quality_gate.txt
 """
 
 from __future__ import annotations
@@ -130,6 +130,10 @@ def run_quality_gate(feed_path: str, report_path: str = "docs/raw/comportal_qual
         "skipped": False,
         "reason": "",
         "report_path": str(rp),
+        "critical_count": len(critical),
+        "cosmetic_count": len(cosmetic),
+        "critical_preview": critical[:10],
+        "cosmetic_preview": cosmetic[:10],
     }
 
 
