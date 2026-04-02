@@ -34,34 +34,13 @@ _TECH_VALUE_RE = re.compile(
     r")\b"
 )
 _RESOURCE_NUMBER_ONLY_RE = re.compile(r"(?iu)^\d[\d\s.,]*(?:\s*(?:стр\.?|страниц))?$")
-
 _GLOBAL_DROP_KEYS_CASEFOLD = {
-    "артикул",
-    "штрихкод",
-    "штрих-код",
-    "штрих код",
-    "barcode",
-    "gtin",
-    "upc",
-    "ean",
-    "ean-13",
-    "ean13",
-    "код тн вэд",
-    "код нкт",
-    "код товара kaspi",
-    "код товара kaspi.kz",
-    "благотворительность",
-    "снижена цена",
-    "новинка",
-    "назначение",
-    "безопасность",
-    "цена по запросу (для сортировки)",
+    "артикул", "штрихкод", "штрих-код", "штрих код", "barcode", "gtin", "upc", "ean", "ean-13",
+    "ean13", "код тн вэд", "код нкт", "код товара kaspi", "код товара kaspi.kz", "благотворительность",
+    "снижена цена", "новинка", "назначение", "безопасность", "цена по запросу (для сортировки)",
     "акция (для сортировки)",
 }
-
-_COMPORTAL_EXTRA_DROP_KEYS_CASEFOLD = {
-    "акция",
-}
+_COMPORTAL_EXTRA_DROP_KEYS_CASEFOLD = {"акция"}
 
 
 def key_quality_ok(k: str, *, require_letter: bool, max_len: int, max_words: int) -> bool:
@@ -97,7 +76,6 @@ def normalize_warranty_to_months(v: str) -> str:
 
 def normalize_key_aliases(key: str, schema: dict[str, Any]) -> str:
     kk = norm_ws(key)
-
     hard_mapping = {
         "Объем": "Объём",
         "Тип печати": "Технология печати",
@@ -107,7 +85,6 @@ def normalize_key_aliases(key: str, schema: dict[str, Any]) -> str:
     }
     if kk in hard_mapping:
         return hard_mapping[kk]
-
     aliases = schema.get("aliases_casefold") or {}
     repl = aliases.get(kk.casefold())
     return norm_ws(repl) if repl else kk
@@ -118,15 +95,8 @@ def _post_clean_color_value(v: str) -> str:
     if not s:
         return ""
     mapping = {
-        "черн": "Чёрный",
-        "желт": "Жёлтый",
-        "голуб": "Голубой",
-        "пурпур": "Пурпурный",
-        "сер": "Серый",
-        "бел": "Белый",
-        "син": "Синий",
-        "красн": "Красный",
-        "зел": "Зелёный",
+        "черн": "Чёрный", "желт": "Жёлтый", "голуб": "Голубой", "пурпур": "Пурпурный",
+        "сер": "Серый", "бел": "Белый", "син": "Синий", "красн": "Красный", "зел": "Зелёный",
     }
     low = s.casefold().replace("ё", "е")
     for pref, clean in mapping.items():
@@ -182,19 +152,15 @@ def apply_value_normalizers(key: str, val: str, schema: dict[str, Any]) -> str:
     v = norm_ws(val)
     if not v:
         return ""
-
     vn = schema.get("value_normalizers") or {}
     ops = vn.get(key) or vn.get(key.casefold()) or []
-
     for op in ops:
         if op == "warranty_months":
             v = normalize_warranty_to_months(v)
         elif op == "trim_ws":
             v = norm_ws(v)
-
     if norm_ws(key).casefold() not in {"совместимость", "модель", "аналог модели"}:
         v = _RE_LETTER_SLASH_LETTER.sub(r"\1 \2", v)
-
     v = _post_clean_value(key, v)
     return norm_ws(v)
 
@@ -249,14 +215,12 @@ def _effective_drop_keys_casefold(schema: dict[str, Any]) -> set[str]:
 
 def build_params_from_xml(source_offer: SourceOffer, schema: dict[str, Any]) -> list[ParamItem]:
     out: list[ParamItem] = []
-
     drop_keys_casefold = _effective_drop_keys_casefold(schema)
     require_letter = bool((schema.get("key_rules") or {}).get("require_letter", True))
     max_len = int((schema.get("key_rules") or {}).get("max_len", 60) or 60)
     max_words = int((schema.get("key_rules") or {}).get("max_words", 9) or 9)
 
     seen_keys: set[str] = set()
-
     type_hint = category_type_hint(source_offer)
     if type_hint:
         out.append(ParamItem(name="Тип", value=type_hint, source="category"))
@@ -267,7 +231,6 @@ def build_params_from_xml(source_offer: SourceOffer, schema: dict[str, Any]) -> 
         raw_val = norm_ws(param.value)
         if not raw_key or not raw_val:
             continue
-
         key = normalize_key_aliases(raw_key, schema)
         if not key:
             continue
@@ -275,16 +238,12 @@ def build_params_from_xml(source_offer: SourceOffer, schema: dict[str, Any]) -> 
             continue
         if not key_quality_ok(key, require_letter=require_letter, max_len=max_len, max_words=max_words):
             continue
-
         val = apply_value_normalizers(key, raw_val, schema)
         if not val:
             continue
-
         kcf = key.casefold()
         if kcf in seen_keys:
             continue
-
         out.append(ParamItem(name=key, value=val, source="xml"))
         seen_keys.add(kcf)
-
     return out
