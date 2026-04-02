@@ -8,6 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TZ: Asia/Almaty
+      COMPORTAL_HTTP_COOKIE: ${{ secrets.COMPORTAL_HTTP_COOKIE }}
+      COMPORTAL_HTTP_AUTHORIZATION: ${{ secrets.COMPORTAL_HTTP_AUTHORIZATION }}
+      COMPORTAL_HTTP_REFERER: https://www.comportal.kz/
 
     steps:
       - name: Checkout
