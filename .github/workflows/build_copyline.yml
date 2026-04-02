@@ -23,6 +23,11 @@ jobs:
       - name: Show Python version
         run: python --version
 
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install PyYAML requests beautifulsoup4 lxml
+
       - name: Compile shared + CopyLine files
         run: |
           python -m py_compile             scripts/build_copyline.py             scripts/cs/core.py             scripts/cs/writer.py             scripts/cs/validators.py             scripts/cs/util.py             scripts/cs/meta.py             scripts/cs/pricing.py             scripts/cs/description.py             scripts/cs/keywords.py             scripts/cs/policy.py             scripts/cs/qg_report.py             scripts/suppliers/copyline/models.py             scripts/suppliers/copyline/source.py             scripts/suppliers/copyline/filtering.py             scripts/suppliers/copyline/normalize.py             scripts/suppliers/copyline/pictures.py             scripts/suppliers/copyline/params_page.py             scripts/suppliers/copyline/desc_clean.py             scripts/suppliers/copyline/desc_extract.py             scripts/suppliers/copyline/compat.py             scripts/suppliers/copyline/builder.py             scripts/suppliers/copyline/diagnostics.py             scripts/suppliers/copyline/quality_gate.py
@@ -30,7 +35,7 @@ jobs:
       - name: Build CopyLine
         run: python scripts/build_copyline.py
 
-      - name: Upload outputs to workspace
+      - name: Verify outputs
         run: |
           test -f docs/raw/copyline.yml
           test -f docs/copyline.yml
