@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-02 17:41:46">
+<yml_catalog date="2026-04-02 17:52:42">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-04-02 17:41:46
+Время сборки (Алматы)                      | 2026-04-02 17:52:42
 Ближайшая сборка (Алматы)                  | 2026-04-03 04:00:00
 Сколько товаров у поставщика до фильтра    | 1191
 Сколько товаров у поставщика после фильтра | 582
@@ -192,14 +192,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873145</vendorCode>
 <name>МФП Canon i-SENSYS MF3010 (5252B004)</name>
 <price>136265</price>
-<vendor>МФП</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 МФП Canon i-SENSYS MF3010 (5252B004)
-Характеристики: мфу, МФП.
+Характеристики: мфу, Canon.
 Категория поставщика: Печатная техника, сканеры и аксессуары > Лазерные монохромные МФУ.]]></description>
 <param name="Тип">МФУ</param>
-<param name="Для бренда">МФП</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">5252B004</param>
 <param name="Модель">5252B004</param>
 <param name="Гарантия">12</param>
@@ -2974,14 +2974,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873144</vendorCode>
 <name>МФП Canon i-SENSYS MF237W BUND(2 картриджа) (1418C170)</name>
 <price>190332</price>
-<vendor>МФП</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 МФП Canon i-SENSYS MF237W BUND(2 картриджа) (1418C170)
-Характеристики: мфу, МФП.
+Характеристики: мфу, Canon.
 Категория поставщика: Печатная техника, сканеры и аксессуары > Лазерные монохромные МФУ.]]></description>
 <param name="Тип">МФУ</param>
-<param name="Для бренда">МФП</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">1418C170</param>
 <param name="Модель">1418C170</param>
 <param name="Гарантия">12</param>
@@ -3023,14 +3023,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873126</vendorCode>
 <name>Картридж HP Europe CF214XH (CF214XH)</name>
 <price>148793</price>
-<vendor>Картридж</vendor>
+<vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Картридж HP Europe CF214XH (CF214XH)
-Характеристики: картридж, Картридж.
+Характеристики: картридж, HP.
 Категория поставщика: Расходные материалы > Картриджи для лазерных устройств.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Для бренда">Картридж</param>
+<param name="Для бренда">HP</param>
 <param name="Коды">CF214XH</param>
 <param name="Модель">CF214XH</param>
 </offer>
@@ -3814,14 +3814,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873146</vendorCode>
 <name>МФП Canon i-SENSYS MF453dw (5161C007)</name>
 <price>186196</price>
-<vendor>МФП</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 МФП Canon i-SENSYS MF453dw (5161C007)
-Характеристики: мфу, МФП.
+Характеристики: мфу, Canon.
 Категория поставщика: Печатная техника, сканеры и аксессуары > Лазерные монохромные МФУ.]]></description>
 <param name="Тип">МФУ</param>
-<param name="Для бренда">МФП</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">5161C007</param>
 <param name="Модель">5161C007</param>
 <param name="Гарантия">12</param>
@@ -4651,14 +4651,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872828</vendorCode>
 <name>Проектор Acer H6815BD (MR.JTA11.001)</name>
 <price>470840</price>
-<vendor>Проектор</vendor>
+<vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Проектор Acer H6815BD (MR.JTA11.001)
-Характеристики: проектор, Проектор.
+Характеристики: проектор, Acer.
 Категория поставщика: ПК, мониторы и аксессуары > Проекторы.]]></description>
 <param name="Тип">Проектор</param>
-<param name="Для бренда">Проектор</param>
+<param name="Для бренда">Acer</param>
 <param name="Коды">MR.JTA11.001</param>
 <param name="Модель">MR.JTA11.001</param>
 <param name="Гарантия">12</param>
@@ -5642,14 +5642,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872560</vendorCode>
 <name>Тонер Canon C-EXV 64 (5753C002)</name>
 <price>47736</price>
-<vendor>Тонер</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер Canon C-EXV 64 (5753C002)
-Характеристики: тонер, Тонер.
+Характеристики: тонер, Canon.
 Категория поставщика: Расходные материалы > Тонеры.]]></description>
 <param name="Тип">Тонер</param>
-<param name="Для бренда">Тонер</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">5753C002</param>
 <param name="Модель">5753C002</param>
 </offer>
@@ -5679,14 +5679,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872561</vendorCode>
 <name>Тонер Canon C-EXV 64 (5754C002)</name>
 <price>85139</price>
-<vendor>Тонер</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер Canon C-EXV 64 (5754C002)
-Характеристики: тонер, Тонер.
+Характеристики: тонер, Canon.
 Категория поставщика: Расходные материалы > Тонеры.]]></description>
 <param name="Тип">Тонер</param>
-<param name="Для бренда">Тонер</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">5754C002</param>
 <param name="Модель">5754C002</param>
 </offer>
@@ -5716,14 +5716,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872562</vendorCode>
 <name>Тонер Canon C-EXV 64 (5756C002)</name>
 <price>89790</price>
-<vendor>Тонер</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер Canon C-EXV 64 (5756C002)
-Характеристики: тонер, Тонер.
+Характеристики: тонер, Canon.
 Категория поставщика: Расходные материалы > Тонеры.]]></description>
 <param name="Тип">Тонер</param>
-<param name="Для бренда">Тонер</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">5756C002</param>
 <param name="Модель">5756C002</param>
 </offer>
@@ -5753,14 +5753,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872563</vendorCode>
 <name>Тонер Canon C-EXV 64 (5755C002)</name>
 <price>85134</price>
-<vendor>Тонер</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер Canon C-EXV 64 (5755C002)
-Характеристики: тонер, Тонер.
+Характеристики: тонер, Canon.
 Категория поставщика: Расходные материалы > Тонеры.]]></description>
 <param name="Тип">Тонер</param>
-<param name="Для бренда">Тонер</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">5755C002</param>
 <param name="Модель">5755C002</param>
 </offer>
@@ -6267,14 +6267,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872950</vendorCode>
 <name>МФП Canon imageRUNNER C3326i (5965C005)</name>
 <price>746648</price>
-<vendor>МФП</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 МФП Canon imageRUNNER C3326i (5965C005)
-Характеристики: мфу, МФП.
+Характеристики: мфу, Canon.
 Категория поставщика: Печатная техника, сканеры и аксессуары > Лазерные цветные МФУ.]]></description>
 <param name="Тип">МФУ</param>
-<param name="Для бренда">МФП</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">5965C005</param>
 <param name="Модель">5965C005</param>
 <param name="Гарантия">12</param>
@@ -6285,14 +6285,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872564</vendorCode>
 <name>Тонер Canon C-EXV 65 (5761C001)</name>
 <price>58767</price>
-<vendor>Тонер</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер Canon C-EXV 65 (5761C001)
-Характеристики: картридж, Тонер.
+Характеристики: картридж, Canon.
 Категория поставщика: Расходные материалы > Картриджи для лазерных устройств.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Для бренда">Тонер</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">5761C001</param>
 <param name="Модель">5761C001</param>
 </offer>
@@ -6323,14 +6323,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872565</vendorCode>
 <name>Тонер Canon C-EXV 65 (5762C001)</name>
 <price>84272</price>
-<vendor>Тонер</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер Canon C-EXV 65 (5762C001)
-Характеристики: картридж, Тонер.
+Характеристики: картридж, Canon.
 Категория поставщика: Расходные материалы > Картриджи для лазерных устройств.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Для бренда">Тонер</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">5762C001</param>
 <param name="Модель">5762C001</param>
 </offer>
@@ -6361,14 +6361,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872566</vendorCode>
 <name>Тонер Canon C-EXV 65 (5764C001)</name>
 <price>84272</price>
-<vendor>Тонер</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер Canon C-EXV 65 (5764C001)
-Характеристики: картридж, Тонер.
+Характеристики: картридж, Canon.
 Категория поставщика: Расходные материалы > Картриджи для лазерных устройств.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Для бренда">Тонер</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">5764C001</param>
 <param name="Модель">5764C001</param>
 </offer>
@@ -6399,14 +6399,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872567</vendorCode>
 <name>Тонер Canon C-EXV 65 (5763C001)</name>
 <price>84272</price>
-<vendor>Тонер</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер Canon C-EXV 65 (5763C001)
-Характеристики: картридж, Тонер.
+Характеристики: картридж, Canon.
 Категория поставщика: Расходные материалы > Картриджи для лазерных устройств.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Для бренда">Тонер</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">5763C001</param>
 <param name="Модель">5763C001</param>
 </offer>
@@ -7882,14 +7882,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872829</vendorCode>
 <name>Проектор Acer X1328WHn (MR.JX211.001)</name>
 <price>234438</price>
-<vendor>Проектор</vendor>
+<vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Проектор Acer X1328WHn (MR.JX211.001)
-Характеристики: проектор, Проектор.
+Характеристики: проектор, Acer.
 Категория поставщика: ПК, мониторы и аксессуары > Проекторы.]]></description>
 <param name="Тип">Проектор</param>
-<param name="Для бренда">Проектор</param>
+<param name="Для бренда">Acer</param>
 <param name="Коды">MR.JX211.001</param>
 <param name="Модель">MR.JX211.001</param>
 <param name="Гарантия">12</param>
@@ -8757,14 +8757,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872947</vendorCode>
 <name>Ноутбук Dell Vostro 3530 (210-BGLW-N1601PVNB3530EMEA01_UBU)</name>
 <price>349396</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Vostro 3530 (210-BGLW-N1601PVNB3530EMEA01_UBU)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">BGLW-</param>
 <param name="Гарантия">12</param>
 </offer>
@@ -9157,14 +9157,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872652</vendorCode>
 <name>Чернила Canon INK GI-40 M (3401C001)</name>
 <price>3813</price>
-<vendor>Чернила</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Чернила Canon INK GI-40 M (3401C001)
-Характеристики: картридж, Чернила.
+Характеристики: картридж, Canon.
 Категория поставщика: Расходные материалы > Картриджи для струйных устройств.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Для бренда">Чернила</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">3401C001</param>
 <param name="Модель">3401C001</param>
 </offer>
@@ -9174,14 +9174,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13870401</vendorCode>
 <name>Чернила Canon INK GI-40 Y (3402C001)</name>
 <price>3813</price>
-<vendor>Чернила</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Чернила Canon INK GI-40 Y (3402C001)
-Характеристики: картридж, Чернила.
+Характеристики: картридж, Canon.
 Категория поставщика: Расходные материалы > Картриджи для струйных устройств.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Для бренда">Чернила</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">3402C001</param>
 <param name="Модель">3402C001</param>
 </offer>
@@ -10760,14 +10760,13 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872771</vendorCode>
 <name>Моноблок AIWA PF2402-D 8-256 (PF2402-D 8-256)</name>
 <price>198339</price>
-<vendor>Моноблок</vendor>
+<vendor></vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Моноблок AIWA PF2402-D 8-256 (PF2402-D 8-256)
-Характеристики: моноблок, Моноблок.
+Характеристики: моноблок.
 Категория поставщика: ПК, мониторы и аксессуары > Моноблоки.]]></description>
 <param name="Тип">Моноблок</param>
-<param name="Для бренда">Моноблок</param>
 <param name="Модель">AIWA</param>
 <param name="Гарантия">12</param>
 </offer>
@@ -10777,14 +10776,13 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872772</vendorCode>
 <name>Моноблок AIWA PF2402-K 8-512 (PF2402-K 8-512)</name>
 <price>211600</price>
-<vendor>Моноблок</vendor>
+<vendor></vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Моноблок AIWA PF2402-K 8-512 (PF2402-K 8-512)
-Характеристики: моноблок, Моноблок.
+Характеристики: моноблок.
 Категория поставщика: ПК, мониторы и аксессуары > Моноблоки.]]></description>
 <param name="Тип">Моноблок</param>
-<param name="Для бренда">Моноблок</param>
 <param name="Модель">AIWA</param>
 <param name="Гарантия">12</param>
 </offer>
@@ -10794,14 +10792,13 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872773</vendorCode>
 <name>Моноблок AIWA PF2702-K 16-512 (PF2702-K 16-512)</name>
 <price>230027</price>
-<vendor>Моноблок</vendor>
+<vendor></vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Моноблок AIWA PF2702-K 16-512 (PF2702-K 16-512)
-Характеристики: моноблок, Моноблок.
+Характеристики: моноблок.
 Категория поставщика: ПК, мониторы и аксессуары > Моноблоки.]]></description>
 <param name="Тип">Моноблок</param>
-<param name="Для бренда">Моноблок</param>
 <param name="Модель">AIWA</param>
 <param name="Гарантия">12</param>
 </offer>
@@ -11522,14 +11519,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873043</vendorCode>
 <name>Монитор Dell UltraSharp 32 4K Thunderbolt Hub Monitor - U3225QE (210-BQTK)</name>
 <price>519346</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell UltraSharp 32 4K Thunderbolt Hub Monitor - U3225QE (210-BQTK)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BQTK</param>
 <param name="Модель">210-BQTK</param>
 <param name="Гарантия">36</param>
@@ -11851,14 +11848,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873044</vendorCode>
 <name>Монитор Dell Pro 24 Monitor - E2425HM, 60.47cm (23.8") (210-BRDN)</name>
 <price>55714</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell Pro 24 Monitor - E2425HM, 60.47cm (23.8") (210-BRDN)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BRDN</param>
 <param name="Модель">210-BRDN</param>
 <param name="Гарантия">36</param>
@@ -11927,14 +11924,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873045</vendorCode>
 <name>Монитор Dell Pro 24 Plus Monitor - P2425D, 60.5cm (23.8") (210-BQMX)</name>
 <price>131406</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell Pro 24 Plus Monitor - P2425D, 60.5cm (23.8") (210-BQMX)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BQMX</param>
 <param name="Модель">210-BQMX</param>
 <param name="Гарантия">36</param>
@@ -12372,14 +12369,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873056</vendorCode>
 <name>Монитор Dell 27 Plus 4K Monitor-S2725QS (210-BQWM)</name>
 <price>157677</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell 27 Plus 4K Monitor-S2725QS (210-BQWM)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BQWM</param>
 <param name="Модель">210-BQWM</param>
 <param name="Гарантия">36</param>
@@ -12448,14 +12445,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873046</vendorCode>
 <name>Монитор Dell 24 Monitor - SE2425HM (210-BQZT)</name>
 <price>50216</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell 24 Monitor - SE2425HM (210-BQZT)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BQZT</param>
 <param name="Модель">210-BQZT</param>
 <param name="Гарантия">36</param>
@@ -12466,14 +12463,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873047</vendorCode>
 <name>Монитор Dell 27 Monitor - SE2725HM (210-BQZW)</name>
 <price>63308</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell 27 Monitor - SE2725HM (210-BQZW)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BQZW</param>
 <param name="Модель">210-BQZW</param>
 <param name="Гарантия">36</param>
@@ -12484,14 +12481,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873013</vendorCode>
 <name>Моноблок Dell Pro 24 All-in-One QB24250 (210-BPPG)</name>
 <price>647146</price>
-<vendor>Моноблок</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Моноблок Dell Pro 24 All-in-One QB24250 (210-BPPG)
-Характеристики: моноблок, Моноблок.
+Характеристики: моноблок, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Моноблоки.]]></description>
 <param name="Тип">Моноблок</param>
-<param name="Для бренда">Моноблок</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BPPG</param>
 <param name="Модель">210-BPPG</param>
 <param name="Гарантия">12</param>
@@ -12949,14 +12946,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872581</vendorCode>
 <name>Ноутбук Asus ROG Strix G16 / G615JHR-S5039 (90NR0LL1-M001B0)</name>
 <price>775008</price>
-<vendor>Ноутбук</vendor>
+<vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Asus ROG Strix G16 / G615JHR-S5039 (90NR0LL1-M001B0)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, ASUS.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">ASUS</param>
 <param name="Коды">90NR0LL1-M001B0</param>
 <param name="Модель">90NR0LL1-M001B0</param>
 <param name="Гарантия">12</param>
@@ -12997,14 +12994,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873048</vendorCode>
 <name>Монитор Dell Dell 32 Plus 4K QD-OLED Monitor - S3225QC (210-BRVT)</name>
 <price>515576</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell Dell 32 Plus 4K QD-OLED Monitor - S3225QC (210-BRVT)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BRVT</param>
 <param name="Модель">210-BRVT</param>
 <param name="Гарантия">36</param>
@@ -13336,14 +13333,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872831</vendorCode>
 <name>Проектор Acer X139 (MR.JX611.00Z)</name>
 <price>217364</price>
-<vendor>Проектор</vendor>
+<vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Проектор Acer X139 (MR.JX611.00Z)
-Характеристики: проектор, Проектор.
+Характеристики: проектор, Acer.
 Категория поставщика: ПК, мониторы и аксессуары > Проекторы.]]></description>
 <param name="Тип">Проектор</param>
-<param name="Для бренда">Проектор</param>
+<param name="Для бренда">Acer</param>
 <param name="Коды">MR.JX611.00Z</param>
 <param name="Модель">MR.JX611.00Z</param>
 <param name="Гарантия">12</param>
@@ -13477,14 +13474,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13871789</vendorCode>
 <name>Ноутбук Acer Predator Helios Neo 18 AI / PHN18-72-9213 (NH.QVHER.001)</name>
 <price>1078136</price>
-<vendor>Ноутбук</vendor>
+<vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Acer Predator Helios Neo 18 AI / PHN18-72-9213 (NH.QVHER.001)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Acer.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Acer</param>
 <param name="Коды">NH.QVHER.001</param>
 <param name="Модель">NH.QVHER.001</param>
 <param name="Гарантия">12</param>
@@ -13840,14 +13837,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872989</vendorCode>
 <name>Ноутбук Dell Pro 14 PC14250 (BTO109_PC14250_EMEA_210-BQHF)</name>
 <price>644305</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 14 PC14250 (BTO109_PC14250_EMEA_210-BQHF)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">PC14250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -13905,14 +13902,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872990</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus PB14250 (BTO111_PB14250_EMEA_210-BPDL)</name>
 <price>779303</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 14 Plus PB14250 (BTO111_PB14250_EMEA_210-BPDL)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">PB14250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -13922,14 +13919,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872991</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus PB14250 (210-BPDL_BTO110_PB14250_EMEA)</name>
 <price>733281</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 14 Plus PB14250 (210-BPDL_BTO110_PB14250_EMEA)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">PB14250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -13939,14 +13936,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872992</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO109_PC16250_EMEA_210-BQHB)</name>
 <price>647372</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 16 PC16250 (BTO109_PC16250_EMEA_210-BQHB)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">PC16250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -13956,14 +13953,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872993</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO107_PC16250_EMEA_210-BQHB)</name>
 <price>680509</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 16 PC16250 (BTO107_PC16250_EMEA_210-BQHB)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">PC16250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -14069,14 +14066,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872994</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16255 (BTO602_PC16255_EMEA_210-BQPC)</name>
 <price>533853</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 16 PC16255 (BTO602_PC16255_EMEA_210-BQPC)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">PC16255</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -14134,14 +14131,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872995</vendorCode>
 <name>Ноутбук Dell Pro 16 Plus PB16250 (BTO105_PB16250_EMEA_UBU_210-BPCM)</name>
 <price>699533</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 16 Plus PB16250 (BTO105_PB16250_EMEA_UBU_210-BPCM)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">PB16250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -14591,14 +14588,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873050</vendorCode>
 <name>Монитор Dell SE2725HG (210-BSNS)</name>
 <price>81407</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell SE2725HG (210-BSNS)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BSNS</param>
 <param name="Модель">210-BSNS</param>
 <param name="Гарантия">36</param>
@@ -14663,14 +14660,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872877</vendorCode>
 <name>Монитор Dell AW2725D (210-BRZW)</name>
 <price>282997</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell AW2725D (210-BRZW)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BRZW</param>
 <param name="Модель">210-BRZW</param>
 <param name="Гарантия">36</param>
@@ -14681,14 +14678,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872763</vendorCode>
 <name>Монитор Dell AW2725DM (210-BQWQ)</name>
 <price>157109</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell AW2725DM (210-BQWQ)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BQWQ</param>
 <param name="Модель">210-BQWQ</param>
 <param name="Гарантия">36</param>
@@ -14699,14 +14696,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872878</vendorCode>
 <name>Монитор Dell AW2525HM (210-BRYJ)</name>
 <price>109161</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell AW2525HM (210-BRYJ)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BRYJ</param>
 <param name="Модель">210-BRYJ</param>
 <param name="Гарантия">36</param>
@@ -15119,14 +15116,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872599</vendorCode>
 <name>Монитор HP Europe Series 5 Pro/524pu (9D9V7AA#ABB)</name>
 <price>117202</price>
-<vendor>Монитор</vendor>
+<vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор HP Europe Series 5 Pro/524pu (9D9V7AA#ABB)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, HP.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">HP</param>
 <param name="Коды">9D9V7AA#ABB</param>
 <param name="Модель">9D9V7AA#ABB</param>
 <param name="Гарантия">36</param>
@@ -15167,14 +15164,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873051</vendorCode>
 <name>Монитор Dell 24 Plus Monitor – S2425HSM (210-BSZD)</name>
 <price>77526</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell 24 Plus Monitor – S2425HSM (210-BSZD)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BSZD</param>
 <param name="Модель">210-BSZD</param>
 <param name="Гарантия">36</param>
@@ -15185,14 +15182,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873053</vendorCode>
 <name>Монитор Dell 27 Plus Monitor – S2725HSM (210-BSZF)</name>
 <price>91028</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell 27 Plus Monitor – S2725HSM (210-BSZF)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BSZF</param>
 <param name="Модель">210-BSZF</param>
 <param name="Гарантия">36</param>
@@ -15203,14 +15200,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872628</vendorCode>
 <name>Монитор Dell 27 Plus Monitor – S2725HSM (210-BSZF)</name>
 <price>91028</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell 27 Plus Monitor – S2725HSM (210-BSZF)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BSZF</param>
 <param name="Модель">210-BSZF</param>
 <param name="Гарантия">36</param>
@@ -15221,14 +15218,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873054</vendorCode>
 <name>Монитор Dell 27 Plus QHD USB-C Monitor - S2725DC (210-BSRL)</name>
 <price>159723</price>
-<vendor>Монитор</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Монитор Dell 27 Plus QHD USB-C Monitor - S2725DC (210-BSRL)
-Характеристики: монитор, Монитор.
+Характеристики: монитор, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Мониторы.]]></description>
 <param name="Тип">Монитор</param>
-<param name="Для бренда">Монитор</param>
+<param name="Для бренда">Dell</param>
 <param name="Коды">210-BSRL</param>
 <param name="Модель">210-BSRL</param>
 <param name="Гарантия">36</param>
@@ -15291,14 +15288,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872583</vendorCode>
 <name>Ноутбук Asus TUF Gaming A18 / FA808UP-S8030 (90NR0NL1-M001L0)</name>
 <price>836370</price>
-<vendor>Ноутбук</vendor>
+<vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Asus TUF Gaming A18 / FA808UP-S8030 (90NR0NL1-M001L0)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, ASUS.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">ASUS</param>
 <param name="Коды">90NR0NL1-M001L0</param>
 <param name="Модель">90NR0NL1-M001L0</param>
 <param name="Гарантия">12</param>
@@ -15357,14 +15354,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872585</vendorCode>
 <name>Ноутбук Asus ExpertBook / P1403CVA-S61790X (90NX0871-M022V0)</name>
 <price>432604</price>
-<vendor>Ноутбук</vendor>
+<vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Asus ExpertBook / P1403CVA-S61790X (90NX0871-M022V0)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, ASUS.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">ASUS</param>
 <param name="Коды">90NX0871-M022V0</param>
 <param name="Модель">90NX0871-M022V0</param>
 <param name="Гарантия">12</param>
@@ -15375,14 +15372,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872587</vendorCode>
 <name>Ноутбук Asus ExpertBook / P1403CVA-S61793X (90NX0871-M022X0)</name>
 <price>477398</price>
-<vendor>Ноутбук</vendor>
+<vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Asus ExpertBook / P1403CVA-S61793X (90NX0871-M022X0)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, ASUS.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">ASUS</param>
 <param name="Коды">90NX0871-M022X0</param>
 <param name="Модель">90NX0871-M022X0</param>
 <param name="Гарантия">12</param>
@@ -15393,14 +15390,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872589</vendorCode>
 <name>Ноутбук Asus ExpertBook / P1503CVA-S72533X (90NX0881-M02Y70)</name>
 <price>434448</price>
-<vendor>Ноутбук</vendor>
+<vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Asus ExpertBook / P1503CVA-S72533X (90NX0881-M02Y70)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, ASUS.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">ASUS</param>
 <param name="Коды">90NX0881-M02Y70</param>
 <param name="Модель">90NX0881-M02Y70</param>
 <param name="Гарантия">12</param>
@@ -15411,14 +15408,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872590</vendorCode>
 <name>Ноутбук Asus ExpertBook / P1503CVA-S72534 (90NX0881-M02Y80)</name>
 <price>395172</price>
-<vendor>Ноутбук</vendor>
+<vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Asus ExpertBook / P1503CVA-S72534 (90NX0881-M02Y80)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, ASUS.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">ASUS</param>
 <param name="Коды">90NX0881-M02Y80</param>
 <param name="Модель">90NX0881-M02Y80</param>
 <param name="Гарантия">12</param>
@@ -15429,14 +15426,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872591</vendorCode>
 <name>Ноутбук Asus ExpertBook / P1503CVA-S72536X (90NX0881-M02Y90)</name>
 <price>478625</price>
-<vendor>Ноутбук</vendor>
+<vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Asus ExpertBook / P1503CVA-S72536X (90NX0881-M02Y90)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, ASUS.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">ASUS</param>
 <param name="Коды">90NX0881-M02Y90</param>
 <param name="Модель">90NX0881-M02Y90</param>
 <param name="Гарантия">12</param>
@@ -15500,14 +15497,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872613</vendorCode>
 <name>Ноутбук HP Europe ProBook 4 G1i (AT7K4AV/74051491)</name>
 <price>479853</price>
-<vendor>Ноутбук</vendor>
+<vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук HP Europe ProBook 4 G1i (AT7K4AV/74051491)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, HP.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">HP</param>
 <param name="Коды">AT7K4AV/74051491</param>
 <param name="Модель">AT7K4AV/74051491</param>
 <param name="Гарантия">36</param>
@@ -15518,14 +15515,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872617</vendorCode>
 <name>Ноутбук HP Europe HP EliteBook 8 G1a (AZ3N2AV/74051488)</name>
 <price>550422</price>
-<vendor>Ноутбук</vendor>
+<vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук HP Europe HP EliteBook 8 G1a (AZ3N2AV/74051488)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, HP.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">HP</param>
 <param name="Коды">AZ3N2AV/74051488</param>
 <param name="Модель">AZ3N2AV/74051488</param>
 <param name="Гарантия">36</param>
@@ -15536,14 +15533,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872623</vendorCode>
 <name>Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_101)</name>
 <price>1196383</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_101)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">DA14250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15553,14 +15550,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872996</vendorCode>
 <name>Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_102)</name>
 <price>1583273</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_102)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">DA14250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15570,14 +15567,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872997</vendorCode>
 <name>Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_104)</name>
 <price>1499940</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_104)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">DA14250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15587,14 +15584,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872998</vendorCode>
 <name>Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_003)</name>
 <price>1551484</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_003)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">DA16250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15604,14 +15601,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872999</vendorCode>
 <name>Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_011)</name>
 <price>1767977</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_011)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">DA16250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15621,14 +15618,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873000</vendorCode>
 <name>Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_006)</name>
 <price>1674763</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_006)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">DA16250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15638,14 +15635,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873001</vendorCode>
 <name>Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_008)</name>
 <price>1921320</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_008)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">DA16250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15655,14 +15652,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873002</vendorCode>
 <name>Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_010)</name>
 <price>2321215</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_010)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">DA16250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15672,14 +15669,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873016</vendorCode>
 <name>Моноблок Dell Pro 24 All-in-One QC24251 (210-BPPN_BTO103_QC24251_EMEA)</name>
 <price>591903</price>
-<vendor>Моноблок</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Моноблок Dell Pro 24 All-in-One QC24251 (210-BPPN_BTO103_QC24251_EMEA)
-Характеристики: моноблок, Моноблок.
+Характеристики: моноблок, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Моноблоки.]]></description>
 <param name="Тип">Моноблок</param>
-<param name="Для бренда">Моноблок</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">QC24251</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15689,14 +15686,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873017</vendorCode>
 <name>Моноблок Dell Pro 24 All-in-One QC24250 (210-BPNS_BTO155_QC24250_EMEA)</name>
 <price>783781</price>
-<vendor>Моноблок</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Моноблок Dell Pro 24 All-in-One QC24250 (210-BPNS_BTO155_QC24250_EMEA)
-Характеристики: моноблок, Моноблок.
+Характеристики: моноблок, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Моноблоки.]]></description>
 <param name="Тип">Моноблок</param>
-<param name="Для бренда">Моноблок</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">QC24250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15757,14 +15754,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873018</vendorCode>
 <name>Моноблок Dell Pro 24 All-in-One QC24250 (210-BPNS_BTO154_QC24250_EMEA)</name>
 <price>740200</price>
-<vendor>Моноблок</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Моноблок Dell Pro 24 All-in-One QC24250 (210-BPNS_BTO154_QC24250_EMEA)
-Характеристики: моноблок, Моноблок.
+Характеристики: моноблок, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Моноблоки.]]></description>
 <param name="Тип">Моноблок</param>
-<param name="Для бренда">Моноблок</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">QC24250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15774,14 +15771,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873019</vendorCode>
 <name>Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG_BTO103_QB24250_EMEA)</name>
 <price>747355</price>
-<vendor>Моноблок</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG_BTO103_QB24250_EMEA)
-Характеристики: моноблок, Моноблок.
+Характеристики: моноблок, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Моноблоки.]]></description>
 <param name="Тип">Моноблок</param>
-<param name="Для бренда">Моноблок</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">QB24250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15791,14 +15788,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873021</vendorCode>
 <name>Компьютер Dell Pro Micro QCM1250 (210-BPQB_BTO003_QCM1250_EMEA)</name>
 <price>375772</price>
-<vendor>Компьютер</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Компьютер Dell Pro Micro QCM1250 (210-BPQB_BTO003_QCM1250_EMEA)
-Характеристики: настольный пк, Компьютер.
+Характеристики: настольный пк, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Настольные ПК.]]></description>
 <param name="Тип">Настольный ПК</param>
-<param name="Для бренда">Компьютер</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">QCM1250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15808,14 +15805,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873023</vendorCode>
 <name>Компьютер Dell Pro Micro QCM1250 (210-BPPV_BTO106_QCM1250_EMEA)</name>
 <price>463993</price>
-<vendor>Компьютер</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Компьютер Dell Pro Micro QCM1250 (210-BPPV_BTO106_QCM1250_EMEA)
-Характеристики: настольный пк, Компьютер.
+Характеристики: настольный пк, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Настольные ПК.]]></description>
 <param name="Тип">Настольный ПК</param>
-<param name="Для бренда">Компьютер</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">QCM1250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15825,14 +15822,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873024</vendorCode>
 <name>Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG_BTO101_QB24250_EMEA)</name>
 <price>656294</price>
-<vendor>Моноблок</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG_BTO101_QB24250_EMEA)
-Характеристики: моноблок, Моноблок.
+Характеристики: моноблок, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Моноблоки.]]></description>
 <param name="Тип">Моноблок</param>
-<param name="Для бренда">Моноблок</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">QB24250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15842,14 +15839,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873025</vendorCode>
 <name>Компьютер Dell Pro Micro QCM1250 (210-BPPV_BTO107_QCM1250_EMEA)</name>
 <price>588157</price>
-<vendor>Компьютер</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Компьютер Dell Pro Micro QCM1250 (210-BPPV_BTO107_QCM1250_EMEA)
-Характеристики: настольный пк, Компьютер.
+Характеристики: настольный пк, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Настольные ПК.]]></description>
 <param name="Тип">Настольный ПК</param>
-<param name="Для бренда">Компьютер</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">QCM1250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15859,14 +15856,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873026</vendorCode>
 <name>Компьютер Dell Pro Tower QCT1250 (210-BPRW_BTO107_QCT1250_EMEA)</name>
 <price>500582</price>
-<vendor>Компьютер</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Компьютер Dell Pro Tower QCT1250 (210-BPRW_BTO107_QCT1250_EMEA)
-Характеристики: настольный пк, Компьютер.
+Характеристики: настольный пк, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Настольные ПК.]]></description>
 <param name="Тип">Настольный ПК</param>
-<param name="Для бренда">Компьютер</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">QCT1250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15876,14 +15873,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873027</vendorCode>
 <name>Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO103_FCT2250_EMEA)</name>
 <price>878973</price>
-<vendor>Компьютер</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO103_FCT2250_EMEA)
-Характеристики: настольный пк, Компьютер.
+Характеристики: настольный пк, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Настольные ПК.]]></description>
 <param name="Тип">Настольный ПК</param>
-<param name="Для бренда">Компьютер</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">FCT2250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15893,14 +15890,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873028</vendorCode>
 <name>Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO113_FCT2250_EMEA)</name>
 <price>1216182</price>
-<vendor>Компьютер</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO113_FCT2250_EMEA)
-Характеристики: настольный пк, Компьютер.
+Характеристики: настольный пк, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Настольные ПК.]]></description>
 <param name="Тип">Настольный ПК</param>
-<param name="Для бренда">Компьютер</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">FCT2250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15910,14 +15907,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873029</vendorCode>
 <name>Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO109_FCT2250_EMEA)</name>
 <price>986151</price>
-<vendor>Компьютер</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO109_FCT2250_EMEA)
-Характеристики: настольный пк, Компьютер.
+Характеристики: настольный пк, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Настольные ПК.]]></description>
 <param name="Тип">Настольный ПК</param>
-<param name="Для бренда">Компьютер</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">FCT2250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15927,14 +15924,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873030</vendorCode>
 <name>Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO112_FCT2250_EMEA)</name>
 <price>1141588</price>
-<vendor>Компьютер</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO112_FCT2250_EMEA)
-Характеристики: настольный пк, Компьютер.
+Характеристики: настольный пк, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Настольные ПК.]]></description>
 <param name="Тип">Настольный ПК</param>
-<param name="Для бренда">Компьютер</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">FCT2250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15944,14 +15941,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873031</vendorCode>
 <name>Компьютер Dell Pro Tower QCT1250 (210-BPRW_BTO110_QCT1250_EMEA)</name>
 <price>594648</price>
-<vendor>Компьютер</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Компьютер Dell Pro Tower QCT1250 (210-BPRW_BTO110_QCT1250_EMEA)
-Характеристики: настольный пк, Компьютер.
+Характеристики: настольный пк, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Настольные ПК.]]></description>
 <param name="Тип">Настольный ПК</param>
-<param name="Для бренда">Компьютер</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">QCT1250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15961,14 +15958,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872965</vendorCode>
 <name>Моноблок Dell All-in-One EC27250 (210-BPFS_EC27250_RPLU-R_010)</name>
 <price>769018</price>
-<vendor>Моноблок</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Моноблок Dell All-in-One EC27250 (210-BPFS_EC27250_RPLU-R_010)
-Характеристики: моноблок, Моноблок.
+Характеристики: моноблок, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Моноблоки.]]></description>
 <param name="Тип">Моноблок</param>
-<param name="Для бренда">Моноблок</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">EC27250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15978,14 +15975,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873003</vendorCode>
 <name>Компьютер Dell Tower Plus EBT2250 (210-BPDZ_EBT2250_ARL_127)</name>
 <price>1416246</price>
-<vendor>Компьютер</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Компьютер Dell Tower Plus EBT2250 (210-BPDZ_EBT2250_ARL_127)
-Характеристики: настольный пк, Компьютер.
+Характеристики: настольный пк, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Настольные ПК.]]></description>
 <param name="Тип">Настольный ПК</param>
-<param name="Для бренда">Компьютер</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">EBT2250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -15995,14 +15992,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873004</vendorCode>
 <name>Компьютер Dell Tower Plus EBT2250 (210-BPDZ_EBT2250_ARL_128)</name>
 <price>2015140</price>
-<vendor>Компьютер</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Компьютер Dell Tower Plus EBT2250 (210-BPDZ_EBT2250_ARL_128)
-Характеристики: настольный пк, Компьютер.
+Характеристики: настольный пк, Dell.
 Категория поставщика: ПК, мониторы и аксессуары > Настольные ПК.]]></description>
 <param name="Тип">Настольный ПК</param>
-<param name="Для бренда">Компьютер</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">EBT2250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -16073,14 +16070,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873102</vendorCode>
 <name>Тонер Canon C-EXV 1005 (6726C002)</name>
 <price>85538</price>
-<vendor>Тонер</vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Тонер Canon C-EXV 1005 (6726C002)
-Характеристики: тонер, Тонер.
+Характеристики: тонер, Canon.
 Категория поставщика: Расходные материалы > Тонеры.]]></description>
 <param name="Тип">Тонер</param>
-<param name="Для бренда">Тонер</param>
+<param name="Для бренда">Canon</param>
 <param name="Коды">6726C002</param>
 <param name="Модель">6726C002</param>
 </offer>
@@ -16116,14 +16113,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872879</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus (210-BPDN_1)</name>
 <price>720541</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 14 Plus (210-BPDN_1)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Гарантия">12</param>
 </offer>
 
@@ -16132,14 +16129,13 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872774</vendorCode>
 <name>Моноблок AIWA PF2402-D-8-512 (PF2402-D 8-512 white)</name>
 <price>208465</price>
-<vendor>Моноблок</vendor>
+<vendor></vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Моноблок AIWA PF2402-D-8-512 (PF2402-D 8-512 white)
-Характеристики: моноблок, Моноблок.
+Характеристики: моноблок.
 Категория поставщика: ПК, мониторы и аксессуары > Моноблоки.]]></description>
 <param name="Тип">Моноблок</param>
-<param name="Для бренда">Моноблок</param>
 <param name="Модель">AIWA</param>
 <param name="Гарантия">12</param>
 </offer>
@@ -16149,14 +16145,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13872917</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO120_PC16250_EMEA_210-BQHB)</name>
 <price>598895</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 16 PC16250 (BTO120_PC16250_EMEA_210-BQHB)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">PC16250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -16166,14 +16162,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873005</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO118_PC16250_EMEA_210-BQHB)</name>
 <price>748005</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 16 PC16250 (BTO118_PC16250_EMEA_210-BQHB)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">PC16250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -16183,14 +16179,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873006</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO121_PC16250_EMEA_210-BQHB)</name>
 <price>738804</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 16 PC16250 (BTO121_PC16250_EMEA_210-BQHB)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">PC16250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -16200,14 +16196,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873137</vendorCode>
 <name>Мобильная рабочая станция Dell Pro Max 18 Plus MB18250 (210-BRXL/BTO101_MB18250_EMEA)</name>
 <price>2047121</price>
-<vendor>Мобильная</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Мобильная рабочая станция Dell Pro Max 18 Plus MB18250 (210-BRXL/BTO101_MB18250_EMEA)
-Характеристики: ноутбук, Мобильная.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Мобильная</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">MB18250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -16217,14 +16213,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873058</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK/BTO217_PB14250_EMEA)</name>
 <price>925621</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK/BTO217_PB14250_EMEA)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">PB14250</param>
 <param name="Гарантия">36</param>
 </offer>
@@ -16234,14 +16230,14 @@ URL поставщика                             | https://www.comportal.kz/
 <vendorCode>CP13873061</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus (PB14250) (210-BPDK_3/BTO211_PB14250_EMEA)</name>
 <price>720093</price>
-<vendor>Ноутбук</vendor>
+<vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Ноутбук Dell Pro 14 Plus (PB14250) (210-BPDK_3/BTO211_PB14250_EMEA)
-Характеристики: ноутбук, Ноутбук.
+Характеристики: ноутбук, Dell.
 Категория поставщика: Ноутбуки и аксессуары > Ноутбуки.]]></description>
 <param name="Тип">Ноутбук</param>
-<param name="Для бренда">Ноутбук</param>
+<param name="Для бренда">Dell</param>
 <param name="Модель">PB14250</param>
 <param name="Гарантия">36</param>
 </offer>
