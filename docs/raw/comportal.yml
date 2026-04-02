@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-02 22:43:14">
+<yml_catalog date="2026-04-02 23:03:05">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-04-02 22:43:14
+Время сборки (Алматы)                      | 2026-04-02 23:03:05
 Ближайшая сборка (Алматы)                  | 2026-04-03 04:00:00
 Сколько товаров у поставщика до фильтра    | 1194
 Сколько товаров у поставщика после фильтра | 583
@@ -28,7 +28,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Чёрный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">5 500</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CE400A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -49,7 +48,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Жёлтый</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">6 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CE402A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -70,7 +68,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Пурпурный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">6 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CE403A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -113,7 +110,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип печати">Струйная</param>
 <param name="Номер">№655</param>
 <param name="Ресурс">600</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CZ110AE#BHK</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -288,7 +284,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Чёрный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">1 500</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CF283A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -308,7 +303,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">CE516A</param>
 <param name="Дополнительная информация">для LJ Enterprise 700 M775dn, M775f</param>
 <param name="Гарантия">3</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CE516A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -488,7 +482,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="ПО">есть</param>
 <param name="Гарантия">24</param>
 <param name="Диапазон входного напряжения">220-415</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">SRT10KRMXLI</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -538,7 +531,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="ПО">есть</param>
 <param name="Гарантия">24</param>
 <param name="Диапазон входного напряжения">220,240,380,415</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">SRT10KXLI</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -568,7 +560,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Порты">USB</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">5 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">8468B006</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -711,7 +702,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Номер">№123</param>
 <param name="Объем">2</param>
 <param name="Ресурс">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">F6V16AE</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -740,7 +730,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Стабилизатор (AVR)">есть</param>
 <param name="Гарантия">24</param>
 <param name="Диапазон входного напряжения">220, 240</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">SRT5KRMXLI</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -897,7 +886,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="ПО">есть</param>
 <param name="Гарантия">24</param>
 <param name="Диапазон входного напряжения">160-275</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">SRT2200RMXLI</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -958,7 +946,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="ПО">есть</param>
 <param name="Гарантия">24</param>
 <param name="Диапазон входного напряжения">160-275</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">SRT3000RMXLI</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -1010,7 +997,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">100 000</param>
 <param name="Емкость 2- го лотка">550</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">J8H61A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -1031,7 +1017,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Чёрный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">1 600</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CF230A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -1198,7 +1183,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Бренд">Canon</param>
 <param name="Модель">C-EXV49 CYM</param>
 <param name="Дополнительная информация">iR ADV C3330i, 3325i, 3320i Color ресурс 66K</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">8528B003AA</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -1420,7 +1404,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Порты">USB WiFI</param>
 <param name="Скорость печати цветной">19</param>
 <param name="Нагрузка">500</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">N4K99C#A82</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -1441,7 +1424,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Жёлтый</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">1 300</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CF542A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -1462,7 +1444,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Пурпурный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">1 300</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CF543A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -1557,7 +1538,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="ПО">нет</param>
 <param name="Гарантия">24</param>
 <param name="Диапазон входного напряжения">170-280</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">BV800I-GR</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -1647,7 +1627,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Бренд">HP Europe</param>
 <param name="Модель">3YP61AE</param>
 <param name="Дополнительная информация">2 печатающие головки: черная и трехцветная; вкладыш с инструкциями по замене печатающих головок</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">3YP61AE</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -1821,7 +1800,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Пурпурный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">20 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">W9103MC</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -1851,7 +1829,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="ПО">есть</param>
 <param name="Гарантия">24</param>
 <param name="Диапазон входного напряжения">180–287В</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">SMC3000RMI2U</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -1952,7 +1929,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Чёрный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">1 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">W1106A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2071,7 +2047,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">C-EXV 59</param>
 <param name="Дополнительная информация">для imageRUNNER 2625i/2630i/2645i</param>
 <param name="Ресурс">30 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">3760C002</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -2103,7 +2078,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Функция">Принтер-Сканер(без АПД)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">20 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">4ZB96A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2146,7 +2120,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип печати">Струйная</param>
 <param name="Номер">№320</param>
 <param name="Объем">300</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">2890C001</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -2210,7 +2183,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип печати">Струйная</param>
 <param name="Номер">№320</param>
 <param name="Объем">300</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">2889C001</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -2277,7 +2249,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Пурпурный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">2 100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">W2033A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2361,7 +2332,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Голубой</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">2 100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">W2031A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2382,7 +2352,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Жёлтый</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">2 100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">W2032A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2412,7 +2381,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Порты">USB</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">5 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">8468B042</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -2447,7 +2415,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Скорость печати цветной">5</param>
 <param name="Функция">Принтер-Сканер(без АПД)-Копир</param>
 <param name="Нагрузка">3 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">1VV21AE</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2794,7 +2761,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип сканера">полистовая подача</param>
 <param name="Формат файлов">A4</param>
 <param name="Нагрузка">4000 листов в день</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">6FW07A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2879,7 +2845,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">50 000</param>
 <param name="Емкость 2- го лотка">250</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">8AF72A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2896,7 +2861,6 @@ URL поставщика                             | https://www.comportal.kz/
 МФУ. Гарантия: 12.]]></description>
 <param name="Тип">МФУ</param>
 <param name="Гарантия">12</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">1418C170</param>
 <param name="Модель">1418C170</param>
 <param name="Для бренда">Canon</param>
@@ -2928,7 +2892,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Функция">Принтер-Сканер(АПД-35с.)-Копир-Факс</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">15 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">1418C170</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -2944,7 +2907,6 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CF214XH</param>
 <param name="Модель">CF214XH</param>
 <param name="Для бренда">HP</param>
@@ -3200,7 +3162,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Технология печати">Лазерная</param>
 <param name="Функция">Принтер-Сканер(без АПД)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">9YF95A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3231,7 +3192,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Функция">Принтер-Сканер(АПД-40с.)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">20 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">9YG08A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3259,7 +3219,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Порты">USB LAN WiFI</param>
 <param name="Функция">Принтер-Сканер(АПД-40с.)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">9YG09A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3457,7 +3416,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат файлов">A4</param>
 <param name="Нагрузка">7500 листов в день</param>
 <param name="Разрядность">48</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">6FW09A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3547,7 +3505,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">8 000</param>
 <param name="Принадлежность в НР">HPS</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">7MD68A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3579,7 +3536,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">8 000</param>
 <param name="Принадлежность в НР">HPS</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">7MD68A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3611,7 +3567,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">8 000</param>
 <param name="Принадлежность в НР">HPS</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">7MD67A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3643,7 +3598,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">8 000</param>
 <param name="Принадлежность в НР">HPS</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">7MD73A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3676,7 +3630,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">8 000</param>
 <param name="Принадлежность в НР">HPS</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">7MD74A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -3733,7 +3686,6 @@ URL поставщика                             | https://www.comportal.kz/
 МФУ. Гарантия: 12.]]></description>
 <param name="Тип">МФУ</param>
 <param name="Гарантия">12</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">5161C007</param>
 <param name="Модель">5161C007</param>
 <param name="Для бренда">Canon</param>
@@ -3766,7 +3718,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">80 000</param>
 <param name="Емкость 2- го лотка">150</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">5161C007</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -4243,7 +4194,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Стабилизатор (AVR)">есть</param>
 <param name="Гарантия">24</param>
 <param name="Диапазон входного напряжения">184–276 В</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">5SC3000IRT</param>
 <param name="Для бренда">Eaton</param>
 </offer>
@@ -4384,7 +4334,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">C-EXV 35</param>
 <param name="Дополнительная информация">Чёрный</param>
 <param name="Ресурс">70 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">3764B002</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -4973,7 +4922,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">80 000</param>
 <param name="Емкость 2- го лотка">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">2Z628A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -5005,7 +4953,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">80 000</param>
 <param name="Емкость 2- го лотка">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">2Z629A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -5461,7 +5408,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
 <param name="Диагональ">49</param>
 <param name="Частота обновления">60</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BGTX</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -5665,7 +5611,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Нет</param>
 <param name="Нагрузка">26 000</param>
 <param name="Жесткий диск">256Gb</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">5975C005AA</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -5685,7 +5630,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">C-EXV 67</param>
 <param name="Дополнительная информация">черный</param>
 <param name="Ресурс">25 500</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">5746C002</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -6024,7 +5968,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Форм-фактор">Rackmount</param>
 <param name="Гарантия">24</param>
 <param name="Диапазон входного напряжения">230</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">SRV3KRILRK</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -6133,7 +6076,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Чёрный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">17 500</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">5761C001</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -6206,7 +6148,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Жёлтый</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">11 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">5764C001</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -6354,7 +6295,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Емкость 2- го лотка">100</param>
 <param name="Емкость 3-го лотка">50</param>
 <param name="Емкость 4-го лотка">550</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">5951C008AA</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -6416,7 +6356,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Стабилизатор (AVR)">есть</param>
 <param name="Гарантия">24</param>
 <param name="Диапазон входного напряжения">220-240</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">SMT2200IC</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -6489,7 +6428,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Типовая продолжительность работы при 100% нагрузке, мин">4,02</param>
 <param name="Форм-фактор">Rackmount</param>
 <param name="Гарантия">24</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">SRV2KRIRK</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -6514,7 +6452,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Типовая продолжительность работы при 100% нагрузке, мин">2,52</param>
 <param name="Форм-фактор">Rackmount</param>
 <param name="Гарантия">24</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">SRV10KRIRK</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -6540,7 +6477,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Типовая продолжительность работы при 100% нагрузке, мин">3,11</param>
 <param name="Форм-фактор">Rackmount</param>
 <param name="Гарантия">24</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">SMT3000RMI2UC</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -6638,7 +6574,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Форм-фактор">Tower</param>
 <param name="Стабилизатор (AVR)">есть</param>
 <param name="Гарантия">24</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">BVX1600LI-GR</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -6743,7 +6678,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Функция">принтер сканер копир факс</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">20 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">5621C001</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -6830,7 +6764,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Стабилизатор (AVR)">есть</param>
 <param name="Гарантия">24</param>
 <param name="Диапазон входного напряжения">240</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">SMT2200RMI2UC</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -6861,7 +6794,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Скорость печати цветной">33</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">50 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">4RA89A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -6892,7 +6824,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Функция">Принтер-Сканер(АПД-50с.)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">50 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">5HH65A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -6923,7 +6854,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Порты">USB LAN</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">50 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">3G653A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -6955,7 +6885,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Функция">Принтер-Сканер(АПД-50с.)-Копир-Факс</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">50 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">3G632A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -6986,7 +6915,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Порты">USB LAN WiFI</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">50 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">3G654A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -7090,7 +7018,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Чёрный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">10 200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">5640C002</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -7140,7 +7067,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Размер Pix">0,28</param>
 <param name="Диагональ">24.5</param>
 <param name="Частота обновления">500</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BJPH</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -7162,7 +7088,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Тип печати">Струйная</param>
 <param name="Объем">55</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">6242C003</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -7190,7 +7115,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A1+</param>
 <param name="Скорость печати ч/б">23</param>
 <param name="Функции">принтер</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">6242C003</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -7218,7 +7142,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A0</param>
 <param name="Скорость печати ч/б">41</param>
 <param name="Функции">принтер</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">6248C003</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -7266,7 +7189,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Чёрный</param>
 <param name="Тип печати">Струйная</param>
 <param name="Объем">55</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">3489C001</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -7896,7 +7818,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">HD Camera</param>
 <param name="Разрешение дисплея">1920x1080</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Коды">Vostro 3520</param>
 </offer>
@@ -7977,7 +7898,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Нагрузка">80 000</param>
 <param name="Емкость 2- го лотка">550</param>
 <param name="Жесткий диск">32Gb</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">6QN29A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -8152,7 +8072,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип кейса">MT</param>
 <param name="Клавиатура">KB216</param>
 <param name="Манипулятор">MS116</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Коды">Vostro 3030</param>
 </offer>
@@ -8241,7 +8160,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Размер Pix">92</param>
 <param name="Диагональ">23.8</param>
 <param name="Частота обновления">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BMFF</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -8332,7 +8250,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Размер Pix">82</param>
 <param name="Диагональ">27</param>
 <param name="Частота обновления">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BMHK</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -8392,7 +8309,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Размер Pix">94</param>
 <param name="Диагональ">24</param>
 <param name="Частота обновления">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BMJF</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -8451,7 +8367,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Размер Pix">92</param>
 <param name="Диагональ">23.8</param>
 <param name="Частота обновления">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BMJB</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -8481,7 +8396,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Размер Pix">81</param>
 <param name="Диагональ">27</param>
 <param name="Частота обновления">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BMGC</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -8512,7 +8426,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Размер Pix">140</param>
 <param name="Диагональ">39.7</param>
 <param name="Частота обновления">120</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BMDV</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -8595,7 +8508,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">40 000</param>
 <param name="Емкость 2- го лотка">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">499N4A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -8701,7 +8613,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Аккумулятор">3 Cell 41WHr</param>
 <param name="Гарантия">12</param>
 <param name="Разрешение дисплея">1920x1080</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Коды">Vostro 3530</param>
 </offer>
@@ -8751,7 +8662,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Бренд">Canon</param>
 <param name="Модель">8985B013</param>
 <param name="Дополнительная информация">Cable Mains, C13 Europe</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">8985B013</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -8771,7 +8681,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">5257C001</param>
 <param name="Дополнительная информация">Flat Control Panel-A1</param>
 <param name="Гарантия">12</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">5257C001</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -9645,7 +9554,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">FHD HDR IR Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Коды">Latitude 7650</param>
 </offer>
@@ -10047,7 +9955,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Мощность (W)">6 000</param>
 <param name="Форм-фактор">Rackmount, Tower</param>
 <param name="Гарантия">12</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">AST.UPS.PGO6KLCD2U</param>
 <param name="Для бренда">Astergo</param>
 </offer>
@@ -10092,7 +9999,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Дополнительная информация">6кВт,10кВт ИБП AST.UPS.PGO6KLCD2U, AST.UPS.PGO10KLCD2</param>
 <param name="По принадлежности">внешний</param>
 <param name="Гарантия">12</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">AST.UPS.PGOBP3U240V7</param>
 <param name="Для бренда">Astergo</param>
 </offer>
@@ -10312,7 +10218,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">FHD HDR IR Camera</param>
 <param name="Разрешение дисплея">1920x1080</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Коды">Latitude 5550</param>
 </offer>
@@ -10411,7 +10316,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип кейса">Tower</param>
 <param name="Клавиатура">Dell Multimedia Keyboard-KB216 - Russian (QWERTY) - Black</param>
 <param name="Манипулятор">Dell Optical Mouse-MS116 - Black</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Коды">Precision 3680 CTO Base</param>
 </offer>
@@ -10561,7 +10465,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Камера">HD Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">90NR0N06-M002R0</param>
 <param name="Для бренда">ASUS</param>
 </offer>
@@ -10658,7 +10561,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Максимальное разрешение">1920x1080</param>
 <param name="Тип дисплея">Full HD</param>
 <param name="Монитор">23.8</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">90PT03T1-M01090</param>
 <param name="Для бренда">ASUS</param>
 </offer>
@@ -10708,7 +10610,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Камера">FHD IR Camera</param>
 <param name="Разрешение дисплея">2560x1600</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">90NR0LT1-M00390</param>
 <param name="Для бренда">ASUS</param>
 </offer>
@@ -10731,7 +10632,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Разрешение">2400x1200</param>
 <param name="Формат печати">A1+</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">6238C003</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -10778,7 +10678,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Аккумулятор">3 Cell 56WHr</param>
 <param name="Гарантия">36</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">A38DHET#BJA</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -10826,7 +10725,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Аккумулятор">6 cell 68Whr</param>
 <param name="Гарантия">36</param>
 <param name="Разрешение дисплея">2880x1800</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">B68ZKET#BJA</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -10887,7 +10785,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Размер Pix">110</param>
 <param name="Диагональ">34</param>
 <param name="Частота обновления">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">9E0Z2UT#ABB</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -11218,7 +11115,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
 <param name="Диагональ">55</param>
 <param name="Частота обновления">60</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BNTN</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -11293,7 +11189,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие динамиков">Присутствуют</param>
 <param name="Диагональ">23.8</param>
 <param name="Частота обновления">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BRDV</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -11322,7 +11217,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Максимальное разрешение">1920x1080</param>
 <param name="Диагональ">23.8</param>
 <param name="Частота обновления">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">9U5J5UT#ABB</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -11351,7 +11245,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Максимальное разрешение">1920x1200</param>
 <param name="Диагональ">24</param>
 <param name="Частота обновления">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">9D9A7AA#ABB</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -11380,7 +11273,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Максимальное разрешение">3840x2160</param>
 <param name="Диагональ">27</param>
 <param name="Частота обновления">180</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BNHT</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -11460,7 +11352,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Камера">FHD IR Camera</param>
 <param name="Разрешение дисплея">2560x1600</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">90NR0LF1-M000V0</param>
 <param name="Для бренда">ASUS</param>
 </offer>
@@ -11515,7 +11406,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Камера">FHD IR Camera</param>
 <param name="Разрешение дисплея">2560x1600</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">90NR0LF1-M005S0</param>
 <param name="Для бренда">ASUS</param>
 </offer>
@@ -11560,7 +11450,6 @@ URL поставщика                             | https://www.comportal.kz/
 Монитор. Гарантия: 36.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BRDN</param>
 <param name="Модель">210-BRDN</param>
 <param name="Для бренда">Dell</param>
@@ -11590,7 +11479,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Максимальное разрешение">1920x1080</param>
 <param name="Диагональ">23.8</param>
 <param name="Частота обновления">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BRDN</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -11690,7 +11578,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Максимальное разрешение">2560x1440</param>
 <param name="Диагональ">27</param>
 <param name="Частота обновления">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BQSZ</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -11899,7 +11786,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Максимальное разрешение">3840x2160</param>
 <param name="Диагональ">31.5</param>
 <param name="Частота обновления">60</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">6N4D6AA#ABB</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -12052,7 +11938,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие динамиков">Speakers</param>
 <param name="Диагональ">27</param>
 <param name="Частота обновления">120</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BQWS</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -12069,7 +11954,6 @@ URL поставщика                             | https://www.comportal.kz/
 Монитор. Гарантия: 36.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BQWM</param>
 <param name="Модель">210-BQWM</param>
 <param name="Для бренда">Dell</param>
@@ -12099,7 +11983,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие динамиков">Speakers</param>
 <param name="Диагональ">27</param>
 <param name="Частота обновления">120</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BQWM</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -12144,7 +12027,6 @@ URL поставщика                             | https://www.comportal.kz/
 Монитор. Гарантия: 36.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BQZT</param>
 <param name="Модель">210-BQZT</param>
 <param name="Для бренда">Dell</param>
@@ -12425,7 +12307,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">FHD IR Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Коды">Pro 16 PC16250</param>
 </offer>
@@ -12475,7 +12356,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Камера">FHD IR Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Коды">Pro 16 PC16250</param>
 </offer>
@@ -12620,7 +12500,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Камера">FHD Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">90NX08H1-M001X0</param>
 <param name="Для бренда">ASUS</param>
 </offer>
@@ -12667,7 +12546,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
 <param name="Диагональ">34</param>
 <param name="Частота обновления">240</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BRTW</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -12880,7 +12758,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Камера">FHD Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">90NB16J1-M00640</param>
 <param name="Для бренда">ASUS</param>
 </offer>
@@ -12932,7 +12809,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Форм-фактор">Tower</param>
 <param name="Стабилизатор (AVR)">есть</param>
 <param name="Гарантия">24</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">BVX2200LI</param>
 <param name="Для бренда">APC</param>
 </offer>
@@ -13245,7 +13121,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="ПО">есть</param>
 <param name="Гарантия">24</param>
 <param name="Диапазон входного напряжения">200/208/220/230/240</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">9SX11KIRT4UG2</param>
 <param name="Для бренда">Eaton</param>
 </offer>
@@ -13361,7 +13236,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">FHD Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">B39XGAT#BJA</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -13456,7 +13330,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Камера">FHD Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">AD2M1ET#BJA</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -13506,7 +13379,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Камера">5.0 mpix</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">C43J5ET#BJA</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -13733,7 +13605,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">FHD HDR IR Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Коды">Pro 16 PC16250</param>
 </offer>
@@ -13798,7 +13669,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">FHD HDR IR Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Коды">Pro 16 PC16255</param>
 </offer>
@@ -13864,7 +13734,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">FHD HDR IR Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Коды">Pro Max 14 MC14250</param>
 </offer>
@@ -14152,7 +14021,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">FHD Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">AD2Y8ET#BJA</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -14201,7 +14069,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">FHD IR Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">AD3D4ET#BJA</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -14250,7 +14117,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">FHD IR Camera</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">AD4H2ET#BJA</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -14295,7 +14161,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Максимальное разрешение">1920x1080</param>
 <param name="Диагональ">23.8</param>
 <param name="Частота обновления">200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BSNR</param>
 <param name="Для бренда">Dell</param>
 </offer>
@@ -14371,7 +14236,6 @@ URL поставщика                             | https://www.comportal.kz/
 Монитор. Гарантия: 36.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BRYJ</param>
 <param name="Модель">210-BRYJ</param>
 <param name="Для бренда">Dell</param>
@@ -14490,7 +14354,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Манипулятор">Black 125 Wired Mouse</param>
 <param name="Тип дисплея">FHD</param>
 <param name="Монитор">27</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">A0ZF4EA#BJA</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -14539,7 +14402,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">5.0 mpix</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">AD4J9ET#BJA</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -14587,7 +14449,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">5.0 mpix</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">AD4H8ET#BJA</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -14640,7 +14501,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Камера">5.0 mpix</param>
 <param name="Аксессуары">Adapter</param>
 <param name="Разрешение дисплея">2880x1800</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">B66V4AT#UUQ</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -14690,7 +14550,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">36</param>
 <param name="Камера">5.0 mpix</param>
 <param name="Разрешение дисплея">1920x1200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">AD2L3ET#BJA</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -14770,7 +14629,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие динамиков">Да</param>
 <param name="Диагональ">23.8</param>
 <param name="Частота обновления">100</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">B1GM5AA#ABB</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -14817,7 +14675,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие динамиков">Да</param>
 <param name="Диагональ">34</param>
 <param name="Частота обновления">120</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">8K157UT#ABB</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -14834,7 +14691,6 @@ URL поставщика                             | https://www.comportal.kz/
 Монитор. Гарантия: 36.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BSZD</param>
 <param name="Модель">210-BSZD</param>
 <param name="Для бренда">Dell</param>
@@ -14869,7 +14725,6 @@ URL поставщика                             | https://www.comportal.kz/
 Монитор. Гарантия: 36.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">210-BSZF</param>
 <param name="Модель">210-BSZF</param>
 <param name="Для бренда">Dell</param>
@@ -14955,7 +14810,6 @@ URL поставщика                             | https://www.comportal.kz/
 Ноутбук. Гарантия: 12.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">90NR0NL1-M001L0</param>
 <param name="Модель">90NR0NL1-M001L0</param>
 <param name="Для бренда">ASUS</param>
@@ -15004,7 +14858,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Камера">HD Camera</param>
 <param name="Разрешение дисплея">1920x1080</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">90NX0871-M022T0</param>
 <param name="Для бренда">ASUS</param>
 </offer>
@@ -15072,7 +14925,6 @@ URL поставщика                             | https://www.comportal.kz/
 Ноутбук. Гарантия: 12.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">90NX0881-M02Y80</param>
 <param name="Модель">90NX0881-M02Y80</param>
 <param name="Для бренда">ASUS</param>
@@ -15143,7 +14995,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12</param>
 <param name="Камера">HD Camera</param>
 <param name="Разрешение дисплея">1920x1080</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">90NX0801-M08YY0</param>
 <param name="Для бренда">ASUS</param>
 </offer>
@@ -15160,7 +15011,6 @@ URL поставщика                             | https://www.comportal.kz/
 Ноутбук. Гарантия: 36.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">AT7K4AV / 74051491</param>
 <param name="Модель">AT7K4AV / 74051491</param>
 <param name="Для бренда">HP</param>
@@ -15399,7 +15249,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Манипулятор">Mouse included with Keyboard (Мышь беспроводная, в комплекте с клавиатурой)</param>
 <param name="Тип дисплея">Full HD</param>
 <param name="Монитор">23.8&amp;quot;, Touch, FHD</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Коды">Pro 24 All-in-One QC24250</param>
 </offer>
@@ -15467,7 +15316,6 @@ URL поставщика                             | https://www.comportal.kz/
 Настольный ПК. Гарантия: 36.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Модель">QCM1250</param>
 <param name="Коды">QCM1250</param>
@@ -15604,7 +15452,6 @@ URL поставщика                             | https://www.comportal.kz/
 Настольный ПК. Гарантия: 36.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Для бренда">Dell</param>
 <param name="Модель">QCT1250</param>
 <param name="Коды">QCT1250</param>
@@ -15912,7 +15759,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Чёрный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">2 500</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">Q2612A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -15933,7 +15779,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Чёрный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">2 000</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CB436A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -15999,7 +15844,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Номер">№121</param>
 <param name="Объем">11</param>
 <param name="Ресурс">200</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CC640HE</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -16032,7 +15876,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">75 000</param>
 <param name="Емкость 2- го лотка">250</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CE710A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -16157,7 +16000,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Жёлтый</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">7 300</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CE742A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -16178,7 +16020,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Цвет">Пурпурный</param>
 <param name="Тип печати">Лазерная</param>
 <param name="Ресурс">7 300</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">CE743A</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -16198,7 +16039,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">C-EXV33 IR2520 / 30</param>
 <param name="Дополнительная информация">Лазерный Черный</param>
 <param name="Ресурс">14 600</param>
-<param name="Цена по запросу (для сортировки)">1</param>
 <param name="Коды">2785B002</param>
 <param name="Для бренда">Canon</param>
 </offer>
