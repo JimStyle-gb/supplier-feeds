@@ -4,16 +4,14 @@ Path: scripts/suppliers/comportal/builder.py
 
 ComPortal supplier layer — сборка raw offer.
 
-Единая роль файла как у готовых поставщиков:
-- взять SourceOffer;
-- прогнать supplier-side cleanup/extraction;
-- собрать чистый raw OfferOut;
-- supplier-specific ошибки чинятся здесь, а не в core.
+Что исправлено:
+- если уже есть нормализованный public brand в vendor tag и param "Для бренда",
+  дублирующий source-param "Бренд" убирается;
+- raw остаётся чище и не тащит лишний дубль бренда в final.
 """
 
 from __future__ import annotations
 
-from dataclasses import asdict
 from typing import Any
 
 from cs.core import OfferOut
@@ -44,13 +42,9 @@ def _param_map(params: list[ParamItem]) -> dict[str, str]:
     return out
 
 
-def _set_if_missing(params: list[ParamItem], *, name: str, value: str, source: str) -> list[ParamItem]:
-    if not norm_ws(name) or not norm_ws(value):
-        return params
-    pmap = _param_map(params)
-    if any(k.casefold() == name.casefold() for k in pmap):
-        return params
-    return list(params) + [ParamItem(name=norm_ws(name), value=norm_ws(value), source=source)]
+def _drop_param_casefold(params: list[ParamItem], name_to_drop: str) -> list[ParamItem]:
+    target = norm_ws(name_to_drop).casefold()
+    return [p for p in params if norm_ws(p.name).casefold() != target]
 
 
 def _ensure_base_params(
@@ -69,12 +63,16 @@ def _ensure_base_params(
     if model and "Модель" not in pmap:
         out.append(ParamItem(name="Модель", value=model, source="normalize"))
 
-    # Коды часто удобно брать из хвостовых скобок / vendorCode.
     if "Коды" not in pmap:
         if model:
             out.append(ParamItem(name="Коды", value=model, source="normalize"))
         elif source_offer.vendor_code:
             out.append(ParamItem(name="Коды", value=norm_ws(source_offer.vendor_code), source="source"))
+
+    # Если vendor уже нормализован в tag + есть "Для бренда", source "Бренд" как дубль убираем.
+    pmap = _param_map(out)
+    if vendor and pmap.get("Для бренда") and pmap.get("Бренд"):
+        out = _drop_param_casefold(out, "Бренд")
 
     return out
 
@@ -85,13 +83,6 @@ def _build_native_desc(
     source_offer: SourceOffer,
     params: list[ParamItem],
 ) -> str:
-    """
-    Supplier-side narrative для raw.
-
-    Для ComPortal source-description обычно слабый, поэтому:
-    - если supplier body есть и чистый — берём его;
-    - иначе собираем короткий служебно-полезный narrative из params.
-    """
     native = sanitize_native_desc(source_offer.description or "", title=clean_name)
     if native:
         return native
@@ -163,7 +154,6 @@ def build_offer_out(
     schema: dict[str, Any],
     policy: dict[str, Any],
 ) -> OfferOut | None:
-    """Собрать один raw OfferOut."""
     prefix = norm_ws(schema.get("id_prefix") or schema.get("supplier_prefix") or "CP")
     placeholder_picture = norm_ws(schema.get("placeholder_picture") or "")
     vendor_blacklist = {str(x).casefold() for x in (schema.get("vendor_blacklist_casefold") or [])}
@@ -229,7 +219,6 @@ def build_offers(
     schema: dict[str, Any],
     policy: dict[str, Any],
 ) -> tuple[list[OfferOut], BuildStats]:
-    """Собрать список raw OfferOut и supplier stats."""
     out: list[OfferOut] = []
     stats = BuildStats(before=len(source_offers), after=0)
 
