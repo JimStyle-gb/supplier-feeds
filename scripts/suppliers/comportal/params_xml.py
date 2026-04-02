@@ -9,7 +9,11 @@ XML params pipeline для ComPortal.
 - kind-aware cleanup;
 - синтетический param "Тип" из category.
 
-Без core-логики и без narrative-builder.
+Что исправлено в этой версии:
+- жёстко вырезаются служебные marketplace/source keys;
+- в raw/final больше не должны протекать:
+  "Цена по запросу (для сортировки)", "Акция (для сортировки)" и прочий мусор;
+- сохранена роль файла: это главный supplier extractor, без core-логики.
 """
 
 from __future__ import annotations
@@ -35,6 +39,36 @@ _TECH_VALUE_RE = re.compile(
     r")\b"
 )
 _RESOURCE_NUMBER_ONLY_RE = re.compile(r"(?iu)^\d[\d\s.,]*(?:\s*(?:стр\.?|страниц))?$")
+
+# Жёстко запрещённые ключи проекта: не должны выходить ни в raw, ни в final.
+_GLOBAL_DROP_KEYS_CASEFOLD = {
+    "артикул",
+    "штрихкод",
+    "штрих-код",
+    "штрих код",
+    "barcode",
+    "gtin",
+    "upc",
+    "ean",
+    "ean-13",
+    "ean13",
+    "код тн вэд",
+    "код нкт",
+    "код товара kaspi",
+    "код товара kaspi.kz",
+    "благотворительность",
+    "снижена цена",
+    "новинка",
+    "назначение",
+    "безопасность",
+    "цена по запросу (для сортировки)",
+    "акция (для сортировки)",
+}
+
+# Для ComPortal это тоже сервисный мусор и не должен ехать в витрину.
+_COMPORTAL_EXTRA_DROP_KEYS_CASEFOLD = {
+    "акция",
+}
 
 
 def key_quality_ok(k: str, *, require_letter: bool, max_len: int, max_words: int) -> bool:
@@ -200,10 +234,17 @@ def category_type_hint(source_offer: SourceOffer) -> str:
     return ""
 
 
+def _effective_drop_keys_casefold(schema: dict[str, Any]) -> set[str]:
+    drop_keys = {str(x).casefold() for x in (schema.get("drop_keys_casefold") or [])}
+    drop_keys |= set(_GLOBAL_DROP_KEYS_CASEFOLD)
+    drop_keys |= set(_COMPORTAL_EXTRA_DROP_KEYS_CASEFOLD)
+    return drop_keys
+
+
 def build_params_from_xml(source_offer: SourceOffer, schema: dict[str, Any]) -> list[ParamItem]:
     out: list[ParamItem] = []
 
-    drop_keys_casefold = {str(x).casefold() for x in (schema.get("drop_keys_casefold") or [])}
+    drop_keys_casefold = _effective_drop_keys_casefold(schema)
     require_letter = bool((schema.get("key_rules") or {}).get("require_letter", True))
     max_len = int((schema.get("key_rules") or {}).get("max_len", 60) or 60)
     max_words = int((schema.get("key_rules") or {}).get("max_words", 9) or 9)
