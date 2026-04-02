@@ -3,212 +3,46 @@ name: Build_CopyLine
 on:
   workflow_dispatch:
   schedule:
-    # Алматы UTC+5 → 04:00 local = 23:00 UTC предыдущего дня
-    - cron: '0 23 * * *'
-
-permissions:
-  contents: write
+    - cron: '0 23 * * *'  # 04:00 Asia/Almaty
 
 jobs:
-  build_copyline:
+  build-copyline:
     runs-on: ubuntu-latest
-    concurrency:
-      group: build_copyline
-      cancel-in-progress: true
+    env:
+      TZ: Asia/Almaty
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          else
-            pip install requests beautifulsoup4 lxml pyyaml python-dateutil openpyxl
-          fi
+      - name: Show Python version
+        run: python --version
 
-      - name: Configure git identity
+      - name: Compile shared + CopyLine files
+        run: |
+          python -m py_compile             scripts/build_copyline.py             scripts/cs/core.py             scripts/cs/writer.py             scripts/cs/validators.py             scripts/cs/util.py             scripts/cs/meta.py             scripts/cs/pricing.py             scripts/cs/description.py             scripts/cs/keywords.py             scripts/cs/policy.py             scripts/cs/qg_report.py             scripts/suppliers/copyline/models.py             scripts/suppliers/copyline/source.py             scripts/suppliers/copyline/filtering.py             scripts/suppliers/copyline/normalize.py             scripts/suppliers/copyline/pictures.py             scripts/suppliers/copyline/params_page.py             scripts/suppliers/copyline/desc_clean.py             scripts/suppliers/copyline/desc_extract.py             scripts/suppliers/copyline/compat.py             scripts/suppliers/copyline/builder.py             scripts/suppliers/copyline/diagnostics.py             scripts/suppliers/copyline/quality_gate.py
+
+      - name: Build CopyLine
+        run: python scripts/build_copyline.py
+
+      - name: Upload outputs to workspace
+        run: |
+          test -f docs/raw/copyline.yml
+          test -f docs/copyline.yml
+          test -f docs/raw/copyline_quality_gate.txt
+
+      - name: Commit updated feeds
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/raw/copyline.yml docs/copyline.yml docs/raw/copyline_quality_gate.txt
+          git diff --cached --quiet && echo "No file changes to commit" && exit 0
+          git commit -m "Build CopyLine"
 
-      - name: Prepare folders
-        run: |
-          mkdir -p docs docs/raw scripts/suppliers/copyline/config
-
-      - name: Smoke test (py_compile existing files only)
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import py_compile
-          import sys
-
-          files = [
-              "scripts/cs/core.py",
-              "scripts/cs/description.py",
-              "scripts/cs/keywords.py",
-              "scripts/cs/meta.py",
-              "scripts/cs/policy.py",
-              "scripts/cs/pricing.py",
-              "scripts/cs/util.py",
-              "scripts/cs/validators.py",
-              "scripts/cs/writer.py",
-              "scripts/cs/qg_report.py",
-              "scripts/build_copyline.py",
-              "scripts/suppliers/__init__.py",
-              "scripts/suppliers/copyline/__init__.py",
-              "scripts/suppliers/copyline/models.py",
-              "scripts/suppliers/copyline/source.py",
-              "scripts/suppliers/copyline/filtering.py",
-              "scripts/suppliers/copyline/normalize.py",
-              "scripts/suppliers/copyline/pictures.py",
-              "scripts/suppliers/copyline/params_page.py",
-              "scripts/suppliers/copyline/desc_clean.py",
-              "scripts/suppliers/copyline/desc_extract.py",
-              "scripts/suppliers/copyline/compat.py",
-              "scripts/suppliers/copyline/builder.py",
-              "scripts/suppliers/copyline/diagnostics.py",
-              "scripts/suppliers/copyline/quality_gate.py",
-          ]
-
-          failed = False
-          for f in files:
-              p = Path(f)
-              if not p.exists():
-                  print(f"SKIP missing: {f}")
-                  continue
-              try:
-                  py_compile.compile(str(p), doraise=True)
-                  print(f"OK: {f}")
-              except Exception as e:
-                  failed = True
-                  print(f"FAIL: {f}: {e}")
-
-          if failed:
-              sys.exit(1)
-          PY
-
-      - name: Show build version
-        run: |
-          python - <<'PY'
-          import pathlib
-          import re
-          t = pathlib.Path('scripts/build_copyline.py').read_text(encoding='utf-8', errors='ignore')
-          m = re.search(r'BUILD_COPYLINE_VERSION\s*=\s*["\']([^"\']+)["\']', t)
-          print('COPYLINE_VERSION', m.group(1) if m else 'UNKNOWN')
-          PY
-
-      - name: Snapshot previous feed
-        run: |
-          mkdir -p /tmp docs docs/raw
-          if [ -f docs/copyline.yml ]; then
-            cp -f docs/copyline.yml /tmp/prev_feed.yml
-          else
-            : > /tmp/prev_feed.yml
-          fi
-
-      - name: Build feed (copyline)
-        env:
-          TZ: Asia/Almaty
-        run: |
-          python scripts/build_copyline.py
-
-      - name: Diagnostics
-        run: |
-          git status --porcelain || true
-          git diff --stat || true
-          ls -la docs docs/raw || true
-          wc -c docs/copyline.yml docs/raw/copyline.yml 2>/dev/null || true
-          [ -f docs/raw/copyline_watch.txt ] && sed -n '1,200p' docs/raw/copyline_watch.txt || true
-          [ -f docs/raw/copyline_quality_gate.txt ] && sed -n '1,260p' docs/raw/copyline_quality_gate.txt || true
-
-      - name: Update FEED_META build time + next run
-        run: |
-          norm_hash() {
-            local f="$1"
-            if [ ! -f "$f" ]; then
-              echo ""
-              return 0
-            fi
-            sed '/<!--FEED_META/,/-->/d' "$f" | sed '/^<yml_catalog date=/d' | md5sum | awk '{print $1}'
-          }
-
-          OLD_HASH=$(norm_hash /tmp/prev_feed.yml)
-          NEW_HASH=$(norm_hash docs/copyline.yml)
-
-          NO_CHANGES=0
-          if [ -n "$OLD_HASH" ] && [ -n "$NEW_HASH" ] && [ "$OLD_HASH" = "$NEW_HASH" ]; then
-            NO_CHANGES=1
-          fi
-
-          TS=$(TZ='Asia/Almaty' date '+%Y-%m-%d %H:%M:%S')
-          NOTE=""
-          if [ "$NO_CHANGES" -eq 1 ]; then
-            NOTE=" (не было изменений)"
-          fi
-
-          TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
-          NOW_HMS=$(TZ='Asia/Almaty' date '+%H%M%S')
-          if [ "$NOW_HMS" -ge "040000" ]; then
-            NEXT_DATE=$(TZ='Asia/Almaty' date -d 'tomorrow' '+%Y-%m-%d')
-          else
-            NEXT_DATE="$TODAY"
-          fi
-          NEXT_RUN="${NEXT_DATE} 04:00:00"
-
-          for F in docs/copyline.yml docs/raw/copyline.yml; do
-            if [ ! -f "$F" ]; then
-              continue
-            fi
-
-            sed -i -E 's/^<yml_catalog date="[^"]+">/<yml_catalog date="'"${TS}"'">/' "$F" || true
-
-            tmp="$F.__tmp"
-            : > "$tmp"
-            while IFS= read -r ln; do
-              if [[ "$ln" == Время\ сборки\ \(Алматы\)* ]]; then
-                left="${ln%%|*}"
-                echo "${left}| ${TS}${NOTE}" >> "$tmp"
-              elif [[ "$ln" == Ближайшая\ сборка\ \(Алматы\)* ]]; then
-                left="${ln%%|*}"
-                echo "${left}| ${NEXT_RUN}" >> "$tmp"
-              else
-                if [ "$NO_CHANGES" -eq 0 ]; then
-                  echo "${ln// (не было изменений)/}" >> "$tmp"
-                else
-                  echo "$ln" >> "$tmp"
-                fi
-              fi
-            done < "$F"
-            mv "$tmp" "$F"
-          done
-
-          echo "CS_NO_CHANGES=$NO_CHANGES" >> "$GITHUB_ENV"
-
-      - name: Commit & push docs/copyline.yml
-        run: |
-          git add docs/copyline.yml docs/raw/copyline.yml
-          if [ -f docs/raw/copyline_watch.txt ]; then
-            git add docs/raw/copyline_watch.txt
-          fi
-          if [ -f docs/raw/copyline_quality_gate.txt ]; then
-            git add docs/raw/copyline_quality_gate.txt
-          fi
-
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-
-          git commit -m "build: copyline feed"
-          git pull --rebase --autostash
-          git push
+      - name: Push
+        run: git push
