@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TZ: Asia/Almaty
-      COMPORTAL_HTTP_COOKIE: ${{ secrets.COMPORTAL_HTTP_COOKIE }}
-      COMPORTAL_HTTP_AUTHORIZATION: ${{ secrets.COMPORTAL_HTTP_AUTHORIZATION }}
+      COMPORTAL_LOGIN: ${{ secrets.COMPORTAL_LOGIN }}
+      COMPORTAL_PASSWORD: ${{ secrets.COMPORTAL_PASSWORD }}
       COMPORTAL_HTTP_REFERER: https://www.comportal.kz/
 
     steps:
