@@ -3,11 +3,14 @@
 Path: scripts/suppliers/comportal/normalize.py
 
 Базовая supplier-нормализация полей ComPortal.
-Роль такая же, как у готовых поставщиков:
-- name / vendor / model / availability / price-in;
-- без picture-policy;
-- без большого extraction-комбайна;
-- без builder/core-логики.
+
+Что улучшено:
+- public name теперь чище:
+  - HP Europe -> HP
+  - Hewlett Packard / Hewlett-Packard -> HP
+  - HP Enterprise -> HPE
+  - MФП -> МФУ
+- это улучшает raw, final и keywords для Google/Яндекса.
 """
 
 from __future__ import annotations
@@ -63,6 +66,7 @@ _VENDOR_CANON_MAP = {
 
 _NAME_VENDOR_PATTERNS: list[tuple[str, str]] = [
     (r"\bHP\s+Europe\b", "HP"),
+    (r"\bHP\s+Inc\.\b", "HP"),
     (r"\bHPE\b", "HPE"),
     (r"\bHP\b", "HP"),
     (r"\bCanon\b", "Canon"),
@@ -95,26 +99,9 @@ _NAME_VENDOR_PATTERNS: list[tuple[str, str]] = [
 ]
 
 _GENERIC_VENDOR_WORDS = {
-    "МФП",
-    "МФУ",
-    "ПРИНТЕР",
-    "НОУТБУК",
-    "МОНИТОР",
-    "ИБП",
-    "СКАНЕР",
-    "ПРОЕКТОР",
-    "КАРТРИДЖ",
-    "ТОНЕР",
-    "БАТАРЕЯ",
-    "АККУМУЛЯТОР",
-    "СТАБИЛИЗАТОР",
-    "МОНОБЛОК",
-    "СЕРВЕР",
-    "КОММУТАТОР",
-    "МАРШРУТИЗАТОР",
-    "ДИСПЛЕЙ",
-    "ПЛОТТЕР",
-    "РАБОЧАЯ",
+    "МФП", "МФУ", "ПРИНТЕР", "НОУТБУК", "МОНИТОР", "ИБП", "СКАНЕР", "ПРОЕКТОР",
+    "КАРТРИДЖ", "ТОНЕР", "БАТАРЕЯ", "АККУМУЛЯТОР", "СТАБИЛИЗАТОР", "МОНОБЛОК",
+    "СЕРВЕР", "КОММУТАТОР", "МАРШРУТИЗАТОР", "ДИСПЛЕЙ", "ПЛОТТЕР", "РАБОЧАЯ",
 }
 
 
@@ -128,8 +115,63 @@ def _param_map(params: list[ParamItem]) -> dict[str, str]:
     return out
 
 
+def _canonical_vendor_token(vendor: str) -> str:
+    s = norm_ws(vendor)
+    if not s:
+        return ""
+
+    up = s.upper()
+    if up in _GENERIC_VENDOR_WORDS:
+        return ""
+
+    if up in _VENDOR_CANON_MAP:
+        return _VENDOR_CANON_MAP[up]
+
+    if up.startswith("HP EUROPE"):
+        return "HP"
+    if up.startswith("HEWLETT PACKARD ENTERPRISE"):
+        return "HPE"
+    if up.startswith("HEWLETT PACKARD"):
+        return "HP"
+    if up.startswith("HP ENTERPRISE"):
+        return "HPE"
+
+    return s
+
+
+def _infer_vendor_from_name(name: str) -> str:
+    s = norm_ws(name)
+    if not s:
+        return ""
+    for pattern, vendor in _NAME_VENDOR_PATTERNS:
+        if re.search(pattern, s, flags=re.IGNORECASE):
+            return vendor
+    return ""
+
+
+def _canonicalize_brand_tokens_in_name(name: str) -> str:
+    s = norm_ws(name)
+    if not s:
+        return ""
+
+    replacements = [
+        (r"\bHP\s+Europe\b", "HP"),
+        (r"\bHP\s+Inc\.\b", "HP"),
+        (r"\bHewlett[\- ]Packard\s+Enterprise\b", "HPE"),
+        (r"\bHewlett[\- ]Packard\b", "HP"),
+        (r"\bHP\s+Enterprise\b", "HPE"),
+        (r"\bМФП\b", "МФУ"),
+    ]
+    for pattern, repl in replacements:
+        s = re.sub(pattern, repl, s, flags=re.IGNORECASE)
+
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+
 def normalize_name(name: str) -> str:
     s = norm_ws(name)
+    s = _canonicalize_brand_tokens_in_name(s)
     s = re.sub(r"\(\s+", "(", s)
     s = re.sub(r"\s+\)", ")", s)
     s = re.sub(r"\s+", " ", s)
@@ -170,40 +212,6 @@ def normalize_available(available_attr: str, available_tag: str, active: str) ->
     return False
 
 
-def _canonical_vendor_token(vendor: str) -> str:
-    s = norm_ws(vendor)
-    if not s:
-        return ""
-
-    up = s.upper()
-    if up in _GENERIC_VENDOR_WORDS:
-        return ""
-
-    if up in _VENDOR_CANON_MAP:
-        return _VENDOR_CANON_MAP[up]
-
-    if up.startswith("HP EUROPE"):
-        return "HP"
-    if up.startswith("HEWLETT PACKARD ENTERPRISE"):
-        return "HPE"
-    if up.startswith("HEWLETT PACKARD"):
-        return "HP"
-    if up.startswith("HP ENTERPRISE"):
-        return "HPE"
-
-    return s
-
-
-def _infer_vendor_from_name(name: str) -> str:
-    s = norm_ws(name)
-    if not s:
-        return ""
-    for pattern, vendor in _NAME_VENDOR_PATTERNS:
-        if re.search(pattern, s, flags=re.IGNORECASE):
-            return vendor
-    return ""
-
-
 def normalize_vendor(
     vendor: str,
     *,
@@ -236,7 +244,6 @@ def normalize_vendor(
 
 def normalize_model(name: str, params: list[ParamItem]) -> str:
     pmap = _param_map(params)
-
     for key in ("Модель", "Партномер", "Артикул", "Номер"):
         val = norm_ws(pmap.get(key, ""))
         if val:
