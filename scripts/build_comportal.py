@@ -10,12 +10,7 @@ ComPortal adapter under CS-template.
 - пишет raw/final feed через shared core;
 - запускает diagnostics;
 - запускает quality gate;
-- печатает build summary.
-
-Важно:
-- ComPortal идёт как param-first supplier;
-- префикс offer/vendorCode = CP;
-- quality gate теперь используется как штатная часть сборки.
+- печатает build summary, включая critical_preview из QG.
 """
 
 from __future__ import annotations
@@ -37,7 +32,7 @@ from suppliers.comportal.quality_gate import run_quality_gate
 from suppliers.comportal.source import fetch_catalog_payload
 
 
-BUILD_COMPORTAL_VERSION = "build_comportal_v7_diagnostics_qg_enforced"
+BUILD_COMPORTAL_VERSION = "build_comportal_v8_qg_preview"
 
 SUPPLIER_NAME_DEFAULT = "ComPortal"
 SUPPLIER_URL_DEFAULT = os.getenv(
@@ -149,6 +144,21 @@ def _print_summary(
     print("-" * 72)
     print(f"quality_gate_ok: {qg.get('ok')}")
     print(f"quality_gate_report: {qg.get('report_path')}")
+    print(f"quality_gate_critical_count: {qg.get('critical_count')}")
+    print(f"quality_gate_cosmetic_count: {qg.get('cosmetic_count')}")
+
+    critical_preview = qg.get("critical_preview") or []
+    if critical_preview:
+        print("quality_gate_critical_preview:")
+        for item in critical_preview:
+            print(f"  - {item}")
+
+    cosmetic_preview = qg.get("cosmetic_preview") or []
+    if cosmetic_preview:
+        print("quality_gate_cosmetic_preview:")
+        for item in cosmetic_preview:
+            print(f"  - {item}")
+
     print("=" * 72)
 
 
