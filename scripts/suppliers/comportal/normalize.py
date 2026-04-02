@@ -3,18 +3,13 @@
 Path: scripts/suppliers/comportal/normalize.py
 ComPortal basic normalization layer.
 
-Задача модуля:
-- нормализовать name;
-- канонизировать vendor;
-- поднять model;
-- подготовить базовые поля для builder/extractor.
-
-В модуле НЕТ:
-- ассортиментного фильтра;
-- удаления param-мусора;
-- построения description;
-- ценовой логики;
-- выбора final param order.
+Что исправлено:
+- vendor fallback больше не цепляет generic-слова типа МФП/Принтер/Ноутбук;
+- сначала ищется нормальный бренд:
+  1) source vendor
+  2) param "Бренд"
+  3) узнаваемый бренд в name
+- model/name остаются в зоне normalize, без business-логики builder.
 """
 
 from __future__ import annotations
@@ -28,9 +23,10 @@ VENDOR_MAP = {
     "HP INC.": "HP",
     "HEWLETT PACKARD": "HP",
     "HEWLETT-PACKARD": "HP",
+    "HP": "HP",
     "HPE": "HPE",
     "HP ENTERPRISE": "HPE",
-    "HP ENTERPRISE/HPE": "HPE",
+    "HEWLETT PACKARD ENTERPRISE": "HPE",
     "CANON": "Canon",
     "EPSON": "Epson",
     "XEROX": "Xerox",
@@ -53,6 +49,73 @@ VENDOR_MAP = {
     "KASPERSKY": "Kaspersky",
     "DR.WEB": "Dr.Web",
     "DR. WEB": "Dr.Web",
+    "VIEWSONIC": "ViewSonic",
+    "BENQ": "BenQ",
+    "AOC": "AOC",
+    "HUAWEI": "Huawei",
+    "TP-LINK": "TP-Link",
+    "TPLINK": "TP-Link",
+    "D-LINK": "D-Link",
+    "DLINK": "D-Link",
+    "CISCO": "Cisco",
+    "ZYXEL": "Zyxel",
+}
+
+# Упорядоченный список для поиска бренда внутри name.
+NAME_BRAND_PATTERNS = [
+    (r"\bHP\s+Europe\b", "HP"),
+    (r"\bHPE\b", "HPE"),
+    (r"\bHP\b", "HP"),
+    (r"\bCanon\b", "Canon"),
+    (r"\bEpson\b", "Epson"),
+    (r"\bXerox\b", "Xerox"),
+    (r"\bBrother\b", "Brother"),
+    (r"\bKyocera\b", "Kyocera"),
+    (r"\bPantum\b", "Pantum"),
+    (r"\bRicoh\b", "Ricoh"),
+    (r"\bAPC\b", "APC"),
+    (r"\bDell\b", "Dell"),
+    (r"\bLenovo\b", "Lenovo"),
+    (r"\bASUS\b", "ASUS"),
+    (r"\bAcer\b", "Acer"),
+    (r"\bMSI\b", "MSI"),
+    (r"\bLG\b", "LG"),
+    (r"\bSamsung\b", "Samsung"),
+    (r"\biiyama\b", "iiyama"),
+    (r"\bGigabyte\b", "Gigabyte"),
+    (r"\bHikvision\b", "Hikvision"),
+    (r"\bViewSonic\b", "ViewSonic"),
+    (r"\bBenQ\b", "BenQ"),
+    (r"\bAOC\b", "AOC"),
+    (r"\bHuawei\b", "Huawei"),
+    (r"\bTP-?Link\b", "TP-Link"),
+    (r"\bD-?Link\b", "D-Link"),
+    (r"\bCisco\b", "Cisco"),
+    (r"\bZyxel\b", "Zyxel"),
+    (r"\bMicrosoft\b", "Microsoft"),
+]
+
+GENERIC_VENDOR_WORDS = {
+    "МФП",
+    "МФУ",
+    "ПРИНТЕР",
+    "НОУТБУК",
+    "МОНИТОР",
+    "ИБП",
+    "СКАНЕР",
+    "ПРОЕКТОР",
+    "КАРТРИДЖ",
+    "ТОНЕР",
+    "БАТАРЕЯ",
+    "АККУМУЛЯТОР",
+    "СТАБИЛИЗАТОР",
+    "МОНОБЛОК",
+    "СЕРВЕР",
+    "КОММУТАТОР",
+    "МАРШРУТИЗАТОР",
+    "ДИСПЛЕЙ",
+    "ПЛОТТЕР",
+    "РАБОЧАЯ",
 }
 
 
@@ -89,70 +152,96 @@ def clean_name(raw_name: str) -> str:
     return s
 
 
+def _canonical_vendor_token(token: str) -> str:
+    """Канонизировать один vendor-token."""
+    cand = norm_spaces(token)
+    if not cand:
+        return ""
+
+    key = cand.upper()
+    if key in GENERIC_VENDOR_WORDS:
+        return ""
+
+    if key in VENDOR_MAP:
+        return VENDOR_MAP[key]
+
+    if key.startswith("HP EUROPE"):
+        return "HP"
+    if key.startswith("HEWLETT PACKARD ENTERPRISE"):
+        return "HPE"
+    if key.startswith("HEWLETT PACKARD"):
+        return "HP"
+    if key.startswith("HP ENTERPRISE"):
+        return "HPE"
+
+    for prefix, target in (
+        ("CANON", "Canon"),
+        ("EPSON", "Epson"),
+        ("XEROX", "Xerox"),
+        ("BROTHER", "Brother"),
+        ("KYOCERA", "Kyocera"),
+        ("PANTUM", "Pantum"),
+        ("RICOH", "Ricoh"),
+        ("APC", "APC"),
+        ("DELL", "Dell"),
+        ("LENOVO", "Lenovo"),
+        ("ASUS", "ASUS"),
+        ("ACER", "Acer"),
+        ("MSI", "MSI"),
+        ("LG", "LG"),
+        ("SAMSUNG", "Samsung"),
+        ("IIYAMA", "iiyama"),
+        ("GIGABYTE", "Gigabyte"),
+        ("HIKVISION", "Hikvision"),
+        ("MICROSOFT", "Microsoft"),
+        ("VIEWSONIC", "ViewSonic"),
+        ("BENQ", "BenQ"),
+        ("AOC", "AOC"),
+        ("HUAWEI", "Huawei"),
+        ("TP-LINK", "TP-Link"),
+        ("TPLINK", "TP-Link"),
+        ("D-LINK", "D-Link"),
+        ("DLINK", "D-Link"),
+        ("CISCO", "Cisco"),
+        ("ZYXEL", "Zyxel"),
+    ):
+        if key.startswith(prefix):
+            return target
+
+    return cand
+
+
+def _extract_vendor_from_name(raw_name: str) -> str:
+    """Найти бренд внутри name."""
+    name = norm_spaces(raw_name)
+    if not name:
+        return ""
+
+    for pattern, vendor in NAME_BRAND_PATTERNS:
+        if re.search(pattern, name, flags=re.IGNORECASE):
+            return vendor
+
+    return ""
+
+
 def canonical_vendor(raw_vendor: str, params_map: Optional[Dict[str, str]] = None, raw_name: str = "") -> str:
     """Канонизировать vendor."""
     params_map = params_map or {}
-    candidates = [
-        norm_spaces(raw_vendor),
-        norm_spaces(params_map.get("Бренд", "")),
-    ]
 
-    name_first = norm_spaces(raw_name).split(" ", 1)[0] if raw_name else ""
-    if name_first:
-        candidates.append(name_first)
+    # 1) source vendor
+    vendor = _canonical_vendor_token(raw_vendor)
+    if vendor:
+        return vendor
 
-    for cand in candidates:
-        if not cand:
-            continue
-        key = cand.upper()
-        if key in VENDOR_MAP:
-            return VENDOR_MAP[key]
-        if key.startswith("HP EUROPE"):
-            return "HP"
-        if key.startswith("HEWLETT PACKARD"):
-            return "HP"
-        if key.startswith("HP "):
-            return "HP"
-        if key.startswith("CANON"):
-            return "Canon"
-        if key.startswith("EPSON"):
-            return "Epson"
-        if key.startswith("XEROX"):
-            return "Xerox"
-        if key.startswith("BROTHER"):
-            return "Brother"
-        if key.startswith("KYOCERA"):
-            return "Kyocera"
-        if key.startswith("PANTUM"):
-            return "Pantum"
-        if key.startswith("RICOH"):
-            return "Ricoh"
-        if key.startswith("APC"):
-            return "APC"
-        if key.startswith("DELL"):
-            return "Dell"
-        if key.startswith("LENOVO"):
-            return "Lenovo"
-        if key.startswith("ASUS"):
-            return "ASUS"
-        if key.startswith("ACER"):
-            return "Acer"
-        if key.startswith("MSI"):
-            return "MSI"
-        if key.startswith("LG"):
-            return "LG"
-        if key.startswith("SAMSUNG"):
-            return "Samsung"
-        if key.startswith("IIYAMA"):
-            return "iiyama"
-        if key.startswith("GIGABYTE"):
-            return "Gigabyte"
-        if key.startswith("HIKVISION"):
-            return "Hikvision"
-        if key.startswith("MICROSOFT"):
-            return "Microsoft"
+    # 2) param "Бренд"
+    vendor = _canonical_vendor_token(params_map.get("Бренд", ""))
+    if vendor:
+        return vendor
 
-        return cand
+    # 3) бренд внутри name
+    vendor = _extract_vendor_from_name(raw_name)
+    if vendor:
+        return vendor
 
     return ""
 
@@ -208,6 +297,8 @@ def normalize_basics(raw_offer: Dict[str, Any]) -> Dict[str, Any]:
 
 __all__ = [
     "VENDOR_MAP",
+    "NAME_BRAND_PATTERNS",
+    "GENERIC_VENDOR_WORDS",
     "params_to_map",
     "clean_name",
     "canonical_vendor",
