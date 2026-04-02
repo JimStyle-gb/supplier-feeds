@@ -3,15 +3,9 @@
 Path: scripts/suppliers/comportal/diagnostics.py
 ComPortal diagnostics helpers.
 
-Задача модуля:
+Роль:
 - собрать простую supplier-диагностику до/после фильтра;
 - посчитать базовые показатели для build summary и отладки.
-
-В модуле НЕТ:
-- фильтрации;
-- нормализации;
-- extraction;
-- quality gate решений.
 """
 
 from __future__ import annotations
@@ -99,12 +93,14 @@ def top_source_categories(
 ) -> List[Dict[str, Any]]:
     """Топ категорий по количеству офферов."""
     counts: Dict[str, Dict[str, Any]] = {}
+
     for x in offers:
         cid = safe_str(x.get("raw_categoryId") or x.get("categoryId"))
         name = safe_str(x.get("raw_category_name"))
         path = safe_str(x.get("raw_category_path"))
         if not cid:
             cid = "__empty__"
+
         rec = counts.setdefault(
             cid,
             {
