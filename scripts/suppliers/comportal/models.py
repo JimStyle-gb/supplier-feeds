@@ -6,7 +6,7 @@ Typed payload contracts for ComPortal supplier-layer.
 
 from __future__ import annotations
 
-from typing import TypedDict, List, Dict
+from typing import Dict, List, TypedDict
 
 
 class RawParam(TypedDict, total=False):
