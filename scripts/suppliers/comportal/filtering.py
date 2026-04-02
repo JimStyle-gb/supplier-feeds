@@ -3,62 +3,50 @@
 Path: scripts/suppliers/comportal/filtering.py
 ComPortal category-first filtering.
 
-Задача модуля:
-- брать сырые офферы из source.py;
-- пропускать только разрешённые categoryId;
-- не пускать ветки Акции / Уцененные;
-- вернуть удобный report для build summary.
-
-В модуле НЕТ:
-- нормализации name/vendor/model;
-- semantic extraction param;
-- правок description;
-- ценовой логики.
+Роль:
+- читать config/filter.yml;
+- фильтровать только по category ids / excluded roots;
+- вернуть filtered offers + report.
 """
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any, Dict, Iterable, List, Set
 
-# Выбранный whitelist пользователя.
-ALLOWED_CATEGORY_IDS: Set[str] = {
-    "8052",  # Ноутбуки
-    "8048",  # Мониторы
-    "8030",  # Моноблоки
-    "8031",  # Настольные ПК
-    "8073",  # Проекторы
-    "8032",  # Рабочие станции
+import yaml
 
-    "8034",  # Лазерные монохромные МФУ
-    "8037",  # Лазерные монохромные принтеры
-    "8035",  # Лазерные цветные МФУ
-    "8038",  # Лазерные цветные принтеры
-    "8036",  # Сканеры
-    "8039",  # Струйные МФУ
-    "8074",  # Струйные принтеры
-    "8040",  # Широкоформатные принтеры
 
-    "8043",  # Картриджи для лазерных устройств
-    "8044",  # Картриджи для струйных устройств
-    "8046",  # Картриджи для широкоформатных устройств
-    "8062",  # Прочие расходные материалы
-    "8047",  # Тонеры
-
-    "8065",  # Батареи. аккумуляторы
-    "8063",  # ИБП
-    "8064",  # Стабилизаторы
-}
-
-# Корни, которые намеренно не берём.
-EXCLUDED_ROOT_IDS: Set[str] = {
-    "8028",  # Акции
-    "8029",  # Уцененные
-}
+CONFIG_PATH = Path(__file__).resolve().parent / "config" / "filter.yml"
 
 
 def safe_str(x: Any) -> str:
-    """Безопасно привести значение к строке."""
+    """Безопасно привести к строке."""
     return str(x).strip() if x is not None else ""
+
+
+def _load_filter_config(config_path: Path = CONFIG_PATH) -> Dict[str, Any]:
+    """Прочитать YAML-конфиг фильтра."""
+    if not config_path.exists():
+        raise FileNotFoundError(f"ComPortal filter config not found: {config_path}")
+    data = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
+    if not isinstance(data, dict):
+        raise RuntimeError(f"ComPortal filter config must be a dict: {config_path}")
+    return data
+
+
+def load_allowed_category_ids(config_path: Path = CONFIG_PATH) -> Set[str]:
+    """Вернуть set разрешённых category ids."""
+    cfg = _load_filter_config(config_path)
+    values = cfg.get("allowed_category_ids") or []
+    return {safe_str(x) for x in values if safe_str(x)}
+
+
+def load_excluded_root_ids(config_path: Path = CONFIG_PATH) -> Set[str]:
+    """Вернуть set запрещённых root ids."""
+    cfg = _load_filter_config(config_path)
+    values = cfg.get("excluded_root_ids") or []
+    return {safe_str(x) for x in values if safe_str(x)}
 
 
 def _category_record(category_index: Dict[str, Dict[str, str]], cid: str) -> Dict[str, str]:
@@ -71,6 +59,7 @@ def _root_category_id(category_index: Dict[str, Dict[str, str]], cid: str) -> st
     cur = safe_str(cid)
     seen: set[str] = set()
     last = cur
+
     while cur and cur not in seen and cur in category_index:
         seen.add(cur)
         last = cur
@@ -78,23 +67,27 @@ def _root_category_id(category_index: Dict[str, Dict[str, str]], cid: str) -> st
         if not parent_id:
             return cur
         cur = parent_id
+
     return last
 
 
 def is_allowed_offer(
     offer: Dict[str, Any],
     category_index: Dict[str, Dict[str, str]],
+    *,
+    allowed_category_ids: Set[str],
+    excluded_root_ids: Set[str],
 ) -> bool:
-    """Проверить, проходит ли оффер фильтр."""
+    """Проверить, проходит ли offer фильтр."""
     cid = safe_str(offer.get("raw_categoryId") or offer.get("categoryId"))
     if not cid:
         return False
 
-    if cid not in ALLOWED_CATEGORY_IDS:
+    if cid not in allowed_category_ids:
         return False
 
     root_id = _root_category_id(category_index, cid)
-    if root_id in EXCLUDED_ROOT_IDS:
+    if root_id in excluded_root_ids:
         return False
 
     return True
@@ -103,8 +96,14 @@ def is_allowed_offer(
 def filter_offers(
     offers: Iterable[Dict[str, Any]],
     category_index: Dict[str, Dict[str, str]],
+    *,
+    config_path: Path = CONFIG_PATH,
 ) -> Dict[str, Any]:
-    """Отфильтровать офферы и вернуть filtered + report."""
+    """Отфильтровать offers по config/filter.yml."""
+    cfg = _load_filter_config(config_path)
+    allowed_category_ids = load_allowed_category_ids(config_path)
+    excluded_root_ids = load_excluded_root_ids(config_path)
+
     source_list = list(offers)
     kept: List[Dict[str, Any]] = []
     rejected_total = 0
@@ -114,7 +113,13 @@ def filter_offers(
 
     for offer in source_list:
         cid = safe_str(offer.get("raw_categoryId") or offer.get("categoryId"))
-        if is_allowed_offer(offer, category_index):
+
+        if is_allowed_offer(
+            offer,
+            category_index,
+            allowed_category_ids=allowed_category_ids,
+            excluded_root_ids=excluded_root_ids,
+        ):
             kept.append(offer)
             if cid:
                 kept_category_counts[cid] = kept_category_counts.get(cid, 0) + 1
@@ -124,7 +129,7 @@ def filter_offers(
                 rejected_category_counts[cid] = rejected_category_counts.get(cid, 0) + 1
 
     allowed_categories_report: List[Dict[str, Any]] = []
-    for cid in sorted(ALLOWED_CATEGORY_IDS):
+    for cid in sorted(allowed_category_ids):
         rec = _category_record(category_index, cid)
         allowed_categories_report.append(
             {
@@ -135,6 +140,7 @@ def filter_offers(
             }
         )
 
+    rejected_limit = int((cfg.get("report") or {}).get("top_rejected_limit") or 20)
     rejected_categories_report: List[Dict[str, Any]] = []
     for cid, cnt in sorted(rejected_category_counts.items(), key=lambda x: (-x[1], x[0])):
         rec = _category_record(category_index, cid)
@@ -148,15 +154,15 @@ def filter_offers(
         )
 
     report = {
-        "mode": "include",
+        "mode": safe_str(cfg.get("mode") or "include"),
         "before": len(source_list),
         "after": len(kept),
         "rejected_total": rejected_total,
-        "allowed_category_count": len(ALLOWED_CATEGORY_IDS),
-        "allowed_category_ids": sorted(ALLOWED_CATEGORY_IDS),
-        "excluded_root_ids": sorted(EXCLUDED_ROOT_IDS),
-        "allowed_categories_report": allowed_categories_report,
-        "rejected_categories_report": rejected_categories_report[:20],
+        "allowed_category_count": len(allowed_category_ids),
+        "allowed_category_ids": sorted(allowed_category_ids),
+        "excluded_root_ids": sorted(excluded_root_ids),
+        "allowed_categories_report": allowed_categories_report if (cfg.get("report") or {}).get("show_allowed_category_report", True) else [],
+        "rejected_categories_report": rejected_categories_report[:rejected_limit] if (cfg.get("report") or {}).get("show_rejected_category_report", True) else [],
     }
 
     return {
@@ -166,8 +172,9 @@ def filter_offers(
 
 
 __all__ = [
-    "ALLOWED_CATEGORY_IDS",
-    "EXCLUDED_ROOT_IDS",
+    "CONFIG_PATH",
+    "load_allowed_category_ids",
+    "load_excluded_root_ids",
     "is_allowed_offer",
     "filter_offers",
 ]
