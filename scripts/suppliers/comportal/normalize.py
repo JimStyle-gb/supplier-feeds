@@ -3,13 +3,18 @@
 Path: scripts/suppliers/comportal/normalize.py
 ComPortal basic normalization layer.
 
-Что исправлено:
-- vendor fallback больше не цепляет generic-слова типа МФП/Принтер/Ноутбук;
-- сначала ищется нормальный бренд:
-  1) source vendor
-  2) param "Бренд"
-  3) узнаваемый бренд в name
-- model/name остаются в зоне normalize, без business-логики builder.
+Роль:
+- нормализовать name;
+- канонизировать vendor;
+- поднять model;
+- подготовить базовые поля для supplier builder.
+
+В модуле НЕТ:
+- фильтра по ассортименту;
+- выбора picture policy;
+- главного params extraction;
+- построения description;
+- ценовой логики.
 """
 
 from __future__ import annotations
@@ -61,7 +66,6 @@ VENDOR_MAP = {
     "ZYXEL": "Zyxel",
 }
 
-# Упорядоченный список для поиска бренда внутри name.
 NAME_BRAND_PATTERNS = [
     (r"\bHP\s+Europe\b", "HP"),
     (r"\bHPE\b", "HPE"),
@@ -153,7 +157,7 @@ def clean_name(raw_name: str) -> str:
 
 
 def _canonical_vendor_token(token: str) -> str:
-    """Канонизировать один vendor-token."""
+    """Канонизировать один vendor token."""
     cand = norm_spaces(token)
     if not cand:
         return ""
@@ -174,45 +178,11 @@ def _canonical_vendor_token(token: str) -> str:
     if key.startswith("HP ENTERPRISE"):
         return "HPE"
 
-    for prefix, target in (
-        ("CANON", "Canon"),
-        ("EPSON", "Epson"),
-        ("XEROX", "Xerox"),
-        ("BROTHER", "Brother"),
-        ("KYOCERA", "Kyocera"),
-        ("PANTUM", "Pantum"),
-        ("RICOH", "Ricoh"),
-        ("APC", "APC"),
-        ("DELL", "Dell"),
-        ("LENOVO", "Lenovo"),
-        ("ASUS", "ASUS"),
-        ("ACER", "Acer"),
-        ("MSI", "MSI"),
-        ("LG", "LG"),
-        ("SAMSUNG", "Samsung"),
-        ("IIYAMA", "iiyama"),
-        ("GIGABYTE", "Gigabyte"),
-        ("HIKVISION", "Hikvision"),
-        ("MICROSOFT", "Microsoft"),
-        ("VIEWSONIC", "ViewSonic"),
-        ("BENQ", "BenQ"),
-        ("AOC", "AOC"),
-        ("HUAWEI", "Huawei"),
-        ("TP-LINK", "TP-Link"),
-        ("TPLINK", "TP-Link"),
-        ("D-LINK", "D-Link"),
-        ("DLINK", "D-Link"),
-        ("CISCO", "Cisco"),
-        ("ZYXEL", "Zyxel"),
-    ):
-        if key.startswith(prefix):
-            return target
-
     return cand
 
 
 def _extract_vendor_from_name(raw_name: str) -> str:
-    """Найти бренд внутри name."""
+    """Найти узнаваемый бренд внутри name."""
     name = norm_spaces(raw_name)
     if not name:
         return ""
@@ -228,17 +198,14 @@ def canonical_vendor(raw_vendor: str, params_map: Optional[Dict[str, str]] = Non
     """Канонизировать vendor."""
     params_map = params_map or {}
 
-    # 1) source vendor
     vendor = _canonical_vendor_token(raw_vendor)
     if vendor:
         return vendor
 
-    # 2) param "Бренд"
     vendor = _canonical_vendor_token(params_map.get("Бренд", ""))
     if vendor:
         return vendor
 
-    # 3) бренд внутри name
     vendor = _extract_vendor_from_name(raw_name)
     if vendor:
         return vendor
@@ -247,7 +214,7 @@ def canonical_vendor(raw_vendor: str, params_map: Optional[Dict[str, str]] = Non
 
 
 def extract_model(raw_name: str, params_map: Optional[Dict[str, str]] = None) -> str:
-    """Поднять модель из param или name."""
+    """Поднять модель из params или name."""
     params_map = params_map or {}
 
     for key in ("Модель", "Партномер", "Артикул", "Номер"):
@@ -269,7 +236,7 @@ def extract_model(raw_name: str, params_map: Optional[Dict[str, str]] = None) ->
 
 
 def normalize_basics(raw_offer: Dict[str, Any]) -> Dict[str, Any]:
-    """Вернуть базово нормализованный offer payload."""
+    """Вернуть базово нормализованный raw offer payload."""
     params = raw_offer.get("raw_params") or raw_offer.get("params") or []
     params_map = params_to_map(params)
 
@@ -296,6 +263,7 @@ def normalize_basics(raw_offer: Dict[str, Any]) -> Dict[str, Any]:
 
 
 __all__ = [
+    "PLACEHOLDER_PICTURE",
     "VENDOR_MAP",
     "NAME_BRAND_PATTERNS",
     "GENERIC_VENDOR_WORDS",
