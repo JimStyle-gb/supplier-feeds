@@ -1,29 +1,24 @@
 # -*- coding: utf-8 -*-
 """
 Path: scripts/suppliers/comportal/normalize.py
-ComPortal basic normalization layer.
 
-Роль:
-- нормализовать name;
-- канонизировать vendor;
-- поднять model;
-- подготовить базовые поля для supplier builder.
-
-В модуле НЕТ:
-- фильтра по ассортименту;
-- выбора picture policy;
-- главного params extraction;
-- построения description;
-- ценовой логики.
+Базовая supplier-нормализация полей ComPortal.
+Роль такая же, как у готовых поставщиков:
+- name / vendor / model / availability / price-in;
+- без picture-policy;
+- без большого extraction-комбайна;
+- без builder/core-логики.
 """
 
 from __future__ import annotations
 
 import re
-from typing import Any, Dict, List, Optional
+
+from cs.util import norm_ws, safe_int
+from suppliers.comportal.models import ParamItem
 
 
-VENDOR_MAP = {
+_VENDOR_CANON_MAP = {
     "HP EUROPE": "HP",
     "HP INC.": "HP",
     "HEWLETT PACKARD": "HP",
@@ -66,7 +61,7 @@ VENDOR_MAP = {
     "ZYXEL": "Zyxel",
 }
 
-NAME_BRAND_PATTERNS = [
+_NAME_VENDOR_PATTERNS: list[tuple[str, str]] = [
     (r"\bHP\s+Europe\b", "HP"),
     (r"\bHPE\b", "HPE"),
     (r"\bHP\b", "HP"),
@@ -99,7 +94,7 @@ NAME_BRAND_PATTERNS = [
     (r"\bMicrosoft\b", "Microsoft"),
 ]
 
-GENERIC_VENDOR_WORDS = {
+_GENERIC_VENDOR_WORDS = {
     "МФП",
     "МФУ",
     "ПРИНТЕР",
@@ -123,153 +118,141 @@ GENERIC_VENDOR_WORDS = {
 }
 
 
-def safe_str(x: Any) -> str:
-    """Безопасно привести к строке."""
-    return str(x).strip() if x is not None else ""
+def _param_map(params: list[ParamItem]) -> dict[str, str]:
+    out: dict[str, str] = {}
+    for p in params or []:
+        name = norm_ws(p.name)
+        value = norm_ws(p.value)
+        if name and value:
+            out[name] = value
+    return out
 
 
-def norm_spaces(s: str) -> str:
-    """Сжать пробелы и NBSP."""
-    s = (s or "").replace("\xa0", " ")
+def normalize_name(name: str) -> str:
+    s = norm_ws(name)
+    s = re.sub(r"\(\s+", "(", s)
+    s = re.sub(r"\s+\)", ")", s)
     s = re.sub(r"\s+", " ", s)
     return s.strip()
 
 
-def params_to_map(params: List[Dict[str, str]]) -> Dict[str, str]:
-    """Собрать map param name -> value."""
-    out: Dict[str, str] = {}
-    for p in params or []:
-        name = norm_spaces(safe_str(p.get("name")))
-        value = norm_spaces(safe_str(p.get("value")))
-        if not name or not value:
-            continue
-        out[name] = value
-    return out
+def build_offer_oid(raw_vendor_code: str, raw_id: str, *, prefix: str) -> str:
+    base = norm_ws(raw_vendor_code) or norm_ws(raw_id)
+    if not base:
+        return ""
+    base = re.sub(r"[^A-Za-z0-9]+", "", base)
+    if not base:
+        return ""
+    if base.upper().startswith(prefix.upper()):
+        return base
+    return f"{prefix}{base}"
 
 
-def clean_name(raw_name: str) -> str:
-    """Почистить source name."""
-    s = norm_spaces(raw_name)
-    s = re.sub(r"^[\-\–\—•\s]+", "", s)
-    s = re.sub(r"\s+\(([^()]*)\)\s*$", lambda m: f" ({m.group(1).strip()})", s)
-    s = re.sub(r"\s+", " ", s).strip()
+def normalize_available(available_attr: str, available_tag: str, active: str) -> bool:
+    av_attr = (available_attr or "").strip().lower()
+    if av_attr in ("true", "1", "yes"):
+        return True
+    if av_attr in ("false", "0", "no"):
+        return False
+
+    av_tag = (available_tag or "").strip().lower()
+    if av_tag in ("true", "1", "yes"):
+        return True
+    if av_tag in ("false", "0", "no"):
+        return False
+
+    act = (active or "").strip().upper()
+    if act == "Y":
+        return True
+    if act == "N":
+        return False
+
+    return False
+
+
+def _canonical_vendor_token(vendor: str) -> str:
+    s = norm_ws(vendor)
+    if not s:
+        return ""
+
+    up = s.upper()
+    if up in _GENERIC_VENDOR_WORDS:
+        return ""
+
+    if up in _VENDOR_CANON_MAP:
+        return _VENDOR_CANON_MAP[up]
+
+    if up.startswith("HP EUROPE"):
+        return "HP"
+    if up.startswith("HEWLETT PACKARD ENTERPRISE"):
+        return "HPE"
+    if up.startswith("HEWLETT PACKARD"):
+        return "HP"
+    if up.startswith("HP ENTERPRISE"):
+        return "HPE"
+
     return s
 
 
-def _canonical_vendor_token(token: str) -> str:
-    """Канонизировать один vendor token."""
-    cand = norm_spaces(token)
-    if not cand:
+def _infer_vendor_from_name(name: str) -> str:
+    s = norm_ws(name)
+    if not s:
         return ""
-
-    key = cand.upper()
-    if key in GENERIC_VENDOR_WORDS:
-        return ""
-
-    if key in VENDOR_MAP:
-        return VENDOR_MAP[key]
-
-    if key.startswith("HP EUROPE"):
-        return "HP"
-    if key.startswith("HEWLETT PACKARD ENTERPRISE"):
-        return "HPE"
-    if key.startswith("HEWLETT PACKARD"):
-        return "HP"
-    if key.startswith("HP ENTERPRISE"):
-        return "HPE"
-
-    return cand
-
-
-def _extract_vendor_from_name(raw_name: str) -> str:
-    """Найти узнаваемый бренд внутри name."""
-    name = norm_spaces(raw_name)
-    if not name:
-        return ""
-
-    for pattern, vendor in NAME_BRAND_PATTERNS:
-        if re.search(pattern, name, flags=re.IGNORECASE):
+    for pattern, vendor in _NAME_VENDOR_PATTERNS:
+        if re.search(pattern, s, flags=re.IGNORECASE):
             return vendor
-
     return ""
 
 
-def canonical_vendor(raw_vendor: str, params_map: Optional[Dict[str, str]] = None, raw_name: str = "") -> str:
-    """Канонизировать vendor."""
-    params_map = params_map or {}
+def normalize_vendor(
+    vendor: str,
+    *,
+    name: str,
+    params: list[ParamItem],
+    vendor_blacklist: set[str],
+    fallback_vendor: str = "",
+) -> str:
+    s = _canonical_vendor_token(vendor)
+    if s and s.casefold() in vendor_blacklist:
+        s = ""
+    if s:
+        return s
 
-    vendor = _canonical_vendor_token(raw_vendor)
-    if vendor:
-        return vendor
+    pmap = _param_map(params)
+    s = _canonical_vendor_token(pmap.get("Бренд", ""))
+    if s and s.casefold() in vendor_blacklist:
+        s = ""
+    if s:
+        return s
 
-    vendor = _canonical_vendor_token(params_map.get("Бренд", ""))
-    if vendor:
-        return vendor
+    s = _infer_vendor_from_name(name)
+    if s and s.casefold() in vendor_blacklist:
+        s = ""
+    if s:
+        return s
 
-    vendor = _extract_vendor_from_name(raw_name)
-    if vendor:
-        return vendor
-
-    return ""
+    return norm_ws(fallback_vendor)
 
 
-def extract_model(raw_name: str, params_map: Optional[Dict[str, str]] = None) -> str:
-    """Поднять модель из params или name."""
-    params_map = params_map or {}
+def normalize_model(name: str, params: list[ParamItem]) -> str:
+    pmap = _param_map(params)
 
     for key in ("Модель", "Партномер", "Артикул", "Номер"):
-        value = norm_spaces(params_map.get(key, ""))
-        if value:
-            return value
+        val = norm_ws(pmap.get(key, ""))
+        if val:
+            return val
 
-    name = norm_spaces(raw_name)
-
-    m = re.search(r"\(([A-Za-z0-9\-\#\/\.]+)\)\s*$", name)
+    s = normalize_name(name)
+    m = re.search(r"\(([A-Za-z0-9#/\-\.]+)\)\s*$", s)
     if m:
-        return m.group(1)
+        return norm_ws(m.group(1))
 
-    m = re.search(r"\b([A-Z]{1,6}[A-Z0-9\-/]{2,})\b", name)
+    m = re.search(r"\b([A-Z]{1,6}[A-Z0-9/\-]{2,})\b", s)
     if m:
-        return m.group(1)
+        return norm_ws(m.group(1))
 
     return ""
 
 
-def normalize_basics(raw_offer: Dict[str, Any]) -> Dict[str, Any]:
-    """Вернуть базово нормализованный raw offer payload."""
-    params = raw_offer.get("raw_params") or raw_offer.get("params") or []
-    params_map = params_to_map(params)
-
-    raw_name = norm_spaces(raw_offer.get("raw_name") or raw_offer.get("title") or raw_offer.get("name"))
-    raw_vendor = norm_spaces(raw_offer.get("raw_vendor") or raw_offer.get("vendor"))
-    raw_vendor_code = norm_spaces(raw_offer.get("raw_vendorCode") or raw_offer.get("vendorCode"))
-
-    name = clean_name(raw_name)
-    vendor = canonical_vendor(raw_vendor, params_map=params_map, raw_name=name)
-    model = extract_model(name, params_map=params_map)
-
-    payload = dict(raw_offer)
-    payload.update(
-        {
-            "title": name,
-            "name": name,
-            "vendor": vendor,
-            "vendorCode": raw_vendor_code,
-            "model": model,
-            "params_map": params_map,
-        }
-    )
-    return payload
-
-
-__all__ = [
-    "PLACEHOLDER_PICTURE",
-    "VENDOR_MAP",
-    "NAME_BRAND_PATTERNS",
-    "GENERIC_VENDOR_WORDS",
-    "params_to_map",
-    "clean_name",
-    "canonical_vendor",
-    "extract_model",
-    "normalize_basics",
-]
+def normalize_price_in(price_text: str) -> int | None:
+    return safe_int(price_text)
