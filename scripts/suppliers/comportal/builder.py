@@ -4,10 +4,15 @@ Path: scripts/suppliers/comportal/builder.py
 
 ComPortal supplier layer — сборка raw offer.
 
-Что исправлено:
-- если уже есть нормализованный public brand в vendor tag и param "Для бренда",
-  дублирующий source-param "Бренд" убирается;
-- raw остаётся чище и не тащит лишний дубль бренда в final.
+Что улучшено:
+- raw остаётся чистым: supplier-specific cleanup живёт здесь, а не в core;
+- если есть нормализованный public brand, source-param "Бренд" не дублируется;
+- native_desc для техники стал заметно информативнее:
+  - МФУ / принтеры / сканеры / проекторы;
+  - мониторы;
+  - ноутбуки / ПК / моноблоки / рабочие станции;
+  - ИБП / стабилизаторы / батареи;
+  - расходка.
 """
 
 from __future__ import annotations
@@ -34,11 +39,17 @@ from suppliers.comportal.pictures import collect_picture_urls
 
 def _param_map(params: list[ParamItem]) -> dict[str, str]:
     out: dict[str, str] = {}
+    seen: set[str] = set()
     for p in params or []:
         name = norm_ws(p.name)
         value = norm_ws(p.value)
-        if name and value and name.casefold() not in {k.casefold() for k in out}:
-            out[name] = value
+        if not name or not value:
+            continue
+        ncf = name.casefold()
+        if ncf in seen:
+            continue
+        out[name] = value
+        seen.add(ncf)
     return out
 
 
@@ -47,120 +58,177 @@ def _drop_param_casefold(params: list[ParamItem], name_to_drop: str) -> list[Par
     return [p for p in params if norm_ws(p.name).casefold() != target]
 
 
-def _ensure_base_params(
-    *,
-    source_offer: SourceOffer,
-    params: list[ParamItem],
-    vendor: str,
-    model: str,
-) -> list[ParamItem]:
+def _join_nonempty(parts: list[str], sep: str = ". ") -> str:
+    vals = [norm_ws(x) for x in parts if norm_ws(x)]
+    return sep.join(vals).strip()
+
+
+def _append_param_line(bits: list[str], label: str, value: str) -> None:
+    v = norm_ws(value)
+    if v:
+        bits.append(f"{label}: {v}")
+
+
+def _desc_for_printing_device(pmap: dict[str, str]) -> str:
+    bits: list[str] = []
+    ptype = norm_ws(pmap.get("Тип", ""))
+    if ptype:
+        bits.append(ptype)
+    _append_param_line(bits, "Формат печати", pmap.get("Формат печати", ""))
+    _append_param_line(bits, "Разрешение", pmap.get("Разрешение", ""))
+    _append_param_line(bits, "Скорость печати ч/б", pmap.get("Скорость печати ч/б", ""))
+    _append_param_line(bits, "Скорость печати цветной", pmap.get("Скорость печати цветной", ""))
+    _append_param_line(bits, "Порты", pmap.get("Порты", ""))
+    _append_param_line(bits, "Технология печати", pmap.get("Технология печати", ""))
+    _append_param_line(bits, "Гарантия", pmap.get("Гарантия", ""))
+    text = _join_nonempty(bits)
+    if text and not text.endswith("."):
+        text += "."
+    return text
+
+
+def _desc_for_monitor(pmap: dict[str, str]) -> str:
+    bits: list[str] = ["Монитор"]
+    _append_param_line(bits, "Диагональ", pmap.get("Диагональ", ""))
+    _append_param_line(bits, "Максимальное разрешение", pmap.get("Максимальное разрешение", ""))
+    _append_param_line(bits, "Тип матрицы", pmap.get("Тип матрицы", ""))
+    _append_param_line(bits, "Частота обновления", pmap.get("Частота обновления", ""))
+    _append_param_line(bits, "Время отклика", pmap.get("Время отклика", ""))
+    _append_param_line(bits, "Порты", pmap.get("Порты", ""))
+    _append_param_line(bits, "Гарантия", pmap.get("Гарантия", ""))
+    text = _join_nonempty(bits)
+    if text and not text.endswith("."):
+        text += "."
+    return text
+
+
+def _desc_for_computer(pmap: dict[str, str]) -> str:
+    bits: list[str] = []
+    ptype = norm_ws(pmap.get("Тип", ""))
+    if ptype:
+        bits.append(ptype)
+    cpu = _join_nonempty([pmap.get("Серия процессора", ""), pmap.get("Модель процессора", "")], sep=" ")
+    _append_param_line(bits, "Процессор", cpu)
+    _append_param_line(bits, "Оперативная память", pmap.get("Оперативная память", ""))
+    storage = _join_nonempty([pmap.get("Объем жесткого диска", ""), pmap.get("Тип жесткого диска", "")], sep=" ")
+    _append_param_line(bits, "Накопитель", storage)
+    _append_param_line(bits, "Диагональ", pmap.get("Диагональ", ""))
+    _append_param_line(bits, "Максимальное разрешение", pmap.get("Максимальное разрешение", ""))
+    os_name = _join_nonempty([pmap.get("Операционная система", ""), pmap.get("Версия операционной системы", "")], sep=" ")
+    _append_param_line(bits, "ОС", os_name)
+    gpu = _join_nonempty([pmap.get("Марка чипсета видеокарты", ""), pmap.get("Модель чипсета видеокарты", "")], sep=" ")
+    _append_param_line(bits, "Видеокарта", gpu)
+    _append_param_line(bits, "Гарантия", pmap.get("Гарантия", ""))
+    text = _join_nonempty(bits)
+    if text and not text.endswith("."):
+        text += "."
+    return text
+
+
+def _desc_for_power(pmap: dict[str, str]) -> str:
+    bits: list[str] = []
+    ptype = norm_ws(pmap.get("Тип", ""))
+    if ptype:
+        bits.append(ptype)
+    power_pair = _join_nonempty([
+        f"{norm_ws(pmap.get('Мощность (VA)', ''))} VA" if norm_ws(pmap.get("Мощность (VA)", "")) else "",
+        f"{norm_ws(pmap.get('Мощность (W)', ''))} W" if norm_ws(pmap.get("Мощность (W)", "")) else "",
+    ], sep=" / ")
+    _append_param_line(bits, "Мощность", power_pair)
+    _append_param_line(bits, "Форм-фактор", pmap.get("Форм-фактор", ""))
+    _append_param_line(bits, "Стабилизатор (AVR)", pmap.get("Стабилизатор (AVR)", ""))
+    _append_param_line(bits, "Время работы при 100% нагрузке, мин", pmap.get("Типовая продолжительность работы при 100% нагрузке, мин", ""))
+    _append_param_line(bits, "Выходные соединения", pmap.get("Выходные соединения", ""))
+    _append_param_line(bits, "Гарантия", pmap.get("Гарантия", ""))
+    text = _join_nonempty(bits)
+    if text and not text.endswith("."):
+        text += "."
+    return text
+
+
+def _desc_for_consumable(pmap: dict[str, str]) -> str:
+    bits: list[str] = []
+    ptype = norm_ws(pmap.get("Тип", ""))
+    if ptype:
+        bits.append(ptype)
+    _append_param_line(bits, "Цвет", pmap.get("Цвет", ""))
+    _append_param_line(bits, "Технология печати", pmap.get("Технология печати", ""))
+    _append_param_line(bits, "Ресурс", pmap.get("Ресурс", ""))
+    _append_param_line(bits, "Объём", pmap.get("Объём", ""))
+    _append_param_line(bits, "Номер", pmap.get("Номер", ""))
+    _append_param_line(bits, "Применение", pmap.get("Применение", ""))
+    text = _join_nonempty(bits)
+    if text and not text.endswith("."):
+        text += "."
+    return text
+
+
+def _build_native_desc(*, clean_name: str, source_offer: SourceOffer, params: list[ParamItem]) -> str:
+    native = sanitize_native_desc(source_offer.description or "", title=clean_name)
+    if native:
+        return native
+    pmap = _param_map(params)
+    ptype = norm_ws(pmap.get("Тип", "")).casefold()
+
+    if ptype in {"мфу", "принтер", "сканер", "проектор", "широкоформатный принтер"}:
+        text = _desc_for_printing_device(pmap)
+        if text:
+            return text
+    if ptype == "монитор":
+        text = _desc_for_monitor(pmap)
+        if text:
+            return text
+    if ptype in {"ноутбук", "моноблок", "настольный пк", "рабочая станция"}:
+        text = _desc_for_computer(pmap)
+        if text:
+            return text
+    if ptype in {"ибп", "стабилизатор", "батарея"}:
+        text = _desc_for_power(pmap)
+        if text:
+            return text
+    if ptype in {"картридж", "тонер", "расходный материал"}:
+        text = _desc_for_consumable(pmap)
+        if text:
+            return text
+
+    bits: list[str] = []
+    if norm_ws(pmap.get("Тип", "")):
+        bits.append(norm_ws(pmap.get("Тип", "")))
+    for key in ("Для бренда", "Коды", "Модель", "Цвет", "Технология печати", "Ресурс", "Гарантия"):
+        _append_param_line(bits, key, pmap.get(key, ""))
+    body = _join_nonempty(bits)
+    if body:
+        if not body.endswith("."):
+            body += "."
+        return body
+    if source_offer.category_path:
+        return f"Категория поставщика: {norm_ws(source_offer.category_path)}."
+    return ""
+
+
+def _ensure_base_params(*, source_offer: SourceOffer, params: list[ParamItem], vendor: str, model: str) -> list[ParamItem]:
     out = list(params)
     pmap = _param_map(out)
-
     if vendor and "Для бренда" not in pmap:
         out.append(ParamItem(name="Для бренда", value=vendor, source="normalize"))
-
     if model and "Модель" not in pmap:
         out.append(ParamItem(name="Модель", value=model, source="normalize"))
-
     if "Коды" not in pmap:
         if model:
             out.append(ParamItem(name="Коды", value=model, source="normalize"))
         elif source_offer.vendor_code:
             out.append(ParamItem(name="Коды", value=norm_ws(source_offer.vendor_code), source="source"))
-
-    # Если vendor уже нормализован в tag + есть "Для бренда", source "Бренд" как дубль убираем.
     pmap = _param_map(out)
     if vendor and pmap.get("Для бренда") and pmap.get("Бренд"):
         out = _drop_param_casefold(out, "Бренд")
-
     return out
 
 
-def _build_native_desc(
-    *,
-    clean_name: str,
-    source_offer: SourceOffer,
-    params: list[ParamItem],
-) -> str:
-    native = sanitize_native_desc(source_offer.description or "", title=clean_name)
-    if native:
-        return native
-
-    pmap = _param_map(params)
-    bits: list[str] = []
-
-    ptype = norm_ws(pmap.get("Тип", ""))
-    if ptype:
-        bits.append(ptype)
-
-    for key in (
-        "Функция",
-        "Формат печати",
-        "Разрешение",
-        "Скорость печати ч/б",
-        "Скорость печати цветной",
-        "Диагональ",
-        "Максимальное разрешение",
-        "Тип матрицы",
-        "Частота обновления",
-        "Время отклика",
-        "Модель процессора",
-        "Серия процессора",
-        "Оперативная память",
-        "Объем жесткого диска",
-        "Тип жесткого диска",
-        "Операционная система",
-        "Версия операционной системы",
-        "Марка чипсета видеокарты",
-        "Модель чипсета видеокарты",
-        "Мощность (VA)",
-        "Мощность (W)",
-        "Форм-фактор",
-        "Стабилизатор (AVR)",
-        "Типовая продолжительность работы при 100% нагрузке, мин",
-        "Выходные соединения",
-        "Порты",
-        "Беспроводная связь",
-        "Беспроводные интерфейсы",
-        "Цвет",
-        "Технология печати",
-        "Ресурс",
-        "Объём",
-        "Номер",
-        "Применение",
-        "Дополнительная информация",
-        "Гарантия",
-    ):
-        val = norm_ws(pmap.get(key, ""))
-        if val:
-            bits.append(f"{key}: {val}")
-
-    body = ". ".join(bits[:8]).strip()
-    if body:
-        if not body.endswith("."):
-            body += "."
-        return body
-
-    if source_offer.category_path:
-        return f"Категория поставщика: {norm_ws(source_offer.category_path)}."
-
-    return ""
-
-
-def build_offer_out(
-    source_offer: SourceOffer,
-    *,
-    schema: dict[str, Any],
-    policy: dict[str, Any],
-) -> OfferOut | None:
+def build_offer_out(source_offer: SourceOffer, *, schema: dict[str, Any], policy: dict[str, Any]) -> OfferOut | None:
     prefix = norm_ws(schema.get("id_prefix") or schema.get("supplier_prefix") or "CP")
     placeholder_picture = norm_ws(schema.get("placeholder_picture") or "")
     vendor_blacklist = {str(x).casefold() for x in (schema.get("vendor_blacklist_casefold") or [])}
-
-    fallback_vendor = norm_ws(
-        (((policy.get("vendor_policy") or {}).get("neutral_fallback_vendor")) or "")
-    )
+    fallback_vendor = norm_ws((((policy.get("vendor_policy") or {}).get("neutral_fallback_vendor")) or ""))
 
     clean_name = normalize_name(source_offer.name)
     clean_vendor = normalize_vendor(
@@ -173,17 +241,8 @@ def build_offer_out(
     clean_model = normalize_model(clean_name, source_offer.params)
 
     params = build_params_from_xml(source_offer, schema)
-    params = extract_desc_fill_params(
-        title=clean_name,
-        desc_text=source_offer.description,
-        existing_params=params,
-    )
-    params = _ensure_base_params(
-        source_offer=source_offer,
-        params=params,
-        vendor=clean_vendor,
-        model=clean_model,
-    )
+    params = extract_desc_fill_params(title=clean_name, desc_text=source_offer.description, existing_params=params)
+    params = _ensure_base_params(source_offer=source_offer, params=params, vendor=clean_vendor, model=clean_model)
     params = apply_compat_cleanup(params)
 
     oid = build_offer_oid(source_offer.vendor_code, source_offer.raw_id, prefix=prefix)
@@ -193,14 +252,9 @@ def build_offer_out(
     pictures = collect_picture_urls(source_offer.picture_urls, placeholder_picture=placeholder_picture)
     available = normalize_available(source_offer.available_attr, source_offer.available_tag, source_offer.active)
     price_in = normalize_price_in(source_offer.price_text)
+    native_desc = _build_native_desc(clean_name=clean_name, source_offer=source_offer, params=params)
 
-    native_desc = _build_native_desc(
-        clean_name=clean_name,
-        source_offer=source_offer,
-        params=params,
-    )
-
-    out = OfferOut(
+    return OfferOut(
         oid=oid,
         available=available,
         name=clean_name,
@@ -210,33 +264,23 @@ def build_offer_out(
         params=[(norm_ws(p.name), norm_ws(p.value)) for p in params if norm_ws(p.name) and norm_ws(p.value)],
         native_desc=native_desc,
     )
-    return out
 
 
-def build_offers(
-    source_offers: list[SourceOffer],
-    *,
-    schema: dict[str, Any],
-    policy: dict[str, Any],
-) -> tuple[list[OfferOut], BuildStats]:
+def build_offers(source_offers: list[SourceOffer], *, schema: dict[str, Any], policy: dict[str, Any]) -> tuple[list[OfferOut], BuildStats]:
     out: list[OfferOut] = []
     stats = BuildStats(before=len(source_offers), after=0)
-
     placeholder_picture = norm_ws(schema.get("placeholder_picture") or "")
     for src in source_offers:
         offer = build_offer_out(src, schema=schema, policy=policy)
         if offer is None:
             stats.filtered_out += 1
             continue
-
         if not src.picture_urls:
             stats.missing_picture_count += 1
         if offer.pictures and placeholder_picture and offer.pictures[0] == placeholder_picture:
             stats.placeholder_picture_count += 1
         if not norm_ws(offer.vendor):
             stats.empty_vendor_count += 1
-
         out.append(offer)
-
     stats.after = len(out)
     return out, stats
