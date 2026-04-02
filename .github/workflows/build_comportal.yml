@@ -1,0 +1,47 @@
+name: Build_ComPortal
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-comportal:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Almaty
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Show Python version
+        run: python --version
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install PyYAML requests beautifulsoup4 lxml
+
+      - name: Compile shared + ComPortal files
+        run: |
+          python -m py_compile             scripts/build_comportal.py             scripts/cs/core.py             scripts/cs/meta.py             scripts/cs/writer.py             scripts/cs/validators.py             scripts/cs/util.py             scripts/cs/pricing.py             scripts/cs/description.py             scripts/cs/keywords.py             scripts/cs/policy.py             scripts/cs/qg_report.py             scripts/suppliers/comportal/source.py             scripts/suppliers/comportal/filtering.py             scripts/suppliers/comportal/normalize.py             scripts/suppliers/comportal/params_catalog.py             scripts/suppliers/comportal/builder.py             scripts/suppliers/comportal/models.py             scripts/suppliers/comportal/diagnostics.py
+
+      - name: Build ComPortal
+        run: python scripts/build_comportal.py
+
+      - name: Verify outputs
+        run: |
+          test -f docs/raw/comportal.yml
+          test -f docs/comportal.yml
+
+      - name: Upload outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: comportal-build-output
+          path: |
+            docs/raw/comportal.yml
+            docs/comportal.yml
