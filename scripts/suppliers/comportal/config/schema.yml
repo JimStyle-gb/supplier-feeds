@@ -1,0 +1,46 @@
+supplier: ComPortal
+supplier_prefix: CP
+source_kind: yml_catalog
+encoding: utf-8
+currency: KZT
+
+raw_contract:
+  keep_source_url: true
+  keep_raw_category_id: true
+  keep_raw_category_name: true
+  keep_raw_category_path: true
+  keep_raw_params: true
+  keep_raw_pictures: true
+  keep_raw_vendor: true
+  keep_raw_vendor_code: true
+  keep_raw_price_text: true
+  keep_raw_url: true
+
+required_raw_fields:
+  - id
+  - vendorCode
+  - name
+  - price
+  - currencyId
+  - available
+  - params
+  - native_desc
+
+output_rules:
+  final_category_id_empty: true
+  final_encoding: utf-8
+  vendorcode_equals_offer_id: true
+  id_prefix: CP
+  available_policy: true
+
+description_contract:
+  native_desc_required: true
+  final_desc_built_by_core: true
+  supplier_desc_should_be_informative: true
+  whatsapp_block_in_core: true
+  payment_delivery_block_in_core: true
+
+params_contract:
+  extractor_owner: params_xml.py
+  desc_extract_fill_missing_only: true
+  compat_generated_by_core: false
