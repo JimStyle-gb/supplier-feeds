@@ -1,0 +1,60 @@
+supplier: ComPortal
+
+vendor_policy:
+  never_use_supplier_name_as_public_vendor: true
+  neutral_fallback_vendor: CS
+  canonicalize_common_brands: true
+  forbid_generic_device_words_as_vendor: true
+  generic_vendor_words:
+    - МФП
+    - МФУ
+    - Принтер
+    - Ноутбук
+    - Монитор
+    - ИБП
+    - Сканер
+    - Проектор
+    - Картридж
+    - Тонер
+    - Батарея
+    - Аккумулятор
+    - Стабилизатор
+
+picture_policy:
+  placeholder: https://placehold.co/800x800/png?text=No+Photo
+  dedupe_pictures: true
+  prefer_real_product_pictures: true
+
+param_policy:
+  drop_param_names:
+    - Штрихкод
+    - Штрих-код
+    - Штрих код
+    - Barcode
+    - GTIN
+    - UPC
+    - EAN
+    - EAN-13
+    - EAN13
+    - Артикул
+    - Новинка
+    - Снижена цена
+    - Благотворительность
+    - Код товара Kaspi
+    - Код ТН ВЭД
+    - Назначение
+    - Цена по запросу (для сортировки)
+    - Акция (для сортировки)
+
+compat_policy:
+  core_generates_compat: false
+  supplier_may_normalize_if_present: true
+
+pricing_policy:
+  allow_fallback_price_100: true
+  price_is_not_reason_to_drop_offer: true
+
+feed_policy:
+  keep_feed_meta_untouched: true
+  final_category_id_empty: true
+  final_encoding_utf8: true
