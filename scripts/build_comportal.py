@@ -8,30 +8,36 @@ ComPortal adapter under CS-template.
 - применяет category-first whitelist filter;
 - собирает clean raw offers;
 - пишет raw/final feed через shared core;
+- запускает diagnostics;
+- запускает quality gate;
 - печатает build summary.
 
 Важно:
-- ComPortal здесь идёт как param-first supplier;
+- ComPortal идёт как param-first supplier;
 - префикс offer/vendorCode = CP;
-- quality gate на этом шаге пока optional: если модуль ещё не создан,
-  сборка не падает.
+- quality gate теперь используется как штатная часть сборки.
 """
 
 from __future__ import annotations
 
 import os
-from pathlib import Path
-from typing import Any, Iterable, List
+from typing import Any
 
 from cs.core import OfferOut, get_public_vendor, write_cs_feed, write_cs_feed_raw
 from cs.meta import next_run_at_hour, now_almaty
 
 from suppliers.comportal.builder import build_offers
+from suppliers.comportal.diagnostics import (
+    summarize_built_offers,
+    summarize_source_offers,
+    top_source_categories,
+)
 from suppliers.comportal.filtering import filter_offers
+from suppliers.comportal.quality_gate import run_quality_gate
 from suppliers.comportal.source import fetch_catalog_payload
 
 
-BUILD_COMPORTAL_VERSION = "build_comportal_v6_source_filter_normalize_params_builder"
+BUILD_COMPORTAL_VERSION = "build_comportal_v7_diagnostics_qg_enforced"
 
 SUPPLIER_NAME_DEFAULT = "ComPortal"
 SUPPLIER_URL_DEFAULT = os.getenv(
@@ -78,69 +84,71 @@ def _to_offer_out(raw_offer: dict[str, Any]) -> OfferOut:
     )
 
 
-def _maybe_run_quality_gate(raw_out_file: str) -> dict[str, Any]:
-    """
-    Optional quality gate.
-    Если модуля ещё нет — пропускаем без падения сборки.
-    """
-    try:
-        from suppliers.comportal.quality_gate import run_quality_gate  # type: ignore
-    except Exception:
-        return {
-            "ok": None,
-            "skipped": True,
-            "reason": "quality_gate module not created yet",
-            "report_path": "",
-        }
-
-    try:
-        return run_quality_gate(feed_path=raw_out_file)
-    except TypeError:
-        # backward-safe fallback на случай другой сигнатуры
-        return run_quality_gate(raw_out_file)
-    except Exception as exc:
-        return {
-            "ok": False,
-            "skipped": False,
-            "reason": f"quality_gate error: {exc}",
-            "report_path": "",
-        }
-
-
 def _print_summary(
     *,
     before: int,
-    built_raw_offers: list[dict[str, Any]],
     filter_report: dict[str, Any],
+    source_diag: dict[str, Any],
+    built_diag: dict[str, Any],
+    top_categories: list[dict[str, Any]],
     qg: dict[str, Any],
     out_file: str,
     raw_out_file: str,
 ) -> None:
-    after = len(built_raw_offers)
-    in_true = sum(1 for offer in built_raw_offers if offer.get("available"))
-    in_false = after - in_true
-
     print("=" * 72)
     print("[ComPortal] build summary")
     print("=" * 72)
     print(f"version: {BUILD_COMPORTAL_VERSION}")
     print(f"before: {before}")
-    print(f"after:  {after}")
+    print(f"after:  {built_diag.get('total', 0)}")
     print(f"raw_out_file: {raw_out_file}")
     print(f"out_file: {out_file}")
     print("-" * 72)
     print("filter_report:")
-    for key, value in filter_report.items():
-        print(f"  {key}: {value}")
+    print(f"  mode: {filter_report.get('mode')}")
+    print(f"  before: {filter_report.get('before')}")
+    print(f"  after: {filter_report.get('after')}")
+    print(f"  rejected_total: {filter_report.get('rejected_total')}")
+    print(f"  allowed_category_count: {filter_report.get('allowed_category_count')}")
     print("-" * 72)
-    print(f"quality_gate_ok:   {qg.get('ok')}")
-    print(f"quality_gate_skip: {qg.get('skipped')}")
-    if qg.get("reason"):
-        print(f"quality_gate_note: {qg.get('reason')}")
-    if qg.get("report_path"):
-        print(f"quality_gate_report: {qg.get('report_path')}")
-    print(f"availability_true:  {in_true}")
-    print(f"availability_false: {in_false}")
+    print("source_diag:")
+    for key in (
+        "total",
+        "available_true",
+        "available_false",
+        "with_picture",
+        "without_picture",
+        "with_vendor",
+        "without_vendor",
+        "with_vendor_code",
+        "without_vendor_code",
+        "with_category",
+        "without_category",
+    ):
+        print(f"  {key}: {source_diag.get(key)}")
+    print("-" * 72)
+    print("built_diag:")
+    for key in (
+        "total",
+        "available_true",
+        "available_false",
+        "with_picture",
+        "without_picture",
+        "with_vendor",
+        "without_vendor",
+        "with_vendor_code",
+        "without_vendor_code",
+        "with_native_desc",
+        "without_native_desc",
+    ):
+        print(f"  {key}: {built_diag.get(key)}")
+    print("-" * 72)
+    print("top_categories:")
+    for row in top_categories[:10]:
+        print(f"  {row.get('id')}: {row.get('path') or row.get('name')} -> {row.get('count')}")
+    print("-" * 72)
+    print(f"quality_gate_ok: {qg.get('ok')}")
+    print(f"quality_gate_report: {qg.get('report_path')}")
     print("=" * 72)
 
 
@@ -159,12 +167,15 @@ def main() -> int:
     category_index = catalog["category_index"]
 
     before = len(source_offers)
+    source_diag = summarize_source_offers(source_offers)
+    top_categories = top_source_categories(source_offers, limit=20)
 
     filtered = filter_offers(source_offers, category_index)
     filtered_offers = filtered["offers"]
     filter_report = filtered["report"]
 
     built_raw_offers = build_offers(filtered_offers)
+    built_diag = summarize_built_offers(built_raw_offers)
     out_offers = [_to_offer_out(x) for x in built_raw_offers]
 
     write_cs_feed_raw(
@@ -191,16 +202,21 @@ def main() -> int:
         public_vendor=public_vendor,
     )
 
-    qg = _maybe_run_quality_gate(raw_out_file)
+    qg = run_quality_gate(feed_path=raw_out_file)
 
     _print_summary(
         before=before,
-        built_raw_offers=built_raw_offers,
         filter_report=filter_report,
+        source_diag=source_diag,
+        built_diag=built_diag,
+        top_categories=top_categories,
         qg=qg,
         out_file=out_file,
         raw_out_file=raw_out_file,
     )
+
+    if not qg.get("ok", False):
+        return 1
     return 0
 
 
