@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
 """
 Path: scripts/suppliers/comportal/quality_gate.py
-Minimal quality gate for ComPortal.
+ComPortal supplier quality gate.
 
-Что улучшено:
-- возвращает critical_count / cosmetic_count;
-- возвращает первые critical issues прямо в build summary;
-- отчёт остаётся в docs/raw/comportal_quality_gate.txt
+Роль:
+- проверить raw feed перед выпуском;
+- записать отчёт в docs/raw/comportal_quality_gate.txt;
+- вернуть ok / report_path / preview для build summary.
 """
 
 from __future__ import annotations
 
 import re
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Dict, List
-import xml.etree.ElementTree as ET
+
 
 GENERIC_VENDORS = {
     "МФП",
@@ -34,18 +35,22 @@ GENERIC_VENDORS = {
 
 
 def _safe(text: str | None) -> str:
+    """Безопасно привести текст к trimmed string."""
     return (text or "").strip()
 
 
 def _parse_feed(feed_path: str) -> ET.Element:
+    """Распарсить raw feed."""
     return ET.parse(feed_path).getroot()
 
 
 def _offer_id(el: ET.Element) -> str:
+    """Вернуть offer id."""
     return _safe(el.get("id"))
 
 
 def _param_map(offer_el: ET.Element) -> Dict[str, str]:
+    """Собрать param map."""
     out: Dict[str, str] = {}
     for p in offer_el.findall("./param"):
         name = _safe(p.get("name"))
@@ -56,12 +61,12 @@ def _param_map(offer_el: ET.Element) -> Dict[str, str]:
 
 
 def run_quality_gate(feed_path: str, report_path: str = "docs/raw/comportal_quality_gate.txt") -> Dict[str, object]:
+    """Запустить quality gate по raw feed."""
     root = _parse_feed(feed_path)
     offers = root.findall(".//offer")
 
     critical: List[str] = []
     cosmetic: List[str] = []
-
     seen_ids: set[str] = set()
 
     for offer in offers:
@@ -137,4 +142,6 @@ def run_quality_gate(feed_path: str, report_path: str = "docs/raw/comportal_qual
     }
 
 
-__all__ = ["run_quality_gate"]
+__all__ = [
+    "run_quality_gate",
+]
