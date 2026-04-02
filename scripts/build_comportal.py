@@ -1,231 +1,292 @@
 # -*- coding: utf-8 -*-
 """
 Path: scripts/build_comportal.py
-ComPortal adapter under CS-template.
 
-Пайплайн:
-- source -> filtering -> builder
-- write raw -> write final
-- diagnostics
-- quality gate
+ComPortal adapter (CP) — thin orchestrator under CS-template.
+
+Что делает:
+- грузит supplier config: filter / schema / policy;
+- читает исходный YML поставщика;
+- прогоняет source -> filtering -> builder;
+- пишет raw feed;
+- пишет final feed;
+- пишет watch-report;
+- запускает supplier-side quality gate.
+
+Важно:
+- supplier-specific логика остаётся только в suppliers/comportal/*;
+- build_comportal.py не должен знать regex-логику ComPortal;
+- orchestrator остаётся тонким и шаблонным относительно других поставщиков.
 """
 
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from typing import Any
 
-from cs.core import OfferOut, get_public_vendor, write_cs_feed, write_cs_feed_raw
+import yaml
+
+from cs.core import write_cs_feed, write_cs_feed_raw
 from cs.meta import next_run_at_hour, now_almaty
 
 from suppliers.comportal.builder import build_offers
 from suppliers.comportal.diagnostics import (
-    summarize_built_offers,
+    build_watch_source_map,
+    make_watch_messages,
+    summarize_build_stats,
+    summarize_offer_outs,
     summarize_source_offers,
-    top_source_categories,
+    write_watch_report,
 )
-from suppliers.comportal.filtering import filter_offers
+from suppliers.comportal.filtering import filter_source_offers, parse_id_set
 from suppliers.comportal.quality_gate import run_quality_gate
-from suppliers.comportal.source import fetch_catalog_payload
+from suppliers.comportal.source import load_source_bundle
 
 
-BUILD_COMPORTAL_VERSION = "build_comportal_restart_v1"
+BUILD_COMPORTAL_VERSION = "build_comportal_v2_template_orchestrator"
 
-SUPPLIER_NAME_DEFAULT = "ComPortal"
-SUPPLIER_URL_DEFAULT = os.getenv(
-    "SUPPLIER_URL",
-    "https://www.comportal.kz/auth/documents/prices/yml-catalog.php",
-)
-OUT_FILE_DEFAULT = os.getenv("OUT_FILE", "docs/comportal.yml")
-RAW_OUT_FILE_DEFAULT = os.getenv("RAW_OUT_FILE", "docs/raw/comportal.yml")
-OUTPUT_ENCODING_DEFAULT = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
-COMPORTAL_NEXT_RUN_HOUR = int(os.getenv("COMPORTAL_NEXT_RUN_HOUR", "4") or "4")
+COMPORTAL_URL_DEFAULT = "https://www.comportal.kz/auth/documents/prices/yml-catalog.php"
+COMPORTAL_OUT_DEFAULT = "docs/comportal.yml"
+COMPORTAL_RAW_OUT_DEFAULT = "docs/raw/comportal.yml"
+COMPORTAL_ID_PREFIX = "CP"
+COMPORTAL_WATCH_OIDS: set[str] = set()
+
+CFG_DIR_DEFAULT = "scripts/suppliers/comportal/config"
+FILTER_FILE_DEFAULT = "filter.yml"
+SCHEMA_FILE_DEFAULT = "schema.yml"
+POLICY_FILE_DEFAULT = "policy.yml"
+
+WATCH_REPORT_DEFAULT = "docs/raw/comportal_watch.txt"
+QUALITY_BASELINE_DEFAULT = "scripts/suppliers/comportal/config/quality_baseline.yml"
+QUALITY_REPORT_DEFAULT = "docs/raw/comportal_quality_gate.txt"
+PLACEHOLDER_DEFAULT = "https://placehold.co/800x800/png?text=No+Photo"
 
 
-def _safe_int(value: Any, default: int = 0) -> int:
-    """Безопасно привести значение к int."""
+# ----------------------------- config helpers -----------------------------
+
+
+def _read_yaml(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+
+
+def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    filter_cfg = _read_yaml(cfg_dir / FILTER_FILE_DEFAULT)
+    schema_cfg = _read_yaml(cfg_dir / SCHEMA_FILE_DEFAULT)
+    policy_cfg = _read_yaml(cfg_dir / POLICY_FILE_DEFAULT)
+    return filter_cfg, schema_cfg, policy_cfg
+
+
+def _safe_int(value: Any, default: int) -> int:
     try:
         return int(value)
     except Exception:
         return default
 
 
-def _to_offer_out(raw_offer: dict[str, Any]) -> OfferOut:
-    """Преобразовать supplier raw-offer в cs.core.OfferOut."""
-    params = []
-    for p in raw_offer.get("params") or []:
-        name = str(p.get("name") or "").strip()
-        value = str(p.get("value") or "").strip()
-        if name and value:
-            params.append((name, value))
-
-    pictures = list(raw_offer.get("pictures") or [])
-    if not pictures and raw_offer.get("picture"):
-        pictures = [str(raw_offer.get("picture"))]
-
-    return OfferOut(
-        oid=str(raw_offer.get("id") or "").strip(),
-        available=bool(raw_offer.get("available", True)),
-        name=str(raw_offer.get("name") or "").strip(),
-        price=_safe_int(raw_offer.get("price"), 0),
-        pictures=[str(x).strip() for x in pictures if str(x).strip()],
-        vendor=str(raw_offer.get("vendor") or "").strip(),
-        params=params,
-        native_desc=str(raw_offer.get("native_desc") or "").strip(),
+def _resolve_hour(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any]) -> int:
+    return _safe_int(
+        policy_cfg.get("schedule_hour_almaty")
+        or policy_cfg.get("next_run_hour_local")
+        or schema_cfg.get("next_run_hour_local"),
+        4,
     )
 
 
-def _print_summary(
-    *,
-    before: int,
-    filter_report: dict[str, Any],
-    source_diag: dict[str, Any],
-    built_diag: dict[str, Any],
-    top_categories: list[dict[str, Any]],
-    qg: dict[str, Any],
-    out_file: str,
-    raw_out_file: str,
-) -> None:
-    """Напечатать build summary."""
-    print("=" * 72)
-    print("[ComPortal] build summary")
-    print("=" * 72)
-    print(f"version: {BUILD_COMPORTAL_VERSION}")
-    print(f"before: {before}")
-    print(f"after:  {built_diag.get('total', 0)}")
-    print(f"raw_out_file: {raw_out_file}")
-    print(f"out_file: {out_file}")
-    print("-" * 72)
+def _resolve_placeholder(schema_cfg: dict[str, Any]) -> str:
+    return str(schema_cfg.get("placeholder_picture") or PLACEHOLDER_DEFAULT).strip() or PLACEHOLDER_DEFAULT
 
-    print("filter_report:")
-    for key in ("mode", "before", "after", "rejected_total", "allowed_category_count"):
-        print(f"  {key}: {filter_report.get(key)}")
-    print("-" * 72)
 
-    print("source_diag:")
-    for key in (
-        "total",
-        "available_true",
-        "available_false",
-        "with_picture",
-        "without_picture",
-        "with_vendor",
-        "without_vendor",
-        "with_vendor_code",
-        "without_vendor_code",
-        "with_category",
-        "without_category",
-    ):
-        print(f"  {key}: {source_diag.get(key)}")
-    print("-" * 72)
+def _resolve_vendor_blacklist(schema_cfg: dict[str, Any]) -> set[str]:
+    return {str(x).strip().casefold() for x in (schema_cfg.get("vendor_blacklist_casefold") or []) if str(x).strip()}
 
-    print("built_diag:")
-    for key in (
-        "total",
-        "available_true",
-        "available_false",
-        "with_picture",
-        "without_picture",
-        "with_vendor",
-        "without_vendor",
-        "with_vendor_code",
-        "without_vendor_code",
-        "with_native_desc",
-        "without_native_desc",
-    ):
-        print(f"  {key}: {built_diag.get(key)}")
-    print("-" * 72)
 
-    print("top_categories:")
-    for row in top_categories[:10]:
-        print(f"  {row.get('id')}: {row.get('path') or row.get('name')} -> {row.get('count')}")
-    print("-" * 72)
+def _resolve_quality_gate(schema_cfg: dict[str, Any]) -> dict[str, Any]:
+    qg = dict(schema_cfg.get("quality_gate") or {})
+    if "enabled" not in qg:
+        qg["enabled"] = True
+    if "enforce" not in qg:
+        qg["enforce"] = True
+    if not qg.get("baseline_file"):
+        qg["baseline_file"] = QUALITY_BASELINE_DEFAULT
+    if not qg.get("report_file"):
+        qg["report_file"] = QUALITY_REPORT_DEFAULT
+    return qg
 
-    print(f"quality_gate_ok: {qg.get('ok')}")
-    print(f"quality_gate_report: {qg.get('report_path')}")
-    print(f"quality_gate_critical_count: {qg.get('critical_count')}")
-    print(f"quality_gate_cosmetic_count: {qg.get('cosmetic_count')}")
 
-    critical_preview = qg.get("critical_preview") or []
-    if critical_preview:
-        print("quality_gate_critical_preview:")
-        for item in critical_preview:
-            print(f"  - {item}")
+def _resolve_allowed_category_ids(filter_cfg: dict[str, Any]) -> set[str]:
+    fallback_ids = {str(x) for x in (filter_cfg.get("allowed_category_ids") or filter_cfg.get("category_ids") or [])}
+    return parse_id_set(os.getenv("COMPORTAL_CATEGORY_IDS"), fallback_ids)
 
-    cosmetic_preview = qg.get("cosmetic_preview") or []
-    if cosmetic_preview:
-        print("quality_gate_cosmetic_preview:")
-        for item in cosmetic_preview:
-            print(f"  - {item}")
 
-    print("=" * 72)
+def _resolve_excluded_root_ids(filter_cfg: dict[str, Any]) -> set[str]:
+    fallback_ids = {str(x) for x in (filter_cfg.get("excluded_root_ids") or [])}
+    return parse_id_set(os.getenv("COMPORTAL_EXCLUDED_ROOT_IDS"), fallback_ids)
+
+
+def _resolve_watch_ids() -> set[str]:
+    raw = os.getenv("COMPORTAL_WATCH_OIDS", "").strip()
+    if not raw:
+        return set(COMPORTAL_WATCH_OIDS)
+    parts = [x.strip() for x in raw.replace(";", ",").split(",")]
+    return {x for x in parts if x}
+
+
+def _run_quality_gate(*, raw_out_file: str, cfg_dir: Path, qg: dict[str, Any]) -> dict[str, object]:
+    if not qg.get("enabled", True):
+        return {
+            "ok": True,
+            "critical_count": 0,
+            "cosmetic_total_count": 0,
+            "known_cosmetic_count": 0,
+            "new_cosmetic_count": 0,
+            "critical_preview": [],
+            "report_file": str(qg.get("report_file") or QUALITY_REPORT_DEFAULT),
+            "baseline_file": str(qg.get("baseline_file") or QUALITY_BASELINE_DEFAULT),
+        }
+
+    schema_path = cfg_dir / SCHEMA_FILE_DEFAULT
+    return run_quality_gate(
+        feed_path=raw_out_file,
+        schema_path=schema_path,
+        enforce=bool(qg.get("enforce", True)),
+    )
+
+
+# ----------------------------- main -----------------------------
 
 
 def main() -> int:
-    """Запуск сборки ComPortal."""
-    supplier_name = SUPPLIER_NAME_DEFAULT
-    supplier_url = SUPPLIER_URL_DEFAULT
-    out_file = OUT_FILE_DEFAULT
-    raw_out_file = RAW_OUT_FILE_DEFAULT
-    output_encoding = OUTPUT_ENCODING_DEFAULT
+    cfg_dir = Path(os.getenv("COMPORTAL_CFG_DIR", CFG_DIR_DEFAULT))
+    filter_cfg, schema_cfg, policy_cfg = _load_supplier_config(cfg_dir)
 
+    url = os.getenv("COMPORTAL_SOURCE_URL", COMPORTAL_URL_DEFAULT).strip() or COMPORTAL_URL_DEFAULT
+    out_file = os.getenv("COMPORTAL_OUT_FILE", COMPORTAL_OUT_DEFAULT).strip() or COMPORTAL_OUT_DEFAULT
+    raw_out_file = os.getenv("COMPORTAL_RAW_OUT_FILE", COMPORTAL_RAW_OUT_DEFAULT).strip() or COMPORTAL_RAW_OUT_DEFAULT
+    watch_report = os.getenv("COMPORTAL_WATCH_REPORT", WATCH_REPORT_DEFAULT).strip() or WATCH_REPORT_DEFAULT
+
+    login = os.getenv("COMPORTAL_LOGIN", "").strip() or None
+    password = os.getenv("COMPORTAL_PASSWORD", "").strip() or None
+    timeout = _safe_int(os.getenv("COMPORTAL_TIMEOUT", "120"), 120)
+
+    supplier_name = str(policy_cfg.get("supplier") or schema_cfg.get("supplier") or "ComPortal").strip() or "ComPortal"
+    hour = _resolve_hour(policy_cfg, schema_cfg)
     build_time = now_almaty()
-    next_run = next_run_at_hour(build_time, hour=COMPORTAL_NEXT_RUN_HOUR)
+    next_run = next_run_at_hour(build_time, hour=hour)
 
-    catalog = fetch_catalog_payload()
-    source_offers = catalog["offers"]
-    category_index = catalog["category_index"]
+    placeholder_picture = _resolve_placeholder(schema_cfg)
+    vendor_blacklist = _resolve_vendor_blacklist(schema_cfg)
+    qg = _resolve_quality_gate(schema_cfg)
 
+    # builder/schema compatibility helpers
+    if "placeholder_picture" not in schema_cfg:
+        schema_cfg["placeholder_picture"] = placeholder_picture
+    if "vendor_blacklist_casefold" not in schema_cfg:
+        schema_cfg["vendor_blacklist_casefold"] = sorted(vendor_blacklist)
+
+    allowed_category_ids = _resolve_allowed_category_ids(filter_cfg)
+    excluded_root_ids = _resolve_excluded_root_ids(filter_cfg)
+    watch_ids = _resolve_watch_ids()
+
+    category_index, source_offers = load_source_bundle(
+        url=url,
+        timeout=timeout,
+        login=login,
+        password=password,
+    )
     before = len(source_offers)
-    source_diag = summarize_source_offers(source_offers)
-    top_categories = top_source_categories(source_offers, limit=20)
 
-    filtered = filter_offers(source_offers, category_index)
-    filtered_offers = filtered["offers"]
-    filter_report = filtered["report"]
+    filtered_offers = filter_source_offers(
+        source_offers,
+        allowed_category_ids,
+        excluded_root_ids,
+    )
 
-    built_raw_offers = build_offers(filtered_offers)
-    built_diag = summarize_built_offers(built_raw_offers)
-    out_offers = [_to_offer_out(x) for x in built_raw_offers]
+    watch_source = build_watch_source_map(
+        source_offers,
+        prefix=COMPORTAL_ID_PREFIX,
+        watch_ids=watch_ids,
+    )
+
+    out_offers, build_stats = build_offers(
+        filtered_offers,
+        schema=schema_cfg,
+        policy=policy_cfg,
+    )
+    after = len(out_offers)
+    watch_out = {offer.oid for offer in out_offers}
+
+    watch_messages = make_watch_messages(
+        watch_ids=watch_ids,
+        watch_source=watch_source,
+        watch_out=watch_out,
+    )
+    write_watch_report(watch_report, watch_messages)
 
     write_cs_feed_raw(
         out_offers,
         supplier=supplier_name,
-        supplier_url=supplier_url,
+        supplier_url=url,
         out_file=raw_out_file,
         build_time=build_time,
         next_run=next_run,
         before=before,
-        encoding=output_encoding,
+        encoding="utf-8",
+        currency_id=str(schema_cfg.get("currency") or "KZT"),
     )
 
-    public_vendor = get_public_vendor(supplier_name)
-    write_cs_feed(
+    changed = write_cs_feed(
         out_offers,
         supplier=supplier_name,
-        supplier_url=supplier_url,
+        supplier_url=url,
         out_file=out_file,
         build_time=build_time,
         next_run=next_run,
         before=before,
-        encoding=output_encoding,
-        public_vendor=public_vendor,
+        encoding="utf-8",
+        public_vendor=os.getenv("PUBLIC_VENDOR", "CS").strip() or "CS",
+        currency_id=str(schema_cfg.get("currency") or "KZT"),
     )
 
-    qg = run_quality_gate(feed_path=raw_out_file)
+    qg_result = _run_quality_gate(raw_out_file=raw_out_file, cfg_dir=cfg_dir, qg=qg)
 
-    _print_summary(
-        before=before,
-        filter_report=filter_report,
-        source_diag=source_diag,
-        built_diag=built_diag,
-        top_categories=top_categories,
-        qg=qg,
-        out_file=out_file,
-        raw_out_file=raw_out_file,
+    src_summary = summarize_source_offers(source_offers)
+    out_summary = summarize_offer_outs(out_offers)
+    build_summary = summarize_build_stats(build_stats)
+
+    print(
+        f"[build_comportal] OK | version={BUILD_COMPORTAL_VERSION} | "
+        f"offers_in={before} | offers_out={after} | "
+        f"in_true={out_summary.get('available_true', 0)} | "
+        f"in_false={out_summary.get('available_false', 0)} | "
+        f"changed={'yes' if changed else 'no'} | file={out_file}"
+    )
+    print(
+        f"[build_comportal] source: with_vendor={src_summary.get('with_vendor', 0)} "
+        f"without_vendor={src_summary.get('without_vendor', 0)} "
+        f"with_picture={src_summary.get('with_picture', 0)} "
+        f"without_picture={src_summary.get('without_picture', 0)}"
+    )
+    print(
+        f"[build_comportal] build: filtered_out={build_summary.get('filtered_out', 0)} "
+        f"placeholder_pictures={build_summary.get('placeholder_picture_count', 0)} "
+        f"empty_vendor={build_summary.get('empty_vendor_count', 0)}"
+    )
+    print(
+        f"[build_comportal] qg: ok={'yes' if qg_result.get('ok') else 'no'} | "
+        f"critical={qg_result.get('critical_count', 0)} | "
+        f"cosmetic_total={qg_result.get('cosmetic_total_count', 0)} | "
+        f"report={qg_result.get('report_file', QUALITY_REPORT_DEFAULT)}"
     )
 
-    if not qg.get("ok", False):
+    if qg_result.get("critical_preview"):
+        print("[build_comportal] qg critical preview:")
+        for line in qg_result.get("critical_preview", []):
+            print(f"  - {line}")
+
+    if not qg_result.get("ok", True):
         return 1
     return 0
 
