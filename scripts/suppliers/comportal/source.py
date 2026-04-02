@@ -3,17 +3,10 @@
 Path: scripts/suppliers/comportal/source.py
 ComPortal source layer.
 
-Задача модуля:
-- прочитать исходный YML поставщика (локальный файл или URL);
-- сохранить сырой payload офферов без ранней semantic-свёртки;
-- сохранить category provenance для category-first фильтра.
-
-В этом модуле НЕТ:
-- фильтра по ассортименту;
-- CS-нормализации name/vendor/model;
-- supplier-business логики;
-- удаления сервисных param;
-- выбора "какие param важнее".
+Что исправлено:
+- поддержка Cookie / Authorization / Referer через env;
+- понятная ошибка, если источник вернул пустой body;
+- понятная ошибка, если вместо XML пришёл HTML/страница авторизации.
 """
 
 from __future__ import annotations
@@ -21,12 +14,13 @@ from __future__ import annotations
 import os
 import re
 import xml.etree.ElementTree as ET
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 from urllib.request import Request, urlopen
 
 DEFAULT_SOURCE_URL = "https://www.comportal.kz/auth/documents/prices/yml-catalog.php"
 SOURCE_URL = os.getenv("COMPORTAL_SOURCE_URL", DEFAULT_SOURCE_URL)
 SOURCE_FILE = os.getenv("COMPORTAL_SOURCE_FILE", "").strip()
+
 HTTP_TIMEOUT = float(os.getenv("COMPORTAL_HTTP_TIMEOUT", os.getenv("HTTP_TIMEOUT", "60")) or "60")
 HTTP_UA = os.getenv(
     "COMPORTAL_HTTP_UA",
@@ -36,6 +30,9 @@ HTTP_UA = os.getenv(
         "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     ),
 )
+HTTP_REFERER = os.getenv("COMPORTAL_HTTP_REFERER", "https://www.comportal.kz/").strip()
+HTTP_COOKIE = os.getenv("COMPORTAL_HTTP_COOKIE", "").strip()
+HTTP_AUTHORIZATION = os.getenv("COMPORTAL_HTTP_AUTHORIZATION", "").strip()
 
 
 def safe_str(x: Any) -> str:
@@ -64,28 +61,70 @@ def parse_price_int(text: str) -> int:
         return 0
 
 
+def _make_headers() -> Dict[str, str]:
+    """HTTP headers for ComPortal."""
+    headers = {
+        "User-Agent": HTTP_UA,
+        "Accept": "*/*",
+        "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.7,en;q=0.5",
+        "Connection": "close",
+        "Referer": HTTP_REFERER or "https://www.comportal.kz/",
+    }
+    if HTTP_COOKIE:
+        headers["Cookie"] = HTTP_COOKIE
+    if HTTP_AUTHORIZATION:
+        headers["Authorization"] = HTTP_AUTHORIZATION
+    return headers
+
+
 def load_source_bytes() -> bytes:
     """Прочитать исходный YML: сначала локальный файл, иначе URL."""
     if SOURCE_FILE:
         with open(SOURCE_FILE, "rb") as fh:
-            return fh.read()
+            data = fh.read()
+        if not data.strip():
+            raise RuntimeError(
+                f"ComPortal local source file is empty: {SOURCE_FILE}"
+            )
+        return data
 
-    req = Request(
-        SOURCE_URL,
-        headers={
-            "User-Agent": HTTP_UA,
-            "Accept": "*/*",
-            "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.7,en;q=0.5",
-            "Connection": "close",
-        },
-    )
+    req = Request(SOURCE_URL, headers=_make_headers())
     with urlopen(req, timeout=HTTP_TIMEOUT) as resp:
-        return resp.read()
+        data = resp.read()
+
+    if not data or not data.strip():
+        raise RuntimeError(
+            "ComPortal source returned empty body. "
+            "Likely the URL needs auth/cookie or returned an empty page. "
+            "Set COMPORTAL_HTTP_COOKIE / COMPORTAL_HTTP_AUTHORIZATION "
+            "or use COMPORTAL_SOURCE_FILE."
+        )
+    return data
 
 
 def parse_xml(data: bytes) -> ET.Element:
-    """Распарсить XML."""
-    return ET.fromstring(data)
+    """Распарсить XML или дать понятную ошибку."""
+    raw = data.lstrip()
+
+    if not raw:
+        raise RuntimeError("ComPortal source body is empty after trim.")
+
+    low = raw[:200].lower()
+    if low.startswith(b"<html") or b"<!doctype html" in low:
+        raise RuntimeError(
+            "ComPortal source returned HTML instead of XML. "
+            "Most likely this is an auth page / blocked response. "
+            "Use COMPORTAL_HTTP_COOKIE or COMPORTAL_SOURCE_FILE."
+        )
+
+    try:
+        return ET.fromstring(raw)
+    except ET.ParseError as exc:
+        preview = raw[:200].decode("utf-8", errors="ignore")
+        raise RuntimeError(
+            "ComPortal XML parse failed. "
+            f"Preview: {preview!r}. Error: {exc}"
+        ) from exc
 
 
 def build_category_index(root: ET.Element) -> Dict[str, Dict[str, str]]:
@@ -171,9 +210,7 @@ def parse_offer(
         category_name = category_index[raw_category_id].get("name", "")
         category_path = category_index[raw_category_id].get("path", "")
 
-    # Legacy/backward-safe поля + сырой provenance.
-    payload: Dict[str, Any] = {
-        # identity
+    return {
         "id": raw_id,
         "sku": raw_vendor_code or raw_id,
         "url": raw_url,
@@ -189,8 +226,6 @@ def parse_offer(
         "pics": pics,
         "params": params,
         "desc": "",
-
-        # raw provenance
         "raw_id": raw_id,
         "raw_name": raw_name,
         "raw_vendor": raw_vendor,
@@ -207,7 +242,6 @@ def parse_offer(
         "raw_params": params,
         "raw_url": raw_url,
     }
-    return payload
 
 
 def fetch_catalog_payload() -> Dict[str, Any]:
