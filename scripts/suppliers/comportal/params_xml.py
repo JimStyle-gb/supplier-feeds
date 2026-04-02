@@ -3,17 +3,12 @@
 Path: scripts/suppliers/comportal/params_xml.py
 
 XML params pipeline для ComPortal.
-Это главный extractor supplier-параметров:
-- cleanup родных XML <param>;
-- aliases / value normalizers;
-- kind-aware cleanup;
-- синтетический param "Тип" из category.
 
-Что исправлено в этой версии:
-- жёстко вырезаются служебные marketplace/source keys;
-- в raw/final больше не должны протекать:
-  "Цена по запросу (для сортировки)", "Акция (для сортировки)" и прочий мусор;
-- сохранена роль файла: это главный supplier extractor, без core-логики.
+Что исправлено:
+- служебные source keys жёстко режутся;
+- "Объем" -> "Объём" нормализуется всегда;
+- "Тип печати" -> "Технология печати" нормализуется всегда;
+- "Гарантия" приводится к виду "N мес" даже если это просто "12".
 """
 
 from __future__ import annotations
@@ -40,7 +35,6 @@ _TECH_VALUE_RE = re.compile(
 )
 _RESOURCE_NUMBER_ONLY_RE = re.compile(r"(?iu)^\d[\d\s.,]*(?:\s*(?:стр\.?|страниц))?$")
 
-# Жёстко запрещённые ключи проекта: не должны выходить ни в raw, ни в final.
 _GLOBAL_DROP_KEYS_CASEFOLD = {
     "артикул",
     "штрихкод",
@@ -65,7 +59,6 @@ _GLOBAL_DROP_KEYS_CASEFOLD = {
     "акция (для сортировки)",
 }
 
-# Для ComPortal это тоже сервисный мусор и не должен ехать в витрину.
 _COMPORTAL_EXTRA_DROP_KEYS_CASEFOLD = {
     "акция",
 }
@@ -104,6 +97,17 @@ def normalize_warranty_to_months(v: str) -> str:
 
 def normalize_key_aliases(key: str, schema: dict[str, Any]) -> str:
     kk = norm_ws(key)
+
+    hard_mapping = {
+        "Объем": "Объём",
+        "Тип печати": "Технология печати",
+        "Беспроводная связь": "Беспроводные интерфейсы",
+        "Разъемы/порты": "Порты",
+        "Формфактор": "Форм-фактор",
+    }
+    if kk in hard_mapping:
+        return hard_mapping[kk]
+
     aliases = schema.get("aliases_casefold") or {}
     repl = aliases.get(kk.casefold())
     return norm_ws(repl) if repl else kk
@@ -169,6 +173,8 @@ def _post_clean_value(key: str, val: str) -> str:
         return _post_clean_technology_value(val)
     if kcf == "ресурс":
         return _post_clean_resource_value(val)
+    if kcf == "гарантия":
+        return normalize_warranty_to_months(val)
     return norm_ws(val)
 
 
