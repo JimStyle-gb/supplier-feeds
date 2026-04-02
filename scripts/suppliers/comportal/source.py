@@ -3,14 +3,15 @@
 Path: scripts/suppliers/comportal/source.py
 ComPortal source layer.
 
-Что исправлено:
-- поддержка Cookie / Authorization / Referer через env;
-- понятная ошибка, если источник вернул пустой body;
-- понятная ошибка, если вместо XML пришёл HTML/страница авторизации.
+Что добавлено:
+- поддержка COMPORTAL_LOGIN / COMPORTAL_PASSWORD;
+- если COMPORTAL_HTTP_AUTHORIZATION не задан, собирается Basic Authorization;
+- сохраняются fallback-варианты через Cookie / локальный файл.
 """
 
 from __future__ import annotations
 
+import base64
 import os
 import re
 import xml.etree.ElementTree as ET
@@ -34,21 +35,21 @@ HTTP_REFERER = os.getenv("COMPORTAL_HTTP_REFERER", "https://www.comportal.kz/").
 HTTP_COOKIE = os.getenv("COMPORTAL_HTTP_COOKIE", "").strip()
 HTTP_AUTHORIZATION = os.getenv("COMPORTAL_HTTP_AUTHORIZATION", "").strip()
 
+COMPORTAL_LOGIN = os.getenv("COMPORTAL_LOGIN", "").strip()
+COMPORTAL_PASSWORD = os.getenv("COMPORTAL_PASSWORD", "").strip()
+
 
 def safe_str(x: Any) -> str:
-    """Безопасно привести значение к строке."""
     return str(x).strip() if x is not None else ""
 
 
 def norm_spaces(s: str) -> str:
-    """Сжать пробелы и NBSP."""
     s = (s or "").replace("\xa0", " ")
     s = re.sub(r"\s+", " ", s)
     return s.strip()
 
 
 def parse_price_int(text: str) -> int:
-    """Вытащить целую цену из source-строки."""
     s = norm_spaces(text)
     if not s:
         return 0
@@ -61,8 +62,12 @@ def parse_price_int(text: str) -> int:
         return 0
 
 
+def _basic_auth_header(login: str, password: str) -> str:
+    token = f"{login}:{password}".encode("utf-8")
+    return "Basic " + base64.b64encode(token).decode("ascii")
+
+
 def _make_headers() -> Dict[str, str]:
-    """HTTP headers for ComPortal."""
     headers = {
         "User-Agent": HTTP_UA,
         "Accept": "*/*",
@@ -70,22 +75,24 @@ def _make_headers() -> Dict[str, str]:
         "Connection": "close",
         "Referer": HTTP_REFERER or "https://www.comportal.kz/",
     }
+
     if HTTP_COOKIE:
         headers["Cookie"] = HTTP_COOKIE
+
     if HTTP_AUTHORIZATION:
         headers["Authorization"] = HTTP_AUTHORIZATION
+    elif COMPORTAL_LOGIN and COMPORTAL_PASSWORD:
+        headers["Authorization"] = _basic_auth_header(COMPORTAL_LOGIN, COMPORTAL_PASSWORD)
+
     return headers
 
 
 def load_source_bytes() -> bytes:
-    """Прочитать исходный YML: сначала локальный файл, иначе URL."""
     if SOURCE_FILE:
         with open(SOURCE_FILE, "rb") as fh:
             data = fh.read()
         if not data.strip():
-            raise RuntimeError(
-                f"ComPortal local source file is empty: {SOURCE_FILE}"
-            )
+            raise RuntimeError(f"ComPortal local source file is empty: {SOURCE_FILE}")
         return data
 
     req = Request(SOURCE_URL, headers=_make_headers())
@@ -95,15 +102,14 @@ def load_source_bytes() -> bytes:
     if not data or not data.strip():
         raise RuntimeError(
             "ComPortal source returned empty body. "
-            "Likely the URL needs auth/cookie or returned an empty page. "
-            "Set COMPORTAL_HTTP_COOKIE / COMPORTAL_HTTP_AUTHORIZATION "
+            "Try COMPORTAL_LOGIN / COMPORTAL_PASSWORD, "
+            "or COMPORTAL_HTTP_COOKIE / COMPORTAL_HTTP_AUTHORIZATION, "
             "or use COMPORTAL_SOURCE_FILE."
         )
     return data
 
 
 def parse_xml(data: bytes) -> ET.Element:
-    """Распарсить XML или дать понятную ошибку."""
     raw = data.lstrip()
 
     if not raw:
@@ -113,8 +119,10 @@ def parse_xml(data: bytes) -> ET.Element:
     if low.startswith(b"<html") or b"<!doctype html" in low:
         raise RuntimeError(
             "ComPortal source returned HTML instead of XML. "
-            "Most likely this is an auth page / blocked response. "
-            "Use COMPORTAL_HTTP_COOKIE or COMPORTAL_SOURCE_FILE."
+            "Most likely auth failed or site returned a session page. "
+            "Try COMPORTAL_LOGIN / COMPORTAL_PASSWORD, "
+            "or COMPORTAL_HTTP_COOKIE / COMPORTAL_HTTP_AUTHORIZATION, "
+            "or use COMPORTAL_SOURCE_FILE."
         )
 
     try:
@@ -128,7 +136,6 @@ def parse_xml(data: bytes) -> ET.Element:
 
 
 def build_category_index(root: ET.Element) -> Dict[str, Dict[str, str]]:
-    """Построить словарь категорий с parent-chain."""
     idx: Dict[str, Dict[str, str]] = {}
     for cat in root.findall(".//categories/category"):
         cid = safe_str(cat.get("id"))
@@ -159,7 +166,6 @@ def build_category_index(root: ET.Element) -> Dict[str, Dict[str, str]]:
 
 
 def _collect_pictures(offer_el: ET.Element) -> List[str]:
-    """Собрать все picture."""
     out: List[str] = []
     seen: set[str] = set()
     for pic_el in offer_el.findall("./picture"):
@@ -172,7 +178,6 @@ def _collect_pictures(offer_el: ET.Element) -> List[str]:
 
 
 def _collect_params(offer_el: ET.Element) -> List[Dict[str, str]]:
-    """Собрать raw param как есть."""
     out: List[Dict[str, str]] = []
     for p in offer_el.findall("./param"):
         name = norm_spaces(safe_str(p.get("name")))
@@ -187,7 +192,6 @@ def parse_offer(
     offer_el: ET.Element,
     category_index: Dict[str, Dict[str, str]],
 ) -> Dict[str, Any]:
-    """Превратить offer XML в сырой page-payload без semantic-логики."""
     raw_id = norm_spaces(safe_str(offer_el.get("id")))
     raw_available = safe_str(offer_el.get("available")).lower() == "true"
 
@@ -245,7 +249,6 @@ def parse_offer(
 
 
 def fetch_catalog_payload() -> Dict[str, Any]:
-    """Прочитать весь каталог и вернуть categories + raw offers."""
     data = load_source_bytes()
     root = parse_xml(data)
     category_index = build_category_index(root)
@@ -262,12 +265,10 @@ def fetch_catalog_payload() -> Dict[str, Any]:
 
 
 def fetch_products() -> List[Dict[str, Any]]:
-    """Backward-safe helper: вернуть только список raw offers."""
     return fetch_catalog_payload()["offers"]
 
 
 def fetch_categories() -> Dict[str, Dict[str, str]]:
-    """Вернуть индекс категорий поставщика."""
     return fetch_catalog_payload()["category_index"]
 
 
