@@ -3,14 +3,11 @@
 Path: scripts/build_comportal.py
 ComPortal adapter under CS-template.
 
-Что делает:
-- читает YML ComPortal;
-- применяет category-first whitelist filter;
-- собирает clean raw offers;
-- пишет raw/final feed через shared core;
-- запускает diagnostics;
-- запускает quality gate;
-- печатает build summary, включая critical_preview из QG.
+Пайплайн:
+- source -> filtering -> builder
+- write raw -> write final
+- diagnostics
+- quality gate
 """
 
 from __future__ import annotations
@@ -32,7 +29,7 @@ from suppliers.comportal.quality_gate import run_quality_gate
 from suppliers.comportal.source import fetch_catalog_payload
 
 
-BUILD_COMPORTAL_VERSION = "build_comportal_v8_qg_preview"
+BUILD_COMPORTAL_VERSION = "build_comportal_restart_v1"
 
 SUPPLIER_NAME_DEFAULT = "ComPortal"
 SUPPLIER_URL_DEFAULT = os.getenv(
@@ -42,11 +39,11 @@ SUPPLIER_URL_DEFAULT = os.getenv(
 OUT_FILE_DEFAULT = os.getenv("OUT_FILE", "docs/comportal.yml")
 RAW_OUT_FILE_DEFAULT = os.getenv("RAW_OUT_FILE", "docs/raw/comportal.yml")
 OUTPUT_ENCODING_DEFAULT = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
-
 COMPORTAL_NEXT_RUN_HOUR = int(os.getenv("COMPORTAL_NEXT_RUN_HOUR", "4") or "4")
 
 
 def _safe_int(value: Any, default: int = 0) -> int:
+    """Безопасно привести значение к int."""
     try:
         return int(value)
     except Exception:
@@ -59,9 +56,8 @@ def _to_offer_out(raw_offer: dict[str, Any]) -> OfferOut:
     for p in raw_offer.get("params") or []:
         name = str(p.get("name") or "").strip()
         value = str(p.get("value") or "").strip()
-        if not name or not value:
-            continue
-        params.append((name, value))
+        if name and value:
+            params.append((name, value))
 
     pictures = list(raw_offer.get("pictures") or [])
     if not pictures and raw_offer.get("picture"):
@@ -90,6 +86,7 @@ def _print_summary(
     out_file: str,
     raw_out_file: str,
 ) -> None:
+    """Напечатать build summary."""
     print("=" * 72)
     print("[ComPortal] build summary")
     print("=" * 72)
@@ -99,13 +96,12 @@ def _print_summary(
     print(f"raw_out_file: {raw_out_file}")
     print(f"out_file: {out_file}")
     print("-" * 72)
+
     print("filter_report:")
-    print(f"  mode: {filter_report.get('mode')}")
-    print(f"  before: {filter_report.get('before')}")
-    print(f"  after: {filter_report.get('after')}")
-    print(f"  rejected_total: {filter_report.get('rejected_total')}")
-    print(f"  allowed_category_count: {filter_report.get('allowed_category_count')}")
+    for key in ("mode", "before", "after", "rejected_total", "allowed_category_count"):
+        print(f"  {key}: {filter_report.get(key)}")
     print("-" * 72)
+
     print("source_diag:")
     for key in (
         "total",
@@ -122,6 +118,7 @@ def _print_summary(
     ):
         print(f"  {key}: {source_diag.get(key)}")
     print("-" * 72)
+
     print("built_diag:")
     for key in (
         "total",
@@ -138,10 +135,12 @@ def _print_summary(
     ):
         print(f"  {key}: {built_diag.get(key)}")
     print("-" * 72)
+
     print("top_categories:")
     for row in top_categories[:10]:
         print(f"  {row.get('id')}: {row.get('path') or row.get('name')} -> {row.get('count')}")
     print("-" * 72)
+
     print(f"quality_gate_ok: {qg.get('ok')}")
     print(f"quality_gate_report: {qg.get('report_path')}")
     print(f"quality_gate_critical_count: {qg.get('critical_count')}")
@@ -163,6 +162,7 @@ def _print_summary(
 
 
 def main() -> int:
+    """Запуск сборки ComPortal."""
     supplier_name = SUPPLIER_NAME_DEFAULT
     supplier_url = SUPPLIER_URL_DEFAULT
     out_file = OUT_FILE_DEFAULT
