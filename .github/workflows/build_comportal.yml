@@ -41,6 +41,17 @@ jobs:
           test -f docs/raw/comportal.yml
           test -f docs/comportal.yml
 
+      - name: Commit updated feeds
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/raw/comportal.yml docs/comportal.yml
+          git diff --cached --quiet && echo "No file changes to commit" && exit 0
+          git commit -m "Build ComPortal"
+
+      - name: Push
+        run: git push
+
       - name: Upload outputs
         uses: actions/upload-artifact@v4
         with:
