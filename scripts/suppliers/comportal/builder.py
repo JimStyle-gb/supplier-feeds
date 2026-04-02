@@ -1,289 +1,253 @@
 # -*- coding: utf-8 -*-
 """
 Path: scripts/suppliers/comportal/builder.py
-ComPortal builder layer.
 
-Роль:
-- взять raw offer после source/filter/normalize;
-- собрать clean raw offer под CS;
-- сформировать стабильный CP-prefixed id/vendorCode;
-- собрать минимально информативный native_desc из name + params + category provenance.
+ComPortal supplier layer — сборка raw offer.
+
+Единая роль файла как у готовых поставщиков:
+- взять SourceOffer;
+- прогнать supplier-side cleanup/extraction;
+- собрать чистый raw OfferOut;
+- supplier-specific ошибки чинятся здесь, а не в core.
 """
 
 from __future__ import annotations
 
-import re
-from typing import Any, Dict, Iterable, List
+from dataclasses import asdict
+from typing import Any
 
-from .compat import apply_compat_cleanup
-from .desc_clean import clean_native_text, clean_title_for_desc
-from .desc_extract import fill_missing_from_title
-from .normalize import normalize_basics
-from .params_xml import extract_clean_params
-from .pictures import pick_main_picture, pick_pictures
-
-SUPPLIER_PREFIX = "CP"
-
-
-def safe_str(x: Any) -> str:
-    """Безопасно привести значение к строке."""
-    return str(x).strip() if x is not None else ""
-
-
-def norm_spaces(s: str) -> str:
-    """Сжать пробелы и NBSP."""
-    s = (s or "").replace("\xa0", " ")
-    s = re.sub(r"\s+", " ", s)
-    return s.strip()
+from cs.core import OfferOut
+from cs.util import norm_ws
+from suppliers.comportal.compat import apply_compat_cleanup
+from suppliers.comportal.desc_clean import sanitize_native_desc
+from suppliers.comportal.desc_extract import extract_desc_fill_params
+from suppliers.comportal.models import BuildStats, ParamItem, SourceOffer
+from suppliers.comportal.normalize import (
+    build_offer_oid,
+    normalize_available,
+    normalize_model,
+    normalize_name,
+    normalize_price_in,
+    normalize_vendor,
+)
+from suppliers.comportal.params_xml import build_params_from_xml
+from suppliers.comportal.pictures import collect_picture_urls
 
 
-def to_int(x: Any) -> int:
-    """Безопасно привести цену к int."""
-    s = norm_spaces(safe_str(x))
-    if not s:
-        return 0
-    digits = re.sub(r"[^0-9]+", "", s)
-    if not digits:
-        return 0
-    try:
-        return int(digits)
-    except Exception:
-        return 0
-
-
-def make_cp_code(raw_offer: Dict[str, Any]) -> str:
-    """Стабильный vendorCode / id с префиксом CP."""
-    vendor_code = norm_spaces(raw_offer.get("raw_vendorCode") or raw_offer.get("vendorCode"))
-    raw_id = norm_spaces(raw_offer.get("raw_id") or raw_offer.get("id"))
-
-    base = vendor_code or raw_id
-    base = re.sub(r"[^A-Za-z0-9]+", "", base)
-    if not base:
-        base = "000000"
-
-    if base.upper().startswith(SUPPLIER_PREFIX):
-        return base
-    return f"{SUPPLIER_PREFIX}{base}"
-
-
-def _param_map(params: List[Dict[str, str]]) -> Dict[str, str]:
-    """Собрать map param name -> value."""
-    out: Dict[str, str] = {}
-    for p in params:
-        name = norm_spaces(safe_str(p.get("name")))
-        value = norm_spaces(safe_str(p.get("value")))
-        if name and value:
+def _param_map(params: list[ParamItem]) -> dict[str, str]:
+    out: dict[str, str] = {}
+    for p in params or []:
+        name = norm_ws(p.name)
+        value = norm_ws(p.value)
+        if name and value and name.casefold() not in {k.casefold() for k in out}:
             out[name] = value
     return out
 
 
-def _join_nonempty(parts: List[str], sep: str = ", ") -> str:
-    """Склеить непустые куски."""
-    return sep.join([norm_spaces(p) for p in parts if norm_spaces(p)])
+def _set_if_missing(params: list[ParamItem], *, name: str, value: str, source: str) -> list[ParamItem]:
+    if not norm_ws(name) or not norm_ws(value):
+        return params
+    pmap = _param_map(params)
+    if any(k.casefold() == name.casefold() for k in pmap):
+        return params
+    return list(params) + [ParamItem(name=norm_ws(name), value=norm_ws(value), source=source)]
 
 
-def _desc_for_printing_device(pmap: Dict[str, str]) -> str:
-    """Нарратив для печатной техники."""
-    bits: List[str] = []
-    if pmap.get("Функция"):
-        bits.append(pmap["Функция"])
-    if pmap.get("Формат печати"):
-        bits.append(f"формат {pmap['Формат печати']}")
-    if pmap.get("Разрешение"):
-        bits.append(f"разрешение {pmap['Разрешение']}")
-    if pmap.get("Скорость печати ч/б"):
-        bits.append(f"скорость ч/б {pmap['Скорость печати ч/б']} стр/мин")
-    if pmap.get("Скорость печати цветной"):
-        bits.append(f"скорость цветной печати {pmap['Скорость печати цветной']} стр/мин")
-    if pmap.get("Порты"):
-        bits.append(f"интерфейсы {pmap['Порты']}")
-    return _join_nonempty(bits)
+def _ensure_base_params(
+    *,
+    source_offer: SourceOffer,
+    params: list[ParamItem],
+    vendor: str,
+    model: str,
+) -> list[ParamItem]:
+    out = list(params)
+    pmap = _param_map(out)
 
+    if vendor and "Для бренда" not in pmap:
+        out.append(ParamItem(name="Для бренда", value=vendor, source="normalize"))
 
-def _desc_for_monitor(pmap: Dict[str, str]) -> str:
-    """Нарратив для монитора."""
-    bits: List[str] = []
-    if pmap.get("Диагональ"):
-        bits.append(f"диагональ {pmap['Диагональ']}")
-    if pmap.get("Максимальное разрешение"):
-        bits.append(f"разрешение {pmap['Максимальное разрешение']}")
-    if pmap.get("Тип матрицы"):
-        bits.append(f"матрица {pmap['Тип матрицы']}")
-    if pmap.get("Частота обновления"):
-        bits.append(f"частота {pmap['Частота обновления']} Гц")
-    if pmap.get("Время отклика"):
-        bits.append(f"отклик {pmap['Время отклика']} мс")
-    if pmap.get("Порты"):
-        bits.append(f"интерфейсы {pmap['Порты']}")
-    return _join_nonempty(bits)
+    if model and "Модель" not in pmap:
+        out.append(ParamItem(name="Модель", value=model, source="normalize"))
 
+    # Коды часто удобно брать из хвостовых скобок / vendorCode.
+    if "Коды" not in pmap:
+        if model:
+            out.append(ParamItem(name="Коды", value=model, source="normalize"))
+        elif source_offer.vendor_code:
+            out.append(ParamItem(name="Коды", value=norm_ws(source_offer.vendor_code), source="source"))
 
-def _desc_for_computer(pmap: Dict[str, str]) -> str:
-    """Нарратив для ноутбука/ПК/моноблока/рабочей станции."""
-    bits: List[str] = []
-    cpu = _join_nonempty([pmap.get("Серия процессора", ""), pmap.get("Модель процессора", "")], " ")
-    if cpu:
-        bits.append(f"процессор {cpu}")
-    if pmap.get("Оперативная память"):
-        bits.append(f"оперативная память {pmap['Оперативная память']}")
-    storage = _join_nonempty([pmap.get("Объем жесткого диска", ""), pmap.get("Тип жесткого диска", "")], " ")
-    if storage:
-        bits.append(f"накопитель {storage}")
-    if pmap.get("Диагональ"):
-        bits.append(f"диагональ {pmap['Диагональ']}")
-    if pmap.get("Максимальное разрешение"):
-        bits.append(f"разрешение {pmap['Максимальное разрешение']}")
-    os_name = _join_nonempty([pmap.get("Операционная система", ""), pmap.get("Версия операционной системы", "")], " ")
-    if os_name:
-        bits.append(f"ОС {os_name}")
-    gpu = _join_nonempty([pmap.get("Марка чипсета видеокарты", ""), pmap.get("Модель чипсета видеокарты", "")], " ")
-    if gpu:
-        bits.append(f"видеокарта {gpu}")
-    return _join_nonempty(bits)
-
-
-def _desc_for_power(pmap: Dict[str, str]) -> str:
-    """Нарратив для ИБП/стабилизаторов/батарей."""
-    bits: List[str] = []
-    va = pmap.get("Мощность (VA)", "")
-    w = pmap.get("Мощность (W)", "")
-    if va or w:
-        bits.append(_join_nonempty([f"{va} VA" if va else "", f"{w} W" if w else ""], " / "))
-    if pmap.get("Форм-фактор"):
-        bits.append(f"форм-фактор {pmap['Форм-фактор']}")
-    if pmap.get("Стабилизатор (AVR)"):
-        bits.append(f"AVR {pmap['Стабилизатор (AVR)']}")
-    if pmap.get("Типовая продолжительность работы при 100% нагрузке, мин"):
-        bits.append(
-            "время работы при полной нагрузке "
-            f"{pmap['Типовая продолжительность работы при 100% нагрузке, мин']} мин"
-        )
-    if pmap.get("Выходные соединения"):
-        bits.append(f"выходы {pmap['Выходные соединения']}")
-    return _join_nonempty(bits)
-
-
-def _desc_for_consumable(pmap: Dict[str, str]) -> str:
-    """Нарратив для расходки."""
-    bits: List[str] = []
-    if pmap.get("Технология печати"):
-        bits.append(f"технология печати {pmap['Технология печати'].lower()}")
-    if pmap.get("Цвет"):
-        bits.append(f"цвет {pmap['Цвет'].lower()}")
-    if pmap.get("Ресурс"):
-        bits.append(f"ресурс {pmap['Ресурс']}")
-    if pmap.get("Объём"):
-        bits.append(f"объём {pmap['Объём']}")
-    if pmap.get("Номер"):
-        bits.append(f"номер {pmap['Номер']}")
-    if pmap.get("Применение"):
-        bits.append(pmap["Применение"])
-    return _join_nonempty(bits)
-
-
-def _make_highlights(pmap: Dict[str, str]) -> str:
-    """Собрать основной narrative по типу товара."""
-    ptype = norm_spaces(pmap.get("Тип", "")).lower()
-
-    if ptype in {"мфу", "принтер", "сканер", "проектор", "широкоформатный принтер"}:
-        return _desc_for_printing_device(pmap)
-    if ptype == "монитор":
-        return _desc_for_monitor(pmap)
-    if ptype in {"ноутбук", "моноблок", "настольный пк", "рабочая станция"}:
-        return _desc_for_computer(pmap)
-    if ptype in {"ибп", "стабилизатор", "батарея"}:
-        return _desc_for_power(pmap)
-    if ptype in {"картридж", "тонер", "расходный материал"}:
-        return _desc_for_consumable(pmap)
-
-    bits: List[str] = []
-    for key in (
-        "Технология печати",
-        "Цвет",
-        "Ресурс",
-        "Диагональ",
-        "Максимальное разрешение",
-        "Оперативная память",
-        "Объем жесткого диска",
-        "Мощность (VA)",
-        "Мощность (W)",
-        "Гарантия",
-    ):
-        if pmap.get(key):
-            bits.append(f"{key.lower()} {pmap[key]}")
-    return _join_nonempty(bits)
-
-
-def build_native_desc(name: str, clean_params: List[Dict[str, str]], raw_offer: Dict[str, Any]) -> str:
-    """Собрать supplier-side native_desc для raw YML."""
-    pmap = _param_map(clean_params)
-    parts: List[str] = [clean_title_for_desc(name)]
-
-    highlights = _make_highlights(pmap)
-    if highlights:
-        parts.append("Характеристики: " + highlights + ".")
-
-    category_path = norm_spaces(raw_offer.get("raw_category_path", ""))
-    if category_path:
-        parts.append(f"Категория поставщика: {category_path}.")
-
-    return clean_native_text("\n".join([x for x in parts if x]).strip())
-
-
-def build_offer(raw_offer: Dict[str, Any]) -> Dict[str, Any]:
-    """Собрать один clean raw offer под CS."""
-    normalized = normalize_basics(raw_offer)
-
-    clean_params, _ = extract_clean_params(normalized)
-    clean_params = fill_missing_from_title(normalized, clean_params)
-    clean_params = apply_compat_cleanup(clean_params)
-
-    cp_code = make_cp_code(normalized)
-    pictures = pick_pictures(normalized)
-    main_picture = pick_main_picture(normalized)
-
-    name = norm_spaces(normalized.get("name") or normalized.get("title") or "")
-    vendor = norm_spaces(normalized.get("vendor", ""))
-    price = to_int(normalized.get("price_raw") or normalized.get("raw_price_text"))
-
-    return {
-        "id": cp_code,
-        "vendorCode": cp_code,
-        "name": name,
-        "price": price,
-        "picture": main_picture,
-        "pictures": pictures,
-        "vendor": vendor,
-        "currencyId": norm_spaces(normalized.get("raw_currencyId") or normalized.get("currencyId") or "KZT") or "KZT",
-        "available": bool(normalized.get("available", True)),
-        "categoryId": "",
-        "params": clean_params,
-        "native_desc": build_native_desc(name, clean_params, normalized),
-        "url": norm_spaces(normalized.get("raw_url") or normalized.get("url")),
-        "source_category_id": norm_spaces(normalized.get("raw_categoryId") or normalized.get("categoryId")),
-        "source_category_name": norm_spaces(normalized.get("raw_category_name")),
-        "source_category_path": norm_spaces(normalized.get("raw_category_path")),
-        "model": norm_spaces(normalized.get("model")),
-    }
-
-
-def build_offers(raw_offers: Iterable[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Построить список clean raw offers."""
-    out: List[Dict[str, Any]] = []
-    for raw_offer in raw_offers:
-        built = build_offer(raw_offer)
-        if not built.get("name"):
-            continue
-        if not built.get("vendorCode"):
-            continue
-        out.append(built)
     return out
 
 
-__all__ = [
-    "SUPPLIER_PREFIX",
-    "build_offer",
-    "build_offers",
-    "make_cp_code",
-    "build_native_desc",
-]
+def _build_native_desc(
+    *,
+    clean_name: str,
+    source_offer: SourceOffer,
+    params: list[ParamItem],
+) -> str:
+    """
+    Supplier-side narrative для raw.
+
+    Для ComPortal source-description обычно слабый, поэтому:
+    - если supplier body есть и чистый — берём его;
+    - иначе собираем короткий служебно-полезный narrative из params.
+    """
+    native = sanitize_native_desc(source_offer.description or "", title=clean_name)
+    if native:
+        return native
+
+    pmap = _param_map(params)
+    bits: list[str] = []
+
+    ptype = norm_ws(pmap.get("Тип", ""))
+    if ptype:
+        bits.append(ptype)
+
+    for key in (
+        "Функция",
+        "Формат печати",
+        "Разрешение",
+        "Скорость печати ч/б",
+        "Скорость печати цветной",
+        "Диагональ",
+        "Максимальное разрешение",
+        "Тип матрицы",
+        "Частота обновления",
+        "Время отклика",
+        "Модель процессора",
+        "Серия процессора",
+        "Оперативная память",
+        "Объем жесткого диска",
+        "Тип жесткого диска",
+        "Операционная система",
+        "Версия операционной системы",
+        "Марка чипсета видеокарты",
+        "Модель чипсета видеокарты",
+        "Мощность (VA)",
+        "Мощность (W)",
+        "Форм-фактор",
+        "Стабилизатор (AVR)",
+        "Типовая продолжительность работы при 100% нагрузке, мин",
+        "Выходные соединения",
+        "Порты",
+        "Беспроводная связь",
+        "Беспроводные интерфейсы",
+        "Цвет",
+        "Технология печати",
+        "Ресурс",
+        "Объём",
+        "Номер",
+        "Применение",
+        "Дополнительная информация",
+        "Гарантия",
+    ):
+        val = norm_ws(pmap.get(key, ""))
+        if val:
+            bits.append(f"{key}: {val}")
+
+    body = ". ".join(bits[:8]).strip()
+    if body:
+        if not body.endswith("."):
+            body += "."
+        return body
+
+    if source_offer.category_path:
+        return f"Категория поставщика: {norm_ws(source_offer.category_path)}."
+
+    return ""
+
+
+def build_offer_out(
+    source_offer: SourceOffer,
+    *,
+    schema: dict[str, Any],
+    policy: dict[str, Any],
+) -> OfferOut | None:
+    """Собрать один raw OfferOut."""
+    prefix = norm_ws(schema.get("id_prefix") or schema.get("supplier_prefix") or "CP")
+    placeholder_picture = norm_ws(schema.get("placeholder_picture") or "")
+    vendor_blacklist = {str(x).casefold() for x in (schema.get("vendor_blacklist_casefold") or [])}
+
+    fallback_vendor = norm_ws(
+        (((policy.get("vendor_policy") or {}).get("neutral_fallback_vendor")) or "")
+    )
+
+    clean_name = normalize_name(source_offer.name)
+    clean_vendor = normalize_vendor(
+        source_offer.vendor,
+        name=clean_name,
+        params=source_offer.params,
+        vendor_blacklist=vendor_blacklist,
+        fallback_vendor=fallback_vendor,
+    )
+    clean_model = normalize_model(clean_name, source_offer.params)
+
+    params = build_params_from_xml(source_offer, schema)
+    params = extract_desc_fill_params(
+        title=clean_name,
+        desc_text=source_offer.description,
+        existing_params=params,
+    )
+    params = _ensure_base_params(
+        source_offer=source_offer,
+        params=params,
+        vendor=clean_vendor,
+        model=clean_model,
+    )
+    params = apply_compat_cleanup(params)
+
+    oid = build_offer_oid(source_offer.vendor_code, source_offer.raw_id, prefix=prefix)
+    if not oid:
+        return None
+
+    pictures = collect_picture_urls(source_offer.picture_urls, placeholder_picture=placeholder_picture)
+    available = normalize_available(source_offer.available_attr, source_offer.available_tag, source_offer.active)
+    price_in = normalize_price_in(source_offer.price_text)
+
+    native_desc = _build_native_desc(
+        clean_name=clean_name,
+        source_offer=source_offer,
+        params=params,
+    )
+
+    out = OfferOut(
+        oid=oid,
+        available=available,
+        name=clean_name,
+        price=price_in,
+        pictures=pictures,
+        vendor=clean_vendor,
+        params=[(norm_ws(p.name), norm_ws(p.value)) for p in params if norm_ws(p.name) and norm_ws(p.value)],
+        native_desc=native_desc,
+    )
+    return out
+
+
+def build_offers(
+    source_offers: list[SourceOffer],
+    *,
+    schema: dict[str, Any],
+    policy: dict[str, Any],
+) -> tuple[list[OfferOut], BuildStats]:
+    """Собрать список raw OfferOut и supplier stats."""
+    out: list[OfferOut] = []
+    stats = BuildStats(before=len(source_offers), after=0)
+
+    placeholder_picture = norm_ws(schema.get("placeholder_picture") or "")
+    for src in source_offers:
+        offer = build_offer_out(src, schema=schema, policy=policy)
+        if offer is None:
+            stats.filtered_out += 1
+            continue
+
+        if not src.picture_urls:
+            stats.missing_picture_count += 1
+        if offer.pictures and placeholder_picture and offer.pictures[0] == placeholder_picture:
+            stats.placeholder_picture_count += 1
+        if not norm_ws(offer.vendor):
+            stats.empty_vendor_count += 1
+
+        out.append(offer)
+
+    stats.after = len(out)
+    return out, stats
