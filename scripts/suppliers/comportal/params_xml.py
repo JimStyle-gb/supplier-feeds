@@ -4,11 +4,9 @@ Path: scripts/suppliers/comportal/params_xml.py
 
 XML params pipeline для ComPortal.
 
-Что исправлено:
-- служебные source keys жёстко режутся;
-- "Объем" -> "Объём" нормализуется всегда;
-- "Тип печати" -> "Технология печати" нормализуется всегда;
-- "Гарантия" приводится к виду "N мес" даже если это просто "12".
+Что улучшено:
+- шумный слабополезный param "По принадлежности" вырезается;
+- для витрины остаются более полезные характеристики.
 """
 
 from __future__ import annotations
@@ -22,7 +20,6 @@ from suppliers.comportal.models import ParamItem, SourceOffer
 
 _RE_HAS_LETTER = re.compile(r"[A-Za-zА-Яа-яЁё]")
 _RE_LETTER_SLASH_LETTER = re.compile(r"([A-Za-zА-Яа-яЁё])\s*/\s*([A-Za-zА-Яа-яЁё])")
-
 _TECH_VALUE_RE = re.compile(
     r"(?iu)\b("
     r"Лазерн(?:ая|ый)|"
@@ -38,7 +35,7 @@ _GLOBAL_DROP_KEYS_CASEFOLD = {
     "артикул", "штрихкод", "штрих-код", "штрих код", "barcode", "gtin", "upc", "ean", "ean-13",
     "ean13", "код тн вэд", "код нкт", "код товара kaspi", "код товара kaspi.kz", "благотворительность",
     "снижена цена", "новинка", "назначение", "безопасность", "цена по запросу (для сортировки)",
-    "акция (для сортировки)",
+    "акция (для сортировки)", "по принадлежности",
 }
 _COMPORTAL_EXTRA_DROP_KEYS_CASEFOLD = {"акция"}
 
