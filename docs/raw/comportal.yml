@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-02 23:58:24">
+<yml_catalog date="2026-04-03 00:11:18">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-04-02 23:58:24
+Время сборки (Алматы)                      | 2026-04-03 00:11:18
 Ближайшая сборка (Алматы)                  | 2026-04-03 04:00:00
 Сколько товаров у поставщика до фильтра    | 1194
 Сколько товаров у поставщика после фильтра | 583
@@ -180,7 +180,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-МФУ. Гарантия: 12 мес.]]></description>
+МФУ. Гарантия: 12 мес. Для бренда: Canon. Модель: 5252B004. Коды: 5252B004.]]></description>
 <param name="Тип">МФУ</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">5252B004</param>
@@ -247,7 +247,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Батарея. Гарантия: 24 мес.]]></description>
+Батарея. Гарантия: 24 мес. Для бренда: APC. Модель: SMX120BP. Коды: SMX120BP.]]></description>
 <param name="Тип">Батарея</param>
 <param name="Модель">SMX120BP</param>
 <param name="Дополнительная информация">120V Rack Tower</param>
@@ -474,7 +474,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Батарея. Гарантия: 24 мес.]]></description>
+Батарея. Гарантия: 24 мес. Для бренда: APC. Модель: SRT192RMBP2. Коды: SRT192RMBP2.]]></description>
 <param name="Тип">Батарея</param>
 <param name="Модель">SRT192RMBP2</param>
 <param name="Дополнительная информация">for Smart-UPS SRT 192V 8 and 10kVA RM / 3U</param>
@@ -606,7 +606,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Батарея. Гарантия: 24 мес.]]></description>
+Батарея. Гарантия: 24 мес. Для бренда: APC. Модель: APCRBC140. Коды: APCRBC140.]]></description>
 <param name="Тип">Батарея</param>
 <param name="Модель">APCRBC140</param>
 <param name="По принадлежности">внутренний</param>
@@ -920,7 +920,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Батарея. Гарантия: 24 мес.]]></description>
+Батарея. Гарантия: 24 мес. Для бренда: APC. Модель: SRT192RMBP. Коды: SRT192RMBP.]]></description>
 <param name="Тип">Батарея</param>
 <param name="Модель">SRT192RMBP</param>
 <param name="Дополнительная информация">Smart-UPS SRT 192 В 5 и 6 кВА</param>
@@ -1671,7 +1671,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Батарея. Гарантия: 24 мес.]]></description>
+Батарея. Гарантия: 24 мес. Для бренда: APC. Модель: SRT48BP. Коды: SRT48BP.]]></description>
 <param name="Тип">Батарея</param>
 <param name="Модель">SRT48BP</param>
 <param name="Дополнительная информация">48 В 1,5 кВА</param>
@@ -2609,7 +2609,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Сканер. Разрешение: 600. Гарантия: 12 мес.]]></description>
+Сканер. Разрешение: 600. Гарантия: 12 мес. Для бренда: HP. Модель: ScanJet Pro 2000 s2. Коды: 6FW06A#B19.]]></description>
 <param name="Тип">Сканер</param>
 <param name="Модель">ScanJet Pro 2000 s2</param>
 <param name="По принадлежности">Бизнес</param>
@@ -2632,7 +2632,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Сканер. Разрешение: 600. Гарантия: 12 мес.]]></description>
+Сканер. Разрешение: 600. Гарантия: 12 мес. Для бренда: HP. Модель: ScanJet Pro 3000 s4. Коды: 6FW07A#B19.]]></description>
 <param name="Тип">Сканер</param>
 <param name="Модель">ScanJet Pro 3000 s4</param>
 <param name="По принадлежности">Бизнес</param>
@@ -2655,7 +2655,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Сканер. Разрешение: 600. Гарантия: 12 мес.]]></description>
+Сканер. Разрешение: 600. Гарантия: 12 мес. Для бренда: HP. Модель: ScanJet Pro N4000 snw1. Коды: 6FW08A#B19.]]></description>
 <param name="Тип">Сканер</param>
 <param name="Модель">ScanJet Pro N4000 snw1</param>
 <param name="По принадлежности">Бизнес</param>
@@ -2736,7 +2736,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-МФУ. Гарантия: 12 мес.]]></description>
+МФУ. Гарантия: 12 мес. Для бренда: Canon. Модель: 1418C170. Коды: 1418C170.]]></description>
 <param name="Тип">МФУ</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">1418C170</param>
@@ -3530,7 +3530,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-МФУ. Гарантия: 12 мес.]]></description>
+МФУ. Гарантия: 12 мес. Для бренда: Canon. Модель: 5161C007. Коды: 5161C007.]]></description>
 <param name="Тип">МФУ</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">5161C007</param>
@@ -3930,7 +3930,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Батарея. Гарантия: 24 мес.]]></description>
+Батарея. Гарантия: 24 мес. Для бренда: Eaton. Модель: 9SX EBM Rack2U. Коды: 9SXEBM36R.]]></description>
 <param name="Тип">Батарея</param>
 <param name="Модель">9SX EBM Rack2U</param>
 <param name="Дополнительная информация">36V</param>
@@ -3949,7 +3949,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Батарея. Гарантия: 24 мес.]]></description>
+Батарея. Гарантия: 24 мес. Для бренда: Eaton. Модель: 9SX EBM Rack2U. Коды: 9SXEBM48R.]]></description>
 <param name="Тип">Батарея</param>
 <param name="Модель">9SX EBM Rack2U</param>
 <param name="Дополнительная информация">48V</param>
@@ -3968,7 +3968,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Батарея. Гарантия: 24 мес.]]></description>
+Батарея. Гарантия: 24 мес. Для бренда: Eaton. Модель: 9SX EBM. Коды: 9SXEBM240.]]></description>
 <param name="Тип">Батарея</param>
 <param name="Модель">9SX EBM</param>
 <param name="Дополнительная информация">240V</param>
@@ -4312,7 +4312,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Проектор. Гарантия: 12 мес.]]></description>
+Проектор. Гарантия: 12 мес. Для бренда: Acer. Модель: MR.JTA11.001. Коды: MR.JTA11.001.]]></description>
 <param name="Тип">Проектор</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">MR.JTA11.001</param>
@@ -6815,7 +6815,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Широкоформатный принтер. Технология печати: Струйная. Гарантия: 12 мес.]]></description>
+Широкоформатный принтер. Технология печати: Струйная. Гарантия: 12 мес. Для бренда: Canon. Модель: Ink PFI-030. Коды: 6242C003.]]></description>
 <param name="Тип">Широкоформатный принтер</param>
 <param name="Модель">Ink PFI-030</param>
 <param name="Цвет">Чёрный</param>
@@ -7305,7 +7305,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Проектор. Гарантия: 12 мес.]]></description>
+Проектор. Гарантия: 12 мес. Для бренда: Acer. Модель: MR.JX211.001. Коды: MR.JX211.001.]]></description>
 <param name="Тип">Проектор</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">MR.JX211.001</param>
@@ -8127,7 +8127,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 12 мес.]]></description>
+Ноутбук. Гарантия: 12 мес. Для бренда: Dell. Модель: BGLW-. Коды: BGLW-.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12 мес</param>
 <param name="Для бренда">Dell</param>
@@ -8970,7 +8970,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Poly</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук.]]></description>
+Ноутбук. Для бренда: Poly. Модель: 89L85AA. Коды: 89L85AA.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Модель">89L85AA</param>
 <param name="Применение">EagleEye IV Camera Cable (10M)</param>
@@ -9635,7 +9635,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Astergo</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Батарея. Гарантия: 12 мес.]]></description>
+Батарея. Гарантия: 12 мес. Для бренда: Astergo. Модель: AST.UPS.PGOBP3U240V7. Коды: AST.UPS.PGOBP3U240V7.]]></description>
 <param name="Тип">Батарея</param>
 <param name="Модель">AST.UPS.PGOBP3U240V7</param>
 <param name="Дополнительная информация">6кВт,10кВт ИБП AST.UPS.PGO6KLCD2U, AST.UPS.PGO10KLCD2</param>
@@ -9654,7 +9654,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Astergo</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Батарея. Гарантия: 12 мес.]]></description>
+Батарея. Гарантия: 12 мес. Для бренда: Astergo. Модель: AST.UPS.PGOBP3U240V9. Коды: AST.UPS.PGOBP3U240V9.]]></description>
 <param name="Тип">Батарея</param>
 <param name="Модель">AST.UPS.PGOBP3U240V9</param>
 <param name="Дополнительная информация">6кВт,10кВт ИБП AST.UPS.PGO6KLCD2U, AST.UPS.PGO10KLCD2</param>
@@ -10014,7 +10014,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: CS. Модель: AIWA. Коды: AIWA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
 <param name="Для бренда">CS</param>
@@ -10031,7 +10031,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: CS. Модель: AIWA. Коды: AIWA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
 <param name="Для бренда">CS</param>
@@ -10048,7 +10048,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: CS. Модель: AIWA. Коды: AIWA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
 <param name="Для бренда">CS</param>
@@ -10742,7 +10742,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BQTK. Коды: 210-BQTK.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BQTK</param>
@@ -11052,7 +11052,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BRDN. Коды: 210-BRDN.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BRDN</param>
@@ -11123,7 +11123,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BQMX. Коды: 210-BQMX.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BQMX</param>
@@ -11394,7 +11394,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Батарея. Гарантия: 24 мес.]]></description>
+Батарея. Гарантия: 24 мес. Для бренда: Eaton. Модель: Eaton 9E EBM. Коды: 9EEBM72.]]></description>
 <param name="Тип">Батарея</param>
 <param name="Модель">Eaton 9E EBM</param>
 <param name="Дополнительная информация">72V</param>
@@ -11458,7 +11458,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Сканер. Порты: 1 разъем SuperSpeed USB 3.0. Гарантия: 12 мес.]]></description>
+Сканер. Порты: 1 разъем SuperSpeed USB 3.0. Гарантия: 12 мес. Для бренда: HP. Модель: ScanJet Pro 4200 s1 +АПД. Коды: 8Q4W2A#B19.]]></description>
 <param name="Тип">Сканер</param>
 <param name="Модель">ScanJet Pro 4200 s1 +АПД</param>
 <param name="По принадлежности">Бизнес</param>
@@ -11541,7 +11541,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BQWM. Коды: 210-BQWM.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BQWM</param>
@@ -11612,7 +11612,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BQZT. Коды: 210-BQZT.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BQZT</param>
@@ -11629,7 +11629,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BQZW. Коды: 210-BQZW.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BQZW</param>
@@ -11646,7 +11646,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: Dell. Модель: 210-BPPG. Коды: 210-BPPG.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">210-BPPG</param>
@@ -12092,7 +12092,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 12 мес.]]></description>
+Ноутбук. Гарантия: 12 мес. Для бренда: ASUS. Модель: 90NR0LL1-M001B0. Коды: 90NR0LL1-M001B0.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">90NR0LL1-M001B0</param>
@@ -12137,7 +12137,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BRVT. Коды: 210-BRVT.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BRVT</param>
@@ -12455,7 +12455,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Проектор. Гарантия: 12 мес.]]></description>
+Проектор. Гарантия: 12 мес. Для бренда: Acer. Модель: MR.JX611.00Z. Коды: MR.JX611.00Z.]]></description>
 <param name="Тип">Проектор</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">MR.JX611.00Z</param>
@@ -12472,7 +12472,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Проектор. Гарантия: 12 мес.]]></description>
+Проектор. Гарантия: 12 мес. Для бренда: Acer. Модель: MR.JXC11.005. Коды: MR.JXC11.005.]]></description>
 <param name="Тип">Проектор</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">MR.JXC11.005</param>
@@ -12604,7 +12604,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 12 мес.]]></description>
+Ноутбук. Гарантия: 12 мес. Для бренда: Acer. Модель: NH.QVHER.001. Коды: NH.QVHER.001.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">NH.QVHER.001</param>
@@ -12648,7 +12648,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Батарея. Гарантия: 24 мес.]]></description>
+Батарея. Гарантия: 24 мес. Для бренда: Eaton. Модель: 9E11KIPMR. Коды: 9EEBM180R.]]></description>
 <param name="Тип">Батарея</param>
 <param name="Модель">9E11KIPMR</param>
 <param name="Дополнительная информация">180V АКБ для 9E6KIR</param>
@@ -12946,7 +12946,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC14250. Коды: PC14250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -13009,7 +13009,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PB14250. Коды: PB14250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -13026,7 +13026,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PB14250. Коды: PB14250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -13043,7 +13043,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC16250. Коды: PC16250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -13060,7 +13060,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC16250. Коды: PC16250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -13169,7 +13169,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC16255. Коды: PC16255.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -13232,7 +13232,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PB16250. Коды: PB16250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -13671,7 +13671,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BSNS. Коды: 210-BSNS.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BSNS</param>
@@ -13738,7 +13738,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BRZW. Коды: 210-BRZW.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BRZW</param>
@@ -13755,7 +13755,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BQWQ. Коды: 210-BQWQ.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BQWQ</param>
@@ -13772,7 +13772,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BRYJ. Коды: 210-BRYJ.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BRYJ</param>
@@ -14171,7 +14171,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: HP. Модель: 9D9V7AA#ABB. Коды: 9D9V7AA#ABB.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">9D9V7AA#ABB</param>
@@ -14216,7 +14216,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BSZD. Коды: 210-BSZD.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BSZD</param>
@@ -14233,7 +14233,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BSZF. Коды: 210-BSZF.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BSZF</param>
@@ -14250,7 +14250,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BSZF. Коды: 210-BSZF.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BSZF</param>
@@ -14267,7 +14267,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Монитор. Гарантия: 36 мес.]]></description>
+Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BSRL. Коды: 210-BSRL.]]></description>
 <param name="Тип">Монитор</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">210-BSRL</param>
@@ -14334,7 +14334,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 12 мес.]]></description>
+Ноутбук. Гарантия: 12 мес. Для бренда: ASUS. Модель: 90NR0NL1-M001L0. Коды: 90NR0NL1-M001L0.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">90NR0NL1-M001L0</param>
@@ -14397,7 +14397,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 12 мес.]]></description>
+Ноутбук. Гарантия: 12 мес. Для бренда: ASUS. Модель: 90NX0871-M022V0. Коды: 90NX0871-M022V0.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">90NX0871-M022V0</param>
@@ -14414,7 +14414,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 12 мес.]]></description>
+Ноутбук. Гарантия: 12 мес. Для бренда: ASUS. Модель: 90NX0871-M022X0. Коды: 90NX0871-M022X0.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">90NX0871-M022X0</param>
@@ -14431,7 +14431,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 12 мес.]]></description>
+Ноутбук. Гарантия: 12 мес. Для бренда: ASUS. Модель: 90NX0881-M02Y70. Коды: 90NX0881-M02Y70.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">90NX0881-M02Y70</param>
@@ -14448,7 +14448,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 12 мес.]]></description>
+Ноутбук. Гарантия: 12 мес. Для бренда: ASUS. Модель: 90NX0881-M02Y80. Коды: 90NX0881-M02Y80.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">90NX0881-M02Y80</param>
@@ -14465,7 +14465,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 12 мес.]]></description>
+Ноутбук. Гарантия: 12 мес. Для бренда: ASUS. Модель: 90NX0881-M02Y90. Коды: 90NX0881-M02Y90.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12 мес</param>
 <param name="Коды">90NX0881-M02Y90</param>
@@ -14533,7 +14533,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: HP. Модель: AT7K4AV / 74051491. Коды: AT7K4AV / 74051491.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">AT7K4AV / 74051491</param>
@@ -14550,7 +14550,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: HP. Модель: AZ3N2AV / 74051488. Коды: AZ3N2AV / 74051488.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Коды">AZ3N2AV / 74051488</param>
@@ -14567,7 +14567,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA14250. Коды: DA14250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14584,7 +14584,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA14250. Коды: DA14250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14601,7 +14601,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA14250. Коды: DA14250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14618,7 +14618,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA16250. Коды: DA16250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14635,7 +14635,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA16250. Коды: DA16250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14652,7 +14652,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA16250. Коды: DA16250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14669,7 +14669,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA16250. Коды: DA16250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14686,7 +14686,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA16250. Коды: DA16250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14703,7 +14703,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 36 мес.]]></description>
+Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: QC24251. Коды: QC24251.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14720,7 +14720,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 36 мес.]]></description>
+Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: QC24250. Коды: QC24250.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14786,7 +14786,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 36 мес.]]></description>
+Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: QC24250. Коды: QC24250.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14803,7 +14803,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 36 мес.]]></description>
+Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: QB24250. Коды: QB24250.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14820,7 +14820,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: QCM1250. Коды: QCM1250.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14837,7 +14837,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: QCM1250. Коды: QCM1250.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14854,7 +14854,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 36 мес.]]></description>
+Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: QB24250. Коды: QB24250.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14871,7 +14871,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: QCM1250. Коды: QCM1250.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14888,7 +14888,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: QCT1250. Коды: QCT1250.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14905,7 +14905,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: FCT2250. Коды: FCT2250.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14922,7 +14922,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: FCT2250. Коды: FCT2250.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14939,7 +14939,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: FCT2250. Коды: FCT2250.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14956,7 +14956,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: FCT2250. Коды: FCT2250.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14973,7 +14973,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: QCT1250. Коды: QCT1250.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -14990,7 +14990,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 36 мес.]]></description>
+Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: EC27250. Коды: EC27250.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -15007,7 +15007,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: EBT2250. Коды: EBT2250.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -15024,7 +15024,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: EBT2250. Коды: EBT2250.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -15138,7 +15138,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 12 мес.]]></description>
+Ноутбук. Гарантия: 12 мес. Для бренда: Dell. Коды: 13872879.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12 мес</param>
 <param name="Для бренда">Dell</param>
@@ -15154,7 +15154,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: CS. Модель: AIWA. Коды: AIWA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
 <param name="Для бренда">CS</param>
@@ -15171,7 +15171,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC16250. Коды: PC16250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -15188,7 +15188,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC16250. Коды: PC16250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -15205,7 +15205,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC16250. Коды: PC16250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -15222,7 +15222,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: MB18250. Коды: MB18250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -15239,7 +15239,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PB14250. Коды: PB14250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
@@ -15256,7 +15256,7 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PB14250. Коды: PB14250.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
