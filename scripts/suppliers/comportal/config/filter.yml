@@ -1,9 +1,6 @@
-# scripts/suppliers/comportal/config/filter.yml
-# ComPortal → whitelist по выбранным пользователем категориям.
-# Ветки Акции / Уцененные сюда намеренно НЕ включены.
-
 mode: include
 
+# Whitelist, который пользователь утвердил для ComPortal.
 allowed_category_ids:
   - 8052  # Ноутбуки
   - 8048  # Мониторы
@@ -31,14 +28,12 @@ allowed_category_ids:
   - 8063  # ИБП
   - 8064  # Стабилизаторы
 
-report:
-  include_branches:
-    - "Ноутбуки и ПК"
-    - "Печатная техника"
-    - "Расходные материалы"
-    - "ИБП и питание"
+# Корни, которые нельзя брать даже если внутри есть похожие категории.
+excluded_root_ids:
+  - 8028  # Акции
+  - 8029  # Уцененные
 
-notes:
-  exclude_roots_implicitly:
-    - 8028  # Акции
-    - 8029  # Уцененные
+report:
+  show_allowed_category_report: true
+  show_rejected_category_report: true
+  top_rejected_limit: 20
