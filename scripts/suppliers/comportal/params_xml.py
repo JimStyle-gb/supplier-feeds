@@ -1,358 +1,243 @@
 # -*- coding: utf-8 -*-
 """
 Path: scripts/suppliers/comportal/params_xml.py
-ComPortal main param-first extractor.
 
-Роль:
-- взять raw param[] из source;
-- убрать supplier/service мусор;
-- нормализовать ключи и значения;
-- собрать основной supplier-param set для raw offer.
+XML params pipeline для ComPortal.
+Это главный extractor supplier-параметров:
+- cleanup родных XML <param>;
+- aliases / value normalizers;
+- kind-aware cleanup;
+- синтетический param "Тип" из category.
 
-В модуле НЕТ:
-- category filter;
-- picture policy;
-- description builder;
-- core pricing/writer logic.
+Без core-логики и без narrative-builder.
 """
 
 from __future__ import annotations
 
 import re
-from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
-import yaml
-
-
-CONFIG_POLICY_PATH = Path(__file__).resolve().parent / "config" / "policy.yml"
+from cs.util import norm_ws
+from suppliers.comportal.models import ParamItem, SourceOffer
 
 
-def safe_str(x: Any) -> str:
-    """Безопасно привести значение к строке."""
-    return str(x).strip() if x is not None else ""
+_RE_HAS_LETTER = re.compile(r"[A-Za-zА-Яа-яЁё]")
+_RE_LETTER_SLASH_LETTER = re.compile(r"([A-Za-zА-Яа-яЁё])\s*/\s*([A-Za-zА-Яа-яЁё])")
+
+_TECH_VALUE_RE = re.compile(
+    r"(?iu)\b("
+    r"Лазерн(?:ая|ый)|"
+    r"Струйн(?:ая|ый)|"
+    r"Чернильн(?:ый|ая)|"
+    r"Светодиодн(?:ая|ый)|"
+    r"Матричн(?:ая|ый)|"
+    r"Термосублимационн(?:ая|ый)"
+    r")\b"
+)
+_RESOURCE_NUMBER_ONLY_RE = re.compile(r"(?iu)^\d[\d\s.,]*(?:\s*(?:стр\.?|страниц))?$")
 
 
-def norm_spaces(s: str) -> str:
-    """Сжать пробелы и NBSP."""
-    s = (s or "").replace("\xa0", " ")
-    s = re.sub(r"\s+", " ", s)
-    return s.strip()
+def key_quality_ok(k: str, *, require_letter: bool, max_len: int, max_words: int) -> bool:
+    kk = norm_ws(k)
+    if not kk:
+        return False
+    if require_letter and not _RE_HAS_LETTER.search(kk):
+        return False
+    if max_len and len(kk) > int(max_len):
+        return False
+    if max_words and len(kk.split()) > int(max_words):
+        return False
+    return True
 
 
-def _load_policy(config_path: Path = CONFIG_POLICY_PATH) -> Dict[str, Any]:
-    """Прочитать supplier policy."""
-    if not config_path.exists():
-        return {}
-    data = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
-    return data if isinstance(data, dict) else {}
-
-
-def load_drop_param_names(config_path: Path = CONFIG_POLICY_PATH) -> set[str]:
-    """Вернуть set param names, которые нужно дропать."""
-    policy = _load_policy(config_path)
-    values = (((policy.get("param_policy") or {}).get("drop_param_names")) or [])
-    return {norm_spaces(str(x)) for x in values if norm_spaces(str(x))}
-
-
-def norm_param_name(name: str) -> str:
-    """Нормализовать имя param."""
-    n = norm_spaces(name)
-    if not n:
+def normalize_warranty_to_months(v: str) -> str:
+    vv = norm_ws(v)
+    if not vv:
         return ""
+    low = vv.casefold()
+    if low in ("нет", "no", "-", "—"):
+        return ""
+    m = re.search(r"(\d{1,2})\s*(год|года|лет)\b", low)
+    if m:
+        return f"{int(m.group(1)) * 12} мес"
+    if re.fullmatch(r"\d{1,3}", low):
+        return f"{int(low)} мес"
+    m = re.search(r"\b(\d{1,3})\b", low)
+    if m and ("мес" in low or "month" in low):
+        return f"{int(m.group(1))} мес"
+    return vv
 
+
+def normalize_key_aliases(key: str, schema: dict[str, Any]) -> str:
+    kk = norm_ws(key)
+    aliases = schema.get("aliases_casefold") or {}
+    repl = aliases.get(kk.casefold())
+    return norm_ws(repl) if repl else kk
+
+
+def _post_clean_color_value(v: str) -> str:
+    s = norm_ws(v).strip(" ;,.-")
+    if not s:
+        return ""
     mapping = {
-        "Тип печати": "Технология печати",
-        "Объем": "Объём",
-        "Беспроводная связь": "Беспроводные интерфейсы",
-        "Разъемы/порты": "Порты",
-        "Формфактор": "Форм-фактор",
+        "черн": "Чёрный",
+        "желт": "Жёлтый",
+        "голуб": "Голубой",
+        "пурпур": "Пурпурный",
+        "сер": "Серый",
+        "бел": "Белый",
+        "син": "Синий",
+        "красн": "Красный",
+        "зел": "Зелёный",
     }
-    return mapping.get(n, n)
+    low = s.casefold().replace("ё", "е")
+    for pref, clean in mapping.items():
+        if low.startswith(pref):
+            return clean
+    return s
 
 
-def norm_param_value(name: str, value: str) -> str:
-    """Нормализовать значение param."""
-    v = norm_spaces(value)
+def _post_clean_technology_value(v: str) -> str:
+    s = norm_ws(v).strip(" ;,.-")
+    if not s:
+        return ""
+    low = s.casefold().replace("ё", "е")
+    if low in {"чернильный", "чернильная", "струйный", "струйная"}:
+        return "Струйная"
+    if low in {"лазерный", "лазерная"}:
+        return "Лазерная"
+    m = _TECH_VALUE_RE.search(s)
+    if not m:
+        return s
+    found = norm_ws(m.group(1))
+    low = found.casefold().replace("ё", "е")
+    if low.startswith("лазерн"):
+        return "Лазерная"
+    if low.startswith("струйн") or low.startswith("чернильн"):
+        return "Струйная"
+    return found
+
+
+def _post_clean_resource_value(v: str) -> str:
+    s = norm_ws(v).strip(" ;,.-")
+    if not s:
+        return ""
+    if _RESOURCE_NUMBER_ONLY_RE.fullmatch(s):
+        return s
+    return s
+
+
+def _post_clean_value(key: str, val: str) -> str:
+    kcf = norm_ws(key).casefold()
+    if kcf == "цвет":
+        return _post_clean_color_value(val)
+    if kcf in {"технология печати", "тип печати"}:
+        return _post_clean_technology_value(val)
+    if kcf == "ресурс":
+        return _post_clean_resource_value(val)
+    return norm_ws(val)
+
+
+def apply_value_normalizers(key: str, val: str, schema: dict[str, Any]) -> str:
+    v = norm_ws(val)
     if not v:
         return ""
 
-    if name == "Технология печати":
-        up = v.upper()
-        if "ЛАЗЕР" in up:
-            return "Лазерная"
-        if "СТРУЙ" in up or "ЧЕРНИЛ" in up:
-            return "Струйная"
+    vn = schema.get("value_normalizers") or {}
+    ops = vn.get(key) or vn.get(key.casefold()) or []
 
-    if name == "Цвет":
-        repl = {
-            "Черный": "Чёрный",
-            "Желтый": "Жёлтый",
-        }
-        return repl.get(v, v)
+    for op in ops:
+        if op == "warranty_months":
+            v = normalize_warranty_to_months(v)
+        elif op == "trim_ws":
+            v = norm_ws(v)
 
-    return v
+    if norm_ws(key).casefold() not in {"совместимость", "модель", "аналог модели"}:
+        v = _RE_LETTER_SLASH_LETTER.sub(r"\1 \2", v)
 
-
-def params_to_map(params: List[Dict[str, str]]) -> Dict[str, str]:
-    """Собрать map param name -> value."""
-    out: Dict[str, str] = {}
-    for p in params or []:
-        name = norm_spaces(safe_str(p.get("name")))
-        value = norm_spaces(safe_str(p.get("value")))
-        if name and value:
-            out[name] = value
-    return out
+    v = _post_clean_value(key, v)
+    return norm_ws(v)
 
 
-def category_leaf_name(raw_offer: Dict[str, Any]) -> str:
-    """Имя листовой source-категории."""
-    return norm_spaces(raw_offer.get("raw_category_name") or "")
+def iter_source_params(source_offer: SourceOffer) -> list[ParamItem]:
+    return list(source_offer.params or [])
 
 
-def infer_type(raw_offer: Dict[str, Any], pmap: Dict[str, str]) -> str:
-    """Определить товарный тип для raw offer."""
-    leaf = category_leaf_name(raw_offer).lower()
-    title = norm_spaces(raw_offer.get("name") or raw_offer.get("title") or "").lower()
-
-    if "лазерные монохромные мфу" in leaf:
-        return "МФУ"
-    if "лазерные цветные мфу" in leaf:
-        return "МФУ"
-    if "струйные мфу" in leaf:
-        return "МФУ"
-    if "лазерные монохромные принтеры" in leaf:
-        return "Принтер"
-    if "лазерные цветные принтеры" in leaf:
-        return "Принтер"
-    if "струйные принтеры" in leaf:
-        return "Принтер"
-    if "широкоформатные принтеры" in leaf:
-        return "Широкоформатный принтер"
-    if "сканеры" in leaf:
-        return "Сканер"
-    if "ноутбуки" in leaf:
+def category_type_hint(source_offer: SourceOffer) -> str:
+    leaf = norm_ws(source_offer.category_name).casefold()
+    if leaf == "ноутбуки":
         return "Ноутбук"
-    if "мониторы" in leaf:
+    if leaf == "мониторы":
         return "Монитор"
-    if "моноблоки" in leaf:
+    if leaf == "моноблоки":
         return "Моноблок"
-    if "настольные пк" in leaf:
+    if leaf == "настольные пк":
         return "Настольный ПК"
-    if "рабочие станции" in leaf:
+    if leaf == "рабочие станции":
         return "Рабочая станция"
-    if "проекторы" in leaf:
+    if leaf == "проекторы":
         return "Проектор"
-    if "картриджи для лазерных устройств" in leaf:
+    if leaf in {"лазерные монохромные мфу", "лазерные цветные мфу", "струйные мфу"}:
+        return "МФУ"
+    if leaf in {"лазерные монохромные принтеры", "лазерные цветные принтеры", "струйные принтеры"}:
+        return "Принтер"
+    if leaf == "широкоформатные принтеры":
+        return "Широкоформатный принтер"
+    if leaf == "сканеры":
+        return "Сканер"
+    if leaf.startswith("картриджи"):
         return "Картридж"
-    if "картриджи для струйных устройств" in leaf:
-        return "Картридж"
-    if "картриджи для широкоформатных устройств" in leaf:
-        return "Картридж"
-    if "тонеры" in leaf:
+    if leaf == "тонеры":
         return "Тонер"
-    if "прочие расходные материалы" in leaf:
+    if leaf == "прочие расходные материалы":
         return "Расходный материал"
-    if "батареи" in leaf or "аккумуляторы" in leaf:
+    if leaf == "батареи. аккумуляторы":
         return "Батарея"
     if leaf == "ибп":
         return "ИБП"
     if leaf == "стабилизаторы":
         return "Стабилизатор"
-
-    if title.startswith("картридж"):
-        return "Картридж"
-    if title.startswith("тонер"):
-        return "Тонер"
-    if title.startswith("ноутбук"):
-        return "Ноутбук"
-    if title.startswith("монитор"):
-        return "Монитор"
-    if title.startswith("проектор"):
-        return "Проектор"
-
     return ""
 
 
-def extract_codes(raw_offer: Dict[str, Any], pmap: Dict[str, str]) -> str:
-    """Поднять коды/модель товара."""
-    for key in ("Модель", "Партномер", "Артикул", "Номер"):
-        value = norm_spaces(pmap.get(key, ""))
-        if value:
-            return value
+def build_params_from_xml(source_offer: SourceOffer, schema: dict[str, Any]) -> list[ParamItem]:
+    out: list[ParamItem] = []
 
-    title = norm_spaces(raw_offer.get("name") or raw_offer.get("title") or "")
-    m = re.search(r"\(([A-Za-z0-9#\-/\.]+)\)\s*$", title)
-    if m:
-        return m.group(1)
+    drop_keys_casefold = {str(x).casefold() for x in (schema.get("drop_keys_casefold") or [])}
+    require_letter = bool((schema.get("key_rules") or {}).get("require_letter", True))
+    max_len = int((schema.get("key_rules") or {}).get("max_len", 60) or 60)
+    max_words = int((schema.get("key_rules") or {}).get("max_words", 9) or 9)
 
-    return ""
+    seen_keys: set[str] = set()
 
+    type_hint = category_type_hint(source_offer)
+    if type_hint:
+        out.append(ParamItem(name="Тип", value=type_hint, source="category"))
+        seen_keys.add("тип")
 
-def _collect_clean_source_params(raw_offer: Dict[str, Any]) -> Dict[str, str]:
-    """Собрать очищенные supplier params из raw_params."""
-    drop_names = load_drop_param_names()
-    raw_params = raw_offer.get("raw_params") or raw_offer.get("params") or []
-
-    out: Dict[str, str] = {}
-    for p in raw_params:
-        raw_name = norm_spaces(safe_str(p.get("name")))
-        raw_value = norm_spaces(safe_str(p.get("value")))
-
-        if not raw_name or not raw_value:
-            continue
-        if raw_name in drop_names:
+    for param in iter_source_params(source_offer):
+        raw_key = norm_ws(param.name)
+        raw_val = norm_ws(param.value)
+        if not raw_key or not raw_val:
             continue
 
-        name = norm_param_name(raw_name)
-        if not name:
+        key = normalize_key_aliases(raw_key, schema)
+        if not key:
+            continue
+        if key.casefold() in drop_keys_casefold:
+            continue
+        if not key_quality_ok(key, require_letter=require_letter, max_len=max_len, max_words=max_words):
             continue
 
-        value = norm_param_value(name, raw_value)
-        if not value:
+        val = apply_value_normalizers(key, raw_val, schema)
+        if not val:
             continue
 
-        out[name] = value
+        kcf = key.casefold()
+        if kcf in seen_keys:
+            continue
+
+        out.append(ParamItem(name=key, value=val, source="xml"))
+        seen_keys.add(kcf)
 
     return out
-
-
-def extract_clean_params(raw_offer: Dict[str, Any]) -> Tuple[List[Dict[str, str]], Dict[str, str]]:
-    """Собрать основной supplier-param set для CS raw."""
-    pmap = _collect_clean_source_params(raw_offer)
-
-    vendor = norm_spaces(raw_offer.get("vendor") or "")
-    model = norm_spaces(raw_offer.get("model") or pmap.get("Модель", ""))
-    ptype = infer_type(raw_offer, pmap)
-    codes = extract_codes(raw_offer, pmap)
-
-    out_map: Dict[str, str] = {}
-
-    if ptype:
-        out_map["Тип"] = ptype
-    if vendor:
-        out_map["Для бренда"] = vendor
-    if codes:
-        out_map["Коды"] = codes
-    if model:
-        out_map["Модель"] = model
-
-    # Часто полезные поля для техники / ИБП / расходки.
-    for key in (
-        "Функция",
-        "Формат печати",
-        "Разрешение",
-        "Скорость печати ч/б",
-        "Скорость печати цветной",
-        "Диагональ",
-        "Максимальное разрешение",
-        "Тип матрицы",
-        "Частота обновления",
-        "Время отклика",
-        "Модель процессора",
-        "Серия процессора",
-        "Оперативная память",
-        "Объем жесткого диска",
-        "Тип жесткого диска",
-        "Операционная система",
-        "Версия операционной системы",
-        "Марка чипсета видеокарты",
-        "Модель чипсета видеокарты",
-        "Мощность (VA)",
-        "Мощность (W)",
-        "Форм-фактор",
-        "Стабилизатор (AVR)",
-        "Типовая продолжительность работы при 100% нагрузке, мин",
-        "Выходные соединения",
-        "Порты",
-        "Беспроводные интерфейсы",
-        "Цвет",
-        "Технология печати",
-        "Ресурс",
-        "Объём",
-        "Номер",
-        "Гарантия",
-        "Применение",
-        "Дополнительная информация",
-        "Версия",
-        "Языковая версия",
-    ):
-        value = norm_spaces(pmap.get(key, ""))
-        if value:
-            out_map[key] = value
-
-    if out_map.get("Модель") and out_map.get("Коды") == out_map.get("Модель"):
-        pass
-
-    ordered_names = [
-        "Тип",
-        "Для бренда",
-        "Коды",
-        "Модель",
-        "Функция",
-        "Формат печати",
-        "Разрешение",
-        "Скорость печати ч/б",
-        "Скорость печати цветной",
-        "Диагональ",
-        "Максимальное разрешение",
-        "Тип матрицы",
-        "Частота обновления",
-        "Время отклика",
-        "Модель процессора",
-        "Серия процессора",
-        "Оперативная память",
-        "Объем жесткого диска",
-        "Тип жесткого диска",
-        "Операционная система",
-        "Версия операционной системы",
-        "Марка чипсета видеокарты",
-        "Модель чипсета видеокарты",
-        "Мощность (VA)",
-        "Мощность (W)",
-        "Форм-фактор",
-        "Стабилизатор (AVR)",
-        "Типовая продолжительность работы при 100% нагрузке, мин",
-        "Выходные соединения",
-        "Порты",
-        "Беспроводные интерфейсы",
-        "Цвет",
-        "Технология печати",
-        "Ресурс",
-        "Объём",
-        "Номер",
-        "Гарантия",
-        "Применение",
-        "Дополнительная информация",
-        "Версия",
-        "Языковая версия",
-    ]
-
-    clean_params: List[Dict[str, str]] = []
-    used = set()
-
-    for name in ordered_names:
-        value = norm_spaces(out_map.get(name, ""))
-        if value:
-            clean_params.append({"name": name, "value": value})
-            used.add(name)
-
-    for name, value in pmap.items():
-        if name in used:
-            continue
-        if not value:
-            continue
-        clean_params.append({"name": name, "value": value})
-
-    return clean_params, out_map
-
-
-__all__ = [
-    "CONFIG_POLICY_PATH",
-    "load_drop_param_names",
-    "params_to_map",
-    "category_leaf_name",
-    "infer_type",
-    "extract_codes",
-    "extract_clean_params",
-]
