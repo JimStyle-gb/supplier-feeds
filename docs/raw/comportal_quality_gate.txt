@@ -1,0 +1,37 @@
+# Итог проверки quality gate
+QUALITY_GATE: PASS
+# PASS = можно выпускать | FAIL = есть блокирующие проблемы
+enforce: true
+# true = quality gate реально валит сборку
+report_file: docs/raw/comportal_quality_gate.txt
+# Куда записан этот отчёт
+baseline_file: scripts/suppliers/comportal/config/quality_baseline.yml
+# Базовый файл для сравнения известных cosmetic-проблем
+freeze_current_as_baseline: no
+# yes = текущие cosmetic-хвосты сохранены как baseline-снимок
+critical_count: 0
+# Сколько найдено критичных проблем
+cosmetic_total_count: 0
+# Общее число некритичных проблем
+cosmetic_offer_count: 0
+# В скольких товарах есть cosmetic-проблемы
+known_cosmetic_count: 0
+# Сколько cosmetic-проблем уже известны по baseline
+known_cosmetic_offer_count: 0
+# В скольких товарах были известные cosmetic-проблемы
+new_cosmetic_count: 0
+# Сколько cosmetic-проблем новые относительно baseline
+new_cosmetic_offer_count: 0
+# В скольких товарах есть новые cosmetic-проблемы
+
+CRITICAL:
+# Ошибок в этой секции нет
+
+COSMETIC TOTAL:
+# Ошибок в этой секции нет
+
+KNOWN COSMETIC:
+# Ошибок в этой секции нет
+
+NEW COSMETIC:
+# Ошибок в этой секции нет
