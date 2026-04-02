@@ -1,67 +1,79 @@
 # -*- coding: utf-8 -*-
 """
 Path: scripts/suppliers/comportal/compat.py
+
 ComPortal compat / codes cleanup helpers.
 
-Роль:
-- точечная supplier-specific cleanup логика;
-- не генерировать совместимость;
-- только безопасная нормализация кодов/моделей, если они уже есть.
-
-Важно:
-- core не должен генерировать compat;
-- модуль не должен угадывать совместимость.
+Роль как у других поставщиков:
+- supplier-side cleanup для кодов / совместимости / модельных серий;
+- никакой генерации совместимости;
+- только безопасная нормализация уже существующих значений.
 """
 
 from __future__ import annotations
 
 import re
-from typing import Dict, List
+from typing import Iterable
+
+from cs.util import norm_ws
+from suppliers.comportal.models import ParamItem
 
 
-def norm_spaces(s: str) -> str:
-    """Сжать пробелы и NBSP."""
-    s = (s or "").replace("\xa0", " ")
-    s = re.sub(r"\s+", " ", s)
-    return s.strip()
+_MULTI_WS_RE = re.compile(r"\s{2,}")
+_COMMA_WS_RE = re.compile(r"\s*,\s*")
+_SLASH_WS_RE = re.compile(r"\s*/\s*")
+_SEMICOLON_WS_RE = re.compile(r"\s*;\s*")
 
 
-def normalize_codes_value(value: str) -> str:
-    """Нормализовать формат кодов/part numbers без угадываний."""
-    v = norm_spaces(value)
-    if not v:
+def _normalize_codes_value(value: str) -> str:
+    s = norm_ws(value)
+    if not s:
         return ""
+    s = _SLASH_WS_RE.sub(" / ", s)
+    s = _COMMA_WS_RE.sub(", ", s)
+    s = _SEMICOLON_WS_RE.sub("; ", s)
+    s = _MULTI_WS_RE.sub(" ", s)
+    return s.strip(" ,;/")
 
-    # Разделители типа "A/B" или "A, B" к единому виду с запятой+пробелом.
-    v = re.sub(r"\s*/\s*", " / ", v)
-    v = re.sub(r"\s*,\s*", ", ", v)
-    v = re.sub(r"\s{2,}", " ", v)
-    return v.strip()
+
+def _normalize_compat_value(value: str) -> str:
+    s = norm_ws(value)
+    if not s:
+        return ""
+    s = _SLASH_WS_RE.sub(" / ", s)
+    s = _COMMA_WS_RE.sub(", ", s)
+    s = _SEMICOLON_WS_RE.sub("; ", s)
+    s = _MULTI_WS_RE.sub(" ", s)
+    return s.strip(" ,;/")
 
 
-def apply_compat_cleanup(params: List[Dict[str, str]]) -> List[Dict[str, str]]:
+def apply_compat_cleanup(params: Iterable[ParamItem]) -> list[ParamItem]:
     """
-    Применить точечную cleanup-логику к params.
-    Никакой генерации совместимости, только cleanup уже существующих значений.
+    Применить безопасную cleanup-логику к supplier params.
+    Совместимость не генерируем — только чистим уже найденное.
     """
-    out: List[Dict[str, str]] = []
+    out: list[ParamItem] = []
 
     for p in params or []:
-        name = norm_spaces(p.get("name", ""))
-        value = norm_spaces(p.get("value", ""))
-
+        name = norm_ws(p.name)
+        value = norm_ws(p.value)
         if not name or not value:
             continue
 
-        if name in {"Коды", "Модель", "Партномер", "Номер"}:
-            value = normalize_codes_value(value)
+        ncf = name.casefold()
+        if ncf in {"коды", "модель", "партномер", "номер"}:
+            value = _normalize_codes_value(value)
+        elif ncf == "совместимость":
+            value = _normalize_compat_value(value)
 
-        out.append({"name": name, "value": value})
+        if not value:
+            continue
+
+        out.append(ParamItem(name=name, value=value, source=p.source))
 
     return out
 
 
 __all__ = [
-    "normalize_codes_value",
     "apply_compat_cleanup",
 ]
