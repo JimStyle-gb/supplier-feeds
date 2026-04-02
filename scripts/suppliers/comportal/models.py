@@ -1,109 +1,75 @@
 # -*- coding: utf-8 -*-
 """
 Path: scripts/suppliers/comportal/models.py
-Typed payload contracts for ComPortal supplier-layer.
+
+Внутренние модели supplier layer для ComPortal.
+Архитектурно — тот же тип слоя, что и у готовых поставщиков:
+- dataclass-модели для source/builder/diagnostics;
+- без бизнес-логики.
 """
 
 from __future__ import annotations
 
-from typing import Dict, List, TypedDict
+from dataclasses import dataclass, field
+from typing import Any
 
 
-class RawParam(TypedDict, total=False):
-    """Сырой param из source YML."""
+@dataclass(slots=True)
+class ParamItem:
+    """Один source param."""
     name: str
     value: str
+    source: str = "xml"
 
 
-class CategoryRecord(TypedDict, total=False):
-    """Категория поставщика."""
-    id: str
+@dataclass(slots=True)
+class CategoryRecord:
+    """Одна source category."""
+    category_id: str
     name: str
-    parent_id: str
-    path: str
+    parent_id: str = ""
+    path: str = ""
+    root_id: str = ""
 
 
-class RawOffer(TypedDict, total=False):
-    """Сырой offer после source.py."""
-    id: str
-    sku: str
-    url: str
-    title: str
-    name: str
-    vendor: str
-    vendorCode: str
-    categoryId: str
-    currencyId: str
-    available: bool
-    price_raw: str
-    pic: str
-    pics: List[str]
-    params: List[RawParam]
-    desc: str
-
+@dataclass(slots=True)
+class SourceOffer:
+    """Один сырой offer из source YML ComPortal."""
     raw_id: str
-    raw_name: str
-    raw_vendor: str
-    raw_vendorCode: str
-    raw_categoryId: str
-    raw_category_name: str
-    raw_category_path: str
-    raw_price_text: str
-    raw_currencyId: str
-    raw_delivery: str
-    raw_active: str
-    raw_picture: str
-    raw_pictures: List[str]
-    raw_params: List[RawParam]
-    raw_url: str
-
-
-class CatalogPayload(TypedDict, total=False):
-    """Полный source payload каталога."""
-    source_url: str
-    category_index: Dict[str, CategoryRecord]
-    offers: List[RawOffer]
-
-
-class FilterReport(TypedDict, total=False):
-    """Отчёт category-first фильтра."""
-    mode: str
-    before: int
-    after: int
-    rejected_total: int
-    allowed_category_count: int
-    allowed_category_ids: List[str]
-    excluded_root_ids: List[str]
-    allowed_categories_report: List[Dict[str, object]]
-    rejected_categories_report: List[Dict[str, object]]
-
-
-class BuiltOffer(TypedDict, total=False):
-    """Clean raw offer перед преобразованием в OfferOut."""
-    id: str
-    vendorCode: str
+    vendor_code: str
+    category_id: str
+    category_name: str
+    category_path: str
+    category_root_id: str
     name: str
-    price: int
-    picture: str
-    pictures: List[str]
+    available_attr: str
+    available_tag: str
     vendor: str
-    currencyId: str
-    available: bool
-    categoryId: str
-    params: List[RawParam]
-    native_desc: str
+    description: str
+    price_text: str
+    currency_id: str
     url: str
-    source_category_id: str
-    source_category_name: str
-    source_category_path: str
-    model: str
+    active: str
+    delivery: str
+    picture_urls: list[str] = field(default_factory=list)
+    params: list[ParamItem] = field(default_factory=list)
+    offer_el: Any | None = None
+
+
+@dataclass(slots=True)
+class BuildStats:
+    """Базовая supplier-статистика сборки."""
+    before: int = 0
+    after: int = 0
+    filtered_out: int = 0
+    missing_picture_count: int = 0
+    placeholder_picture_count: int = 0
+    empty_vendor_count: int = 0
 
 
 __all__ = [
-    "RawParam",
+    "ParamItem",
     "CategoryRecord",
-    "RawOffer",
-    "CatalogPayload",
-    "FilterReport",
-    "BuiltOffer",
+    "SourceOffer",
+    "BuildStats",
 ]
