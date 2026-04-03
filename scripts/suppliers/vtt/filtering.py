@@ -2,17 +2,25 @@
 """
 Path: scripts/suppliers/vtt/filtering.py
 
-VTT filtering layer:
-- default category scope
-- early prefix filter on listing titles
-- url helpers for listing crawl
+VTT filtering layer.
+
+Каноническая роль файла:
+- хранить supplier filter-policy;
+- читать filter.yml;
+- давать source/build единый source of truth по category codes и allowed title prefixes;
+- держать URL/title helper-ы для listing crawl;
+- не тащить login/source/builder логику.
+
+Важно:
+- именно filtering.py, а не source.py, должен быть центром ассортиментной политики VTT;
+- backward-safe helper-ы сохранены, чтобы поэтапная чистка не ломала текущий build.
 """
 
 from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 from urllib.parse import parse_qs, urlencode, urljoin, urlparse, urlunparse
 
 try:
@@ -85,6 +93,30 @@ ORIGINAL_MARK_RE = re.compile(
 LEAD_MARK_RE = re.compile(r"""^(?:\((?:E|LE)\)|LE\b|E\b)\s*""", re.I)
 
 
+def _clean_list(values: Iterable[Any]) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for item in values:
+        s = norm_ws(item)
+        if not s:
+            continue
+        sig = s.casefold()
+        if sig in seen:
+            continue
+        seen.add(sig)
+        out.append(s)
+    return out
+
+
+def parse_id_list(raw: str | None, fallback: list[str]) -> list[str]:
+    """Прочитать список кодов из env или вернуть fallback."""
+    if not raw:
+        return list(fallback)
+    parts = re.split(r"[\s,;]+", raw.strip())
+    out = _clean_list(parts)
+    return out or list(fallback)
+
+
 def product_path_re(path: str) -> bool:
     return bool(re.match(r"^/catalog/[^/?#]+/?$", path or "", re.I))
 
@@ -144,7 +176,7 @@ def load_filter_config(path: str | Path) -> dict[str, Any]:
 def categories_from_cfg(cfg: dict[str, Any]) -> list[str]:
     vals = cfg.get("category_codes")
     if isinstance(vals, list):
-        out = [norm_ws(x) for x in vals if norm_ws(x)]
+        out = _clean_list(vals)
         if out:
             return out
     return list(DEFAULT_CATEGORY_CODES)
@@ -153,13 +185,50 @@ def categories_from_cfg(cfg: dict[str, Any]) -> list[str]:
 def prefixes_from_cfg(cfg: dict[str, Any]) -> list[str]:
     vals = cfg.get("allowed_title_prefixes")
     if isinstance(vals, list):
-        out = [norm_ws(x) for x in vals if norm_ws(x)]
+        out = _clean_list(vals)
         if out:
             return out
-    # backward-safe support for old include_prefixes
+
+    # backward-safe support for older names
     vals = cfg.get("include_prefixes")
     if isinstance(vals, list):
-        out = [norm_ws(x) for x in vals if norm_ws(x)]
+        out = _clean_list(vals)
         if out:
             return out
+
     return list(DEFAULT_ALLOWED_TITLE_PREFIXES)
+
+
+def resolve_filter_inputs(
+    *,
+    filter_cfg: dict[str, Any] | None = None,
+    category_codes_env: str | None = None,
+    allowed_prefixes_env: str | None = None,
+) -> tuple[list[str], list[str]]:
+    """
+    Единый helper для source/build:
+    - category codes идут из filter.yml, env только override;
+    - allowed title prefixes идут из filter.yml, env только override.
+    """
+    cfg = filter_cfg or {}
+    categories = categories_from_cfg(cfg)
+    prefixes = prefixes_from_cfg(cfg)
+    categories = parse_id_list(category_codes_env, categories)
+    prefixes = parse_id_list(allowed_prefixes_env, prefixes)
+    return categories, prefixes
+
+
+__all__ = [
+    "DEFAULT_ALLOWED_TITLE_PREFIXES",
+    "DEFAULT_CATEGORY_CODES",
+    "categories_from_cfg",
+    "load_filter_config",
+    "mk_category_url",
+    "normalize_listing_title",
+    "normalize_listing_url",
+    "parse_id_list",
+    "prefixes_from_cfg",
+    "product_path_re",
+    "resolve_filter_inputs",
+    "title_matches_allowed",
+]
