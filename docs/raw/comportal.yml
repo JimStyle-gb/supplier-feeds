@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-03 15:14:32">
+<yml_catalog date="2026-04-03 15:50:04">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-04-03 15:14:32
+Время сборки (Алматы)                      | 2026-04-03 15:50:04
 Ближайшая сборка (Алматы)                  | 2026-04-04 04:00:00
 Сколько товаров у поставщика до фильтра    | 1176
 Сколько товаров у поставщика после фильтра | 573
@@ -205,11 +205,9 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A3</param>
 <param name="Скорость печати ч/б">41</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">100</param>
 <param name="Порты">USB LAN</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">100 000</param>
-<param name="Емкость 2- го лотка">250</param>
 <param name="Коды">CF236A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -518,7 +516,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">18</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">100</param>
 <param name="Порты">USB</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">5 000</param>
@@ -895,11 +892,9 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">43</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">100</param>
 <param name="Порты">USB LAN</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">100 000</param>
-<param name="Емкость 2- го лотка">550</param>
 <param name="Коды">J8H61A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -1279,7 +1274,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">20</param>
 <param name="Технология печати">Струйная</param>
-<param name="Емкость 1- го лотка">50</param>
 <param name="Порты">USB WiFI</param>
 <param name="Скорость печати цветной">19</param>
 <param name="Нагрузка">500</param>
@@ -1770,7 +1764,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">18</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">150</param>
 <param name="Порты">USB</param>
 <param name="Функция">принтер сканер копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
@@ -1796,7 +1789,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">43</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">550</param>
 <param name="Порты">USB LAN</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">150 000</param>
@@ -2215,7 +2207,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">18</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">150</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Скорость печати цветной">4</param>
 <param name="Функция">Принтер-Сканер(АПД-40с.)-Копир-Факс</param>
@@ -2242,7 +2233,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">61</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">650</param>
 <param name="Порты">USB LAN</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">275 000</param>
@@ -2554,11 +2544,9 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A3</param>
 <param name="Скорость печати ч/б">24</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">100</param>
 <param name="Функция">Принтер-Сканер(без АПД)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">50 000</param>
-<param name="Емкость 2- го лотка">250</param>
 <param name="Коды">8AF71A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2580,11 +2568,9 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A3</param>
 <param name="Скорость печати ч/б">24</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">100</param>
 <param name="Функция">Принтер-Сканер(АПД-100с.)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">50 000</param>
-<param name="Емкость 2- го лотка">250</param>
 <param name="Коды">8AF72A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -2623,7 +2609,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">23</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">251</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Функция">Принтер-Сканер(АПД-35с.)-Копир-Факс</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
@@ -2829,7 +2814,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">29</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">150</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">20 000</param>
@@ -3173,7 +3157,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">20</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">150</param>
 <param name="Порты">USB Bluetooth WiFI</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">8 000</param>
@@ -3199,7 +3182,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">20</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">150</param>
 <param name="Порты">USB Bluetooth WiFI</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">8 000</param>
@@ -3225,7 +3207,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">20</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">150</param>
 <param name="Порты">USB</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">8 000</param>
@@ -3251,7 +3232,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">21</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">150</param>
 <param name="Порты">USB Bluetooth WiFI</param>
 <param name="Функция">Принтер-Сканер(без АПД)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
@@ -3278,7 +3258,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">21</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">150</param>
 <param name="Порты">USB Bluetooth WiFI</param>
 <param name="Функция">Принтер-Сканер(без АПД)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
@@ -3360,12 +3339,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">38</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">550</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Функция">принтер сканер копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">80 000</param>
-<param name="Емкость 2- го лотка">150</param>
 <param name="Коды">5161C007</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -4120,13 +4097,11 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">33</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">550</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Скорость печати цветной">33</param>
 <param name="Функция">принтер сканер копир факс</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">50 000</param>
-<param name="Емкость 2- го лотка">250</param>
 <param name="Коды">5455C023</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -4495,12 +4470,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">40</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">250</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Функция">Принтер-Сканер(АПД-50с.)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">80 000</param>
-<param name="Емкость 2- го лотка">100</param>
 <param name="Коды">2Z628A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -4522,12 +4495,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">40</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">250</param>
 <param name="Порты">USB LAN Bluetooth WiFI</param>
 <param name="Функция">Принтер-Сканер(АПД-50с.)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">80 000</param>
-<param name="Емкость 2- го лотка">100</param>
 <param name="Коды">2Z629A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -4903,12 +4874,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">33</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">250</param>
 <param name="Порты">USB LAN</param>
 <param name="Функция">Принтер-Сканер(АПД-50с.)-Копир-Факс</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">50 000</param>
-<param name="Емкость 2- го лотка">150</param>
 <param name="Коды">3G631A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -4981,7 +4950,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Функция">принтер сканер копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Нет</param>
 <param name="Нагрузка">36 000</param>
-<param name="Емкость 2- го лотка">550</param>
 <param name="Коды">5963C005</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -5777,12 +5745,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">40</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">250</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Функция">Принтер-Сканер(АПД-50с.)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">80 000</param>
-<param name="Емкость 2- го лотка">100</param>
 <param name="Емкость 4-го лотка">550</param>
 <param name="Коды">5951C008AA</param>
 <param name="Для бренда">Canon</param>
@@ -5805,12 +5771,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">36</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">250</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Функция">принтер сканер копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">80 000</param>
-<param name="Емкость 2- го лотка">100</param>
 <param name="Емкость 4-го лотка">550</param>
 <param name="Коды">5951C020AA</param>
 <param name="Для бренда">Canon</param>
@@ -6130,7 +6094,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">29</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">150</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Функция">принтер сканер копир факс</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
@@ -6156,7 +6119,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">29</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">150</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Функция">принтер сканер копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
@@ -6234,7 +6196,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">33</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">150</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Скорость печати цветной">33</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
@@ -6286,7 +6247,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">33</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">250</param>
 <param name="Порты">USB LAN</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">50 000</param>
@@ -6311,7 +6271,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">33</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">250</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Функция">Принтер-Сканер(АПД-50с.)-Копир-Факс</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
@@ -6337,7 +6296,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">33</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">250</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">50 000</param>
@@ -7244,13 +7202,11 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">43</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">100</param>
 <param name="Порты">USB LAN</param>
 <param name="Скорость печати цветной">43</param>
 <param name="Функция">Принтер-Сканер(АПД-100с.)-Копир-Факс</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">80 000</param>
-<param name="Емкость 2- го лотка">550</param>
 <param name="Жесткий диск">32Gb</param>
 <param name="Коды">6QN29A#B19</param>
 <param name="Для бренда">HP</param>
@@ -7786,13 +7742,11 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">43</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">550</param>
 <param name="Порты">USB LAN</param>
 <param name="Скорость печати цветной">43</param>
 <param name="Функция">Принтер-Сканер(АПД-100с.)-Копир-Факс</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">10 000</param>
-<param name="Емкость 2- го лотка">100</param>
 <param name="Жесткий диск">500Gb</param>
 <param name="Коды">58R10A#B19</param>
 <param name="Для бренда">HP</param>
@@ -7815,12 +7769,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">25</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">250</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Скорость печати цветной">25</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">40 000</param>
-<param name="Емкость 2- го лотка">100</param>
 <param name="Коды">499N4A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -7842,12 +7794,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">25</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">250</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Скорость печати цветной">25</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">40 000</param>
-<param name="Емкость 2- го лотка">100</param>
 <param name="Коды">8D7L2A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -7938,12 +7888,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">33</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">550</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Скорость печати цветной">33</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">50 000</param>
-<param name="Емкость 2- го лотка">250</param>
 <param name="Коды">5456C020</param>
 <param name="Для бренда">Canon</param>
 </offer>
@@ -8023,12 +7971,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A3</param>
 <param name="Скорость печати ч/б">26</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">1 200</param>
 <param name="Порты">USB LAN WiFI</param>
 <param name="Скорость печати цветной">20</param>
 <param name="Функция">Принтер-Сканер(АПД-100с.)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Нет</param>
-<param name="Емкость 2- го лотка">250</param>
 <param name="Жесткий диск">256Gb</param>
 <param name="Коды">5965C005 / bundle</param>
 <param name="Для бренда">Canon</param>
@@ -10890,13 +10836,11 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">52</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">100</param>
 <param name="Порты">USB LAN</param>
 <param name="Скорость печати цветной">52</param>
 <param name="Функция">Принтер-Сканер(АПД-150с.)-Копир-Факс</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">100 000</param>
-<param name="Емкость 2- го лотка">150</param>
 <param name="Жесткий диск">6Gb</param>
 <param name="Коды">6QN36A#B19</param>
 <param name="Для бренда">HP</param>
@@ -11827,7 +11771,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">40</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">250</param>
 <param name="Порты">USB</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">80 000</param>
@@ -11852,7 +11795,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">36</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">250</param>
 <param name="Порты">USB</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">80 000</param>
@@ -11902,12 +11844,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Скорость печати ч/б">70</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">520</param>
 <param name="Порты">USB Bluetooth WiFI</param>
 <param name="Функция">принтер сканер копир факс</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Нагрузка">250 000</param>
-<param name="Емкость 2- го лотка">520</param>
 <param name="Емкость 4-го лотка">100</param>
 <param name="Коды">9S186A#B19</param>
 <param name="Для бренда">HP</param>
@@ -14640,12 +14580,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A3</param>
 <param name="Скорость печати ч/б">20</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">100</param>
 <param name="Порты">USB</param>
 <param name="Скорость печати цветной">20</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">75 000</param>
-<param name="Емкость 2- го лотка">250</param>
 <param name="Коды">CE710A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -14686,12 +14624,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A3</param>
 <param name="Скорость печати ч/б">20</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">100</param>
 <param name="Порты">USB LAN</param>
 <param name="Скорость печати цветной">20</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">75 000</param>
-<param name="Емкость 2- го лотка">250</param>
 <param name="Коды">CE712A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
@@ -14713,12 +14649,10 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A3</param>
 <param name="Скорость печати ч/б">20</param>
 <param name="Технология печати">Лазерная</param>
-<param name="Емкость 1- го лотка">100</param>
 <param name="Порты">USB LAN</param>
 <param name="Скорость печати цветной">20</param>
 <param name="Наличие картриджа (тонера) в комплекте">Полный</param>
 <param name="Нагрузка">75 000</param>
-<param name="Емкость 2- го лотка">250</param>
 <param name="Коды">CE711A#B19</param>
 <param name="Для бренда">HP</param>
 </offer>
