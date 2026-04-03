@@ -5,12 +5,18 @@ Path: scripts/suppliers/comportal/normalize.py
 Базовая supplier-нормализация полей ComPortal.
 
 Что улучшено:
-- public name теперь чище:
+- public name чище:
   - HP Europe -> HP
   - Hewlett Packard / Hewlett-Packard -> HP
   - HP Enterprise -> HPE
-  - MФП -> МФУ
-- это улучшает raw, final и keywords для Google/Яндекса.
+  - МФП -> МФУ
+- vendor inference больше не узкий:
+  - ищем бренд в vendor
+  - в нескольких param-ключах
+  - в name
+  - в description
+- это добивает кейсы вроде AIWA, где бренд есть в name/params,
+  но раньше падал в fallback "CS".
 """
 
 from __future__ import annotations
@@ -62,6 +68,9 @@ _VENDOR_CANON_MAP = {
     "DLINK": "D-Link",
     "CISCO": "Cisco",
     "ZYXEL": "Zyxel",
+    "EATON": "Eaton",
+    "AIWA": "AIWA",
+    "POLY": "Poly",
 }
 
 _NAME_VENDOR_PATTERNS: list[tuple[str, str]] = [
@@ -96,6 +105,9 @@ _NAME_VENDOR_PATTERNS: list[tuple[str, str]] = [
     (r"\bCisco\b", "Cisco"),
     (r"\bZyxel\b", "Zyxel"),
     (r"\bMicrosoft\b", "Microsoft"),
+    (r"\bEaton\b", "Eaton"),
+    (r"\bAIWA\b", "AIWA"),
+    (r"\bPoly\b", "Poly"),
 ]
 
 _GENERIC_VENDOR_WORDS = {
@@ -139,8 +151,8 @@ def _canonical_vendor_token(vendor: str) -> str:
     return s
 
 
-def _infer_vendor_from_name(name: str) -> str:
-    s = norm_ws(name)
+def _infer_vendor_from_text(text: str) -> str:
+    s = norm_ws(text)
     if not s:
         return ""
     for pattern, vendor in _NAME_VENDOR_PATTERNS:
@@ -217,23 +229,44 @@ def normalize_vendor(
     *,
     name: str,
     params: list[ParamItem],
+    description_text: str = "",
     vendor_blacklist: set[str],
     fallback_vendor: str = "",
 ) -> str:
+    # 1) source vendor
     s = _canonical_vendor_token(vendor)
     if s and s.casefold() in vendor_blacklist:
         s = ""
     if s:
         return s
 
+    # 2) params by priority
     pmap = _param_map(params)
-    s = _canonical_vendor_token(pmap.get("Бренд", ""))
+    for key in (
+        "Бренд",
+        "Для бренда",
+        "Производитель",
+        "Производитель операционной системы",
+        "Производитель чипсета видеокарты",
+        "Марка чипсета видеокарты",
+        "Модель",
+        "Коды",
+    ):
+        s = _canonical_vendor_token(pmap.get(key, ""))
+        if s and s.casefold() in vendor_blacklist:
+            s = ""
+        if s:
+            return s
+
+    # 3) name
+    s = _infer_vendor_from_text(name)
     if s and s.casefold() in vendor_blacklist:
         s = ""
     if s:
         return s
 
-    s = _infer_vendor_from_name(name)
+    # 4) description
+    s = _infer_vendor_from_text(description_text)
     if s and s.casefold() in vendor_blacklist:
         s = ""
     if s:
