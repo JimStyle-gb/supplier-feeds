@@ -17,11 +17,8 @@ VTT filtering layer under CS-template.
   mk_category_url, normalize_listing_url, product_path_re,
   normalize_listing_title, title_matches_allowed,
   categories_from_cfg, prefixes_from_cfg, resolve_filter_inputs.
-- resolve_filter_inputs(...) поддерживает все старые имена kwargs:
-  cfg_path / filter_cfg / categories_env / prefixes_env /
-  category_codes_env / allowed_title_prefixes_env /
-  env_category_codes / env_allowed_title_prefixes /
-  env_categories / env_prefixes.
+- resolve_filter_inputs(...) намеренно сделан очень терпимым к legacy kwargs,
+  чтобы мягко пережить переход VTT на канонический supplier-template.
 """
 
 from __future__ import annotations
@@ -283,14 +280,27 @@ def resolve_filter_inputs(
     allowed_title_prefixes_env: str | None = None,
     env_category_codes: str | None = None,
     env_allowed_title_prefixes: str | None = None,
+    env_allowed_prefixes: str | None = None,
     env_categories: str | None = None,
     env_prefixes: str | None = None,
+    **legacy_kwargs: Any,
 ) -> tuple[list[str], list[str]]:
     cfg: dict[str, Any] = {}
     if cfg_path:
         cfg.update(load_filter_cfg(cfg_path))
     if filter_cfg:
         cfg.update(filter_cfg)
+
+    # Подбираем legacy имена, если прилетели через **kwargs.
+    env_category_codes = env_category_codes or safe_str(legacy_kwargs.get("env_category_codes"))
+    env_allowed_title_prefixes = env_allowed_title_prefixes or safe_str(legacy_kwargs.get("env_allowed_title_prefixes"))
+    env_allowed_prefixes = env_allowed_prefixes or safe_str(legacy_kwargs.get("env_allowed_prefixes"))
+    env_categories = env_categories or safe_str(legacy_kwargs.get("env_categories"))
+    env_prefixes = env_prefixes or safe_str(legacy_kwargs.get("env_prefixes"))
+    categories_env = categories_env or safe_str(legacy_kwargs.get("categories_env"))
+    prefixes_env = prefixes_env or safe_str(legacy_kwargs.get("prefixes_env"))
+    category_codes_env = category_codes_env or safe_str(legacy_kwargs.get("category_codes_env"))
+    allowed_title_prefixes_env = allowed_title_prefixes_env or safe_str(legacy_kwargs.get("allowed_title_prefixes_env"))
 
     categories = _split_env_list(
         category_codes_env or categories_env or env_category_codes or env_categories
@@ -299,7 +309,11 @@ def resolve_filter_inputs(
         categories = categories_from_cfg(cfg)
 
     prefixes = _split_env_list(
-        allowed_title_prefixes_env or prefixes_env or env_allowed_title_prefixes or env_prefixes
+        allowed_title_prefixes_env
+        or prefixes_env
+        or env_allowed_title_prefixes
+        or env_allowed_prefixes
+        or env_prefixes
     )
     if not prefixes:
         prefixes = prefixes_from_cfg(cfg)
