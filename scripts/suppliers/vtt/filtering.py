@@ -17,6 +17,11 @@ VTT filtering layer under CS-template.
   mk_category_url, normalize_listing_url, product_path_re,
   normalize_listing_title, title_matches_allowed,
   categories_from_cfg, prefixes_from_cfg, resolve_filter_inputs.
+- resolve_filter_inputs(...) поддерживает все старые имена kwargs:
+  cfg_path / filter_cfg / categories_env / prefixes_env /
+  category_codes_env / allowed_title_prefixes_env /
+  env_category_codes / env_allowed_title_prefixes /
+  env_categories / env_prefixes.
 """
 
 from __future__ import annotations
@@ -276,6 +281,10 @@ def resolve_filter_inputs(
     prefixes_env: str | None = None,
     category_codes_env: str | None = None,
     allowed_title_prefixes_env: str | None = None,
+    env_category_codes: str | None = None,
+    env_allowed_title_prefixes: str | None = None,
+    env_categories: str | None = None,
+    env_prefixes: str | None = None,
 ) -> tuple[list[str], list[str]]:
     cfg: dict[str, Any] = {}
     if cfg_path:
@@ -283,11 +292,15 @@ def resolve_filter_inputs(
     if filter_cfg:
         cfg.update(filter_cfg)
 
-    categories = _split_env_list(category_codes_env or categories_env)
+    categories = _split_env_list(
+        category_codes_env or categories_env or env_category_codes or env_categories
+    )
     if not categories:
         categories = categories_from_cfg(cfg)
 
-    prefixes = _split_env_list(allowed_title_prefixes_env or prefixes_env)
+    prefixes = _split_env_list(
+        allowed_title_prefixes_env or prefixes_env or env_allowed_title_prefixes or env_prefixes
+    )
     if not prefixes:
         prefixes = prefixes_from_cfg(cfg)
 
