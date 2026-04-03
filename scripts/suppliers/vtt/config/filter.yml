@@ -1,5 +1,10 @@
+schema_version: 2
 supplier: vtt
 mode: include
+
+# Канонический filter-layer для VTT под CS-template.
+# Только ассортиментная политика: category scope + allowed title prefixes.
+# Source/build не должны дублировать эти defaults внутри себя.
 
 category_codes:
   - DRM_CRT
@@ -49,3 +54,8 @@ allowed_title_prefixes:
   - Фотопроводниковый блок
   - Бокс сбора тонера
   - Рефил
+
+notes: >
+  Canonical VTT filter config under CS-template.
+  Filtering is the only source of assortment policy for VTT:
+  category codes and title prefixes must not be duplicated in source.py or build_vtt.py.
