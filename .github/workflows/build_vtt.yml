@@ -3,8 +3,7 @@ name: Build_VTT
 on:
   workflow_dispatch:
   schedule:
-    # Алматы UTC+5 → 05:00 local = 00:00 UTC
-    - cron: "0 0 1,10,20 * *"
+    - cron: "0 0 1,10,20 * *"  # 05:00 Asia/Almaty
 
 permissions:
   contents: write
@@ -23,7 +22,6 @@ jobs:
       VTT_BASE_URL: https://b2b.vtt.ru/
       VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
       VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
-
       VTT_BUILD_MODE: index
       VTT_REQUEST_DELAY_MS: 8
       VTT_MAX_LISTING_PAGES: 5000
@@ -52,29 +50,74 @@ jobs:
           fi
 
       - name: Prepare folders
-        run: mkdir -p docs docs/raw docs/debug/vtt_shards
+        run: |
+          mkdir -p docs docs/raw docs/debug/vtt_shards
+          rm -f docs/debug/vtt_shards/*.json || true
 
       - name: Smoke test
         run: |
-          python -m py_compile \
-            scripts/build_vtt.py \
-            scripts/suppliers/vtt/models.py \
-            scripts/suppliers/vtt/source.py \
-            scripts/suppliers/vtt/filtering.py \
-            scripts/suppliers/vtt/normalize.py \
-            scripts/suppliers/vtt/pictures.py \
-            scripts/suppliers/vtt/params.py \
-            scripts/suppliers/vtt/params_page.py \
-            scripts/suppliers/vtt/desc_clean.py \
-            scripts/suppliers/vtt/desc_extract.py \
-            scripts/suppliers/vtt/compat.py \
-            scripts/suppliers/vtt/builder.py \
-            scripts/suppliers/vtt/diagnostics.py \
-            scripts/suppliers/vtt/quality_gate.py \
-            scripts/suppliers/vtt/client.py
+          python - <<'PY'
+          import py_compile
+          import sys
+          from pathlib import Path
+
+          files = [
+              "scripts/build_vtt.py",
+              "scripts/suppliers/__init__.py",
+              "scripts/suppliers/vtt/__init__.py",
+              "scripts/suppliers/vtt/models.py",
+              "scripts/suppliers/vtt/client.py",
+              "scripts/suppliers/vtt/source.py",
+              "scripts/suppliers/vtt/filtering.py",
+              "scripts/suppliers/vtt/normalize.py",
+              "scripts/suppliers/vtt/pictures.py",
+              "scripts/suppliers/vtt/params.py",
+              "scripts/suppliers/vtt/params_page.py",
+              "scripts/suppliers/vtt/desc_clean.py",
+              "scripts/suppliers/vtt/desc_extract.py",
+              "scripts/suppliers/vtt/compat.py",
+              "scripts/suppliers/vtt/builder.py",
+              "scripts/suppliers/vtt/diagnostics.py",
+              "scripts/suppliers/vtt/quality_gate.py",
+          ]
+
+          failed = False
+          for f in files:
+              p = Path(f)
+              if not p.exists():
+                  print(f"SKIP missing: {f}")
+                  continue
+              try:
+                  py_compile.compile(str(p), doraise=True)
+                  print(f"OK: {f}")
+              except Exception as e:
+                  failed = True
+                  print(f"FAIL: {f}: {e}")
+
+          if failed:
+              sys.exit(1)
+          PY
+
+      - name: Show build version
+        run: |
+          python - <<'PY'
+          import pathlib
+          import re
+          t = pathlib.Path('scripts/build_vtt.py').read_text(encoding='utf-8', errors='ignore')
+          m = re.search(r'BUILD_VTT_VERSION\s*=\s*["\']([^"\']+)["\']', t)
+          print('VTT_VERSION', m.group(1) if m else 'UNKNOWN')
+          PY
 
       - name: Build shared index
         run: python scripts/build_vtt.py
+
+      - name: Diagnostics
+        if: always()
+        run: |
+          git status --porcelain || true
+          git diff --stat || true
+          ls -la docs docs/raw docs/debug/vtt_shards || true
+          [ -f docs/debug/vtt_shards/index_summary.json ] && cat docs/debug/vtt_shards/index_summary.json || true
 
       - name: Upload index artifact
         if: always()
@@ -84,6 +127,7 @@ jobs:
           path: |
             docs/debug/vtt_shards/index.json
             docs/debug/vtt_shards/index_summary.json
+          if-no-files-found: warn
 
   build_vtt_shards:
     name: build-vtt-shard-${{ matrix.shard_no }}
@@ -103,7 +147,6 @@ jobs:
       VTT_BASE_URL: https://b2b.vtt.ru/
       VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
       VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
-
       VTT_BUILD_MODE: shard_index
       VTT_SHARD_NAME: shard_${{ matrix.shard_no }}
       VTT_SHARD_NO: ${{ matrix.shard_no }}
@@ -145,34 +188,60 @@ jobs:
 
       - name: Smoke test
         run: |
-          python -m py_compile \
-            scripts/build_vtt.py \
-            scripts/suppliers/vtt/models.py \
-            scripts/suppliers/vtt/source.py \
-            scripts/suppliers/vtt/filtering.py \
-            scripts/suppliers/vtt/normalize.py \
-            scripts/suppliers/vtt/pictures.py \
-            scripts/suppliers/vtt/params.py \
-            scripts/suppliers/vtt/params_page.py \
-            scripts/suppliers/vtt/desc_clean.py \
-            scripts/suppliers/vtt/desc_extract.py \
-            scripts/suppliers/vtt/compat.py \
-            scripts/suppliers/vtt/builder.py \
-            scripts/suppliers/vtt/diagnostics.py \
-            scripts/suppliers/vtt/quality_gate.py \
-            scripts/suppliers/vtt/client.py
+          python - <<'PY'
+          import py_compile
+          import sys
+          from pathlib import Path
+
+          files = [
+              "scripts/build_vtt.py",
+              "scripts/suppliers/vtt/source.py",
+              "scripts/suppliers/vtt/filtering.py",
+              "scripts/suppliers/vtt/normalize.py",
+              "scripts/suppliers/vtt/pictures.py",
+              "scripts/suppliers/vtt/params.py",
+              "scripts/suppliers/vtt/params_page.py",
+              "scripts/suppliers/vtt/desc_clean.py",
+              "scripts/suppliers/vtt/desc_extract.py",
+              "scripts/suppliers/vtt/compat.py",
+              "scripts/suppliers/vtt/builder.py",
+              "scripts/suppliers/vtt/diagnostics.py",
+              "scripts/suppliers/vtt/quality_gate.py",
+          ]
+
+          failed = False
+          for f in files:
+              p = Path(f)
+              if not p.exists():
+                  print(f"SKIP missing: {f}")
+                  continue
+              try:
+                  py_compile.compile(str(p), doraise=True)
+                  print(f"OK: {f}")
+              except Exception as e:
+                  failed = True
+                  print(f"FAIL: {f}: {e}")
+
+          if failed:
+              sys.exit(1)
+          PY
 
       - name: Build shard from shared index
         run: python scripts/build_vtt.py
+
+      - name: Diagnostics
+        if: always()
+        run: |
+          ls -la docs docs/raw docs/debug/vtt_shards || true
+          [ -f docs/debug/vtt_shards/shard_${{ matrix.shard_no }}.json ] && wc -c docs/debug/vtt_shards/shard_${{ matrix.shard_no }}.json || true
 
       - name: Upload shard artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: vtt-shard-${{ matrix.shard_no }}
-          path: |
-            docs/debug/vtt_shards/shard_${{ matrix.shard_no }}.json
-            docs/debug/vtt_shards/shard_${{ matrix.shard_no }}_summary.json
+          path: docs/debug/vtt_shards/shard_${{ matrix.shard_no }}.json
+          if-no-files-found: warn
 
   merge_vtt:
     name: merge-vtt
@@ -236,22 +305,43 @@ jobs:
 
       - name: Smoke test
         run: |
-          python -m py_compile \
-            scripts/build_vtt.py \
-            scripts/suppliers/vtt/models.py \
-            scripts/suppliers/vtt/source.py \
-            scripts/suppliers/vtt/filtering.py \
-            scripts/suppliers/vtt/normalize.py \
-            scripts/suppliers/vtt/pictures.py \
-            scripts/suppliers/vtt/params.py \
-            scripts/suppliers/vtt/params_page.py \
-            scripts/suppliers/vtt/desc_clean.py \
-            scripts/suppliers/vtt/desc_extract.py \
-            scripts/suppliers/vtt/compat.py \
-            scripts/suppliers/vtt/builder.py \
-            scripts/suppliers/vtt/diagnostics.py \
-            scripts/suppliers/vtt/quality_gate.py \
-            scripts/suppliers/vtt/client.py
+          python - <<'PY'
+          import py_compile
+          import sys
+          from pathlib import Path
+
+          files = [
+              "scripts/build_vtt.py",
+              "scripts/suppliers/vtt/source.py",
+              "scripts/suppliers/vtt/filtering.py",
+              "scripts/suppliers/vtt/normalize.py",
+              "scripts/suppliers/vtt/pictures.py",
+              "scripts/suppliers/vtt/params.py",
+              "scripts/suppliers/vtt/params_page.py",
+              "scripts/suppliers/vtt/desc_clean.py",
+              "scripts/suppliers/vtt/desc_extract.py",
+              "scripts/suppliers/vtt/compat.py",
+              "scripts/suppliers/vtt/builder.py",
+              "scripts/suppliers/vtt/diagnostics.py",
+              "scripts/suppliers/vtt/quality_gate.py",
+          ]
+
+          failed = False
+          for f in files:
+              p = Path(f)
+              if not p.exists():
+                  print(f"SKIP missing: {f}")
+                  continue
+              try:
+                  py_compile.compile(str(p), doraise=True)
+                  print(f"OK: {f}")
+              except Exception as e:
+                  failed = True
+                  print(f"FAIL: {f}: {e}")
+
+          if failed:
+              sys.exit(1)
+          PY
 
       - name: Snapshot previous feed
         run: |
@@ -265,15 +355,39 @@ jobs:
       - name: Merge shards + build final feeds
         run: python scripts/build_vtt.py
 
+      - name: Show VTT quality gate report
+        if: always()
+        run: |
+          echo "==== docs/raw/vtt_quality_gate.txt ===="
+          [ -f docs/raw/vtt_quality_gate.txt ] && sed -n '1,400p' docs/raw/vtt_quality_gate.txt || echo "vtt_quality_gate.txt not found"
+
       - name: Diagnostics
+        if: always()
         run: |
           git status --porcelain || true
           git diff --stat || true
           ls -la docs docs/raw docs/debug/vtt_shards || true
           wc -c docs/vtt.yml docs/raw/vtt.yml 2>/dev/null || true
-          [ -f docs/raw/vtt_quality_gate.txt ] && sed -n '1,260p' docs/raw/vtt_quality_gate.txt || true
+          [ -f docs/debug/vtt_shards/merge_summary.json ] && cat docs/debug/vtt_shards/merge_summary.json || true
+          [ -f docs/raw/vtt_quality_gate.txt ] && sed -n '1,400p' docs/raw/vtt_quality_gate.txt || true
+
+      - name: Upload merge artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vtt-merge-output
+          path: |
+            docs/vtt.yml
+            docs/raw/vtt.yml
+            docs/raw/vtt_quality_gate.txt
+            docs/debug/vtt_shards/index.json
+            docs/debug/vtt_shards/index_summary.json
+            docs/debug/vtt_shards/merge_summary.json
+            docs/debug/vtt_shards/shard_*.json
+          if-no-files-found: warn
 
       - name: Update FEED_META build time + next run
+        if: success()
         run: |
           norm_hash() {
             local f="$1"
@@ -297,15 +411,74 @@ jobs:
           if [ "$NO_CHANGES" -eq 1 ]; then
             NOTE=" (не было изменений)"
           fi
+          export TS NOTE
 
-          perl -0pi -e 's@(Время сборки \(Алматы\)\s*\| ).*@${1}'"$TS$NOTE"'@m' docs/vtt.yml docs/raw/vtt.yml
+          python - <<'PY'
+          import os
+          import pathlib
+          import re
+          from datetime import datetime
+
+          paths = [pathlib.Path("docs/vtt.yml"), pathlib.Path("docs/raw/vtt.yml")]
+          ts = os.environ["TS"]
+          note = os.environ.get("NOTE", "")
+
+          dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
+          day = dt.day
+          month = dt.month
+          year = dt.year
+
+          future_days = [1, 10, 20]
+          next_day = None
+          next_month = month
+          next_year = year
+          for d in future_days:
+            if d > day:
+              next_day = d
+              break
+          if next_day is None:
+            next_day = 1
+            if month == 12:
+              next_month = 1
+              next_year += 1
+            else:
+              next_month += 1
+
+          next_run = f"{next_year:04d}-{next_month:02d}-{next_day:02d} 05:00:00"
+
+          for path in paths:
+            if not path.exists():
+              continue
+            text = path.read_text(encoding="utf-8", errors="ignore")
+            text = re.sub(
+              r"(Время сборки \(Алматы\)\s*\|\s*)(.+)",
+              rf"\1{ts}{note}",
+              text,
+              count=1,
+            )
+            text = re.sub(
+              r"(Ближайшая сборка \(Алматы\)\s*\|\s*)(.+)",
+              rf"\1{next_run}",
+              text,
+              count=1,
+            )
+            text = re.sub(
+              r'(<yml_catalog\s+date=")([^"]+)(">)',
+              rf"\1{ts}\3",
+              text,
+              count=1,
+            )
+            path.write_text(text, encoding="utf-8")
+          PY
 
       - name: Commit and push
+        if: success()
         run: |
-          git add docs/vtt.yml docs/raw/vtt.yml docs/raw/vtt_quality_gate.txt docs/debug/vtt_shards/*.json || true
+          git add docs/vtt.yml docs/raw/vtt.yml docs/raw/vtt_quality_gate.txt docs/debug/vtt_shards/*.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Build_VTT"
+          git commit -m "Build VTT"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
           git push
