@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-03 10:26:37">
+<yml_catalog date="2026-04-03 10:38:50">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-04-03 10:26:37
+Время сборки (Алматы)                      | 2026-04-03 10:38:50
 Ближайшая сборка (Алматы)                  | 2026-04-04 04:00:00
-Сколько товаров у поставщика до фильтра    | 1192
-Сколько товаров у поставщика после фильтра | 582
-Сколько товаров есть в наличии (true)      | 582
+Сколько товаров у поставщика до фильтра    | 1190
+Сколько товаров у поставщика после фильтра | 580
+Сколько товаров есть в наличии (true)      | 580
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -119,12 +119,12 @@ URL поставщика                             | https://www.comportal.kz/
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж. Цвет: Чёрный. Технология печати: Струйная. Ресурс: 550. Номер: №655.</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> CZ109AE#BHK</li><li><strong>Модель:</strong> CZ109AE#BHK</li><li><strong>Номер:</strong> №655</li><li><strong>Ресурс:</strong> 550</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> CZ109AE#BHK</li><li><strong>Модель:</strong> CZ109AE</li><li><strong>Номер:</strong> №655</li><li><strong>Ресурс:</strong> 550</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">HP</param>
 <param name="Коды">CZ109AE#BHK</param>
-<param name="Модель">CZ109AE#BHK</param>
+<param name="Модель">CZ109AE</param>
 <param name="Номер">№655</param>
 <param name="Ресурс">550</param>
 <param name="Технология печати">Струйная</param>
@@ -150,12 +150,12 @@ URL поставщика                             | https://www.comportal.kz/
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж. Цвет: Голубой. Технология печати: Струйная. Ресурс: 600. Номер: №655.</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> CZ110AE#BHK</li><li><strong>Модель:</strong> CZ110AE#BHK</li><li><strong>Номер:</strong> №655</li><li><strong>Ресурс:</strong> 600</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> CZ110AE#BHK</li><li><strong>Модель:</strong> CZ110AE</li><li><strong>Номер:</strong> №655</li><li><strong>Ресурс:</strong> 600</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">HP</param>
 <param name="Коды">CZ110AE#BHK</param>
-<param name="Модель">CZ110AE#BHK</param>
+<param name="Модель">CZ110AE</param>
 <param name="Номер">№655</param>
 <param name="Ресурс">600</param>
 <param name="Технология печати">Струйная</param>
@@ -181,12 +181,12 @@ URL поставщика                             | https://www.comportal.kz/
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж. Цвет: Жёлтый. Технология печати: Струйная. Ресурс: 600. Номер: №655.</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> CZ112AE#BHK</li><li><strong>Модель:</strong> CZ112AE#BHK</li><li><strong>Номер:</strong> №655</li><li><strong>Ресурс:</strong> 600</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> CZ112AE#BHK</li><li><strong>Модель:</strong> CZ112AE</li><li><strong>Номер:</strong> №655</li><li><strong>Ресурс:</strong> 600</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">HP</param>
 <param name="Коды">CZ112AE#BHK</param>
-<param name="Модель">CZ112AE#BHK</param>
+<param name="Модель">CZ112AE</param>
 <param name="Номер">№655</param>
 <param name="Ресурс">600</param>
 <param name="Технология печати">Струйная</param>
@@ -212,12 +212,12 @@ URL поставщика                             | https://www.comportal.kz/
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж. Цвет: Голубой. Технология печати: Струйная. Ресурс: 825. Объём: 8,5. Номер: №933.</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> CN054AE#BGX</li><li><strong>Модель:</strong> CN054AE#BGX</li><li><strong>Номер:</strong> №933</li><li><strong>Объём:</strong> 8,5</li><li><strong>Ресурс:</strong> 825</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Голубой</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> CN054AE#BGX</li><li><strong>Модель:</strong> CN054AE</li><li><strong>Номер:</strong> №933</li><li><strong>Объём:</strong> 8,5</li><li><strong>Ресурс:</strong> 825</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Голубой</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">HP</param>
 <param name="Коды">CN054AE#BGX</param>
-<param name="Модель">CN054AE#BGX</param>
+<param name="Модель">CN054AE</param>
 <param name="Номер">№933</param>
 <param name="Объём">8,5</param>
 <param name="Ресурс">825</param>
@@ -244,12 +244,12 @@ URL поставщика                             | https://www.comportal.kz/
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж. Цвет: Пурпурный. Технология печати: Струйная. Ресурс: 825. Объём: 8,5. Номер: №933.</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> CN055AE#BGX</li><li><strong>Модель:</strong> CN055AE#BGX</li><li><strong>Номер:</strong> №933</li><li><strong>Объём:</strong> 8,5</li><li><strong>Ресурс:</strong> 825</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> CN055AE#BGX</li><li><strong>Модель:</strong> CN055AE</li><li><strong>Номер:</strong> №933</li><li><strong>Объём:</strong> 8,5</li><li><strong>Ресурс:</strong> 825</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">HP</param>
 <param name="Коды">CN055AE#BGX</param>
-<param name="Модель">CN055AE#BGX</param>
+<param name="Модель">CN055AE</param>
 <param name="Номер">№933</param>
 <param name="Объём">8,5</param>
 <param name="Ресурс">825</param>
@@ -934,12 +934,12 @@ URL поставщика                             | https://www.comportal.kz/
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж. Цвет: Чёрный. Технология печати: Струйная. Ресурс: 600. Номер: №651.</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> C2P10AE#BHK</li><li><strong>Модель:</strong> C2P10AE#BHK</li><li><strong>Номер:</strong> №651</li><li><strong>Ресурс:</strong> 600</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> C2P10AE#BHK</li><li><strong>Модель:</strong> C2P10AE</li><li><strong>Номер:</strong> №651</li><li><strong>Ресурс:</strong> 600</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">HP</param>
 <param name="Коды">C2P10AE#BHK</param>
-<param name="Модель">C2P10AE#BHK</param>
+<param name="Модель">C2P10AE</param>
 <param name="Номер">№651</param>
 <param name="Ресурс">600</param>
 <param name="Технология печати">Струйная</param>
@@ -965,12 +965,12 @@ URL поставщика                             | https://www.comportal.kz/
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж. Цвет: Трехцветный. Технология печати: Струйная. Ресурс: 300. Номер: №651.</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> C2P11AE#BHK</li><li><strong>Модель:</strong> C2P11AE#BHK</li><li><strong>Номер:</strong> №651</li><li><strong>Ресурс:</strong> 300</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Трехцветный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> C2P11AE#BHK</li><li><strong>Модель:</strong> C2P11AE</li><li><strong>Номер:</strong> №651</li><li><strong>Ресурс:</strong> 300</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Трехцветный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">HP</param>
 <param name="Коды">C2P11AE#BHK</param>
-<param name="Модель">C2P11AE#BHK</param>
+<param name="Модель">C2P11AE</param>
 <param name="Номер">№651</param>
 <param name="Ресурс">300</param>
 <param name="Технология печати">Струйная</param>
@@ -1554,12 +1554,12 @@ URL поставщика                             | https://www.comportal.kz/
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж. Цвет: Чёрный. Технология печати: Струйная. Ресурс: 2 000. Объём: 10,5. Номер: №953.</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> L0S70AE#BGX</li><li><strong>Модель:</strong> L0S70AE#BGX</li><li><strong>Номер:</strong> №953</li><li><strong>Объём:</strong> 10,5</li><li><strong>Ресурс:</strong> 2 000</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> L0S70AE#BGX</li><li><strong>Модель:</strong> L0S70AE</li><li><strong>Номер:</strong> №953</li><li><strong>Объём:</strong> 10,5</li><li><strong>Ресурс:</strong> 2 000</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">HP</param>
 <param name="Коды">L0S70AE#BGX</param>
-<param name="Модель">L0S70AE#BGX</param>
+<param name="Модель">L0S70AE</param>
 <param name="Номер">№953</param>
 <param name="Объём">10,5</param>
 <param name="Ресурс">2 000</param>
@@ -1586,12 +1586,12 @@ URL поставщика                             | https://www.comportal.kz/
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж. Цвет: Пурпурный. Технология печати: Струйная. Ресурс: 1 600. Объём: 7. Номер: №953.</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> F6U17AE#BGX</li><li><strong>Модель:</strong> F6U17AE#BGX</li><li><strong>Номер:</strong> №953</li><li><strong>Объём:</strong> 7</li><li><strong>Ресурс:</strong> 1 600</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> F6U17AE#BGX</li><li><strong>Модель:</strong> F6U17AE</li><li><strong>Номер:</strong> №953</li><li><strong>Объём:</strong> 7</li><li><strong>Ресурс:</strong> 1 600</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">HP</param>
 <param name="Коды">F6U17AE#BGX</param>
-<param name="Модель">F6U17AE#BGX</param>
+<param name="Модель">F6U17AE</param>
 <param name="Номер">№953</param>
 <param name="Объём">7</param>
 <param name="Ресурс">1 600</param>
@@ -1618,12 +1618,12 @@ URL поставщика                             | https://www.comportal.kz/
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж. Цвет: Жёлтый. Технология печати: Струйная. Ресурс: 1 600. Объём: 7. Номер: №953.</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> F6U18AE#BGX</li><li><strong>Модель:</strong> F6U18AE#BGX</li><li><strong>Номер:</strong> №953</li><li><strong>Объём:</strong> 7</li><li><strong>Ресурс:</strong> 1 600</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> F6U18AE#BGX</li><li><strong>Модель:</strong> F6U18AE</li><li><strong>Номер:</strong> №953</li><li><strong>Объём:</strong> 7</li><li><strong>Ресурс:</strong> 1 600</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">HP</param>
 <param name="Коды">F6U18AE#BGX</param>
-<param name="Модель">F6U18AE#BGX</param>
+<param name="Модель">F6U18AE</param>
 <param name="Номер">№953</param>
 <param name="Объём">7</param>
 <param name="Ресурс">1 600</param>
@@ -6610,12 +6610,12 @@ URL поставщика                             | https://www.comportal.kz/
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж. Цвет: Трехцветный. Технология печати: Струйная. Номер: №305.</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> 3YM63AE#UUQ</li><li><strong>Модель:</strong> 3YM63AE#UUQ</li><li><strong>Номер:</strong> №305</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Трехцветный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> 3YM63AE#UUQ</li><li><strong>Модель:</strong> 3YM63AE</li><li><strong>Номер:</strong> №305</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Трехцветный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">HP</param>
 <param name="Коды">3YM63AE#UUQ</param>
-<param name="Модель">3YM63AE#UUQ</param>
+<param name="Модель">3YM63AE</param>
 <param name="Номер">№305</param>
 <param name="Технология печати">Струйная</param>
 <param name="Тип">Картридж</param>
@@ -7408,12 +7408,12 @@ URL поставщика                             | https://www.comportal.kz/
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <p>Картридж. Цвет: Чёрный. Технология печати: Струйная. Ресурс: 240. Номер: №305.</p>
-<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> 3YM62AE#UUQ</li><li><strong>Модель:</strong> 3YM62AE#UUQ</li><li><strong>Номер:</strong> №305</li><li><strong>Ресурс:</strong> 240</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> 3YM62AE#UUQ</li><li><strong>Модель:</strong> 3YM62AE</li><li><strong>Номер:</strong> №305</li><li><strong>Ресурс:</strong> 240</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Для бренда">HP</param>
 <param name="Коды">3YM62AE#UUQ</param>
-<param name="Модель">3YM62AE#UUQ</param>
+<param name="Модель">3YM62AE</param>
 <param name="Номер">№305</param>
 <param name="Ресурс">240</param>
 <param name="Технология печати">Струйная</param>
@@ -13812,70 +13812,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Astergo, ИБП Astergo AST.UPS.LA1500USB8I (AST.UPS.LA1500USB8I), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13870395" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13870395</vendorCode>
-<name>Ноутбук Dell Latitude 5550 (210-BLMN_N013L555015EMEA_VP)</name>
-<price>890900</price>
-<picture>http://www.comportal.kz/upload/iblock/316/7yn5v0jrx5saybw8jyj4strcqb7e7h6n.jpg</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Ноутбук Dell Latitude 5550 (210-BLMN_N013L555015EMEA_VP)</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Ноутбук. Процессор: 165U Core Ultra 7. Оперативная память: 32 Gb. Накопитель: 512 PCIe NVMe SSD. ОС: Windows 11 Pro. Видеокарта: Graphics Intel® Graphics. Гарантия: 36 мес.</p>
-<h3>Характеристики</h3><ul><li><strong>Bluetooth:</strong> Bluetooth 5.3</li><li><strong>Wi-Fi:</strong> 802.11ax</li><li><strong>Адаптер:</strong> 65W AC Adapter</li><li><strong>Аккумулятор:</strong> 3 Cell 54WHr</li><li><strong>Битность операционной системы:</strong> 64</li><li><strong>Версия операционной системы:</strong> Pro</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Для бренда:</strong> Dell</li><li><strong>Дополнительные характеристики:</strong> Backlit Keyboard; Fingerprint</li><li><strong>Занятые слоты памяти:</strong> 2</li><li><strong>Камера:</strong> FHD HDR IR Camera</li><li><strong>Коды:</strong> Latitude 5550</li><li><strong>Количество дисков:</strong> 1</li><li><strong>Количество портов USB:</strong> 4</li><li><strong>Количество слотов памяти:</strong> 2</li><li><strong>Марка чипсета видеокарты:</strong> Graphics</li><li><strong>Модель:</strong> Latitude 5550</li><li><strong>Модель процессора:</strong> Core Ultra 7</li><li><strong>Модель чипсета видеокарты:</strong> Intel® Graphics</li><li><strong>Объем видеопамяти:</strong> 256 Mb</li><li><strong>Объем жесткого диска:</strong> 512</li><li><strong>Оперативная память:</strong> 32 Gb</li><li><strong>Операционная система:</strong> Windows 11</li><li><strong>Порты:</strong> 1x HDMI; 2x USB-A 3.0; 2x USB-C; 1x SC Slot; 1x MicroSD; 1x RJ-45</li><li><strong>Производитель операционной системы:</strong> Microsoft</li><li><strong>Производитель процессора:</strong> Intel</li><li><strong>Производитель чипсета видеокарты:</strong> Intel</li><li><strong>Размер дисплея:</strong> 15,6</li><li><strong>Разрешение дисплея:</strong> 1920x1080</li><li><strong>Серия процессора:</strong> 165U</li><li><strong>Сетевая карта (скорость передачи):</strong> 10/100/1000</li><li><strong>Скорость вращения шпинделя:</strong> Read Intensive</li><li><strong>Тип:</strong> Ноутбук</li><li><strong>Тип жесткого диска:</strong> PCIe NVMe SSD</li><li><strong>Тип матрицы:</strong> FHD IPS</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Тип привода:</strong> No ODD</li><li><strong>Цвет:</strong> Серый</li><li><strong>Частота оперативной памяти:</strong> 5600</li><li><strong>Частота процессора:</strong> 1,7</li><li><strong>Языковая версия операционной системы:</strong> Русская</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Bluetooth">Bluetooth 5.3</param>
-<param name="Wi-Fi">802.11ax</param>
-<param name="Адаптер">65W AC Adapter</param>
-<param name="Аккумулятор">3 Cell 54WHr</param>
-<param name="Битность операционной системы">64</param>
-<param name="Версия операционной системы">Pro</param>
-<param name="Гарантия">36 мес</param>
-<param name="Для бренда">Dell</param>
-<param name="Дополнительные характеристики">Backlit Keyboard; Fingerprint</param>
-<param name="Занятые слоты памяти">2</param>
-<param name="Камера">FHD HDR IR Camera</param>
-<param name="Коды">Latitude 5550</param>
-<param name="Количество дисков">1</param>
-<param name="Количество портов USB">4</param>
-<param name="Количество слотов памяти">2</param>
-<param name="Марка чипсета видеокарты">Graphics</param>
-<param name="Модель">Latitude 5550</param>
-<param name="Модель процессора">Core Ultra 7</param>
-<param name="Модель чипсета видеокарты">Intel® Graphics</param>
-<param name="Объем видеопамяти">256 Mb</param>
-<param name="Объем жесткого диска">512</param>
-<param name="Оперативная память">32 Gb</param>
-<param name="Операционная система">Windows 11</param>
-<param name="Порты">1x HDMI; 2x USB-A 3.0; 2x USB-C; 1x SC Slot; 1x MicroSD; 1x RJ-45</param>
-<param name="Производитель операционной системы">Microsoft</param>
-<param name="Производитель процессора">Intel</param>
-<param name="Производитель чипсета видеокарты">Intel</param>
-<param name="Размер дисплея">15,6</param>
-<param name="Разрешение дисплея">1920x1080</param>
-<param name="Серия процессора">165U</param>
-<param name="Сетевая карта (скорость передачи)">10/100/1000</param>
-<param name="Скорость вращения шпинделя">Read Intensive</param>
-<param name="Тип">Ноутбук</param>
-<param name="Тип жесткого диска">PCIe NVMe SSD</param>
-<param name="Тип матрицы">FHD IPS</param>
-<param name="Тип оперативной памяти">DDR5</param>
-<param name="Тип привода">No ODD</param>
-<param name="Цвет">Серый</param>
-<param name="Частота оперативной памяти">5600</param>
-<param name="Частота процессора">1,7</param>
-<param name="Языковая версия операционной системы">Русская</param>
-<keywords>Dell, Ноутбук Dell Latitude 5550 (210-BLMN_N013L555015EMEA_VP), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13870396" available="true">
 <categoryId></categoryId>
 <vendorCode>CP13870396</vendorCode>
@@ -16791,44 +16727,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">90NR0LL1-M001B0</param>
 <param name="Тип">Ноутбук</param>
 <keywords>ASUS, Ноутбук Asus ROG Strix G16 / G615JHR-S5039 (90NR0LL1-M001B0), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13872066" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13872066</vendorCode>
-<name>Монитор Dell Alienware 34 240Hz QD-OLED Gaming Monitor- AW3425DW (210-BRTW)</name>
-<price>469900</price>
-<picture>http://www.comportal.kz/upload/iblock/e49/wzp26ok0wvctdax1mu26ie2tfl2l89lq.JPG</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Монитор Dell Alienware 34 240Hz QD-OLED Gaming Monitor- AW3425DW (210-BRTW)</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Монитор. Диагональ: 34. Максимальное разрешение: 3440x1440. Тип матрицы: OLED. Частота обновления: 240. Время отклика: 1. Порты: 1x DP 1.4 (HDCP 1.4 &amp; 2.3)(Supports up to 3840 x 2160 240 Hz, DSC, HDR)/2 x HDMI 2.1 (HDCP 1.4 &amp; 2.3)(Supports up to 3840 x 2160 240 Hz FRL, HDR, VRR as per specified in HDMI 2.1) (including 1x HDMI 2.1 FRL with eARC - to support Dolby ATMOS signal pass-through)/1 x USB 3.2 Gen 1 (5 Gbps) Type-B upstream port/2 x USB 3.2 Gen 1 (5 Gbps) Type-A downstream ports Bott/1 x USB 3.2 Gen 1 (5 Gbps) Type-C downstream port which supports BC1.2 power-charging/1x USB 3.2 Gen 1 (5 Gbps) Type-A. Гарантия: 36 мес.</p>
-<h3>Характеристики</h3><ul><li><strong>Время отклика:</strong> 1</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Диагональ:</strong> 34</li><li><strong>Для бренда:</strong> Dell</li><li><strong>Коды:</strong> 210-BRTW</li><li><strong>Контрастность:</strong> 1500:1</li><li><strong>Максимальное разрешение:</strong> 3440x1440</li><li><strong>Модель:</strong> Alienware 34 240Hz QD-OLED Gaming Monitor- AW3425DW</li><li><strong>Порты:</strong> 1x DP 1.4 (HDCP 1.4 &amp; 2.3)(Supports up to 3840 x 2160 240 Hz, DSC, HDR)/2 x HDMI 2.1 (HDCP 1.4 &amp; 2.3)(Supports up to 3840 x 2160 240 Hz FRL, HDR, VRR as per specified in HDMI 2.1) (including 1x HDMI 2.1 FRL with eARC - to support Dolby ATMOS signal pass-through)/1 x USB 3.2 Gen 1 (5 Gbps) Type-B upstream port/2 x USB 3.2 Gen 1 (5 Gbps) Type-A downstream ports Bott/1 x USB 3.2 Gen 1 (5 Gbps) Type-C downstream port which supports BC1.2 power-charging/1x USB 3.2 Gen 1 (5 Gbps) Type-A</li><li><strong>Тип:</strong> Монитор</li><li><strong>Тип матрицы:</strong> OLED</li><li><strong>Углы обзора (вертикальный/горизонтальный):</strong> 178/178</li><li><strong>Цвет:</strong> Чёрный</li><li><strong>Частота обновления:</strong> 240</li><li><strong>Яркость:</strong> 1 000</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Время отклика">1</param>
-<param name="Гарантия">36 мес</param>
-<param name="Диагональ">34</param>
-<param name="Для бренда">Dell</param>
-<param name="Коды">210-BRTW</param>
-<param name="Контрастность">1500:1</param>
-<param name="Максимальное разрешение">3440x1440</param>
-<param name="Модель">Alienware 34 240Hz QD-OLED Gaming Monitor- AW3425DW</param>
-<param name="Порты">1x DP 1.4 (HDCP 1.4 &amp; 2.3)(Supports up to 3840 x 2160 240 Hz, DSC, HDR)/2 x HDMI 2.1 (HDCP 1.4 &amp; 2.3)(Supports up to 3840 x 2160 240 Hz FRL, HDR, VRR as per specified in HDMI 2.1) (including 1x HDMI 2.1 FRL with eARC - to support Dolby ATMOS signal pass-through)/1 x USB 3.2 Gen 1 (5 Gbps) Type-B upstream port/2 x USB 3.2 Gen 1 (5 Gbps) Type-A downstream ports Bott/1 x USB 3.2 Gen 1 (5 Gbps) Type-C downstream port which supports BC1.2 power-charging/1x USB 3.2 Gen 1 (5 Gbps) Type-A</param>
-<param name="Тип">Монитор</param>
-<param name="Тип матрицы">OLED</param>
-<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
-<param name="Цвет">Чёрный</param>
-<param name="Частота обновления">240</param>
-<param name="Яркость">1 000</param>
-<keywords>Dell, Монитор Dell Alienware 34 240Hz QD-OLED Gaming Monitor- AW3425DW (210-BRTW), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13873048" available="true">

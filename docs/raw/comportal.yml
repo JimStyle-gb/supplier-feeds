@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-03 10:26:37">
+<yml_catalog date="2026-04-03 10:38:50">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-04-03 10:26:37
+Время сборки (Алматы)                      | 2026-04-03 10:38:50
 Ближайшая сборка (Алматы)                  | 2026-04-04 04:00:00
-Сколько товаров у поставщика до фильтра    | 1192
-Сколько товаров у поставщика после фильтра | 582
-Сколько товаров есть в наличии (true)      | 582
+Сколько товаров у поставщика до фильтра    | 1190
+Сколько товаров у поставщика после фильтра | 580
+Сколько товаров есть в наличии (true)      | 580
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -80,7 +80,7 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж. Цвет: Чёрный. Технология печати: Струйная. Ресурс: 550. Номер: №655.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">CZ109AE#BHK</param>
+<param name="Модель">CZ109AE</param>
 <param name="Цвет">Чёрный</param>
 <param name="Технология печати">Струйная</param>
 <param name="Номер">№655</param>
@@ -100,7 +100,7 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж. Цвет: Голубой. Технология печати: Струйная. Ресурс: 600. Номер: №655.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">CZ110AE#BHK</param>
+<param name="Модель">CZ110AE</param>
 <param name="Цвет">Голубой</param>
 <param name="Технология печати">Струйная</param>
 <param name="Номер">№655</param>
@@ -120,7 +120,7 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж. Цвет: Жёлтый. Технология печати: Струйная. Ресурс: 600. Номер: №655.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">CZ112AE#BHK</param>
+<param name="Модель">CZ112AE</param>
 <param name="Цвет">Жёлтый</param>
 <param name="Технология печати">Струйная</param>
 <param name="Номер">№655</param>
@@ -140,7 +140,7 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж. Цвет: Голубой. Технология печати: Струйная. Ресурс: 825. Объём: 8,5. Номер: №933.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">CN054AE#BGX</param>
+<param name="Модель">CN054AE</param>
 <param name="Цвет">Голубой</param>
 <param name="Технология печати">Струйная</param>
 <param name="Номер">№933</param>
@@ -161,7 +161,7 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж. Цвет: Пурпурный. Технология печати: Струйная. Ресурс: 825. Объём: 8,5. Номер: №933.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">CN055AE#BGX</param>
+<param name="Модель">CN055AE</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Технология печати">Струйная</param>
 <param name="Номер">№933</param>
@@ -620,7 +620,7 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж. Цвет: Чёрный. Технология печати: Струйная. Ресурс: 600. Номер: №651.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">C2P10AE#BHK</param>
+<param name="Модель">C2P10AE</param>
 <param name="Цвет">Чёрный</param>
 <param name="Технология печати">Струйная</param>
 <param name="Номер">№651</param>
@@ -640,7 +640,7 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж. Цвет: Трехцветный. Технология печати: Струйная. Ресурс: 300. Номер: №651.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">C2P11AE#BHK</param>
+<param name="Модель">C2P11AE</param>
 <param name="Цвет">Трехцветный</param>
 <param name="Технология печати">Струйная</param>
 <param name="Номер">№651</param>
@@ -1042,7 +1042,7 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж. Цвет: Чёрный. Технология печати: Струйная. Ресурс: 2 000. Объём: 10,5. Номер: №953.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">L0S70AE#BGX</param>
+<param name="Модель">L0S70AE</param>
 <param name="Цвет">Чёрный</param>
 <param name="Технология печати">Струйная</param>
 <param name="Номер">№953</param>
@@ -1063,7 +1063,7 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж. Цвет: Пурпурный. Технология печати: Струйная. Ресурс: 1 600. Объём: 7. Номер: №953.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">F6U17AE#BGX</param>
+<param name="Модель">F6U17AE</param>
 <param name="Цвет">Пурпурный</param>
 <param name="Технология печати">Струйная</param>
 <param name="Номер">№953</param>
@@ -1084,7 +1084,7 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж. Цвет: Жёлтый. Технология печати: Струйная. Ресурс: 1 600. Объём: 7. Номер: №953.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">F6U18AE#BGX</param>
+<param name="Модель">F6U18AE</param>
 <param name="Цвет">Жёлтый</param>
 <param name="Технология печати">Струйная</param>
 <param name="Номер">№953</param>
@@ -4525,7 +4525,7 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж. Цвет: Трехцветный. Технология печати: Струйная. Номер: №305.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">3YM63AE#UUQ</param>
+<param name="Модель">3YM63AE</param>
 <param name="Цвет">Трехцветный</param>
 <param name="Технология печати">Струйная</param>
 <param name="Номер">№305</param>
@@ -5081,7 +5081,7 @@ URL поставщика                             | https://www.comportal.kz/
 <description><![CDATA[
 Картридж. Цвет: Чёрный. Технология печати: Струйная. Ресурс: 240. Номер: №305.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">3YM62AE#UUQ</param>
+<param name="Модель">3YM62AE</param>
 <param name="Цвет">Чёрный</param>
 <param name="Технология печати">Струйная</param>
 <param name="Номер">№305</param>
@@ -9632,59 +9632,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Для бренда">Astergo</param>
 </offer>
 
-<offer id="CP13870395" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13870395</vendorCode>
-<name>Ноутбук Dell Latitude 5550 (210-BLMN_N013L555015EMEA_VP)</name>
-<price>822527</price>
-<picture>http://www.comportal.kz/upload/iblock/316/7yn5v0jrx5saybw8jyj4strcqb7e7h6n.jpg</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Ноутбук. Процессор: 165U Core Ultra 7. Оперативная память: 32 Gb. Накопитель: 512 PCIe NVMe SSD. ОС: Windows 11 Pro. Видеокарта: Graphics Intel® Graphics. Гарантия: 36 мес.]]></description>
-<param name="Тип">Ноутбук</param>
-<param name="Модель">Latitude 5550</param>
-<param name="Объем жесткого диска">512</param>
-<param name="Скорость вращения шпинделя">Read Intensive</param>
-<param name="Тип жесткого диска">PCIe NVMe SSD</param>
-<param name="Производитель процессора">Intel</param>
-<param name="Модель процессора">Core Ultra 7</param>
-<param name="Серия процессора">165U</param>
-<param name="Частота процессора">1,7</param>
-<param name="Сетевая карта (скорость передачи)">10/100/1000</param>
-<param name="Количество портов USB">4</param>
-<param name="Оперативная память">32 Gb</param>
-<param name="Частота оперативной памяти">5600</param>
-<param name="Количество слотов памяти">2</param>
-<param name="Занятые слоты памяти">2</param>
-<param name="Объем видеопамяти">256 Mb</param>
-<param name="Тип оперативной памяти">DDR5</param>
-<param name="Порты">1x HDMI; 2x USB-A 3.0; 2x USB-C; 1x SC Slot; 1x MicroSD; 1x RJ-45</param>
-<param name="Тип привода">No ODD</param>
-<param name="Количество дисков">1</param>
-<param name="Размер дисплея">15,6</param>
-<param name="Дополнительные характеристики">Backlit Keyboard; Fingerprint</param>
-<param name="Тип матрицы">FHD IPS</param>
-<param name="Производитель чипсета видеокарты">Intel</param>
-<param name="Марка чипсета видеокарты">Graphics</param>
-<param name="Модель чипсета видеокарты">Intel® Graphics</param>
-<param name="Производитель операционной системы">Microsoft</param>
-<param name="Операционная система">Windows 11</param>
-<param name="Версия операционной системы">Pro</param>
-<param name="Битность операционной системы">64</param>
-<param name="Языковая версия операционной системы">Русская</param>
-<param name="Цвет">Серый</param>
-<param name="Bluetooth">Bluetooth 5.3</param>
-<param name="Wi-Fi">802.11ax</param>
-<param name="Адаптер">65W AC Adapter</param>
-<param name="Аккумулятор">3 Cell 54WHr</param>
-<param name="Гарантия">36 мес</param>
-<param name="Камера">FHD HDR IR Camera</param>
-<param name="Разрешение дисплея">1920x1080</param>
-<param name="Для бренда">Dell</param>
-<param name="Коды">Latitude 5550</param>
-</offer>
-
 <offer id="CP13870396" available="true">
 <categoryId></categoryId>
 <vendorCode>CP13870396</vendorCode>
@@ -11874,33 +11821,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Коды">90NR0LL1-M001B0</param>
 <param name="Модель">90NR0LL1-M001B0</param>
 <param name="Для бренда">ASUS</param>
-</offer>
-
-<offer id="CP13872066" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13872066</vendorCode>
-<name>Монитор Dell Alienware 34 240Hz QD-OLED Gaming Monitor- AW3425DW (210-BRTW)</name>
-<price>427307</price>
-<picture>http://www.comportal.kz/upload/iblock/e49/wzp26ok0wvctdax1mu26ie2tfl2l89lq.JPG</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Монитор. Диагональ: 34. Максимальное разрешение: 3440x1440. Тип матрицы: OLED. Частота обновления: 240. Время отклика: 1. Порты: 1x DP 1.4 (HDCP 1.4 & 2.3)(Supports up to 3840 x 2160 240 Hz, DSC, HDR)/2 x HDMI 2.1 (HDCP 1.4 & 2.3)(Supports up to 3840 x 2160 240 Hz FRL, HDR, VRR as per specified in HDMI 2.1) (including 1x HDMI 2.1 FRL with eARC - to support Dolby ATMOS signal pass-through)/1 x USB 3.2 Gen 1 (5 Gbps) Type-B upstream port/2 x USB 3.2 Gen 1 (5 Gbps) Type-A downstream ports Bott/1 x USB 3.2 Gen 1 (5 Gbps) Type-C downstream port which supports BC1.2 power-charging/1x USB 3.2 Gen 1 (5 Gbps) Type-A. Гарантия: 36 мес.]]></description>
-<param name="Тип">Монитор</param>
-<param name="Модель">Alienware 34 240Hz QD-OLED Gaming Monitor- AW3425DW</param>
-<param name="Порты">1x DP 1.4 (HDCP 1.4 &amp; 2.3)(Supports up to 3840 x 2160 240 Hz, DSC, HDR)/2 x HDMI 2.1 (HDCP 1.4 &amp; 2.3)(Supports up to 3840 x 2160 240 Hz FRL, HDR, VRR as per specified in HDMI 2.1) (including 1x HDMI 2.1 FRL with eARC - to support Dolby ATMOS signal pass-through)/1 x USB 3.2 Gen 1 (5 Gbps) Type-B upstream port/2 x USB 3.2 Gen 1 (5 Gbps) Type-A downstream ports Bott/1 x USB 3.2 Gen 1 (5 Gbps) Type-C downstream port which supports BC1.2 power-charging/1x USB 3.2 Gen 1 (5 Gbps) Type-A</param>
-<param name="Тип матрицы">OLED</param>
-<param name="Цвет">Чёрный</param>
-<param name="Гарантия">36 мес</param>
-<param name="Контрастность">1500:1</param>
-<param name="Яркость">1 000</param>
-<param name="Время отклика">1</param>
-<param name="Максимальное разрешение">3440x1440</param>
-<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
-<param name="Диагональ">34</param>
-<param name="Частота обновления">240</param>
-<param name="Коды">210-BRTW</param>
-<param name="Для бренда">Dell</param>
 </offer>
 
 <offer id="CP13873048" available="true">
