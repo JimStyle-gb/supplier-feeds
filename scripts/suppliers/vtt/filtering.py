@@ -13,10 +13,10 @@ VTT filtering layer under CS-template.
 Важно:
 - source.py не должен дублировать ассортиментные defaults;
 - filter.yml остаётся source of truth;
-- resolve_filter_inputs(...) специально совместим
-  со старыми вызовами через cfg_path=... и/или filter_cfg=....
-- сохранены aliases categories_from_cfg / prefixes_from_cfg
-  для текущего build_vtt.py.
+- сохранены старые функции:
+  mk_category_url, normalize_listing_url, product_path_re,
+  normalize_listing_title, title_matches_allowed,
+  categories_from_cfg, prefixes_from_cfg, resolve_filter_inputs.
 """
 
 from __future__ import annotations
@@ -24,6 +24,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qs, urlencode, urljoin, urlparse, urlunparse
 
 try:
     import yaml
@@ -82,6 +83,15 @@ DEFAULT_ALLOWED_TITLE_PREFIXES: list[str] = [
     "Рефил",
 ]
 
+TITLE_LEAD_CODE_RE = re.compile(
+    r"""^(?:[A-Z0-9][A-Z0-9\-./]{2,}(?:\s*,\s*[A-Z0-9][A-Z0-9\-./]{2,})*\s+)+""",
+    re.I,
+)
+ORIGINAL_MARK_RE = re.compile(
+    r"""(?<!\w)\((?:O|О|OEM)\)(?!\w)|\bоригинал(?:ьн(?:ый|ая|ое|ые))?\b""",
+    re.I,
+)
+LEAD_MARK_RE = re.compile(r"""^(?:\((?:E|LE)\)|LE\b|E\b)\s*""", re.I)
 _MULTI_WS_RE = re.compile(r"\s+")
 
 
@@ -102,6 +112,46 @@ def _norm_title_prefix(text: str) -> str:
     return s.strip()
 
 
+def product_path_re(path: str) -> bool:
+    return bool(re.match(r"^/catalog/[^/?#]+/?$", path or "", re.I))
+
+
+def normalize_listing_url(url: str) -> str:
+    p = urlparse(url)
+    qs = parse_qs(p.query)
+    items: list[tuple[str, str]] = []
+    for key in sorted(qs):
+        for value in sorted(qs[key]):
+            items.append((key, value))
+    return urlunparse((p.scheme, p.netloc, p.path, "", urlencode(items, doseq=True), ""))
+
+
+def mk_category_url(base_url: str, code: str) -> str:
+    return urljoin(base_url, f"/catalog/?category={code}")
+
+
+def build_listing_url(base_url: str, category_code: str, page_no: int = 1) -> str:
+    base = safe_str(base_url).rstrip("/")
+    cat = safe_str(category_code)
+    if not base or not cat:
+        return base
+    if page_no <= 1:
+        return mk_category_url(base, cat)
+    return f"{mk_category_url(base, cat)}&PAGEN_1={int(page_no)}"
+
+
+def normalize_listing_title(title: str) -> str:
+    title = norm_ws(title)
+    title = ORIGINAL_MARK_RE.sub("", title)
+    title = TITLE_LEAD_CODE_RE.sub("", title)
+    while True:
+        new_title = LEAD_MARK_RE.sub("", title).strip(" ,.-")
+        if new_title == title:
+            break
+        title = new_title
+    return norm_ws(title).strip(" ,.-")
+
+
 def _read_yaml(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
@@ -117,6 +167,10 @@ def load_filter_cfg(cfg_path: str | Path | None) -> dict[str, Any]:
     if not cfg_path:
         return {}
     return _read_yaml(Path(cfg_path))
+
+
+def load_filter_config(path: str | Path) -> dict[str, Any]:
+    return load_filter_cfg(path)
 
 
 def _as_list(raw: Any) -> list[str]:
@@ -136,13 +190,26 @@ def _split_env_list(raw: str | None) -> list[str]:
 
 
 def categories_from_cfg(cfg: dict[str, Any] | None) -> list[str]:
-    """Backward-safe alias для build_vtt.py."""
-    return _as_list((cfg or {}).get("category_codes")) or list(DEFAULT_CATEGORY_CODES)
+    vals = (cfg or {}).get("category_codes")
+    if isinstance(vals, list):
+        out = [norm_ws(x) for x in vals if norm_ws(x)]
+        if out:
+            return out
+    return list(DEFAULT_CATEGORY_CODES)
 
 
 def prefixes_from_cfg(cfg: dict[str, Any] | None) -> list[str]:
-    """Backward-safe alias для build_vtt.py."""
-    return _as_list((cfg or {}).get("allowed_title_prefixes")) or list(DEFAULT_ALLOWED_TITLE_PREFIXES)
+    vals = (cfg or {}).get("allowed_title_prefixes")
+    if isinstance(vals, list):
+        out = [norm_ws(x) for x in vals if norm_ws(x)]
+        if out:
+            return out
+    vals = (cfg or {}).get("include_prefixes")
+    if isinstance(vals, list):
+        out = [norm_ws(x) for x in vals if norm_ws(x)]
+        if out:
+            return out
+    return list(DEFAULT_ALLOWED_TITLE_PREFIXES)
 
 
 def title_allowed(title: str, allowed_prefixes: list[str] | tuple[str, ...] | set[str] | None) -> bool:
@@ -162,6 +229,10 @@ def title_allowed(title: str, allowed_prefixes: list[str] | tuple[str, ...] | se
         if t_cf.startswith(p.casefold()):
             return True
     return False
+
+
+def title_matches_allowed(title: str, prefixes: list[str]) -> bool:
+    return title_allowed(title, prefixes)
 
 
 def url_allowed(url: str, category_codes: list[str] | tuple[str, ...] | set[str] | None) -> bool:
@@ -206,15 +277,6 @@ def resolve_filter_inputs(
     category_codes_env: str | None = None,
     allowed_title_prefixes_env: str | None = None,
 ) -> tuple[list[str], list[str]]:
-    """
-    Backward-safe resolver.
-
-    Поддерживает старые вызовы:
-      resolve_filter_inputs(cfg_path=...)
-      resolve_filter_inputs(filter_cfg=...)
-      resolve_filter_inputs(cfg_path=..., filter_cfg=...)
-    и новые env-override варианты.
-    """
     cfg: dict[str, Any] = {}
     if cfg_path:
         cfg.update(load_filter_cfg(cfg_path))
@@ -232,27 +294,23 @@ def resolve_filter_inputs(
     return categories, prefixes
 
 
-def build_listing_url(base_url: str, category_code: str, page_no: int = 1) -> str:
-    base = safe_str(base_url).rstrip("/")
-    cat = safe_str(category_code)
-    if not base or not cat:
-        return base
-    if page_no <= 1:
-        return f"{base}/catalog/{cat}/"
-    return f"{base}/catalog/{cat}/?PAGEN_1={int(page_no)}"
-
-
 __all__ = [
     "DEFAULT_CATEGORY_CODES",
     "DEFAULT_ALLOWED_TITLE_PREFIXES",
     "safe_str",
     "norm_ws",
+    "product_path_re",
+    "normalize_listing_url",
+    "mk_category_url",
+    "build_listing_url",
+    "normalize_listing_title",
     "load_filter_cfg",
+    "load_filter_config",
     "categories_from_cfg",
     "prefixes_from_cfg",
     "resolve_filter_inputs",
     "title_allowed",
+    "title_matches_allowed",
     "url_allowed",
     "filter_index_items",
-    "build_listing_url",
 ]
