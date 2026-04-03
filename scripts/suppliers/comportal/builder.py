@@ -5,15 +5,18 @@ Path: scripts/suppliers/comportal/builder.py
 ComPortal supplier layer — сборка raw offer.
 
 Что улучшено:
-- native_desc для "бедных" карточек техники теперь не обрывается на 1 поле;
-- если у устройства мало сильных техпараметров, в supplier-side narrative
-  добавляются безопасные опорные поля:
-  - Для бренда
-  - Модель
-  - Коды
-  - Гарантия
-- это особенно помогает таким товарам, как простые МФУ/принтеры,
-  у которых source params бедные, но raw всё равно должен быть полезным.
+- добавлен безопасный supplier-side слой mutual enrichment;
+- params_xml.py остаётся главным extractor;
+- desc_extract.py остаётся only-fill-missing;
+- builder теперь аккуратно делает reconcile XML params + desc hints,
+  не превращаясь во второй extractor.
+
+Логика:
+- XML params = главный источник;
+- desc/title hints = только безопасное обогащение;
+- если desc даёт более сильное значение для уже известного ключа,
+  builder может заменить слабое XML-значение;
+- core в это не вмешивается.
 """
 
 from __future__ import annotations
@@ -36,6 +39,15 @@ from suppliers.comportal.normalize import (
 )
 from suppliers.comportal.params_xml import build_params_from_xml
 from suppliers.comportal.pictures import collect_picture_urls
+
+
+_RECONCILE_KEYS = {
+    "коды",
+    "модель",
+    "ресурс",
+    "гарантия",
+    "цвет",
+}
 
 
 def _param_map(params: list[ParamItem]) -> dict[str, str]:
@@ -75,6 +87,98 @@ def _finalize_desc(text: str) -> str:
     if t and not t.endswith("."):
         t += "."
     return t
+
+
+def _param_value_score(name: str, value: str) -> int:
+    """
+    Оценить качество значения для безопасного reconcile.
+    Чем больше score — тем сильнее значение.
+    """
+    ncf = norm_ws(name).casefold()
+    v = norm_ws(value)
+    if not v:
+        return 0
+
+    score = 0
+
+    # Общее качество.
+    if len(v) >= 3:
+        score += 1
+    if any(ch.isdigit() for ch in v):
+        score += 1
+    if "#" in v or "/" in v:
+        score += 1
+    if len(v) >= 8:
+        score += 1
+
+    # Ключевые специальные правила.
+    if ncf == "гарантия":
+        if "мес" in v.casefold():
+            score += 4
+    elif ncf == "ресурс":
+        if any(ch.isdigit() for ch in v):
+            score += 3
+        if "стр" in v.casefold():
+            score += 1
+    elif ncf in {"коды", "модель"}:
+        if len(v) >= 5:
+            score += 3
+        if "#" in v or "/" in v or "-" in v:
+            score += 2
+    elif ncf == "цвет":
+        if v.casefold() in {
+            "чёрный", "черный", "жёлтый", "желтый", "голубой",
+            "пурпурный", "серый", "белый", "синий", "красный", "зелёный", "зеленый",
+        }:
+            score += 3
+
+    return score
+
+
+def _merge_desc_enrichment(xml_params: list[ParamItem], desc_params: list[ParamItem]) -> list[ParamItem]:
+    """
+    Безопасное взаимное обогащение.
+    XML остаётся главным источником, но desc hints могут:
+    - добавить отсутствующий ключ;
+    - заменить слабое XML-значение на более сильное.
+    """
+    out = list(xml_params)
+    index: dict[str, int] = {}
+
+    for i, p in enumerate(out):
+        ncf = norm_ws(p.name).casefold()
+        if ncf and ncf not in index:
+            index[ncf] = i
+
+    for p in desc_params or []:
+        name = norm_ws(p.name)
+        value = norm_ws(p.value)
+        if not name or not value:
+            continue
+
+        ncf = name.casefold()
+
+        # Только безопасные reconcile-ключи.
+        if ncf not in _RECONCILE_KEYS:
+            if ncf not in index:
+                out.append(ParamItem(name=name, value=value, source=p.source))
+                index[ncf] = len(out) - 1
+            continue
+
+        if ncf not in index:
+            out.append(ParamItem(name=name, value=value, source=p.source))
+            index[ncf] = len(out) - 1
+            continue
+
+        old_idx = index[ncf]
+        old_param = out[old_idx]
+        old_score = _param_value_score(old_param.name, old_param.value)
+        new_score = _param_value_score(name, value)
+
+        if new_score > old_score:
+            out[old_idx] = ParamItem(name=old_param.name, value=value, source=p.source)
+
+    return out
 
 
 def _enrich_sparse_device_desc(bits: list[str], pmap: dict[str, str]) -> list[str]:
@@ -117,8 +221,7 @@ def _desc_for_printing_device(pmap: dict[str, str]) -> str:
 
 
 def _desc_for_monitor(pmap: dict[str, str]) -> str:
-    bits: list[str] = []
-    bits.append("Монитор")
+    bits: list[str] = ["Монитор"]
 
     _append_param_line(bits, "Диагональ", pmap.get("Диагональ", ""))
     _append_param_line(bits, "Максимальное разрешение", pmap.get("Максимальное разрешение", ""))
@@ -189,11 +292,7 @@ def _desc_for_power(pmap: dict[str, str]) -> str:
     _append_param_line(bits, "Мощность", power_pair)
     _append_param_line(bits, "Форм-фактор", pmap.get("Форм-фактор", ""))
     _append_param_line(bits, "Стабилизатор (AVR)", pmap.get("Стабилизатор (AVR)", ""))
-    _append_param_line(
-        bits,
-        "Время работы при 100% нагрузке, мин",
-        pmap.get("Типовая продолжительность работы при 100% нагрузке, мин", ""),
-    )
+    _append_param_line(bits, "Время работы при 100% нагрузке, мин", pmap.get("Типовая продолжительность работы при 100% нагрузке, мин", ""))
     _append_param_line(bits, "Выходные соединения", pmap.get("Выходные соединения", ""))
     _append_param_line(bits, "Гарантия", pmap.get("Гарантия", ""))
 
@@ -260,15 +359,7 @@ def _build_native_desc(
     if norm_ws(pmap.get("Тип", "")):
         bits.append(norm_ws(pmap.get("Тип", "")))
 
-    for key in (
-        "Для бренда",
-        "Коды",
-        "Модель",
-        "Цвет",
-        "Технология печати",
-        "Ресурс",
-        "Гарантия",
-    ):
+    for key in ("Для бренда", "Коды", "Модель", "Цвет", "Технология печати", "Ресурс", "Гарантия"):
         _append_param_line(bits, key, pmap.get(key, ""))
 
     body = _join_nonempty(bits)
@@ -320,9 +411,7 @@ def build_offer_out(
     placeholder_picture = norm_ws(schema.get("placeholder_picture") or "")
     vendor_blacklist = {str(x).casefold() for x in (schema.get("vendor_blacklist_casefold") or [])}
 
-    fallback_vendor = norm_ws(
-        (((policy.get("vendor_policy") or {}).get("neutral_fallback_vendor")) or "")
-    )
+    fallback_vendor = norm_ws((((policy.get("vendor_policy") or {}).get("neutral_fallback_vendor")) or ""))
 
     clean_name = normalize_name(source_offer.name)
     clean_vendor = normalize_vendor(
@@ -334,12 +423,13 @@ def build_offer_out(
     )
     clean_model = normalize_model(clean_name, source_offer.params)
 
-    params = build_params_from_xml(source_offer, schema)
-    params = extract_desc_fill_params(
+    xml_params = build_params_from_xml(source_offer, schema)
+    desc_hint_params = extract_desc_fill_params(
         title=clean_name,
         desc_text=source_offer.description,
-        existing_params=params,
+        existing_params=[],
     )
+    params = _merge_desc_enrichment(xml_params, desc_hint_params)
     params = _ensure_base_params(
         source_offer=source_offer,
         params=params,
@@ -362,7 +452,7 @@ def build_offer_out(
         params=params,
     )
 
-    out = OfferOut(
+    return OfferOut(
         oid=oid,
         available=available,
         name=clean_name,
@@ -372,7 +462,6 @@ def build_offer_out(
         params=[(norm_ws(p.name), norm_ws(p.value)) for p in params if norm_ws(p.name) and norm_ws(p.value)],
         native_desc=native_desc,
     )
-    return out
 
 
 def build_offers(
