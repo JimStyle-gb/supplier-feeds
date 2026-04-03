@@ -4,10 +4,20 @@ Path: scripts/suppliers/comportal/builder.py
 
 ComPortal supplier layer — сборка raw offer.
 
-Что исправлено:
+Что улучшено:
 - safe mutual enrichment сохранён;
-- но "Модель" больше не перетирается packaging/code-хвостом,
-  если XML уже дал более чистую базовую модель.
+- добавлена точечная type-aware чистка слабополезных техпараметров;
+- это не core-логика: supplier-layer сам решает, какие raw params
+  для ComPortal реально полезны для витрины и SEO.
+
+Что режем сейчас:
+- глобально: "Серия"
+- для печатной техники:
+  - "Объем памяти"
+  - "Количество лотков"
+  - "Емкость 1-го лотка"
+  - "Емкость 2-го лотка"
+  - "Емкость 3-го лотка"
 """
 
 from __future__ import annotations
@@ -32,7 +42,25 @@ from suppliers.comportal.params_xml import build_params_from_xml
 from suppliers.comportal.pictures import collect_picture_urls
 
 
-_RECONCILE_KEYS = {"коды", "модель", "ресурс", "гарантия", "цвет"}
+_RECONCILE_KEYS = {
+    "коды",
+    "модель",
+    "ресурс",
+    "гарантия",
+    "цвет",
+}
+
+_GLOBAL_DROP_PARAM_NAMES = {
+    "серия",
+}
+
+_PRINT_DEVICE_DROP_PARAM_NAMES = {
+    "объем памяти",
+    "количество лотков",
+    "емкость 1-го лотка",
+    "емкость 2-го лотка",
+    "емкость 3-го лотка",
+}
 
 
 def _param_map(params: list[ParamItem]) -> dict[str, str]:
@@ -79,6 +107,7 @@ def _param_value_score(name: str, value: str) -> int:
     v = norm_ws(value)
     if not v:
         return 0
+
     score = 0
     if len(v) >= 3:
         score += 1
@@ -88,6 +117,7 @@ def _param_value_score(name: str, value: str) -> int:
         score += 1
     if len(v) >= 8:
         score += 1
+
     if ncf == "гарантия":
         if "мес" in v.casefold():
             score += 4
@@ -102,60 +132,83 @@ def _param_value_score(name: str, value: str) -> int:
         if "#" in v or "/" in v or "-" in v:
             score += 2
     elif ncf == "цвет":
-        if v.casefold() in {"чёрный", "черный", "жёлтый", "желтый", "голубой", "пурпурный", "серый", "белый", "синий", "красный", "зелёный", "зеленый"}:
+        if v.casefold() in {
+            "чёрный", "черный", "жёлтый", "желтый", "голубой",
+            "пурпурный", "серый", "белый", "синий", "красный", "зелёный", "зеленый",
+        }:
             score += 3
+
     return score
 
 
 def _model_reconcile_should_keep_old(old_value: str, new_value: str) -> bool:
+    """
+    Для "Модель" стараемся хранить более чистую базовую модель,
+    а packaging/code-хвосты оставлять в "Коды".
+    """
     old_v = norm_ws(old_value)
     new_v = norm_ws(new_value)
     if not old_v or not new_v:
         return False
+
     old_cf = old_v.casefold()
     new_cf = new_v.casefold()
+
     if old_cf == new_cf:
         return True
+
     if new_cf.startswith(old_cf) and any(sep in new_v for sep in ("#", "/")):
         return True
+
     for sep in ("#", "/"):
         if sep in new_v:
             head = norm_ws(new_v.split(sep, 1)[0])
             if head.casefold() == old_cf:
                 return True
+
     return False
 
 
 def _merge_desc_enrichment(xml_params: list[ParamItem], desc_params: list[ParamItem]) -> list[ParamItem]:
     out = list(xml_params)
     index: dict[str, int] = {}
+
     for i, p in enumerate(out):
         ncf = norm_ws(p.name).casefold()
         if ncf and ncf not in index:
             index[ncf] = i
+
     for p in desc_params or []:
         name = norm_ws(p.name)
         value = norm_ws(p.value)
         if not name or not value:
             continue
+
         ncf = name.casefold()
+
         if ncf not in _RECONCILE_KEYS:
             if ncf not in index:
                 out.append(ParamItem(name=name, value=value, source=p.source))
                 index[ncf] = len(out) - 1
             continue
+
         if ncf not in index:
             out.append(ParamItem(name=name, value=value, source=p.source))
             index[ncf] = len(out) - 1
             continue
+
         old_idx = index[ncf]
         old_param = out[old_idx]
+
         if ncf == "модель" and _model_reconcile_should_keep_old(old_param.value, value):
             continue
+
         old_score = _param_value_score(old_param.name, old_param.value)
         new_score = _param_value_score(name, value)
+
         if new_score > old_score:
             out[old_idx] = ParamItem(name=old_param.name, value=value, source=p.source)
+
     return out
 
 
@@ -163,6 +216,7 @@ def _enrich_sparse_device_desc(bits: list[str], pmap: dict[str, str]) -> list[st
     strong_payload_count = max(0, len(bits) - 1)
     if strong_payload_count >= 3:
         return bits
+
     for key in ("Для бренда", "Модель", "Коды", "Гарантия"):
         val = norm_ws(pmap.get(key, ""))
         if not val:
@@ -170,6 +224,7 @@ def _enrich_sparse_device_desc(bits: list[str], pmap: dict[str, str]) -> list[st
         probe = f"{key}: {val}"
         if probe not in bits:
             bits.append(probe)
+
     return bits
 
 
@@ -228,10 +283,13 @@ def _desc_for_power(pmap: dict[str, str]) -> str:
     ptype = norm_ws(pmap.get("Тип", ""))
     if ptype:
         bits.append(ptype)
-    power_pair = _join_nonempty([
-        f"{norm_ws(pmap.get('Мощность (VA)', ''))} VA" if norm_ws(pmap.get("Мощность (VA)", "")) else "",
-        f"{norm_ws(pmap.get('Мощность (W)', ''))} W" if norm_ws(pmap.get("Мощность (W)", "")) else "",
-    ], sep=" / ")
+    power_pair = _join_nonempty(
+        [
+            f"{norm_ws(pmap.get('Мощность (VA)', ''))} VA" if norm_ws(pmap.get("Мощность (VA)", "")) else "",
+            f"{norm_ws(pmap.get('Мощность (W)', ''))} W" if norm_ws(pmap.get("Мощность (W)", "")) else "",
+        ],
+        sep=" / ",
+    )
     _append_param_line(bits, "Мощность", power_pair)
     _append_param_line(bits, "Форм-фактор", pmap.get("Форм-фактор", ""))
     _append_param_line(bits, "Стабилизатор (AVR)", pmap.get("Стабилизатор (AVR)", ""))
@@ -256,12 +314,32 @@ def _desc_for_consumable(pmap: dict[str, str]) -> str:
     return _finalize_desc(_join_nonempty(bits))
 
 
+def _prune_low_value_params(params: list[ParamItem]) -> list[ParamItem]:
+    """
+    Точечная чистка слабополезных raw params.
+    """
+    pmap = _param_map(params)
+    ptype = norm_ws(pmap.get("Тип", "")).casefold()
+
+    drop_names = set(_GLOBAL_DROP_PARAM_NAMES)
+    if ptype in {"мфу", "принтер", "сканер", "проектор", "широкоформатный принтер"}:
+        drop_names |= set(_PRINT_DEVICE_DROP_PARAM_NAMES)
+
+    out: list[ParamItem] = []
+    for p in params or []:
+        if norm_ws(p.name).casefold() in drop_names:
+            continue
+        out.append(p)
+    return out
+
+
 def _build_native_desc(*, clean_name: str, source_offer: SourceOffer, params: list[ParamItem]) -> str:
     native = sanitize_native_desc(source_offer.description or "", title=clean_name)
     if native:
         return native
     pmap = _param_map(params)
     ptype = norm_ws(pmap.get("Тип", "")).casefold()
+
     if ptype in {"мфу", "принтер", "сканер", "проектор", "широкоформатный принтер"}:
         text = _desc_for_printing_device(pmap)
         if text:
@@ -282,6 +360,7 @@ def _build_native_desc(*, clean_name: str, source_offer: SourceOffer, params: li
         text = _desc_for_consumable(pmap)
         if text:
             return text
+
     bits: list[str] = []
     if norm_ws(pmap.get("Тип", "")):
         bits.append(norm_ws(pmap.get("Тип", "")))
@@ -318,28 +397,54 @@ def build_offer_out(source_offer: SourceOffer, *, schema: dict[str, Any], policy
     placeholder_picture = norm_ws(schema.get("placeholder_picture") or "")
     vendor_blacklist = {str(x).casefold() for x in (schema.get("vendor_blacklist_casefold") or [])}
     fallback_vendor = norm_ws((((policy.get("vendor_policy") or {}).get("neutral_fallback_vendor")) or ""))
+
     clean_name = normalize_name(source_offer.name)
-    clean_vendor = normalize_vendor(source_offer.vendor, name=clean_name, params=source_offer.params, vendor_blacklist=vendor_blacklist, fallback_vendor=fallback_vendor)
+    clean_vendor = normalize_vendor(
+        source_offer.vendor,
+        name=clean_name,
+        params=source_offer.params,
+        vendor_blacklist=vendor_blacklist,
+        fallback_vendor=fallback_vendor,
+    )
     clean_model = normalize_model(clean_name, source_offer.params)
+
     xml_params = build_params_from_xml(source_offer, schema)
-    desc_hint_params = extract_desc_fill_params(title=clean_name, desc_text=source_offer.description, existing_params=[])
+    desc_hint_params = extract_desc_fill_params(
+        title=clean_name,
+        desc_text=source_offer.description,
+        existing_params=[],
+    )
     params = _merge_desc_enrichment(xml_params, desc_hint_params)
     params = _ensure_base_params(source_offer=source_offer, params=params, vendor=clean_vendor, model=clean_model)
     params = apply_compat_cleanup(params)
+    params = _prune_low_value_params(params)
+
     oid = build_offer_oid(source_offer.vendor_code, source_offer.raw_id, prefix=prefix)
     if not oid:
         return None
+
     pictures = collect_picture_urls(source_offer.picture_urls, placeholder_picture=placeholder_picture)
     available = normalize_available(source_offer.available_attr, source_offer.available_tag, source_offer.active)
     price_in = normalize_price_in(source_offer.price_text)
     native_desc = _build_native_desc(clean_name=clean_name, source_offer=source_offer, params=params)
-    return OfferOut(oid=oid, available=available, name=clean_name, price=price_in, pictures=pictures, vendor=clean_vendor, params=[(norm_ws(p.name), norm_ws(p.value)) for p in params if norm_ws(p.name) and norm_ws(p.value)], native_desc=native_desc)
+
+    return OfferOut(
+        oid=oid,
+        available=available,
+        name=clean_name,
+        price=price_in,
+        pictures=pictures,
+        vendor=clean_vendor,
+        params=[(norm_ws(p.name), norm_ws(p.value)) for p in params if norm_ws(p.name) and norm_ws(p.value)],
+        native_desc=native_desc,
+    )
 
 
 def build_offers(source_offers: list[SourceOffer], *, schema: dict[str, Any], policy: dict[str, Any]) -> tuple[list[OfferOut], BuildStats]:
     out: list[OfferOut] = []
     stats = BuildStats(before=len(source_offers), after=0)
     placeholder_picture = norm_ws(schema.get("placeholder_picture") or "")
+
     for src in source_offers:
         offer = build_offer_out(src, schema=schema, policy=policy)
         if offer is None:
@@ -352,5 +457,6 @@ def build_offers(source_offers: list[SourceOffer], *, schema: dict[str, Any], po
         if not norm_ws(offer.vendor):
             stats.empty_vendor_count += 1
         out.append(offer)
+
     stats.after = len(out)
     return out, stats
