@@ -380,21 +380,82 @@ def _build_native_desc(*, clean_name: str, source_offer: SourceOffer, params: li
     return ""
 
 
+_IDENTITY_GENERIC_VALUES = {
+    "моноблок",
+    "ноутбук",
+    "принтер",
+    "мфу",
+    "сканер",
+    "проектор",
+    "монитор",
+    "картридж",
+    "тонер",
+    "ибп",
+    "сервер",
+    "cs",
+}
+
+
+def _is_weak_identity_value(value: str, *, vendor: str) -> bool:
+    v = norm_ws(value)
+    if not v:
+        return True
+
+    vcf = v.casefold()
+    if vcf in _IDENTITY_GENERIC_VALUES:
+        return True
+    if vendor and vcf == norm_ws(vendor).casefold():
+        return True
+
+    return False
+
+
+def _upsert_param(params: list[ParamItem], *, name: str, value: str, source: str) -> list[ParamItem]:
+    target = norm_ws(name).casefold()
+    out: list[ParamItem] = []
+    replaced = False
+
+    for p in params or []:
+        if norm_ws(p.name).casefold() == target and not replaced:
+            out.append(ParamItem(name=norm_ws(name), value=norm_ws(value), source=source))
+            replaced = True
+        else:
+            out.append(p)
+
+    if not replaced:
+        out.append(ParamItem(name=norm_ws(name), value=norm_ws(value), source=source))
+    return out
+
+
 def _ensure_base_params(*, source_offer: SourceOffer, params: list[ParamItem], vendor: str, model: str) -> list[ParamItem]:
     out = list(params)
     pmap = _param_map(out)
-    if vendor and "Для бренда" not in pmap:
-        out.append(ParamItem(name="Для бренда", value=vendor, source="normalize"))
-    if model and "Модель" not in pmap:
-        out.append(ParamItem(name="Модель", value=model, source="normalize"))
-    if "Коды" not in pmap:
-        if model:
-            out.append(ParamItem(name="Коды", value=model, source="normalize"))
-        elif source_offer.vendor_code:
+
+    if vendor:
+        cur_vendor_param = norm_ws(pmap.get("Для бренда", ""))
+        if not cur_vendor_param or _is_weak_identity_value(cur_vendor_param, vendor=vendor):
+            out = _upsert_param(out, name="Для бренда", value=vendor, source="normalize")
+
+    pmap = _param_map(out)
+    if model:
+        cur_model = norm_ws(pmap.get("Модель", ""))
+        if not cur_model or _is_weak_identity_value(cur_model, vendor=vendor):
+            out = _upsert_param(out, name="Модель", value=model, source="normalize")
+
+    pmap = _param_map(out)
+    if model:
+        cur_codes = norm_ws(pmap.get("Коды", ""))
+        if not cur_codes or _is_weak_identity_value(cur_codes, vendor=vendor):
+            out = _upsert_param(out, name="Коды", value=model, source="normalize")
+    elif source_offer.vendor_code:
+        pmap = _param_map(out)
+        if "Коды" not in pmap:
             out.append(ParamItem(name="Коды", value=norm_ws(source_offer.vendor_code), source="source"))
+
     pmap = _param_map(out)
     if vendor and pmap.get("Для бренда") and pmap.get("Бренд"):
         out = _drop_param_casefold(out, "Бренд")
+
     return out
 
 
