@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-03 01:42:38">
+<yml_catalog date="2026-04-03 18:56:31">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-04-03 01:42:38
+Время сборки (Алматы)                      | 2026-04-03 18:56:31
 Ближайшая сборка (Алматы)                  | 2026-04-04 01:00:00
-Сколько товаров у поставщика до фильтра    | 2043
-Сколько товаров у поставщика после фильтра | 170
-Сколько товаров есть в наличии (true)      | 170
+Сколько товаров у поставщика до фильтра    | 2045
+Сколько товаров у поставщика после фильтра | 176
+Сколько товаров есть в наличии (true)      | 176
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -1238,7 +1238,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T69440N</vendorCode>
 <name>Картридж Epson C13T69440N, жёлтый, 700 мл</name>
 <price>222900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/425/s87ply3o1mrfsaztv4enkhrxmbes9jtj.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1674,6 +1674,40 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>ViewSonic, Монитор Viewsonic VX2719-PC-MHD, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="ACC11CH96404" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC11CH96404</vendorCode>
+<name>МФУ Epson L14150 фабрика печати</name>
+<price>461900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>МФУ Epson L14150 фабрика печати</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Печать без картриджей Компактный быстрый многофункциональный принтер EcoTank для печати формата A3+. Низкие затраты на печать страницы, лоток на 250 листов и автоподатчик на 35 листов. Высокая скорость печати и сканирования Низкие затраты на печать страницы Универсальный принтер с поддержкой A3+ Ищите компактный экономичный цветной принтер формата A3? L14150 доказывает, что это возможно. Принтер EcoTank позволяет печатать, сканировать, копировать и отправлять факсом документы в формате A4, а также печатать в формате A3+ с заднего податчика при очень низкой стоимости печати страницы. Скорость сканирования и печати, фронтальный лоток на 250 листов и автоподатчик на 35 листов A4 обеспечивают быстрое выполнение задач. Компактная модель для печати A3 Компактный принтер L14150 EcoTank позволяет печатать, сканировать, копировать и отправлять факсом документы в формате A4, а также печатать в формате A3+ с заднего податчика. Кроме того, ЖК-экран позволяет легко печатать без ПК…</p>
+<h3>Характеристики</h3><ul><li><strong>Вес:</strong> 9,7 кг</li><li><strong>Габариты:</strong> 498 x 358 x 245</li><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Диагональ:</strong> 6,8 см Свойства Сенсорный экран Другие</li><li><strong>Интерфейсы:</strong> Wi-Fi, Ethernet, USB</li><li><strong>Модель:</strong> МФУ Epson L14150 фабрика печати</li><li><strong>Разрешение печати, dpi:</strong> 4800 x 1200</li><li><strong>Разрешение сканера, dpi:</strong> 1200 x 2400</li><li><strong>Скорость печати (A4):</strong> 17</li><li><strong>Технология:</strong> чернил Пигментный чёрный и цветные чернила на красителях</li><li><strong>Тип:</strong> МФУ Офис</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Вес">9,7 кг</param>
+<param name="Габариты">498 x 358 x 245</param>
+<param name="Гарантия">12 мес.</param>
+<param name="Диагональ">6,8 см Свойства Сенсорный экран Другие</param>
+<param name="Интерфейсы">Wi-Fi, Ethernet, USB</param>
+<param name="Модель">МФУ Epson L14150 фабрика печати</param>
+<param name="Разрешение печати, dpi">4800 x 1200</param>
+<param name="Разрешение сканера, dpi">1200 x 2400</param>
+<param name="Скорость печати (A4)">17</param>
+<param name="Технология">чернил Пигментный чёрный и цветные чернила на красителях</param>
+<param name="Тип">МФУ Офис</param>
+<keywords>Epson, МФУ Epson L14150 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="ACC11CJ69401" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC11CJ69401</vendorCode>
@@ -1703,6 +1737,36 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">МФУ Дом</param>
 <param name="Цвет">Black</param>
 <keywords>Epson, МФУ Epson L3200 фабрика печати, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="ACC11CJ67412" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC11CJ67412</vendorCode>
+<name>МФУ Epson L3250 фабрика печати. Wi-Fi</name>
+<price>104900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>МФУ Epson L3250 фабрика печати. Wi-Fi</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Домашний струйный принтер Многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct Печать, сканирование и копирование Wi-Fi Direct Черный Благодаря отсутствию необходимости в замене картриджей это многофункциональное устройство (печать, сканирование, копирование) с Wi-Fi Direct подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. С помощью 100-листового заднего лотка для бумаги, печати фотографий без полей (до 10 x 15 см) и скорости печати до 10 страниц в минуту¹ вы с легкостью сможете выполнять различные задачи. Попрощайтесь с дорогостоящими картриджами EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета. Постоянная экономия Этот принтер EcoTank, поставляемый с чернилами на срок до 3 лет, обеспечивает значительную экономию средств при печати. Сменный набор чернильных флаконов может использоваться для печати до 4500 страниц в черном цвете и до 7500 страниц в цвете…</p>
+<h3>Характеристики</h3><ul><li><strong>Вес:</strong> 3,9 кг</li><li><strong>Габариты:</strong> 375 x 347 x 179</li><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Модель:</strong> МФУ Epson L3250 фабрика печати. Wi-Fi</li><li><strong>Технология:</strong> капель с переменным размером</li><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Цвет:</strong> Black</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Вес">3,9 кг</param>
+<param name="Габариты">375 x 347 x 179</param>
+<param name="Гарантия">12 мес.</param>
+<param name="Модель">МФУ Epson L3250 фабрика печати. Wi-Fi</param>
+<param name="Технология">капель с переменным размером</param>
+<param name="Тип">МФУ Дом</param>
+<param name="Цвет">Black</param>
+<keywords>Epson, МФУ Epson L3250 фабрика печати. Wi-Fi, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CJ67414" available="true">
@@ -1766,6 +1830,36 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">МФУ Дом</param>
 <param name="Цвет">Белый жк-дисплей</param>
 <keywords>Epson, МФУ Epson L3266 фабрика печати Wi-Fi, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="ACC11CK59404" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC11CK59404</vendorCode>
+<name>МФУ Epson L3550 фабрика печати, Wi-Fi</name>
+<price>158900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>МФУ Epson L3550 фабрика печати, Wi-Fi</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>МФУ с чернильными емкостями для печати дома Высокоскоростной цветной принтер 3-в-1 формата A4 с поддержкой Wi-Fi Direct Печать, сканирование, копирование Поддержка Wi-Fi Direct Черный Благодаря отсутствию картриджей МФУ (принтер-копир-скан) с поддержкой Wi-Fi Direct подойдет тем, кому необходимо высокое качество при низкой себестоимости печати. Решайте разнообразные задачи благодаря заднему лотку на 100 листов, функции печати фотографий без полей (размером до 10×15 см), а также скорости печати до 15 страниц в минуту¹. При необходимости емкость для отработанных чернил легко заменить самостоятельно без обращения в сервисный центр. Забудьте о дорогих картриджах Устройства серии EcoTank с чернильными емкостями большого объема — это удобное решение для печати дома. Модели оснащены усовершенствованной системой заправки чернил InkLock, минимизирующей риск протечек, а также системой KeyLock, не дающей перепутать цвета. Еще больше экономии Чернил в комплекте хватит на три года использования³, благодаря чему экономия составит до 90 % стоимости чернил². Одного комплекта чернил достаточно для печати 4 300 черно-белых страниц и 7 300 цветных страниц ⁴…</p>
+<h3>Характеристики</h3><ul><li><strong>Вес:</strong> 4,1 кг</li><li><strong>Габариты:</strong> 375 x 347 x 179</li><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Модель:</strong> поставляется с установленной печатающей головкой и не требует сложной настройки. Техника Метод печати PrecisionCore™ Print Head Конфигурация сопла 400 Сопла (черный), 128 Сопла (цвет) Минимальный размер капли 3,3 капли(ей)</li><li><strong>Технология:</strong> PrecisionCore Heat-Free, не использующая нагрев при печати, помогает экономить электроэнергию и деньги за счет меньшего количества деталей, подлежащих регулярной замене. В отличие от принтеров других производителей</li><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Цвет:</strong> Black другие</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Вес">4,1 кг</param>
+<param name="Габариты">375 x 347 x 179</param>
+<param name="Гарантия">12 мес.</param>
+<param name="Модель">поставляется с установленной печатающей головкой и не требует сложной настройки. Техника Метод печати PrecisionCore™ Print Head Конфигурация сопла 400 Сопла (черный), 128 Сопла (цвет) Минимальный размер капли 3,3 капли(ей)</param>
+<param name="Технология">PrecisionCore Heat-Free, не использующая нагрев при печати, помогает экономить электроэнергию и деньги за счет меньшего количества деталей, подлежащих регулярной замене. В отличие от принтеров других производителей</param>
+<param name="Тип">МФУ Дом</param>
+<param name="Цвет">Black другие</param>
+<keywords>Epson, МФУ Epson L3550 фабрика печати Wi-Fi, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC11CK58404" available="true">
@@ -2483,6 +2577,33 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Технология">печати Термотрансферная Длина носителя, метров 9 Ширина носителя, миллиметров 6 9 12 18</param>
 <param name="Тип">Ленточный</param>
 <keywords>Epson, Принтер ленточный Epson LW400, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="ACC51CA63100" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC51CA63100</vendorCode>
+<name>Принтер ленточный Epson LW700</name>
+<price>72900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Принтер ленточный Epson LW700</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Тип: Ленточный; Модель: Принтер ленточный Epson LW700</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес.</li><li><strong>Модель:</strong> Принтер ленточный Epson LW700</li><li><strong>Технология:</strong> печати Термотрансферная Длина носителя, метров 9 Ширина носителя, миллиметров 6 9 12 18 24</li><li><strong>Тип:</strong> Ленточный</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">12 мес.</param>
+<param name="Модель">Принтер ленточный Epson LW700</param>
+<param name="Технология">печати Термотрансферная Длина носителя, метров 9 Ширина носителя, миллиметров 6 9 12 18 24</param>
+<param name="Тип">Ленточный</param>
+<keywords>Epson, Принтер ленточный Epson LW700, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACZD4A042-30EE00EZ" available="true">
@@ -4041,6 +4162,37 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Чернила Epson C13T09C54A голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="ACC13T09C64A" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T09C64A</vendorCode>
+<name>Чернила Epson C13T09C64A, голубой</name>
+<price>10900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Чернила Epson C13T09C64A, голубой</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Оригинальные чернила Epson C13T09C64A Голубого цвета для Epson L8050 / Epson L18050.</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson L8050 / Epson L18050</li><li><strong>Коды:</strong> C13T09C64A</li><li><strong>Модель:</strong> C13T09C64A</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">3 мес.</param>
+<param name="Для бренда">Epson</param>
+<param name="Для устройства">Epson L8050 / Epson L18050</param>
+<param name="Коды">C13T09C64A</param>
+<param name="Модель">C13T09C64A</param>
+<param name="Тип">Чернила</param>
+<param name="Тип печати">Струйная</param>
+<param name="Цвет">Голубой</param>
+<keywords>Epson, Чернила Epson C13T09C64A голубой, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="ACC13T66414A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T66414A</vendorCode>
@@ -4071,6 +4223,38 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип печати">Струйная</param>
 <param name="Цвет">Чёрный</param>
 <keywords>Epson, Чернила Epson C13T66414A чёрный 4000 – 7100 страниц формата A4*, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="ACC13T66424A" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T66424A</vendorCode>
+<name>Чернила Epson C13T66424A, голубой, 5700 – 6500 страниц формата A4*</name>
+<price>7900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Чернила Epson C13T66424A, голубой, 5700 – 6500 страниц формата A4*</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Оригинальные чернила Epson C13T66424A Голубого цвета для Epson L100 / Epson L200 / Epson L110 / Epson L210 / Epson L300 / Epson L355 / Epson L550. Ресурс: 5700 – 6500 страниц формата A4*.</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Для устройства:</strong> Epson L100 / Epson L200 / Epson L110 / Epson L210 / Epson L300 / Epson L355 / Epson L550</li><li><strong>Коды:</strong> C13T66424A</li><li><strong>Модель:</strong> C13T66424A</li><li><strong>Ресурс:</strong> 5700 – 6500 страниц формата A4*</li><li><strong>Тип:</strong> Чернила</li><li><strong>Тип печати:</strong> Струйная</li><li><strong>Цвет:</strong> Голубой</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">3 мес.</param>
+<param name="Для бренда">Epson</param>
+<param name="Для устройства">Epson L100 / Epson L200 / Epson L110 / Epson L210 / Epson L300 / Epson L355 / Epson L550</param>
+<param name="Коды">C13T66424A</param>
+<param name="Модель">C13T66424A</param>
+<param name="Ресурс">5700 – 6500 страниц формата A4*</param>
+<param name="Тип">Чернила</param>
+<param name="Тип печати">Струйная</param>
+<param name="Цвет">Голубой</param>
+<keywords>Epson, Чернила Epson C13T66424A голубой 5700 – 6500 страниц формата A4*, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACC13T66434A" available="true">
@@ -4352,32 +4536,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Гарантия">12 мес.</param>
 <param name="Модель">Шредер Fellowes® AUTOMAX 150C SHREDDER (CROSS CUT) 230V EU</param>
 <keywords>Fellowes, Шредер Fellowes® AUTOMAX 150C SHREDDER (CROSS CUT) 230V EU, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="AC4629201" available="true">
-<categoryId></categoryId>
-<vendorCode>AC4629201</vendorCode>
-<name>Шредер Fellowes® AutoMax® 100M, минирезка, DIN P-4, 4х10 мм, автоподача 100 лст., 23 лтр., автореверс</name>
-<price>144900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/a0e/bwypzsvo4u6av2bh97a3bbx9v6fl3xd9.jpg</picture>
-<vendor>Fellowes</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Шредер Fellowes® AutoMax® 100M, минирезка, DIN P-4, 4х10 мм, автоподача 100 лст., 23 лтр., автореверс</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Шредер с автоподачей AutoMax™ 100M Гибридная модель с автоматической/ручной подачей Ультра тихий механизм уничтожения с плавающим режущим блоком Загрузка лотка до 100 листов, быстрая подача бумаги благодаря 8 прорезиненным роликам Перекрестная минирезка - 4х10 мм, лист А4 разрезается на 1500 фрагментов Удобная выдвижная корзина 23 литра ≈ 175 листов А4 Гарантия 2 года на устройство и 7 лет на ножи Возможности уничтожения - скобы, карты, скрепки AutoFeed. Автоматическая подача документов на уничтожение. Просто загрузите стопку документов в лоток и включите шредер – все остальное он сделает за вас. Auto Reverse Auto Reverse. В случае образования затора автоматически запускается обратный ход, чтобы расправить на ножах бумагу. Уничтожение продолжится в обычном режиме. SilentShred SilentShred®. Тихая и комфортная работа уничтожителя документов. Особая конструкция двигателя и механизма привода минимизирует уровень шума при работе шредера. Sleep Mode Sleep Mode™. автоматическое отключение питания шредера<br>Дополнительно:<br>Тип резки: перекрестная<br>Уровень секретности: P-4<br>Уничтожение: скобы, карты, скрепки<br>Производительность уничтожителя: 100 (10 вручную)<br>Емкость корзины, литров: 23 л</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 24 мес.</li><li><strong>Модель:</strong> Шредер Fellowes® AutoMax® 100M, минирезка, DIN P-4, 4х10 мм,автоподача 100 лст., 23 лтр., автореверс</li><li><strong>Тип:</strong> Шредеры офисные</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Гарантия">24 мес.</param>
-<param name="Модель">Шредер Fellowes® AutoMax® 100M, минирезка, DIN P-4, 4х10 мм,автоподача 100 лст., 23 лтр., автореверс</param>
-<param name="Тип">Шредеры офисные</param>
-<keywords>Fellowes, Шредер Fellowes® AutoMax® 100M минирезка DIN P-4 4х10 мм автоподача 100 лст. 23 лтр. автореверс, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="AC4633601" available="true">
@@ -4666,6 +4824,34 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Модель">Экономичный набор из четырех контейнеров с чернилами, серия 103</param>
 <param name="Тип">Экономичный набор</param>
 <keywords>CS, Экономичный набор Экономичный набор из четырех контейнеров с чернилами серия 103, доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="ACC13T66464A" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T66464A</vendorCode>
+<name>Экономичный набор Epson Экономичный набор из четырех контейнеров с чернилами, серия 664, чернил позволят напечатать до 4 500 черно-белых страниц и др.</name>
+<price>19900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- Наименование товара -->
+<h3>Экономичный набор Epson Экономичный набор из четырех контейнеров с чернилами, серия 664, чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных¹. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество</h3>
+<!-- WhatsApp -->
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<p>Оригинальный экономичный набор Epson Экономичный набор из четырех контейнеров с чернилами, серия 664. Ресурс: чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных¹. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество.</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3 мес.</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Модель:</strong> Экономичный набор из четырех контейнеров с чернилами, серия 664</li><li><strong>Ресурс:</strong> чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных¹. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество</li><li><strong>Тип:</strong> Экономичный набор</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Гарантия">3 мес.</param>
+<param name="Для бренда">Epson</param>
+<param name="Модель">Экономичный набор из четырех контейнеров с чернилами, серия 664</param>
+<param name="Ресурс">чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных¹. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество</param>
+<param name="Тип">Экономичный набор</param>
+<keywords>Epson, Экономичный набор Epson Экономичный набор из четырех контейнеров с чернилами серия 664 чернил позволят напечатать до 4 500 черно-белых страниц и др., доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="ACMSPSAB167V2" available="true">
