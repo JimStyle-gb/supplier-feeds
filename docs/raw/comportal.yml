@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-03 16:43:57">
+<yml_catalog date="2026-04-03 17:10:29">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-04-03 16:43:57
+Время сборки (Алматы)                      | 2026-04-03 17:10:29
 Ближайшая сборка (Алматы)                  | 2026-04-04 04:00:00
 Сколько товаров у поставщика до фильтра    | 1175
 Сколько товаров у поставщика после фильтра | 572
@@ -7717,12 +7717,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 12 мес. Для бренда: Dell. Модель: BGLW-. Коды: BGLW-.]]></description>
+Ноутбук. Гарантия: 12 мес. Для бренда: Dell. Модель: 210-BGLW-N1601PVNB3530EMEA01_UBU. Коды: 210-BGLW-N1601PVNB3530EMEA01_UBU.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">BGLW-</param>
-<param name="Коды">BGLW-</param>
+<param name="Модель">210-BGLW-N1601PVNB3530EMEA01_UBU</param>
+<param name="Коды">210-BGLW-N1601PVNB3530EMEA01_UBU</param>
 </offer>
 
 <offer id="CP13864621" available="true">
@@ -9403,12 +9403,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: AIWA. Коды: AIWA.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: PF2402-D 8-256. Коды: PF2402-D 8-256.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
 <param name="Для бренда">AIWA</param>
-<param name="Модель">AIWA</param>
-<param name="Коды">AIWA</param>
+<param name="Модель">PF2402-D 8-256</param>
+<param name="Коды">PF2402-D 8-256</param>
 </offer>
 
 <offer id="CP13872772" available="true">
@@ -9420,12 +9420,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: AIWA. Коды: AIWA.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: PF2402-K 8-512. Коды: PF2402-K 8-512.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
 <param name="Для бренда">AIWA</param>
-<param name="Модель">AIWA</param>
-<param name="Коды">AIWA</param>
+<param name="Модель">PF2402-K 8-512</param>
+<param name="Коды">PF2402-K 8-512</param>
 </offer>
 
 <offer id="CP13872773" available="true">
@@ -9437,12 +9437,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: AIWA. Коды: AIWA.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: PF2702-K 16-512. Коды: PF2702-K 16-512.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
 <param name="Для бренда">AIWA</param>
-<param name="Модель">AIWA</param>
-<param name="Коды">AIWA</param>
+<param name="Модель">PF2702-K 16-512</param>
+<param name="Коды">PF2702-K 16-512</param>
 </offer>
 
 <offer id="CP13869991" available="true">
@@ -12168,12 +12168,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC14250. Коды: PC14250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: BTO109_PC14250_EMEA_210-BQHF. Коды: BTO109_PC14250_EMEA_210-BQHF.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">PC14250</param>
-<param name="Коды">PC14250</param>
+<param name="Модель">BTO109_PC14250_EMEA_210-BQHF</param>
+<param name="Коды">BTO109_PC14250_EMEA_210-BQHF</param>
 </offer>
 
 <offer id="CP13871907" available="true">
@@ -12230,12 +12230,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PB14250. Коды: PB14250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: BTO111_PB14250_EMEA_210-BPDL. Коды: BTO111_PB14250_EMEA_210-BPDL.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">PB14250</param>
-<param name="Коды">PB14250</param>
+<param name="Модель">BTO111_PB14250_EMEA_210-BPDL</param>
+<param name="Коды">BTO111_PB14250_EMEA_210-BPDL</param>
 </offer>
 
 <offer id="CP13872991" available="true">
@@ -12247,12 +12247,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PB14250. Коды: PB14250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPDL_BTO110_PB14250_EMEA. Коды: 210-BPDL_BTO110_PB14250_EMEA.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">PB14250</param>
-<param name="Коды">PB14250</param>
+<param name="Модель">210-BPDL_BTO110_PB14250_EMEA</param>
+<param name="Коды">210-BPDL_BTO110_PB14250_EMEA</param>
 </offer>
 
 <offer id="CP13872992" available="true">
@@ -12264,12 +12264,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC16250. Коды: PC16250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: BTO109_PC16250_EMEA_210-BQHB. Коды: BTO109_PC16250_EMEA_210-BQHB.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">PC16250</param>
-<param name="Коды">PC16250</param>
+<param name="Модель">BTO109_PC16250_EMEA_210-BQHB</param>
+<param name="Коды">BTO109_PC16250_EMEA_210-BQHB</param>
 </offer>
 
 <offer id="CP13872993" available="true">
@@ -12281,12 +12281,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC16250. Коды: PC16250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: BTO107_PC16250_EMEA_210-BQHB. Коды: BTO107_PC16250_EMEA_210-BQHB.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">PC16250</param>
-<param name="Коды">PC16250</param>
+<param name="Модель">BTO107_PC16250_EMEA_210-BQHB</param>
+<param name="Коды">BTO107_PC16250_EMEA_210-BQHB</param>
 </offer>
 
 <offer id="CP13871911" available="true">
@@ -12388,12 +12388,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC16255. Коды: PC16255.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: BTO602_PC16255_EMEA_210-BQPC. Коды: BTO602_PC16255_EMEA_210-BQPC.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">PC16255</param>
-<param name="Коды">PC16255</param>
+<param name="Модель">BTO602_PC16255_EMEA_210-BQPC</param>
+<param name="Коды">BTO602_PC16255_EMEA_210-BQPC</param>
 </offer>
 
 <offer id="CP13871914" available="true">
@@ -12450,12 +12450,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PB16250. Коды: PB16250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: BTO105_PB16250_EMEA_UBU_210-BPCM. Коды: BTO105_PB16250_EMEA_UBU_210-BPCM.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">PB16250</param>
-<param name="Коды">PB16250</param>
+<param name="Модель">BTO105_PB16250_EMEA_UBU_210-BPCM</param>
+<param name="Коды">BTO105_PB16250_EMEA_UBU_210-BPCM</param>
 </offer>
 
 <offer id="CP13872233" available="true">
@@ -13758,12 +13758,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA14250. Коды: DA14250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPBH_DA14250_ARLH_101. Коды: 210-BPBH_DA14250_ARLH_101.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">DA14250</param>
-<param name="Коды">DA14250</param>
+<param name="Модель">210-BPBH_DA14250_ARLH_101</param>
+<param name="Коды">210-BPBH_DA14250_ARLH_101</param>
 </offer>
 
 <offer id="CP13872996" available="true">
@@ -13775,12 +13775,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA14250. Коды: DA14250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPBH_DA14250_ARLH_102. Коды: 210-BPBH_DA14250_ARLH_102.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">DA14250</param>
-<param name="Коды">DA14250</param>
+<param name="Модель">210-BPBH_DA14250_ARLH_102</param>
+<param name="Коды">210-BPBH_DA14250_ARLH_102</param>
 </offer>
 
 <offer id="CP13872997" available="true">
@@ -13792,12 +13792,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA14250. Коды: DA14250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPBH_DA14250_ARLH_104. Коды: 210-BPBH_DA14250_ARLH_104.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">DA14250</param>
-<param name="Коды">DA14250</param>
+<param name="Модель">210-BPBH_DA14250_ARLH_104</param>
+<param name="Коды">210-BPBH_DA14250_ARLH_104</param>
 </offer>
 
 <offer id="CP13872998" available="true">
@@ -13809,12 +13809,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA16250. Коды: DA16250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BRTS_DA16250_ARLH_003. Коды: 210-BRTS_DA16250_ARLH_003.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">DA16250</param>
-<param name="Коды">DA16250</param>
+<param name="Модель">210-BRTS_DA16250_ARLH_003</param>
+<param name="Коды">210-BRTS_DA16250_ARLH_003</param>
 </offer>
 
 <offer id="CP13872999" available="true">
@@ -13826,12 +13826,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA16250. Коды: DA16250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BRTS_DA16250_ARLH_011. Коды: 210-BRTS_DA16250_ARLH_011.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">DA16250</param>
-<param name="Коды">DA16250</param>
+<param name="Модель">210-BRTS_DA16250_ARLH_011</param>
+<param name="Коды">210-BRTS_DA16250_ARLH_011</param>
 </offer>
 
 <offer id="CP13873000" available="true">
@@ -13843,12 +13843,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA16250. Коды: DA16250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BRTS_DA16250_ARLH_006. Коды: 210-BRTS_DA16250_ARLH_006.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">DA16250</param>
-<param name="Коды">DA16250</param>
+<param name="Модель">210-BRTS_DA16250_ARLH_006</param>
+<param name="Коды">210-BRTS_DA16250_ARLH_006</param>
 </offer>
 
 <offer id="CP13873001" available="true">
@@ -13860,12 +13860,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA16250. Коды: DA16250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BRTS_DA16250_ARLH_008. Коды: 210-BRTS_DA16250_ARLH_008.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">DA16250</param>
-<param name="Коды">DA16250</param>
+<param name="Модель">210-BRTS_DA16250_ARLH_008</param>
+<param name="Коды">210-BRTS_DA16250_ARLH_008</param>
 </offer>
 
 <offer id="CP13873002" available="true">
@@ -13877,12 +13877,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: DA16250. Коды: DA16250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BRTS_DA16250_ARLH_010. Коды: 210-BRTS_DA16250_ARLH_010.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">DA16250</param>
-<param name="Коды">DA16250</param>
+<param name="Модель">210-BRTS_DA16250_ARLH_010</param>
+<param name="Коды">210-BRTS_DA16250_ARLH_010</param>
 </offer>
 
 <offer id="CP13873016" available="true">
@@ -13894,12 +13894,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: QC24251. Коды: QC24251.]]></description>
+Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPPN_BTO103_QC24251_EMEA. Коды: 210-BPPN_BTO103_QC24251_EMEA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">QC24251</param>
-<param name="Коды">QC24251</param>
+<param name="Модель">210-BPPN_BTO103_QC24251_EMEA</param>
+<param name="Коды">210-BPPN_BTO103_QC24251_EMEA</param>
 </offer>
 
 <offer id="CP13873017" available="true">
@@ -13911,12 +13911,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: QC24250. Коды: QC24250.]]></description>
+Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPNS_BTO155_QC24250_EMEA. Коды: 210-BPNS_BTO155_QC24250_EMEA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">QC24250</param>
-<param name="Коды">QC24250</param>
+<param name="Модель">210-BPNS_BTO155_QC24250_EMEA</param>
+<param name="Коды">210-BPNS_BTO155_QC24250_EMEA</param>
 </offer>
 
 <offer id="CP13872548" available="true">
@@ -13976,12 +13976,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: QC24250. Коды: QC24250.]]></description>
+Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPNS_BTO154_QC24250_EMEA. Коды: 210-BPNS_BTO154_QC24250_EMEA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">QC24250</param>
-<param name="Коды">QC24250</param>
+<param name="Модель">210-BPNS_BTO154_QC24250_EMEA</param>
+<param name="Коды">210-BPNS_BTO154_QC24250_EMEA</param>
 </offer>
 
 <offer id="CP13873019" available="true">
@@ -13993,12 +13993,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: QB24250. Коды: QB24250.]]></description>
+Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPPG_BTO103_QB24250_EMEA. Коды: 210-BPPG_BTO103_QB24250_EMEA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">QB24250</param>
-<param name="Коды">QB24250</param>
+<param name="Модель">210-BPPG_BTO103_QB24250_EMEA</param>
+<param name="Коды">210-BPPG_BTO103_QB24250_EMEA</param>
 </offer>
 
 <offer id="CP13873021" available="true">
@@ -14010,12 +14010,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: QCM1250. Коды: QCM1250.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPQB_BTO003_QCM1250_EMEA. Коды: 210-BPQB_BTO003_QCM1250_EMEA.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">QCM1250</param>
-<param name="Коды">QCM1250</param>
+<param name="Модель">210-BPQB_BTO003_QCM1250_EMEA</param>
+<param name="Коды">210-BPQB_BTO003_QCM1250_EMEA</param>
 </offer>
 
 <offer id="CP13873023" available="true">
@@ -14027,12 +14027,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: QCM1250. Коды: QCM1250.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPPV_BTO106_QCM1250_EMEA. Коды: 210-BPPV_BTO106_QCM1250_EMEA.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">QCM1250</param>
-<param name="Коды">QCM1250</param>
+<param name="Модель">210-BPPV_BTO106_QCM1250_EMEA</param>
+<param name="Коды">210-BPPV_BTO106_QCM1250_EMEA</param>
 </offer>
 
 <offer id="CP13873024" available="true">
@@ -14044,12 +14044,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: QB24250. Коды: QB24250.]]></description>
+Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPPG_BTO101_QB24250_EMEA. Коды: 210-BPPG_BTO101_QB24250_EMEA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">QB24250</param>
-<param name="Коды">QB24250</param>
+<param name="Модель">210-BPPG_BTO101_QB24250_EMEA</param>
+<param name="Коды">210-BPPG_BTO101_QB24250_EMEA</param>
 </offer>
 
 <offer id="CP13873025" available="true">
@@ -14061,12 +14061,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: QCM1250. Коды: QCM1250.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPPV_BTO107_QCM1250_EMEA. Коды: 210-BPPV_BTO107_QCM1250_EMEA.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">QCM1250</param>
-<param name="Коды">QCM1250</param>
+<param name="Модель">210-BPPV_BTO107_QCM1250_EMEA</param>
+<param name="Коды">210-BPPV_BTO107_QCM1250_EMEA</param>
 </offer>
 
 <offer id="CP13873026" available="true">
@@ -14078,12 +14078,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: QCT1250. Коды: QCT1250.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPRW_BTO107_QCT1250_EMEA. Коды: 210-BPRW_BTO107_QCT1250_EMEA.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">QCT1250</param>
-<param name="Коды">QCT1250</param>
+<param name="Модель">210-BPRW_BTO107_QCT1250_EMEA</param>
+<param name="Коды">210-BPRW_BTO107_QCT1250_EMEA</param>
 </offer>
 
 <offer id="CP13873027" available="true">
@@ -14095,12 +14095,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: FCT2250. Коды: FCT2250.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPSN_BTO103_FCT2250_EMEA. Коды: 210-BPSN_BTO103_FCT2250_EMEA.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">FCT2250</param>
-<param name="Коды">FCT2250</param>
+<param name="Модель">210-BPSN_BTO103_FCT2250_EMEA</param>
+<param name="Коды">210-BPSN_BTO103_FCT2250_EMEA</param>
 </offer>
 
 <offer id="CP13873028" available="true">
@@ -14112,12 +14112,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: FCT2250. Коды: FCT2250.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPSN_BTO113_FCT2250_EMEA. Коды: 210-BPSN_BTO113_FCT2250_EMEA.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">FCT2250</param>
-<param name="Коды">FCT2250</param>
+<param name="Модель">210-BPSN_BTO113_FCT2250_EMEA</param>
+<param name="Коды">210-BPSN_BTO113_FCT2250_EMEA</param>
 </offer>
 
 <offer id="CP13873029" available="true">
@@ -14129,12 +14129,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: FCT2250. Коды: FCT2250.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPSN_BTO109_FCT2250_EMEA. Коды: 210-BPSN_BTO109_FCT2250_EMEA.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">FCT2250</param>
-<param name="Коды">FCT2250</param>
+<param name="Модель">210-BPSN_BTO109_FCT2250_EMEA</param>
+<param name="Коды">210-BPSN_BTO109_FCT2250_EMEA</param>
 </offer>
 
 <offer id="CP13873030" available="true">
@@ -14146,12 +14146,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: FCT2250. Коды: FCT2250.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPSN_BTO112_FCT2250_EMEA. Коды: 210-BPSN_BTO112_FCT2250_EMEA.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">FCT2250</param>
-<param name="Коды">FCT2250</param>
+<param name="Модель">210-BPSN_BTO112_FCT2250_EMEA</param>
+<param name="Коды">210-BPSN_BTO112_FCT2250_EMEA</param>
 </offer>
 
 <offer id="CP13873031" available="true">
@@ -14163,12 +14163,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: QCT1250. Коды: QCT1250.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPRW_BTO110_QCT1250_EMEA. Коды: 210-BPRW_BTO110_QCT1250_EMEA.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">QCT1250</param>
-<param name="Коды">QCT1250</param>
+<param name="Модель">210-BPRW_BTO110_QCT1250_EMEA</param>
+<param name="Коды">210-BPRW_BTO110_QCT1250_EMEA</param>
 </offer>
 
 <offer id="CP13872965" available="true">
@@ -14180,12 +14180,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: EC27250. Коды: EC27250.]]></description>
+Моноблок. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPFS_EC27250_RPLU-R_010. Коды: 210-BPFS_EC27250_RPLU-R_010.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">EC27250</param>
-<param name="Коды">EC27250</param>
+<param name="Модель">210-BPFS_EC27250_RPLU-R_010</param>
+<param name="Коды">210-BPFS_EC27250_RPLU-R_010</param>
 </offer>
 
 <offer id="CP13873003" available="true">
@@ -14197,12 +14197,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: EBT2250. Коды: EBT2250.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPDZ_EBT2250_ARL_127. Коды: 210-BPDZ_EBT2250_ARL_127.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">EBT2250</param>
-<param name="Коды">EBT2250</param>
+<param name="Модель">210-BPDZ_EBT2250_ARL_127</param>
+<param name="Коды">210-BPDZ_EBT2250_ARL_127</param>
 </offer>
 
 <offer id="CP13873004" available="true">
@@ -14214,12 +14214,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: EBT2250. Коды: EBT2250.]]></description>
+Настольный ПК. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPDZ_EBT2250_ARL_128. Коды: 210-BPDZ_EBT2250_ARL_128.]]></description>
 <param name="Тип">Настольный ПК</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">EBT2250</param>
-<param name="Коды">EBT2250</param>
+<param name="Модель">210-BPDZ_EBT2250_ARL_128</param>
+<param name="Коды">210-BPDZ_EBT2250_ARL_128</param>
 </offer>
 
 <offer id="CP13872444" available="true">
@@ -14309,11 +14309,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 12 мес. Для бренда: Dell. Коды: 13872879.]]></description>
+Ноутбук. Гарантия: 12 мес. Для бренда: Dell. Модель: 210-BPDN_1. Коды: 210-BPDN_1.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">12 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Коды">13872879</param>
+<param name="Модель">210-BPDN_1</param>
+<param name="Коды">210-BPDN_1</param>
 </offer>
 
 <offer id="CP13872774" available="true">
@@ -14325,12 +14326,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: AIWA. Коды: AIWA.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: PF2402-D 8-512 white. Коды: PF2402-D 8-512 white.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
 <param name="Для бренда">AIWA</param>
-<param name="Модель">AIWA</param>
-<param name="Коды">AIWA</param>
+<param name="Модель">PF2402-D 8-512 white</param>
+<param name="Коды">PF2402-D 8-512 white</param>
 </offer>
 
 <offer id="CP13872917" available="true">
@@ -14342,12 +14343,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC16250. Коды: PC16250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: BTO120_PC16250_EMEA_210-BQHB. Коды: BTO120_PC16250_EMEA_210-BQHB.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">PC16250</param>
-<param name="Коды">PC16250</param>
+<param name="Модель">BTO120_PC16250_EMEA_210-BQHB</param>
+<param name="Коды">BTO120_PC16250_EMEA_210-BQHB</param>
 </offer>
 
 <offer id="CP13873005" available="true">
@@ -14359,12 +14360,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC16250. Коды: PC16250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: BTO118_PC16250_EMEA_210-BQHB. Коды: BTO118_PC16250_EMEA_210-BQHB.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">PC16250</param>
-<param name="Коды">PC16250</param>
+<param name="Модель">BTO118_PC16250_EMEA_210-BQHB</param>
+<param name="Коды">BTO118_PC16250_EMEA_210-BQHB</param>
 </offer>
 
 <offer id="CP13873006" available="true">
@@ -14376,12 +14377,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PC16250. Коды: PC16250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: BTO121_PC16250_EMEA_210-BQHB. Коды: BTO121_PC16250_EMEA_210-BQHB.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">PC16250</param>
-<param name="Коды">PC16250</param>
+<param name="Модель">BTO121_PC16250_EMEA_210-BQHB</param>
+<param name="Коды">BTO121_PC16250_EMEA_210-BQHB</param>
 </offer>
 
 <offer id="CP13873137" available="true">
@@ -14393,12 +14394,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: MB18250. Коды: MB18250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BRXL / BTO101_MB18250_EMEA. Коды: 210-BRXL / BTO101_MB18250_EMEA.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">MB18250</param>
-<param name="Коды">MB18250</param>
+<param name="Модель">210-BRXL / BTO101_MB18250_EMEA</param>
+<param name="Коды">210-BRXL / BTO101_MB18250_EMEA</param>
 </offer>
 
 <offer id="CP13873058" available="true">
@@ -14410,12 +14411,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PB14250. Коды: PB14250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPDK / BTO217_PB14250_EMEA. Коды: 210-BPDK / BTO217_PB14250_EMEA.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">PB14250</param>
-<param name="Коды">PB14250</param>
+<param name="Модель">210-BPDK / BTO217_PB14250_EMEA</param>
+<param name="Коды">210-BPDK / BTO217_PB14250_EMEA</param>
 </offer>
 
 <offer id="CP13873061" available="true">
@@ -14427,12 +14428,12 @@ URL поставщика                             | https://www.comportal.kz/
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: PB14250. Коды: PB14250.]]></description>
+Ноутбук. Гарантия: 36 мес. Для бренда: Dell. Модель: 210-BPDK_3 / BTO211_PB14250_EMEA. Коды: 210-BPDK_3 / BTO211_PB14250_EMEA.]]></description>
 <param name="Тип">Ноутбук</param>
 <param name="Гарантия">36 мес</param>
 <param name="Для бренда">Dell</param>
-<param name="Модель">PB14250</param>
-<param name="Коды">PB14250</param>
+<param name="Модель">210-BPDK_3 / BTO211_PB14250_EMEA</param>
+<param name="Коды">210-BPDK_3 / BTO211_PB14250_EMEA</param>
 </offer>
 
 <offer id="CP10318173" available="true">
