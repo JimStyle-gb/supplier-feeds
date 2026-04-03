@@ -4,25 +4,24 @@ Path: scripts/suppliers/comportal/builder.py
 
 ComPortal supplier layer — сборка raw offer.
 
-Что улучшено:
+Финальная микро-полировка:
 - safe mutual enrichment сохранён;
-- добавлена точечная type-aware чистка слабополезных техпараметров;
-- это не core-логика: supplier-layer сам решает, какие raw params
-  для ComPortal реально полезны для витрины и SEO.
+- guard для "Модель" сохранён;
+- type-aware prune слабых техпараметров сохранён;
+- добавлена канонизация кривых supplier-ключей перед prune.
 
-Что режем сейчас:
-- глобально: "Серия"
-- для печатной техники:
-  - "Объем памяти"
-  - "Количество лотков"
-  - "Емкость 1-го лотка"
-  - "Емкость 2-го лотка"
-  - "Емкость 3-го лотка"
+Что это чинит:
+- "Емкость 1- го лотка" -> "емкость 1-го лотка"
+- "Емкость 2- го лотка" -> "емкость 2-го лотка"
+- "Емкость 3- го лотка" -> "емкость 3-го лотка"
+
+После этого такие кривые вариации должны нормально отрезаться.
 """
 
 from __future__ import annotations
 
 from typing import Any
+import re
 
 from cs.core import OfferOut
 from cs.util import norm_ws
@@ -142,10 +141,6 @@ def _param_value_score(name: str, value: str) -> int:
 
 
 def _model_reconcile_should_keep_old(old_value: str, new_value: str) -> bool:
-    """
-    Для "Модель" стараемся хранить более чистую базовую модель,
-    а packaging/code-хвосты оставлять в "Коды".
-    """
     old_v = norm_ws(old_value)
     new_v = norm_ws(new_value)
     if not old_v or not new_v:
@@ -314,6 +309,16 @@ def _desc_for_consumable(pmap: dict[str, str]) -> str:
     return _finalize_desc(_join_nonempty(bits))
 
 
+def _canonical_param_name_for_prune(name: str) -> str:
+    """
+    Канонизация supplier-key только для prune-сравнения.
+    """
+    s = norm_ws(name).casefold()
+    s = re.sub(r"\b(\d+)\s*-\s*го\b", r"\1-го", s)
+    s = re.sub(r"\s+", " ", s)
+    return s.strip()
+
+
 def _prune_low_value_params(params: list[ParamItem]) -> list[ParamItem]:
     """
     Точечная чистка слабополезных raw params.
@@ -327,7 +332,8 @@ def _prune_low_value_params(params: list[ParamItem]) -> list[ParamItem]:
 
     out: list[ParamItem] = []
     for p in params or []:
-        if norm_ws(p.name).casefold() in drop_names:
+        probe = _canonical_param_name_for_prune(p.name)
+        if probe in drop_names:
             continue
         out.append(p)
     return out
