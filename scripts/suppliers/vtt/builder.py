@@ -2,24 +2,24 @@
 """
 Path: scripts/suppliers/vtt/builder.py
 
-VTT builder layer under CS-template.
+VTT builder layer.
 
-Роль файла:
-- собрать clean raw OfferOut из уже распарсенного supplier payload;
-- использовать normalize / compat / desc_extract / pictures как отдельные роли;
-- не держать source-crawl логику;
-- не держать final render / final description logic core-слоя.
+Patch focus:
+- fix current critical class `empty_vendor`;
+- keep existing VTT-specific title/compat logic intact;
+- make vendor inference happen on full context
+  (raw vendor + params + title + compat + description + codes),
+  not only on the early narrow signal.
 
 Важно:
-- текущая pricing-логика intentionally оставлена backward-safe, без бизнес-изменения;
-- compat-specific repair остаётся в compat.py;
-- builder использует канонические helper-ы pictures/normalize, но сохраняет public API build_offer_from_raw(...).
+- pricing intentionally не меняем;
+- compat/title repair intentionally не меняем;
+- это точечный raw-quality fix после structural template alignment.
 """
 
 from __future__ import annotations
 
 import re
-from typing import Sequence
 
 from cs.core import OfferOut, compute_price
 
@@ -49,6 +49,7 @@ from .normalize import (
 )
 from .pictures import PLACEHOLDER, collect_picture_urls
 
+
 SKIP_PARAM_KEYS = {
     "Артикул",
     "Штрих-код",
@@ -71,6 +72,125 @@ _TITLE_COLOR_TAIL_RE = re.compile(
     r"пурпурн(?:ый|ая|ое)?|малинов(?:ый|ая|ое)?|сер(?:ый|ая|ое)?|красн(?:ый|ая|ое)?))\s*$",
     re.I,
 )
+
+# Дополняем мягкий vendor inference builder-слоем.
+_VENDOR_ALIASES: tuple[tuple[str, str], ...] = (
+    ("HP", "HP"),
+    ("HPE", "HPE"),
+    ("Canon", "Canon"),
+    ("Xerox", "Xerox"),
+    ("Kyocera", "Kyocera"),
+    ("Brother", "Brother"),
+    ("Epson", "Epson"),
+    ("Ricoh", "Ricoh"),
+    ("Samsung", "Samsung"),
+    ("Lexmark", "Lexmark"),
+    ("Pantum", "Pantum"),
+    ("Sharp", "Sharp"),
+    ("Panasonic", "Panasonic"),
+    ("Toshiba", "Toshiba"),
+    ("Develop", "Develop"),
+    ("Gestetner", "Gestetner"),
+    ("RISO", "RISO"),
+    ("Avision", "Avision"),
+    ("DELI", "Deli"),
+    ("Oki", "OKI"),
+    ("OKI", "OKI"),
+)
+
+_DEVICE_VENDOR_HINTS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (re.compile(r"(?iu)\b(?:LaserJet|DeskJet|DesignJet|OfficeJet|OJ\s+Pro|Color\s+LaserJet)\b"), "HP"),
+    (re.compile(r"(?iu)\b(?:PIXMA|imageRUNNER|imagePRESS|i-SENSYS|LBP|MF\d|TM-\d|PRO-\d)\b"), "Canon"),
+    (re.compile(r"(?iu)\b(?:VersaLink|AltaLink|WorkCentre|Phaser|ColorQube|DocuColor|Versant)\b"), "Xerox"),
+    (re.compile(r"(?iu)\b(?:ECOSYS|TASKalfa|FS-\d|M\d{4}dn|P\d{4}dn)\b"), "Kyocera"),
+    (re.compile(r"(?iu)\b(?:DCP|MFC|HL-\d|TN-\d|DR-\d)\b"), "Brother"),
+    (re.compile(r"(?iu)\b(?:SCX|CLP|CLX|ML-\d|SL-[A-Z0-9-]+)\b"), "Samsung"),
+    (re.compile(r"(?iu)\b(?:L\d{3,4}|XP-\d|WF-\d|Expression|Stylus)\b"), "Epson"),
+    (re.compile(r"(?iu)\bAvision\b"), "Avision"),
+    (re.compile(r"(?iu)\bDELI\b"), "Deli"),
+)
+
+_FOR_BRAND_RE = re.compile(
+    r"(?iu)(?:^|\b)(?:для|for)\s+"
+    r"(HP|HPE|Canon|Xerox|Kyocera|Brother|Epson|Ricoh|Samsung|Lexmark|Pantum|Sharp|Panasonic|Toshiba|Develop|Gestetner|RISO|Avision|DELI|OKI)\b"
+)
+
+
+def _canonical_vendor(value: str) -> str:
+    s = norm_ws(value)
+    if not s:
+        return ""
+    for raw, canon in _VENDOR_ALIASES:
+        if s.casefold() == raw.casefold():
+            return canon
+    return s
+
+
+def _vendor_from_texts(*texts: str) -> str:
+    hay = "\n".join([norm_ws(x) for x in texts if norm_ws(x)])
+    if not hay:
+        return ""
+
+    m = _FOR_BRAND_RE.search(hay)
+    if m:
+        return _canonical_vendor(m.group(1))
+
+    for raw, canon in _VENDOR_ALIASES:
+        if re.search(rf"(?iu)\b{re.escape(raw)}\b", hay):
+            return canon
+
+    for rx, vendor in _DEVICE_VENDOR_HINTS:
+        if rx.search(hay):
+            return vendor
+
+    return ""
+
+
+def _resolve_vendor(
+    *,
+    raw_vendor: str,
+    title: str,
+    params: list[tuple[str, str]],
+    compat: str,
+    description_text: str,
+    codes: list[str],
+    part_number: str,
+    display_part_number: str,
+) -> str:
+    # 1) Старый путь сохраняем первым.
+    vendor = _canonical_vendor(guess_vendor(raw_vendor, title, params))
+    if vendor:
+        return vendor
+
+    # 2) Прямые param-ключи.
+    for key, value in params or []:
+        key_n = norm_ws(key).casefold()
+        val_n = _canonical_vendor(value)
+        if not val_n:
+            continue
+        if key_n in {"для бренда", "бренд", "марка", "vendor", "brand", "производитель"}:
+            return val_n
+
+    # 3) Полный уже собранный контекст: compat / description / title / codes / partnumber.
+    vendor = _vendor_from_texts(
+        compat,
+        description_text,
+        title,
+        display_part_number,
+        part_number,
+        ", ".join(codes),
+        *[f"{k}: {v}" for k, v in params],
+    )
+    if vendor:
+        return vendor
+
+    # 4) Supplier families without explicit vendor token:
+    # Hi-Black / CET / N-series often reveal the brand only through device families.
+    vendor = _vendor_from_texts(compat, description_text)
+    if vendor:
+        return vendor
+
+    return ""
 
 
 def _merge_params(
@@ -228,12 +348,6 @@ def build_offer_from_raw(
     id_prefix: str = "VT",
     placeholder_picture: str | None = None,
 ) -> OfferOut | None:
-    """
-    Собрать один raw OfferOut.
-    Backward-safe:
-    - старые вызовы build_offer_from_raw(raw) продолжают работать;
-    - новый канонический путь может передавать placeholder_picture из config.
-    """
     original_flag = is_original(
         safe_str(raw.get("name")),
         safe_str(raw.get("description_body")),
@@ -246,14 +360,16 @@ def build_offer_from_raw(
         return None
 
     sku = safe_str(raw.get("sku"))
+    raw_params = raw.get("params") or []
     source_categories = list(
         raw.get("source_categories") or ([] if not safe_str(raw.get("category_code")) else [safe_str(raw.get("category_code"))])
     )
 
-    vendor = guess_vendor(safe_str(raw.get("vendor")), clean_title_value, raw.get("params") or [])
+    # Предварительный vendor только для compat-parser.
+    vendor_pre = _canonical_vendor(guess_vendor(safe_str(raw.get("vendor")), clean_title_value, raw_params))
     type_name = infer_type(source_categories, clean_title_value)
     tech = infer_tech(source_categories, type_name, clean_title_value)
-    part_number = extract_part_number(raw, raw.get("params") or [], clean_title_value)
+    part_number = extract_part_number(raw, raw_params, clean_title_value)
 
     title_no_suffix = re.sub(r"\s*\(оригинал\)$", "", title, flags=re.I).strip(" ,")
     if part_number:
@@ -264,8 +380,8 @@ def build_offer_from_raw(
 
     compat = extract_compat(
         clean_title_value,
-        vendor,
-        raw.get("params") or [],
+        vendor_pre,
+        raw_params,
         safe_str(raw.get("description_body")),
         part_number,
         sku,
@@ -275,15 +391,28 @@ def build_offer_from_raw(
 
     resource = extract_resource(
         clean_title_value,
-        raw.get("params") or [],
+        raw_params,
         safe_str(raw.get("description_body")),
     )
-    codes = collect_codes(raw, raw.get("params") or [], resource, part_number, compat)
+    codes = collect_codes(raw, raw_params, resource, part_number, compat)
     display_part_number = derive_display_part_number(
         title=title,
         raw_part_number=part_number,
         codes=codes,
     )
+
+    # Финальный vendor считаем уже на полном контексте.
+    vendor = _resolve_vendor(
+        raw_vendor=safe_str(raw.get("vendor")),
+        title=title,
+        params=raw_params,
+        compat=compat,
+        description_text=safe_str(raw.get("description_body") or raw.get("description_meta")),
+        codes=codes,
+        part_number=part_number,
+        display_part_number=display_part_number,
+    )
+
     params = _merge_params(
         raw,
         vendor,
@@ -297,8 +426,6 @@ def build_offer_from_raw(
         resource,
     )
 
-    # ВАЖНО:
-    # pricing intentionally оставлен как сейчас, чтобы этот патч был структурным, а не бизнес-меняющим.
     raw_price = int(raw.get("price_rub_raw") or 0)
     price = compute_price(raw_price)
 
