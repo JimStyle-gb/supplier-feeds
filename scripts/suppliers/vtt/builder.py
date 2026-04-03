@@ -2,28 +2,40 @@
 """
 Path: scripts/suppliers/vtt/builder.py
 
-VTT builder layer.
-v25:
-- restores v22-safe title cleanup;
-- explicitly repairs Xerox WC 7525/.../7835 title row from compat;
-- removes remaining Canon 052H and HP 651 title tails after compat cleanup;
-- fixes Hi-Black 727 titles and color override from explicit title color;
-- uses OEM-like display part number for Hi-Black/internal numeric cases;
-- keeps description in sync with display part number used in params;
-- keeps title short for SEO: type + family/code + compatibility + originality;
-- leaves compat-specific logic to compat.py.
+VTT builder layer under CS-template.
+
+Роль файла:
+- собрать clean raw OfferOut из уже распарсенного supplier payload;
+- использовать normalize / compat / desc_extract / pictures как отдельные роли;
+- не держать source-crawl логику;
+- не держать final render / final description logic core-слоя.
+
+Важно:
+- текущая pricing-логика intentionally оставлена backward-safe, без бизнес-изменения;
+- compat-specific repair остаётся в compat.py;
+- builder использует канонические helper-ы pictures/normalize, но сохраняет public API build_offer_from_raw(...).
 """
 
 from __future__ import annotations
 
 import re
+from typing import Sequence
 
 from cs.core import OfferOut, compute_price
 
-from .compat import ALT_PART_TAIL_RE, CODE_SOURCE_KEYS, collect_codes, derive_display_part_number, derive_hiblack_color, extract_compat, extract_part_number
+from .compat import (
+    ALT_PART_TAIL_RE,
+    CODE_SOURCE_KEYS,
+    collect_codes,
+    derive_display_part_number,
+    derive_hiblack_color,
+    extract_compat,
+    extract_part_number,
+)
 from .desc_extract import build_native_description, extract_resource
 from .normalize import (
     append_original_suffix,
+    build_offer_oid,
     clean_title,
     guess_vendor,
     infer_color_from_title,
@@ -35,13 +47,22 @@ from .normalize import (
     norm_ws,
     safe_str,
 )
-from .pictures import PLACEHOLDER, clean_picture_urls
+from .pictures import PLACEHOLDER, collect_picture_urls
 
 SKIP_PARAM_KEYS = {
-    "Артикул", "Штрих-код", "Вендор", "Категория", "Подкатегория",
-    "В упаковке, штук", "Местный склад, штук", "Местный, до новой поставки, дней",
-    "Склад Москва, штук", "Москва, до новой поставки, дней", "Категория VTT",
+    "Артикул",
+    "Штрих-код",
+    "Вендор",
+    "Категория",
+    "Подкатегория",
+    "В упаковке, штук",
+    "Местный склад, штук",
+    "Местный, до новой поставки, дней",
+    "Склад Москва, штук",
+    "Москва, до новой поставки, дней",
+    "Категория VTT",
 }
+
 DUPLICATE_LEAD_RE = re.compile(r"^([A-Z0-9][A-Z0-9\-./]{2,})\s*,\s*\1\b", re.I)
 _TITLE_COLOR_TAIL_RE = re.compile(
     r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|color|colour|"
@@ -51,13 +72,26 @@ _TITLE_COLOR_TAIL_RE = re.compile(
     re.I,
 )
 
-def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number: str, display_part_number: str, codes: list[str], title: str, compat: str, resource: str) -> list[tuple[str, str]]:
+
+def _merge_params(
+    raw: dict,
+    vendor: str,
+    type_name: str,
+    tech: str,
+    part_number: str,
+    display_part_number: str,
+    codes: list[str],
+    title: str,
+    compat: str,
+    resource: str,
+) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     color_found = ""
 
     def add(k: str, v: str) -> None:
-        key = norm_ws(k); val = norm_ws(v)
+        key = norm_ws(k)
+        val = norm_ws(v)
         if not key or not val:
             return
         sig = (key.casefold(), val.casefold())
@@ -73,7 +107,8 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number
     if tech:
         add("Технология печати", tech)
     if vendor and type_name and any(
-        x in type_name.casefold() for x in ("картридж", "драм", "девелопер", "чернила", "тонер", "головка", "блок", "барабан", "контейнер", "носитель")
+        x in type_name.casefold()
+        for x in ("картридж", "драм", "девелопер", "чернила", "тонер", "головка", "блок", "барабан", "контейнер", "носитель")
     ):
         add("Для бренда", vendor)
 
@@ -105,7 +140,10 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number
 
     if final_color:
         replaced = False
-        if color_found and final_color != color_found and ("Hi-Black" in title or any(x in title for x in ("Cyan", "Magenta", "Yellow", "Grey", "Gray", "Photoblack", "Mattblack"))):
+        if color_found and final_color != color_found and (
+            "Hi-Black" in title
+            or any(x in title for x in ("Cyan", "Magenta", "Yellow", "Grey", "Gray", "Photoblack", "Mattblack"))
+        ):
             out2: list[tuple[str, str]] = []
             for k, v in out:
                 if k == "Цвет" and not replaced:
@@ -119,6 +157,7 @@ def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number
             add("Цвет", final_color)
 
     return out
+
 
 def _strip_tail_noise(title_no_suffix: str) -> str:
     changed = True
@@ -135,6 +174,7 @@ def _strip_tail_noise(title_no_suffix: str) -> str:
         t = re.sub(r"(?:,\s*|\s+)(?:bk|c|m|y|cl|ml|lc|lm)\s*$", "", t, flags=re.I).strip(" ,")
         changed = t != before
     return t
+
 
 def _repair_known_titles(title_no_suffix: str, compat: str) -> str:
     t = norm_ws(title_no_suffix)
@@ -181,15 +221,35 @@ def _repair_known_titles(title_no_suffix: str, compat: str) -> str:
 
     return t
 
-def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None:
-    original_flag = is_original(safe_str(raw.get("name")), safe_str(raw.get("description_body")), safe_str(raw.get("description_meta")))
+
+def build_offer_from_raw(
+    raw: dict,
+    *,
+    id_prefix: str = "VT",
+    placeholder_picture: str | None = None,
+) -> OfferOut | None:
+    """
+    Собрать один raw OfferOut.
+    Backward-safe:
+    - старые вызовы build_offer_from_raw(raw) продолжают работать;
+    - новый канонический путь может передавать placeholder_picture из config.
+    """
+    original_flag = is_original(
+        safe_str(raw.get("name")),
+        safe_str(raw.get("description_body")),
+        safe_str(raw.get("description_meta")),
+    )
+
     clean_title_value = clean_title(norm_ws(raw.get("name")))
     title = append_original_suffix(clean_title_value, original_flag)
     if not title:
         return None
 
     sku = safe_str(raw.get("sku"))
-    source_categories = list(raw.get("source_categories") or ([] if not safe_str(raw.get("category_code")) else [safe_str(raw.get("category_code"))]))
+    source_categories = list(
+        raw.get("source_categories") or ([] if not safe_str(raw.get("category_code")) else [safe_str(raw.get("category_code"))])
+    )
+
     vendor = guess_vendor(safe_str(raw.get("vendor")), clean_title_value, raw.get("params") or [])
     type_name = infer_type(source_categories, clean_title_value)
     tech = infer_tech(source_categories, type_name, clean_title_value)
@@ -202,21 +262,50 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(sku)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
     title_no_suffix = _strip_tail_noise(title_no_suffix)
 
-    compat = extract_compat(clean_title_value, vendor, raw.get("params") or [], safe_str(raw.get("description_body")), part_number, sku)
+    compat = extract_compat(
+        clean_title_value,
+        vendor,
+        raw.get("params") or [],
+        safe_str(raw.get("description_body")),
+        part_number,
+        sku,
+    )
     title_no_suffix = _repair_known_titles(title_no_suffix, compat)
     title = append_original_suffix(norm_ws(title_no_suffix), original_flag)
 
-    resource = extract_resource(clean_title_value, raw.get("params") or [], safe_str(raw.get("description_body")))
+    resource = extract_resource(
+        clean_title_value,
+        raw.get("params") or [],
+        safe_str(raw.get("description_body")),
+    )
     codes = collect_codes(raw, raw.get("params") or [], resource, part_number, compat)
-    display_part_number = derive_display_part_number(title=title, raw_part_number=part_number, codes=codes)
-    params = _merge_params(raw, vendor, type_name, tech, part_number, display_part_number, codes, clean_title_value, compat, resource)
+    display_part_number = derive_display_part_number(
+        title=title,
+        raw_part_number=part_number,
+        codes=codes,
+    )
+    params = _merge_params(
+        raw,
+        vendor,
+        type_name,
+        tech,
+        part_number,
+        display_part_number,
+        codes,
+        clean_title_value,
+        compat,
+        resource,
+    )
 
+    # ВАЖНО:
+    # pricing intentionally оставлен как сейчас, чтобы этот патч был структурным, а не бизнес-меняющим.
     raw_price = int(raw.get("price_rub_raw") or 0)
     price = compute_price(raw_price)
 
-    pictures = clean_picture_urls([safe_str(x) for x in (raw.get("pictures") or []) if safe_str(x)])
-    if not pictures:
-        pictures = [PLACEHOLDER]
+    pictures = collect_picture_urls(
+        [safe_str(x) for x in (raw.get("pictures") or []) if safe_str(x)],
+        placeholder_picture=(placeholder_picture or PLACEHOLDER),
+    )
 
     color = ""
     for k, v in params:
@@ -234,9 +323,9 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         desc_body=safe_str(raw.get("description_body") or raw.get("description_meta")),
     )
 
-    oid = make_oid(sku, clean_title_value)
-    if id_prefix and not oid.startswith(id_prefix):
-        oid = id_prefix + oid.lstrip()
+    oid = build_offer_oid(raw_vendor_code=sku, raw_id=make_oid(sku, clean_title_value), prefix=id_prefix)
+    if not oid:
+        return None
 
     return OfferOut(
         oid=oid,
@@ -248,3 +337,9 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT") -> OfferOut | None
         params=params,
         native_desc=desc,
     )
+
+
+__all__ = [
+    "SKIP_PARAM_KEYS",
+    "build_offer_from_raw",
+]
