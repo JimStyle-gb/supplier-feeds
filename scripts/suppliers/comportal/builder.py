@@ -409,6 +409,7 @@ def build_offer_out(source_offer: SourceOffer, *, schema: dict[str, Any], policy
         source_offer.vendor,
         name=clean_name,
         params=source_offer.params,
+        description_text=source_offer.description,
         vendor_blacklist=vendor_blacklist,
         fallback_vendor=fallback_vendor,
     )
