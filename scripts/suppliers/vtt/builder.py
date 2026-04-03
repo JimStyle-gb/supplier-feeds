@@ -4,12 +4,12 @@ Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
 
-Patch focus:
-- fix current critical class `empty_vendor`;
+Patch focus v2:
+- continue reducing current critical class `empty_vendor`;
 - keep existing VTT-specific title/compat logic intact;
-- make vendor inference happen on full context
-  (raw vendor + params + title + compat + description + codes),
-  not only on the early narrow signal.
+- strengthen vendor inference for remaining families:
+  Olivetti / Triumph-Adler / Konica Minolta / Minolta /
+  F+ imaging / Deli / Huawei / Avision / Катюша.
 
 Важно:
 - pricing intentionally не меняем;
@@ -64,7 +64,6 @@ SKIP_PARAM_KEYS = {
     "Категория VTT",
 }
 
-DUPLICATE_LEAD_RE = re.compile(r"^([A-Z0-9][A-Z0-9\-./]{2,})\s*,\s*\1\b", re.I)
 _TITLE_COLOR_TAIL_RE = re.compile(
     r"(?:,?\s*(?:black|photo\s*black|photoblack|matte\s*black|matt\s*black|cyan|yellow|magenta|grey|gray|red|blue|color|colour|"
     r"bk|c|m|y|cl|ml|lc|lm|"
@@ -73,7 +72,6 @@ _TITLE_COLOR_TAIL_RE = re.compile(
     re.I,
 )
 
-# Дополняем мягкий vendor inference builder-слоем.
 _VENDOR_ALIASES: tuple[tuple[str, str], ...] = (
     ("HP", "HP"),
     ("HPE", "HPE"),
@@ -94,8 +92,17 @@ _VENDOR_ALIASES: tuple[tuple[str, str], ...] = (
     ("RISO", "RISO"),
     ("Avision", "Avision"),
     ("DELI", "Deli"),
-    ("Oki", "OKI"),
+    ("Deli", "Deli"),
     ("OKI", "OKI"),
+    ("Oki", "OKI"),
+    ("Olivetti", "Olivetti"),
+    ("Triumph-Adler", "Triumph-Adler"),
+    ("Huawei", "Huawei"),
+    ("Катюша", "Катюша"),
+    ("F+ imaging", "F+ imaging"),
+    ("F+", "F+ imaging"),
+    ("Konica Minolta", "Konica Minolta"),
+    ("Minolta", "Konica Minolta"),
 )
 
 _DEVICE_VENDOR_HINTS: tuple[tuple[re.Pattern[str], str], ...] = (
@@ -108,11 +115,44 @@ _DEVICE_VENDOR_HINTS: tuple[tuple[re.Pattern[str], str], ...] = (
     (re.compile(r"(?iu)\b(?:L\d{3,4}|XP-\d|WF-\d|Expression|Stylus)\b"), "Epson"),
     (re.compile(r"(?iu)\bAvision\b"), "Avision"),
     (re.compile(r"(?iu)\bDELI\b"), "Deli"),
+    (re.compile(r"(?iu)\bDeli\b"), "Deli"),
+    (re.compile(r"(?iu)\bOlivetti\b"), "Olivetti"),
+    (re.compile(r"(?iu)\bTriumph-?Adler\b"), "Triumph-Adler"),
+    (re.compile(r"(?iu)\bHuawei\b"), "Huawei"),
+    (re.compile(r"(?iu)\bКатюша\b"), "Катюша"),
+    (re.compile(r"(?iu)\bF\+\s*imaging\b"), "F+ imaging"),
+    (re.compile(r"(?iu)\bPixLab\b"), "Huawei"),
+    (re.compile(r"(?iu)\bBizhub\b"), "Konica Minolta"),
 )
 
-_FOR_BRAND_RE = re.compile(
-    r"(?iu)(?:^|\b)(?:для|for)\s+"
-    r"(HP|HPE|Canon|Xerox|Kyocera|Brother|Epson|Ricoh|Samsung|Lexmark|Pantum|Sharp|Panasonic|Toshiba|Develop|Gestetner|RISO|Avision|DELI|OKI)\b"
+_FOR_BRAND_PATTERNS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+HP\b"), "HP"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+HPE\b"), "HPE"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Canon\b"), "Canon"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Xerox\b"), "Xerox"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Kyocera\b"), "Kyocera"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Brother\b"), "Brother"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Epson\b"), "Epson"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Ricoh\b"), "Ricoh"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Samsung\b"), "Samsung"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Lexmark\b"), "Lexmark"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Pantum\b"), "Pantum"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Sharp\b"), "Sharp"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Panasonic\b"), "Panasonic"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Toshiba\b"), "Toshiba"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Develop\b"), "Develop"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Gestetner\b"), "Gestetner"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+RISO\b"), "RISO"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Avision\b"), "Avision"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+DELI\b"), "Deli"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Deli\b"), "Deli"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Olivetti\b"), "Olivetti"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Triumph-?Adler\b"), "Triumph-Adler"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Huawei\b"), "Huawei"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Катюша\b"), "Катюша"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+F\+\s*imaging\b"), "F+ imaging"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Konica\s+Minolta\b"), "Konica Minolta"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Minolta\b"), "Konica Minolta"),
 )
 
 
@@ -131,12 +171,13 @@ def _vendor_from_texts(*texts: str) -> str:
     if not hay:
         return ""
 
-    m = _FOR_BRAND_RE.search(hay)
-    if m:
-        return _canonical_vendor(m.group(1))
+    for rx, vendor in _FOR_BRAND_PATTERNS:
+        if rx.search(hay):
+            return vendor
 
+    low = hay.casefold()
     for raw, canon in _VENDOR_ALIASES:
-        if re.search(rf"(?iu)\b{re.escape(raw)}\b", hay):
+        if raw.casefold() in low:
             return canon
 
     for rx, vendor in _DEVICE_VENDOR_HINTS:
@@ -157,12 +198,10 @@ def _resolve_vendor(
     part_number: str,
     display_part_number: str,
 ) -> str:
-    # 1) Старый путь сохраняем первым.
     vendor = _canonical_vendor(guess_vendor(raw_vendor, title, params))
     if vendor:
         return vendor
 
-    # 2) Прямые param-ключи.
     for key, value in params or []:
         key_n = norm_ws(key).casefold()
         val_n = _canonical_vendor(value)
@@ -171,7 +210,6 @@ def _resolve_vendor(
         if key_n in {"для бренда", "бренд", "марка", "vendor", "brand", "производитель"}:
             return val_n
 
-    # 3) Полный уже собранный контекст: compat / description / title / codes / partnumber.
     vendor = _vendor_from_texts(
         compat,
         description_text,
@@ -181,12 +219,6 @@ def _resolve_vendor(
         ", ".join(codes),
         *[f"{k}: {v}" for k, v in params],
     )
-    if vendor:
-        return vendor
-
-    # 4) Supplier families without explicit vendor token:
-    # Hi-Black / CET / N-series often reveal the brand only through device families.
-    vendor = _vendor_from_texts(compat, description_text)
     if vendor:
         return vendor
 
@@ -365,7 +397,6 @@ def build_offer_from_raw(
         raw.get("source_categories") or ([] if not safe_str(raw.get("category_code")) else [safe_str(raw.get("category_code"))])
     )
 
-    # Предварительный vendor только для compat-parser.
     vendor_pre = _canonical_vendor(guess_vendor(safe_str(raw.get("vendor")), clean_title_value, raw_params))
     type_name = infer_type(source_categories, clean_title_value)
     tech = infer_tech(source_categories, type_name, clean_title_value)
@@ -401,7 +432,6 @@ def build_offer_from_raw(
         codes=codes,
     )
 
-    # Финальный vendor считаем уже на полном контексте.
     vendor = _resolve_vendor(
         raw_vendor=safe_str(raw.get("vendor")),
         title=title,
