@@ -13,8 +13,10 @@ VTT filtering layer under CS-template.
 Важно:
 - source.py не должен дублировать ассортиментные defaults;
 - filter.yml остаётся source of truth;
-- resolve_filter_inputs(...) специально сделан совместимым
+- resolve_filter_inputs(...) специально совместим
   со старыми вызовами через cfg_path=... и/или filter_cfg=....
+- сохранены aliases categories_from_cfg / prefixes_from_cfg
+  для текущего build_vtt.py.
 """
 
 from __future__ import annotations
@@ -133,6 +135,16 @@ def _split_env_list(raw: str | None) -> list[str]:
     return [p.strip() for p in parts if p and p.strip()]
 
 
+def categories_from_cfg(cfg: dict[str, Any] | None) -> list[str]:
+    """Backward-safe alias для build_vtt.py."""
+    return _as_list((cfg or {}).get("category_codes")) or list(DEFAULT_CATEGORY_CODES)
+
+
+def prefixes_from_cfg(cfg: dict[str, Any] | None) -> list[str]:
+    """Backward-safe alias для build_vtt.py."""
+    return _as_list((cfg or {}).get("allowed_title_prefixes")) or list(DEFAULT_ALLOWED_TITLE_PREFIXES)
+
+
 def title_allowed(title: str, allowed_prefixes: list[str] | tuple[str, ...] | set[str] | None) -> bool:
     prefixes = [safe_str(x) for x in (allowed_prefixes or []) if safe_str(x)]
     if not prefixes:
@@ -211,11 +223,11 @@ def resolve_filter_inputs(
 
     categories = _split_env_list(category_codes_env or categories_env)
     if not categories:
-        categories = _as_list(cfg.get("category_codes")) or list(DEFAULT_CATEGORY_CODES)
+        categories = categories_from_cfg(cfg)
 
     prefixes = _split_env_list(allowed_title_prefixes_env or prefixes_env)
     if not prefixes:
-        prefixes = _as_list(cfg.get("allowed_title_prefixes")) or list(DEFAULT_ALLOWED_TITLE_PREFIXES)
+        prefixes = prefixes_from_cfg(cfg)
 
     return categories, prefixes
 
@@ -236,6 +248,8 @@ __all__ = [
     "safe_str",
     "norm_ws",
     "load_filter_cfg",
+    "categories_from_cfg",
+    "prefixes_from_cfg",
     "resolve_filter_inputs",
     "title_allowed",
     "url_allowed",
