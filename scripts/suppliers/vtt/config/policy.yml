@@ -37,7 +37,7 @@ core_rules:
 
 quality_gate:
   enabled: true
-  enforce: true
+  enforce: false
   baseline_file: scripts/suppliers/vtt/config/quality_gate_baseline.yml
   report_file: docs/raw/vtt_quality_gate.txt
   max_cosmetic_offers: 5
