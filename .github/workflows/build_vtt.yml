@@ -3,6 +3,7 @@ name: Build_VTT
 on:
   workflow_dispatch:
   schedule:
+    # Алматы UTC+5 → 05:00 local = 00:00 UTC
     - cron: "0 0 1,10,20 * *"
 
 permissions:
@@ -51,15 +52,26 @@ jobs:
           fi
 
       - name: Prepare folders
-        run: mkdir -p docs/debug/vtt_shards
+        run: mkdir -p docs docs/raw docs/debug/vtt_shards
 
       - name: Smoke test
         run: |
           python -m py_compile \
             scripts/build_vtt.py \
+            scripts/suppliers/vtt/models.py \
             scripts/suppliers/vtt/source.py \
+            scripts/suppliers/vtt/filtering.py \
+            scripts/suppliers/vtt/normalize.py \
+            scripts/suppliers/vtt/pictures.py \
+            scripts/suppliers/vtt/params.py \
+            scripts/suppliers/vtt/params_page.py \
+            scripts/suppliers/vtt/desc_clean.py \
+            scripts/suppliers/vtt/desc_extract.py \
+            scripts/suppliers/vtt/compat.py \
             scripts/suppliers/vtt/builder.py \
-            scripts/suppliers/vtt/quality_gate.py
+            scripts/suppliers/vtt/diagnostics.py \
+            scripts/suppliers/vtt/quality_gate.py \
+            scripts/suppliers/vtt/client.py
 
       - name: Build shared index
         run: python scripts/build_vtt.py
@@ -96,8 +108,6 @@ jobs:
       VTT_SHARD_NAME: shard_${{ matrix.shard_no }}
       VTT_SHARD_NO: ${{ matrix.shard_no }}
       VTT_SHARD_TOTAL: 5
-
-      # Ускорение за счет равномерного деления по реальному количеству товаров.
       VTT_REQUEST_DELAY_MS: 8
       VTT_MAX_LISTING_PAGES: 5000
       VTT_MAX_WORKERS: 10
@@ -125,7 +135,7 @@ jobs:
           fi
 
       - name: Prepare folders
-        run: mkdir -p docs/debug/vtt_shards
+        run: mkdir -p docs docs/raw docs/debug/vtt_shards
 
       - name: Download index artifact
         uses: actions/download-artifact@v4
@@ -137,9 +147,20 @@ jobs:
         run: |
           python -m py_compile \
             scripts/build_vtt.py \
+            scripts/suppliers/vtt/models.py \
             scripts/suppliers/vtt/source.py \
+            scripts/suppliers/vtt/filtering.py \
+            scripts/suppliers/vtt/normalize.py \
+            scripts/suppliers/vtt/pictures.py \
+            scripts/suppliers/vtt/params.py \
+            scripts/suppliers/vtt/params_page.py \
+            scripts/suppliers/vtt/desc_clean.py \
+            scripts/suppliers/vtt/desc_extract.py \
+            scripts/suppliers/vtt/compat.py \
             scripts/suppliers/vtt/builder.py \
-            scripts/suppliers/vtt/quality_gate.py
+            scripts/suppliers/vtt/diagnostics.py \
+            scripts/suppliers/vtt/quality_gate.py \
+            scripts/suppliers/vtt/client.py
 
       - name: Build shard from shared index
         run: python scripts/build_vtt.py
@@ -149,7 +170,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: vtt-shard-${{ matrix.shard_no }}
-          path: docs/debug/vtt_shards/shard_${{ matrix.shard_no }}.json
+          path: |
+            docs/debug/vtt_shards/shard_${{ matrix.shard_no }}.json
+            docs/debug/vtt_shards/shard_${{ matrix.shard_no }}_summary.json
 
   merge_vtt:
     name: merge-vtt
@@ -164,7 +187,6 @@ jobs:
       TZ: Asia/Almaty
       VTT_BASE_URL: https://b2b.vtt.ru/
       VTT_BUILD_MODE: merge
-
       OUT_FILE: docs/vtt.yml
       RAW_OUT_FILE: docs/raw/vtt.yml
       VTT_QG_REPORT: docs/raw/vtt_quality_gate.txt
@@ -216,9 +238,20 @@ jobs:
         run: |
           python -m py_compile \
             scripts/build_vtt.py \
+            scripts/suppliers/vtt/models.py \
             scripts/suppliers/vtt/source.py \
+            scripts/suppliers/vtt/filtering.py \
+            scripts/suppliers/vtt/normalize.py \
+            scripts/suppliers/vtt/pictures.py \
+            scripts/suppliers/vtt/params.py \
+            scripts/suppliers/vtt/params_page.py \
+            scripts/suppliers/vtt/desc_clean.py \
+            scripts/suppliers/vtt/desc_extract.py \
+            scripts/suppliers/vtt/compat.py \
             scripts/suppliers/vtt/builder.py \
-            scripts/suppliers/vtt/quality_gate.py
+            scripts/suppliers/vtt/diagnostics.py \
+            scripts/suppliers/vtt/quality_gate.py \
+            scripts/suppliers/vtt/client.py
 
       - name: Snapshot previous feed
         run: |
@@ -265,82 +298,14 @@ jobs:
             NOTE=" (не было изменений)"
           fi
 
-          NOW_DOM=$(TZ='Asia/Almaty' date '+%-d')
-          NOW_HMS=$(TZ='Asia/Almaty' date '+%H%M%S')
-          TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
+          perl -0pi -e 's@(Время сборки \(Алматы\)\s*\| ).*@${1}'"$TS$NOTE"'@m' docs/vtt.yml docs/raw/vtt.yml
 
-          if [ "$NOW_DOM" -lt 10 ]; then
-            NEXT_DATE=$(TZ='Asia/Almaty' date -d "$(date +%Y-%m-10)" '+%Y-%m-%d')
-            if [ "$NOW_DOM" -eq 1 ] && [ "$NOW_HMS" -lt "050000" ]; then
-              NEXT_DATE="$TODAY"
-            elif [ "$NOW_DOM" -eq 1 ] && [ "$NOW_HMS" -ge "050000" ]; then
-              NEXT_DATE=$(TZ='Asia/Almaty' date -d "$(date +%Y-%m-10)" '+%Y-%m-%d')
-            fi
-          elif [ "$NOW_DOM" -lt 20 ]; then
-            NEXT_DATE=$(TZ='Asia/Almaty' date -d "$(date +%Y-%m-20)" '+%Y-%m-%d')
-            if [ "$NOW_DOM" -eq 10 ] && [ "$NOW_HMS" -lt "050000" ]; then
-              NEXT_DATE="$TODAY"
-            fi
-          else
-            NEXT_DATE=$(TZ='Asia/Almaty' date -d "$(date +%Y-%m-01 next month)" '+%Y-%m-%d')
-            if [ "$NOW_DOM" -eq 20 ] && [ "$NOW_HMS" -lt "050000" ]; then
-              NEXT_DATE="$TODAY"
-            fi
-          fi
-
-          NEXT_RUN="${NEXT_DATE} 05:00:00"
-
-          for F in docs/vtt.yml docs/raw/vtt.yml; do
-            if [ ! -f "$F" ]; then
-              continue
-            fi
-
-            sed -i -E "s/^<yml_catalog date=\"[^\"]+\">/<yml_catalog date=\"${TS}\">/" "$F" || true
-
-            tmp="$F.__tmp"
-            : > "$tmp"
-
-            while IFS= read -r ln; do
-              if [[ "$ln" == Время\ сборки\ \(Алматы\)* ]]; then
-                left="${ln%%|*}"
-                echo "${left}| ${TS}${NOTE}" >> "$tmp"
-              elif [[ "$ln" == Ближайшая\ сборка\ \(Алматы\)* ]]; then
-                left="${ln%%|*}"
-                echo "${left}| ${NEXT_RUN}" >> "$tmp"
-              else
-                if [ "$NO_CHANGES" -eq 0 ]; then
-                  echo "${ln// (не было изменений)/}" >> "$tmp"
-                else
-                  echo "$ln" >> "$tmp"
-                fi
-              fi
-            done < "$F"
-
-            mv "$tmp" "$F"
-          done
-
-      - name: Commit & push docs/vtt.yml
+      - name: Commit and push
         run: |
-          git add docs/vtt.yml docs/raw/vtt.yml
-          if [ -f docs/raw/vtt_quality_gate.txt ]; then
-            git add docs/raw/vtt_quality_gate.txt
-          fi
-
+          git add docs/vtt.yml docs/raw/vtt.yml docs/raw/vtt_quality_gate.txt docs/debug/vtt_shards/*.json || true
           if git diff --cached --quiet; then
-            echo "No changes to commit."
+            echo "No changes to commit"
             exit 0
           fi
-
-          git commit -m "build: vtt feed"
-          git pull --rebase --autostash
+          git commit -m "Build_VTT"
           git push
-
-      - name: Upload VTT build artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: vtt-build-output
-          path: |
-            docs/vtt.yml
-            docs/raw/vtt.yml
-            docs/raw/vtt_quality_gate.txt
