@@ -181,6 +181,24 @@ def _canonicalize_brand_tokens_in_name(name: str) -> str:
     return s
 
 
+def _is_weak_model_value(value: str, *, name: str) -> bool:
+    v = norm_ws(value)
+    if not v:
+        return True
+
+    up = v.upper()
+    if up in _GENERIC_VENDOR_WORDS:
+        return True
+    if up in _VENDOR_CANON_MAP:
+        return True
+
+    inferred_vendor = _infer_vendor_from_text(name)
+    if inferred_vendor and v.casefold() == inferred_vendor.casefold():
+        return True
+
+    return False
+
+
 def normalize_name(name: str) -> str:
     s = norm_ws(name)
     s = _canonicalize_brand_tokens_in_name(s)
@@ -277,19 +295,38 @@ def normalize_vendor(
 
 def normalize_model(name: str, params: list[ParamItem]) -> str:
     pmap = _param_map(params)
+
     for key in ("Модель", "Партномер", "Артикул", "Номер"):
         val = norm_ws(pmap.get(key, ""))
-        if val:
+        if val and not _is_weak_model_value(val, name=name):
             return val
 
     s = normalize_name(name)
-    m = re.search(r"\(([A-Za-z0-9#/\-\.]+)\)\s*$", s)
+
+    m = re.search(r"\(([^()]{2,})\)\s*$", s)
     if m:
-        return norm_ws(m.group(1))
+        val = norm_ws(m.group(1))
+        if val and not _is_weak_model_value(val, name=name):
+            return val
+
+    m = re.search(
+        r"(?iu)\b(?:моноблок|ноутбук|принтер|мфу|сканер|проектор|монитор)\s+"
+        r"(?:AIWA|Dell|HP|Canon|Epson|Xerox|Brother|Kyocera|Pantum|Ricoh|APC|Lenovo|ASUS|Acer|MSI|LG|Samsung|Huawei|iiyama|Gigabyte|Hikvision|ViewSonic|BenQ|AOC|TP\-?Link|D\-?Link|Cisco|Zyxel|Eaton|Poly)\s+"
+        r"([^()]{3,})",
+        s,
+    )
+    if m:
+        tail = norm_ws(m.group(1))
+        if "(" in tail:
+            tail = norm_ws(tail.split("(", 1)[0])
+        if tail and not _is_weak_model_value(tail, name=name):
+            return tail
 
     m = re.search(r"\b([A-Z]{1,6}[A-Z0-9/\-]{2,})\b", s)
     if m:
-        return norm_ws(m.group(1))
+        val = norm_ws(m.group(1))
+        if val and not _is_weak_model_value(val, name=name):
+            return val
 
     return ""
 
