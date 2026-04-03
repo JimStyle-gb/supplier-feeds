@@ -1,10 +1,21 @@
 supplier: vtt
+schema_version: 2
+id_prefix: VT
 adapter_cleans_params: true
+
+placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
+
+# Главный extractor supplier-layer сам поднимает clean raw params.
+# Core не должен чинить VTT-specific params.
+source_of_truth_for_params: page_params_first
+desc_extract_mode: only_fill_missing
+raw_must_be_clean: true
 
 key_rules:
   banned_exact:
     - Артикул
     - Штрих-код
+    - Штрихкод
     - Вендор
     - Категория
     - Подкатегория
@@ -12,6 +23,15 @@ key_rules:
     - SKU
     - UPC
     - EAN
+    - Barcode
+    - GTIN
+    - Назначение
+  discard_exact:
+    - В упаковке, штук
+    - Местный склад, штук
+    - Местный, до новой поставки, дней
+    - Склад Москва, штук
+    - Москва, до новой поставки, дней
   aliases:
     OEM-номер: Партномер
     Партс-номер: Партномер
@@ -27,3 +47,18 @@ allow_keys:
     - Технология печати
     - Цвет
     - Ресурс
+    - Объем
+  consumable:
+    - Тип
+    - Для бренда
+    - Партномер
+    - Коды расходников
+    - Совместимость
+    - Технология печати
+    - Цвет
+    - Ресурс
+    - Объем
+
+notes: >
+  Canonical VTT schema under CS-template.
+  Supplier-layer extracts clean raw params itself; shared core must not repair VTT-specific param logic.
