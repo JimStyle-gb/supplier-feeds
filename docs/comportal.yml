@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-03 15:50:04">
+<yml_catalog date="2026-04-03 16:43:57">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-04-03 15:50:04
+Время сборки (Алматы)                      | 2026-04-03 16:43:57
 Ближайшая сборка (Алматы)                  | 2026-04-04 04:00:00
-Сколько товаров у поставщика до фильтра    | 1176
-Сколько товаров у поставщика после фильтра | 573
-Сколько товаров есть в наличии (true)      | 573
+Сколько товаров у поставщика до фильтра    | 1175
+Сколько товаров у поставщика после фильтра | 572
+Сколько товаров есть в наличии (true)      | 572
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -13558,7 +13558,7 @@ URL поставщика                             | https://www.comportal.kz/
 <name>Моноблок AIWA PF2402-D 8-256 (PF2402-D 8-256)</name>
 <price>221900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>CS</vendor>
+<vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
@@ -13568,16 +13568,16 @@ URL поставщика                             | https://www.comportal.kz/
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Моноблок. Гарантия: 12 мес. Для бренда: CS. Модель: AIWA. Коды: AIWA.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Для бренда:</strong> CS</li><li><strong>Коды:</strong> AIWA</li><li><strong>Модель:</strong> AIWA</li><li><strong>Тип:</strong> Моноблок</li></ul>
+<p>Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: AIWA. Коды: AIWA.</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Для бренда:</strong> AIWA</li><li><strong>Коды:</strong> AIWA</li><li><strong>Модель:</strong> AIWA</li><li><strong>Тип:</strong> Моноблок</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<param name="Для бренда">CS</param>
+<param name="Для бренда">AIWA</param>
 <param name="Коды">AIWA</param>
 <param name="Модель">AIWA</param>
 <param name="Тип">Моноблок</param>
-<keywords>CS, Моноблок AIWA PF2402-D 8-256 (PF2402-D 8-256), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>AIWA, Моноблок AIWA PF2402-D 8-256 (PF2402-D 8-256), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13872772" available="true">
@@ -13586,7 +13586,7 @@ URL поставщика                             | https://www.comportal.kz/
 <name>Моноблок AIWA PF2402-K 8-512 (PF2402-K 8-512)</name>
 <price>240900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>CS</vendor>
+<vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
@@ -13596,16 +13596,16 @@ URL поставщика                             | https://www.comportal.kz/
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Моноблок. Гарантия: 12 мес. Для бренда: CS. Модель: AIWA. Коды: AIWA.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Для бренда:</strong> CS</li><li><strong>Коды:</strong> AIWA</li><li><strong>Модель:</strong> AIWA</li><li><strong>Тип:</strong> Моноблок</li></ul>
+<p>Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: AIWA. Коды: AIWA.</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Для бренда:</strong> AIWA</li><li><strong>Коды:</strong> AIWA</li><li><strong>Модель:</strong> AIWA</li><li><strong>Тип:</strong> Моноблок</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<param name="Для бренда">CS</param>
+<param name="Для бренда">AIWA</param>
 <param name="Коды">AIWA</param>
 <param name="Модель">AIWA</param>
 <param name="Тип">Моноблок</param>
-<keywords>CS, Моноблок AIWA PF2402-K 8-512 (PF2402-K 8-512), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>AIWA, Моноблок AIWA PF2402-K 8-512 (PF2402-K 8-512), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13872773" available="true">
@@ -13614,7 +13614,7 @@ URL поставщика                             | https://www.comportal.kz/
 <name>Моноблок AIWA PF2702-K 16-512 (PF2702-K 16-512)</name>
 <price>259900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>CS</vendor>
+<vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
@@ -13624,16 +13624,16 @@ URL поставщика                             | https://www.comportal.kz/
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Моноблок. Гарантия: 12 мес. Для бренда: CS. Модель: AIWA. Коды: AIWA.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Для бренда:</strong> CS</li><li><strong>Коды:</strong> AIWA</li><li><strong>Модель:</strong> AIWA</li><li><strong>Тип:</strong> Моноблок</li></ul>
+<p>Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: AIWA. Коды: AIWA.</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Для бренда:</strong> AIWA</li><li><strong>Коды:</strong> AIWA</li><li><strong>Модель:</strong> AIWA</li><li><strong>Тип:</strong> Моноблок</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<param name="Для бренда">CS</param>
+<param name="Для бренда">AIWA</param>
 <param name="Коды">AIWA</param>
 <param name="Модель">AIWA</param>
 <param name="Тип">Моноблок</param>
-<keywords>CS, Моноблок AIWA PF2702-K 16-512 (PF2702-K 16-512), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>AIWA, Моноблок AIWA PF2702-K 16-512 (PF2702-K 16-512), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13869991" available="true">
@@ -14039,45 +14039,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Частота обновления">100</param>
 <param name="Яркость">350</param>
 <keywords>HP, Монитор HP Series 5 Pro 527pm USB-C Conferencing (9E0Y9UT#ABB), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13869984" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13869984</vendorCode>
-<name>Монитор HP Series 5 Pro 534pm USB-C Conferencing (9E0Z2UT#ABB)</name>
-<price>278900</price>
-<picture>http://www.comportal.kz/upload/iblock/399/mn5nwjvkejmtxih5cx1a1vam35ott6ur.jpg</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- Наименование товара -->
-<h3>Монитор HP Series 5 Pro 534pm USB-C Conferencing (9E0Z2UT#ABB)</h3>
-<!-- WhatsApp -->
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<p>Монитор. Диагональ: 34. Максимальное разрешение: 3440x1440. Тип матрицы: WQHD. Частота обновления: 100. Время отклика: 5. Порты: 1xUSB Type-A/1xUSB-B/1xUSB Type-C DisplayPort1.4. Гарантия: 36 мес.</p>
-<h3>Характеристики</h3><ul><li><strong>Время отклика:</strong> 5</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Диагональ:</strong> 34</li><li><strong>Для бренда:</strong> HP</li><li><strong>Коды:</strong> 9E0Z2UT#ABB</li><li><strong>Контрастность:</strong> 4000:1</li><li><strong>Максимальное разрешение:</strong> 3440x1440</li><li><strong>Модель:</strong> 9E0Z2UT#ABB</li><li><strong>Порты:</strong> 1xUSB Type-A/1xUSB-B/1xUSB Type-C DisplayPort1.4</li><li><strong>Размер Pix:</strong> 110</li><li><strong>Тип:</strong> Монитор</li><li><strong>Тип матрицы:</strong> WQHD</li><li><strong>Углы обзора (вертикальный/горизонтальный):</strong> 178/178</li><li><strong>Цвет:</strong> Чёрный</li><li><strong>Частота обновления:</strong> 100</li><li><strong>Яркость:</strong> 400</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Время отклика">5</param>
-<param name="Гарантия">36 мес</param>
-<param name="Диагональ">34</param>
-<param name="Для бренда">HP</param>
-<param name="Коды">9E0Z2UT#ABB</param>
-<param name="Контрастность">4000:1</param>
-<param name="Максимальное разрешение">3440x1440</param>
-<param name="Модель">9E0Z2UT#ABB</param>
-<param name="Порты">1xUSB Type-A/1xUSB-B/1xUSB Type-C DisplayPort1.4</param>
-<param name="Размер Pix">110</param>
-<param name="Тип">Монитор</param>
-<param name="Тип матрицы">WQHD</param>
-<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
-<param name="Цвет">Чёрный</param>
-<param name="Частота обновления">100</param>
-<param name="Яркость">400</param>
-<keywords>HP, Монитор HP Series 5 Pro 534pm USB-C Conferencing (9E0Z2UT#ABB), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13870533" available="true">
@@ -20411,7 +20372,7 @@ URL поставщика                             | https://www.comportal.kz/
 <name>Моноблок AIWA PF2402-D-8-512 (PF2402-D 8-512 white)</name>
 <price>236900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>CS</vendor>
+<vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- Наименование товара -->
@@ -20421,16 +20382,16 @@ URL поставщика                             | https://www.comportal.kz/
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<p>Моноблок. Гарантия: 12 мес. Для бренда: CS. Модель: AIWA. Коды: AIWA.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Для бренда:</strong> CS</li><li><strong>Коды:</strong> AIWA</li><li><strong>Модель:</strong> AIWA</li><li><strong>Тип:</strong> Моноблок</li></ul>
+<p>Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: AIWA. Коды: AIWA.</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Для бренда:</strong> AIWA</li><li><strong>Коды:</strong> AIWA</li><li><strong>Модель:</strong> AIWA</li><li><strong>Тип:</strong> Моноблок</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
-<param name="Для бренда">CS</param>
+<param name="Для бренда">AIWA</param>
 <param name="Коды">AIWA</param>
 <param name="Модель">AIWA</param>
 <param name="Тип">Моноблок</param>
-<keywords>CS, Моноблок AIWA PF2402-D-8-512 (PF2402-D 8-512 white), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>AIWA, Моноблок AIWA PF2402-D-8-512 (PF2402-D 8-512 white), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13872917" available="true">

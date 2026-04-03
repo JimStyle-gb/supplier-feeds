@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-03 15:50:04">
+<yml_catalog date="2026-04-03 16:43:57">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-04-03 15:50:04
+Время сборки (Алматы)                      | 2026-04-03 16:43:57
 Ближайшая сборка (Алматы)                  | 2026-04-04 04:00:00
-Сколько товаров у поставщика до фильтра    | 1176
-Сколько товаров у поставщика после фильтра | 573
-Сколько товаров есть в наличии (true)      | 573
+Сколько товаров у поставщика до фильтра    | 1175
+Сколько товаров у поставщика после фильтра | 572
+Сколько товаров есть в наличии (true)      | 572
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -9400,13 +9400,13 @@ URL поставщика                             | https://www.comportal.kz/
 <name>Моноблок AIWA PF2402-D 8-256 (PF2402-D 8-256)</name>
 <price>198339</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>CS</vendor>
+<vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес. Для бренда: CS. Модель: AIWA. Коды: AIWA.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: AIWA. Коды: AIWA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
-<param name="Для бренда">CS</param>
+<param name="Для бренда">AIWA</param>
 <param name="Модель">AIWA</param>
 <param name="Коды">AIWA</param>
 </offer>
@@ -9417,13 +9417,13 @@ URL поставщика                             | https://www.comportal.kz/
 <name>Моноблок AIWA PF2402-K 8-512 (PF2402-K 8-512)</name>
 <price>211600</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>CS</vendor>
+<vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес. Для бренда: CS. Модель: AIWA. Коды: AIWA.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: AIWA. Коды: AIWA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
-<param name="Для бренда">CS</param>
+<param name="Для бренда">AIWA</param>
 <param name="Модель">AIWA</param>
 <param name="Коды">AIWA</param>
 </offer>
@@ -9434,13 +9434,13 @@ URL поставщика                             | https://www.comportal.kz/
 <name>Моноблок AIWA PF2702-K 16-512 (PF2702-K 16-512)</name>
 <price>230027</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>CS</vendor>
+<vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес. Для бренда: CS. Модель: AIWA. Коды: AIWA.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: AIWA. Коды: AIWA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
-<param name="Для бренда">CS</param>
+<param name="Для бренда">AIWA</param>
 <param name="Модель">AIWA</param>
 <param name="Коды">AIWA</param>
 </offer>
@@ -9759,34 +9759,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Диагональ">27</param>
 <param name="Частота обновления">100</param>
 <param name="Коды">9E0Y9UT#ABB</param>
-<param name="Для бренда">HP</param>
-</offer>
-
-<offer id="CP13869984" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13869984</vendorCode>
-<name>Монитор HP Series 5 Pro 534pm USB-C Conferencing (9E0Z2UT#ABB)</name>
-<price>248594</price>
-<picture>http://www.comportal.kz/upload/iblock/399/mn5nwjvkejmtxih5cx1a1vam35ott6ur.jpg</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Монитор. Диагональ: 34. Максимальное разрешение: 3440x1440. Тип матрицы: WQHD. Частота обновления: 100. Время отклика: 5. Порты: 1xUSB Type-A/1xUSB-B/1xUSB Type-C DisplayPort1.4. Гарантия: 36 мес.]]></description>
-<param name="Тип">Монитор</param>
-<param name="Модель">9E0Z2UT#ABB</param>
-<param name="Порты">1xUSB Type-A/1xUSB-B/1xUSB Type-C DisplayPort1.4</param>
-<param name="Тип матрицы">WQHD</param>
-<param name="Цвет">Чёрный</param>
-<param name="Гарантия">36 мес</param>
-<param name="Контрастность">4000:1</param>
-<param name="Яркость">400</param>
-<param name="Время отклика">5</param>
-<param name="Максимальное разрешение">3440x1440</param>
-<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
-<param name="Размер Pix">110</param>
-<param name="Диагональ">34</param>
-<param name="Частота обновления">100</param>
-<param name="Коды">9E0Z2UT#ABB</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -14350,13 +14322,13 @@ URL поставщика                             | https://www.comportal.kz/
 <name>Моноблок AIWA PF2402-D-8-512 (PF2402-D 8-512 white)</name>
 <price>208465</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>CS</vendor>
+<vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Моноблок. Гарантия: 12 мес. Для бренда: CS. Модель: AIWA. Коды: AIWA.]]></description>
+Моноблок. Гарантия: 12 мес. Для бренда: AIWA. Модель: AIWA. Коды: AIWA.]]></description>
 <param name="Тип">Моноблок</param>
 <param name="Гарантия">12 мес</param>
-<param name="Для бренда">CS</param>
+<param name="Для бренда">AIWA</param>
 <param name="Модель">AIWA</param>
 <param name="Коды">AIWA</param>
 </offer>
