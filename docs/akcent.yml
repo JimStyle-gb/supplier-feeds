@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-04 01:44:18">
+<yml_catalog date="2026-04-04 21:00:29">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-04-04 01:44:18
+Время сборки (Алматы)                      | 2026-04-04 21:00:29
 Ближайшая сборка (Алматы)                  | 2026-04-05 01:00:00
-Сколько товаров у поставщика до фильтра    | 2045
+Сколько товаров у поставщика до фильтра    | 2041
 Сколько товаров у поставщика после фильтра | 176
 Сколько товаров есть в наличии (true)      | 176
 Сколько товаров нет в наличии (false)      | 0
@@ -1679,7 +1679,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CH96404</vendorCode>
 <name>МФУ Epson L14150 фабрика печати</name>
 <price>461900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/e01/i7xpt3gv7ue9szoaw0zmrh90in3ra05i.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1744,7 +1744,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ67412</vendorCode>
 <name>МФУ Epson L3250 фабрика печати. Wi-Fi</name>
 <price>104900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/358/lxtmcj0imiles090hfyrgv2ks9sybtum.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1837,7 +1837,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CK59404</vendorCode>
 <name>МФУ Epson L3550 фабрика печати, Wi-Fi</name>
 <price>158900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/b9d/321g5ip06inw6yiu5kl36p2upvmxkihe.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2584,7 +2584,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC51CA63100</vendorCode>
 <name>Принтер ленточный Epson LW700</name>
 <price>72900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/632/90bfat3qgqy9r1plezn746kmlggyiheh.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4167,7 +4167,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T09C64A</vendorCode>
 <name>Чернила Epson C13T09C64A, голубой</name>
 <price>10900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/a93/mzpzbizytnn2r0vgj1f7iksyrrre3zcc.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4230,7 +4230,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T66424A</vendorCode>
 <name>Чернила Epson C13T66424A, голубой, 5700 – 6500 страниц формата A4*</name>
 <price>7900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/fde/q87nc9md3muxkkrsvwdjxlpg62utdxph.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4831,7 +4831,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T66464A</vendorCode>
 <name>Экономичный набор Epson Экономичный набор из четырех контейнеров с чернилами, серия 664, чернил позволят напечатать до 4 500 черно-белых страниц и др.</name>
 <price>19900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/ac1/n0qqf3iwn8mynu6hkm97h7soqkislcwf.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -5336,3 +5336,4 @@ URL поставщика                             | https://ak-cent.kz/export
 
 </offers>
 </shop>
+</yml_catalog>
