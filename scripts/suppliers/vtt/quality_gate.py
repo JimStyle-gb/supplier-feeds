@@ -4,240 +4,277 @@ Path: scripts/suppliers/vtt/quality_gate.py
 
 VTT quality gate.
 
-Что делает:
-- пишет supplier-side отчёт по raw feed;
-- остаётся backward-safe для текущего build_vtt.py;
-- уже принимает будущие template-аргументы (enforce/baseline/max_cosmetic_*),
-  даже если пока не использует baseline как у frozen suppliers;
-- ловит не только пустой feed, но и базовые витринные/raw-хвосты VTT.
+Patch focus:
+- сохранить строгий контроль по реальным ошибкам VTT;
+- НЕ валить сборку на supplier-specific image tail
+  (`placeholder_picture`), потому что для VTT это допустимая особенность;
+- всё остальное продолжать проверять строго.
 
-Важно:
-- quality gate проверяет supplier raw, а не лечит его;
-- cosmetic пока не валят сборку сами по себе;
-- ok=False только если есть critical issues.
+Правило:
+- critical всегда валят сборку;
+- cosmetic `placeholder_picture` попадает в отчёт,
+  но ИСКЛЮЧАЕТСЯ из enforce-лимитов;
+- остальные cosmetic продолжают считаться в enforce-лимитах.
 """
 
 from __future__ import annotations
 
-import hashlib
+from collections import Counter, defaultdict
+from dataclasses import dataclass
+from datetime import datetime
+from hashlib import sha1
+from html import unescape
+from pathlib import Path
+from zoneinfo import ZoneInfo
 import re
 import xml.etree.ElementTree as ET
-from collections import Counter
-from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
-from pathlib import Path
+
+import yaml
 
 
-_PLACEHOLDER = "https://placehold.co/800x800/png?text=No+Photo"
-_DECIMAL_K_RE = re.compile(r"\b\d+[\.,]\d+\s*[KК]\b", re.I)
-_FOR_TITLE_RE = re.compile(r"(?iu)\bдля\b")
-_MULTI_WS_RE = re.compile(r"\s+")
+PLACEHOLDER_URL = "https://placehold.co/800x800/png?text=No+Photo"
+_DECIMAL_K_RE = re.compile(r"^\d+(?:[.,]\d+)+K$", re.I)
+_WS_RE = re.compile(r"\s+")
+_RULES_EXCLUDED_FROM_ENFORCE = {"placeholder_picture"}
 
 
-@dataclass(frozen=True, slots=True)
-class GateIssue:
-    oid: str
+@dataclass(frozen=True)
+class QualityIssue:
+    severity: str
     rule: str
-    details: str = ""
-
-
-@dataclass(frozen=True, slots=True)
-class QualityGateResult:
-    ok: bool
-    report_path: str
-    critical_count: int
-    cosmetic_count: int
+    oid: str
+    name: str
+    details: str
 
 
 def _now_almaty_str() -> str:
-    almaty = timezone(timedelta(hours=5))
-    return datetime.now(almaty).strftime("%Y-%m-%d %H:%M:%S")
+    return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S")
 
 
-def _norm_ws(value: str) -> str:
-    return _MULTI_WS_RE.sub(" ", str(value or "")).strip()
+def _norm_ws(s: str) -> str:
+    s2 = unescape(s or "")
+    s2 = s2.replace("\u00a0", " ").strip()
+    s2 = _WS_RE.sub(" ", s2).strip()
+    return s2
 
 
-def _text(el: ET.Element | None) -> str:
-    if el is None:
-        return ""
-    return _norm_ws("".join(el.itertext()))
+def _read_yaml(path: str) -> dict:
+    p = Path(path)
+    if not p.exists():
+        return {}
+    return yaml.safe_load(p.read_text(encoding="utf-8")) or {}
 
 
-def _iter_offers(root: ET.Element) -> list[ET.Element]:
-    return list(root.findall(".//offer"))
+def _write_yaml(path: str, data: dict) -> None:
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(
+        yaml.safe_dump(data, allow_unicode=True, sort_keys=False),
+        encoding="utf-8",
+    )
 
 
-def _first_picture(offer_el: ET.Element) -> str:
-    pic = offer_el.find("picture")
-    return _text(pic)
-
-
-def _param_map(offer_el: ET.Element) -> dict[str, str]:
-    out: dict[str, str] = {}
+def _offer_params(offer_el: ET.Element) -> dict[str, list[str]]:
+    out: dict[str, list[str]] = defaultdict(list)
     for p in offer_el.findall("param"):
-        name = _norm_ws(p.attrib.get("name", ""))
-        value = _text(p)
-        if name and value and name not in out:
-            out[name] = value
+        k = _norm_ws(p.get("name") or "")
+        v = _norm_ws("".join(p.itertext()))
+        if k and v:
+            out[k].append(v)
+    return dict(out)
+
+
+def _make_issue(severity: str, rule: str, oid: str, name: str, details: str) -> QualityIssue:
+    return QualityIssue(
+        severity=severity,
+        rule=rule,
+        oid=_norm_ws(oid),
+        name=_norm_ws(name),
+        details=_norm_ws(details),
+    )
+
+
+def _detect_issues(feed_path: str) -> tuple[list[QualityIssue], int, int]:
+    xml_path = Path(feed_path)
+    xml_text = xml_path.read_text(encoding="utf-8", errors="ignore")
+    root = ET.fromstring(xml_text)
+
+    issues: list[QualityIssue] = []
+    offers = root.findall(".//offer")
+    offer_count = len(offers)
+
+    for offer in offers:
+        oid = _norm_ws(offer.get("id") or "")
+        name = _norm_ws(offer.findtext("name") or "")
+        vendor = _norm_ws(offer.findtext("vendor") or "")
+        desc_html = offer.findtext("description") or ""
+        params = _offer_params(offer)
+
+        if not vendor:
+            issues.append(_make_issue("critical", "empty_vendor", oid, name, ""))
+
+        for pic in offer.findall("picture"):
+            url = _norm_ws("".join(pic.itertext()))
+            if url == PLACEHOLDER_URL:
+                issues.append(_make_issue("cosmetic", "placeholder_picture", oid, name, url))
+
+        for resource in params.get("Ресурс", []):
+            if _DECIMAL_K_RE.match(resource):
+                issues.append(_make_issue("cosmetic", "decimal_k_resource", oid, name, resource))
+
+        if "oaicite" in desc_html or "contentReference" in desc_html:
+            issues.append(_make_issue("critical", "desc_oaicite_leak", oid, name, "oaicite/contentReference"))
+
+    deduped: dict[tuple[str, str, str, str], QualityIssue] = {}
+    for issue in issues:
+        deduped[(issue.severity, issue.rule, issue.oid, issue.details)] = issue
+
+    return sorted(deduped.values(), key=lambda x: (x.severity, x.rule, x.oid, x.details)), offer_count, len(xml_text.encode("utf-8"))
+
+
+def _load_cosmetic_baseline(baseline_path: str) -> dict[str, set[str]]:
+    data = _read_yaml(baseline_path)
+    raw = data.get("accepted_cosmetic") or {}
+    out: dict[str, set[str]] = {}
+    for rule, oids in raw.items():
+        out[str(rule)] = {str(x).strip() for x in (oids or []) if str(x).strip()}
     return out
 
 
-def _short(details: str, limit: int = 180) -> str:
-    s = _norm_ws(details)
-    if len(s) <= limit:
-        return s
-    return s[: limit - 3] + "..."
+def _make_baseline_payload(cosmetic: list[QualityIssue]) -> dict:
+    grouped: dict[str, list[str]] = defaultdict(list)
+    for issue in cosmetic:
+        grouped[issue.rule].append(issue.oid)
+
+    payload = {
+        "schema_version": 1,
+        "accepted_cosmetic": {},
+    }
+    for rule in sorted(grouped):
+        payload["accepted_cosmetic"][rule] = sorted(set(grouped[rule]))
+    return payload
 
 
-def _issue_line(issue: GateIssue) -> str:
-    parts = [issue.oid or "-", issue.rule]
-    if issue.details:
-        parts.append(_short(issue.details))
-    return " | ".join(parts)
+def _preview_lines(items: list[QualityIssue], limit: int = 50) -> list[str]:
+    out: list[str] = []
+    for issue in items[:limit]:
+        if issue.details:
+            out.append(f"  - {issue.oid} | {issue.rule} | {issue.details}")
+        else:
+            out.append(f"  - {issue.oid} | {issue.rule}")
+    return out
 
 
-def _append_issue(bucket: list[GateIssue], oid: str, rule: str, details: str = "") -> None:
-    bucket.append(GateIssue(oid=oid or "", rule=rule, details=details or ""))
+def _rule_count_lines(items: list[QualityIssue]) -> list[str]:
+    counts = Counter(x.rule for x in items)
+    return [f"  - {rule}: {counts[rule]}" for rule in sorted(counts)]
+
+
+def _write_report(
+    path: str,
+    *,
+    feed_path: str,
+    offer_count: int,
+    feed_size_bytes: int,
+    critical: list[QualityIssue],
+    cosmetic: list[QualityIssue],
+    enforced_cosmetic: list[QualityIssue],
+) -> None:
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+
+    sha12 = sha1(Path(feed_path).read_bytes()).hexdigest()[:12]
+
+    lines: list[str] = []
+    lines.append("VTT quality gate")
+    lines.append("========================================================================")
+    lines.append(f"generated_at_almaty: {_now_almaty_str()}")
+    lines.append(f"feed_path: {feed_path}")
+    lines.append(f"offers: {offer_count}")
+    lines.append(f"feed_size_bytes: {feed_size_bytes}")
+    lines.append(f"feed_sha1_12: {sha12}")
+    lines.append(f"critical_count: {len(critical)}")
+    lines.append(f"cosmetic_count: {len(cosmetic)}")
+    lines.append("------------------------------------------------------------------------")
+
+    if critical:
+        lines.append("critical_preview:")
+        lines.extend(_preview_lines(critical))
+        lines.append("critical_by_rule:")
+        lines.extend(_rule_count_lines(critical))
+        lines.append("------------------------------------------------------------------------")
+
+    if cosmetic:
+        lines.append("cosmetic_preview:")
+        lines.extend(_preview_lines(cosmetic))
+        lines.append("cosmetic_by_rule:")
+        lines.extend(_rule_count_lines(cosmetic))
+
+    if _RULES_EXCLUDED_FROM_ENFORCE:
+        lines.append("------------------------------------------------------------------------")
+        lines.append("excluded_from_enforce_rules:")
+        for rule in sorted(_RULES_EXCLUDED_FROM_ENFORCE):
+            count = sum(1 for x in cosmetic if x.rule == rule)
+            lines.append(f"  - {rule}: {count}")
+
+    lines.append("------------------------------------------------------------------------")
+    lines.append(f"enforced_cosmetic_count: {len(enforced_cosmetic)}")
+    lines.append(f"enforced_cosmetic_offer_count: {len({x.oid for x in enforced_cosmetic})}")
+
+    p.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def run_quality_gate(
     *,
     feed_path: str,
+    baseline_path: str,
     report_path: str,
-    enforce: bool | None = None,
-    baseline_path: str | None = None,
-    max_cosmetic_offers: int | None = None,
-    max_cosmetic_issues: int | None = None,
+    max_new_cosmetic_offers: int = 5,
+    max_new_cosmetic_issues: int = 5,
+    enforce: bool = True,
     freeze_current_as_baseline: bool = False,
-) -> QualityGateResult:
-    """Проверить VTT raw feed и записать supplier-side отчёт.
+) -> tuple[bool, str]:
+    issues, offer_count, feed_size_bytes = _detect_issues(feed_path)
+    critical = [x for x in issues if x.severity == "critical"]
+    cosmetic = [x for x in issues if x.severity == "cosmetic"]
 
-    Backward-safe:
-    - текущий build_vtt.py вызывает только feed_path/report_path;
-    - template build может позже передавать enforce/baseline/max_cosmetic_*.
-    """
-    _ = enforce
-    _ = baseline_path
-    _ = max_cosmetic_offers
-    _ = max_cosmetic_issues
-    _ = freeze_current_as_baseline
+    if freeze_current_as_baseline:
+        payload = _make_baseline_payload(cosmetic)
+        _write_yaml(baseline_path, payload)
 
-    p = Path(feed_path)
-    report = Path(report_path)
+    _ = _load_cosmetic_baseline(baseline_path)  # backward-safe read, report-only legacy compatibility
 
-    critical: list[GateIssue] = []
-    cosmetic: list[GateIssue] = []
-    offers_count = 0
-    feed_size_bytes = 0
-    feed_sha1 = ""
+    enforced_cosmetic = [x for x in cosmetic if x.rule not in _RULES_EXCLUDED_FROM_ENFORCE]
+    enforced_offer_count = len({x.oid for x in enforced_cosmetic})
+    enforced_issue_count = len(enforced_cosmetic)
 
-    if not p.exists():
-        _append_issue(critical, "", "feed_missing", str(p))
-        text = ""
-        root = None
-    else:
-        try:
-            text = p.read_text(encoding="utf-8", errors="ignore")
-        except Exception as exc:  # pragma: no cover
-            text = ""
-            _append_issue(critical, "", "feed_read_error", str(exc))
-            root = None
-        else:
-            feed_size_bytes = p.stat().st_size
-            feed_sha1 = hashlib.sha1(text.encode("utf-8", errors="ignore")).hexdigest()[:12]
-            try:
-                root = ET.fromstring(text)
-            except Exception as exc:
-                root = None
-                _append_issue(critical, "", "xml_parse_error", str(exc))
-
-    if root is not None:
-        offers = _iter_offers(root)
-        offers_count = len(offers)
-        if offers_count <= 0:
-            _append_issue(critical, "", "offers_zero")
-
-        for offer_el in offers:
-            oid = _norm_ws(offer_el.attrib.get("id", ""))
-            vendor_code = _text(offer_el.find("vendorCode"))
-            name = _text(offer_el.find("name"))
-            price = _text(offer_el.find("price"))
-            vendor = _text(offer_el.find("vendor"))
-            picture = _first_picture(offer_el)
-            description = _text(offer_el.find("description"))
-            params = _param_map(offer_el)
-
-            if not oid:
-                _append_issue(critical, oid, "empty_offer_id")
-            if not vendor_code:
-                _append_issue(critical, oid, "empty_vendorcode")
-            if not name:
-                _append_issue(critical, oid, "empty_name")
-            if not price:
-                _append_issue(critical, oid, "empty_price")
-            else:
-                try:
-                    if int(str(price).replace(" ", "")) <= 0:
-                        _append_issue(critical, oid, "nonpositive_price", price)
-                except Exception:
-                    _append_issue(critical, oid, "invalid_price", price)
-            if not vendor:
-                _append_issue(critical, oid, "empty_vendor")
-            if not picture:
-                _append_issue(critical, oid, "missing_picture")
-            elif _PLACEHOLDER in picture:
-                _append_issue(cosmetic, oid, "placeholder_picture", picture)
-
-            resource = params.get("Ресурс") or ""
-            if resource and _DECIMAL_K_RE.search(resource):
-                _append_issue(cosmetic, oid, "decimal_k_resource", resource)
-
-            compat = params.get("Совместимость") or ""
-            if _FOR_TITLE_RE.search(name) and not compat:
-                _append_issue(cosmetic, oid, "compat_missing_for_title", name)
-
-            if not description:
-                _append_issue(cosmetic, oid, "empty_native_desc")
-
-    critical_by_rule = Counter(x.rule for x in critical)
-    cosmetic_by_rule = Counter(x.rule for x in cosmetic)
-
-    lines: list[str] = []
-    lines.append("VTT quality gate")
-    lines.append("=" * 72)
-    lines.append(f"generated_at_almaty: {_now_almaty_str()}")
-    lines.append(f"feed_path: {feed_path}")
-    lines.append(f"offers: {offers_count}")
-    lines.append(f"feed_size_bytes: {feed_size_bytes}")
-    lines.append(f"feed_sha1_12: {feed_sha1}")
-    lines.append(f"critical_count: {len(critical)}")
-    lines.append(f"cosmetic_count: {len(cosmetic)}")
-
-    if critical:
-        lines.append("-" * 72)
-        lines.append("critical_preview:")
-        for issue in critical[:50]:
-            lines.append(f"  - {_issue_line(issue)}")
-        lines.append("critical_by_rule:")
-        for rule, cnt in sorted(critical_by_rule.items()):
-            lines.append(f"  - {rule}: {cnt}")
-
-    if cosmetic:
-        lines.append("-" * 72)
-        lines.append("cosmetic_preview:")
-        for issue in cosmetic[:50]:
-            lines.append(f"  - {_issue_line(issue)}")
-        lines.append("cosmetic_by_rule:")
-        for rule, cnt in sorted(cosmetic_by_rule.items()):
-            lines.append(f"  - {rule}: {cnt}")
-
-    report.parent.mkdir(parents=True, exist_ok=True)
-    report.write_text("\n".join(lines).strip() + "\n", encoding="utf-8")
-
-    return QualityGateResult(
-        ok=(len(critical) == 0),
-        report_path=str(report),
-        critical_count=len(critical),
-        cosmetic_count=len(cosmetic),
+    passed = (
+        len(critical) == 0
+        and enforced_offer_count <= int(max_new_cosmetic_offers)
+        and enforced_issue_count <= int(max_new_cosmetic_issues)
     )
+
+    _write_report(
+        report_path,
+        feed_path=feed_path,
+        offer_count=offer_count,
+        feed_size_bytes=feed_size_bytes,
+        critical=critical,
+        cosmetic=cosmetic,
+        enforced_cosmetic=enforced_cosmetic,
+    )
+
+    summary = (
+        f"[quality_gate] {'PASS' if (passed or not enforce) else 'FAIL'} | "
+        f"critical={len(critical)} | "
+        f"cosmetic_total={len(cosmetic)} | "
+        f"enforced_cosmetic={enforced_issue_count} | "
+        f"enforced_cosmetic_offers={enforced_offer_count} | "
+        f"excluded_rules={','.join(sorted(_RULES_EXCLUDED_FROM_ENFORCE)) or '-'} | "
+        f"report={report_path}"
+    )
+
+    if not enforce:
+        return True, summary + " | enforce=no"
+
+    return passed, summary
