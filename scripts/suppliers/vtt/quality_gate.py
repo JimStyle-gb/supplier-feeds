@@ -4,9 +4,10 @@ Path: scripts/suppliers/vtt/quality_gate.py
 
 VTT quality gate.
 
-Patch focus v3:
-- backward-safe interface for current build_vtt.py;
-- возвращает объект с .ok / .report_path / .critical_count / .cosmetic_count;
+v4:
+- логика gate не меняется;
+- отчёт приведён к каноническому стилю AkCent / AlStyle / CopyLine;
+- VTT-specific debug-данные вынесены в нижний дополнительный блок;
 - placeholder_picture остаётся в отчёте, но исключается из enforce-подсчёта.
 """
 
@@ -181,6 +182,15 @@ def _rule_count_lines(items: list[QualityIssue]) -> list[str]:
     return [f"  - {rule}: {counts[rule]}" for rule in sorted(counts)]
 
 
+def _section(lines: list[str], title: str, items: list[QualityIssue]) -> None:
+    lines.append(title + ":")
+    if items:
+        lines.extend(_preview_lines(items))
+    else:
+        lines.append("# Ошибок в этой секции нет")
+    lines.append("")
+
+
 def _write_report(
     path: str,
     *,
@@ -190,46 +200,74 @@ def _write_report(
     critical: list[QualityIssue],
     cosmetic: list[QualityIssue],
     enforced_cosmetic: list[QualityIssue],
+    baseline_path: str | None,
+    freeze_current_as_baseline: bool,
+    enforce: bool,
 ) -> None:
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
 
     sha12 = sha1(Path(feed_path).read_bytes()).hexdigest()[:12]
+    cosmetic_offer_count = len({x.oid for x in cosmetic})
+    enforced_offer_count = len({x.oid for x in enforced_cosmetic})
+    passed = len(critical) == 0 and enforced_offer_count <= 5 and len(enforced_cosmetic) <= 5
+
+    # baseline пока используем только как справочную/стилистическую часть отчёта
+    # без разделения known/new по логике enforce, как в других поставщиках сейчас.
+    known_cosmetic: list[QualityIssue] = []
+    new_cosmetic: list[QualityIssue] = list(cosmetic)
 
     lines: list[str] = []
-    lines.append("VTT quality gate")
-    lines.append("========================================================================")
+    lines.append("# Итог проверки quality gate")
+    lines.append(f"QUALITY_GATE: {'PASS' if passed else 'FAIL'}")
+    lines.append("# PASS = можно выпускать | FAIL = есть блокирующие проблемы")
+    lines.append(f"enforce: {'true' if enforce else 'false'}")
+    lines.append("# true = quality gate реально валит сборку")
+    lines.append(f"report_file: {path}")
+    lines.append("# Куда записан этот отчёт")
+    lines.append(f"baseline_file: {baseline_path or ''}")
+    lines.append("# Базовый файл для сравнения известных cosmetic-проблем")
+    lines.append(f"freeze_current_as_baseline: {'yes' if freeze_current_as_baseline else 'no'}")
+    lines.append("# yes = текущие cosmetic-хвосты сохранены как baseline-снимок")
+    lines.append(f"critical_count: {len(critical)}")
+    lines.append("# Сколько найдено критичных проблем")
+    lines.append(f"cosmetic_total_count: {len(cosmetic)}")
+    lines.append("# Общее число некритичных проблем")
+    lines.append(f"cosmetic_offer_count: {cosmetic_offer_count}")
+    lines.append("# В скольких товарах есть cosmetic-проблемы")
+    lines.append(f"known_cosmetic_count: {len(known_cosmetic)}")
+    lines.append("# Сколько cosmetic-проблем уже известны по baseline")
+    lines.append("known_cosmetic_offer_count: 0")
+    lines.append("# В скольких товарах есть уже известные cosmetic-проблемы")
+    lines.append(f"new_cosmetic_count: {len(new_cosmetic)}")
+    lines.append("# Сколько найдено новых cosmetic-проблем")
+    lines.append(f"new_cosmetic_offer_count: {len({x.oid for x in new_cosmetic})}")
+    lines.append("# В скольких товарах есть новые cosmetic-проблемы")
+    lines.append("")
+
+    _section(lines, "CRITICAL", critical)
+    _section(lines, "COSMETIC TOTAL", cosmetic)
+    _section(lines, "KNOWN COSMETIC", known_cosmetic)
+    _section(lines, "NEW COSMETIC", new_cosmetic)
+
+    lines.append("DEBUG VTT:")
     lines.append(f"generated_at_almaty: {_now_almaty_str()}")
     lines.append(f"feed_path: {feed_path}")
     lines.append(f"offers: {offer_count}")
     lines.append(f"feed_size_bytes: {feed_size_bytes}")
     lines.append(f"feed_sha1_12: {sha12}")
-    lines.append(f"critical_count: {len(critical)}")
-    lines.append(f"cosmetic_count: {len(cosmetic)}")
-    lines.append("------------------------------------------------------------------------")
-
-    if critical:
-        lines.append("critical_preview:")
-        lines.extend(_preview_lines(critical))
-        lines.append("critical_by_rule:")
-        lines.extend(_rule_count_lines(critical))
-        lines.append("------------------------------------------------------------------------")
-
-    if cosmetic:
-        lines.append("cosmetic_preview:")
-        lines.extend(_preview_lines(cosmetic))
-        lines.append("cosmetic_by_rule:")
-        lines.extend(_rule_count_lines(cosmetic))
-
-    lines.append("------------------------------------------------------------------------")
     lines.append("excluded_from_enforce_rules:")
     for rule in sorted(_RULES_EXCLUDED_FROM_ENFORCE):
         count = sum(1 for x in cosmetic if x.rule == rule)
         lines.append(f"  - {rule}: {count}")
-
-    lines.append("------------------------------------------------------------------------")
     lines.append(f"enforced_cosmetic_count: {len(enforced_cosmetic)}")
-    lines.append(f"enforced_cosmetic_offer_count: {len({x.oid for x in enforced_cosmetic})}")
+    lines.append(f"enforced_cosmetic_offer_count: {enforced_offer_count}")
+    lines.append("")
+    lines.append("COSMETIC TOTAL BY RULE:")
+    if cosmetic:
+        lines.extend(_rule_count_lines(cosmetic))
+    else:
+        lines.append("# Ошибок в этой секции нет")
 
     p.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -272,6 +310,9 @@ def run_quality_gate(
         critical=critical,
         cosmetic=cosmetic,
         enforced_cosmetic=enforced_cosmetic,
+        baseline_path=baseline_path,
+        freeze_current_as_baseline=freeze_current_as_baseline,
+        enforce=enforce,
     )
 
     ok = True if not enforce else passed
