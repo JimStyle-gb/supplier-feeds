@@ -1,10 +1,10 @@
 VTT quality gate
 ========================================================================
-generated_at_almaty: 2026-04-04 15:49:05
+generated_at_almaty: 2026-04-04 17:25:00
 feed_path: docs/raw/vtt.yml
 offers: 3137
 feed_size_bytes: 3097661
-feed_sha1_12: 5b392d47db50
+feed_sha1_12: 079b6e909c0b
 critical_count: 0
 cosmetic_count: 455
 ------------------------------------------------------------------------
@@ -61,3 +61,9 @@ cosmetic_preview:
   - VT15016127 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
 cosmetic_by_rule:
   - placeholder_picture: 455
+------------------------------------------------------------------------
+excluded_from_enforce_rules:
+  - placeholder_picture: 455
+------------------------------------------------------------------------
+enforced_cosmetic_count: 0
+enforced_cosmetic_offer_count: 0
