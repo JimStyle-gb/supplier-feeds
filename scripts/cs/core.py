@@ -1825,15 +1825,21 @@ def _ac_drop_barcode_params(params: list[tuple[str, str]]) -> list[tuple[str, st
 
 def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name: str) -> list[tuple[str, str]]:
     """Точечные правила по поставщикам/категориям для <param> и блока характеристик.
-    - Удаляем служебные params (Артикул добавляется/может приходить извне)
-    - VTT: штрих-код/аналоги удаляем; OEM-номер -> Партномер; если OEM нет — Каталожный номер -> Партномер
-    - CopyLine: для 'Кабель сетевой' удаляем 'Совместимость'
+    Shared core делает только truly-common post-rules.
+
+    Что допустимо здесь:
+    - глобально не выпускать служебный param 'Артикул';
+    - AkCent: человекочитаемо переименовать техничные 1D/2D-ключи;
+    - CopyLine: для 'Кабель сетевой' убрать шумный param 'Совместимость'.
+
+    Что НЕ должно жить здесь:
+    - supplier-specific очистка VTT;
+    - supplier-specific OEM/Каталожный номер -> Партномер;
+    - любые другие adapter-side правила.
     """
     oid_u = (oid or "").upper()
     name_cf = (name or "").strip().casefold()
-    is_vtt = oid_u.startswith("VT")
     is_copyline = oid_u.startswith("CL")
-
 
     # AkCent: переименовываем техничные ключи 1D/2D/Распознавание кода в человекочитаемые названия.
     # Значения (списки форматов) сохраняем как есть.
@@ -1850,21 +1856,6 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
             renamed.append((kk0, vv0))
         params = renamed
 
-    # VTT: если OEM не дали — не теряем Каталожный номер (переносим в Партномер)
-    vtt_has_oem = False
-    vtt_has_part = False
-    if is_vtt:
-        for k0, v0 in params or []:
-            kk0 = norm_ws(k0)
-            vv0 = norm_ws(v0)
-            if not kk0 or not vv0:
-                continue
-            k0_cf = kk0.casefold().replace("ё", "е")
-            if k0_cf in {"oem-номер", "oem номер", "oem", "oem номер детали", "oem номер/part number"}:
-                vtt_has_oem = True
-            if k0_cf in {"партномер", "partnumber", "part number", "pn", "part no"}:
-                vtt_has_part = True
-
     out: list[tuple[str, str]] = []
     for k, v in params or []:
         kk = norm_ws(k)
@@ -1872,22 +1863,12 @@ def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name
         if not kk or not vv:
             continue
         k_cf = kk.casefold().replace("ё", "е")
-        # глобально: не выводим служебный 'Артикул' как характеристику
+
+        # Глобально: не выводим служебный 'Артикул' как характеристику.
+        # Если supplier хочет использовать его для stable ID/vendorCode —
+        # это должно происходить в supplier-layer ДО входа в core.
         if k_cf == "артикул":
             continue
-
-        if is_vtt:
-            # VTT: чистим служебные параметры
-            if k_cf in {"аналоги", "аналог", "штрихкод", "штрих-код", "штрих код"}:
-                continue
-            # VTT: OEM-номер -> Партномер
-            if k_cf in {"oem-номер", "oem номер", "oem", "oem номер детали", "oem номер/part number"}:
-                kk = "Партномер"
-            # VTT: Каталожный номер оставляем ТОЛЬКО если OEM/Партномер не дали
-            elif k_cf in {"каталожный номер", "кат. номер", "каталожный №", "кат. №"}:
-                if vtt_has_oem or vtt_has_part:
-                    continue
-                kk = "Партномер"
 
         if is_copyline and name_cf.startswith("кабель сетевой") and (k_cf == "совместимость"):
             continue
