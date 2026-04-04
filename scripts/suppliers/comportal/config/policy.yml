@@ -1,60 +1,55 @@
+schema_version: 2
 supplier: ComPortal
+timezone: Asia/Almaty
 
-vendor_policy:
-  never_use_supplier_name_as_public_vendor: true
-  neutral_fallback_vendor: CS
-  canonicalize_common_brands: true
-  forbid_generic_device_words_as_vendor: true
-  generic_vendor_words:
-    - МФП
-    - МФУ
-    - Принтер
-    - Ноутбук
-    - Монитор
-    - ИБП
-    - Сканер
-    - Проектор
-    - Картридж
-    - Тонер
-    - Батарея
-    - Аккумулятор
-    - Стабилизатор
+# Единое расписание проекта:
+# AkCent 01:00 -> AlStyle 02:00 -> ComPortal 03:00 -> CopyLine 04:00 -> VTT 05:00
+next_run_hour_local: 3
+schedule_hour_almaty: 3
 
-picture_policy:
-  placeholder: https://placehold.co/800x800/png?text=No+Photo
-  dedupe_pictures: true
-  prefer_real_product_pictures: true
+id_prefix: CP
+placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
 
-param_policy:
-  drop_param_names:
-    - Штрихкод
-    - Штрих-код
-    - Штрих код
-    - Barcode
-    - GTIN
-    - UPC
-    - EAN
-    - EAN-13
-    - EAN13
-    - Артикул
-    - Новинка
-    - Снижена цена
-    - Благотворительность
-    - Код товара Kaspi
-    - Код ТН ВЭД
-    - Назначение
-    - Цена по запросу (для сортировки)
-    - Акция (для сортировки)
+vendor_blacklist_casefold:
+  - comportal
+  - comportal.kz
 
-compat_policy:
-  core_generates_compat: false
-  supplier_may_normalize_if_present: true
+currency: KZT
 
-pricing_policy:
-  allow_fallback_price_100: true
-  price_is_not_reason_to_drop_offer: true
+param_priority:
+  - Тип
+  - Для бренда
+  - Модель
+  - Коды
+  - Номер
+  - Совместимость
+  - Технология печати
+  - Цвет
+  - Ресурс
+  - Объём
 
-feed_policy:
-  keep_feed_meta_untouched: true
-  final_category_id_empty: true
-  final_encoding_utf8: true
+core_rules:
+  mutate_params: false
+  auto_codes_from_text: false
+  auto_compat_from_text: false
+  placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
+
+supplier_layer:
+  source_of_truth_for_params: xml_params_first
+  desc_extract_mode: only_fill_missing
+  compat_mode: safe_cleanup_only
+  raw_must_be_clean: true
+
+quality_gate:
+  enabled: true
+  enforce: true
+  baseline_file: scripts/suppliers/comportal/config/quality_gate_baseline.yml
+  report_file: docs/raw/comportal_quality_gate.txt
+  max_new_cosmetic_offers: 5
+  max_new_cosmetic_issues: 5
+  freeze_current_as_baseline: false
+
+notes:
+  - ComPortal supplier-layer должен сам отдавать clean raw без supplier-specific правок в core.
+  - baseline_file приведён к каноническому имени quality_gate_baseline.yml.
+  - next_run_hour_local и schedule_hour_almaty зафиксированы на 03:00 по Алматы.
