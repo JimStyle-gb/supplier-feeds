@@ -4,11 +4,21 @@ Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
 
-Patch focus v4:
-- сохранить нулевые critical по vendor;
-- исправить смысловой косяк, когда title уже "Тонер-картридж ...",
-  а supplier-layer всё ещё ставит Тип="Картридж";
-- не трогать pricing и остальную VTT-specific cleanup-логику.
+Patch focus v6:
+- закрепить явное supplier-rule для stable ID / vendorCode;
+- скрипт должен ИЗНАЧАЛЬНО знать, откуда брать основной код товара,
+  а не "чистить" vendorCode постфактум;
+- source priority для VTT:
+    1) явный article/SKU из params
+    2) clean part_number
+    3) clean display_part_number
+    4) raw sku
+- composite коды вида Z7Y72A/JC96-12502A не использовать как основной stable ID,
+  если уже выделен clean article Z7Y72A.
+
+Важно:
+- сохраняет последние фиксы vendor/type/resource;
+- не трогает pricing и остальную VTT-specific cleanup-логику.
 """
 
 from __future__ import annotations
@@ -45,7 +55,6 @@ from .pictures import PLACEHOLDER, collect_picture_urls
 
 
 SKIP_PARAM_KEYS = {
-    "Артикул",
     "Штрих-код",
     "Вендор",
     "Категория",
@@ -56,6 +65,19 @@ SKIP_PARAM_KEYS = {
     "Склад Москва, штук",
     "Москва, до новой поставки, дней",
     "Категория VTT",
+}
+
+ID_SOURCE_PARAM_KEYS = {
+    "артикул",
+    "sku",
+    "код товара",
+    "товарный код",
+    "article",
+    "product code",
+    "part number",
+    "партномер",
+    "каталожный номер",
+    "oem-номер",
 }
 
 _TITLE_COLOR_TAIL_RE = re.compile(
@@ -227,10 +249,6 @@ def _resolve_vendor(
 
 
 def _prefer_title_type(current_type: str, title: str) -> str:
-    """
-    Если title уже явно задаёт более точный тип, чем category-derived current_type,
-    title должен иметь приоритет.
-    """
     t = norm_ws(title).lower()
     explicit = (
         ("тонер-картридж", "Тонер-картридж"),
@@ -248,11 +266,70 @@ def _prefer_title_type(current_type: str, title: str) -> str:
         ("тонер", "Тонер"),
         ("чернила", "Чернила"),
         ("кабель сетевой", "Кабель сетевой"),
+        ("блок проявки", "Блок проявки"),
+        ("сервисный набор", "Блок проявки"),
+        ("блок", "Блок"),
     )
     for prefix, canonical in explicit:
         if t.startswith(prefix):
             return canonical
     return current_type
+
+
+def _normalize_code_token(value: str) -> str:
+    s = norm_ws(value).upper()
+    s = s.replace(" ", "")
+    return s
+
+
+def _primary_id_from_params(params: list[tuple[str, str]]) -> str:
+    """
+    Канонический источник stable ID №1 для VTT:
+    явный article/SKU/part-number из params.
+    """
+    for key, value in params or []:
+        key_n = norm_ws(key).casefold()
+        if key_n not in ID_SOURCE_PARAM_KEYS:
+            continue
+        token = _normalize_code_token(value)
+        if not token:
+            continue
+        if "/" in token:
+            token = token.split("/", 1)[0].strip()
+        if token:
+            return token
+    return ""
+
+
+def _select_stable_offer_code(*, raw_params: list[tuple[str, str]], raw_sku: str, part_number: str, display_part_number: str) -> str:
+    """
+    Явная supplier-policy выбора stable ID для VTT.
+
+    Приоритет:
+    1) article/SKU из params
+    2) clean part_number
+    3) clean display_part_number
+    4) raw sku
+    """
+    from_params = _primary_id_from_params(raw_params)
+    if from_params:
+        return from_params
+
+    part = _normalize_code_token(part_number)
+    if part:
+        return part
+
+    display = _normalize_code_token(display_part_number)
+    if display:
+        return display
+
+    sku = _normalize_code_token(raw_sku)
+    if sku:
+        if "/" in sku:
+            return sku.split("/", 1)[0].strip() or sku
+        return sku
+
+    return ""
 
 
 def _merge_params(
@@ -504,7 +581,17 @@ def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT", placeholder_pictur
         desc_body=safe_str(raw.get("description_body") or raw.get("description_meta")),
     )
 
-    oid = build_offer_oid(raw_vendor_code=sku, raw_id=make_oid(sku, clean_title_value), prefix=id_prefix)
+    stable_offer_code = _select_stable_offer_code(
+        raw_params=raw_params,
+        raw_sku=sku,
+        part_number=part_number,
+        display_part_number=display_part_number,
+    )
+    oid = build_offer_oid(
+        raw_vendor_code=stable_offer_code,
+        raw_id=make_oid(stable_offer_code or sku, clean_title_value),
+        prefix=id_prefix,
+    )
     if not oid:
         return None
 
