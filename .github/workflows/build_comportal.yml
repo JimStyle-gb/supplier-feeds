@@ -1,142 +1,188 @@
-name: Build_ComPortal
+# -*- coding: utf-8 -*-
+"""
+Path: scripts/suppliers/comportal/source.py
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 22 * * *'  # 03:00 Asia/Almaty
+Только источник ComPortal:
+- скачать YML;
+- распарсить categories;
+- собрать SourceOffer.
 
-permissions:
-  contents: write
+Без normalize/filter/builder-логики.
+"""
 
-jobs:
-  build_comportal:
-    runs-on: ubuntu-latest
-    concurrency:
-      group: build_comportal
-      cancel-in-progress: true
+from __future__ import annotations
 
-    env:
-      TZ: Asia/Almaty
+import xml.etree.ElementTree as ET
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+import requests
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+from cs.util import norm_ws
+from suppliers.comportal.models import CategoryRecord, ParamItem, SourceOffer
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          else
-            pip install requests beautifulsoup4 lxml pyyaml python-dateutil openpyxl
-          fi
 
-      - name: Configure git identity
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+def _preview_text(text: str, limit: int = 240) -> str:
+    s = (text or "").replace("\r", " ").replace("\n", " ").strip()
+    if len(s) > limit:
+        return s[:limit] + "..."
+    return s
 
-      - name: Prepare folders
-        run: |
-          mkdir -p docs docs/raw docs/debug
 
-      - name: Smoke test
-        run: |
-          python - <<'PY'
-          import py_compile
-          import sys
-          from pathlib import Path
+def fetch_xml_text(
+    url: str,
+    *,
+    timeout: int = 120,
+    login: str | None = None,
+    password: str | None = None,
+) -> str:
+    """Скачать source YML и сразу отловить пустой/не-XML ответ."""
+    auth = (login, password) if (login and password) else None
+    r = requests.get(url, timeout=timeout, auth=auth)
+    r.raise_for_status()
 
-          files = [
-              "scripts/build_comportal.py",
-              "scripts/suppliers/__init__.py",
-              "scripts/suppliers/comportal/__init__.py",
-              "scripts/suppliers/comportal/models.py",
-              "scripts/suppliers/comportal/source.py",
-              "scripts/suppliers/comportal/filtering.py",
-              "scripts/suppliers/comportal/normalize.py",
-              "scripts/suppliers/comportal/params_xml.py",
-              "scripts/suppliers/comportal/desc_clean.py",
-              "scripts/suppliers/comportal/desc_extract.py",
-              "scripts/suppliers/comportal/compat.py",
-              "scripts/suppliers/comportal/pictures.py",
-              "scripts/suppliers/comportal/builder.py",
-              "scripts/suppliers/comportal/diagnostics.py",
-              "scripts/suppliers/comportal/quality_gate.py",
-              "scripts/cs/core.py",
-              "scripts/cs/writer.py",
-              "scripts/cs/validators.py",
-              "scripts/cs/util.py",
-              "scripts/cs/pricing.py",
-              "scripts/cs/meta.py",
-              "scripts/cs/description.py",
-              "scripts/cs/keywords.py",
-              "scripts/cs/qg_report.py",
-          ]
+    text = (r.text or "").lstrip("\ufeff").strip()
+    if not text:
+        raise RuntimeError(
+            "ComPortal source вернул пустой body. "
+            "Проверь COMPORTAL_LOGIN/COMPORTAL_PASSWORD, доступность source URL "
+            "и не отдал ли поставщик пустой ответ."
+        )
 
-          failed = False
-          for f in files:
-              p = Path(f)
-              if not p.exists():
-                  print(f"SKIP missing: {f}")
-                  continue
-              try:
-                  py_compile.compile(str(p), doraise=True)
-                  print(f"OK: {f}")
-              except Exception as e:
-                  failed = True
-                  print(f"FAIL: {f}: {e}")
+    low = text[:400].lower()
+    if "<html" in low or "<!doctype html" in low:
+        raise RuntimeError(
+            "ComPortal source вернул HTML вместо YML/XML. "
+            "Скорее всего не прошла авторизация или поставщик отдал страницу логина/ошибки. "
+            f"URL={url} | preview={_preview_text(text)}"
+        )
 
-          if failed:
-              sys.exit(1)
-          PY
+    return text
 
-      - name: Show build version
-        run: |
-          python - <<'PY'
-          import pathlib
-          import re
-          t = pathlib.Path('scripts/build_comportal.py').read_text(encoding='utf-8', errors='ignore')
-          m = re.search(r'BUILD_[A-Z0-9_]+_VERSION\s*=\s*["\']([^"\']+)["\']', t)
-          print('COMPORTAL_VERSION', m.group(1) if m else 'UNKNOWN')
-          PY
 
-      - name: Build
-        run: python scripts/build_comportal.py
+def get_text(el: ET.Element | None) -> str:
+    """Безопасно вытащить text из XML-узла."""
+    if el is None:
+        return ""
+    return "".join(el.itertext()).strip()
 
-      - name: Diagnostics
-        if: always()
-        run: |
-          git status --porcelain || true
-          git diff --stat || true
-          ls -la docs docs/raw docs/debug || true
-          [ -f docs/raw/comportal_quality_gate.txt ] && cat docs/raw/comportal_quality_gate.txt || true
 
-      - name: Upload artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: comportal-artifacts
-          path: |
-            docs/comportal.yml
-            docs/raw/comportal.yml
-            docs/raw/comportal_quality_gate.txt
-          if-no-files-found: warn
+def parse_xml_root(xml_text: str) -> ET.Element:
+    """Распарсить XML root с понятной ошибкой."""
+    text = (xml_text or "").lstrip("\ufeff").strip()
+    if not text:
+        raise RuntimeError("ComPortal source XML пустой после скачивания.")
 
-      - name: Commit and push changes
-        if: success()
-        run: |
-          git add docs/comportal.yml docs/raw/comportal.yml docs/raw/comportal_quality_gate.txt || true
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-          git commit -m "Build ComPortal feed"
-          git push
+    try:
+        return ET.fromstring(text)
+    except ET.ParseError as e:
+        raise RuntimeError(
+            "ComPortal source не распарсился как XML. "
+            f"ParseError: {e}. Preview: {_preview_text(text)}"
+        ) from e
+
+
+def iter_offer_elements(root: ET.Element):
+    """Итератор source offer nodes."""
+    return root.findall(".//offer")
+
+
+def build_category_index(root: ET.Element) -> dict[str, CategoryRecord]:
+    """Построить индекс source categories."""
+    out: dict[str, CategoryRecord] = {}
+
+    for cat in root.findall(".//categories/category"):
+        cid = norm_ws(cat.get("id") or "")
+        if not cid:
+            continue
+        out[cid] = CategoryRecord(
+            category_id=cid,
+            name=norm_ws(get_text(cat)),
+            parent_id=norm_ws(cat.get("parentId") or ""),
+        )
+
+    for cid, rec in out.items():
+        chain: list[str] = []
+        cur = cid
+        seen: set[str] = set()
+        root_id = cid
+
+        while cur and cur not in seen and cur in out:
+            seen.add(cur)
+            cur_rec = out[cur]
+            if cur_rec.name:
+                chain.append(cur_rec.name)
+            root_id = cur
+            cur = cur_rec.parent_id
+
+        chain.reverse()
+        rec.path = " > ".join([x for x in chain if x])
+        rec.root_id = root_id
+
+    return out
+
+
+def collect_params(offer_el: ET.Element) -> list[ParamItem]:
+    """Собрать source params."""
+    out: list[ParamItem] = []
+
+    for p in offer_el.findall("param"):
+        name = norm_ws(p.get("name") or "")
+        value = norm_ws(get_text(p))
+        if not name or not value:
+            continue
+        out.append(ParamItem(name=name, value=value, source="xml"))
+
+    return out
+
+
+def extract_source_offer(
+    offer_el: ET.Element,
+    *,
+    category_index: dict[str, CategoryRecord],
+) -> SourceOffer:
+    """Собрать один SourceOffer."""
+    category_id = norm_ws(get_text(offer_el.find("categoryId")))
+    cat = category_index.get(category_id)
+
+    return SourceOffer(
+        raw_id=norm_ws(offer_el.get("id") or ""),
+        vendor_code=norm_ws(get_text(offer_el.find("vendorCode"))),
+        category_id=category_id,
+        category_name=cat.name if cat else "",
+        category_path=cat.path if cat else "",
+        category_root_id=cat.root_id if cat else "",
+        name=norm_ws(get_text(offer_el.find("name"))),
+        available_attr=(offer_el.get("available") or "").strip(),
+        available_tag=norm_ws(get_text(offer_el.find("available"))),
+        vendor=norm_ws(get_text(offer_el.find("vendor"))),
+        description=get_text(offer_el.find("description")),
+        price_text=get_text(offer_el.find("price")),
+        currency_id=norm_ws(get_text(offer_el.find("currencyId"))),
+        url=norm_ws(get_text(offer_el.find("url"))),
+        active=norm_ws(get_text(offer_el.find("active"))),
+        delivery=norm_ws(get_text(offer_el.find("delivery"))),
+        picture_urls=[
+            norm_ws(get_text(p))
+            for p in offer_el.findall("picture")
+            if norm_ws(get_text(p))
+        ],
+        params=collect_params(offer_el),
+        offer_el=offer_el,
+    )
+
+
+def load_source_bundle(
+    *,
+    url: str,
+    timeout: int = 120,
+    login: str | None = None,
+    password: str | None = None,
+) -> tuple[dict[str, CategoryRecord], list[SourceOffer]]:
+    """Загрузить categories + offers."""
+    xml_text = fetch_xml_text(url, timeout=timeout, login=login, password=password)
+    root = parse_xml_root(xml_text)
+    category_index = build_category_index(root)
+    offers = [
+        extract_source_offer(el, category_index=category_index)
+        for el in iter_offer_elements(root)
+    ]
+    return category_index, offers
