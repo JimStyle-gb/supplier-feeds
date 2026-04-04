@@ -4,21 +4,15 @@ Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
 
-Patch focus v6:
-- закрепить явное supplier-rule для stable ID / vendorCode;
-- скрипт должен ИЗНАЧАЛЬНО знать, откуда брать основной код товара,
-  а не "чистить" vendorCode постфактум;
+Patch focus v7:
+- сохранить явную supplier-policy выбора stable ID / vendorCode;
+- исправить регрессию: param "Артикул" нельзя выпускать в final,
+  он должен использоваться только как внутренний источник stable ID;
 - source priority для VTT:
     1) явный article/SKU из params
     2) clean part_number
     3) clean display_part_number
     4) raw sku
-- composite коды вида Z7Y72A/JC96-12502A не использовать как основной stable ID,
-  если уже выделен clean article Z7Y72A.
-
-Важно:
-- сохраняет последние фиксы vendor/type/resource;
-- не трогает pricing и остальную VTT-specific cleanup-логику.
 """
 
 from __future__ import annotations
@@ -55,6 +49,7 @@ from .pictures import PLACEHOLDER, collect_picture_urls
 
 
 SKIP_PARAM_KEYS = {
+    "Артикул",
     "Штрих-код",
     "Вендор",
     "Категория",
@@ -283,10 +278,6 @@ def _normalize_code_token(value: str) -> str:
 
 
 def _primary_id_from_params(params: list[tuple[str, str]]) -> str:
-    """
-    Канонический источник stable ID №1 для VTT:
-    явный article/SKU/part-number из params.
-    """
     for key, value in params or []:
         key_n = norm_ws(key).casefold()
         if key_n not in ID_SOURCE_PARAM_KEYS:
@@ -302,15 +293,6 @@ def _primary_id_from_params(params: list[tuple[str, str]]) -> str:
 
 
 def _select_stable_offer_code(*, raw_params: list[tuple[str, str]], raw_sku: str, part_number: str, display_part_number: str) -> str:
-    """
-    Явная supplier-policy выбора stable ID для VTT.
-
-    Приоритет:
-    1) article/SKU из params
-    2) clean part_number
-    3) clean display_part_number
-    4) raw sku
-    """
     from_params = _primary_id_from_params(raw_params)
     if from_params:
         return from_params
