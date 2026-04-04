@@ -1,14 +1,33 @@
-VTT quality gate
-========================================================================
-generated_at_almaty: 2026-04-04 23:00:14
-feed_path: docs/raw/vtt.yml
-offers: 3137
-feed_size_bytes: 3097661
-feed_sha1_12: 689b8fd5b904
+# Итог проверки quality gate
+QUALITY_GATE: PASS
+# PASS = можно выпускать | FAIL = есть блокирующие проблемы
+enforce: true
+# true = quality gate реально валит сборку
+report_file: docs/raw/vtt_quality_gate.txt
+# Куда записан этот отчёт
+baseline_file: 
+# Базовый файл для сравнения известных cosmetic-проблем
+freeze_current_as_baseline: no
+# yes = текущие cosmetic-хвосты сохранены как baseline-снимок
 critical_count: 0
-cosmetic_count: 455
-------------------------------------------------------------------------
-cosmetic_preview:
+# Сколько найдено критичных проблем
+cosmetic_total_count: 455
+# Общее число некритичных проблем
+cosmetic_offer_count: 455
+# В скольких товарах есть cosmetic-проблемы
+known_cosmetic_count: 0
+# Сколько cosmetic-проблем уже известны по baseline
+known_cosmetic_offer_count: 0
+# В скольких товарах есть уже известные cosmetic-проблемы
+new_cosmetic_count: 455
+# Сколько найдено новых cosmetic-проблем
+new_cosmetic_offer_count: 455
+# В скольких товарах есть новые cosmetic-проблемы
+
+CRITICAL:
+# Ошибок в этой секции нет
+
+COSMETIC TOTAL:
   - VT013R00676 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT10111574 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT101131383 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
@@ -59,11 +78,72 @@ cosmetic_preview:
   - VT15016123 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT15016124 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT15016127 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
-cosmetic_by_rule:
-  - placeholder_picture: 455
-------------------------------------------------------------------------
+
+KNOWN COSMETIC:
+# Ошибок в этой секции нет
+
+NEW COSMETIC:
+  - VT013R00676 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT10111574 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT101131383 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT106R02760 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT106R02774 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT108R01416 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100041 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100042 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100043 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100044 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100045 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100053 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100078 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100079 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT115R00128 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501192101 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT150119743016 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT150119743017 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT150119743162 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT150119743261 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT15011974345 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT15011974350 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT15011974351 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501600 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501601 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501602 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501603 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501604 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501605 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT150160920 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT150160921 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT150160922 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT150160924 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501609450 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501609452 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501609454 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501609456 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT15016094564 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT15016094565 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT15016094566 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT15016094567 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501609461 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501609462 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501609463 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501609464 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT15016120 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT15016121 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT15016123 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT15016124 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT15016127 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+
+DEBUG VTT:
+generated_at_almaty: 2026-04-05 00:18:02
+feed_path: docs/raw/vtt.yml
+offers: 3137
+feed_size_bytes: 3097661
+feed_sha1_12: b1ce86fdd753
 excluded_from_enforce_rules:
   - placeholder_picture: 455
-------------------------------------------------------------------------
 enforced_cosmetic_count: 0
 enforced_cosmetic_offer_count: 0
+
+COSMETIC TOTAL BY RULE:
+  - placeholder_picture: 455
