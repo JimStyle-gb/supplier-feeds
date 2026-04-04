@@ -20,6 +20,13 @@ from cs.util import norm_ws
 from suppliers.comportal.models import CategoryRecord, ParamItem, SourceOffer
 
 
+def _preview_text(text: str, limit: int = 240) -> str:
+    s = (text or "").replace("\r", " ").replace("\n", " ").strip()
+    if len(s) > limit:
+        return s[:limit] + "..."
+    return s
+
+
 def fetch_xml_text(
     url: str,
     *,
@@ -27,11 +34,28 @@ def fetch_xml_text(
     login: str | None = None,
     password: str | None = None,
 ) -> str:
-    """Скачать source YML."""
+    """Скачать source YML и сразу отловить пустой/не-XML ответ."""
     auth = (login, password) if (login and password) else None
     r = requests.get(url, timeout=timeout, auth=auth)
     r.raise_for_status()
-    return r.text
+
+    text = (r.text or "").lstrip("\ufeff").strip()
+    if not text:
+        raise RuntimeError(
+            "ComPortal source вернул пустой body. "
+            "Проверь COMPORTAL_LOGIN/COMPORTAL_PASSWORD, доступность source URL "
+            "и не отдал ли поставщик пустой ответ."
+        )
+
+    low = text[:400].lower()
+    if "<html" in low or "<!doctype html" in low:
+        raise RuntimeError(
+            "ComPortal source вернул HTML вместо YML/XML. "
+            "Скорее всего не прошла авторизация или поставщик отдал страницу логина/ошибки. "
+            f"URL={url} | preview={_preview_text(text)}"
+        )
+
+    return text
 
 
 def get_text(el: ET.Element | None) -> str:
@@ -42,8 +66,18 @@ def get_text(el: ET.Element | None) -> str:
 
 
 def parse_xml_root(xml_text: str) -> ET.Element:
-    """Распарсить XML root."""
-    return ET.fromstring(xml_text)
+    """Распарсить XML root с понятной ошибкой."""
+    text = (xml_text or "").lstrip("\ufeff").strip()
+    if not text:
+        raise RuntimeError("ComPortal source XML пустой после скачивания.")
+
+    try:
+        return ET.fromstring(text)
+    except ET.ParseError as e:
+        raise RuntimeError(
+            "ComPortal source не распарсился как XML. "
+            f"ParseError: {e}. Preview: {_preview_text(text)}"
+        ) from e
 
 
 def iter_offer_elements(root: ET.Element):
