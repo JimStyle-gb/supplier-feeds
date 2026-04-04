@@ -4,14 +4,10 @@ Path: scripts/suppliers/vtt/quality_gate.py
 
 VTT quality gate.
 
-Patch focus v2:
-- backward-compatible signature for build_vtt.py;
-- не валить VTT только из-за supplier-specific image tail (`placeholder_picture`);
-- при этом оставить строгий контроль по всем остальным real issues.
-
-Важно:
-- baseline_path сделан optional, потому что текущий build_vtt.py вызывает
-  run_quality_gate(feed_path=..., report_path=...) без baseline_path.
+Patch focus v3:
+- backward-safe interface for current build_vtt.py;
+- возвращает объект с .ok / .report_path / .critical_count / .cosmetic_count;
+- placeholder_picture остаётся в отчёте, но исключается из enforce-подсчёта.
 """
 
 from __future__ import annotations
@@ -45,6 +41,14 @@ class QualityIssue:
     oid: str
     name: str
     details: str
+
+
+@dataclass(frozen=True)
+class QualityGateResult:
+    ok: bool
+    report_path: str
+    critical_count: int
+    cosmetic_count: int
 
 
 def _now_almaty_str() -> str:
@@ -239,7 +243,7 @@ def run_quality_gate(
     max_new_cosmetic_issues: int = 5,
     enforce: bool = True,
     freeze_current_as_baseline: bool = False,
-) -> tuple[bool, str]:
+) -> QualityGateResult:
     issues, offer_count, feed_size_bytes = _detect_issues(feed_path)
     critical = [x for x in issues if x.severity == "critical"]
     cosmetic = [x for x in issues if x.severity == "cosmetic"]
@@ -248,7 +252,7 @@ def run_quality_gate(
         payload = _make_baseline_payload(cosmetic)
         _write_yaml(baseline_path, payload)
 
-    _ = _load_cosmetic_baseline(baseline_path)  # backward-safe compatibility
+    _ = _load_cosmetic_baseline(baseline_path)
 
     enforced_cosmetic = [x for x in cosmetic if x.rule not in _RULES_EXCLUDED_FROM_ENFORCE]
     enforced_offer_count = len({x.oid for x in enforced_cosmetic})
@@ -270,17 +274,10 @@ def run_quality_gate(
         enforced_cosmetic=enforced_cosmetic,
     )
 
-    summary = (
-        f"[quality_gate] {'PASS' if (passed or not enforce) else 'FAIL'} | "
-        f"critical={len(critical)} | "
-        f"cosmetic_total={len(cosmetic)} | "
-        f"enforced_cosmetic={enforced_issue_count} | "
-        f"enforced_cosmetic_offers={enforced_offer_count} | "
-        f"excluded_rules={','.join(sorted(_RULES_EXCLUDED_FROM_ENFORCE)) or '-'} | "
-        f"report={report_path}"
+    ok = True if not enforce else passed
+    return QualityGateResult(
+        ok=ok,
+        report_path=report_path,
+        critical_count=len(critical),
+        cosmetic_count=len(cosmetic),
     )
-
-    if not enforce:
-        return True, summary + " | enforce=no"
-
-    return passed, summary
