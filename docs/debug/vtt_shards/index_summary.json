@@ -1,0 +1,20 @@
+{
+  "total": 3142,
+  "categories": [
+    "DRM_CRT",
+    "DRM_UNIT",
+    "CARTLAS_ORIG",
+    "CARTLAS_COPY",
+    "CARTLAS_PRINT",
+    "CARTLAS_TNR",
+    "CARTINJ_PRNTHD",
+    "CARTINJ_Refill",
+    "CARTINJ_ORIG",
+    "CARTMAT_CART",
+    "TNR_WASTETON",
+    "DEV_DEV",
+    "TNR_REFILL",
+    "INK_COMMON",
+    "PARTSPRINT_DEVUN"
+  ]
+}

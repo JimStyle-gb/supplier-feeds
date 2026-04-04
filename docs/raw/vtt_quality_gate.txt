@@ -1,12 +1,64 @@
 VTT quality gate
 ========================================================================
-generated_at_almaty: 2026-04-01 08:44:49
+generated_at_almaty: 2026-04-04 11:21:06
 feed_path: docs/raw/vtt.yml
-offers: 3115
-feed_size_bytes: 3070120
-feed_sha1_12: 0f50a868c290
+offers: 3117
+feed_size_bytes: 3083973
+feed_sha1_12: 88a582555840
 critical_count: 0
-cosmetic_count: 1
+cosmetic_count: 1266
 ------------------------------------------------------------------------
-cosmetic:
-  - placeholder_pictures_present
+cosmetic_preview:
+  - VT006R01731 | decimal_k_resource | 13,7K
+  - VT013R00676/013R00674 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT013R00676/013R00674 | decimal_k_resource | 34,8K
+  - VT052H | decimal_k_resource | 9,2K
+  - VT057 | decimal_k_resource | 3,1K
+  - VT10111573 | decimal_k_resource | 17,6K
+  - VT10111574 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT10111574 | decimal_k_resource | 35,5K
+  - VT101131034 | decimal_k_resource | 8.3K
+  - VT1011310340 | decimal_k_resource | 8.3K
+  - VT10113135 | decimal_k_resource | 8.4K
+  - VT101131350 | decimal_k_resource | 8.4K
+  - VT101131352 | decimal_k_resource | 7.3K
+  - VT101131353 | decimal_k_resource | 7.3K
+  - VT101131354 | decimal_k_resource | 7.3K
+  - VT101131374 | decimal_k_resource | 15.5K
+  - VT101131375 | decimal_k_resource | 8.5K
+  - VT101131376 | decimal_k_resource | 8.5K
+  - VT101131377 | decimal_k_resource | 8.5K
+  - VT101131383 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT101131384 | decimal_k_resource | 42.1K
+  - VT106R02773 | decimal_k_resource | 1,5K
+  - VT106R03581 | decimal_k_resource | 5,9K
+  - VT106R03585 | decimal_k_resource | 24,6K
+  - VT106R03745 | decimal_k_resource | 23,6K
+  - VT106R03746 | decimal_k_resource | 16,5K
+  - VT106R03943 | decimal_k_resource | 25,9K
+  - VT1100041 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100042 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100043 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100044 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100045 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100053 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100071 | decimal_k_resource | 4.425K
+  - VT1100072 | decimal_k_resource | 0,68K
+  - VT1100073 | decimal_k_resource | 0,65K
+  - VT1100074 | decimal_k_resource | 0,68K
+  - VT1100075 | decimal_k_resource | 0,5K
+  - VT1100076 | decimal_k_resource | 2.5K
+  - VT1100077 | decimal_k_resource | 1.8K
+  - VT1100078 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100078 | decimal_k_resource | 1.3K
+  - VT1100079 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1100079 | decimal_k_resource | 1.52K
+  - VT113R00782 | decimal_k_resource | 82,2K
+  - VT115R00128 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT117 | decimal_k_resource | 0,7K
+  - VT120012071 | decimal_k_resource | 1.5K
+  - VT120012091 | decimal_k_resource | 2.1K
+  - VT1200120920 | decimal_k_resource | 2.1K
+cosmetic_by_rule:
+  - decimal_k_resource: 815
+  - placeholder_picture: 451
