@@ -1,9 +1,4 @@
-schema_version: 2
-supplier: VTT
-timezone: Asia/Almaty
-# VTT запускается по Алматы в 05:00; сами даты запуска задаются workflow (1/10/20).
-next_run_hour_local: 5
-schedule_hour_almaty: 5
+supplier: vtt
 id_prefix: VT
 source_kind: html_site_parsing
 source_of_truth_for_params: page_params_first
@@ -11,7 +6,6 @@ desc_extract_mode: only_fill_missing
 raw_must_be_clean: true
 
 always_true_available: true
-placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
 
 param_priority:
   - Тип
@@ -27,7 +21,6 @@ param_priority:
 core_rules:
   # Для VTT raw уже должен приходить чистым supplier-result.
   drop_desc_specs_pairs: true
-  mutate_params: false
   enable_enrich_from_desc: false
   enable_enrich_from_name_desc: false
   enable_auto_compat: false
@@ -36,14 +29,7 @@ core_rules:
   enable_clean_params: false
 
 quality_gate:
-  enabled: true
-  enforce: false
-  baseline_file: scripts/suppliers/vtt/config/quality_gate_baseline.yml
-  report_file: docs/raw/vtt_quality_gate.txt
+  enforce: true
   max_cosmetic_offers: 5
   max_cosmetic_issues: 5
-  freeze_current_as_baseline: false
-
-  # legacy keys for backward-safe compatibility
   report_path: docs/raw/vtt_quality_gate.txt
-  baseline_path: scripts/suppliers/vtt/config/quality_gate_baseline.yml
