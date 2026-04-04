@@ -32,4 +32,8 @@ quality_gate:
   enforce: true
   max_cosmetic_offers: 5
   max_cosmetic_issues: 5
+  report_file: docs/raw/vtt_quality_gate.txt
+  baseline_file: scripts/suppliers/vtt/config/quality_gate_baseline.yml
+  # legacy keys for backward-safe compatibility
   report_path: docs/raw/vtt_quality_gate.txt
+  baseline_path: scripts/suppliers/vtt/config/quality_gate_baseline.yml
