@@ -10,10 +10,10 @@ VTT source layer.
 - без owner-логики по builder/final;
 - ассортиментная политика берётся из filtering.py / config, а не живёт здесь.
 
-v18:
-- source больше не держит собственные DEFAULT_CATEGORY_CODES / DEFAULT_ALLOWED_TITLE_PREFIXES;
-- cfg_from_env() читает ассортиментные входы через filtering.py;
-- сохраняет backward-safe API для build_vtt.py:
+v19:
+- убран fallback на params_page.py;
+- source использует только канонический params.py;
+- сохранён public API для build_vtt.py:
   cfg_from_env, make_session, clone_session_with_cookies, login,
   collect_product_index, parse_product_page_from_index.
 """
@@ -36,29 +36,15 @@ from urllib3.util.retry import Retry
 
 from .models import VTTConfig
 from .normalize import canon_vendor, norm_ws
-
-# Канонический extractor после Патча 1.
-try:  # pragma: no cover - backward-safe bridge
-    from .params import (
-        extract_images_from_html,
-        extract_meta_desc,
-        extract_params_and_desc,
-        extract_price_rub,
-        extract_sku,
-        extract_title,
-        extract_title_codes,
-    )
-except Exception:  # pragma: no cover
-    from .params_page import (  # type: ignore
-        extract_images_from_html,
-        extract_meta_desc,
-        extract_params_and_desc,
-        extract_price_rub,
-        extract_sku,
-        extract_title,
-        extract_title_codes,
-    )
-
+from .params import (
+    extract_images_from_html,
+    extract_meta_desc,
+    extract_params_and_desc,
+    extract_price_rub,
+    extract_sku,
+    extract_title,
+    extract_title_codes,
+)
 from .filtering import (
     DEFAULT_ALLOWED_TITLE_PREFIXES,
     DEFAULT_CATEGORY_CODES,
