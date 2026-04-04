@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-04 12:35:28">
+<yml_catalog date="2026-04-04 13:12:29">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | VTT
 URL поставщика                             | https://b2b.vtt.ru/catalog/
-Время сборки (Алматы)                      | 2026-04-04 12:35:28
+Время сборки (Алматы)                      | 2026-04-04 13:12:29
 Ближайшая сборка (Алматы)                  | 2026-04-10 05:00:00
 Сколько товаров у поставщика до фильтра    | 3142
 Сколько товаров у поставщика после фильтра | 3117
@@ -59,8 +59,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 006R01646; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: 006R01646; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Партномер">006R01646</param>
@@ -76,8 +76,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 006R01648; Цвет: Красный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: 006R01648; Цвет: Красный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Партномер">006R01648</param>
@@ -93,8 +93,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 006R01649; Цвет: Желтый; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: 006R01649; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Партномер">006R01649</param>
@@ -164,8 +164,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 006R01695; Ресурс: 3K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: 006R01695; Ресурс: 3K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Партномер">006R01695</param>
@@ -182,8 +182,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 006R01696; Ресурс: 3K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: 006R01696; Ресурс: 3K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Партномер">006R01696</param>
@@ -290,8 +290,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 2200C002; Совместимость: Canon MF421dw/MF426dw/MF428x/MF429x; Ресурс: 9K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: 2200C002; Совместимость: Canon MF421dw/MF426dw/MF428x/MF429x; Ресурс: 9K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Чёрный</param>
@@ -491,8 +491,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 9436B002; Ресурс: 18K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: 9436B002; Ресурс: 18K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Партномер">9436B002</param>
@@ -868,8 +868,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 106R02773; Ресурс: 2K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: 106R02773; Ресурс: 2K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Цвет">Чёрный</param>
@@ -2228,8 +2228,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 1394C002; Ресурс: 16K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер; Партномер: 1394C002; Ресурс: 16K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Партномер">1394C002</param>
@@ -2246,8 +2246,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 1396C002; Ресурс: 9K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер; Партномер: 1396C002; Ресурс: 9K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Партномер">1396C002</param>
@@ -2264,8 +2264,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 1397C002; Ресурс: 9K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер; Партномер: 1397C002; Ресурс: 9K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Партномер">1397C002</param>
@@ -9247,8 +9247,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-103-70Ml-Bk; Совместимость: Epson L3100/3101/3110/3150, C13T00S14A; Ресурс: 5K; Цвет: Чёрный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-103-70Ml-Bk; Совместимость: Epson L3100/3101/3110/3150, C13T00S14A; Ресурс: 5K; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Чёрный</param>
@@ -9270,8 +9270,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-103-70Ml-C; Совместимость: Epson L3100/3101/3110/3150, C13T00S24A; Ресурс: 8K; Цвет: Голубой]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-103-70Ml-C; Совместимость: Epson L3100/3101/3110/3150, C13T00S24A; Ресурс: 8K; Цвет: Голубой]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -9293,8 +9293,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-103-70Ml-M; Совместимость: Epson L3100/3101/3110/3150, C13T00S34A; Ресурс: 8K; Цвет: Пурпурный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-103-70Ml-M; Совместимость: Epson L3100/3101/3110/3150, C13T00S34A; Ресурс: 8K; Цвет: Пурпурный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -9316,8 +9316,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-103-70Ml-Y; Совместимость: Epson L3100/3101/3110/3150, C13T00S44A; Ресурс: 8K; Цвет: Желтый]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-103-70Ml-Y; Совместимость: Epson L3100/3101/3110/3150, C13T00S44A; Ресурс: 8K; Цвет: Желтый]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
@@ -9339,8 +9339,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-664-70Ml-Bk; Совместимость: Epson L130/L310/L405/L655, C13T66414A; Ресурс: 4K; Цвет: Чёрный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-664-70Ml-Bk; Совместимость: Epson L130/L310/L405/L655, C13T66414A; Ресурс: 4K; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Чёрный</param>
@@ -9362,8 +9362,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-664-70Ml-C; Совместимость: Epson L130/L310/L405/L655, C13T66424A; Ресурс: 7K; Цвет: Голубой]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-664-70Ml-C; Совместимость: Epson L130/L310/L405/L655, C13T66424A; Ресурс: 7K; Цвет: Голубой]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -9385,8 +9385,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-664-70Ml-M; Совместимость: Epson L130/L310/L405/L655, C13T66434A; Ресурс: 7K; Цвет: Пурпурный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-664-70Ml-M; Совместимость: Epson L130/L310/L405/L655, C13T66434A; Ресурс: 7K; Цвет: Пурпурный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -9408,8 +9408,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-664-70Ml-Y; Совместимость: Epson L130/L310/L405/L655, C13T66444A; Ресурс: 7K; Цвет: Желтый]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-664-70Ml-Y; Совместимость: Epson L130/L310/L405/L655, C13T66444A; Ресурс: 7K; Цвет: Желтый]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
@@ -9431,8 +9431,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-673-70Ml-Bk; Совместимость: Epson L800/L801/L810/L850, C13T67314A; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-673-70Ml-Bk; Совместимость: Epson L800/L801/L810/L850, C13T67314A; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Чёрный</param>
@@ -9454,8 +9454,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-673-70Ml-C; Совместимость: Epson L800/L801/L810/L850, C13T67324A; Ресурс: 5K; Цвет: Голубой]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-673-70Ml-C; Совместимость: Epson L800/L801/L810/L850, C13T67324A; Ресурс: 5K; Цвет: Голубой]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -9477,8 +9477,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-673-70Ml-M; Совместимость: Epson L800/L801/L810/L850, C13T67334A; Ресурс: 5K; Цвет: Пурпурный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-673-70Ml-M; Совместимость: Epson L800/L801/L810/L850, C13T67334A; Ресурс: 5K; Цвет: Пурпурный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -9500,8 +9500,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-673-70Ml-Y; Совместимость: Epson L800/L801/L810/L850, C13T67344A; Ресурс: 5K; Цвет: Желтый]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-673-70Ml-Y; Совместимость: Epson L800/L801/L810/L850, C13T67344A; Ресурс: 5K; Цвет: Желтый]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
@@ -9523,8 +9523,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-673-70Ml-CL; Совместимость: Epson L800/L801/L810/L850, C13T67354A; Ресурс: 5K; Цвет: Голубой]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-673-70Ml-CL; Совместимость: Epson L800/L801/L810/L850, C13T67354A; Ресурс: 5K; Цвет: Голубой]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -9546,8 +9546,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-673-70Ml-ML; Совместимость: Epson L800/L801/L810/L850, C13T67364A; Ресурс: 5K; Цвет: Пурпурный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-673-70Ml-ML; Совместимость: Epson L800/L801/L810/L850, C13T67364A; Ресурс: 5K; Цвет: Пурпурный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -9571,8 +9571,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-E101-140Ml-Bk; Совместимость: Epson EcoTank L4150/4160, BK pig; Ресурс: 140 мл; Цвет: Чёрный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-E101-140Ml-Bk; Совместимость: Epson EcoTank L4150/4160, BK pig; Ресурс: 140 мл; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Чёрный</param>
@@ -9596,8 +9596,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-E101-70Ml-С; Совместимость: Epson EcoTank L4150/4160; Ресурс: 70 мл; Цвет: Голубой]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-E101-70Ml-С; Совместимость: Epson EcoTank L4150/4160; Ресурс: 70 мл; Цвет: Голубой]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -9621,8 +9621,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-E101-70Ml-M; Совместимость: Epson EcoTank L4150/4160; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-E101-70Ml-M; Совместимость: Epson EcoTank L4150/4160; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -9646,8 +9646,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-E101-70Ml-Y; Совместимость: Epson EcoTank L4150/4160; Ресурс: 70 мл; Цвет: Желтый]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-E101-70Ml-Y; Совместимость: Epson EcoTank L4150/4160; Ресурс: 70 мл; Цвет: Желтый]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
@@ -9672,8 +9672,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-BR-6000-115Ml-Bk; Совместимость: Brother DCPT300/500W/700W, BK pig; Ресурс: 115 мл; Цвет: Чёрный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-BR-6000-115Ml-Bk; Совместимость: Brother DCPT300/500W/700W, BK pig; Ресурс: 115 мл; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -9698,8 +9698,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-BR-5000-45Ml-C; Совместимость: Brother DCPT300/500W/700W; Ресурс: 45 мл; Цвет: Голубой]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-BR-5000-45Ml-C; Совместимость: Brother DCPT300/500W/700W; Ресурс: 45 мл; Цвет: Голубой]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Голубой</param>
@@ -9724,8 +9724,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-BR-5000-45Ml-M; Совместимость: Brother DCPT300/500W/700W; Ресурс: 45 мл; Цвет: Пурпурный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-BR-5000-45Ml-M; Совместимость: Brother DCPT300/500W/700W; Ресурс: 45 мл; Цвет: Пурпурный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Пурпурный</param>
@@ -9750,8 +9750,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-BR-5000-45Ml-Y; Совместимость: Brother DCPT300/500W/700W; Ресурс: 45 мл; Цвет: Желтый]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-BR-5000-45Ml-Y; Совместимость: Brother DCPT300/500W/700W; Ресурс: 45 мл; Цвет: Желтый]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Желтый</param>
@@ -9775,8 +9775,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-490-135Ml-Bk; Совместимость: Canon G1400/2400/3400, BK pig; Ресурс: 135 мл; Цвет: Чёрный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-CAN-490-135Ml-Bk; Совместимость: Canon G1400/2400/3400, BK pig; Ресурс: 135 мл; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Чёрный</param>
@@ -9801,8 +9801,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-490-70Ml-C; Совместимость: Canon G1400/2400/3400; Ресурс: 70 мл; Цвет: Голубой]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-CAN-490-70Ml-C; Совместимость: Canon G1400/2400/3400; Ресурс: 70 мл; Цвет: Голубой]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Голубой</param>
@@ -9827,8 +9827,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-490-70Ml-M; Совместимость: Canon G1400/2400/3400; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-CAN-490-70Ml-M; Совместимость: Canon G1400/2400/3400; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Пурпурный</param>
@@ -9853,8 +9853,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-490-70Ml-Y; Совместимость: Canon G1400/2400/3400; Ресурс: 70 мл; Цвет: Желтый]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-CAN-490-70Ml-Y; Совместимость: Canon G1400/2400/3400; Ресурс: 70 мл; Цвет: Желтый]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Желтый</param>
@@ -9875,8 +9875,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-41-140Ml-Bk; Совместимость: Canon G1430/2430/3430, BK pig; Ресурс: 140 мл; Цвет: Чёрный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-CAN-41-140Ml-Bk; Совместимость: Canon G1430/2430/3430, BK pig; Ресурс: 140 мл; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Чёрный</param>
@@ -9897,8 +9897,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-41-70Ml-C; Совместимость: Canon G1430/2430/3430; Ресурс: 70 мл; Цвет: Голубой]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-CAN-41-70Ml-C; Совместимость: Canon G1430/2430/3430; Ресурс: 70 мл; Цвет: Голубой]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Голубой</param>
@@ -9919,8 +9919,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-41-70Ml-M; Совместимость: Canon G1430/2430/3430; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-CAN-41-70Ml-M; Совместимость: Canon G1430/2430/3430; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Пурпурный</param>
@@ -9941,8 +9941,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-CAN-41-70Ml-Y; Совместимость: Canon G1430/2430/3430; Ресурс: 70 мл; Цвет: Желтый]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-CAN-41-70Ml-Y; Совместимость: Canon G1430/2430/3430; Ресурс: 70 мл; Цвет: Желтый]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Цвет">Желтый</param>
@@ -9967,8 +9967,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-HP-52-70Ml-C; Совместимость: HP Ink Tank 410/Smart Tank 515; Ресурс: 70 мл; Цвет: Голубой]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-HP-52-70Ml-C; Совместимость: HP Ink Tank 410/Smart Tank 515; Ресурс: 70 мл; Цвет: Голубой]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Голубой</param>
@@ -9993,8 +9993,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-HP-52-70Ml-M; Совместимость: HP Ink Tank 410/Smart Tank 515; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-HP-52-70Ml-M; Совместимость: HP Ink Tank 410/Smart Tank 515; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Пурпурный</param>
@@ -10019,8 +10019,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-HP-52-70Ml-Y; Совместимость: HP Ink Tank 410/Smart Tank 515; Ресурс: 70 мл; Цвет: Желтый]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-HP-52-70Ml-Y; Совместимость: HP Ink Tank 410/Smart Tank 515; Ресурс: 70 мл; Цвет: Желтый]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Желтый</param>
@@ -10043,8 +10043,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-HP-53-140Ml-Bk; Совместимость: HP Ink Tank 410/Smart Tank 515, BK pig; Ресурс: 140 мл; Цвет: Чёрный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-HP-53-140Ml-Bk; Совместимость: HP Ink Tank 410/Smart Tank 515, BK pig; Ресурс: 140 мл; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -10069,8 +10069,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-BR-D60-115Ml-Bk; Совместимость: Brother DCPT310/510W/710W, BK pig; Ресурс: 115 мл; Цвет: Чёрный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-BR-D60-115Ml-Bk; Совместимость: Brother DCPT310/510W/710W, BK pig; Ресурс: 115 мл; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -10094,8 +10094,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-112-140Ml-Bk; Совместимость: Epson L6550/6570, BK, pig; Ресурс: 140 мл; Цвет: Чёрный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-112-140Ml-Bk; Совместимость: Epson L6550/6570, BK, pig; Ресурс: 140 мл; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Чёрный</param>
@@ -10119,8 +10119,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-112-70Ml-C; Совместимость: Epson L6550/6570, C, pig; Ресурс: 70 мл; Цвет: Голубой]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-112-70Ml-C; Совместимость: Epson L6550/6570, C, pig; Ресурс: 70 мл; Цвет: Голубой]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -10144,8 +10144,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-112-70Ml-M; Совместимость: Epson L6550/6570, M, pig; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-112-70Ml-M; Совместимость: Epson L6550/6570, M, pig; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -10169,8 +10169,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-112-70Ml-Y; Совместимость: Epson L6550/6570, Y, pig; Ресурс: 70 мл; Цвет: Желтый]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-112-70Ml-Y; Совместимость: Epson L6550/6570, Y, pig; Ресурс: 70 мл; Цвет: Желтый]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
@@ -10194,8 +10194,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-108-70Ml-Bk; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Чёрный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-108-70Ml-Bk; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Чёрный</param>
@@ -10219,8 +10219,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-108-70Ml-C; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Голубой]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-108-70Ml-C; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Голубой]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -10244,8 +10244,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-108-70Ml-M; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-108-70Ml-M; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -10269,8 +10269,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-108-70Ml-Y; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Желтый]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-108-70Ml-Y; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Желтый]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
@@ -10294,8 +10294,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-108-70Ml-CL; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Голубой]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-108-70Ml-CL; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Голубой]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -10319,8 +10319,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Чернила; Партномер: HiBl-EPS-108-70Ml-ML; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
-<param name="Тип">Чернила</param>
+Тип: Контейнер; Партномер: HiBl-EPS-108-70Ml-ML; Совместимость: Epson L8050/L18050; Ресурс: 70 мл; Цвет: Пурпурный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -11593,8 +11593,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-8365Y; Совместимость: Kyocera TASKalfa 2554ci; Ресурс: 12000; Цвет: Желтый; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: TK-8365Y; Совместимость: Kyocera TASKalfa 2554ci; Ресурс: 12000; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Цвет">Желтый</param>
@@ -11613,8 +11613,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-8365C; Совместимость: Kyocera TASKalfa 2554ci; Ресурс: 12000; Цвет: Голубой; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: TK-8365C; Совместимость: Kyocera TASKalfa 2554ci; Ресурс: 12000; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Цвет">Голубой</param>
@@ -12692,8 +12692,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Драм-юнит; Партномер: HB-CF232A/051; Совместимость: HP LJ Pro M203/M206/M230/LBP162dw/MF264dw/267dw; Ресурс: 23K; Цвет: Чёрный]]></description>
-<param name="Тип">Драм-юнит</param>
+Тип: Драм-картридж; Партномер: HB-CF232A/051; Совместимость: HP LJ Pro M203/M206/M230/LBP162dw/MF264dw/267dw; Ресурс: 23K; Цвет: Чёрный]]></description>
+<param name="Тип">Драм-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -16819,8 +16819,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 3526C002; Ресурс: 21K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: 3526C002; Ресурс: 21K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Партномер">3526C002</param>
@@ -16852,8 +16852,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 3760C002; Совместимость: Canon iR 2625/2630; Ресурс: 30K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: 3760C002; Совместимость: Canon iR 2625/2630; Ресурс: 30K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Партномер">3760C002</param>
@@ -17144,8 +17144,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-160; Ресурс: 3K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-160; Ресурс: 3K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-160</param>
@@ -17573,8 +17573,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-6305; Ресурс: 35K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-6305; Ресурс: 35K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-6305</param>
@@ -18009,8 +18009,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Ricoh</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 408010; Ресурс: 2K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Принт-картридж; Партномер: 408010; Ресурс: 2K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Принт-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Ricoh</param>
 <param name="Партномер">408010</param>
@@ -20288,8 +20288,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Драм-картридж; Партномер: 101R00434; Оригинальность: Оригинал]]></description>
-<param name="Тип">Драм-картридж</param>
+Тип: Копи-картридж; Партномер: 101R00434; Оригинальность: Оригинал]]></description>
+<param name="Тип">Копи-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Партномер">101R00434</param>
@@ -20777,8 +20777,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-241BK; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-241BK; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -20796,8 +20796,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-245C; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 2K; Цвет: Голубой]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-245C; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 2K; Цвет: Голубой]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Голубой</param>
@@ -20815,8 +20815,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-245M; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 2K; Цвет: Пурпурный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-245M; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 2K; Цвет: Пурпурный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Пурпурный</param>
@@ -20834,8 +20834,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-245Y; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 2K; Цвет: Желтый]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-245Y; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 2K; Цвет: Желтый]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Желтый</param>
@@ -21211,8 +21211,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-CF218A; Совместимость: HP LJ Pro M104/MFP M132, 1, 4K, с чипом; Ресурс: 1K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-CF218A; Совместимость: HP LJ Pro M104/MFP M132, 1, 4K, с чипом; Ресурс: 1K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21233,8 +21233,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-CF230X/051H; Совместимость: HP LJ Pro M203/MFP M227/LBP162dw/MF 264dw/267dw; Ресурс: 4K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-CF230X/051H; Совместимость: HP LJ Pro M203/MFP M227/LBP162dw/MF 264dw/267dw; Ресурс: 4K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21256,8 +21256,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-CF230A/051; Совместимость: HP LJ Pro M203/MFP M227/LBP162dw/MF 264dw/267dw; Ресурс: 2K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-CF230A/051; Совместимость: HP LJ Pro M203/MFP M227/LBP162dw/MF 264dw/267dw; Ресурс: 2K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21296,8 +21296,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-CF217A; Совместимость: HP LJ Pro M102a/MFP M130, 1, 6K (с чипом); Ресурс: 2K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-CF217A; Совместимость: HP LJ Pro M102a/MFP M130, 1, 6K (с чипом); Ресурс: 2K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21315,8 +21315,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CF233A; Совместимость: HP LJ Ultra M106/MFP M134; Ресурс: 2K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-CF233A; Совместимость: HP LJ Ultra M106/MFP M134; Ресурс: 2K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21334,8 +21334,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-CF233A; Совместимость: HP LJ Ultra M106/MFP M134; Ресурс: 2K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-CF233A; Совместимость: HP LJ Ultra M106/MFP M134; Ресурс: 2K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21374,8 +21374,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CF218A; Совместимость: HP LJ Pro M104/MFP M132; Ресурс: 1K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-CF218A; Совместимость: HP LJ Pro M104/MFP M132; Ресурс: 1K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21393,8 +21393,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CF230X/051H; Совместимость: HP LJ Pro M203/MFP M227/LBP162dw/MF 264dw/267dw; Ресурс: 4K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-CF230X/051H; Совместимость: HP LJ Pro M203/MFP M227/LBP162dw/MF 264dw/267dw; Ресурс: 4K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21412,8 +21412,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CF217A; Совместимость: HP LJ Pro M102a/MFP M130; Ресурс: 2K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-CF217A; Совместимость: HP LJ Pro M102a/MFP M130; Ресурс: 2K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21431,8 +21431,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CF230A/051; Совместимость: HP LJ Pro M203/MFP M227/LBP162dw/MF 264dw/267dw; Ресурс: 2K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-CF230A/051; Совместимость: HP LJ Pro M203/MFP M227/LBP162dw/MF 264dw/267dw; Ресурс: 2K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21476,8 +21476,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CF218AL; Совместимость: HP LJ Pro M104/MFP M132, 6K (увелич. ресурс); Ресурс: 6K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-CF218AL; Совместимость: HP LJ Pro M104/MFP M132, 6K (увелич. ресурс); Ресурс: 6K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21495,8 +21495,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CF230XL; Совместимость: HP LJ Pro M203/MFP M227, 6K (увелич. ресурс); Ресурс: 6K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-CF230XL; Совместимость: HP LJ Pro M203/MFP M227, 6K (увелич. ресурс); Ресурс: 6K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21514,8 +21514,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-CF231A; Совместимость: HP LJ Ultra M206dn/MFP M230fdw/sdn; Ресурс: 5K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-CF231A; Совместимость: HP LJ Ultra M206dn/MFP M230fdw/sdn; Ресурс: 5K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -21555,8 +21555,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Драм-юнит; Партномер: N-CF232A; Совместимость: HP LJ Pro M203/M206/M230/LBP162dw/MF264dw/267dw; Ресурс: 23K; Цвет: Чёрный]]></description>
-<param name="Тип">Драм-юнит</param>
+Тип: Драм-картридж; Партномер: N-CF232A; Совместимость: HP LJ Pro M203/M206/M230/LBP162dw/MF264dw/267dw; Ресурс: 23K; Цвет: Чёрный]]></description>
+<param name="Тип">Драм-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">HP</param>
 <param name="Цвет">Чёрный</param>
@@ -22204,8 +22204,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 006R01647; Цвет: Голубой; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: 006R01647; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Партномер">006R01647</param>
@@ -22897,8 +22897,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-3100; Ресурс: 13K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-3100; Ресурс: 13K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-3100</param>
@@ -23743,8 +23743,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-106R02778-NewFirm; Совместимость: Xerox Phaser 3052/3260/WC 3215/3225, 3K(новая прошивка); Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-106R02778-NewFirm; Совместимость: Xerox Phaser 3052/3260/WC 3215/3225, 3K(новая прошивка); Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Цвет">Чёрный</param>
@@ -23801,8 +23801,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-106R02778; Совместимость: Xerox Phaser 3052/3260/WC 3215/3225, 3K (новая прошивка); Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-106R02778; Совместимость: Xerox Phaser 3052/3260/WC 3215/3225, 3K (новая прошивка); Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Цвет">Чёрный</param>
@@ -24623,8 +24623,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-1075; Совместимость: Brother HL-1110R/1112R/DCP-1510R/MFC-1810R; Ресурс: 1K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-1075; Совместимость: Brother HL-1110R/1112R/DCP-1510R/MFC-1810R; Ресурс: 1K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -24642,8 +24642,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-1075; Совместимость: Brother HL-1110R/1112R/DCP1510R/1512/MFC1810R; Ресурс: 1K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-1075; Совместимость: Brother HL-1110R/1112R/DCP1510R/1512/MFC1810R; Ресурс: 1K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -24770,8 +24770,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-SP230H; Совместимость: Brother HL-L2371D/Ricoh SP230DNw/SP230SFNw; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-SP230H; Совместимость: Brother HL-L2371D/Ricoh SP230DNw/SP230SFNw; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -25954,8 +25954,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-2080; Совместимость: Brother HL-2130/DCP7055; Ресурс: 1K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-2080; Совместимость: Brother HL-2130/DCP7055; Ресурс: 1K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -25973,8 +25973,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-2080; Совместимость: Brother HL-2130/DCP-7055; Ресурс: 1K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-2080; Совместимость: Brother HL-2130/DCP-7055; Ресурс: 1K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -25992,8 +25992,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-1095; Совместимость: Brother HL-1202/DCP1602; Ресурс: 2K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-1095; Совместимость: Brother HL-1202/DCP1602; Ресурс: 2K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26030,8 +26030,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-1095; Совместимость: Brother HL-1202/DCP1602; Ресурс: 2K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-1095; Совместимость: Brother HL-1202/DCP1602; Ресурс: 2K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26068,8 +26068,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-2125/2175; Совместимость: Brother HL-2140R/2150NR/DCP-7030R; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-2125/2175; Совместимость: Brother HL-2140R/2150NR/DCP-7030R; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26087,8 +26087,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-2125/2175; Совместимость: Brother HL-2140R/2150NR/2170WR; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-2125/2175; Совместимость: Brother HL-2140R/2150NR/2170WR; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26106,8 +26106,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TN3230; Ресурс: 3K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TN3230; Ресурс: 3K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Партномер">TN3230</param>
@@ -26123,8 +26123,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-3230; Совместимость: Brother HL-5340/5350/5370/5380/DCP8070D/8085DN; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-3230; Совместимость: Brother HL-5340/5350/5370/5380/DCP8070D/8085DN; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26142,8 +26142,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-3280; Совместимость: Brother HL-5340/5350/5370/5380//DCP8070D; Ресурс: 8K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-3280; Совместимость: Brother HL-5340/5350/5370/5380//DCP8070D; Ресурс: 8K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26161,8 +26161,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-3280; Совместимость: Brother HL-5340/5350/5370/5380/DCP-8070D; Ресурс: 8K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-3280; Совместимость: Brother HL-5340/5350/5370/5380/DCP-8070D; Ресурс: 8K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26180,8 +26180,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-2275; Совместимость: Brother HL-2240R/2240DR/2250DNR/DCP-7060DR; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-2275; Совместимость: Brother HL-2240R/2240DR/2250DNR/DCP-7060DR; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26199,8 +26199,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-2275; Совместимость: Brother HL-2240R/2240DR/2250DNR/DCP-7060DR; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-2275; Совместимость: Brother HL-2240R/2240DR/2250DNR/DCP-7060DR; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26218,8 +26218,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-3380; Совместимость: Brother HL-5440D/5450DN/DCP-8150DN; Ресурс: 8K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-3380; Совместимость: Brother HL-5440D/5450DN/DCP-8150DN; Ресурс: 8K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26237,8 +26237,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-3380; Совместимость: Brother HL-5440D/5450DN/DCP-8150DN; Ресурс: 8K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-3380; Совместимость: Brother HL-5440D/5450DN/DCP-8150DN; Ресурс: 8K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26256,8 +26256,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-2075; Совместимость: Brother HL-2030/2040/2070/7010/7420/7820; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-2075; Совместимость: Brother HL-2030/2040/2070/7010/7420/7820; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26275,8 +26275,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-2075; Совместимость: Brother HL-2030/2040/2070/7010/7420/7820; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-2075; Совместимость: Brother HL-2030/2040/2070/7010/7420/7820; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26294,8 +26294,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-2235; Совместимость: Brother HL-2240R/2250/2270/MFC7360/7460; Ресурс: 1K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-2235; Совместимость: Brother HL-2240R/2250/2270/MFC7360/7460; Ресурс: 1K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26313,8 +26313,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-2235; Совместимость: Brother HL-2240R/2250/2270/MFC7360; Ресурс: 1K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-2235; Совместимость: Brother HL-2240R/2250/2270/MFC7360; Ресурс: 1K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26332,8 +26332,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-2090; Совместимость: Brother HL-2132R/DCP-7057R; Ресурс: 1K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-2090; Совместимость: Brother HL-2132R/DCP-7057R; Ресурс: 1K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26351,8 +26351,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-2085; Совместимость: Brother HL-2035R; Ресурс: 2K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-2085; Совместимость: Brother HL-2035R; Ресурс: 2K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26370,8 +26370,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-2085; Совместимость: Brother HL-2035R; Ресурс: 2K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-2085; Совместимость: Brother HL-2035R; Ресурс: 2K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26389,8 +26389,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-2090; Совместимость: Brother HL-2132R/DCP-7057R; Ресурс: 1K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-2090; Совместимость: Brother HL-2132R/DCP-7057R; Ресурс: 1K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26408,8 +26408,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-3170; Совместимость: Brother HL-5240/5250DN/5270DN, Универсальный; Ресурс: 7K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-3170; Совместимость: Brother HL-5240/5250DN/5270DN, Универсальный; Ресурс: 7K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26427,8 +26427,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-3170; Совместимость: Brother HL-5240/5250DN/5270DN, Универальный; Ресурс: 7K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-3170; Совместимость: Brother HL-5240/5250DN/5270DN, Универальный; Ресурс: 7K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26446,8 +26446,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-3480; Совместимость: Brother HL-L5000D/5100DN/5200DW; Ресурс: 8K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-3480; Совместимость: Brother HL-L5000D/5100DN/5200DW; Ресурс: 8K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -26465,8 +26465,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-3480; Совместимость: Brother HL-L5000D/5100DN/5200DW; Ресурс: 8K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-3480; Совместимость: Brother HL-L5000D/5100DN/5200DW; Ресурс: 8K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -29240,8 +29240,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-580C; Ресурс: 3K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-580C; Ресурс: 3K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Цвет">Голубой</param>
@@ -30282,8 +30282,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-1130; Ресурс: 3K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-1130; Ресурс: 3K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-1130</param>
@@ -30299,8 +30299,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-1110; Ресурс: 3K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-1110; Ресурс: 3K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-1110</param>
@@ -30316,8 +30316,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-1120; Ресурс: 3K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-1120; Ресурс: 3K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-1120</param>
@@ -31476,8 +31476,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-895K; Ресурс: 895K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-895K; Ресурс: 895K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Цвет">Чёрный</param>
@@ -31494,8 +31494,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-715; Ресурс: 34K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-715; Ресурс: 34K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-715</param>
@@ -32207,8 +32207,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Pantum</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Драм-юнит; Партномер: HB-DL-420; Совместимость: Pantum M6700/P; Ресурс: 12K; Цвет: Чёрный]]></description>
-<param name="Тип">Драм-юнит</param>
+Тип: Драм-картридж; Партномер: HB-DL-420; Совместимость: Pantum M6700/P; Ресурс: 12K; Цвет: Чёрный]]></description>
+<param name="Тип">Драм-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Pantum</param>
 <param name="Цвет">Чёрный</param>
@@ -32377,8 +32377,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Pantum</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Драм-юнит; Партномер: N-DL-420; Совместимость: Pantum M6700/P; Ресурс: 12K; Цвет: Чёрный]]></description>
-<param name="Тип">Драм-юнит</param>
+Тип: Драм-картридж; Партномер: N-DL-420; Совместимость: Pantum M6700/P; Ресурс: 12K; Цвет: Чёрный]]></description>
+<param name="Тип">Драм-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Pantum</param>
 <param name="Цвет">Чёрный</param>
@@ -33840,8 +33840,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 106R01159; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Принт-картридж; Партномер: 106R01159; Оригинальность: Оригинал]]></description>
+<param name="Тип">Принт-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Партномер">106R01159</param>
@@ -33951,8 +33951,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 006R01160; Ресурс: 30K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: 006R01160; Ресурс: 30K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Партномер">006R01160</param>
@@ -35796,8 +35796,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 2785B002; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: 2785B002; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Партномер">2785B002</param>
@@ -36506,8 +36506,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-2375; Совместимость: Brother HL-L2300/2305/2320/2340/2360; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-2375; Совместимость: Brother HL-L2300/2305/2320/2340/2360; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -36525,8 +36525,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-2375/TN-2335; Совместимость: Brother HL-L2300/2305/2320/2340; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-2375/TN-2335; Совместимость: Brother HL-L2300/2305/2320/2340; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -37249,8 +37249,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 6908B002; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: 6908B002; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Партномер">6908B002</param>
@@ -37644,8 +37644,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-3390; Совместимость: Brother HL-5440D/5445/5450DN/5470DW/6180DW; Ресурс: 12K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-3390; Совместимость: Brother HL-5440D/5445/5450DN/5470DW/6180DW; Ресурс: 12K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -38284,8 +38284,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-EPS-T6716; Совместимость: Epson отработанных чернил Hi-Чёрный T6716 Epson WF-M5299, WF-M5799, WF-C5790DWF; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Контейнер; Партномер: HB-EPS-T6716; Совместимость: Epson отработанных чернил Hi-Чёрный T6716 Epson WF-M5299, WF-M5799, WF-C5790DWF; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Партномер">HB-EPS-T6716</param>
@@ -38308,8 +38308,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 9963520545; Совместимость: Canon отработанных чернил Hi-Чёрный MC-G04 для Canon PIXMA G1130/G2170/G3170; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Контейнер; Партномер: 9963520545; Совместимость: Canon отработанных чернил Hi-Чёрный MC-G04 для Canon PIXMA G1130/G2170/G3170; Цвет: Чёрный]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Canon</param>
 <param name="Партномер">9963520545</param>
@@ -40007,8 +40007,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-241BK; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-241BK; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -40026,8 +40026,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-245C; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 2K; Цвет: Голубой]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-245C; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 2K; Цвет: Голубой]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Голубой</param>
@@ -40045,8 +40045,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-245M; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 2K; Цвет: Пурпурный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-245M; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 2K; Цвет: Пурпурный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Пурпурный</param>
@@ -40064,8 +40064,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-245Y; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 2K; Цвет: Желтый]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-245Y; Совместимость: Brother HL-3140CW/3150CDW/3170CDW; Ресурс: 2K; Цвет: Желтый]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Желтый</param>
@@ -40083,8 +40083,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-325Bk; Совместимость: Brother HL-4150CDN/4140CN/4570CDW; Ресурс: 4K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-325Bk; Совместимость: Brother HL-4150CDN/4140CN/4570CDW; Ресурс: 4K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -40102,8 +40102,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-325C; Совместимость: Brother HL-4150CDN/4140CN/4570CDW; Ресурс: 4K; Цвет: Голубой]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-325C; Совместимость: Brother HL-4150CDN/4140CN/4570CDW; Ресурс: 4K; Цвет: Голубой]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Голубой</param>
@@ -40121,8 +40121,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-325M; Совместимость: Brother HL-4150CDN/4140CN/4570CDW; Ресурс: 4K; Цвет: Пурпурный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-325M; Совместимость: Brother HL-4150CDN/4140CN/4570CDW; Ресурс: 4K; Цвет: Пурпурный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Пурпурный</param>
@@ -40140,8 +40140,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-325Y; Совместимость: Brother HL-4150CDN/4140CN/4570CDW; Ресурс: 4K; Цвет: Желтый]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-325Y; Совместимость: Brother HL-4150CDN/4140CN/4570CDW; Ресурс: 4K; Цвет: Желтый]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Желтый</param>
@@ -40159,8 +40159,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-326BK; Совместимость: Brother HL-L8250CDN/8350CDW/8350CDWT; Ресурс: 4K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-326BK; Совместимость: Brother HL-L8250CDN/8350CDW/8350CDWT; Ресурс: 4K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -40178,8 +40178,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-326C; Совместимость: Brother HL-L8250CDN/8350CDW/8350CDWT; Ресурс: 4K; Цвет: Голубой]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-326C; Совместимость: Brother HL-L8250CDN/8350CDW/8350CDWT; Ресурс: 4K; Цвет: Голубой]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Голубой</param>
@@ -40197,8 +40197,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-326M; Совместимость: Brother HL-L8250CDN/8350CDW/8350CDWT; Ресурс: 4K; Цвет: Пурпурный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-326M; Совместимость: Brother HL-L8250CDN/8350CDW/8350CDWT; Ресурс: 4K; Цвет: Пурпурный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Пурпурный</param>
@@ -40216,8 +40216,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-326Y; Совместимость: Brother HL-L8250CDN/8350CDW/8350CDWT; Ресурс: 4K; Цвет: Желтый]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-326Y; Совместимость: Brother HL-L8250CDN/8350CDW/8350CDWT; Ресурс: 4K; Цвет: Желтый]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Желтый</param>
@@ -40387,8 +40387,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-423BK; Совместимость: Brother HL-L8260CDW/8360/MFC L8690CDW; Ресурс: 7K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-423BK; Совместимость: Brother HL-L8260CDW/8360/MFC L8690CDW; Ресурс: 7K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -40406,8 +40406,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-423C; Совместимость: Brother HL-L8260CDW/8360/MFC L8690CDW; Ресурс: 4K; Цвет: Голубой]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-423C; Совместимость: Brother HL-L8260CDW/8360/MFC L8690CDW; Ресурс: 4K; Цвет: Голубой]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Голубой</param>
@@ -40425,8 +40425,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-423M; Совместимость: Brother HL-L8260CDW/8360/MFC L8690CDW; Ресурс: 4K; Цвет: Пурпурный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-423M; Совместимость: Brother HL-L8260CDW/8360/MFC L8690CDW; Ресурс: 4K; Цвет: Пурпурный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Пурпурный</param>
@@ -40444,8 +40444,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-423Y; Совместимость: Brother HL-L8260CDW/8360/MFC L8690CDW; Ресурс: 4K; Цвет: Желтый]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-423Y; Совместимость: Brother HL-L8260CDW/8360/MFC L8690CDW; Ресурс: 4K; Цвет: Желтый]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Желтый</param>
@@ -40463,8 +40463,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-421BK; Совместимость: Brother HL-L8260/8360/MFC L8690/8900/DCP L8410; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-421BK; Совместимость: Brother HL-L8260/8360/MFC L8690/8900/DCP L8410; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -40482,8 +40482,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-421C; Совместимость: Brother HL-L8260/8360/MFC L8690/8900/DCP L8410; Ресурс: 2K; Цвет: Голубой]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-421C; Совместимость: Brother HL-L8260/8360/MFC L8690/8900/DCP L8410; Ресурс: 2K; Цвет: Голубой]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Голубой</param>
@@ -40501,8 +40501,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-421M; Совместимость: Brother HL-L8260/8360/MFC L8690/8900/DCP L8410; Ресурс: 2K; Цвет: Пурпурный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-421M; Совместимость: Brother HL-L8260/8360/MFC L8690/8900/DCP L8410; Ресурс: 2K; Цвет: Пурпурный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Пурпурный</param>
@@ -40520,8 +40520,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-421Y; Совместимость: Brother HL-L8260/8360/MFC L8690/8900/DCP L8410; Ресурс: 2K; Цвет: Желтый]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-421Y; Совместимость: Brother HL-L8260/8360/MFC L8690/8900/DCP L8410; Ресурс: 2K; Цвет: Желтый]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Желтый</param>
@@ -40539,8 +40539,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-910BK; Совместимость: Brother HL-L9310CDW/MFC L9570CDW; Ресурс: 9K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-910BK; Совместимость: Brother HL-L9310CDW/MFC L9570CDW; Ресурс: 9K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -40558,8 +40558,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-910C; Совместимость: Brother HL-L9310CDW/MFC L9570CDW; Ресурс: 9K; Цвет: Голубой]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-910C; Совместимость: Brother HL-L9310CDW/MFC L9570CDW; Ресурс: 9K; Цвет: Голубой]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Голубой</param>
@@ -40577,8 +40577,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-910M; Совместимость: Brother HL-L9310CDW/MFC L9570CDW; Ресурс: 9K; Цвет: Пурпурный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-910M; Совместимость: Brother HL-L9310CDW/MFC L9570CDW; Ресурс: 9K; Цвет: Пурпурный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Пурпурный</param>
@@ -40596,8 +40596,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-910Y; Совместимость: Brother HL-L9310CDW/MFC L9570CDW; Ресурс: 9K; Цвет: Желтый]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-910Y; Совместимость: Brother HL-L9310CDW/MFC L9570CDW; Ресурс: 9K; Цвет: Желтый]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Желтый</param>
@@ -40615,8 +40615,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-217BK; Совместимость: Brother HL-L3230/DCP-L3550/MFC-L3770; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-217BK; Совместимость: Brother HL-L3230/DCP-L3550/MFC-L3770; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -40634,8 +40634,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-217C; Совместимость: Brother HL-L3230/DCP-L3550/MFC-L3770; Ресурс: 2K; Цвет: Голубой]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-217C; Совместимость: Brother HL-L3230/DCP-L3550/MFC-L3770; Ресурс: 2K; Цвет: Голубой]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Голубой</param>
@@ -40653,8 +40653,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-217M; Совместимость: Brother HL-L3230/DCP-L3550/MFC-L3770; Ресурс: 2K; Цвет: Пурпурный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-217M; Совместимость: Brother HL-L3230/DCP-L3550/MFC-L3770; Ресурс: 2K; Цвет: Пурпурный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Пурпурный</param>
@@ -40672,8 +40672,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-217Y; Совместимость: Brother HL-L3230/DCP-L3550/MFC-L3770; Ресурс: 2K; Цвет: Желтый]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-217Y; Совместимость: Brother HL-L3230/DCP-L3550/MFC-L3770; Ресурс: 2K; Цвет: Желтый]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Желтый</param>
@@ -40940,8 +40940,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: A8K3250; Ресурс: 21K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: A8K3250; Ресурс: 21K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Партномер">A8K3250</param>
@@ -40958,8 +40958,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: A8K3350; Ресурс: 21K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: A8K3350; Ресурс: 21K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Партномер">A8K3350</param>
@@ -40976,8 +40976,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Konica Minolta</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: A8K3450; Ресурс: 21K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: A8K3450; Ресурс: 21K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Konica Minolta</param>
 <param name="Партномер">A8K3450</param>
@@ -40994,8 +40994,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Sharp</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: AR202LT; Ресурс: 16K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: AR202LT; Ресурс: 16K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Партномер">AR202LT</param>
@@ -41028,8 +41028,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Драм-юнит; Партномер: 101R00664; Ресурс: 10K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Драм-юнит</param>
+Тип: Принт-картридж; Партномер: 101R00664; Ресурс: 10K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Принт-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Партномер">101R00664</param>
@@ -41149,8 +41149,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Sharp</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: BPGT20BA; Совместимость: Sharp C-CUBE; Ресурс: 18K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: BPGT20BA; Совместимость: Sharp C-CUBE; Ресурс: 18K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Цвет">Чёрный</param>
@@ -41168,8 +41168,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Sharp</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: BPGT20BB; Совместимость: Sharp C-CUBE; Ресурс: 9K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: BPGT20BB; Совместимость: Sharp C-CUBE; Ресурс: 9K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Цвет">Чёрный</param>
@@ -41187,8 +41187,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Sharp</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: BPGT20CA; Совместимость: Sharp C-CUBE, 10К бирюзовый; Ресурс: 10K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: BPGT20CA; Совместимость: Sharp C-CUBE, 10К бирюзовый; Ресурс: 10K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Цвет">Голубой</param>
@@ -41206,8 +41206,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Sharp</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: BPGT20CB; Совместимость: Sharp C-CUBE, 5К бирюзовый; Ресурс: 5K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: BPGT20CB; Совместимость: Sharp C-CUBE, 5К бирюзовый; Ресурс: 5K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Sharp</param>
 <param name="Цвет">Голубой</param>
@@ -41339,8 +41339,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: 0384B006; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: 0384B006; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Canon</param>
 <param name="Партномер">0384B006</param>
@@ -41373,8 +41373,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: C13T00S14A; Совместимость: Epson L3100/3101/3110/3150; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Контейнер; Партномер: C13T00S14A; Совместимость: Epson L3100/3101/3110/3150; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Чёрный</param>
@@ -41391,8 +41391,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: C13T00S24A; Совместимость: Epson L3100/3101/3110/3150; Цвет: Голубой; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Контейнер; Партномер: C13T00S24A; Совместимость: Epson L3100/3101/3110/3150; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Голубой</param>
@@ -41409,8 +41409,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: C13T00S34A; Совместимость: Epson L3100/3101/3110/3150; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Контейнер; Партномер: C13T00S34A; Совместимость: Epson L3100/3101/3110/3150; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Пурпурный</param>
@@ -41427,8 +41427,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: C13T00S44A; Совместимость: Epson L3100/3101/3110/3150; Цвет: Желтый; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Контейнер; Партномер: C13T00S44A; Совместимость: Epson L3100/3101/3110/3150; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Цвет">Желтый</param>
@@ -41445,8 +41445,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: C13T03P14A; Совместимость: Epson M1100/1120/2140; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Контейнер; Партномер: C13T03P14A; Совместимость: Epson M1100/1120/2140; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Партномер">C13T03P14A</param>
@@ -55198,8 +55198,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Huawei</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: HB-DC-HW-X-15000; Совместимость: Huawei PixLab X1/B5/CV81-WD; Ресурс: 15K; Цвет: Чёрный]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Драм-юнит; Партномер: HB-DC-HW-X-15000; Совместимость: Huawei PixLab X1/B5/CV81-WD; Ресурс: 15K; Цвет: Чёрный]]></description>
+<param name="Тип">Драм-юнит</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Huawei</param>
 <param name="Цвет">Чёрный</param>
@@ -56908,8 +56908,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-2375-MPS; Совместимость: Brother HL-L2300/2305/2320/2340; Ресурс: 10K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-2375-MPS; Совместимость: Brother HL-L2300/2305/2320/2340; Ресурс: 10K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -56927,8 +56927,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: HB-TN-2420; Совместимость: Brother HL-L2310D/L2350DW/2357/MFC-L2710DW/DCP-L2510D; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: HB-TN-2420; Совместимость: Brother HL-L2310D/L2350DW/2357/MFC-L2710DW/DCP-L2510D; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -57660,8 +57660,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: C13T00R240; Совместимость: Epson L7160/7180; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Контейнер; Партномер: C13T00R240; Совместимость: Epson L7160/7180; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Контейнер</param>
 <param name="Технология печати">Струйная</param>
 <param name="Для бренда">Epson</param>
 <param name="Партномер">C13T00R240</param>
@@ -58454,8 +58454,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-2510XL; Совместимость: Brother HL-L2400/2445/MFC L2800/2835/2860/DCP L; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-2510XL; Совместимость: Brother HL-L2400/2445/MFC L2800/2835/2860/DCP L; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -58478,8 +58478,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-2560XL; Совместимость: Brother HL-L2400D/L2440DW/MFC L2805DW/2885/DCP L; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-2560XL; Совместимость: Brother HL-L2400D/L2440DW/MFC L2805DW/2885/DCP L; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -58500,8 +58500,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-3600XL; Совместимость: Brother HL-L5210/6210/6410/MFC L5710/DCP L; Ресурс: 6K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-3600XL; Совместимость: Brother HL-L5210/6210/6410/MFC L5710/DCP L; Ресурс: 6K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -58519,8 +58519,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-3600XXL; Совместимость: Brother HL-L5210/6210/6410/MFC L5710/DCP L; Ресурс: 6K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-3600XXL; Совместимость: Brother HL-L5210/6210/6410/MFC L5710/DCP L; Ресурс: 6K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -58541,8 +58541,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: N-TN-B021; Совместимость: Brother HL-B2000D/B2080DW/B2100DB/DCP-B7500D/B7535DW; Ресурс: 3K; Цвет: Чёрный]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: N-TN-B021; Совместимость: Brother HL-B2000D/B2080DW/B2100DB/DCP-B7500D/B7535DW; Ресурс: 3K; Цвет: Чёрный]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Brother</param>
 <param name="Цвет">Чёрный</param>
@@ -59200,8 +59200,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: 006R01694; Ресурс: 3K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: 006R01694; Ресурс: 3K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Xerox</param>
 <param name="Партномер">006R01694</param>
@@ -59302,8 +59302,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-1140; Ресурс: 7K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-1140; Ресурс: 7K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-1140</param>
@@ -59355,8 +59355,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-130; Ресурс: 7K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-130; Ресурс: 7K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-130</param>
@@ -59372,8 +59372,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-3130; Ресурс: 25K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-3130; Ресурс: 25K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-3130</param>
@@ -59442,8 +59442,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-350; Ресурс: 15K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-350; Ресурс: 15K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-350</param>
@@ -59459,8 +59459,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-360; Ресурс: 20K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-360; Ресурс: 20K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-360</param>
@@ -59476,8 +59476,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-4105; Ресурс: 15K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-4105; Ресурс: 15K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-4105</param>
@@ -59493,8 +59493,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-475; Ресурс: 15K; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-475; Ресурс: 15K; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-475</param>
@@ -59635,8 +59635,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-580K; Ресурс: 580K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-580K; Ресурс: 580K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Цвет">Чёрный</param>
@@ -59653,8 +59653,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-580Y; Ресурс: 3K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-580Y; Ресурс: 3K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Цвет">Желтый</param>
@@ -59671,8 +59671,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-590K; Ресурс: 590K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-590K; Ресурс: 590K; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-590K</param>
@@ -59689,8 +59689,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-590M; Ресурс: 5K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-590M; Ресурс: 5K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-590M</param>
@@ -59707,8 +59707,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-590Y; Ресурс: 5K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-590Y; Ресурс: 5K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Партномер">TK-590Y</param>
@@ -59725,8 +59725,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: ТонеркатриджKyoceraT; Совместимость: Kyocera TASKalfa 2554ci; Ресурс: 25000; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: ТонеркатриджKyoceraT; Совместимость: Kyocera TASKalfa 2554ci; Ресурс: 25000; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Цвет">Чёрный</param>
@@ -59745,8 +59745,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-8365M; Совместимость: Kyocera TASKalfa 2554ci; Ресурс: 12000; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Тонер; Партномер: TK-8365M; Совместимость: Kyocera TASKalfa 2554ci; Ресурс: 12000; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Цвет">Пурпурный</param>
@@ -59783,8 +59783,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-895C; Ресурс: 6K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-895C; Ресурс: 6K; Цвет: Голубой; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Цвет">Голубой</param>
@@ -59801,8 +59801,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-895M; Ресурс: 6K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-895M; Ресурс: 6K; Цвет: Пурпурный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Цвет">Пурпурный</param>
@@ -59819,8 +59819,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Kyocera</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Тонер-картридж; Партномер: TK-895Y; Ресурс: 6K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
-<param name="Тип">Тонер-картридж</param>
+Тип: Картридж; Партномер: TK-895Y; Ресурс: 6K; Цвет: Желтый; Оригинальность: Оригинал]]></description>
+<param name="Тип">Картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Kyocera</param>
 <param name="Цвет">Желтый</param>
@@ -59856,8 +59856,8 @@ URL поставщика                             | https://b2b.vtt.ru/catalo
 <vendor>Pantum</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Тип: Картридж; Партномер: TLC2310H; Совместимость: Pantum серии 2300, 1600 стр; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
-<param name="Тип">Картридж</param>
+Тип: Тонер-картридж; Партномер: TLC2310H; Совместимость: Pantum серии 2300, 1600 стр; Цвет: Чёрный; Оригинальность: Оригинал]]></description>
+<param name="Тип">Тонер-картридж</param>
 <param name="Технология печати">Лазерная</param>
 <param name="Для бренда">Pantum</param>
 <param name="Цвет">Чёрный</param>
