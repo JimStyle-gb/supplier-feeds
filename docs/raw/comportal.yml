@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-03 17:10:29">
+<yml_catalog date="2026-04-04 21:14:32">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-04-03 17:10:29
-Ближайшая сборка (Алматы)                  | 2026-04-04 04:00:00
-Сколько товаров у поставщика до фильтра    | 1175
-Сколько товаров у поставщика после фильтра | 572
-Сколько товаров есть в наличии (true)      | 572
+Время сборки (Алматы)                      | 2026-04-04 21:14:32
+Ближайшая сборка (Алматы)                  | 2026-04-05 04:00:00
+Сколько товаров у поставщика до фильтра    | 1180
+Сколько товаров у поставщика после фильтра | 573
+Сколько товаров есть в наличии (true)      | 573
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -2913,6 +2913,22 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Функция">Принтер-Сканер(АПД-40с.)-Копир</param>
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Коды">9YG09A#B19</param>
+<param name="Для бренда">HP</param>
+</offer>
+
+<offer id="CP13842679" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13842679</vendorCode>
+<name>Печатающая головка HP 729 DesignJet Printhead Replacement Kit (F9J81A)</name>
+<price>240740</price>
+<picture>http://www.comportal.kz/upload/iblock/b8e/b8e51a269d79b68f51de87e15ee80823.JPG</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Картридж.]]></description>
+<param name="Тип">Картридж</param>
+<param name="Модель">729 DesignJet Printhead Replacement Kit</param>
+<param name="Коды">F9J81A</param>
 <param name="Для бренда">HP</param>
 </offer>
 
