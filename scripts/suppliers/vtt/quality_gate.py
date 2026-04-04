@@ -4,17 +4,14 @@ Path: scripts/suppliers/vtt/quality_gate.py
 
 VTT quality gate.
 
-Patch focus:
-- сохранить строгий контроль по реальным ошибкам VTT;
-- НЕ валить сборку на supplier-specific image tail
-  (`placeholder_picture`), потому что для VTT это допустимая особенность;
-- всё остальное продолжать проверять строго.
+Patch focus v2:
+- backward-compatible signature for build_vtt.py;
+- не валить VTT только из-за supplier-specific image tail (`placeholder_picture`);
+- при этом оставить строгий контроль по всем остальным real issues.
 
-Правило:
-- critical всегда валят сборку;
-- cosmetic `placeholder_picture` попадает в отчёт,
-  но ИСКЛЮЧАЕТСЯ из enforce-лимитов;
-- остальные cosmetic продолжают считаться в enforce-лимитах.
+Важно:
+- baseline_path сделан optional, потому что текущий build_vtt.py вызывает
+  run_quality_gate(feed_path=..., report_path=...) без baseline_path.
 """
 
 from __future__ import annotations
@@ -29,7 +26,10 @@ from zoneinfo import ZoneInfo
 import re
 import xml.etree.ElementTree as ET
 
-import yaml
+try:
+    import yaml
+except Exception:  # pragma: no cover
+    yaml = None  # type: ignore
 
 
 PLACEHOLDER_URL = "https://placehold.co/800x800/png?text=No+Photo"
@@ -58,14 +58,21 @@ def _norm_ws(s: str) -> str:
     return s2
 
 
-def _read_yaml(path: str) -> dict:
-    p = Path(path)
-    if not p.exists():
+def _read_yaml(path: str | None) -> dict:
+    if not path:
         return {}
-    return yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+    p = Path(path)
+    if not p.exists() or yaml is None:
+        return {}
+    try:
+        return yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+    except Exception:
+        return {}
 
 
-def _write_yaml(path: str, data: dict) -> None:
+def _write_yaml(path: str | None, data: dict) -> None:
+    if not path or yaml is None:
+        return
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(
@@ -132,7 +139,7 @@ def _detect_issues(feed_path: str) -> tuple[list[QualityIssue], int, int]:
     return sorted(deduped.values(), key=lambda x: (x.severity, x.rule, x.oid, x.details)), offer_count, len(xml_text.encode("utf-8"))
 
 
-def _load_cosmetic_baseline(baseline_path: str) -> dict[str, set[str]]:
+def _load_cosmetic_baseline(baseline_path: str | None) -> dict[str, set[str]]:
     data = _read_yaml(baseline_path)
     raw = data.get("accepted_cosmetic") or {}
     out: dict[str, set[str]] = {}
@@ -210,12 +217,11 @@ def _write_report(
         lines.append("cosmetic_by_rule:")
         lines.extend(_rule_count_lines(cosmetic))
 
-    if _RULES_EXCLUDED_FROM_ENFORCE:
-        lines.append("------------------------------------------------------------------------")
-        lines.append("excluded_from_enforce_rules:")
-        for rule in sorted(_RULES_EXCLUDED_FROM_ENFORCE):
-            count = sum(1 for x in cosmetic if x.rule == rule)
-            lines.append(f"  - {rule}: {count}")
+    lines.append("------------------------------------------------------------------------")
+    lines.append("excluded_from_enforce_rules:")
+    for rule in sorted(_RULES_EXCLUDED_FROM_ENFORCE):
+        count = sum(1 for x in cosmetic if x.rule == rule)
+        lines.append(f"  - {rule}: {count}")
 
     lines.append("------------------------------------------------------------------------")
     lines.append(f"enforced_cosmetic_count: {len(enforced_cosmetic)}")
@@ -227,8 +233,8 @@ def _write_report(
 def run_quality_gate(
     *,
     feed_path: str,
-    baseline_path: str,
     report_path: str,
+    baseline_path: str | None = None,
     max_new_cosmetic_offers: int = 5,
     max_new_cosmetic_issues: int = 5,
     enforce: bool = True,
@@ -238,11 +244,11 @@ def run_quality_gate(
     critical = [x for x in issues if x.severity == "critical"]
     cosmetic = [x for x in issues if x.severity == "cosmetic"]
 
-    if freeze_current_as_baseline:
+    if freeze_current_as_baseline and baseline_path:
         payload = _make_baseline_payload(cosmetic)
         _write_yaml(baseline_path, payload)
 
-    _ = _load_cosmetic_baseline(baseline_path)  # backward-safe read, report-only legacy compatibility
+    _ = _load_cosmetic_baseline(baseline_path)  # backward-safe compatibility
 
     enforced_cosmetic = [x for x in cosmetic if x.rule not in _RULES_EXCLUDED_FROM_ENFORCE]
     enforced_offer_count = len({x.oid for x in enforced_cosmetic})
