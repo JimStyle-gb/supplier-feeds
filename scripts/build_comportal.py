@@ -17,6 +17,11 @@ ComPortal adapter (CP) — thin orchestrator under CS-template.
 - supplier-specific логика остаётся только в suppliers/comportal/*;
 - build_comportal.py не должен знать regex-логику ComPortal;
 - orchestrator остаётся тонким и шаблонным относительно других поставщиков.
+
+v3:
+- fallback hour исправлен с 04:00 на 03:00 по проектному порядку;
+- next run в FEED_META теперь совпадает с правилом:
+  AkCent 01:00 -> AlStyle 02:00 -> ComPortal 03:00 -> CopyLine 04:00 -> VTT 05:00.
 """
 
 from __future__ import annotations
@@ -44,8 +49,7 @@ from suppliers.comportal.quality_gate import run_quality_gate
 from suppliers.comportal.source import load_source_bundle
 
 
-BUILD_COMPORTAL_VERSION = "build_comportal_v2_template_orchestrator"
-
+BUILD_COMPORTAL_VERSION = "build_comportal_v3_hour_0300"
 COMPORTAL_URL_DEFAULT = "https://www.comportal.kz/auth/documents/prices/yml-catalog.php"
 COMPORTAL_OUT_DEFAULT = "docs/comportal.yml"
 COMPORTAL_RAW_OUT_DEFAULT = "docs/raw/comportal.yml"
@@ -61,9 +65,6 @@ WATCH_REPORT_DEFAULT = "docs/raw/comportal_watch.txt"
 QUALITY_BASELINE_DEFAULT = "scripts/suppliers/comportal/config/quality_baseline.yml"
 QUALITY_REPORT_DEFAULT = "docs/raw/comportal_quality_gate.txt"
 PLACEHOLDER_DEFAULT = "https://placehold.co/800x800/png?text=No+Photo"
-
-
-# ----------------------------- config helpers -----------------------------
 
 
 def _read_yaml(path: Path) -> dict[str, Any]:
@@ -91,7 +92,7 @@ def _resolve_hour(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any]) -> int
         policy_cfg.get("schedule_hour_almaty")
         or policy_cfg.get("next_run_hour_local")
         or schema_cfg.get("next_run_hour_local"),
-        4,
+        3,
     )
 
 
@@ -155,9 +156,6 @@ def _run_quality_gate(*, raw_out_file: str, cfg_dir: Path, qg: dict[str, Any]) -
     )
 
 
-# ----------------------------- main -----------------------------
-
-
 def main() -> int:
     cfg_dir = Path(os.getenv("COMPORTAL_CFG_DIR", CFG_DIR_DEFAULT))
     filter_cfg, schema_cfg, policy_cfg = _load_supplier_config(cfg_dir)
@@ -180,7 +178,6 @@ def main() -> int:
     vendor_blacklist = _resolve_vendor_blacklist(schema_cfg)
     qg = _resolve_quality_gate(schema_cfg)
 
-    # builder/schema compatibility helpers
     if "placeholder_picture" not in schema_cfg:
         schema_cfg["placeholder_picture"] = placeholder_picture
     if "vendor_blacklist_casefold" not in schema_cfg:
