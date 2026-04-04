@@ -1,17 +1,20 @@
 VTT quality gate
 ========================================================================
-generated_at_almaty: 2026-04-04 13:12:28
+generated_at_almaty: 2026-04-04 14:43:06
 feed_path: docs/raw/vtt.yml
-offers: 3117
-feed_size_bytes: 3081955
-feed_sha1_12: 96e61909326f
+offers: 3137
+feed_size_bytes: 3097661
+feed_sha1_12: 54de3de41bf7
 critical_count: 0
-cosmetic_count: 451
+cosmetic_count: 455
 ------------------------------------------------------------------------
 cosmetic_preview:
-  - VT013R00676/013R00674 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT013R00676 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT10111574 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT101131383 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT106R02760 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT106R02774 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT108R01416 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT1100041 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT1100042 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT1100043 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
@@ -50,14 +53,11 @@ cosmetic_preview:
   - VT1501609461 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT1501609462 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT1501609463 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - VT1501609464 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT15016120 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT15016121 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT15016123 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT15016124 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT15016127 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
-  - VT150161290 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
-  - VT150161292 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
-  - VT1501612920 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
-  - VT1501612921 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
 cosmetic_by_rule:
-  - placeholder_picture: 451
+  - placeholder_picture: 455
