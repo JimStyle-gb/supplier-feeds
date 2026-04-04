@@ -16,7 +16,12 @@ VTT adapter (VT) — thin orchestrator under CS-template.
 Важно:
 - supplier-specific логика остаётся только в suppliers/vtt/*;
 - orchestrator шаблонный по форме, но сохраняет VTT-specific sharding/index flow;
-- ассортиментые правила берутся из filter.yml / filtering.py, а не из hardcode build-файла.
+- ассортиментные правила берутся из filter.yml / filtering.py, а не из hardcode build-файла.
+
+v11:
+- убран legacy fallback-импорт diagnostics;
+- orchestrator использует только канонический suppliers.vtt.diagnostics.print_build_summary;
+- остальная рабочая логика index / shard_index / merge / full сохранена без изменения.
 """
 
 from __future__ import annotations
@@ -32,12 +37,8 @@ from typing import Any
 import yaml
 
 from cs.core import OfferOut, get_public_vendor, next_run_dom_at_hour, now_almaty, write_cs_feed, write_cs_feed_raw
-
 from suppliers.vtt.builder import build_offer_from_raw
-try:  # pragma: no cover - следующая чистка уберёт fallback
-    from suppliers.vtt.diagnostics import print_build_summary as diagnostics_print_build_summary
-except Exception:  # pragma: no cover
-    diagnostics_print_build_summary = None  # type: ignore
+from suppliers.vtt.diagnostics import print_build_summary
 from suppliers.vtt.filtering import categories_from_cfg, prefixes_from_cfg
 from suppliers.vtt.quality_gate import run_quality_gate
 from suppliers.vtt.source import (
@@ -50,8 +51,7 @@ from suppliers.vtt.source import (
     parse_product_page_from_index,
 )
 
-
-BUILD_VTT_VERSION = "build_vtt_v10_template_orchestrator_phase1"
+BUILD_VTT_VERSION = "build_vtt_v11_drop_diagnostics_fallback"
 
 SUPPLIER_NAME_DEFAULT = "VTT"
 VTT_URL_DEFAULT = "https://b2b.vtt.ru/catalog/"
@@ -83,7 +83,6 @@ def _read_yaml(path: Path) -> dict[str, Any]:
         return {}
 
 
-
 def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     filter_cfg = _read_yaml(cfg_dir / FILTER_FILE_DEFAULT)
     schema_cfg = _read_yaml(cfg_dir / SCHEMA_FILE_DEFAULT)
@@ -91,13 +90,11 @@ def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any]
     return filter_cfg, schema_cfg, policy_cfg
 
 
-
 def _safe_int(value: Any, default: int) -> int:
     try:
         return int(value)
     except Exception:
         return default
-
 
 
 def _load_param_priority(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any]) -> tuple[str, ...]:
@@ -124,7 +121,6 @@ def _load_param_priority(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any])
     return tuple(out)
 
 
-
 def _resolve_hour(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any]) -> int:
     return _safe_int(
         policy_cfg.get("schedule_hour_almaty")
@@ -132,7 +128,6 @@ def _resolve_hour(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any]) -> int
         or schema_cfg.get("next_run_hour_local"),
         5,
     )
-
 
 
 def _resolve_dom_list(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any]) -> tuple[int, ...]:
@@ -150,15 +145,12 @@ def _resolve_dom_list(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any]) ->
     return tuple(out or [1, 10, 20])
 
 
-
 def _resolve_supplier_name(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any]) -> str:
     return str(policy_cfg.get("supplier") or schema_cfg.get("supplier") or SUPPLIER_NAME_DEFAULT).strip() or SUPPLIER_NAME_DEFAULT
 
 
-
 def _resolve_id_prefix(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any]) -> str:
     return str(policy_cfg.get("id_prefix") or schema_cfg.get("id_prefix") or VTT_ID_PREFIX_DEFAULT).strip() or VTT_ID_PREFIX_DEFAULT
-
 
 
 def _resolve_output_encoding(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any]) -> str:
@@ -167,7 +159,6 @@ def _resolve_output_encoding(policy_cfg: dict[str, Any], schema_cfg: dict[str, A
         or schema_cfg.get("encoding")
         or OUTPUT_ENCODING_DEFAULT
     ).strip() or OUTPUT_ENCODING_DEFAULT
-
 
 
 def _resolve_quality_gate(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any]) -> dict[str, Any]:
@@ -179,12 +170,10 @@ def _resolve_quality_gate(policy_cfg: dict[str, Any], schema_cfg: dict[str, Any]
     return qg
 
 
-
 def _resolve_paths() -> tuple[str, str]:
     out_file = os.getenv("VTT_OUT_FILE", os.getenv("OUT_FILE", OUT_FILE_DEFAULT)).strip() or OUT_FILE_DEFAULT
     raw_out_file = os.getenv("VTT_RAW_OUT_FILE", os.getenv("RAW_OUT_FILE", RAW_OUT_FILE_DEFAULT)).strip() or RAW_OUT_FILE_DEFAULT
     return out_file, raw_out_file
-
 
 
 def _prepare_source_env(cfg_dir: Path, filter_cfg: dict[str, Any]) -> None:
@@ -204,36 +193,6 @@ def _prepare_source_env(cfg_dir: Path, filter_cfg: dict[str, Any]) -> None:
 # ----------------------------- diagnostics helpers -----------------------------
 
 
-def _fallback_print_summary(
-    *,
-    version: str,
-    before: int,
-    after: int,
-    raw_out_file: str,
-    out_file: str,
-    qg,
-    availability_true: int,
-    availability_false: int,
-) -> None:
-    print("=" * 72)
-    print("[VTT] build summary")
-    print("=" * 72)
-    print("version:", version)
-    print(f"before: {before}")
-    print(f"after:  {after}")
-    print(f"raw_out_file: {raw_out_file}")
-    print(f"out_file: {out_file}")
-    print("-" * 72)
-    print(f"quality_gate_ok:       {qg.ok}")
-    print(f"quality_gate_report:   {qg.report_path}")
-    print(f"quality_gate_critical: {qg.critical_count}")
-    print(f"quality_gate_cosmetic: {qg.cosmetic_count}")
-    print(f"availability_true:     {availability_true}")
-    print(f"availability_false:    {availability_false}")
-    print("=" * 72)
-
-
-
 def _print_summary(
     *,
     version: str,
@@ -245,19 +204,7 @@ def _print_summary(
     availability_true: int,
     availability_false: int,
 ) -> None:
-    if diagnostics_print_build_summary is not None:
-        diagnostics_print_build_summary(
-            version=version,
-            before=before,
-            after=after,
-            raw_out_file=raw_out_file,
-            out_file=out_file,
-            qg=qg,
-            availability_true=availability_true,
-            availability_false=availability_false,
-        )
-        return
-    _fallback_print_summary(
+    print_build_summary(
         version=version,
         before=before,
         after=after,
@@ -285,7 +232,6 @@ def _offer_to_dict(offer: OfferOut) -> dict[str, Any]:
     }
 
 
-
 def _dict_to_offer(row: dict[str, Any]) -> OfferOut:
     return OfferOut(
         oid=str(row["oid"]),
@@ -297,7 +243,6 @@ def _dict_to_offer(row: dict[str, Any]) -> OfferOut:
         params=[(str(k), str(v)) for k, v in (row.get("params") or [])],
         native_desc=str(row.get("native_desc", "")),
     )
-
 
 
 def _safe_write_json(path: Path, payload: dict[str, Any] | list[Any]) -> None:
@@ -319,14 +264,12 @@ def _login_or_raise(cfg):
     return sess
 
 
-
 def _collect_index(cfg) -> list[dict[str, Any]]:
     deadline = datetime.utcnow() + timedelta(minutes=max(1.0, float(cfg.max_crawl_minutes)))
     sess = _login_or_raise(cfg)
     if sess is None:
         return []
     return collect_product_index(sess, cfg, list(cfg.categories), deadline)
-
 
 
 def _build_offers_for_index(cfg, index: list[dict[str, Any]], *, id_prefix: str) -> list[OfferOut]:
@@ -377,7 +320,6 @@ def _build_offers_for_index(cfg, index: list[dict[str, Any]], *, id_prefix: str)
     return out_offers
 
 
-
 def _run_quality_gate(*, raw_out_file: str, qg_cfg: dict[str, Any]):
     if not bool(qg_cfg.get("enabled", True)):
         class _QG:
@@ -389,7 +331,6 @@ def _run_quality_gate(*, raw_out_file: str, qg_cfg: dict[str, Any]):
 
     report_path = str(qg_cfg.get("report_path") or qg_cfg.get("report_file") or VTT_QG_REPORT_DEFAULT)
     return run_quality_gate(feed_path=raw_out_file, report_path=report_path)
-
 
 
 def _write_feeds(
@@ -462,7 +403,6 @@ def _run_index(cfg_dir: Path, filter_cfg: dict[str, Any], schema_cfg: dict[str, 
     return 0
 
 
-
 def _run_shard_index(cfg_dir: Path, filter_cfg: dict[str, Any], schema_cfg: dict[str, Any], policy_cfg: dict[str, Any]) -> int:
     _prepare_source_env(cfg_dir, filter_cfg)
     cfg = cfg_from_env()
@@ -520,7 +460,6 @@ def _run_shard_index(cfg_dir: Path, filter_cfg: dict[str, Any], schema_cfg: dict
     return 0
 
 
-
 def _load_shards() -> tuple[list[OfferOut], int]:
     offers: list[OfferOut] = []
     seen_oids: set[str] = set()
@@ -553,7 +492,6 @@ def _load_shards() -> tuple[list[OfferOut], int]:
 
     offers.sort(key=lambda x: x.oid)
     return offers, before
-
 
 
 def _run_merge(cfg_dir: Path, filter_cfg: dict[str, Any], schema_cfg: dict[str, Any], policy_cfg: dict[str, Any]) -> int:
@@ -614,7 +552,6 @@ def _run_merge(cfg_dir: Path, filter_cfg: dict[str, Any], schema_cfg: dict[str, 
         availability_false=availability_false,
     )
     return 0 if qg.ok else 1
-
 
 
 def _run_full(cfg_dir: Path, filter_cfg: dict[str, Any], schema_cfg: dict[str, Any], policy_cfg: dict[str, Any]) -> int:
