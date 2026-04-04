@@ -452,19 +452,19 @@ jobs:
             text = path.read_text(encoding="utf-8", errors="ignore")
             text = re.sub(
               r"(Время сборки \(Алматы\)\s*\|\s*)(.+)",
-              rf"\1{ts}{note}",
+              rf"\g<1>{ts}{note}",
               text,
               count=1,
             )
             text = re.sub(
               r"(Ближайшая сборка \(Алматы\)\s*\|\s*)(.+)",
-              rf"\1{next_run}",
+              rf"\g<1>{next_run}",
               text,
               count=1,
             )
             text = re.sub(
               r'(<yml_catalog\s+date=")([^"]+)(">)',
-              rf"\1{ts}\3",
+              rf"\g<1>{ts}\g<3>",
               text,
               count=1,
             )
