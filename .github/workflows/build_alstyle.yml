@@ -3,8 +3,7 @@ name: Build_AlStyle
 on:
   workflow_dispatch:
   schedule:
-    # Алматы UTC+5 → 02:00 local = 21:00 UTC предыдущего дня
-    - cron: '0 21 * * *'
+    - cron: '0 21 * * *'  # 02:00 Asia/Almaty
 
 permissions:
   contents: write
@@ -15,6 +14,9 @@ jobs:
     concurrency:
       group: build_alstyle
       cancel-in-progress: true
+
+    env:
+      TZ: Asia/Almaty
 
     steps:
       - name: Checkout
@@ -43,26 +45,16 @@ jobs:
 
       - name: Prepare folders
         run: |
-          mkdir -p docs docs/raw scripts/suppliers/alstyle/config
+          mkdir -p docs docs/raw docs/debug
 
-      - name: Smoke test (py_compile existing files only)
+      - name: Smoke test
         run: |
           python - <<'PY'
-          from pathlib import Path
           import py_compile
           import sys
+          from pathlib import Path
 
           files = [
-              "scripts/cs/core.py",
-              "scripts/cs/description.py",
-              "scripts/cs/keywords.py",
-              "scripts/cs/meta.py",
-              "scripts/cs/policy.py",
-              "scripts/cs/pricing.py",
-              "scripts/cs/util.py",
-              "scripts/cs/validators.py",
-              "scripts/cs/writer.py",
-              "scripts/cs/qg_report.py",
               "scripts/build_alstyle.py",
               "scripts/suppliers/__init__.py",
               "scripts/suppliers/alstyle/__init__.py",
@@ -70,14 +62,23 @@ jobs:
               "scripts/suppliers/alstyle/source.py",
               "scripts/suppliers/alstyle/filtering.py",
               "scripts/suppliers/alstyle/normalize.py",
-              "scripts/suppliers/alstyle/pictures.py",
               "scripts/suppliers/alstyle/params_xml.py",
               "scripts/suppliers/alstyle/desc_clean.py",
               "scripts/suppliers/alstyle/desc_extract.py",
               "scripts/suppliers/alstyle/compat.py",
+              "scripts/suppliers/alstyle/pictures.py",
               "scripts/suppliers/alstyle/builder.py",
               "scripts/suppliers/alstyle/diagnostics.py",
               "scripts/suppliers/alstyle/quality_gate.py",
+              "scripts/cs/core.py",
+              "scripts/cs/writer.py",
+              "scripts/cs/validators.py",
+              "scripts/cs/util.py",
+              "scripts/cs/pricing.py",
+              "scripts/cs/meta.py",
+              "scripts/cs/description.py",
+              "scripts/cs/keywords.py",
+              "scripts/cs/qg_report.py",
           ]
 
           failed = False
@@ -103,112 +104,39 @@ jobs:
           import pathlib
           import re
           t = pathlib.Path('scripts/build_alstyle.py').read_text(encoding='utf-8', errors='ignore')
-          m = re.search(r'BUILD_ALSTYLE_VERSION\s*=\s*["\']([^"\']+)["\']', t)
+          m = re.search(r'BUILD_[A-Z0-9_]+_VERSION\s*=\s*["\']([^"\']+)["\']', t)
           print('ALSTYLE_VERSION', m.group(1) if m else 'UNKNOWN')
           PY
 
-      - name: Snapshot previous feed
-        run: |
-          mkdir -p /tmp docs docs/raw
-          if [ -f docs/alstyle.yml ]; then
-            cp -f docs/alstyle.yml /tmp/prev_feed.yml
-          else
-            : > /tmp/prev_feed.yml
-          fi
-
-      - name: Build feed (alstyle)
-        env:
-          TZ: Asia/Almaty
-        run: |
-          python scripts/build_alstyle.py
+      - name: Build
+        run: python scripts/build_alstyle.py
 
       - name: Diagnostics
+        if: always()
         run: |
           git status --porcelain || true
           git diff --stat || true
-          ls -la docs docs/raw || true
-          wc -c docs/alstyle.yml docs/raw/alstyle.yml 2>/dev/null || true
-          [ -f docs/raw/alstyle_watch.txt ] && sed -n '1,200p' docs/raw/alstyle_watch.txt || true
-          [ -f docs/raw/alstyle_quality_gate.txt ] && sed -n '1,260p' docs/raw/alstyle_quality_gate.txt || true
+          ls -la docs docs/raw docs/debug || true
+          [ -f docs/raw/alstyle_quality_gate.txt ] && cat docs/raw/alstyle_quality_gate.txt || true
 
-      - name: Update FEED_META build time + next run
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alstyle-artifacts
+          path: |
+            docs/alstyle.yml
+            docs/raw/alstyle.yml
+            docs/raw/alstyle_quality_gate.txt
+          if-no-files-found: warn
+
+      - name: Commit and push changes
+        if: success()
         run: |
-          norm_hash() {
-            local f="$1"
-            if [ ! -f "$f" ]; then
-              echo ""
-              return 0
-            fi
-            sed '/<!--FEED_META/,/-->/d' "$f" | sed '/^<yml_catalog date=/d' | md5sum | awk '{print $1}'
-          }
-
-          OLD_HASH=$(norm_hash /tmp/prev_feed.yml)
-          NEW_HASH=$(norm_hash docs/alstyle.yml)
-
-          NO_CHANGES=0
-          if [ -n "$OLD_HASH" ] && [ -n "$NEW_HASH" ] && [ "$OLD_HASH" = "$NEW_HASH" ]; then
-            NO_CHANGES=1
-          fi
-
-          TS=$(TZ='Asia/Almaty' date '+%Y-%m-%d %H:%M:%S')
-          NOTE=""
-          if [ "$NO_CHANGES" -eq 1 ]; then
-            NOTE=" (не было изменений)"
-          fi
-
-          TODAY=$(TZ='Asia/Almaty' date '+%Y-%m-%d')
-          NOW_HMS=$(TZ='Asia/Almaty' date '+%H%M%S')
-          if [ "$NOW_HMS" -ge "020000" ]; then
-            NEXT_DATE=$(TZ='Asia/Almaty' date -d 'tomorrow' '+%Y-%m-%d')
-          else
-            NEXT_DATE="$TODAY"
-          fi
-          NEXT_RUN="${NEXT_DATE} 02:00:00"
-
-          for F in docs/alstyle.yml docs/raw/alstyle.yml; do
-            if [ ! -f "$F" ]; then
-              continue
-            fi
-
-            sed -i -E 's/^<yml_catalog date="[^"]+">/<yml_catalog date="'"${TS}"'">/' "$F" || true
-
-            tmp="$F.__tmp"
-            : > "$tmp"
-            while IFS= read -r ln; do
-              if [[ "$ln" == Время\ сборки\ \(Алматы\)* ]]; then
-                left="${ln%%|*}"
-                echo "${left}| ${TS}${NOTE}" >> "$tmp"
-              elif [[ "$ln" == Ближайшая\ сборка\ \(Алматы\)* ]]; then
-                left="${ln%%|*}"
-                echo "${left}| ${NEXT_RUN}" >> "$tmp"
-              else
-                if [ "$NO_CHANGES" -eq 0 ]; then
-                  echo "${ln// (не было изменений)/}" >> "$tmp"
-                else
-                  echo "$ln" >> "$tmp"
-                fi
-              fi
-            done < "$F"
-            mv "$tmp" "$F"
-          done
-
-          echo "CS_NO_CHANGES=$NO_CHANGES" >> "$GITHUB_ENV"
-
-      - name: Commit & push docs/alstyle.yml
-        run: |
-          git add docs/alstyle.yml docs/raw/alstyle.yml
-          if [ -f docs/raw/alstyle_watch.txt ]; then
-            git add docs/raw/alstyle_watch.txt
-          fi
-          if [ -f docs/raw/alstyle_quality_gate.txt ]; then
-            git add docs/raw/alstyle_quality_gate.txt
-          fi
-
+          git add docs/alstyle.yml docs/raw/alstyle.yml docs/raw/alstyle_quality_gate.txt || true
           if git diff --cached --quiet; then
-            echo "No changes to commit."
+            echo "No changes to commit"
             exit 0
           fi
-
-          git commit -m "build: alstyle feed"
-          git pull --rebase --autostash
+          git commit -m "Build AlStyle feed"
           git push
