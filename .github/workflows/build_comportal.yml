@@ -17,6 +17,8 @@ jobs:
 
     env:
       TZ: Asia/Almaty
+      COMPORTAL_LOGIN: ${{ secrets.COMPORTAL_LOGIN }}
+      COMPORTAL_PASSWORD: ${{ secrets.COMPORTAL_PASSWORD }}
 
     steps:
       - name: Checkout
@@ -117,7 +119,8 @@ jobs:
           git status --porcelain || true
           git diff --stat || true
           ls -la docs docs/raw docs/debug || true
-          [ -f docs/raw/comportal_quality_gate.txt ] && cat docs/raw/comportal_quality_gate.txt || true
+          [ -f docs/raw/comportal_watch.txt ] && sed -n '1,200p' docs/raw/comportal_watch.txt || true
+          [ -f docs/raw/comportal_quality_gate.txt ] && sed -n '1,260p' docs/raw/comportal_quality_gate.txt || true
 
       - name: Upload artifacts
         if: always()
@@ -127,13 +130,20 @@ jobs:
           path: |
             docs/comportal.yml
             docs/raw/comportal.yml
+            docs/raw/comportal_watch.txt
             docs/raw/comportal_quality_gate.txt
           if-no-files-found: warn
 
       - name: Commit and push changes
         if: success()
         run: |
-          git add docs/comportal.yml docs/raw/comportal.yml docs/raw/comportal_quality_gate.txt || true
+          git add docs/comportal.yml docs/raw/comportal.yml
+          if [ -f docs/raw/comportal_watch.txt ]; then
+            git add docs/raw/comportal_watch.txt
+          fi
+          if [ -f docs/raw/comportal_quality_gate.txt ]; then
+            git add docs/raw/comportal_quality_gate.txt
+          fi
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
