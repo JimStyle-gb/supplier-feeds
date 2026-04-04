@@ -3,7 +3,7 @@ name: Build_VTT
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 1,10,20 * *"  # 05:00 Asia/Almaty
+    - cron: '0 0 1,10,20 * *'  # 05:00 Asia/Almaty
 
 permissions:
   contents: write
@@ -31,14 +31,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
@@ -66,19 +66,26 @@ jobs:
               "scripts/suppliers/__init__.py",
               "scripts/suppliers/vtt/__init__.py",
               "scripts/suppliers/vtt/models.py",
-              "scripts/suppliers/vtt/client.py",
               "scripts/suppliers/vtt/source.py",
               "scripts/suppliers/vtt/filtering.py",
               "scripts/suppliers/vtt/normalize.py",
               "scripts/suppliers/vtt/pictures.py",
               "scripts/suppliers/vtt/params.py",
-              "scripts/suppliers/vtt/params_page.py",
               "scripts/suppliers/vtt/desc_clean.py",
               "scripts/suppliers/vtt/desc_extract.py",
               "scripts/suppliers/vtt/compat.py",
               "scripts/suppliers/vtt/builder.py",
               "scripts/suppliers/vtt/diagnostics.py",
               "scripts/suppliers/vtt/quality_gate.py",
+              "scripts/cs/core.py",
+              "scripts/cs/writer.py",
+              "scripts/cs/validators.py",
+              "scripts/cs/util.py",
+              "scripts/cs/pricing.py",
+              "scripts/cs/meta.py",
+              "scripts/cs/description.py",
+              "scripts/cs/keywords.py",
+              "scripts/cs/qg_report.py",
           ]
 
           failed = False
@@ -159,14 +166,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
@@ -195,12 +202,12 @@ jobs:
 
           files = [
               "scripts/build_vtt.py",
+              "scripts/suppliers/vtt/models.py",
               "scripts/suppliers/vtt/source.py",
               "scripts/suppliers/vtt/filtering.py",
               "scripts/suppliers/vtt/normalize.py",
               "scripts/suppliers/vtt/pictures.py",
               "scripts/suppliers/vtt/params.py",
-              "scripts/suppliers/vtt/params_page.py",
               "scripts/suppliers/vtt/desc_clean.py",
               "scripts/suppliers/vtt/desc_extract.py",
               "scripts/suppliers/vtt/compat.py",
@@ -262,14 +269,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
@@ -288,19 +295,10 @@ jobs:
       - name: Prepare folders
         run: |
           mkdir -p docs docs/raw docs/debug/vtt_shards
-          rm -f docs/debug/vtt_shards/*.json || true
-
-      - name: Download index artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: vtt-index
-          path: docs/debug/vtt_shards
 
       - name: Download shard artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: vtt-shard-*
-          merge-multiple: true
           path: docs/debug/vtt_shards
 
       - name: Smoke test
@@ -312,18 +310,18 @@ jobs:
 
           files = [
               "scripts/build_vtt.py",
-              "scripts/suppliers/vtt/source.py",
-              "scripts/suppliers/vtt/filtering.py",
-              "scripts/suppliers/vtt/normalize.py",
-              "scripts/suppliers/vtt/pictures.py",
-              "scripts/suppliers/vtt/params.py",
-              "scripts/suppliers/vtt/params_page.py",
-              "scripts/suppliers/vtt/desc_clean.py",
-              "scripts/suppliers/vtt/desc_extract.py",
-              "scripts/suppliers/vtt/compat.py",
-              "scripts/suppliers/vtt/builder.py",
-              "scripts/suppliers/vtt/diagnostics.py",
+              "scripts/suppliers/vtt/models.py",
               "scripts/suppliers/vtt/quality_gate.py",
+              "scripts/suppliers/vtt/diagnostics.py",
+              "scripts/cs/core.py",
+              "scripts/cs/writer.py",
+              "scripts/cs/validators.py",
+              "scripts/cs/util.py",
+              "scripts/cs/pricing.py",
+              "scripts/cs/meta.py",
+              "scripts/cs/description.py",
+              "scripts/cs/keywords.py",
+              "scripts/cs/qg_report.py",
           ]
 
           failed = False
@@ -343,23 +341,8 @@ jobs:
               sys.exit(1)
           PY
 
-      - name: Snapshot previous feed
-        run: |
-          mkdir -p /tmp docs docs/raw
-          if [ -f docs/vtt.yml ]; then
-            cp -f docs/vtt.yml /tmp/prev_feed.yml
-          else
-            : > /tmp/prev_feed.yml
-          fi
-
-      - name: Merge shards + build final feeds
+      - name: Merge and build final feeds
         run: python scripts/build_vtt.py
-
-      - name: Show VTT quality gate report
-        if: always()
-        run: |
-          echo "==== docs/raw/vtt_quality_gate.txt ===="
-          [ -f docs/raw/vtt_quality_gate.txt ] && sed -n '1,400p' docs/raw/vtt_quality_gate.txt || echo "vtt_quality_gate.txt not found"
 
       - name: Diagnostics
         if: always()
@@ -367,118 +350,27 @@ jobs:
           git status --porcelain || true
           git diff --stat || true
           ls -la docs docs/raw docs/debug/vtt_shards || true
-          wc -c docs/vtt.yml docs/raw/vtt.yml 2>/dev/null || true
-          [ -f docs/debug/vtt_shards/merge_summary.json ] && cat docs/debug/vtt_shards/merge_summary.json || true
-          [ -f docs/raw/vtt_quality_gate.txt ] && sed -n '1,400p' docs/raw/vtt_quality_gate.txt || true
+          [ -f docs/raw/vtt_quality_gate.txt ] && cat docs/raw/vtt_quality_gate.txt || true
 
-      - name: Upload merge artifacts
+      - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vtt-merge-output
+          name: vtt-artifacts
           path: |
             docs/vtt.yml
             docs/raw/vtt.yml
             docs/raw/vtt_quality_gate.txt
-            docs/debug/vtt_shards/index.json
-            docs/debug/vtt_shards/index_summary.json
-            docs/debug/vtt_shards/merge_summary.json
-            docs/debug/vtt_shards/shard_*.json
+            docs/debug/vtt_shards
           if-no-files-found: warn
 
-      - name: Update FEED_META build time + next run
+      - name: Commit and push changes
         if: success()
         run: |
-          norm_hash() {
-            local f="$1"
-            if [ ! -f "$f" ]; then
-              echo ""
-              return 0
-            fi
-            sed '/<!--FEED_META/,/-->/d' "$f" | sed '/^<yml_catalog date=/d' | md5sum | awk '{print $1}'
-          }
-
-          OLD_HASH=$(norm_hash /tmp/prev_feed.yml)
-          NEW_HASH=$(norm_hash docs/vtt.yml)
-
-          NO_CHANGES=0
-          if [ -n "$OLD_HASH" ] && [ -n "$NEW_HASH" ] && [ "$OLD_HASH" = "$NEW_HASH" ]; then
-            NO_CHANGES=1
-          fi
-
-          TS=$(TZ='Asia/Almaty' date '+%Y-%m-%d %H:%M:%S')
-          NOTE=""
-          if [ "$NO_CHANGES" -eq 1 ]; then
-            NOTE=" (не было изменений)"
-          fi
-          export TS NOTE
-
-          python - <<'PY'
-          import os
-          import pathlib
-          import re
-          from datetime import datetime
-
-          paths = [pathlib.Path("docs/vtt.yml"), pathlib.Path("docs/raw/vtt.yml")]
-          ts = os.environ["TS"]
-          note = os.environ.get("NOTE", "")
-
-          dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
-          day = dt.day
-          month = dt.month
-          year = dt.year
-
-          future_days = [1, 10, 20]
-          next_day = None
-          next_month = month
-          next_year = year
-          for d in future_days:
-            if d > day:
-              next_day = d
-              break
-          if next_day is None:
-            next_day = 1
-            if month == 12:
-              next_month = 1
-              next_year += 1
-            else:
-              next_month += 1
-
-          next_run = f"{next_year:04d}-{next_month:02d}-{next_day:02d} 05:00:00"
-
-          for path in paths:
-            if not path.exists():
-              continue
-            text = path.read_text(encoding="utf-8", errors="ignore")
-            text = re.sub(
-              r"(Время сборки \(Алматы\)\s*\|\s*)(.+)",
-              rf"\g<1>{ts}{note}",
-              text,
-              count=1,
-            )
-            text = re.sub(
-              r"(Ближайшая сборка \(Алматы\)\s*\|\s*)(.+)",
-              rf"\g<1>{next_run}",
-              text,
-              count=1,
-            )
-            text = re.sub(
-              r'(<yml_catalog\s+date=")([^"]+)(">)',
-              rf"\g<1>{ts}\g<3>",
-              text,
-              count=1,
-            )
-            path.write_text(text, encoding="utf-8")
-          PY
-
-      - name: Commit and push
-        if: success()
-        run: |
-          git add docs/vtt.yml docs/raw/vtt.yml docs/raw/vtt_quality_gate.txt docs/debug/vtt_shards/*.json
+          git add docs/vtt.yml docs/raw/vtt.yml docs/raw/vtt_quality_gate.txt docs/debug/vtt_shards || true
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Build VTT"
-          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git commit -m "Build VTT feed"
           git push
