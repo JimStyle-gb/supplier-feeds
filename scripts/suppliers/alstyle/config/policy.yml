@@ -3,6 +3,7 @@ supplier: AlStyle
 timezone: Asia/Almaty
 # Новое единое расписание проекта: AlStyle запускается ежедневно в 02:00 по Алматы.
 next_run_hour_local: 2
+schedule_hour_almaty: 2
 id_prefix: AS
 placeholder_picture: https://placehold.co/800x800/png?text=No+Photo
 
@@ -27,7 +28,7 @@ core_rules:
 quality_gate:
   enabled: true
   enforce: true
-  baseline_file: scripts/suppliers/alstyle/config/quality_baseline.yml
+  baseline_file: scripts/suppliers/alstyle/config/quality_gate_baseline.yml
   report_file: docs/raw/alstyle_quality_gate.txt
 
   # ВАЖНО:
@@ -49,6 +50,3 @@ quality_gate:
   # только как справочный снимок.
   # Они НЕ исключаются из будущего подсчёта.
   freeze_current_as_baseline: false
-
-# legacy keys for backward-safe compatibility
-schedule_hour_almaty: 2
