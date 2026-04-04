@@ -4,12 +4,11 @@ Path: scripts/suppliers/vtt/builder.py
 
 VTT builder layer.
 
-Patch focus v2:
-- continue reducing current critical class `empty_vendor`;
+Patch focus v3:
+- finish current critical class `empty_vendor`;
 - keep existing VTT-specific title/compat logic intact;
-- strengthen vendor inference for remaining families:
-  Olivetti / Triumph-Adler / Konica Minolta / Minolta /
-  F+ imaging / Deli / Huawei / Avision / Катюша.
+- strengthen vendor inference for the last CET FujiFilm families
+  (FUJIFILM Apeos / ApeosPort).
 
 Важно:
 - pricing intentionally не меняем;
@@ -72,7 +71,7 @@ _TITLE_COLOR_TAIL_RE = re.compile(
     re.I,
 )
 
-_VENDOR_ALIASES: tuple[tuple[str, str], ...] = (
+_VENDOR_ALIASES = (
     ("HP", "HP"),
     ("HPE", "HPE"),
     ("Canon", "Canon"),
@@ -97,6 +96,9 @@ _VENDOR_ALIASES: tuple[tuple[str, str], ...] = (
     ("Oki", "OKI"),
     ("Olivetti", "Olivetti"),
     ("Triumph-Adler", "Triumph-Adler"),
+    ("FUJIFILM", "FUJIFILM"),
+    ("FujiFilm", "FUJIFILM"),
+    ("Fujifilm", "FUJIFILM"),
     ("Huawei", "Huawei"),
     ("Катюша", "Катюша"),
     ("F+ imaging", "F+ imaging"),
@@ -105,7 +107,7 @@ _VENDOR_ALIASES: tuple[tuple[str, str], ...] = (
     ("Minolta", "Konica Minolta"),
 )
 
-_DEVICE_VENDOR_HINTS: tuple[tuple[re.Pattern[str], str], ...] = (
+_DEVICE_VENDOR_HINTS = (
     (re.compile(r"(?iu)\b(?:LaserJet|DeskJet|DesignJet|OfficeJet|OJ\s+Pro|Color\s+LaserJet)\b"), "HP"),
     (re.compile(r"(?iu)\b(?:PIXMA|imageRUNNER|imagePRESS|i-SENSYS|LBP|MF\d|TM-\d|PRO-\d)\b"), "Canon"),
     (re.compile(r"(?iu)\b(?:VersaLink|AltaLink|WorkCentre|Phaser|ColorQube|DocuColor|Versant)\b"), "Xerox"),
@@ -113,6 +115,7 @@ _DEVICE_VENDOR_HINTS: tuple[tuple[re.Pattern[str], str], ...] = (
     (re.compile(r"(?iu)\b(?:DCP|MFC|HL-\d|TN-\d|DR-\d)\b"), "Brother"),
     (re.compile(r"(?iu)\b(?:SCX|CLP|CLX|ML-\d|SL-[A-Z0-9-]+)\b"), "Samsung"),
     (re.compile(r"(?iu)\b(?:L\d{3,4}|XP-\d|WF-\d|Expression|Stylus)\b"), "Epson"),
+    (re.compile(r"(?iu)\b(?:ApeosPort|Apeos)\b"), "FUJIFILM"),
     (re.compile(r"(?iu)\bAvision\b"), "Avision"),
     (re.compile(r"(?iu)\bDELI\b"), "Deli"),
     (re.compile(r"(?iu)\bDeli\b"), "Deli"),
@@ -125,7 +128,7 @@ _DEVICE_VENDOR_HINTS: tuple[tuple[re.Pattern[str], str], ...] = (
     (re.compile(r"(?iu)\bBizhub\b"), "Konica Minolta"),
 )
 
-_FOR_BRAND_PATTERNS: tuple[tuple[re.Pattern[str], str], ...] = (
+_FOR_BRAND_PATTERNS = (
     (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+HP\b"), "HP"),
     (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+HPE\b"), "HPE"),
     (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Canon\b"), "Canon"),
@@ -148,6 +151,9 @@ _FOR_BRAND_PATTERNS: tuple[tuple[re.Pattern[str], str], ...] = (
     (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Deli\b"), "Deli"),
     (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Olivetti\b"), "Olivetti"),
     (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Triumph-?Adler\b"), "Triumph-Adler"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+FUJIFILM\b"), "FUJIFILM"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+FujiFilm\b"), "FUJIFILM"),
+    (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Fujifilm\b"), "FUJIFILM"),
     (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Huawei\b"), "Huawei"),
     (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+Катюша\b"), "Катюша"),
     (re.compile(r"(?iu)(?:^|\b)(?:для|for)\s+F\+\s*imaging\b"), "F+ imaging"),
@@ -187,17 +193,7 @@ def _vendor_from_texts(*texts: str) -> str:
     return ""
 
 
-def _resolve_vendor(
-    *,
-    raw_vendor: str,
-    title: str,
-    params: list[tuple[str, str]],
-    compat: str,
-    description_text: str,
-    codes: list[str],
-    part_number: str,
-    display_part_number: str,
-) -> str:
+def _resolve_vendor(*, raw_vendor: str, title: str, params: list[tuple[str, str]], compat: str, description_text: str, codes: list[str], part_number: str, display_part_number: str) -> str:
     vendor = _canonical_vendor(guess_vendor(raw_vendor, title, params))
     if vendor:
         return vendor
@@ -225,18 +221,7 @@ def _resolve_vendor(
     return ""
 
 
-def _merge_params(
-    raw: dict,
-    vendor: str,
-    type_name: str,
-    tech: str,
-    part_number: str,
-    display_part_number: str,
-    codes: list[str],
-    title: str,
-    compat: str,
-    resource: str,
-) -> list[tuple[str, str]]:
+def _merge_params(raw: dict, vendor: str, type_name: str, tech: str, part_number: str, display_part_number: str, codes: list[str], title: str, compat: str, resource: str) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     color_found = ""
@@ -258,10 +243,7 @@ def _merge_params(
         add("Тип", type_name)
     if tech:
         add("Технология печати", tech)
-    if vendor and type_name and any(
-        x in type_name.casefold()
-        for x in ("картридж", "драм", "девелопер", "чернила", "тонер", "головка", "блок", "барабан", "контейнер", "носитель")
-    ):
+    if vendor and type_name and any(x in type_name.casefold() for x in ("картридж", "драм", "девелопер", "чернила", "тонер", "головка", "блок", "барабан", "контейнер", "носитель")):
         add("Для бренда", vendor)
 
     for key, value in raw_params:
@@ -292,10 +274,7 @@ def _merge_params(
 
     if final_color:
         replaced = False
-        if color_found and final_color != color_found and (
-            "Hi-Black" in title
-            or any(x in title for x in ("Cyan", "Magenta", "Yellow", "Grey", "Gray", "Photoblack", "Mattblack"))
-        ):
+        if color_found and final_color != color_found and ("Hi-Black" in title or any(x in title for x in ("Cyan", "Magenta", "Yellow", "Grey", "Gray", "Photoblack", "Mattblack"))):
             out2: list[tuple[str, str]] = []
             for k, v in out:
                 if k == "Цвет" and not replaced:
@@ -304,7 +283,6 @@ def _merge_params(
                 else:
                     out2.append((k, v))
             out = out2
-            color_found = final_color
         elif not color_found:
             add("Цвет", final_color)
 
@@ -374,17 +352,8 @@ def _repair_known_titles(title_no_suffix: str, compat: str) -> str:
     return t
 
 
-def build_offer_from_raw(
-    raw: dict,
-    *,
-    id_prefix: str = "VT",
-    placeholder_picture: str | None = None,
-) -> OfferOut | None:
-    original_flag = is_original(
-        safe_str(raw.get("name")),
-        safe_str(raw.get("description_body")),
-        safe_str(raw.get("description_meta")),
-    )
+def build_offer_from_raw(raw: dict, *, id_prefix: str = "VT", placeholder_picture: str | None = None) -> OfferOut | None:
+    original_flag = is_original(safe_str(raw.get("name")), safe_str(raw.get("description_body")), safe_str(raw.get("description_meta")))
 
     clean_title_value = clean_title(norm_ws(raw.get("name")))
     title = append_original_suffix(clean_title_value, original_flag)
@@ -393,9 +362,7 @@ def build_offer_from_raw(
 
     sku = safe_str(raw.get("sku"))
     raw_params = raw.get("params") or []
-    source_categories = list(
-        raw.get("source_categories") or ([] if not safe_str(raw.get("category_code")) else [safe_str(raw.get("category_code"))])
-    )
+    source_categories = list(raw.get("source_categories") or ([] if not safe_str(raw.get("category_code")) else [safe_str(raw.get("category_code"))]))
 
     vendor_pre = _canonical_vendor(guess_vendor(safe_str(raw.get("vendor")), clean_title_value, raw_params))
     type_name = infer_type(source_categories, clean_title_value)
@@ -409,28 +376,13 @@ def build_offer_from_raw(
         title_no_suffix = re.sub(rf"(?:,?\s*{re.escape(sku)})+$", "", title_no_suffix, flags=re.I).strip(" ,")
     title_no_suffix = _strip_tail_noise(title_no_suffix)
 
-    compat = extract_compat(
-        clean_title_value,
-        vendor_pre,
-        raw_params,
-        safe_str(raw.get("description_body")),
-        part_number,
-        sku,
-    )
+    compat = extract_compat(clean_title_value, vendor_pre, raw_params, safe_str(raw.get("description_body")), part_number, sku)
     title_no_suffix = _repair_known_titles(title_no_suffix, compat)
     title = append_original_suffix(norm_ws(title_no_suffix), original_flag)
 
-    resource = extract_resource(
-        clean_title_value,
-        raw_params,
-        safe_str(raw.get("description_body")),
-    )
+    resource = extract_resource(clean_title_value, raw_params, safe_str(raw.get("description_body")))
     codes = collect_codes(raw, raw_params, resource, part_number, compat)
-    display_part_number = derive_display_part_number(
-        title=title,
-        raw_part_number=part_number,
-        codes=codes,
-    )
+    display_part_number = derive_display_part_number(title=title, raw_part_number=part_number, codes=codes)
 
     vendor = _resolve_vendor(
         raw_vendor=safe_str(raw.get("vendor")),
@@ -443,26 +395,12 @@ def build_offer_from_raw(
         display_part_number=display_part_number,
     )
 
-    params = _merge_params(
-        raw,
-        vendor,
-        type_name,
-        tech,
-        part_number,
-        display_part_number,
-        codes,
-        clean_title_value,
-        compat,
-        resource,
-    )
+    params = _merge_params(raw, vendor, type_name, tech, part_number, display_part_number, codes, clean_title_value, compat, resource)
 
     raw_price = int(raw.get("price_rub_raw") or 0)
     price = compute_price(raw_price)
 
-    pictures = collect_picture_urls(
-        [safe_str(x) for x in (raw.get("pictures") or []) if safe_str(x)],
-        placeholder_picture=(placeholder_picture or PLACEHOLDER),
-    )
+    pictures = collect_picture_urls([safe_str(x) for x in (raw.get("pictures") or []) if safe_str(x)], placeholder_picture=(placeholder_picture or PLACEHOLDER))
 
     color = ""
     for k, v in params:
