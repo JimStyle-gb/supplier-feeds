@@ -5,7 +5,7 @@ enforce: true
 # true = quality gate реально валит сборку
 report_file: docs/raw/akcent_quality_gate.txt
 # Куда записан этот отчёт
-baseline_file: scripts/suppliers/akcent/config/quality_baseline.yml
+baseline_file: scripts/suppliers/akcent/config/quality_gate_baseline.yml
 # Базовый файл для сравнения известных cosmetic-проблем
 freeze_current_as_baseline: no
 # yes = текущие cosmetic-хвосты сохранены как baseline-снимок
