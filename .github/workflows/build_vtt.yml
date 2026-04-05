@@ -3,280 +3,35 @@ name: Build_VTT
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 1,10,20 * *'  # 05:00 Asia/Almaty
+    # Алматы UTC+5 -> 05:00 local = 00:00 UTC
+    - cron: "0 0 1,10,20 * *"
 
 permissions:
   contents: write
 
 jobs:
-  build_vtt_index:
-    name: build-vtt-index
+  build_index:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 90
     concurrency:
-      group: build_vtt_index
+      group: build_vtt
       cancel-in-progress: true
 
     env:
       TZ: Asia/Almaty
-      VTT_BASE_URL: https://b2b.vtt.ru/
       VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
       VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
-      VTT_BUILD_MODE: index
-      VTT_REQUEST_DELAY_MS: 8
-      VTT_MAX_LISTING_PAGES: 5000
-      VTT_MAX_WORKERS: 8
-      VTT_MAX_CRAWL_MINUTES: 90
-      VTT_SOFTFAIL: "false"
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          else
-            pip install requests beautifulsoup4 lxml pyyaml python-dateutil openpyxl
-          fi
-
-      - name: Prepare folders
-        run: |
-          mkdir -p docs docs/raw docs/debug/vtt_shards
-          rm -f docs/debug/vtt_shards/*.json || true
-
-      - name: Smoke test
-        run: |
-          python - <<'PY'
-          import py_compile
-          import sys
-          from pathlib import Path
-
-          files = [
-              "scripts/build_vtt.py",
-              "scripts/suppliers/__init__.py",
-              "scripts/suppliers/vtt/__init__.py",
-              "scripts/suppliers/vtt/models.py",
-              "scripts/suppliers/vtt/source.py",
-              "scripts/suppliers/vtt/filtering.py",
-              "scripts/suppliers/vtt/normalize.py",
-              "scripts/suppliers/vtt/pictures.py",
-              "scripts/suppliers/vtt/params.py",
-              "scripts/suppliers/vtt/desc_clean.py",
-              "scripts/suppliers/vtt/desc_extract.py",
-              "scripts/suppliers/vtt/compat.py",
-              "scripts/suppliers/vtt/builder.py",
-              "scripts/suppliers/vtt/diagnostics.py",
-              "scripts/suppliers/vtt/quality_gate.py",
-              "scripts/cs/core.py",
-              "scripts/cs/writer.py",
-              "scripts/cs/validators.py",
-              "scripts/cs/util.py",
-              "scripts/cs/pricing.py",
-              "scripts/cs/meta.py",
-              "scripts/cs/description.py",
-              "scripts/cs/keywords.py",
-              "scripts/cs/qg_report.py",
-          ]
-
-          failed = False
-          for f in files:
-              p = Path(f)
-              if not p.exists():
-                  print(f"SKIP missing: {f}")
-                  continue
-              try:
-                  py_compile.compile(str(p), doraise=True)
-                  print(f"OK: {f}")
-              except Exception as e:
-                  failed = True
-                  print(f"FAIL: {f}: {e}")
-
-          if failed:
-              sys.exit(1)
-          PY
-
-      - name: Show build version
-        run: |
-          python - <<'PY'
-          import pathlib
-          import re
-          t = pathlib.Path('scripts/build_vtt.py').read_text(encoding='utf-8', errors='ignore')
-          m = re.search(r'BUILD_VTT_VERSION\s*=\s*["\']([^"\']+)["\']', t)
-          print('VTT_VERSION', m.group(1) if m else 'UNKNOWN')
-          PY
-
-      - name: Build shared index
-        run: python scripts/build_vtt.py
-
-      - name: Diagnostics
-        if: always()
-        run: |
-          git status --porcelain || true
-          git diff --stat || true
-          ls -la docs docs/raw docs/debug/vtt_shards || true
-          [ -f docs/debug/vtt_shards/index_summary.json ] && cat docs/debug/vtt_shards/index_summary.json || true
-
-      - name: Upload index artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: vtt-index
-          path: |
-            docs/debug/vtt_shards/index.json
-            docs/debug/vtt_shards/index_summary.json
-          if-no-files-found: warn
-
-  build_vtt_shards:
-    name: build-vtt-shard-${{ matrix.shard_no }}
-    needs: build_vtt_index
-    runs-on: ubuntu-latest
-    timeout-minutes: 180
-    concurrency:
-      group: build_vtt_shard_${{ matrix.shard_no }}
-      cancel-in-progress: true
-    strategy:
-      fail-fast: false
-      matrix:
-        shard_no: [0, 1, 2, 3, 4]
-
-    env:
-      TZ: Asia/Almaty
-      VTT_BASE_URL: https://b2b.vtt.ru/
-      VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
-      VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
-      VTT_BUILD_MODE: shard_index
-      VTT_SHARD_NAME: shard_${{ matrix.shard_no }}
-      VTT_SHARD_NO: ${{ matrix.shard_no }}
-      VTT_SHARD_TOTAL: 5
-      VTT_REQUEST_DELAY_MS: 8
-      VTT_MAX_LISTING_PAGES: 5000
-      VTT_MAX_WORKERS: 10
-      VTT_MAX_CRAWL_MINUTES: 90
-      VTT_SOFTFAIL: "false"
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          else
-            pip install requests beautifulsoup4 lxml pyyaml python-dateutil openpyxl
-          fi
-
-      - name: Prepare folders
-        run: mkdir -p docs docs/raw docs/debug/vtt_shards
-
-      - name: Download index artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: vtt-index
-          path: docs/debug/vtt_shards
-
-      - name: Smoke test
-        run: |
-          python - <<'PY'
-          import py_compile
-          import sys
-          from pathlib import Path
-
-          files = [
-              "scripts/build_vtt.py",
-              "scripts/suppliers/vtt/models.py",
-              "scripts/suppliers/vtt/source.py",
-              "scripts/suppliers/vtt/filtering.py",
-              "scripts/suppliers/vtt/normalize.py",
-              "scripts/suppliers/vtt/pictures.py",
-              "scripts/suppliers/vtt/params.py",
-              "scripts/suppliers/vtt/desc_clean.py",
-              "scripts/suppliers/vtt/desc_extract.py",
-              "scripts/suppliers/vtt/compat.py",
-              "scripts/suppliers/vtt/builder.py",
-              "scripts/suppliers/vtt/diagnostics.py",
-              "scripts/suppliers/vtt/quality_gate.py",
-          ]
-
-          failed = False
-          for f in files:
-              p = Path(f)
-              if not p.exists():
-                  print(f"SKIP missing: {f}")
-                  continue
-              try:
-                  py_compile.compile(str(p), doraise=True)
-                  print(f"OK: {f}")
-              except Exception as e:
-                  failed = True
-                  print(f"FAIL: {f}: {e}")
-
-          if failed:
-              sys.exit(1)
-          PY
-
-      - name: Build shard from shared index
-        run: python scripts/build_vtt.py
-
-      - name: Diagnostics
-        if: always()
-        run: |
-          ls -la docs docs/raw docs/debug/vtt_shards || true
-          [ -f docs/debug/vtt_shards/shard_${{ matrix.shard_no }}.json ] && wc -c docs/debug/vtt_shards/shard_${{ matrix.shard_no }}.json || true
-
-      - name: Upload shard artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: vtt-shard-${{ matrix.shard_no }}
-          path: docs/debug/vtt_shards/shard_${{ matrix.shard_no }}.json
-          if-no-files-found: warn
-
-  merge_vtt:
-    name: merge-vtt
-    needs: build_vtt_shards
-    runs-on: ubuntu-latest
-    timeout-minutes: 180
-    concurrency:
-      group: build_vtt_merge
-      cancel-in-progress: true
-
-    env:
-      TZ: Asia/Almaty
-      VTT_BASE_URL: https://b2b.vtt.ru/
-      VTT_BUILD_MODE: merge
-      OUT_FILE: docs/vtt.yml
-      RAW_OUT_FILE: docs/raw/vtt.yml
-      VTT_QG_REPORT: docs/raw/vtt_quality_gate.txt
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
@@ -293,56 +48,158 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Prepare folders
-        run: |
-          mkdir -p docs docs/raw docs/debug/vtt_shards
-
-      - name: Download shard artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: docs/debug/vtt_shards
+        run: mkdir -p docs docs/raw docs/debug/vtt_shards
 
       - name: Smoke test
         run: |
+          python -m py_compile             scripts/cs/core.py             scripts/build_vtt.py
+
+      - name: Show build version
+        run: |
           python - <<'PY'
-          import py_compile
-          import sys
+          import re
           from pathlib import Path
-
-          files = [
-              "scripts/build_vtt.py",
-              "scripts/suppliers/vtt/models.py",
-              "scripts/suppliers/vtt/quality_gate.py",
-              "scripts/suppliers/vtt/diagnostics.py",
-              "scripts/cs/core.py",
-              "scripts/cs/writer.py",
-              "scripts/cs/validators.py",
-              "scripts/cs/util.py",
-              "scripts/cs/pricing.py",
-              "scripts/cs/meta.py",
-              "scripts/cs/description.py",
-              "scripts/cs/keywords.py",
-              "scripts/cs/qg_report.py",
-          ]
-
-          failed = False
-          for f in files:
-              p = Path(f)
-              if not p.exists():
-                  print(f"SKIP missing: {f}")
-                  continue
-              try:
-                  py_compile.compile(str(p), doraise=True)
-                  print(f"OK: {f}")
-              except Exception as e:
-                  failed = True
-                  print(f"FAIL: {f}: {e}")
-
-          if failed:
-              sys.exit(1)
+          text = Path("scripts/build_vtt.py").read_text(encoding="utf-8", errors="ignore")
+          m = re.search(r'BUILD_[A-Z_]+_VERSION\s*=\s*["\']([^"\']+)["\']', text)
+          print("build_version:", m.group(1) if m else "unknown")
           PY
 
-      - name: Merge and build final feeds
-        run: python scripts/build_vtt.py
+      - name: Build index
+        run: |
+          VTT_BUILD_MODE=index python scripts/build_vtt.py
+
+      - name: Upload index artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vtt-index
+          path: |
+            docs/debug/vtt_shards/index.json
+            docs/debug/vtt_shards/index_summary.json
+          if-no-files-found: error
+
+  build_shards:
+    needs: build_index
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard_no: [0, 1, 2, 3, 4]
+
+    env:
+      TZ: Asia/Almaty
+      VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
+      VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            pip install requests beautifulsoup4 lxml pyyaml python-dateutil openpyxl
+          fi
+
+      - name: Prepare folders
+        run: mkdir -p docs docs/raw docs/debug/vtt_shards
+
+      - name: Download index artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: vtt-index
+          path: docs/debug/vtt_shards
+
+      - name: Build shard
+        run: |
+          VTT_BUILD_MODE=shard_index           VTT_SHARD_TOTAL=5           VTT_SHARD_NO=${{ matrix.shard_no }}           VTT_SHARD_NAME=shard-${{ matrix.shard_no }}           python scripts/build_vtt.py
+
+      - name: Upload shard artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vtt-shard-${{ matrix.shard_no }}
+          path: |
+            docs/debug/vtt_shards/shard-${{ matrix.shard_no }}.json
+            docs/debug/vtt_shards/shard-${{ matrix.shard_no }}_summary.json
+          if-no-files-found: error
+
+  merge_and_publish:
+    needs: build_shards
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    env:
+      TZ: Asia/Almaty
+      VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
+      VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            pip install requests beautifulsoup4 lxml pyyaml python-dateutil openpyxl
+          fi
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Prepare folders
+        run: mkdir -p docs docs/raw docs/debug/vtt_shards
+
+      - name: Smoke test
+        run: |
+          python -m py_compile             scripts/cs/core.py             scripts/build_vtt.py
+
+      - name: Download index artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: vtt-index
+          path: docs/debug/vtt_shards
+
+      - name: Download shard artifacts
+        uses: actions/download-artifact@v5
+        with:
+          pattern: vtt-shard-*
+          path: docs/debug/vtt_shards
+          merge-multiple: true
+
+      - name: Snapshot previous feed
+        run: |
+          mkdir -p /tmp
+          if [ -f docs/vtt.yml ]; then
+            cp -f docs/vtt.yml /tmp/prev_vtt.yml
+          else
+            : > /tmp/prev_vtt.yml
+          fi
+
+      - name: Merge shards and build final VTT feed
+        run: |
+          VTT_BUILD_MODE=merge python scripts/build_vtt.py
 
       - name: Diagnostics
         if: always()
@@ -350,27 +207,38 @@ jobs:
           git status --porcelain || true
           git diff --stat || true
           ls -la docs docs/raw docs/debug/vtt_shards || true
-          [ -f docs/raw/vtt_quality_gate.txt ] && cat docs/raw/vtt_quality_gate.txt || true
+          wc -c docs/vtt.yml docs/raw/vtt.yml 2>/dev/null || true
+          [ -f docs/raw/vtt_quality_gate.txt ] && sed -n '1,260p' docs/raw/vtt_quality_gate.txt || true
 
-      - name: Upload artifacts
+      - name: Upload build artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vtt-artifacts
+          name: vtt-build-output
           path: |
             docs/vtt.yml
             docs/raw/vtt.yml
             docs/raw/vtt_quality_gate.txt
-            docs/debug/vtt_shards
+            docs/debug/vtt_shards/index.json
+            docs/debug/vtt_shards/index_summary.json
+            docs/debug/vtt_shards/shard-*.json
+            docs/debug/vtt_shards/shard-*_summary.json
+            docs/debug/vtt_shards/merge_summary.json
           if-no-files-found: warn
 
-      - name: Commit and push changes
+      - name: Commit & push docs/vtt.yml
         if: success()
         run: |
-          git add docs/vtt.yml docs/raw/vtt.yml docs/raw/vtt_quality_gate.txt docs/debug/vtt_shards || true
+          git add docs/vtt.yml docs/raw/vtt.yml
+          if [ -f docs/raw/vtt_quality_gate.txt ]; then
+            git add docs/raw/vtt_quality_gate.txt
+          fi
+
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Build VTT feed"
+
+          git commit -m "build: vtt feed"
+          git pull --rebase --autostash
           git push
