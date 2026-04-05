@@ -17,6 +17,9 @@ AlStyle adapter (AS) — thin orchestrator under CS-template.
 - supplier-specific логика остаётся только в suppliers/alstyle/*;
 - build_alstyle.py не должен знать regex-логику AlStyle;
 - orchestrator остаётся тонким и шаблонным относительно других поставщиков.
+
+v109:
+- default baseline path приведён к quality_gate_baseline.yml.
 """
 
 from __future__ import annotations
@@ -41,7 +44,7 @@ from suppliers.alstyle.quality_gate import run_quality_gate
 from suppliers.alstyle.source import load_source_offers
 
 
-BUILD_ALSTYLE_VERSION = "build_alstyle_v108_template_align_daily_0200"
+BUILD_ALSTYLE_VERSION = "build_alstyle_v109_qg_baseline_canonical"
 
 ALSTYLE_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ALSTYLE_OUT_DEFAULT = "docs/alstyle.yml"
@@ -55,7 +58,7 @@ SCHEMA_FILE_DEFAULT = "schema.yml"
 POLICY_FILE_DEFAULT = "policy.yml"
 
 WATCH_REPORT_DEFAULT = "docs/raw/alstyle_watch.txt"
-QUALITY_BASELINE_DEFAULT = "scripts/suppliers/alstyle/config/quality_baseline.yml"
+QUALITY_BASELINE_DEFAULT = "scripts/suppliers/alstyle/config/quality_gate_baseline.yml"
 QUALITY_REPORT_DEFAULT = "docs/raw/alstyle_quality_gate.txt"
 PLACEHOLDER_DEFAULT = "https://placehold.co/800x800/png?text=No+Photo"
 
@@ -69,7 +72,6 @@ def _read_yaml(path: Path) -> dict[str, Any]:
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
-
 def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     filter_cfg = _read_yaml(cfg_dir / FILTER_FILE_DEFAULT)
     schema_cfg = _read_yaml(cfg_dir / SCHEMA_FILE_DEFAULT)
@@ -77,11 +79,9 @@ def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any]
     return filter_cfg, schema_cfg, policy_cfg
 
 
-
 def _env_truthy(name: str) -> bool:
     val = os.getenv(name, "").strip().casefold()
     return val in {"1", "true", "yes", "y", "on"}
-
 
 
 def _safe_int(value: Any, default: int) -> int:
@@ -89,7 +89,6 @@ def _safe_int(value: Any, default: int) -> int:
         return int(value)
     except Exception:
         return default
-
 
 
 def _resolve_hour(policy_cfg: dict[str, Any]) -> int:
@@ -100,7 +99,6 @@ def _resolve_hour(policy_cfg: dict[str, Any]) -> int:
     )
 
 
-
 def _resolve_placeholder(policy_cfg: dict[str, Any]) -> str:
     return (
         os.getenv("PLACEHOLDER_PICTURE")
@@ -109,11 +107,9 @@ def _resolve_placeholder(policy_cfg: dict[str, Any]) -> str:
     )
 
 
-
 def _resolve_vendor_blacklist(policy_cfg: dict[str, Any]) -> set[str]:
     raw = policy_cfg.get("vendor_blacklist_casefold") or ["alstyle"]
     return {str(x).casefold() for x in raw if str(x).strip()}
-
 
 
 def _resolve_quality_gate(policy_cfg: dict[str, Any]) -> dict[str, Any]:
@@ -132,8 +128,6 @@ def _resolve_quality_gate(policy_cfg: dict[str, Any]) -> dict[str, Any]:
             or qg_cfg.get("report_file")
             or QUALITY_REPORT_DEFAULT
         ),
-        # Русский комментарий: держим поддержку старых env-переменных,
-        # чтобы phase-0 не ломал уже существующие workflow/ручные прогоны.
         "max_cosmetic_offers": _safe_int(
             os.getenv(
                 "ALSTYLE_QUALITY_MAX_COSMETIC_OFFERS",
@@ -157,7 +151,6 @@ def _resolve_quality_gate(policy_cfg: dict[str, Any]) -> dict[str, Any]:
         "freeze_current_as_baseline": bool(qg_cfg.get("freeze_current_as_baseline", False))
         or _env_truthy("ALSTYLE_QUALITY_FREEZE_BASELINE"),
     }
-
 
 
 def _run_quality_gate(*, out_file: str, qg: dict[str, Any]) -> None:
