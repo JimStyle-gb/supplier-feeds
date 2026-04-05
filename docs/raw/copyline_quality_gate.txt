@@ -34,8 +34,8 @@ CRITICAL:
 COSMETIC TOTAL:
 # Ошибок в этой секции нет
 
-NEW COSMETIC VS BASELINE:
+NEW COSMETIC:
 # Ошибок в этой секции нет
 
-KNOWN COSMETIC FROM BASELINE:
+KNOWN COSMETIC:
 # Ошибок в этой секции нет
