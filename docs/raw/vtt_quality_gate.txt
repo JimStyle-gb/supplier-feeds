@@ -135,11 +135,11 @@ NEW COSMETIC:
   - VT15016127 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
 
 DEBUG VTT:
-generated_at_almaty: 2026-04-05 11:24:23
+generated_at_almaty: 2026-04-05 12:09:44
 feed_path: docs/raw/vtt.yml
 offers: 3137
 feed_size_bytes: 3097661
-feed_sha1_12: db46d91f24fd
+feed_sha1_12: 381347088ec6
 excluded_from_enforce_rules:
   - placeholder_picture: 455
 enforced_cosmetic_count: 0
