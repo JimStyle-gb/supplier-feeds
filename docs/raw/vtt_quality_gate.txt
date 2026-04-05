@@ -5,7 +5,7 @@ enforce: true
 # true = quality gate реально валит сборку
 report_file: docs/raw/vtt_quality_gate.txt
 # Куда записан этот отчёт
-baseline_file: 
+baseline_file: scripts/suppliers/vtt/config/quality_gate_baseline.yml
 # Базовый файл для сравнения известных cosmetic-проблем
 freeze_current_as_baseline: no
 # yes = текущие cosmetic-хвосты сохранены как baseline-снимок
@@ -22,7 +22,11 @@ known_cosmetic_offer_count: 0
 new_cosmetic_count: 455
 # Сколько найдено новых cosmetic-проблем
 new_cosmetic_offer_count: 455
-# В скольких товарах есть новые cosmetic-проблемы
+# В скольких товарах появились новые cosmetic-проблемы
+max_cosmetic_offers: 5
+# Допустимый максимум товаров с cosmetic-проблемами
+max_cosmetic_issues: 5
+# Допустимый максимум cosmetic-проблем всего
 
 CRITICAL:
 # Ошибок в этой секции нет
@@ -79,9 +83,6 @@ COSMETIC TOTAL:
   - VT15016124 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT15016127 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
 
-KNOWN COSMETIC:
-# Ошибок в этой секции нет
-
 NEW COSMETIC:
   - VT013R00676 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT10111574 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
@@ -134,12 +135,15 @@ NEW COSMETIC:
   - VT15016124 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
   - VT15016127 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
 
+KNOWN COSMETIC:
+# Ошибок в этой секции нет
+
 DEBUG VTT:
-generated_at_almaty: 2026-04-05 12:09:44
+generated_at_almaty: 2026-04-05 15:14:39
 feed_path: docs/raw/vtt.yml
 offers: 3137
 feed_size_bytes: 3097661
-feed_sha1_12: 381347088ec6
+feed_sha1_12: 93725bdfb4f0
 excluded_from_enforce_rules:
   - placeholder_picture: 455
 enforced_cosmetic_count: 0
