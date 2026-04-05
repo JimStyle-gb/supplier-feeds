@@ -5,33 +5,215 @@ enforce: true
 # true = quality gate реально валит сборку
 report_file: docs/raw/comportal_quality_gate.txt
 # Куда записан этот отчёт
-baseline_file: scripts/suppliers/comportal/config/quality_baseline.yml
+baseline_file: scripts/suppliers/comportal/config/quality_gate_baseline.yml
 # Базовый файл для сравнения известных cosmetic-проблем
 freeze_current_as_baseline: no
 # yes = текущие cosmetic-хвосты сохранены как baseline-снимок
 critical_count: 0
 # Сколько найдено критичных проблем
-cosmetic_total_count: 0
+cosmetic_total_count: 90
 # Общее число некритичных проблем
-cosmetic_offer_count: 0
+cosmetic_offer_count: 90
 # В скольких товарах есть cosmetic-проблемы
 known_cosmetic_count: 0
 # Сколько cosmetic-проблем уже известны по baseline
 known_cosmetic_offer_count: 0
-# В скольких товарах были известные cosmetic-проблемы
-new_cosmetic_count: 0
-# Сколько cosmetic-проблем новые относительно baseline
-new_cosmetic_offer_count: 0
-# В скольких товарах есть новые cosmetic-проблемы
+# В скольких товарах есть уже известные cosmetic-проблемы
+new_cosmetic_count: 90
+# Сколько найдено новых cosmetic-проблем
+new_cosmetic_offer_count: 90
+# В скольких товарах появились новые cosmetic-проблемы
+max_cosmetic_offers: 5
+# Допустимый максимум товаров с cosmetic-проблемами
+max_cosmetic_issues: 5
+# Допустимый максимум cosmetic-проблем всего
 
 CRITICAL:
 # Ошибок в этой секции нет
 
 COSMETIC TOTAL:
-# Ошибок в этой секции нет
-
-KNOWN COSMETIC:
-# Ошибок в этой секции нет
+  - CP10420608 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13870174 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13870401 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13871789 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872560 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872561 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872562 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872563 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872564 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872565 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872566 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872567 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872581 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872583 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872585 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872587 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872589 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872590 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872591 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872599 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872613 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872617 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872623 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872628 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872652 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872763 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872771 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872772 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872773 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872774 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872827 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872828 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872829 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872831 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872877 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872878 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872879 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872917 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872947 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872965 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872989 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872990 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872991 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872992 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872993 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872994 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872995 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872996 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872997 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872998 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872999 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873000 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873001 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873002 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873003 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873004 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873005 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873006 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873013 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873016 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873017 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873018 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873019 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873021 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873023 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873024 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873025 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873026 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873027 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873028 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873029 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873030 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873031 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873043 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873044 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873045 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873047 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873048 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873050 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873051 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873053 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873054 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873056 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873058 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873061 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873126 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873137 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873144 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873145 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873146 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
 
 NEW COSMETIC:
+  - CP10420608 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13870174 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13870401 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13871789 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872560 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872561 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872562 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872563 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872564 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872565 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872566 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872567 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872581 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872583 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872585 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872587 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872589 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872590 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872591 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872599 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872613 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872617 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872623 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872628 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872652 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872763 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872771 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872772 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872773 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872774 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872827 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872828 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872829 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872831 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872877 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872878 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872879 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872917 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872947 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872965 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872989 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872990 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872991 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872992 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872993 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872994 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872995 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872996 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872997 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872998 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13872999 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873000 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873001 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873002 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873003 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873004 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873005 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873006 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873013 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873016 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873017 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873018 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873019 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873021 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873023 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873024 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873025 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873026 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873027 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873028 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873029 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873030 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873031 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873043 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873044 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873045 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873047 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873048 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873050 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873051 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873053 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873054 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873056 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873058 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873061 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873126 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873137 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873144 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873145 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+  - CP13873146 | placeholder_picture | https://placehold.co/800x800/png?text=No+Photo
+
+KNOWN COSMETIC:
 # Ошибок в этой секции нет
