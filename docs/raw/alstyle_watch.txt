@@ -1,1 +1,0 @@
-[build_alstyle] ROOT_CAUSE: watched offer not present in supplier XML: AS257478
