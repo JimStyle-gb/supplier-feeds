@@ -17,6 +17,10 @@ AkCent adapter (AC) — thin orchestrator under CS-template.
 - supplier-specific логика остаётся только в suppliers/akcent/*;
 - build_akcent.py не знает regexp-логики AkCent;
 - orchestrator остаётся thin и шаблонным.
+
+v69:
+- fallback hour исправлен на 01:00 по проектному порядку;
+- default baseline path приведён к quality_gate_baseline.yml.
 """
 
 from __future__ import annotations
@@ -38,7 +42,7 @@ from suppliers.akcent.quality_gate import run_quality_gate
 from suppliers.akcent.source import fetch_source_root, iter_source_offers
 
 
-BUILD_AKCENT_VERSION = "build_akcent_v68_daily_0100_meta_cleanup"
+BUILD_AKCENT_VERSION = "build_akcent_v69_daily_0100_qg_baseline_canonical"
 
 AKCENT_URL_DEFAULT = "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml"
 AKCENT_OUT_DEFAULT = "docs/akcent.yml"
@@ -49,7 +53,7 @@ FILTER_FILE_DEFAULT = "filter.yml"
 SCHEMA_FILE_DEFAULT = "schema.yml"
 POLICY_FILE_DEFAULT = "policy.yml"
 
-QUALITY_BASELINE_DEFAULT = "scripts/suppliers/akcent/config/quality_baseline.yml"
+QUALITY_BASELINE_DEFAULT = "scripts/suppliers/akcent/config/quality_gate_baseline.yml"
 QUALITY_REPORT_DEFAULT = "docs/raw/akcent_quality_gate.txt"
 PLACEHOLDER_DEFAULT = "https://placehold.co/800x800/png?text=No+Photo"
 
@@ -63,7 +67,6 @@ def _read_yaml(path: Path) -> dict[str, Any]:
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
-
 def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     filter_cfg = _read_yaml(cfg_dir / FILTER_FILE_DEFAULT)
     schema_cfg = _read_yaml(cfg_dir / SCHEMA_FILE_DEFAULT)
@@ -71,11 +74,9 @@ def _load_supplier_config(cfg_dir: Path) -> tuple[dict[str, Any], dict[str, Any]
     return filter_cfg, schema_cfg, policy_cfg
 
 
-
 def _env_truthy(name: str) -> bool:
     val = os.getenv(name, "").strip().casefold()
     return val in {"1", "true", "yes", "y", "on"}
-
 
 
 def _safe_int(value: Any, default: int) -> int:
@@ -83,7 +84,6 @@ def _safe_int(value: Any, default: int) -> int:
         return int(value)
     except Exception:
         return default
-
 
 
 def _filter_prefixes_from_cfg(filter_cfg: dict[str, Any]) -> list[str]:
@@ -140,7 +140,6 @@ def _call_filter(
     return filtered, report
 
 
-
 def _call_builder(
     filtered_offers: list[Any],
     *,
@@ -182,7 +181,6 @@ def _call_builder(
         "after": len(offers),
     }
     return offers, report
-
 
 
 def _run_quality_gate(*, out_file: str, raw_out_file: str, policy_cfg: dict[str, Any]) -> None:
@@ -244,12 +242,17 @@ def _run_quality_gate(*, out_file: str, raw_out_file: str, policy_cfg: dict[str,
             raise SystemExit(1)
         return
 
-    run_quality_gate(
-        out_file=out_file,
-        raw_out_file=raw_out_file,
-        supplier=str(policy_cfg.get("supplier") or "AkCent").strip() or "AkCent",
-        version=BUILD_AKCENT_VERSION,
-    )
+    # legacy fallback
+    result = run_quality_gate(raw_out_file=raw_out_file)
+    if isinstance(result, tuple):
+        ok = bool(result[0])
+        if len(result) > 1:
+            print(result[1])
+        if not ok:
+            raise SystemExit(1)
+        return
+    if isinstance(result, dict) and not bool(result.get("ok", True)):
+        raise SystemExit(1)
 
 
 # ----------------------------- main -----------------------------
@@ -257,11 +260,8 @@ def _run_quality_gate(*, out_file: str, raw_out_file: str, policy_cfg: dict[str,
 
 def main() -> int:
     url = os.getenv("AKCENT_URL", AKCENT_URL_DEFAULT)
-    out_file = os.getenv("AKCENT_OUT", os.getenv("AKCENT_OUT_FILE", AKCENT_OUT_DEFAULT))
-    raw_out_file = os.getenv(
-        "AKCENT_RAW_OUT",
-        os.getenv("AKCENT_RAW_OUT_FILE", AKCENT_RAW_OUT_DEFAULT),
-    )
+    out_file = os.getenv("AKCENT_OUT", AKCENT_OUT_DEFAULT)
+    raw_out_file = os.getenv("AKCENT_RAW_OUT", AKCENT_RAW_OUT_DEFAULT)
 
     cfg_dir = Path(os.getenv("AKCENT_CFG_DIR", CFG_DIR_DEFAULT))
     filter_cfg, schema_cfg, policy_cfg = _load_supplier_config(cfg_dir)
@@ -270,7 +270,7 @@ def main() -> int:
     encoding = str(policy_cfg.get("output_encoding") or "utf-8").strip() or "utf-8"
     schedule_hour = _safe_int(
         policy_cfg.get("schedule_hour_almaty") or policy_cfg.get("next_run_hour_local"),
-        2,
+        1,
     )
 
     build_time = now_almaty()
