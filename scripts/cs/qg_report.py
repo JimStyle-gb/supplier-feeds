@@ -2,6 +2,12 @@
 """
 CS quality gate report writer.
 Единый writer для всех docs/raw/<supplier>_quality_gate.txt
+
+v2:
+- добивает полную одинаковость заголовков секций;
+- вместо 'NEW COSMETIC VS BASELINE' и 'KNOWN COSMETIC FROM BASELINE'
+  теперь везде используются короткие канонические:
+  'NEW COSMETIC' и 'KNOWN COSMETIC'.
 """
 
 from __future__ import annotations
@@ -98,7 +104,7 @@ def write_quality_gate_report(
 
     _section(lines, "CRITICAL", critical)
     _section(lines, "COSMETIC TOTAL", cosmetic)
-    _section(lines, "NEW COSMETIC VS BASELINE", new_cosmetic)
-    _section(lines, "KNOWN COSMETIC FROM BASELINE", known_cosmetic)
+    _section(lines, "NEW COSMETIC", new_cosmetic)
+    _section(lines, "KNOWN COSMETIC", known_cosmetic)
 
     p.write_text("\n".join(lines).strip() + "\n", encoding="utf-8")
