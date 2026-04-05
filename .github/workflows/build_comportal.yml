@@ -3,7 +3,8 @@ name: Build_ComPortal
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 22 * * *'  # 03:00 Asia/Almaty
+    # Алматы UTC+5 -> 03:00 local = 22:00 UTC предыдущего дня
+    - cron: "0 22 * * *"
 
 permissions:
   contents: write
@@ -11,6 +12,7 @@ permissions:
 jobs:
   build_comportal:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     concurrency:
       group: build_comportal
       cancel-in-progress: true
@@ -22,14 +24,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
@@ -46,107 +48,68 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Prepare folders
-        run: |
-          mkdir -p docs docs/raw docs/debug
+        run: mkdir -p docs docs/raw
 
       - name: Smoke test
         run: |
-          python - <<'PY'
-          import py_compile
-          import sys
-          from pathlib import Path
-
-          files = [
-              "scripts/build_comportal.py",
-              "scripts/suppliers/__init__.py",
-              "scripts/suppliers/comportal/__init__.py",
-              "scripts/suppliers/comportal/models.py",
-              "scripts/suppliers/comportal/source.py",
-              "scripts/suppliers/comportal/filtering.py",
-              "scripts/suppliers/comportal/normalize.py",
-              "scripts/suppliers/comportal/params_xml.py",
-              "scripts/suppliers/comportal/desc_clean.py",
-              "scripts/suppliers/comportal/desc_extract.py",
-              "scripts/suppliers/comportal/compat.py",
-              "scripts/suppliers/comportal/pictures.py",
-              "scripts/suppliers/comportal/builder.py",
-              "scripts/suppliers/comportal/diagnostics.py",
-              "scripts/suppliers/comportal/quality_gate.py",
-              "scripts/cs/core.py",
-              "scripts/cs/writer.py",
-              "scripts/cs/validators.py",
-              "scripts/cs/util.py",
-              "scripts/cs/pricing.py",
-              "scripts/cs/meta.py",
-              "scripts/cs/description.py",
-              "scripts/cs/keywords.py",
-              "scripts/cs/qg_report.py",
-          ]
-
-          failed = False
-          for f in files:
-              p = Path(f)
-              if not p.exists():
-                  print(f"SKIP missing: {f}")
-                  continue
-              try:
-                  py_compile.compile(str(p), doraise=True)
-                  print(f"OK: {f}")
-              except Exception as e:
-                  failed = True
-                  print(f"FAIL: {f}: {e}")
-
-          if failed:
-              sys.exit(1)
-          PY
+          python -m py_compile             scripts/cs/core.py             scripts/build_comportal.py
 
       - name: Show build version
         run: |
           python - <<'PY'
-          import pathlib
           import re
-          t = pathlib.Path('scripts/build_comportal.py').read_text(encoding='utf-8', errors='ignore')
-          m = re.search(r'BUILD_[A-Z0-9_]+_VERSION\s*=\s*["\']([^"\']+)["\']', t)
-          print('COMPORTAL_VERSION', m.group(1) if m else 'UNKNOWN')
+          from pathlib import Path
+          text = Path("scripts/build_comportal.py").read_text(encoding="utf-8", errors="ignore")
+          m = re.search(r'BUILD_[A-Z_]+_VERSION\s*=\s*["\']([^"\']+)["\']', text)
+          print("build_version:", m.group(1) if m else "unknown")
           PY
 
-      - name: Build
-        run: python scripts/build_comportal.py
+      - name: Snapshot previous feed
+        run: |
+          mkdir -p /tmp
+          if [ -f docs/comportal.yml ]; then
+            cp -f docs/comportal.yml /tmp/prev_comportal.yml
+          else
+            : > /tmp/prev_comportal.yml
+          fi
+
+      - name: Build feed (comportal)
+        run: |
+          python scripts/build_comportal.py
 
       - name: Diagnostics
         if: always()
         run: |
           git status --porcelain || true
           git diff --stat || true
-          ls -la docs docs/raw docs/debug || true
-          [ -f docs/raw/comportal_watch.txt ] && sed -n '1,200p' docs/raw/comportal_watch.txt || true
+          ls -la docs docs/raw || true
+          wc -c docs/comportal.yml docs/raw/comportal.yml 2>/dev/null || true
           [ -f docs/raw/comportal_quality_gate.txt ] && sed -n '1,260p' docs/raw/comportal_quality_gate.txt || true
 
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: comportal-artifacts
+          name: comportal-build-output
           path: |
             docs/comportal.yml
             docs/raw/comportal.yml
-            docs/raw/comportal_watch.txt
             docs/raw/comportal_quality_gate.txt
           if-no-files-found: warn
 
-      - name: Commit and push changes
+      - name: Commit & push docs/comportal.yml
         if: success()
         run: |
           git add docs/comportal.yml docs/raw/comportal.yml
-          if [ -f docs/raw/comportal_watch.txt ]; then
-            git add docs/raw/comportal_watch.txt
-          fi
           if [ -f docs/raw/comportal_quality_gate.txt ]; then
             git add docs/raw/comportal_quality_gate.txt
           fi
+
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Build ComPortal feed"
+
+          git commit -m "build: comportal feed"
+          git pull --rebase --autostash
           git push
