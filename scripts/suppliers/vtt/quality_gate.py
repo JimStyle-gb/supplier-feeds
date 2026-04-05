@@ -4,22 +4,19 @@ Path: scripts/suppliers/vtt/quality_gate.py
 
 VTT quality gate.
 
-v6:
-- baseline_file больше не пустой;
-- в шапку добавлены max_cosmetic_offers / max_cosmetic_issues;
-- PASS/FAIL считается только по enforced new cosmetic;
-- placeholder_picture остаётся в отчёте, но исключён из enforce.
+v7:
+- отчёт теперь полностью такой же по структуре, как у остальных поставщиков;
+- убраны DEBUG VTT и COSMETIC TOTAL BY RULE из txt-отчёта;
+- placeholder_picture остаётся в отчёте, но исключён из enforce;
+- baseline_file всегда заполнен каноническим путём.
 """
 
 from __future__ import annotations
 
-from collections import Counter, defaultdict
+from collections import defaultdict
 from dataclasses import dataclass
-from datetime import datetime
-from hashlib import sha1
 from html import unescape
 from pathlib import Path
-from zoneinfo import ZoneInfo
 import re
 import xml.etree.ElementTree as ET
 
@@ -27,6 +24,7 @@ try:
     import yaml
 except Exception:  # pragma: no cover
     yaml = None  # type: ignore
+
 
 PLACEHOLDER_URL = "https://placehold.co/800x800/png?text=No+Photo"
 QUALITY_BASELINE_DEFAULT = "scripts/suppliers/vtt/config/quality_gate_baseline.yml"
@@ -51,10 +49,6 @@ class QualityGateResult:
     report_path: str
     critical_count: int
     cosmetic_count: int
-
-
-def _now_almaty_str() -> str:
-    return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S")
 
 
 def _norm_ws(s: str) -> str:
@@ -104,7 +98,7 @@ def _make_issue(severity: str, rule: str, oid: str, name: str, details: str) -> 
     )
 
 
-def _detect_issues(feed_path: str) -> tuple[list[QualityIssue], int, int]:
+def _detect_issues(feed_path: str) -> tuple[list[QualityIssue], int]:
     xml_path = Path(feed_path)
     xml_text = xml_path.read_text(encoding="utf-8", errors="ignore")
     root = ET.fromstring(xml_text)
@@ -139,7 +133,7 @@ def _detect_issues(feed_path: str) -> tuple[list[QualityIssue], int, int]:
     for issue in issues:
         deduped[(issue.severity, issue.rule, issue.oid, issue.details)] = issue
 
-    return sorted(deduped.values(), key=lambda x: (x.severity, x.rule, x.oid, x.details)), offer_count, len(xml_text.encode("utf-8"))
+    return sorted(deduped.values(), key=lambda x: (x.severity, x.rule, x.oid, x.details)), offer_count
 
 
 def _load_cosmetic_baseline(baseline_path: str | None) -> dict[str, set[str]]:
@@ -171,11 +165,6 @@ def _preview_lines(items: list[QualityIssue], limit: int = 50) -> list[str]:
     return out
 
 
-def _rule_count_lines(items: list[QualityIssue]) -> list[str]:
-    counts = Counter(x.rule for x in items)
-    return [f"  - {rule}: {counts[rule]}" for rule in sorted(counts)]
-
-
 def _section(lines: list[str], title: str, items: list[QualityIssue]) -> None:
     lines.append("")
     lines.append(title + ":")
@@ -188,9 +177,6 @@ def _section(lines: list[str], title: str, items: list[QualityIssue]) -> None:
 def _write_report(
     path: str,
     *,
-    feed_path: str,
-    offer_count: int,
-    feed_size_bytes: int,
     critical: list[QualityIssue],
     cosmetic: list[QualityIssue],
     known_cosmetic: list[QualityIssue],
@@ -205,7 +191,6 @@ def _write_report(
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
 
-    sha12 = sha1(Path(feed_path).read_bytes()).hexdigest()[:12]
     cosmetic_offer_count = len({x.oid for x in cosmetic})
     known_offer_count = len({x.oid for x in known_cosmetic})
     new_offer_count = len({x.oid for x in new_cosmetic})
@@ -252,26 +237,6 @@ def _write_report(
     _section(lines, "NEW COSMETIC", new_cosmetic)
     _section(lines, "KNOWN COSMETIC", known_cosmetic)
 
-    lines.append("")
-    lines.append("DEBUG VTT:")
-    lines.append(f"generated_at_almaty: {_now_almaty_str()}")
-    lines.append(f"feed_path: {feed_path}")
-    lines.append(f"offers: {offer_count}")
-    lines.append(f"feed_size_bytes: {feed_size_bytes}")
-    lines.append(f"feed_sha1_12: {sha12}")
-    lines.append("excluded_from_enforce_rules:")
-    for rule in sorted(_RULES_EXCLUDED_FROM_ENFORCE):
-        count = sum(1 for x in cosmetic if x.rule == rule)
-        lines.append(f"  - {rule}: {count}")
-    lines.append(f"enforced_cosmetic_count: {len(enforced_new_cosmetic)}")
-    lines.append(f"enforced_cosmetic_offer_count: {len({x.oid for x in enforced_new_cosmetic})}")
-    lines.append("")
-    lines.append("COSMETIC TOTAL BY RULE:")
-    if cosmetic:
-        lines.extend(_rule_count_lines(cosmetic))
-    else:
-        lines.append("# Ошибок в этой секции нет")
-
     p.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -288,7 +253,7 @@ def run_quality_gate(
     report_path = str(report_path or QUALITY_REPORT_DEFAULT)
     baseline_path = str(baseline_path or QUALITY_BASELINE_DEFAULT)
 
-    issues, offer_count, feed_size_bytes = _detect_issues(feed_path)
+    issues, _offer_count = _detect_issues(feed_path)
     critical = [x for x in issues if x.severity == "critical"]
     cosmetic = [x for x in issues if x.severity == "cosmetic"]
 
@@ -307,17 +272,8 @@ def run_quality_gate(
 
     enforced_new_cosmetic = [x for x in new_cosmetic if x.rule not in _RULES_EXCLUDED_FROM_ENFORCE]
 
-    passed = (
-        len(critical) == 0
-        and len({x.oid for x in enforced_new_cosmetic}) <= int(max_new_cosmetic_offers)
-        and len(enforced_new_cosmetic) <= int(max_new_cosmetic_issues)
-    )
-
     _write_report(
         report_path,
-        feed_path=feed_path,
-        offer_count=offer_count,
-        feed_size_bytes=feed_size_bytes,
         critical=critical,
         cosmetic=cosmetic,
         known_cosmetic=known_cosmetic,
@@ -330,6 +286,11 @@ def run_quality_gate(
         max_cosmetic_issues=int(max_new_cosmetic_issues),
     )
 
+    passed = (
+        len(critical) == 0
+        and len({x.oid for x in enforced_new_cosmetic}) <= int(max_new_cosmetic_offers)
+        and len(enforced_new_cosmetic) <= int(max_new_cosmetic_issues)
+    )
     ok = True if not enforce else passed
     return QualityGateResult(
         ok=ok,
