@@ -137,17 +137,3 @@ NEW COSMETIC:
 
 KNOWN COSMETIC:
 # Ошибок в этой секции нет
-
-DEBUG VTT:
-generated_at_almaty: 2026-04-05 15:14:39
-feed_path: docs/raw/vtt.yml
-offers: 3137
-feed_size_bytes: 3097661
-feed_sha1_12: 93725bdfb4f0
-excluded_from_enforce_rules:
-  - placeholder_picture: 455
-enforced_cosmetic_count: 0
-enforced_cosmetic_offer_count: 0
-
-COSMETIC TOTAL BY RULE:
-  - placeholder_picture: 455
