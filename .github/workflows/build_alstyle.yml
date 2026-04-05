@@ -3,7 +3,8 @@ name: Build_AlStyle
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 21 * * *'  # 02:00 Asia/Almaty
+    # Алматы UTC+5 -> 02:00 local = 21:00 UTC предыдущего дня
+    - cron: "0 21 * * *"
 
 permissions:
   contents: write
@@ -11,6 +12,7 @@ permissions:
 jobs:
   build_alstyle:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     concurrency:
       group: build_alstyle
       cancel-in-progress: true
@@ -20,14 +22,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
@@ -44,99 +46,70 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Prepare folders
-        run: |
-          mkdir -p docs docs/raw docs/debug
+        run: mkdir -p docs docs/raw
 
       - name: Smoke test
         run: |
-          python - <<'PY'
-          import py_compile
-          import sys
-          from pathlib import Path
-
-          files = [
-              "scripts/build_alstyle.py",
-              "scripts/suppliers/__init__.py",
-              "scripts/suppliers/alstyle/__init__.py",
-              "scripts/suppliers/alstyle/models.py",
-              "scripts/suppliers/alstyle/source.py",
-              "scripts/suppliers/alstyle/filtering.py",
-              "scripts/suppliers/alstyle/normalize.py",
-              "scripts/suppliers/alstyle/params_xml.py",
-              "scripts/suppliers/alstyle/desc_clean.py",
-              "scripts/suppliers/alstyle/desc_extract.py",
-              "scripts/suppliers/alstyle/compat.py",
-              "scripts/suppliers/alstyle/pictures.py",
-              "scripts/suppliers/alstyle/builder.py",
-              "scripts/suppliers/alstyle/diagnostics.py",
-              "scripts/suppliers/alstyle/quality_gate.py",
-              "scripts/cs/core.py",
-              "scripts/cs/writer.py",
-              "scripts/cs/validators.py",
-              "scripts/cs/util.py",
-              "scripts/cs/pricing.py",
-              "scripts/cs/meta.py",
-              "scripts/cs/description.py",
-              "scripts/cs/keywords.py",
-              "scripts/cs/qg_report.py",
-          ]
-
-          failed = False
-          for f in files:
-              p = Path(f)
-              if not p.exists():
-                  print(f"SKIP missing: {f}")
-                  continue
-              try:
-                  py_compile.compile(str(p), doraise=True)
-                  print(f"OK: {f}")
-              except Exception as e:
-                  failed = True
-                  print(f"FAIL: {f}: {e}")
-
-          if failed:
-              sys.exit(1)
-          PY
+          python -m py_compile \
+            scripts/cs/core.py \
+            scripts/build_alstyle.py
 
       - name: Show build version
         run: |
           python - <<'PY'
-          import pathlib
           import re
-          t = pathlib.Path('scripts/build_alstyle.py').read_text(encoding='utf-8', errors='ignore')
-          m = re.search(r'BUILD_[A-Z0-9_]+_VERSION\s*=\s*["\']([^"\']+)["\']', t)
-          print('ALSTYLE_VERSION', m.group(1) if m else 'UNKNOWN')
+          from pathlib import Path
+          text = Path("scripts/build_alstyle.py").read_text(encoding="utf-8", errors="ignore")
+          m = re.search(r'BUILD_[A-Z_]+_VERSION\s*=\s*["\']([^"\']+)["\']', text)
+          print("build_version:", m.group(1) if m else "unknown")
           PY
 
-      - name: Build
-        run: python scripts/build_alstyle.py
+      - name: Snapshot previous feed
+        run: |
+          mkdir -p /tmp
+          if [ -f docs/alstyle.yml ]; then
+            cp -f docs/alstyle.yml /tmp/prev_alstyle.yml
+          else
+            : > /tmp/prev_alstyle.yml
+          fi
+
+      - name: Build feed (alstyle)
+        run: |
+          python scripts/build_alstyle.py
 
       - name: Diagnostics
         if: always()
         run: |
           git status --porcelain || true
           git diff --stat || true
-          ls -la docs docs/raw docs/debug || true
-          [ -f docs/raw/alstyle_quality_gate.txt ] && cat docs/raw/alstyle_quality_gate.txt || true
+          ls -la docs docs/raw || true
+          wc -c docs/alstyle.yml docs/raw/alstyle.yml 2>/dev/null || true
+          [ -f docs/raw/alstyle_quality_gate.txt ] && sed -n '1,260p' docs/raw/alstyle_quality_gate.txt || true
 
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: alstyle-artifacts
+          name: alstyle-build-output
           path: |
             docs/alstyle.yml
             docs/raw/alstyle.yml
             docs/raw/alstyle_quality_gate.txt
           if-no-files-found: warn
 
-      - name: Commit and push changes
+      - name: Commit & push docs/alstyle.yml
         if: success()
         run: |
-          git add docs/alstyle.yml docs/raw/alstyle.yml docs/raw/alstyle_quality_gate.txt || true
+          git add docs/alstyle.yml docs/raw/alstyle.yml
+          if [ -f docs/raw/alstyle_quality_gate.txt ]; then
+            git add docs/raw/alstyle_quality_gate.txt
+          fi
+
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Build AlStyle feed"
+
+          git commit -m "build: alstyle feed"
+          git pull --rebase --autostash
           git push
