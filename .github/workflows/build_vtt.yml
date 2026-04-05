@@ -226,6 +226,11 @@ jobs:
             docs/debug/vtt_shards/merge_summary.json
           if-no-files-found: warn
 
+      - name: Cleanup shard temp files
+        if: always()
+        run: |
+          rm -rf docs/debug/vtt_shards
+
       - name: Commit & push docs/vtt.yml
         if: success()
         run: |
@@ -233,6 +238,7 @@ jobs:
           if [ -f docs/raw/vtt_quality_gate.txt ]; then
             git add docs/raw/vtt_quality_gate.txt
           fi
+          git add -A docs/debug/vtt_shards || true
 
           if git diff --cached --quiet; then
             echo "No changes to commit."
