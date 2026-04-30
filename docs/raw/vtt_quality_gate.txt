@@ -13,13 +13,13 @@ freeze_current_as_baseline: no
 # yes = текущие cosmetic-хвосты сохранены как baseline-снимок
 critical_count: 0
 # Сколько найдено критичных проблем
-cosmetic_total_count: 448
+cosmetic_total_count: 451
 # Общее число некритичных проблем
-cosmetic_offer_count: 448
+cosmetic_offer_count: 451
 # В скольких товарах есть cosmetic-проблемы
-known_cosmetic_count: 448
+known_cosmetic_count: 451
 # Сколько cosmetic-проблем уже известны по baseline
-known_cosmetic_offer_count: 448
+known_cosmetic_offer_count: 451
 # В скольких товарах есть уже известные cosmetic-проблемы
 new_cosmetic_count: 0
 # Сколько найдено новых cosmetic-проблем
@@ -289,7 +289,6 @@ VT989999938745 | placeholder_picture | Требует ручной провер�
 VT9901584 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VT9911181302 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VT991130285 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
-VT991143 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VT9955686 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VT995631118 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VT995631186 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
@@ -405,6 +404,10 @@ VTHB-C-EXV65-M | placeholder_picture | Требует ручной провер�
 VTHB-C-EXV65-Y | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VTHB-CL541XL-COL | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VTHB-CL56-COL | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
+VTHB-CTL-1100XC | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
+VTHB-CTL-1100XK | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
+VTHB-CTL-1100XM | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
+VTHB-CTL-1100XY | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VTHB-D320T24KBK | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VTHB-D320T24KC | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VTHB-D320T24KM | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
@@ -742,7 +745,6 @@ VT989999938745 | placeholder_picture | Требует ручной провер�
 VT9901584 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VT9911181302 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VT991130285 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
-VT991143 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VT9955686 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VT995631118 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VT995631186 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
@@ -858,6 +860,10 @@ VTHB-C-EXV65-M | placeholder_picture | Требует ручной провер�
 VTHB-C-EXV65-Y | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VTHB-CL541XL-COL | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VTHB-CL56-COL | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
+VTHB-CTL-1100XC | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
+VTHB-CTL-1100XK | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
+VTHB-CTL-1100XM | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
+VTHB-CTL-1100XY | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VTHB-D320T24KBK | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VTHB-D320T24KC | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 VTHB-D320T24KM | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
