@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-04-20 02:03:48">
+<yml_catalog date="2026-05-01 02:33:46">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-04-20 02:03:48
-Ближайшая сборка (Алматы)                  | 2026-05-01 01:30:00
-Сколько товаров у поставщика до фильтра    | 2709
+Время сборки (Алматы)                      | 2026-05-01 02:33:46
+Ближайшая сборка (Алматы)                  | 2026-05-10 01:30:00
+Сколько товаров у поставщика до фильтра    | 2710
 Сколько товаров у поставщика после фильтра | 1220
 Сколько товаров есть в наличии (true)      | 1220
 Сколько товаров нет в наличии (false)      | 0
@@ -925,7 +925,7 @@ CLP-360/365/365W, CLX-3300/3305/3305W/3305FW/3305FN, Xpress C410/C460.
 <categoryId></categoryId>
 <vendorCode>CL100106</vendorCode>
 <name>Картридж для Samsung MLT-D101S Europrint (совместимый)</name>
-<price>3135</price>
+<price>3225</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_D101S_euro1.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_D101S_euro-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_samsung-pack7.jpg</picture>
@@ -1467,7 +1467,7 @@ LSZH
 <categoryId></categoryId>
 <vendorCode>CL100230</vendorCode>
 <name>Картридж для Samsung MLT-D108S Europrint (совместимый)</name>
-<price>5290</price>
+<price>5245</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_D108S_euro.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_D108S_euro-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_samsung-pack12.jpg</picture>
@@ -1584,7 +1584,7 @@ LSZH
 <categoryId></categoryId>
 <vendorCode>CL100237</vendorCode>
 <name>Картридж для Samsung MLT-D109S Europrint (совместимый)</name>
-<price>4670</price>
+<price>4635</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_109S_euro.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_109S_euro-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_samsung-pack1.jpg</picture>
@@ -2196,7 +2196,7 @@ PE
 <categoryId></categoryId>
 <vendorCode>CL100414</vendorCode>
 <name>Картридж для Samsung MLT-D105S Europrint (совместимый)</name>
-<price>4505</price>
+<price>4475</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ml-d105s-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_mlt-d105s.jpg</picture>
 <vendor>Samsung</vendor>
@@ -2258,7 +2258,7 @@ PE
 <categoryId></categoryId>
 <vendorCode>CL100427</vendorCode>
 <name>Картридж для HP CF283A Europrint (совместимый)</name>
-<price>3085</price>
+<price>3015</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_283A_euro.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_283A_euro-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_euro-pack12.jpg</picture>
@@ -2578,7 +2578,7 @@ Canon i-SENSYS MF211, MF212w, MF216n, MF217w, MF226dn, MF229dw, MF231, MF232w, M
 <categoryId></categoryId>
 <vendorCode>CL100680</vendorCode>
 <name>Картридж для HP CE310A/Canon 729 Чёрный Europrint (совместимый)</name>
-<price>2165</price>
+<price>2150</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ce310a1.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ce310a.jpg</picture>
 <vendor>HP</vendor>
@@ -2603,7 +2603,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <categoryId></categoryId>
 <vendorCode>CL100681</vendorCode>
 <name>Картридж для HP CE311A/Canon 729 Голубой Europrint (совместимый)</name>
-<price>2375</price>
+<price>2355</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ce311a1.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ce311a.jpg</picture>
 <vendor>HP</vendor>
@@ -2628,7 +2628,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <categoryId></categoryId>
 <vendorCode>CL100682</vendorCode>
 <name>Картридж для HP CE312A/Canon 729 Желтый Europrint (совместимый)</name>
-<price>2375</price>
+<price>2355</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ce312a1.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ce312a.jpg</picture>
 <vendor>HP</vendor>
@@ -2653,7 +2653,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <categoryId></categoryId>
 <vendorCode>CL100683</vendorCode>
 <name>Картридж для HP CE313A/Canon 729 Пурпурный Europrint (совместимый)</name>
-<price>2375</price>
+<price>2355</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ce313a.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ce313a-m.jpg</picture>
 <vendor>HP</vendor>
@@ -3328,7 +3328,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <categoryId></categoryId>
 <vendorCode>CL100851</vendorCode>
 <name>Драм-картридж для Xerox (101R00474) Phaser 3052/3260 WC 3215/3225 (10k) Europrint (совместимый)</name>
-<price>3095</price>
+<price>3165</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00474-ep.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -3592,7 +3592,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL100921</vendorCode>
 <name>Картридж для HP CF283A Top print (совместимый)</name>
-<price>2480</price>
+<price>2425</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_283_TOP.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_283_TOP-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_pack1.jpg</picture>
@@ -3984,7 +3984,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL101014</vendorCode>
 <name>Картридж для HP CE740A (307A) Чёрный Europrint (совместимый)</name>
-<price>18545</price>
+<price>18405</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_HP_CE740A_.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -4006,7 +4006,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL101015</vendorCode>
 <name>Картридж для HP CE741A (307A) Голубой Europrint (совместимый)</name>
-<price>18675</price>
+<price>18535</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_HP_CE741A_.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -4028,7 +4028,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL101016</vendorCode>
 <name>Картридж для HP CE742A (307A) Желтый Europrint (совместимый)</name>
-<price>18675</price>
+<price>18535</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_HP_CE742A_.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -4050,7 +4050,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL101017</vendorCode>
 <name>Картридж для HP CE743A (307A) Пурпурный Europrint (совместимый)</name>
-<price>18675</price>
+<price>18535</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_HP_CE743A_.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -4183,7 +4183,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL101148</vendorCode>
 <name>Картридж для Samsung ML-1610D2 Europrint (совместимый)</name>
-<price>4920</price>
+<price>4970</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_1610_euro.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_1610_euro-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_samsung-pack2.jpg</picture>
@@ -6268,7 +6268,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL101903</vendorCode>
 <name>Картридж для HP CF283A ON (совместимый)</name>
-<price>2480</price>
+<price>2425</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_283_ON.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_283_ON-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_21.jpg</picture>
@@ -6360,7 +6360,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL101930</vendorCode>
 <name>Картридж для Samsung MLT-D111S Europrint (совместимый)</name>
-<price>3360</price>
+<price>3370</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_D111S_euro1.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_D111S_euro-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_samsung-pack13.jpg</picture>
@@ -6522,7 +6522,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL101940</vendorCode>
 <name>Картридж для HP CF280A Europrint (совместимый)</name>
-<price>3320</price>
+<price>3360</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_280A_euro.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_280A_euro-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_euro-pack10.jpg</picture>
@@ -7099,7 +7099,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL102315</vendorCode>
 <name>Картридж для HP CF214A (№14A) Europrint (совместимый)</name>
-<price>10295</price>
+<price>10475</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_cf214a.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -7232,7 +7232,7 @@ Enterprise 700 M712, M725.
 <categoryId></categoryId>
 <vendorCode>CL102333</vendorCode>
 <name>Тонер-картридж для Canon C-EXV42 (10,2K) Europrint (совместимый)</name>
-<price>3110</price>
+<price>3160</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv42-ep.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv42-ep2.jpg</picture>
 <vendor>Canon</vendor>
@@ -7357,7 +7357,7 @@ PE
 <categoryId></categoryId>
 <vendorCode>CL102358</vendorCode>
 <name>Картридж для HP CZ192A №93A Europrint (совместимый)</name>
-<price>11255</price>
+<price>11425</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CZ192__.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -9966,7 +9966,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
 <categoryId></categoryId>
 <vendorCode>CL102999</vendorCode>
 <name>Картридж для HP CC364X Europrint (совместимый)</name>
-<price>14060</price>
+<price>11040</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_cc364x.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -10277,7 +10277,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 <categoryId></categoryId>
 <vendorCode>CL103068</vendorCode>
 <name>Тонер-картридж для Canon C-EXV33 (14,6K) Europrint (совместимый)</name>
-<price>3205</price>
+<price>3225</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv33.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -11772,7 +11772,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL103520</vendorCode>
 <name>Картридж для HP CE505A/CF280A/ Canon 719 ON (совместимый)</name>
-<price>2925</price>
+<price>2980</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_505_280_ON.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_505_280_ON-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_25.jpg</picture>
@@ -12219,7 +12219,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL103710</vendorCode>
 <name>Тонер-картридж для Brother TN-2175 (2,6K) Europrint (совместимый)</name>
-<price>3495</price>
+<price>2820</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-2175.jpg</picture>
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
@@ -12326,7 +12326,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL103758</vendorCode>
 <name>Драм-картридж для Xerox (101R00555) Phaser 3330/ WC 3335/3345 (30K) (совместимый)</name>
-<price>3625</price>
+<price>3700</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00555.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -13212,7 +13212,7 @@ Enterprise M806dn, M806x+, Flow M830z.
 <categoryId></categoryId>
 <vendorCode>CL103922</vendorCode>
 <name>Картридж для HP CF217A (с чипом) Europrint (совместимый)</name>
-<price>2455</price>
+<price>2430</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF217A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -13561,7 +13561,7 @@ Enterprise M806dn, M806x+, Flow M830z.
 <categoryId></categoryId>
 <vendorCode>CL103977</vendorCode>
 <name>Картридж для HP CF287X Europrint (совместимый)</name>
-<price>8315</price>
+<price>8930</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF287X.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -15649,7 +15649,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL104307</vendorCode>
 <name>Картридж для Lexmark MS/MX/317/417/517/617 с чипом (51B5000) (совместимый)</name>
-<price>4350</price>
+<price>4325</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_51B5000.jpg</picture>
 <vendor>Lexmark</vendor>
 <currencyId>KZT</currencyId>
@@ -15736,7 +15736,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL104319</vendorCode>
 <name>Картридж для Canon 039 Europrint (11K) (совместимый)</name>
-<price>9475</price>
+<price>9675</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_039_euro.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_039_euro-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_pack_euro.jpg</picture>
@@ -16957,7 +16957,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL104572</vendorCode>
 <name>Картридж для Canon 051H Europrint (совместимый)</name>
-<price>2685</price>
+<price>2745</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-051H-oem.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_euro-pack.jpg</picture>
 <vendor>Canon</vendor>
@@ -17605,7 +17605,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL104659</vendorCode>
 <name>Картридж для HP W1106A (№106A) (c чипом) (1K) Europrint (совместимый)</name>
-<price>2795</price>
+<price>2780</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W1106A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -17998,7 +17998,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL104704</vendorCode>
 <name>Картридж для Canon 057H (без чипа) (10K) Europrint (совместимый)</name>
-<price>7210</price>
+<price>7185</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-057-ep.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon-057h-no-chip-oem.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_euro-pack.jpg</picture>
@@ -18932,7 +18932,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL104887</vendorCode>
 <name>Картридж для HP CF218A/Canon 047 (без чипа) Europrint (совместимый)</name>
-<price>2355</price>
+<price>2150</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-CF218A-Canon-047.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -20317,7 +20317,7 @@ SL-C430, SL-C430W, SL-C480, SL-C480W, SL-C480FW.
 <categoryId></categoryId>
 <vendorCode>CL105090</vendorCode>
 <name>Картридж для HP W1335A (№335A) (7.4K) Europrint (совместимый)</name>
-<price>4020</price>
+<price>3985</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1335A-ep.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1335A-oem.jpg</picture>
 <vendor>HP</vendor>
@@ -21457,7 +21457,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL105239</vendorCode>
 <name>Картридж для HP W1470A №147A без чипа (10.5K) Europrint (совместимый)</name>
-<price>15275</price>
+<price>13055</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-w1470a-no-chip.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_w1470a-oem.jpg</picture>
 <vendor>HP</vendor>
@@ -21646,7 +21646,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL105295</vendorCode>
 <name>Картридж для PANTUM PC-211EV Europrint (совместимый)</name>
-<price>3710</price>
+<price>3760</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_PANTUM-PC-211EV-oem.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_PANTUM-PC-211EV.jpg</picture>
 <vendor>Pantum</vendor>
@@ -21879,7 +21879,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL105419</vendorCode>
 <name>Картридж для HP W1510X №151X без чипа (9,7K) Europrint (совместимый)</name>
-<price>5955</price>
+<price>6215</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-w1510x-no-chip.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1510X-ep.jpg</picture>
 <vendor>HP</vendor>
@@ -22040,7 +22040,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL105426</vendorCode>
 <name>Картридж для Canon T06 без чипа (20,5K) Europrint (совместимый)</name>
-<price>9960</price>
+<price>10240</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-T06-ep.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -22414,7 +22414,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL105486</vendorCode>
 <name>Картридж для HP W1360X №136X с чипом (2.6K) Europrint (совместимый)</name>
-<price>6370</price>
+<price>4875</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W1360X.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -22436,7 +22436,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL105487</vendorCode>
 <name>Картридж для HP W1470A №147A с чипом (10.5K) Europrint (совместимый)</name>
-<price>17015</price>
+<price>14240</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1470A-ep.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_w1470a-oem.jpg</picture>
 <vendor>HP</vendor>
@@ -23027,7 +23027,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL105543</vendorCode>
 <name>Драм-картридж для Xerox 013R00691 (12K) Europrint (совместимый)</name>
-<price>10820</price>
+<price>12500</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00691-ep.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
@@ -23180,7 +23180,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL105604</vendorCode>
 <name>Картридж для Canon 070H без чипа (10.2K) Europrint (совместимый)</name>
-<price>6960</price>
+<price>6915</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-070H-ep-no-chip.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CANON_070H-2.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_euro-pack.jpg</picture>
@@ -23574,7 +23574,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL105658</vendorCode>
 <name>Тонер-картридж для Canon C-EXV65 Чёрный (17,5K) Europrint (совместимый)</name>
-<price>17630</price>
+<price>17895</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv65-k.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -24053,7 +24053,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL105724</vendorCode>
 <name>Тонер-картридж 006R04368 Чёрный (8K) Europrint (совместимый)</name>
-<price>8510</price>
+<price>10625</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R04368.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R04368-0.jpg</picture>
 <vendor>Xerox</vendor>
@@ -24542,7 +24542,7 @@ LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.
 <categoryId></categoryId>
 <vendorCode>CL105757</vendorCode>
 <name>Драм-картридж для Xerox 013R00690 (40K) Europrint (совместимый)</name>
-<price>11140</price>
+<price>9710</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00690-ep.jpg</picture>
 <vendor>Xerox</vendor>
 <currencyId>KZT</currencyId>
