@@ -25,12 +25,6 @@
 
 
 
-## START AlStyle
-Поставщик: AlStyle
-Товаров без categoryId: 0
-
-# Все товары получили categoryId
-## END AlStyle
 
 ## START ComPortal
 Поставщик: ComPortal
@@ -38,3 +32,10 @@
 
 ComPortal | CP13823539 | Батарейка APC APCRBC152 (APCRBC152) | categoryId не определён
 ## END ComPortal
+
+## START AlStyle
+Поставщик: AlStyle
+Товаров без categoryId: 0
+
+# Все товары получили categoryId
+## END AlStyle

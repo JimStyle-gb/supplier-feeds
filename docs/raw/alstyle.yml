@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-03 00:34:23">
+<yml_catalog date="2026-05-04 00:33:15">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | AlStyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 2026-05-03 00:34:23
-Ближайшая сборка (Алматы)                  | 2026-05-03 23:30:00
+Время сборки (Алматы)                      | 2026-05-04 00:33:15
+Ближайшая сборка (Алматы)                  | 2026-05-04 23:30:00
 Сколько товаров у поставщика до фильтра    | 16914
 Сколько товаров у поставщика после фильтра | 1992
-Сколько товаров есть в наличии (true)      | 1462
-Сколько товаров нет в наличии (false)      | 530
+Сколько товаров есть в наличии (true)      | 1460
+Сколько товаров нет в наличии (false)      | 532
 -->
 
 <offer id="AS113695" available="true">
@@ -24667,7 +24667,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS396489" available="true">
+<offer id="AS396489" available="false">
 <categoryId></categoryId>
 <vendorCode>AS396489</vendorCode>
 <name>Интерактивная доска (панель) Dahua 65" DHI-LPH65-MC480-U</name>
@@ -44128,7 +44128,7 @@ Sysform LM-360N — ламинатор Sysform LM-360N — это професс
 <param name="Объём">0.00100464</param>
 </offer>
 
-<offer id="AS419384" available="true">
+<offer id="AS419384" available="false">
 <categoryId></categoryId>
 <vendorCode>AS419384</vendorCode>
 <name>Цветное лазерное МФУ Canon I-S MF667CDW</name>
