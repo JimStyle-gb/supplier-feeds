@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-04 01:06:19">
+<yml_catalog date="2026-05-05 01:47:35">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-05-04 01:06:19
-Ближайшая сборка (Алматы)                  | 2026-05-05 00:30:00
-Сколько товаров у поставщика до фильтра    | 1167
-Сколько товаров у поставщика после фильтра | 633
-Сколько товаров есть в наличии (true)      | 633
+Время сборки (Алматы)                      | 2026-05-05 01:47:35
+Ближайшая сборка (Алматы)                  | 2026-05-06 00:30:00
+Сколько товаров у поставщика до фильтра    | 1181
+Сколько товаров у поставщика после фильтра | 641
+Сколько товаров есть в наличии (true)      | 641
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -742,33 +742,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">737</param>
 <param name="Для бренда">Canon</param>
 <param name="Оригинальность">Оригинал</param>
-</offer>
-
-<offer id="CP10404631" available="true">
-<categoryId></categoryId>
-<vendorCode>CP10404631</vendorCode>
-<name>Аккумулятор APC APCRBC140 (APCRBC140)</name>
-<price>319081</price>
-<picture>https://www.comportal.kz/upload/iblock/a0b/eaknc1tc8o4o2hm3nocpwa44zfh3p2lh.jpg</picture>
-<vendor>APC</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Батарея. Мощность: 6 000 VA / 6 000 W. Форм-фактор: Tower. Стабилизатор (AVR): есть. Время работы при 100% нагрузке, мин: 2. Выходные соединения: (4) IEC 320 C19 (Батарейное резервное питание) (6) IEC 320 C13 (Батарейное резервное питание) (1) Hard Wire 3-wire (H N + G) (Батарейное резервное питание) (2) IEC Jumpers (Батарейное резервное питание). Гарантия: 24 мес.]]></description>
-<param name="Тип">Батарея</param>
-<param name="Модель">Аккумулятор APC APCRBC140</param>
-<param name="Дополнительная информация">Smart</param>
-<param name="Интерфейс">IEC</param>
-<param name="Выходные соединения">(4) IEC 320 C19 (Батарейное резервное питание) (6) IEC 320 C13 (Батарейное резервное питание) (1) Hard Wire 3-wire (H N + G) (Батарейное резервное питание) (2) IEC Jumpers (Батарейное резервное питание)</param>
-<param name="Мощность (VA)">6 000</param>
-<param name="Мощность (W)">6 000</param>
-<param name="Типовая продолжительность работы при 100% нагрузке, мин">2</param>
-<param name="Форм-фактор">Tower</param>
-<param name="Стабилизатор (AVR)">есть</param>
-<param name="ПО">есть</param>
-<param name="Гарантия">24 мес</param>
-<param name="Диапазон входного напряжения">160-275В</param>
-<param name="Коды">APCRBC140</param>
-<param name="Для бренда">APC</param>
 </offer>
 
 <offer id="CP10553057" available="true">
@@ -1935,6 +1908,27 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
+<offer id="CP13870240" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13870240</vendorCode>
+<name>Картридж HP M0J94AE (M0J94AE) (оригинал)</name>
+<price>121672</price>
+<picture>https://www.comportal.kz/upload/iblock/cd1/lva41jauh7tuhifhx03cp0dii02g7d9a.jpeg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Оригинальный картридж HP M0J94AE коды — M0J94AE / №991; цвет — Пурпурный; ресурс — 16 000; технология печати — Струйная.]]></description>
+<param name="Тип">Картридж</param>
+<param name="Модель">M0J94AE</param>
+<param name="Цвет">Пурпурный</param>
+<param name="Технология печати">Струйная</param>
+<param name="Номер">№991</param>
+<param name="Ресурс">16 000</param>
+<param name="Коды">M0J94AE</param>
+<param name="Для бренда">HP</param>
+<param name="Оригинальность">Оригинал</param>
+</offer>
+
 <offer id="CP10409118" available="true">
 <categoryId></categoryId>
 <vendorCode>CP10409118</vendorCode>
@@ -2881,31 +2875,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Коды">P2V67A</param>
 <param name="Для бренда">HP</param>
 <param name="Оригинальность">Оригинал</param>
-</offer>
-
-<offer id="CP10834918" available="true">
-<categoryId></categoryId>
-<vendorCode>CP10834918</vendorCode>
-<name>Принтер HP Color Laser 150a (4ZB94A#B19)</name>
-<price>111666</price>
-<picture>https://www.comportal.kz/upload/iblock/be5/dyjp4fldusx7ooiemz0xl17zx0oaeg29.JPG</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Принтер. Формат печати: A4. Разрешение: 600x600. Скорость печати ч/б: 18. Скорость печати цветной: 4. Порты: USB. Технология печати: Лазерная. Гарантия: 12 мес.]]></description>
-<param name="Тип">Принтер</param>
-<param name="Модель">Color Laser 150a</param>
-<param name="Гарантия">12 мес</param>
-<param name="Разрешение">600x600</param>
-<param name="Формат печати">A4</param>
-<param name="Скорость печати ч/б">18</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Порты">USB</param>
-<param name="Скорость печати цветной">4</param>
-<param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
-<param name="Нагрузка">20 000</param>
-<param name="Коды">4ZB94A#B19</param>
-<param name="Для бренда">HP</param>
 </offer>
 
 <offer id="CP10725204" available="true">
@@ -4353,6 +4322,22 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
+<offer id="CP13870142" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13870142</vendorCode>
+<name>Шарнир Canon HINGE, READER (FM2-C066-000000)</name>
+<price>12848</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+расходный материал Canon Шарнир Canon HINGE, READER код — FM2-C066-000000.]]></description>
+<param name="Тип">Расходный материал</param>
+<param name="Модель">Шарнир Canon HINGE, READER</param>
+<param name="Коды">FM2-C066-000000</param>
+<param name="Для бренда">Canon</param>
+</offer>
+
 <offer id="CP13870639" available="true">
 <categoryId></categoryId>
 <vendorCode>CP13870639</vendorCode>
@@ -5059,54 +5044,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Камера">Webcam</param>
 <param name="Разрешение дисплея">1920x1080</param>
 <param name="Коды">210-BDRB-5</param>
-<param name="Для бренда">Dell</param>
-</offer>
-
-<offer id="CP13870789" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13870789</vendorCode>
-<name>Ноутбук Dell Vostro 5625 (210-BDFL-3)</name>
-<price>424073</price>
-<picture>https://www.comportal.kz/upload/iblock/890/fk476q44sz5uo9fyd5s5zh76a6p7nawv.JPG</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Ноутбук. Модельная серия: Vostro 5625. Процессор: AMD 5625U Ryzen 5 2,3. Оперативная память: 8 Gb / DDR4 / 3200. Накопитель: 256 / M.2 PCIe SSD / 1 шт. Диагональ: 16. Разрешение: 1920x1200. ОС: Microsoft Windows 11 Pro 64. Видеокарта: AMD Graphics 256 Mb. Wi‑Fi: MT7921. Bluetooth: Bluetooth. Камера: Webcam. Гарантия: 36 мес.]]></description>
-<param name="Тип">Ноутбук</param>
-<param name="Модель">Vostro 5625</param>
-<param name="Объем жесткого диска">256</param>
-<param name="Тип жесткого диска">M.2 PCIe SSD</param>
-<param name="Производитель процессора">AMD</param>
-<param name="Модель процессора">Ryzen 5</param>
-<param name="Серия процессора">5625U</param>
-<param name="Частота процессора">2,3</param>
-<param name="Оперативная память">8 Gb</param>
-<param name="Частота оперативной памяти">3200</param>
-<param name="Количество слотов памяти">2</param>
-<param name="Занятые слоты памяти">1</param>
-<param name="Объем видеопамяти">256 Mb</param>
-<param name="Тип оперативной памяти">DDR4</param>
-<param name="Тип привода">No ODD</param>
-<param name="Количество дисков">1</param>
-<param name="Размер дисплея">16</param>
-<param name="Дополнительные характеристики">FPS</param>
-<param name="Тип матрицы">FHD+</param>
-<param name="Производитель чипсета видеокарты">AMD</param>
-<param name="Марка чипсета видеокарты">Radeon</param>
-<param name="Модель чипсета видеокарты">Graphics</param>
-<param name="Производитель операционной системы">Microsoft</param>
-<param name="Операционная система">Windows 11</param>
-<param name="Версия операционной системы">Pro</param>
-<param name="Битность операционной системы">64</param>
-<param name="Цвет">Серый</param>
-<param name="Bluetooth">Bluetooth</param>
-<param name="Wi-Fi">MT7921</param>
-<param name="Адаптер">65W AC Adapter</param>
-<param name="Аккумулятор">4-cell 54W HR</param>
-<param name="Гарантия">36 мес</param>
-<param name="Камера">Webcam</param>
-<param name="Разрешение дисплея">1920x1200</param>
-<param name="Коды">210-BDFL-3</param>
 <param name="Для бренда">Dell</param>
 </offer>
 
@@ -6692,6 +6629,32 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Для бренда">Dell</param>
 </offer>
 
+<offer id="CP13834336" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13834336</vendorCode>
+<name>МФУ Canon i-SENSYS MF463dw (5951C008AA)</name>
+<price>200119</price>
+<picture>https://www.comportal.kz/upload/iblock/390/2nfu71ivarw81gnd8jp4rhlwlmr5c3gf.JPG</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+МФУ. Формат печати: A4. Разрешение: 1200x1200. Скорость печати ч/б: 40. Порты: USB LAN WiFI. Технология печати: Лазерная. Гарантия: 12 мес.]]></description>
+<param name="Тип">МФУ</param>
+<param name="Модель">i-SENSYS MF463dw</param>
+<param name="Гарантия">12 мес</param>
+<param name="Разрешение">1200x1200</param>
+<param name="Формат печати">A4</param>
+<param name="Скорость печати ч/б">40</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Порты">USB LAN WiFI</param>
+<param name="Функция">Принтер-Сканер(АПД-50с.)-Копир</param>
+<param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
+<param name="Нагрузка">80 000</param>
+<param name="Емкость 4-го лотка">550</param>
+<param name="Коды">5951C008AA</param>
+<param name="Для бренда">Canon</param>
+</offer>
+
 <offer id="CP13834574" available="true">
 <categoryId></categoryId>
 <vendorCode>CP13834574</vendorCode>
@@ -6938,27 +6901,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">24 мес</param>
 <param name="Коды">BVX2200LI-GR</param>
 <param name="Для бренда">APC</param>
-</offer>
-
-<offer id="CP13835280" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13835280</vendorCode>
-<name>Картридж HP 3YM74AE (3YM74AE#BHK) (оригинал)</name>
-<price>6481</price>
-<picture>https://www.comportal.kz/upload/iblock/a65/myg2z9m3ia20wiaa8m97vn9zstewogj6.JPG</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Оригинальный картридж HP 3YM74AE коды — 3YM74AE#BHK / №653; цвет — Трехцветный; ресурс — 200; технология печати — Струйная.]]></description>
-<param name="Тип">Картридж</param>
-<param name="Модель">3YM74AE</param>
-<param name="Цвет">Трехцветный</param>
-<param name="Технология печати">Струйная</param>
-<param name="Номер">№653</param>
-<param name="Ресурс">200</param>
-<param name="Коды">3YM74AE#BHK</param>
-<param name="Для бренда">HP</param>
-<param name="Оригинальность">Оригинал</param>
 </offer>
 
 <offer id="CP13850377" available="true">
@@ -8452,6 +8394,33 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Диагональ">24</param>
 <param name="Частота обновления">100</param>
 <param name="Коды">210-BMJD</param>
+<param name="Для бренда">Dell</param>
+</offer>
+
+<offer id="CP13866842" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13866842</vendorCode>
+<name>Монитор Dell Pro 24 Plus P2425H (210-BMFF)</name>
+<price>87787</price>
+<picture>https://www.comportal.kz/upload/iblock/7c1/on0ej1inzuczbdngnshv9854xzm137j5.JPG</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Монитор. Диагональ: 23.8. Максимальное разрешение: 1920x1080. Тип матрицы: IPS. Частота обновления: 100. Время отклика: 5. Порты: 1x HDMI 1.4/1x DP 1.2/1x VGA/1x USB 3.2 Gen1 Type-B/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C. Гарантия: 36 мес.]]></description>
+<param name="Тип">Монитор</param>
+<param name="Модель">P2425H</param>
+<param name="Порты">1x HDMI 1.4/1x DP 1.2/1x VGA/1x USB 3.2 Gen1 Type-B/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C</param>
+<param name="Тип матрицы">IPS</param>
+<param name="Гарантия">36 мес</param>
+<param name="Контрастность">1500:1</param>
+<param name="Яркость">250</param>
+<param name="Время отклика">5</param>
+<param name="Максимальное разрешение">1920x1080</param>
+<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
+<param name="Размер Pix">92</param>
+<param name="Диагональ">23.8</param>
+<param name="Частота обновления">100</param>
+<param name="Коды">210-BMFF</param>
 <param name="Для бренда">Dell</param>
 </offer>
 
@@ -10822,6 +10791,23 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Для бренда">APC</param>
 </offer>
 
+<offer id="CP13870220" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13870220</vendorCode>
+<name>Узел фиксации Canon FM1-Y640-030000 (FM1-Y640-030000)</name>
+<price>191925</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+расходный материал Canon Узел фиксации Canon FM1-Y640-030000 код — FM1-Y640-030000.]]></description>
+<param name="Тип">Расходный материал</param>
+<param name="Модель">Узел фиксации Canon FM1-Y640-030000</param>
+<param name="Дополнительная информация">FIXING ASSEMBLY, FX-209</param>
+<param name="Коды">FM1-Y640-030000</param>
+<param name="Для бренда">Canon</param>
+</offer>
+
 <offer id="CP13873237" available="true">
 <categoryId></categoryId>
 <vendorCode>CP13873237</vendorCode>
@@ -13056,6 +13042,23 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Коды">BTO105_PC16250_EMEA_210-BQHB</param>
 </offer>
 
+<offer id="CP13873353" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13873353</vendorCode>
+<name>Ноутбук Dell Pro 16 PC16250 (BTO106_PC16250_EMEA_210-BQHB)</name>
+<price>649868</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Ноутбук. Модельная серия: Pro 16 PC16250. Гарантия: 36 мес. Для бренда: Dell. Модель: Pro 16 PC16250. Коды: BTO106_PC16250_EMEA_210-BQHB.]]></description>
+<param name="Тип">Ноутбук</param>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">Dell</param>
+<param name="Модель">Pro 16 PC16250</param>
+<param name="Коды">BTO106_PC16250_EMEA_210-BQHB</param>
+</offer>
+
 <offer id="CP13871912" available="true">
 <categoryId></categoryId>
 <vendorCode>CP13871912</vendorCode>
@@ -13178,6 +13181,57 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Для бренда">Dell</param>
 <param name="Модель">Pro 16 Plus PB16250</param>
 <param name="Коды">BTO105_PB16250_EMEA_UBU_210-BPCM</param>
+</offer>
+
+<offer id="CP13873354" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13873354</vendorCode>
+<name>Мобильная рабочая станция Dell Pro Max 14 MC14250 (BTO120_MC14250_EMEA_210-BPVX)</name>
+<price>950594</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Ноутбук. Модельная серия: Pro Max 14. Гарантия: 36 мес. Для бренда: Dell. Модель: Pro Max 14. Коды: BTO120_MC14250_EMEA_210-BPVX.]]></description>
+<param name="Тип">Ноутбук</param>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">Dell</param>
+<param name="Модель">Pro Max 14</param>
+<param name="Коды">BTO120_MC14250_EMEA_210-BPVX</param>
+</offer>
+
+<offer id="CP13873355" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13873355</vendorCode>
+<name>Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO128_MC16250_EMEA_210-BPVR)</name>
+<price>1254364</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Ноутбук. Модельная серия: Pro Max 16. Гарантия: 36 мес. Для бренда: Dell. Модель: Pro Max 16. Коды: BTO128_MC16250_EMEA_210-BPVR.]]></description>
+<param name="Тип">Ноутбук</param>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">Dell</param>
+<param name="Модель">Pro Max 16</param>
+<param name="Коды">BTO128_MC16250_EMEA_210-BPVR</param>
+</offer>
+
+<offer id="CP13873356" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13873356</vendorCode>
+<name>Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO129_MC16250_EMEA_210-BPVR)</name>
+<price>824877</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Ноутбук. Модельная серия: Pro Max 16. Гарантия: 36 мес. Для бренда: Dell. Модель: Pro Max 16. Коды: BTO129_MC16250_EMEA_210-BPVR.]]></description>
+<param name="Тип">Ноутбук</param>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">Dell</param>
+<param name="Модель">Pro Max 16</param>
+<param name="Коды">BTO129_MC16250_EMEA_210-BPVR</param>
 </offer>
 
 <offer id="CP13872134" available="true">
@@ -14763,6 +14817,23 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Коды">210-BRXR / BTO102_MB16250_EMEA</param>
 </offer>
 
+<offer id="CP13873357" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13873357</vendorCode>
+<name>Мобильная рабочая станция Dell Pro Max 18 Plus MB18250 (210-BRXL / BTO101_MB18250_EMEA)</name>
+<price>2006732</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Ноутбук. Модельная серия: Pro Max 18. Гарантия: 36 мес. Для бренда: Dell. Модель: Pro Max 18. Коды: 210-BRXL / BTO101_MB18250_EMEA.]]></description>
+<param name="Тип">Ноутбук</param>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">Dell</param>
+<param name="Модель">Pro Max 18</param>
+<param name="Коды">210-BRXL / BTO101_MB18250_EMEA</param>
+</offer>
+
 <offer id="CP13873167" available="true">
 <categoryId></categoryId>
 <vendorCode>CP13873167</vendorCode>
@@ -14896,6 +14967,40 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12 мес</param>
 <param name="Коды">9H7C6ET#BJA</param>
 <param name="Модель">Pro SFF 400 G9</param>
+<param name="Для бренда">HP</param>
+</offer>
+
+<offer id="CP13873361" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13873361</vendorCode>
+<name>Ноутбук HP ProBook 4 G1a 16 (B39XQAT#BJA)</name>
+<price>592492</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Ноутбук. Модельная серия: ProBook 4 G1a 16. Гарантия: 24 мес. Для бренда: HP. Модель: ProBook 4 G1a 16. Коды: B39XQAT#BJA.]]></description>
+<param name="Тип">Ноутбук</param>
+<param name="Гарантия">24 мес</param>
+<param name="Коды">B39XQAT#BJA</param>
+<param name="Модель">ProBook 4 G1a 16</param>
+<param name="Для бренда">HP</param>
+</offer>
+
+<offer id="CP13873362" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13873362</vendorCode>
+<name>Компьютер HP ProDesk 2 Tower G1i (B6XD2ET#BJA)</name>
+<price>445724</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Настольный ПК. Модельная серия: ProDesk 2 Tower G1i. Гарантия: 12 мес. Для бренда: HP. Модель: ProDesk 2 Tower G1i. Коды: B6XD2ET#BJA.]]></description>
+<param name="Тип">Настольный ПК</param>
+<param name="Гарантия">12 мес</param>
+<param name="Коды">B6XD2ET#BJA</param>
+<param name="Модель">ProDesk 2 Tower G1i</param>
 <param name="Для бренда">HP</param>
 </offer>
 

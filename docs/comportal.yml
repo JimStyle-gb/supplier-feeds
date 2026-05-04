@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-04 01:06:19">
+<yml_catalog date="2026-05-05 01:47:35">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-05-04 01:06:19
-Ближайшая сборка (Алматы)                  | 2026-05-05 00:30:00
-Сколько товаров у поставщика до фильтра    | 1167
-Сколько товаров у поставщика после фильтра | 632
-Сколько товаров есть в наличии (true)      | 632
+Время сборки (Алматы)                      | 2026-05-05 01:47:35
+Ближайшая сборка (Алматы)                  | 2026-05-06 00:30:00
+Сколько товаров у поставщика до фильтра    | 1181
+Сколько товаров у поставщика после фильтра | 640
+Сколько товаров есть в наличии (true)      | 640
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -1831,64 +1831,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Оригинальность">Оригинал</param>
 <param name="Тип">Картридж</param>
 <keywords>Canon, Картридж Canon 737 (9435B002) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP10404631" available="true">
-<categoryId>702</categoryId>
-<vendorCode>CP10404631</vendorCode>
-<name>Аккумулятор APC APCRBC140 (APCRBC140)</name>
-<price>356900</price>
-<picture>https://www.comportal.kz/upload/iblock/a0b/eaknc1tc8o4o2hm3nocpwa44zfh3p2lh.jpg</picture>
-<vendor>APC</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Аккумулятор APC APCRBC140 (APCRBC140)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Батарея. Мощность: 6 000 VA / 6 000 W. Форм-фактор: Tower. Стабилизатор (AVR): есть. Время работы при 100% нагрузке, мин: 2. Выходные соединения: (4) IEC 320 C19 (Батарейное резервное питание) (6) IEC 320 C13 (Батарейное резервное питание) (1) Hard Wire 3-wire (H N + G) (Батарейное резервное питание) (2) IEC Jumpers (Батарейное резервное питание). Гарантия: 24 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Выходные соединения:</strong> (4) IEC 320 C19 (Батарейное резервное питание) (6) IEC 320 C13 (Батарейное резервное питание) (1) Hard Wire 3-wire (H N + G) (Батарейное резервное питание) (2) IEC Jumpers (Батарейное резервное питание)</li><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Диапазон входного напряжения:</strong> 160-275В</li><li><strong>Бренд:</strong> APC</li><li><strong>Дополнительная информация:</strong> Smart</li><li><strong>Интерфейс:</strong> IEC</li><li><strong>Коды:</strong> APCRBC140</li><li><strong>Модель:</strong> Аккумулятор APC APCRBC140</li><li><strong>Мощность (VA):</strong> 6 000</li><li><strong>Мощность (W):</strong> 6 000</li><li><strong>ПО:</strong> есть</li><li><strong>Стабилизатор (AVR):</strong> есть</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Выходные соединения">(4) IEC 320 C19 (Батарейное резервное питание) (6) IEC 320 C13 (Батарейное резервное питание) (1) Hard Wire 3-wire (H N + G) (Батарейное резервное питание) (2) IEC Jumpers (Батарейное резервное питание)</param>
-<param name="Гарантия">24 мес</param>
-<param name="Диапазон входного напряжения">160-275В</param>
-<param name="Для бренда">APC</param>
-<param name="Дополнительная информация">Smart</param>
-<param name="Интерфейс">IEC</param>
-<param name="Коды">APCRBC140</param>
-<param name="Модель">Аккумулятор APC APCRBC140</param>
-<param name="Мощность (VA)">6 000</param>
-<param name="Мощность (W)">6 000</param>
-<param name="ПО">есть</param>
-<param name="Стабилизатор (AVR)">есть</param>
-<param name="Тип">Батарея</param>
-<param name="Типовая продолжительность работы при 100% нагрузке, мин">2</param>
-<param name="Форм-фактор">Tower</param>
-<keywords>APC, Аккумулятор APC APCRBC140 (APCRBC140), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP10553057" available="true">
@@ -4689,6 +4631,58 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>HP, Картридж HP M0J90AE (M0J90AE) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="CP13870240" available="true">
+<categoryId>102</categoryId>
+<vendorCode>CP13870240</vendorCode>
+<name>Картридж HP M0J94AE (M0J94AE) (оригинал)</name>
+<price>138900</price>
+<picture>https://www.comportal.kz/upload/iblock/cd1/lva41jauh7tuhifhx03cp0dii02g7d9a.jpeg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP M0J94AE (M0J94AE) (оригинал)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP M0J94AE коды — M0J94AE / №991; цвет — Пурпурный; ресурс — 16 000; технология печати — Струйная.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> M0J94AE</li><li><strong>Модель:</strong> M0J94AE</li><li><strong>Номер:</strong> №991</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 16 000</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">HP</param>
+<param name="Коды">M0J94AE</param>
+<param name="Модель">M0J94AE</param>
+<param name="Номер">№991</param>
+<param name="Оригинальность">Оригинал</param>
+<param name="Ресурс">16 000</param>
+<param name="Технология печати">Струйная</param>
+<param name="Тип">Картридж</param>
+<param name="Цвет">Пурпурный</param>
+<keywords>HP, Картридж HP M0J94AE (M0J94AE) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="CP10409118" available="true">
 <categoryId>102</categoryId>
 <vendorCode>CP10409118</vendorCode>
@@ -7011,66 +7005,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип">Картридж</param>
 <param name="Цвет">Фото черный</param>
 <keywords>HP, Картридж HP P2V67A (P2V67A) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP10834918" available="true">
-<categoryId>101</categoryId>
-<vendorCode>CP10834918</vendorCode>
-<name>Принтер HP Color Laser 150a (4ZB94A#B19)</name>
-<price>128900</price>
-<picture>https://www.comportal.kz/upload/iblock/be5/dyjp4fldusx7ooiemz0xl17zx0oaeg29.JPG</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Принтер HP Color Laser 150a (4ZB94A#B19)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Принтер. Формат печати: A4. Разрешение: 600x600. Скорость печати ч/б: 18. Скорость печати цветной: 4. Порты: USB. Технология печати: Лазерная. Гарантия: 12 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Разрешение 600x600</li><li>Гарантия 12 мес</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 4ZB94A#B19</li><li><strong>Модель:</strong> Color Laser 150a</li><li><strong>Нагрузка:</strong> 20 000</li><li><strong>Наличие картриджа (тонера) в комплекте:</strong> Стартовый</li><li><strong>Порты:</strong> USB</li><li><strong>Разрешение:</strong> 600x600</li><li><strong>Скорость печати цветной:</strong> 4</li><li><strong>Скорость печати ч/б:</strong> 18</li><li><strong>Технология печати:</strong> Лазерная</li><li><strong>Тип:</strong> Принтер</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">HP</param>
-<param name="Коды">4ZB94A#B19</param>
-<param name="Модель">Color Laser 150a</param>
-<param name="Нагрузка">20 000</param>
-<param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
-<param name="Порты">USB</param>
-<param name="Разрешение">600x600</param>
-<param name="Скорость печати цветной">4</param>
-<param name="Скорость печати ч/б">18</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Тип">Принтер</param>
-<param name="Формат печати">A4</param>
-<keywords>HP, Принтер HP Color Laser 150a (4ZB94A#B19), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP10725204" available="true">
@@ -10563,6 +10497,53 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>HP, Картридж HP 335X (W1335X) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="CP13870142" available="true">
+<categoryId>207</categoryId>
+<vendorCode>CP13870142</vendorCode>
+<name>Шарнир Canon HINGE, READER (FM2-C066-000000)</name>
+<price>17900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Шарнир Canon HINGE, READER (FM2-C066-000000)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">расходный материал Canon Шарнир Canon HINGE, READER код — FM2-C066-000000.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> Canon</li><li><strong>Коды:</strong> FM2-C066-000000</li><li><strong>Модель:</strong> Шарнир Canon HINGE, READER</li><li><strong>Тип:</strong> Расходный материал</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">Canon</param>
+<param name="Коды">FM2-C066-000000</param>
+<param name="Модель">Шарнир Canon HINGE, READER</param>
+<param name="Тип">Расходный материал</param>
+<keywords>Canon, Шарнир Canon HINGE READER (FM2-C066-000000), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="CP13870639" available="true">
 <categoryId>701</categoryId>
 <vendorCode>CP13870639</vendorCode>
@@ -12085,89 +12066,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Частота оперативной памяти">3200</param>
 <param name="Частота процессора">2,3</param>
 <keywords>Dell, Ноутбук Dell Vostro 3525 (210-BDRB-5), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13870789" available="true">
-<categoryId>601</categoryId>
-<vendorCode>CP13870789</vendorCode>
-<name>Ноутбук Dell Vostro 5625 (210-BDFL-3)</name>
-<price>466900</price>
-<picture>https://www.comportal.kz/upload/iblock/890/fk476q44sz5uo9fyd5s5zh76a6p7nawv.JPG</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук Dell Vostro 5625 (210-BDFL-3)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: Vostro 5625. Процессор: AMD 5625U Ryzen 5 2,3. Оперативная память: 8 Gb / DDR4 / 3200. Накопитель: 256 / M.2 PCIe SSD / 1 шт. Диагональ: 16. Разрешение: 1920x1200. ОС: Microsoft Windows 11 Pro 64. Видеокарта: AMD Graphics 256 Mb. Wi‑Fi: MT7921. Bluetooth: Bluetooth. Камера: Webcam. Гарантия: 36 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Оперативная память 8 Gb</li><li>Операционная система Windows 11</li><li>Поддержка Wi-Fi MT7921</li><li>Поддержка Bluetooth</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Bluetooth:</strong> Bluetooth</li><li><strong>Wi-Fi:</strong> MT7921</li><li><strong>Адаптер:</strong> 65W AC Adapter</li><li><strong>Аккумулятор:</strong> 4-cell 54W HR</li><li><strong>Битность операционной системы:</strong> 64</li><li><strong>Версия операционной системы:</strong> Pro</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Бренд:</strong> Dell</li><li><strong>Дополнительные характеристики:</strong> FPS</li><li><strong>Занятые слоты памяти:</strong> 1</li><li><strong>Камера:</strong> Webcam</li><li><strong>Коды:</strong> 210-BDFL-3</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Bluetooth">Bluetooth</param>
-<param name="Wi-Fi">MT7921</param>
-<param name="Адаптер">65W AC Adapter</param>
-<param name="Аккумулятор">4-cell 54W HR</param>
-<param name="Битность операционной системы">64</param>
-<param name="Версия операционной системы">Pro</param>
-<param name="Гарантия">36 мес</param>
-<param name="Для бренда">Dell</param>
-<param name="Дополнительные характеристики">FPS</param>
-<param name="Занятые слоты памяти">1</param>
-<param name="Камера">Webcam</param>
-<param name="Коды">210-BDFL-3</param>
-<param name="Количество дисков">1</param>
-<param name="Количество слотов памяти">2</param>
-<param name="Марка чипсета видеокарты">Radeon</param>
-<param name="Модель">Vostro 5625</param>
-<param name="Модель процессора">Ryzen 5</param>
-<param name="Модель чипсета видеокарты">Graphics</param>
-<param name="Объем видеопамяти">256 Mb</param>
-<param name="Объем жесткого диска">256</param>
-<param name="Оперативная память">8 Gb</param>
-<param name="Операционная система">Windows 11</param>
-<param name="Производитель операционной системы">Microsoft</param>
-<param name="Производитель процессора">AMD</param>
-<param name="Производитель чипсета видеокарты">AMD</param>
-<param name="Размер дисплея">16</param>
-<param name="Разрешение дисплея">1920x1200</param>
-<param name="Серия процессора">5625U</param>
-<param name="Тип">Ноутбук</param>
-<param name="Тип жесткого диска">M.2 PCIe SSD</param>
-<param name="Тип матрицы">FHD+</param>
-<param name="Тип оперативной памяти">DDR4</param>
-<param name="Тип привода">No ODD</param>
-<param name="Цвет">Серый</param>
-<param name="Частота оперативной памяти">3200</param>
-<param name="Частота процессора">2,3</param>
-<keywords>Dell, Ноутбук Dell Vostro 5625 (210-BDFL-3), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13870790" available="true">
@@ -15824,6 +15722,67 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Dell, Монитор Dell U3824DW (210-BHXB), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="CP13834336" available="true">
+<categoryId>101</categoryId>
+<vendorCode>CP13834336</vendorCode>
+<name>МФУ Canon i-SENSYS MF463dw (5951C008AA)</name>
+<price>228900</price>
+<picture>https://www.comportal.kz/upload/iblock/390/2nfu71ivarw81gnd8jp4rhlwlmr5c3gf.JPG</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">МФУ Canon i-SENSYS MF463dw (5951C008AA)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">МФУ. Формат печати: A4. Разрешение: 1200x1200. Скорость печати ч/б: 40. Порты: USB LAN WiFI. Технология печати: Лазерная. Гарантия: 12 мес.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
+
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Разрешение 1200x1200</li><li>Гарантия 12 мес</li></ul>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> Canon</li><li><strong>Емкость 4-го лотка:</strong> 550</li><li><strong>Коды:</strong> 5951C008AA</li><li><strong>Модель:</strong> i-SENSYS MF463dw</li><li><strong>Нагрузка:</strong> 80 000</li><li><strong>Наличие картриджа (тонера) в комплекте:</strong> Стартовый</li><li><strong>Порты:</strong> USB LAN WiFI</li><li><strong>Разрешение:</strong> 1200x1200</li><li><strong>Скорость печати ч/б:</strong> 40</li><li><strong>Технология печати:</strong> Лазерная</li><li><strong>Тип:</strong> МФУ</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Гарантия">12 мес</param>
+<param name="Для бренда">Canon</param>
+<param name="Емкость 4-го лотка">550</param>
+<param name="Коды">5951C008AA</param>
+<param name="Модель">i-SENSYS MF463dw</param>
+<param name="Нагрузка">80 000</param>
+<param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
+<param name="Порты">USB LAN WiFI</param>
+<param name="Разрешение">1200x1200</param>
+<param name="Скорость печати ч/б">40</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Тип">МФУ</param>
+<param name="Формат печати">A4</param>
+<param name="Функция">Принтер-Сканер(АПД-50с.)-Копир</param>
+<keywords>Canon, МФУ Canon i-SENSYS MF463dw (5951C008AA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="CP13834574" available="true">
 <categoryId>701</categoryId>
 <vendorCode>CP13834574</vendorCode>
@@ -16384,58 +16343,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Типовая продолжительность работы при 100% нагрузке, мин">2,15</param>
 <param name="Форм-фактор">Tower</param>
 <keywords>APC, ИБП APC BVX2200LI-GR 230V AVR Schuko Sockets (BVX2200LI-GR), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13835280" available="true">
-<categoryId>102</categoryId>
-<vendorCode>CP13835280</vendorCode>
-<name>Картридж HP 3YM74AE (3YM74AE#BHK) (оригинал)</name>
-<price>9900</price>
-<picture>https://www.comportal.kz/upload/iblock/a65/myg2z9m3ia20wiaa8m97vn9zstewogj6.JPG</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP 3YM74AE (3YM74AE#BHK) (оригинал)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP 3YM74AE коды — 3YM74AE#BHK / №653; цвет — Трехцветный; ресурс — 200; технология печати — Струйная.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 3YM74AE#BHK</li><li><strong>Модель:</strong> 3YM74AE</li><li><strong>Номер:</strong> №653</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 200</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Трехцветный</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Для бренда">HP</param>
-<param name="Коды">3YM74AE#BHK</param>
-<param name="Модель">3YM74AE</param>
-<param name="Номер">№653</param>
-<param name="Оригинальность">Оригинал</param>
-<param name="Ресурс">200</param>
-<param name="Технология печати">Струйная</param>
-<param name="Тип">Картридж</param>
-<param name="Цвет">Трехцветный</param>
-<keywords>HP, Картридж HP 3YM74AE (3YM74AE#BHK) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13850377" available="true">
@@ -19848,6 +19755,68 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Частота обновления">100</param>
 <param name="Яркость">300</param>
 <keywords>Dell, Монитор Dell P2425 (210-BMJD), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13866842" available="true">
+<categoryId>602</categoryId>
+<vendorCode>CP13866842</vendorCode>
+<name>Монитор Dell Pro 24 Plus P2425H (210-BMFF)</name>
+<price>101900</price>
+<picture>https://www.comportal.kz/upload/iblock/7c1/on0ej1inzuczbdngnshv9854xzm137j5.JPG</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор Dell Pro 24 Plus P2425H (210-BMFF)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Диагональ: 23.8. Максимальное разрешение: 1920x1080. Тип матрицы: IPS. Частота обновления: 100. Время отклика: 5. Порты: 1x HDMI 1.4/1x DP 1.2/1x VGA/1x USB 3.2 Gen1 Type-B/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C. Гарантия: 36 мес.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
+
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Диагональ экрана 23.8</li><li>Гарантия 36 мес</li></ul>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Время отклика:</strong> 5</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Диагональ:</strong> 23.8</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> 210-BMFF</li><li><strong>Контрастность:</strong> 1500:1</li><li><strong>Максимальное разрешение:</strong> 1920x1080</li><li><strong>Модель:</strong> P2425H</li><li><strong>Порты:</strong> 1x HDMI 1.4/1x DP 1.2/1x VGA/1x USB 3.2 Gen1 Type-B/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C</li><li><strong>Размер Pix:</strong> 92</li><li><strong>Тип:</strong> Монитор</li><li><strong>Тип матрицы:</strong> IPS</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Время отклика">5</param>
+<param name="Гарантия">36 мес</param>
+<param name="Диагональ">23.8</param>
+<param name="Для бренда">Dell</param>
+<param name="Коды">210-BMFF</param>
+<param name="Контрастность">1500:1</param>
+<param name="Максимальное разрешение">1920x1080</param>
+<param name="Модель">P2425H</param>
+<param name="Порты">1x HDMI 1.4/1x DP 1.2/1x VGA/1x USB 3.2 Gen1 Type-B/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C</param>
+<param name="Размер Pix">92</param>
+<param name="Тип">Монитор</param>
+<param name="Тип матрицы">IPS</param>
+<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
+<param name="Частота обновления">100</param>
+<param name="Яркость">250</param>
+<keywords>Dell, Монитор Dell Pro 24 Plus P2425H (210-BMFF), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13866845" available="true">
@@ -24824,6 +24793,54 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>APC, ИБП APC SRTL3000RM4UXLI (SRTL3000RM4UXLI), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="CP13870220" available="true">
+<categoryId>207</categoryId>
+<vendorCode>CP13870220</vendorCode>
+<name>Узел фиксации Canon FM1-Y640-030000 (FM1-Y640-030000)</name>
+<price>214900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Узел фиксации Canon FM1-Y640-030000 (FM1-Y640-030000)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">расходный материал Canon Узел фиксации Canon FM1-Y640-030000 код — FM1-Y640-030000.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> Canon</li><li><strong>Дополнительная информация:</strong> FIXING ASSEMBLY, FX-209</li><li><strong>Коды:</strong> FM1-Y640-030000</li><li><strong>Модель:</strong> Узел фиксации Canon FM1-Y640-030000</li><li><strong>Тип:</strong> Расходный материал</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">Canon</param>
+<param name="Дополнительная информация">FIXING ASSEMBLY, FX-209</param>
+<param name="Коды">FM1-Y640-030000</param>
+<param name="Модель">Узел фиксации Canon FM1-Y640-030000</param>
+<param name="Тип">Расходный материал</param>
+<keywords>Canon, Узел фиксации Canon FM1-Y640-030000 (FM1-Y640-030000), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="CP13873237" available="true">
 <categoryId>602</categoryId>
 <vendorCode>CP13873237</vendorCode>
@@ -29687,6 +29704,54 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Dell, Ноутбук Dell Pro 16 PC16250 (BTO105_PC16250_EMEA_210-BQHB), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="CP13873353" available="true">
+<categoryId>601</categoryId>
+<vendorCode>CP13873353</vendorCode>
+<name>Ноутбук Dell Pro 16 PC16250 (BTO106_PC16250_EMEA_210-BQHB)</name>
+<price>705900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук Dell Pro 16 PC16250 (BTO106_PC16250_EMEA_210-BQHB)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: Pro 16 PC16250. Гарантия: 36 мес. Для бренда: Dell. Модель: Pro 16 PC16250. Коды: BTO106_PC16250_EMEA_210-BQHB.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> BTO106_PC16250_EMEA_210-BQHB</li><li><strong>Модель:</strong> Pro 16 PC16250</li><li><strong>Тип:</strong> Ноутбук</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">Dell</param>
+<param name="Коды">BTO106_PC16250_EMEA_210-BQHB</param>
+<param name="Модель">Pro 16 PC16250</param>
+<param name="Тип">Ноутбук</param>
+<keywords>Dell, Ноутбук Dell Pro 16 PC16250 (BTO106_PC16250_EMEA_210-BQHB), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="CP13871912" available="true">
 <categoryId>601</categoryId>
 <vendorCode>CP13871912</vendorCode>
@@ -29941,6 +30006,150 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">Pro 16 Plus PB16250</param>
 <param name="Тип">Ноутбук</param>
 <keywords>Dell, Ноутбук Dell Pro 16 Plus PB16250 (BTO105_PB16250_EMEA_UBU_210-BPCM), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13873354" available="true">
+<categoryId>601</categoryId>
+<vendorCode>CP13873354</vendorCode>
+<name>Мобильная рабочая станция Dell Pro Max 14 MC14250 (BTO120_MC14250_EMEA_210-BPVX)</name>
+<price>1023900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Мобильная рабочая станция Dell Pro Max 14 MC14250 (BTO120_MC14250_EMEA_210-BPVX)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: Pro Max 14. Гарантия: 36 мес. Для бренда: Dell. Модель: Pro Max 14. Коды: BTO120_MC14250_EMEA_210-BPVX.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> BTO120_MC14250_EMEA_210-BPVX</li><li><strong>Модель:</strong> Pro Max 14</li><li><strong>Тип:</strong> Ноутбук</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">Dell</param>
+<param name="Коды">BTO120_MC14250_EMEA_210-BPVX</param>
+<param name="Модель">Pro Max 14</param>
+<param name="Тип">Ноутбук</param>
+<keywords>Dell, Мобильная рабочая станция Dell Pro Max 14 MC14250 (BTO120_MC14250_EMEA_210-BPVX), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13873355" available="true">
+<categoryId>601</categoryId>
+<vendorCode>CP13873355</vendorCode>
+<name>Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO128_MC16250_EMEA_210-BPVR)</name>
+<price>1344900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO128_MC16250_EMEA_210-BPVR)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: Pro Max 16. Гарантия: 36 мес. Для бренда: Dell. Модель: Pro Max 16. Коды: BTO128_MC16250_EMEA_210-BPVR.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> BTO128_MC16250_EMEA_210-BPVR</li><li><strong>Модель:</strong> Pro Max 16</li><li><strong>Тип:</strong> Ноутбук</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">Dell</param>
+<param name="Коды">BTO128_MC16250_EMEA_210-BPVR</param>
+<param name="Модель">Pro Max 16</param>
+<param name="Тип">Ноутбук</param>
+<keywords>Dell, Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO128_MC16250_EMEA_210-BPVR), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13873356" available="true">
+<categoryId>601</categoryId>
+<vendorCode>CP13873356</vendorCode>
+<name>Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO129_MC16250_EMEA_210-BPVR)</name>
+<price>892900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO129_MC16250_EMEA_210-BPVR)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: Pro Max 16. Гарантия: 36 мес. Для бренда: Dell. Модель: Pro Max 16. Коды: BTO129_MC16250_EMEA_210-BPVR.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> BTO129_MC16250_EMEA_210-BPVR</li><li><strong>Модель:</strong> Pro Max 16</li><li><strong>Тип:</strong> Ноутбук</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">Dell</param>
+<param name="Коды">BTO129_MC16250_EMEA_210-BPVR</param>
+<param name="Модель">Pro Max 16</param>
+<param name="Тип">Ноутбук</param>
+<keywords>Dell, Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO129_MC16250_EMEA_210-BPVR), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13872134" available="true">
@@ -33834,6 +34043,54 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Dell, Мобильная рабочая станция Dell Pro Max 16 Plus MB16250 (210-BRXR / BTO102_MB16250_EMEA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="CP13873357" available="true">
+<categoryId>601</categoryId>
+<vendorCode>CP13873357</vendorCode>
+<name>Мобильная рабочая станция Dell Pro Max 18 Plus MB18250 (210-BRXL / BTO101_MB18250_EMEA)</name>
+<price>2147900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Мобильная рабочая станция Dell Pro Max 18 Plus MB18250 (210-BRXL / BTO101_MB18250_EMEA)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: Pro Max 18. Гарантия: 36 мес. Для бренда: Dell. Модель: Pro Max 18. Коды: 210-BRXL / BTO101_MB18250_EMEA.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> 210-BRXL / BTO101_MB18250_EMEA</li><li><strong>Модель:</strong> Pro Max 18</li><li><strong>Тип:</strong> Ноутбук</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">Dell</param>
+<param name="Коды">210-BRXL / BTO101_MB18250_EMEA</param>
+<param name="Модель">Pro Max 18</param>
+<param name="Тип">Ноутбук</param>
+<keywords>Dell, Мобильная рабочая станция Dell Pro Max 18 Plus MB18250 (210-BRXL / BTO101_MB18250_EMEA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="CP13873167" available="true">
 <categoryId>601</categoryId>
 <vendorCode>CP13873167</vendorCode>
@@ -34216,6 +34473,102 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">Pro SFF 400 G9</param>
 <param name="Тип">Настольный ПК</param>
 <keywords>HP, Компьютер HP Pro SFF 400 G9 (9H7C6ET#BJA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13873361" available="true">
+<categoryId>601</categoryId>
+<vendorCode>CP13873361</vendorCode>
+<name>Ноутбук HP ProBook 4 G1a 16 (B39XQAT#BJA)</name>
+<price>646900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук HP ProBook 4 G1a 16 (B39XQAT#BJA)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: ProBook 4 G1a 16. Гарантия: 24 мес. Для бренда: HP. Модель: ProBook 4 G1a 16. Коды: B39XQAT#BJA.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> B39XQAT#BJA</li><li><strong>Модель:</strong> ProBook 4 G1a 16</li><li><strong>Тип:</strong> Ноутбук</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Гарантия">24 мес</param>
+<param name="Для бренда">HP</param>
+<param name="Коды">B39XQAT#BJA</param>
+<param name="Модель">ProBook 4 G1a 16</param>
+<param name="Тип">Ноутбук</param>
+<keywords>HP, Ноутбук HP ProBook 4 G1a 16 (B39XQAT#BJA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13873362" available="true">
+<categoryId>604</categoryId>
+<vendorCode>CP13873362</vendorCode>
+<name>Компьютер HP ProDesk 2 Tower G1i (B6XD2ET#BJA)</name>
+<price>488900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Компьютер HP ProDesk 2 Tower G1i (B6XD2ET#BJA)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Настольный ПК. Модельная серия: ProDesk 2 Tower G1i. Гарантия: 12 мес. Для бренда: HP. Модель: ProDesk 2 Tower G1i. Коды: B6XD2ET#BJA.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> B6XD2ET#BJA</li><li><strong>Модель:</strong> ProDesk 2 Tower G1i</li><li><strong>Тип:</strong> Настольный ПК</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Гарантия">12 мес</param>
+<param name="Для бренда">HP</param>
+<param name="Коды">B6XD2ET#BJA</param>
+<param name="Модель">ProDesk 2 Tower G1i</param>
+<param name="Тип">Настольный ПК</param>
+<keywords>HP, Компьютер HP ProDesk 2 Tower G1i (B6XD2ET#BJA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13873203" available="true">
