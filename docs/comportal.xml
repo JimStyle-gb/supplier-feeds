@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-05 01:47:35">
+<yml_catalog date="2026-05-06 01:39:32">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-05-05 01:47:35
-Ближайшая сборка (Алматы)                  | 2026-05-06 00:30:00
-Сколько товаров у поставщика до фильтра    | 1181
-Сколько товаров у поставщика после фильтра | 640
-Сколько товаров есть в наличии (true)      | 640
+Время сборки (Алматы)                      | 2026-05-06 01:39:32
+Ближайшая сборка (Алматы)                  | 2026-05-07 00:30:00
+Сколько товаров у поставщика до фильтра    | 1169
+Сколько товаров у поставщика после фильтра | 629
+Сколько товаров есть в наличии (true)      | 629
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -477,54 +477,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип">Картридж</param>
 <param name="Цвет">Пурпурный</param>
 <keywords>HP, Картридж HP CN055AE (CN055AE#BGX) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13873145" available="true">
-<categoryId>301</categoryId>
-<vendorCode>CP13873145</vendorCode>
-<name>МФУ Canon i-SENSYS MF3010 (5252B004)</name>
-<price>150900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Canon</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">МФУ Canon i-SENSYS MF3010 (5252B004)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">МФУ. Гарантия: 12 мес. Для бренда: Canon. Модель: i-SENSYS MF3010. Коды: 5252B004.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> Canon</li><li><strong>Коды:</strong> 5252B004</li><li><strong>Модель:</strong> i-SENSYS MF3010</li><li><strong>Тип:</strong> МФУ</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">Canon</param>
-<param name="Коды">5252B004</param>
-<param name="Модель">i-SENSYS MF3010</param>
-<param name="Тип">МФУ</param>
-<keywords>Canon, МФУ Canon i-SENSYS MF3010 (5252B004), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP10302301" available="true">
@@ -3174,7 +3126,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP10377081</vendorCode>
 <name>Картридж HP F6U17AE (F6U17AE#BGX) (оригинал)</name>
-<price>25900</price>
+<price>26900</price>
 <picture>https://www.comportal.kz/upload/iblock/e4e/opteczrgj1rs9mcyi15x1nr14880k31v.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -8651,58 +8603,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип">Картридж</param>
 <param name="Цвет">Жёлтый</param>
 <keywords>HP, Картридж HP 963XL (3JA29AE#BGX) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13760828" available="true">
-<categoryId>102</categoryId>
-<vendorCode>CP13760828</vendorCode>
-<name>Картридж HP 963XL (3JA30AE#BGX) (оригинал)</name>
-<price>29900</price>
-<picture>https://www.comportal.kz/upload/iblock/1d1/uzidooqrdfuhjd4yhe35cwe3njbm8d3t.JPG</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP 963XL (3JA30AE#BGX) (оригинал)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP 963XL код — 3JA30AE#BGX; цвет — Чёрный; ресурс — 2 000; технология печати — Струйная.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 3JA30AE#BGX</li><li><strong>Модель:</strong> 963XL</li><li><strong>Объём:</strong> 48</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 2 000</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Для бренда">HP</param>
-<param name="Коды">3JA30AE#BGX</param>
-<param name="Модель">963XL</param>
-<param name="Объём">48</param>
-<param name="Оригинальность">Оригинал</param>
-<param name="Ресурс">2 000</param>
-<param name="Технология печати">Струйная</param>
-<param name="Тип">Картридж</param>
-<param name="Цвет">Чёрный</param>
-<keywords>HP, Картридж HP 963XL (3JA30AE#BGX) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP10782666" available="true">
@@ -15722,67 +15622,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Dell, Монитор Dell U3824DW (210-BHXB), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13834336" available="true">
-<categoryId>101</categoryId>
-<vendorCode>CP13834336</vendorCode>
-<name>МФУ Canon i-SENSYS MF463dw (5951C008AA)</name>
-<price>228900</price>
-<picture>https://www.comportal.kz/upload/iblock/390/2nfu71ivarw81gnd8jp4rhlwlmr5c3gf.JPG</picture>
-<vendor>Canon</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">МФУ Canon i-SENSYS MF463dw (5951C008AA)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">МФУ. Формат печати: A4. Разрешение: 1200x1200. Скорость печати ч/б: 40. Порты: USB LAN WiFI. Технология печати: Лазерная. Гарантия: 12 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Разрешение 1200x1200</li><li>Гарантия 12 мес</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> Canon</li><li><strong>Емкость 4-го лотка:</strong> 550</li><li><strong>Коды:</strong> 5951C008AA</li><li><strong>Модель:</strong> i-SENSYS MF463dw</li><li><strong>Нагрузка:</strong> 80 000</li><li><strong>Наличие картриджа (тонера) в комплекте:</strong> Стартовый</li><li><strong>Порты:</strong> USB LAN WiFI</li><li><strong>Разрешение:</strong> 1200x1200</li><li><strong>Скорость печати ч/б:</strong> 40</li><li><strong>Технология печати:</strong> Лазерная</li><li><strong>Тип:</strong> МФУ</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">Canon</param>
-<param name="Емкость 4-го лотка">550</param>
-<param name="Коды">5951C008AA</param>
-<param name="Модель">i-SENSYS MF463dw</param>
-<param name="Нагрузка">80 000</param>
-<param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
-<param name="Порты">USB LAN WiFI</param>
-<param name="Разрешение">1200x1200</param>
-<param name="Скорость печати ч/б">40</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Тип">МФУ</param>
-<param name="Формат печати">A4</param>
-<param name="Функция">Принтер-Сканер(АПД-50с.)-Копир</param>
-<keywords>Canon, МФУ Canon i-SENSYS MF463dw (5951C008AA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13834574" available="true">
 <categoryId>701</categoryId>
 <vendorCode>CP13834574</vendorCode>
@@ -21990,68 +21829,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Dell, Ноутбук Dell Latitude 7650 (210-BLQN_3), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13871826" available="true">
-<categoryId>602</categoryId>
-<vendorCode>CP13871826</vendorCode>
-<name>Монитор Acer Predator XB323QKV3bmiiphx (UM.JX3EE.301)</name>
-<price>305900</price>
-<picture>https://www.comportal.kz/upload/iblock/500/kvw9llu4g57493qzvu2qw5988c84z73u.jpg</picture>
-<vendor>Acer</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор Acer Predator XB323QKV3bmiiphx (UM.JX3EE.301)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Модельная серия: Predator XB323QKV3bmiiphx. Диагональ: 31.5. Максимальное разрешение: 3840x2160. Тип матрицы: IPS. Частота обновления: 160. Время отклика: 1. Порты: 2xHDMI(2.1) + 1xDP(1.4) + Audio out. Гарантия: 12 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Диагональ экрана 31.5</li><li>Гарантия 12 мес</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Время отклика:</strong> 1</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Диагональ:</strong> 31.5</li><li><strong>Бренд:</strong> Acer</li><li><strong>Коды:</strong> UM.JX3EE.301</li><li><strong>Контрастность:</strong> 1000:1</li><li><strong>Максимальное разрешение:</strong> 3840x2160</li><li><strong>Модель:</strong> Predator XB323QKV3bmiiphx</li><li><strong>Порты:</strong> 2xHDMI(2.1) + 1xDP(1.4) + Audio out</li><li><strong>Тип:</strong> Монитор</li><li><strong>Тип матрицы:</strong> IPS</li><li><strong>Углы обзора (вертикальный/горизонтальный):</strong> 178/178</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Время отклика">1</param>
-<param name="Гарантия">12 мес</param>
-<param name="Диагональ">31.5</param>
-<param name="Для бренда">Acer</param>
-<param name="Коды">UM.JX3EE.301</param>
-<param name="Контрастность">1000:1</param>
-<param name="Максимальное разрешение">3840x2160</param>
-<param name="Модель">Predator XB323QKV3bmiiphx</param>
-<param name="Порты">2xHDMI(2.1) + 1xDP(1.4) + Audio out</param>
-<param name="Тип">Монитор</param>
-<param name="Тип матрицы">IPS</param>
-<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
-<param name="Цвет">Чёрный</param>
-<param name="Частота обновления">160</param>
-<param name="Яркость">400</param>
-<keywords>Acer, Монитор Acer Predator XB323QKV3bmiiphx (UM.JX3EE.301), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13871713" available="true">
 <categoryId>602</categoryId>
 <vendorCode>CP13871713</vendorCode>
@@ -23634,88 +23411,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>AIWA, Моноблок AIWA PF2702-K 16-512 (PF2702-K 16-512), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13869798" available="true">
-<categoryId>601</categoryId>
-<vendorCode>CP13869798</vendorCode>
-<name>Ноутбук ASUS Vivobook Pro 15 OLED / N6506CU-MA037W (90NB15E3-M00310)</name>
-<price>830900</price>
-<picture>https://www.comportal.kz/upload/iblock/c61/pfjhob4nwucre73xbxtxz82hesm3ob7d.jpg</picture>
-<vendor>ASUS</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук ASUS Vivobook Pro 15 OLED / N6506CU-MA037W (90NB15E3-M00310)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Процессор: Intel 255H Core Ultra 7 2. Оперативная память: 24 Gb / DDR5 / 6400. Накопитель: 1000 / PCIe NVMe SSD. Диагональ: 15,6. Разрешение: 2880x1620. ОС: Microsoft Windows 11 Home 64. Видеокарта: nVidia RTX 4050 6 Gb. Wi‑Fi: 802.11ax. Bluetooth: Bluetooth 5.3. Камера: 5.0 mpix. Гарантия: 12 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Оперативная память 24 Gb</li><li>Операционная система Windows 11</li><li>Поддержка Wi-Fi 802.11ax</li><li>Поддержка Bluetooth 5.3</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Bluetooth:</strong> Bluetooth 5.3</li><li><strong>Wi-Fi:</strong> 802.11ax</li><li><strong>Адаптер:</strong> 200W AC Adapter</li><li><strong>Аккумулятор:</strong> 4-cell 75WHrs Li-ion</li><li><strong>Битность операционной системы:</strong> 64</li><li><strong>Версия операционной системы:</strong> Home</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> ASUS</li><li><strong>Занятые слоты памяти:</strong> 1</li><li><strong>Камера:</strong> 5.0 mpix</li><li><strong>Коды:</strong> 90NB15E3-M00310</li><li><strong>Количество слотов памяти:</strong> 1</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Bluetooth">Bluetooth 5.3</param>
-<param name="Wi-Fi">802.11ax</param>
-<param name="Адаптер">200W AC Adapter</param>
-<param name="Аккумулятор">4-cell 75WHrs Li-ion</param>
-<param name="Битность операционной системы">64</param>
-<param name="Версия операционной системы">Home</param>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">ASUS</param>
-<param name="Занятые слоты памяти">1</param>
-<param name="Камера">5.0 mpix</param>
-<param name="Коды">90NB15E3-M00310</param>
-<param name="Количество слотов памяти">1</param>
-<param name="Марка чипсета видеокарты">GeForce</param>
-<param name="Модель">Vivobook Pro 15 OLED / N6506CU-MA037W</param>
-<param name="Модель процессора">Core Ultra 7</param>
-<param name="Модель чипсета видеокарты">RTX 4050</param>
-<param name="Объем видеопамяти">6 Gb</param>
-<param name="Объем жесткого диска">1000</param>
-<param name="Оперативная память">24 Gb</param>
-<param name="Операционная система">Windows 11</param>
-<param name="Порты">1x USB 3.2 Gen 2 Type-C with support for display power delivery (data speed up to 10Gbps)/2x USB 3.2 Gen 1 Type-A (data speed up to 5Gbps)/1x Thunderbolt 4 with support for display power delivery (data speed up to 40Gbps)/1x HDMI 2.1 TMDS/1x 3.5mm Combo A</param>
-<param name="Производитель операционной системы">Microsoft</param>
-<param name="Производитель процессора">Intel</param>
-<param name="Производитель чипсета видеокарты">nVidia</param>
-<param name="Размер дисплея">15,6</param>
-<param name="Разрешение дисплея">2880x1620</param>
-<param name="Серия процессора">255H</param>
-<param name="Тип">Ноутбук</param>
-<param name="Тип жесткого диска">PCIe NVMe SSD</param>
-<param name="Тип матрицы">3K</param>
-<param name="Тип оперативной памяти">DDR5</param>
-<param name="Тип привода">No ODD</param>
-<param name="Цвет">Серый</param>
-<param name="Частота оперативной памяти">6400</param>
-<param name="Частота процессора">2</param>
-<keywords>ASUS, Ноутбук ASUS Vivobook Pro 15 OLED / N6506CU-MA037W (90NB15E3-M00310), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13870328" available="true">
 <categoryId>602</categoryId>
 <vendorCode>CP13870328</vendorCode>
@@ -23794,6 +23489,88 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Частота процессора">1,3</param>
 <param name="Языковая версия операционной системы">Многоязычная</param>
 <keywords>ASUS, Моноблок ASUS E3402WVA-WPC004X (90PT03T1-M01090), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13870517" available="true">
+<categoryId>601</categoryId>
+<vendorCode>CP13870517</vendorCode>
+<name>Ноутбук ASUS ROG Strix G18 / G815LR-S9085 (90NR0LT1-M00390)</name>
+<price>1441900</price>
+<picture>https://www.comportal.kz/upload/iblock/151/9i7js8a3l2t7g56ew62nafv1mpjbg1h4.JPG</picture>
+<vendor>ASUS</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук ASUS ROG Strix G18 / G815LR-S9085 (90NR0LT1-M00390)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Процессор: Intel 275HX Core Ultra 9 2,7. Оперативная память: 32 Gb / DDR5 / 5600. Накопитель: 1000 / M.2 PCIe SSD. Диагональ: 18. Разрешение: 2560x1600. ОС: Без операционной системы. Видеокарта: nVidia RTX 5070 Ti 12 Gb. Wi‑Fi: 802.11be. Bluetooth: Bluetooth 5.4. Камера: FHD IR Camera. Гарантия: 12 мес.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
+
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Оперативная память 32 Gb</li><li>Операционная система Без операционной системы</li><li>Поддержка Wi-Fi 802.11be</li><li>Поддержка Bluetooth 5.4</li></ul>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Bluetooth:</strong> Bluetooth 5.4</li><li><strong>Wi-Fi:</strong> 802.11be</li><li><strong>Адаптер:</strong> 280W AC Adapter</li><li><strong>Аккумулятор:</strong> 4-Cell 90Wh</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> ASUS</li><li><strong>Дополнительные характеристики:</strong> 240 Hz</li><li><strong>Занятые слоты памяти:</strong> 1</li><li><strong>Камера:</strong> FHD IR Camera</li><li><strong>Коды:</strong> 90NR0LT1-M00390</li><li><strong>Количество портов USB:</strong> 3</li><li><strong>Количество слотов памяти:</strong> 2</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Bluetooth">Bluetooth 5.4</param>
+<param name="Wi-Fi">802.11be</param>
+<param name="Адаптер">280W AC Adapter</param>
+<param name="Аккумулятор">4-Cell 90Wh</param>
+<param name="Гарантия">12 мес</param>
+<param name="Для бренда">ASUS</param>
+<param name="Дополнительные характеристики">240 Hz</param>
+<param name="Занятые слоты памяти">1</param>
+<param name="Камера">FHD IR Camera</param>
+<param name="Коды">90NR0LT1-M00390</param>
+<param name="Количество портов USB">3</param>
+<param name="Количество слотов памяти">2</param>
+<param name="Марка чипсета видеокарты">GeForce</param>
+<param name="Модель">S9085</param>
+<param name="Модель процессора">Core Ultra 9</param>
+<param name="Модель чипсета видеокарты">RTX 5070 Ti</param>
+<param name="Объем видеопамяти">12 Gb</param>
+<param name="Объем жесткого диска">1000</param>
+<param name="Оперативная память">32 Gb</param>
+<param name="Операционная система">Без операционной системы</param>
+<param name="Порты">1x 2.5G LAN port / 2x Thunderbolt™ 5 with support for DisplayPort™ / power delivery G-SYNC (data speed up to 120Gbps) / 3x USB 3.2 Gen 2 Type-A (data speed up to 10Gbps)</param>
+<param name="Производитель процессора">Intel</param>
+<param name="Производитель чипсета видеокарты">nVidia</param>
+<param name="Размер дисплея">18</param>
+<param name="Разрешение дисплея">2560x1600</param>
+<param name="Серия процессора">275HX</param>
+<param name="Сетевая карта (скорость передачи)">10/100/1000</param>
+<param name="Тип">Ноутбук</param>
+<param name="Тип жесткого диска">M.2 PCIe SSD</param>
+<param name="Тип матрицы">IPS</param>
+<param name="Тип оперативной памяти">DDR5</param>
+<param name="Тип привода">No ODD</param>
+<param name="Цвет">Серый</param>
+<param name="Частота оперативной памяти">5600</param>
+<param name="Частота процессора">2,7</param>
+<keywords>ASUS, Ноутбук ASUS ROG Strix G18 / G815LR-S9085 (90NR0LT1-M00390), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13870436" available="true">
@@ -25011,128 +24788,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>HP, Монитор HP S 5 Pro 524pn (9D9A7AA#ABB), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13870727" available="true">
-<categoryId>602</categoryId>
-<vendorCode>CP13870727</vendorCode>
-<name>Монитор Dell Alienware 32 Gaming Monitor - AW3225DM (210-BQWN)</name>
-<price>171900</price>
-<picture>https://www.comportal.kz/upload/iblock/d84/lcjja7244dta3o90dpkjg8ai2yxurbua.JPG</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор Dell Alienware 32 Gaming Monitor - AW3225DM (210-BQWN)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Диагональ: 32. Максимальное разрешение: 2560x1440. Тип матрицы: VA. Частота обновления: 180. Время отклика: 1. Порты: 2 HDMI ports/1 DisplayPort 1.4/2 USB Type-A/1 USB Type-B. Гарантия: 36 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Диагональ экрана 32</li><li>Гарантия 36 мес</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Время отклика:</strong> 1</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Диагональ:</strong> 32</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> 210-BQWN</li><li><strong>Контрастность:</strong> 3000:1</li><li><strong>Максимальное разрешение:</strong> 2560x1440</li><li><strong>Модель:</strong> AW3225DM</li><li><strong>Порты:</strong> 2 HDMI ports/1 DisplayPort 1.4/2 USB Type-A/1 USB Type-B</li><li><strong>Тип:</strong> Монитор</li><li><strong>Тип матрицы:</strong> VA</li><li><strong>Цвет:</strong> Чёрный</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Время отклика">1</param>
-<param name="Гарантия">36 мес</param>
-<param name="Диагональ">32</param>
-<param name="Для бренда">Dell</param>
-<param name="Коды">210-BQWN</param>
-<param name="Контрастность">3000:1</param>
-<param name="Максимальное разрешение">2560x1440</param>
-<param name="Модель">AW3225DM</param>
-<param name="Порты">2 HDMI ports/1 DisplayPort 1.4/2 USB Type-A/1 USB Type-B</param>
-<param name="Тип">Монитор</param>
-<param name="Тип матрицы">VA</param>
-<param name="Цвет">Чёрный</param>
-<param name="Частота обновления">180</param>
-<param name="Яркость">400</param>
-<keywords>Dell, Монитор Dell Alienware 32 Gaming Monitor - AW3225DM (210-BQWN), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13870728" available="true">
-<categoryId>602</categoryId>
-<vendorCode>CP13870728</vendorCode>
-<name>Монитор Dell Alienware 34 Gaming Monitor - AW3425DWM (210-BQWL)</name>
-<price>207900</price>
-<picture>https://www.comportal.kz/upload/iblock/ba6/6xj75ltcmfi7qppz0m3ih932z95pqf5g.JPG</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор Dell Alienware 34 Gaming Monitor - AW3425DWM (210-BQWL)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Диагональ: 34. Максимальное разрешение: 3440x1440. Тип матрицы: VA. Частота обновления: 180. Время отклика: 1. Порты: 2 HDMI ports/1 DisplayPort 1.4/2 USB Type-A/1 USB Type-B. Гарантия: 36 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Диагональ экрана 34</li><li>Гарантия 36 мес</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Время отклика:</strong> 1</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Диагональ:</strong> 34</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> 210-BQWL</li><li><strong>Контрастность:</strong> 3000:1</li><li><strong>Максимальное разрешение:</strong> 3440x1440</li><li><strong>Модель:</strong> AW3425DWM</li><li><strong>Порты:</strong> 2 HDMI ports/1 DisplayPort 1.4/2 USB Type-A/1 USB Type-B</li><li><strong>Тип:</strong> Монитор</li><li><strong>Тип матрицы:</strong> VA</li><li><strong>Цвет:</strong> Чёрный</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Время отклика">1</param>
-<param name="Гарантия">36 мес</param>
-<param name="Диагональ">34</param>
-<param name="Для бренда">Dell</param>
-<param name="Коды">210-BQWL</param>
-<param name="Контрастность">3000:1</param>
-<param name="Максимальное разрешение">3440x1440</param>
-<param name="Модель">AW3425DWM</param>
-<param name="Порты">2 HDMI ports/1 DisplayPort 1.4/2 USB Type-A/1 USB Type-B</param>
-<param name="Тип">Монитор</param>
-<param name="Тип матрицы">VA</param>
-<param name="Цвет">Чёрный</param>
-<param name="Частота обновления">180</param>
-<param name="Яркость">400</param>
-<keywords>Dell, Монитор Dell Alienware 34 Gaming Monitor - AW3425DWM (210-BQWL), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13872351" available="true">
 <categoryId>602</categoryId>
 <vendorCode>CP13872351</vendorCode>
@@ -25974,66 +25629,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Dell, Монитор Dell Pro 32 Plus 4K USB-C Hub Monitor - P3225QE 80.0cm (31.5") (210-BQZY), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13870736" available="true">
-<categoryId>602</categoryId>
-<vendorCode>CP13870736</vendorCode>
-<name>Монитор Dell Pro 34 Plus USB-C Hub Monitor - P3425WE, 86.5cm (34.1") (210-BRDR)</name>
-<price>327900</price>
-<picture>https://www.comportal.kz/upload/iblock/23b/nzl7nzp53fs7ezyp5qe0uphslv15anit.JPG</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор Dell Pro 34 Plus USB-C Hub Monitor - P3425WE, 86.5cm (34.1&quot;) (210-BRDR)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Диагональ: 34.18. Максимальное разрешение: 3440x1440. Тип матрицы: IPS. Частота обновления: 100. Время отклика: 5. Порты: 1 HDMI port (HDCP 1.4) (Supports up to WQHD 3440 x 1440 100 Hz, TMDS, as per specified in HDMI 2.1)/1 DisplayPort 1.4 port (HDCP 1.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Диагональ экрана 34.18</li><li>Гарантия 36 мес</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Время отклика:</strong> 5</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Диагональ:</strong> 34.18</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> 210-BRDR</li><li><strong>Контрастность:</strong> 1500:1</li><li><strong>Максимальное разрешение:</strong> 3440x1440</li><li><strong>Модель:</strong> P3425WE</li><li><strong>Порты:</strong> 1 HDMI port (HDCP 1.4) (Supports up to WQHD 3440 x 1440 100 Hz, TMDS, as per specified in HDMI 2.1)/1 DisplayPort 1.4 port (HDCP 1.4) (Supports up to WQHD 3440 x 1440 100 Hz)/3 USB Type-A 5Gbps downstream ports/1 USB Type-B 5Gbps upstream port/1 USB-C 5Gbps downstream port (Power Delivery up to 15 W)/1 USB-C 5Gbps upstream port (DisplayPort 1.4 Alternate Mode, Power Delivery up to 90 W)/1 RJ45</li><li><strong>Тип:</strong> Монитор</li><li><strong>Тип матрицы:</strong> IPS</li><li><strong>Частота обновления:</strong> 100</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Время отклика">5</param>
-<param name="Гарантия">36 мес</param>
-<param name="Диагональ">34.18</param>
-<param name="Для бренда">Dell</param>
-<param name="Коды">210-BRDR</param>
-<param name="Контрастность">1500:1</param>
-<param name="Максимальное разрешение">3440x1440</param>
-<param name="Модель">P3425WE</param>
-<param name="Порты">1 HDMI port (HDCP 1.4) (Supports up to WQHD 3440 x 1440 100 Hz, TMDS, as per specified in HDMI 2.1)/1 DisplayPort 1.4 port (HDCP 1.4) (Supports up to WQHD 3440 x 1440 100 Hz)/3 USB Type-A 5Gbps downstream ports/1 USB Type-B 5Gbps upstream port/1 USB-C 5Gb</param>
-<param name="Тип">Монитор</param>
-<param name="Тип матрицы">IPS</param>
-<param name="Частота обновления">100</param>
-<param name="Яркость">350</param>
-<keywords>Dell, Монитор Dell Pro 34 Plus USB-C Hub Monitor - P3425WE 86.5cm (34.1") (210-BRDR), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13870562" available="true">
 <categoryId>602</categoryId>
 <vendorCode>CP13870562</vendorCode>
@@ -26780,87 +26375,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Dell, Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13871801" available="true">
-<categoryId>601</categoryId>
-<vendorCode>CP13871801</vendorCode>
-<name>Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK_BTO211_PB14250_EMEA)</name>
-<price>587900</price>
-<picture>https://www.comportal.kz/upload/iblock/c8a/g1gc40esb07snlumdbkuhsytryrakqku.jpg</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK_BTO211_PB14250_EMEA)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: Pro 14 Plus PB14250. Процессор: Intel 236V Core Ultra 5 2,1. Оперативная память: 16 Gb / LPDDR5X / 8533. Накопитель: 512 / M.2 PCIe SSD / 1 шт. Диагональ: 14. Разрешение: 1920x1200. ОС: Microsoft Windows 11 Pro 64. Видеокарта: Intel Arc. Wi‑Fi: AX211. Bluetooth: Bluetooth. Камера: FHD IR Camera. Гарантия: 12 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Оперативная память 16 Gb</li><li>Операционная система Windows 11</li><li>Поддержка Wi-Fi AX211</li><li>Поддержка Bluetooth</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Bluetooth:</strong> Bluetooth</li><li><strong>Wi-Fi:</strong> AX211</li><li><strong>Адаптер:</strong> 65W AC Adapter</li><li><strong>Аккумулятор:</strong> 3 Cell 55WHr</li><li><strong>Битность операционной системы:</strong> 64</li><li><strong>Версия операционной системы:</strong> Pro</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> Dell</li><li><strong>Дополнительные характеристики:</strong> FgrPr</li><li><strong>Камера:</strong> FHD IR Camera</li><li><strong>Коды:</strong> 210-BPDK_BTO211_PB14250_EMEA</li><li><strong>Количество дисков:</strong> 1</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Bluetooth">Bluetooth</param>
-<param name="Wi-Fi">AX211</param>
-<param name="Адаптер">65W AC Adapter</param>
-<param name="Аккумулятор">3 Cell 55WHr</param>
-<param name="Битность операционной системы">64</param>
-<param name="Версия операционной системы">Pro</param>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">Dell</param>
-<param name="Дополнительные характеристики">FgrPr</param>
-<param name="Камера">FHD IR Camera</param>
-<param name="Коды">210-BPDK_BTO211_PB14250_EMEA</param>
-<param name="Количество дисков">1</param>
-<param name="Количество слотов памяти">1</param>
-<param name="Марка чипсета видеокарты">Graphics</param>
-<param name="Модель">Pro 14 Plus PB14250</param>
-<param name="Модель процессора">Core Ultra 5</param>
-<param name="Модель чипсета видеокарты">Arc</param>
-<param name="Объем жесткого диска">512</param>
-<param name="Оперативная память">16 Gb</param>
-<param name="Операционная система">Windows 11</param>
-<param name="Производитель операционной системы">Microsoft</param>
-<param name="Производитель процессора">Intel</param>
-<param name="Производитель чипсета видеокарты">Intel</param>
-<param name="Размер дисплея">14</param>
-<param name="Разрешение дисплея">1920x1200</param>
-<param name="Серия процессора">236V</param>
-<param name="Тип">Ноутбук</param>
-<param name="Тип жесткого диска">M.2 PCIe SSD</param>
-<param name="Тип матрицы">FHD+</param>
-<param name="Тип оперативной памяти">LPDDR5X</param>
-<param name="Тип привода">No ODD</param>
-<param name="Частота оперативной памяти">8533</param>
-<param name="Частота процессора">2,1</param>
-<param name="Языковая версия операционной системы">Многоязычная</param>
-<keywords>Dell, Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK_BTO211_PB14250_EMEA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13871802" available="true">
 <categoryId>601</categoryId>
 <vendorCode>CP13871802</vendorCode>
@@ -27507,68 +27021,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Коды">210-BRVT</param>
 <param name="Модель">S3225QC</param>
 <param name="Тип">Монитор</param>
-<keywords>Dell, Монитор Dell 32 Plus 4K QD-OLED Monitor - S3225QC (210-BRVT), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13871384" available="true">
-<categoryId>602</categoryId>
-<vendorCode>CP13871384</vendorCode>
-<name>Монитор Dell 32 Plus 4K QD-OLED Monitor - S3225QC (210-BRVT)</name>
-<price>437900</price>
-<picture>https://www.comportal.kz/upload/iblock/6b4/844nm4v839459r65p4tlcx2d8s63t2vh.JPG</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор Dell 32 Plus 4K QD-OLED Monitor - S3225QC (210-BRVT)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Диагональ: 32. Максимальное разрешение: 3840x2160. Тип матрицы: OLED. Частота обновления: 120. Время отклика: 1. Порты: 1 HDMI port (HDCP 1.4 and 2.2) (Supports up to UHD 3840 x 2160 120 Hz, FRL, HDR, VRR as per specified in HDMI 2.1)/2 USB-C 5Gbps downstream ports (Data only, Power Delivery up to 15 W)/1 USB-C 5Gbps upstream port (DisplayPort 1.4 Alt Mode, Power Delivery up to 90 W). Гарантия: 36 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Диагональ экрана 32</li><li>Гарантия 36 мес</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Время отклика:</strong> 1</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Диагональ:</strong> 32</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> 210-BRVT</li><li><strong>Контрастность:</strong> 1500:1</li><li><strong>Максимальное разрешение:</strong> 3840x2160</li><li><strong>Модель:</strong> S3225QC</li><li><strong>Наличие динамиков:</strong> есть</li><li><strong>Порты:</strong> 1 HDMI port (HDCP 1.4 and 2.2) (Supports up to UHD 3840 x 2160 120 Hz, FRL, HDR, VRR as per specified in HDMI 2.1)/2 USB-C 5Gbps downstream ports (Data only, Power Delivery up to 15 W)/1 USB-C 5Gbps upstream port (DisplayPort 1.4 Alt Mode, Power Delivery up to 90 W)</li><li><strong>Тип:</strong> Монитор</li><li><strong>Тип матрицы:</strong> OLED</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Время отклика">1</param>
-<param name="Гарантия">36 мес</param>
-<param name="Диагональ">32</param>
-<param name="Для бренда">Dell</param>
-<param name="Коды">210-BRVT</param>
-<param name="Контрастность">1500:1</param>
-<param name="Максимальное разрешение">3840x2160</param>
-<param name="Модель">S3225QC</param>
-<param name="Наличие динамиков">есть</param>
-<param name="Порты">1 HDMI port (HDCP 1.4 and 2.2) (Supports up to UHD 3840 x 2160 120 Hz, FRL, HDR, VRR as per specified in HDMI 2.1)/2 USB-C 5Gbps downstream ports (Data only, Power Delivery up to 15 W)/1 USB-C 5Gbps upstream port (DisplayPort 1.4 Alt Mode, Power Delivery</param>
-<param name="Тип">Монитор</param>
-<param name="Тип матрицы">OLED</param>
-<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
-<param name="Частота обновления">120</param>
-<param name="Яркость">1 000</param>
 <keywords>Dell, Монитор Dell 32 Plus 4K QD-OLED Monitor - S3225QC (210-BRVT), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
@@ -28505,6 +27957,66 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип">Принтер</param>
 <param name="Формат печати">A4</param>
 <keywords>Canon, Принтер Canon I-SENSYS LBP243DW II (7187C013), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13872198" available="true">
+<categoryId>602</categoryId>
+<vendorCode>CP13872198</vendorCode>
+<name>Монитор HP S5 Pro 527pu (9E0G5AA#ABB)</name>
+<price>162900</price>
+<picture>https://www.comportal.kz/upload/iblock/3d3/yqzp78i88c7yf46t0gu1lsp2fdh1knfl.JPG</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор HP S5 Pro 527pu (9E0G5AA#ABB)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Модельная серия: S5 Pro 527pu. Диагональ: 27. Максимальное разрешение: 2560x1440. Тип матрицы: IPS. Частота обновления: 100. Время отклика: 1. Порты: HDMI DisplayPort. Гарантия: 36 мес.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
+
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Диагональ экрана 27</li><li>Гарантия 36 мес</li></ul>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Время отклика:</strong> 1</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Диагональ:</strong> 27</li><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 9E0G5AA#ABB</li><li><strong>Контрастность:</strong> 1300:1</li><li><strong>Максимальное разрешение:</strong> 2560x1440</li><li><strong>Модель:</strong> S5 Pro 527pu</li><li><strong>Порты:</strong> HDMI DisplayPort</li><li><strong>Тип:</strong> Монитор</li><li><strong>Тип матрицы:</strong> IPS</li><li><strong>Частота обновления:</strong> 100</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Время отклика">1</param>
+<param name="Гарантия">36 мес</param>
+<param name="Диагональ">27</param>
+<param name="Для бренда">HP</param>
+<param name="Коды">9E0G5AA#ABB</param>
+<param name="Контрастность">1300:1</param>
+<param name="Максимальное разрешение">2560x1440</param>
+<param name="Модель">S5 Pro 527pu</param>
+<param name="Порты">HDMI DisplayPort</param>
+<param name="Тип">Монитор</param>
+<param name="Тип матрицы">IPS</param>
+<param name="Частота обновления">100</param>
+<param name="Яркость">350</param>
+<keywords>HP, Монитор HP S5 Pro 527pu (9E0G5AA#ABB), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13872105" available="true">
@@ -30495,54 +30007,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Dell, Монитор Dell AW2725DM (210-BQWQ), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13872878" available="true">
-<categoryId>602</categoryId>
-<vendorCode>CP13872878</vendorCode>
-<name>Монитор Dell AW2525HM (210-BRYJ)</name>
-<price>128900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор Dell AW2525HM (210-BRYJ)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: AW2525HM. Коды: 210-BRYJ.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> 210-BRYJ</li><li><strong>Модель:</strong> AW2525HM</li><li><strong>Тип:</strong> Монитор</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Гарантия">36 мес</param>
-<param name="Для бренда">Dell</param>
-<param name="Коды">210-BRYJ</param>
-<param name="Модель">AW2525HM</param>
-<param name="Тип">Монитор</param>
-<keywords>Dell, Монитор Dell AW2525HM (210-BRYJ), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13872296" available="true">
 <categoryId>303</categoryId>
 <vendorCode>CP13872296</vendorCode>
@@ -31805,54 +31269,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Частота оперативной памяти">5200</param>
 <param name="Частота процессора">2,2</param>
 <keywords>ASUS, Ноутбук ASUS ExpertBook / P1403CVA-S61785 (90NX0871-M022T0), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13872585" available="true">
-<categoryId>601</categoryId>
-<vendorCode>CP13872585</vendorCode>
-<name>Ноутбук ASUS ExpertBook / P1403CVA-S61790X (90NX0871-M022V0)</name>
-<price>466900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>ASUS</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук ASUS ExpertBook / P1403CVA-S61790X (90NX0871-M022V0)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Гарантия: 12 мес. Для бренда: ASUS. Модель: P1403CVA. Коды: 90NX0871-M022V0.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> ASUS</li><li><strong>Коды:</strong> 90NX0871-M022V0</li><li><strong>Модель:</strong> P1403CVA</li><li><strong>Тип:</strong> Ноутбук</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">ASUS</param>
-<param name="Коды">90NX0871-M022V0</param>
-<param name="Модель">P1403CVA</param>
-<param name="Тип">Ноутбук</param>
-<keywords>ASUS, Ноутбук ASUS ExpertBook / P1403CVA-S61790X (90NX0871-M022V0), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13872591" available="true">
@@ -34665,54 +34081,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">SE2726HG</param>
 <param name="Тип">Монитор</param>
 <keywords>Dell, Монитор Dell SE2726HG (210-BTSP), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13873278" available="true">
-<categoryId>602</categoryId>
-<vendorCode>CP13873278</vendorCode>
-<name>Монитор Dell SE2426HG (210-BTTF)</name>
-<price>65900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Dell</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор Dell SE2426HG (210-BTTF)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Гарантия: 36 мес. Для бренда: Dell. Модель: SE2426HG. Коды: 210-BTTF.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> 210-BTTF</li><li><strong>Модель:</strong> SE2426HG</li><li><strong>Тип:</strong> Монитор</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Гарантия">36 мес</param>
-<param name="Для бренда">Dell</param>
-<param name="Коды">210-BTTF</param>
-<param name="Модель">SE2426HG</param>
-<param name="Тип">Монитор</param>
-<keywords>Dell, Монитор Dell SE2426HG (210-BTTF), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13873279" available="true">
