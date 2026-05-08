@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-08 01:48:04">
+<yml_catalog date="2026-05-09 01:33:58">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-05-08 01:48:04
-Ближайшая сборка (Алматы)                  | 2026-05-09 00:30:00
-Сколько товаров у поставщика до фильтра    | 1165
-Сколько товаров у поставщика после фильтра | 627
-Сколько товаров есть в наличии (true)      | 627
+Время сборки (Алматы)                      | 2026-05-09 01:33:58
+Ближайшая сборка (Алматы)                  | 2026-05-10 00:30:00
+Сколько товаров у поставщика до фильтра    | 1163
+Сколько товаров у поставщика после фильтра | 621
+Сколько товаров есть в наличии (true)      | 621
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -483,7 +483,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10302301</vendorCode>
 <name>Картридж HP CE285AF (2 шт.) (CE285AF) (оригинал)</name>
-<price>97900</price>
+<price>96900</price>
 <picture>https://www.comportal.kz/upload/iblock/fc1/fc132913b24a672c3e6e3fe6230c18ca.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -534,7 +534,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10304640</vendorCode>
 <name>Принтер HP LaserJet Enterprise 700 M712dn (CF236A#B19)</name>
-<price>976900</price>
+<price>973900</price>
 <picture>https://www.comportal.kz/upload/iblock/966/966e06657c005e0c2ae8144cc286bbe0.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -905,7 +905,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>703</categoryId>
 <vendorCode>CP10658452</vendorCode>
 <name>Дополнительная батарея APC SMX120BP (SMX120BP)</name>
-<price>609900</price>
+<price>607900</price>
 <picture>https://www.comportal.kz/upload/iblock/c52/ifb6pclw9jmd90b5hey1hesdde4q4igw.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -1005,7 +1005,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>203</categoryId>
 <vendorCode>CP13870166</vendorCode>
 <name>Трансферный комплект HP CE516A (CE516A)</name>
-<price>210900</price>
+<price>209900</price>
 <picture>https://www.comportal.kz/upload/iblock/503/hdizvzicxlp638enym2i6d0wltnq6623.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -1054,7 +1054,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>105</categoryId>
 <vendorCode>CP13870159</vendorCode>
 <name>Барабан HP CF364A (CF364A)</name>
-<price>162900</price>
+<price>161900</price>
 <picture>https://www.comportal.kz/upload/iblock/733/wijfg9ugarqixbuzmx6qc8x0jl1y1inv.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -1150,7 +1150,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>105</categoryId>
 <vendorCode>CP13870163</vendorCode>
 <name>Барабан HP CF365A (CF365A)</name>
-<price>162900</price>
+<price>161900</price>
 <picture>https://www.comportal.kz/upload/iblock/009/dch24p6arcl4xdkwhig1wznfgf2648eu.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -1246,7 +1246,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13867162</vendorCode>
 <name>Картридж HP C9732AC (C9732AC) (оригинал)</name>
-<price>209900</price>
+<price>208900</price>
 <picture>https://www.comportal.kz/upload/iblock/ea1/vdv0jtlz1185h24cttc0cfg88fug9oq7.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -1297,7 +1297,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13827646</vendorCode>
 <name>ИБП APC SMX3000RMHV2U (SMX3000RMHV2U)</name>
-<price>1364900</price>
+<price>1360900</price>
 <picture>https://www.comportal.kz/upload/iblock/6be/gxezuguei1v1kpi6ua1yvc4x2ylqo3hs.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -1354,7 +1354,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10865855</vendorCode>
 <name>ИБП APC SMX2200HV (SMX2200HV)</name>
-<price>952900</price>
+<price>949900</price>
 <picture>https://www.comportal.kz/upload/iblock/ee6/c123jsc0sv25l3t7phsczdu1lrdjfq42.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -1413,7 +1413,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13827520</vendorCode>
 <name>ИБП APC SRT10KRMXLI (SRT10KRMXLI)</name>
-<price>3139900</price>
+<price>3129900</price>
 <picture>https://www.comportal.kz/upload/iblock/82e/8g1icf1rudo2cgq2z54vgdo7lixcjaf6.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -1471,7 +1471,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10406026</vendorCode>
 <name>Дополнительная батарея APC SRT192RMBP2 (SRT192RMBP2)</name>
-<price>922900</price>
+<price>919900</price>
 <picture>https://www.comportal.kz/upload/iblock/a6f/fo0pjbdr2vfqyqvw9f00oauomah8aluu.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -1520,7 +1520,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10532957</vendorCode>
 <name>ИБП APC SRT10KXLI (SRT10KXLI)</name>
-<price>2593900</price>
+<price>2585900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -1568,7 +1568,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10376754</vendorCode>
 <name>ИБП APC SRT10KXLI (SRT10KXLI)</name>
-<price>3254900</price>
+<price>3244900</price>
 <picture>https://www.comportal.kz/upload/iblock/d5b/61942mck6d03fnxm9xnqcj2yfrevqjd9.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -1626,7 +1626,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10372691</vendorCode>
 <name>ИБП APC SRT5KXLI (SRT5KXLI)</name>
-<price>1960900</price>
+<price>1954900</price>
 <picture>https://www.comportal.kz/upload/iblock/c69/ttfohs8n6dxhs0158r99rg42ec3wheud.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -1683,7 +1683,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10303174</vendorCode>
 <name>ИБП APC SRT6KXLI (SRT6KXLI)</name>
-<price>2305900</price>
+<price>2297900</price>
 <picture>https://www.comportal.kz/upload/iblock/424/mmqoib0f7n75dymln1f1sm6705wtukoy.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -2099,7 +2099,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10362550</vendorCode>
 <name>ИБП APC SRT5KRMXLI (SRT5KRMXLI)</name>
-<price>2058900</price>
+<price>2051900</price>
 <picture>https://www.comportal.kz/upload/iblock/2d1/zzryforaa3xogyfy3c9jnjzhgayi7c74.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -2156,7 +2156,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13827510</vendorCode>
 <name>ИБП APC SRT6KRMXLI (SRT6KRMXLI)</name>
-<price>2102900</price>
+<price>2096900</price>
 <picture>https://www.comportal.kz/upload/iblock/8e9/5pio7chhcldmeils0sc890fmd9mdltqp.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -2214,7 +2214,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10420608</vendorCode>
 <name>ИБП APC SRT8KRMXLI (SRT8KRMXLI)</name>
-<price>2738900</price>
+<price>2729900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -2322,7 +2322,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10364644</vendorCode>
 <name>ИБП APC SRT2200XLI (SRT2200XLI)</name>
-<price>774900</price>
+<price>771900</price>
 <picture>https://www.comportal.kz/upload/iblock/f1c/i8o54yz5biryyxknjzod9zihl1euzfbm.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -2381,7 +2381,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10402565</vendorCode>
 <name>ИБП APC SRT2200RMXLI (SRT2200RMXLI)</name>
-<price>918900</price>
+<price>915900</price>
 <picture>https://www.comportal.kz/upload/iblock/d94/f4u1gyou2ot4d17f0ps5wi6in547wzkr.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -2440,7 +2440,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13873335</vendorCode>
 <name>ИБП APC SRT3000XLI (SRT3000XLI)</name>
-<price>1236900</price>
+<price>1232900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -2488,7 +2488,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10372081</vendorCode>
 <name>ИБП APC SRT3000XLI (SRT3000XLI)</name>
-<price>1236900</price>
+<price>1232900</price>
 <picture>https://www.comportal.kz/upload/iblock/f99/kac37kmy1m5nywvwq0v5mm22jtxpzydk.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -2547,7 +2547,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10361619</vendorCode>
 <name>ИБП APC SRT3000RMXLI (SRT3000RMXLI)</name>
-<price>1382900</price>
+<price>1378900</price>
 <picture>https://www.comportal.kz/upload/iblock/b45/kgrm4gcr4bxkv80lto03hrqoqi1irk62.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -2606,7 +2606,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10395514</vendorCode>
 <name>Дополнительная батарея APC SRT192RMBP (SRT192RMBP)</name>
-<price>697900</price>
+<price>694900</price>
 <picture>https://www.comportal.kz/upload/iblock/39a/dkuu833ceasdaudbgqdfts8mn9kzyhod.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -2655,7 +2655,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10317753</vendorCode>
 <name>Принтер HP LaserJet Pro M501dn (J8H61A#B19)</name>
-<price>230900</price>
+<price>229900</price>
 <picture>https://www.comportal.kz/upload/iblock/82e/qfcnzbymrgpfg2xba0c0nnrf1km5x3cd.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -3232,7 +3232,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13821643</vendorCode>
 <name>Тонер Canon 034 MG (9452B001) (оригинал)</name>
-<price>155900</price>
+<price>154900</price>
 <picture>https://www.comportal.kz/upload/iblock/fd7/1d3slbdxn3xfspexk5iwuuq3y9p3pik0.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -3282,7 +3282,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10416521</vendorCode>
 <name>ИБП APC SMX2000I (SMC2000I)</name>
-<price>676900</price>
+<price>674900</price>
 <picture>https://www.comportal.kz/upload/iblock/869/blm7va14jysv8szegvbr08o8w9dit8hr.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -3700,7 +3700,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10297250</vendorCode>
 <name>Тонер Canon C-EXV54 M (1396C002) (оригинал)</name>
-<price>60900</price>
+<price>59900</price>
 <picture>https://www.comportal.kz/upload/iblock/131/nz17loydllgrkxl24fd9oy6t97ilh8wp.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -3860,7 +3860,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10323958</vendorCode>
 <name>Картридж HP CF541A (CF541A) (оригинал)</name>
-<price>48900</price>
+<price>47900</price>
 <picture>https://www.comportal.kz/upload/iblock/fb2/fb2ee0224dc4fd1aaed07c4cdff17cfb.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -4114,7 +4114,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13835386</vendorCode>
 <name>ИБП HPE R1500 INTL (Q1L90A)</name>
-<price>323900</price>
+<price>322900</price>
 <picture>https://www.comportal.kz/upload/iblock/3dd/hq3tq6k8lu2exa628jvizyaj4me7i9jb.JPG</picture>
 <vendor>HPE</vendor>
 <currencyId>KZT</currencyId>
@@ -4999,7 +4999,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP10991404</vendorCode>
 <name>ИБП APC SRT1000RMXLI (SRT1000RMXLI)</name>
-<price>583900</price>
+<price>581900</price>
 <picture>https://www.comportal.kz/upload/iblock/db4/x1hlitbpxmke8wxznuwama52th8pce5k.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -5057,7 +5057,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13853154</vendorCode>
 <name>ИБП APC SRT1500XLI (SRT1500XLI)</name>
-<price>617900</price>
+<price>615900</price>
 <picture>https://www.comportal.kz/upload/iblock/602/uco5p5sv9n02mx2f1bllpj196d0z44yj.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -5114,7 +5114,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13872259</vendorCode>
 <name>ИБП APC SRT1500RMXLI (SRT1500RMXLI)</name>
-<price>630900</price>
+<price>628900</price>
 <picture>https://www.comportal.kz/upload/iblock/f32/m4mazr41bxlca9881kreb63pevknkrg2.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -5171,7 +5171,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>703</categoryId>
 <vendorCode>CP10686385</vendorCode>
 <name>Аккумулятор APC SRT48BP (SRT48BP)</name>
-<price>370900</price>
+<price>368900</price>
 <picture>https://www.comportal.kz/upload/iblock/ad6/g8jffvu6g04thpckpnq74jf15bshht16.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -5220,7 +5220,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13872229</vendorCode>
 <name>ИБП APC SRV1KI (SRV1KI)</name>
-<price>165900</price>
+<price>164900</price>
 <picture>https://www.comportal.kz/upload/iblock/fd0/o1ww0a860g7g9fly58oujgqfvtep18hz.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -5328,7 +5328,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP11151945</vendorCode>
 <name>ИБП APC SMC3000RMI2U (SMC3000RMI2U)</name>
-<price>663900</price>
+<price>661900</price>
 <picture>https://www.comportal.kz/upload/iblock/446/0lnmvo4hakynfm09pcv9p4x2whmb2bew.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -5641,7 +5641,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>106</categoryId>
 <vendorCode>CP13870526</vendorCode>
 <name>Печатающая головка Canon PF-06 (2352C001) (оригинал)</name>
-<price>285900</price>
+<price>284900</price>
 <picture>https://www.comportal.kz/upload/iblock/9f8/azh2xjiu8fbjsyb3tajuf2zwyukwakw1.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -5787,67 +5787,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Canon, Тонер-картридж Canon C-EXV 59 (3760C002) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP10416791" available="true">
-<categoryId>101</categoryId>
-<vendorCode>CP10416791</vendorCode>
-<name>МФУ HP Color Laser 178nw (4ZB96A#B19)</name>
-<price>163900</price>
-<picture>https://www.comportal.kz/upload/iblock/3c2/9dzh94b79f1usi49v8v60h7hf9epfuh1.JPG</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">МФУ HP Color Laser 178nw (4ZB96A#B19)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">МФУ. Формат печати: A4. Разрешение: 600x600. Скорость печати ч/б: 18. Скорость печати цветной: 4. Порты: USB LAN WiFI. Технология печати: Лазерная. Гарантия: 12 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Разрешение 600x600</li><li>Гарантия 12 мес</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 4ZB96A#B19</li><li><strong>Модель:</strong> Color Laser 178nw</li><li><strong>Нагрузка:</strong> 20 000</li><li><strong>Наличие картриджа (тонера) в комплекте:</strong> Стартовый</li><li><strong>Порты:</strong> USB LAN WiFI</li><li><strong>Разрешение:</strong> 600x600</li><li><strong>Скорость печати цветной:</strong> 4</li><li><strong>Скорость печати ч/б:</strong> 18</li><li><strong>Технология печати:</strong> Лазерная</li><li><strong>Тип:</strong> МФУ</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">HP</param>
-<param name="Коды">4ZB96A#B19</param>
-<param name="Модель">Color Laser 178nw</param>
-<param name="Нагрузка">20 000</param>
-<param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
-<param name="Порты">USB LAN WiFI</param>
-<param name="Разрешение">600x600</param>
-<param name="Скорость печати цветной">4</param>
-<param name="Скорость печати ч/б">18</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Тип">МФУ</param>
-<param name="Формат печати">A4</param>
-<param name="Функция">Принтер-Сканер(без АПД)-Копир</param>
-<keywords>HP, МФУ HP Color Laser 178nw (4ZB96A#B19), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP11231732" available="true">
 <categoryId>102</categoryId>
 <vendorCode>CP11231732</vendorCode>
@@ -5956,7 +5895,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP10806653</vendorCode>
 <name>Картридж Canon PFI-710BK (2354C001) (оригинал)</name>
-<price>178900</price>
+<price>177900</price>
 <picture>https://www.comportal.kz/upload/iblock/98d/qpzushimfcre1j5msvq6dlo1cerdrwkw.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -6008,7 +5947,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP10736920</vendorCode>
 <name>Картридж Canon PFI-320 (2892C001) (оригинал)</name>
-<price>97900</price>
+<price>96900</price>
 <picture>https://www.comportal.kz/upload/iblock/485/iurecjsgpmnrsxoncd0ng2n89l2up7kt.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -6112,7 +6051,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP10736919</vendorCode>
 <name>Картридж Canon PFI-320 (2893C001) (оригинал)</name>
-<price>98900</price>
+<price>97900</price>
 <picture>https://www.comportal.kz/upload/iblock/85b/gv1o5iani1x8elf3ye08zlhkbqq61uu5.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -6222,7 +6161,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10720851</vendorCode>
 <name>Картридж HP W2033A / 415A (W2033A) (оригинал)</name>
-<price>69900</price>
+<price>68900</price>
 <picture>https://www.comportal.kz/upload/iblock/204/6biu7yhjhoi3m1750ftznp3bc0f5z7sz.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -6273,7 +6212,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP10703230</vendorCode>
 <name>Картридж Canon PFI-710YL (2357C001) (оригинал)</name>
-<price>178900</price>
+<price>177900</price>
 <picture>https://www.comportal.kz/upload/iblock/fab/81rsz92cpzekwsa26n08zdu4jc8wjx4l.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -6325,7 +6264,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP10703229</vendorCode>
 <name>Картридж Canon PFI-710M (2356C001) (оригинал)</name>
-<price>178900</price>
+<price>177900</price>
 <picture>https://www.comportal.kz/upload/iblock/c3f/vdp5gs2f5hq4xwkvz5cuxdz8mmzn2loh.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -6377,7 +6316,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP10704801</vendorCode>
 <name>Картридж Canon PFI-710C (2355C001) (оригинал)</name>
-<price>178900</price>
+<price>177900</price>
 <picture>https://www.comportal.kz/upload/iblock/21e/8mi2ee8n5mq3ft5g5h8rtdpdz2pwd9kk.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -6480,7 +6419,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10720849</vendorCode>
 <name>Картридж HP W2031A / 415A (W2031A) (оригинал)</name>
-<price>69900</price>
+<price>68900</price>
 <picture>https://www.comportal.kz/upload/iblock/da7/w4r2s0sy4ir8jmksnfeo73qymlbkas7y.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -6965,7 +6904,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10600974</vendorCode>
 <name>Принтер HP LaserJet Enterprise M611dn (7PS84A#B19)</name>
-<price>421900</price>
+<price>420900</price>
 <picture>https://www.comportal.kz/upload/iblock/376/hae2l3qs1m6xmoe4yp1kcy0fn0zncgur.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -7241,7 +7180,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP11337741</vendorCode>
 <name>Картридж HP 207X (W2211X) (оригинал)</name>
-<price>66900</price>
+<price>65900</price>
 <picture>https://www.comportal.kz/upload/iblock/f7c/zr5g187w83x6693an9u6eo83i1r79m2g.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -8004,7 +7943,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>304</categoryId>
 <vendorCode>CP13820562</vendorCode>
 <name>Сканер HP ScanJet Pro 3000 s4 (6FW07A#B19)</name>
-<price>244900</price>
+<price>243900</price>
 <picture>https://www.comportal.kz/upload/iblock/ed1/slnl9odprkamp7nigokx17n1n0md7kv0.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -8061,7 +8000,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>304</categoryId>
 <vendorCode>CP13846250</vendorCode>
 <name>Сканер HP ScanJet Pro N4000 snw1 (6FW08A#B19)</name>
-<price>298900</price>
+<price>297900</price>
 <picture>https://www.comportal.kz/upload/iblock/a4d/wkf902puod9dxn4spttkgoxjgtlj91y0.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -8118,7 +8057,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10831590</vendorCode>
 <name>МФУ HP LaserJet M442dn (8AF71A#B19)</name>
-<price>305900</price>
+<price>304900</price>
 <picture>https://www.comportal.kz/upload/iblock/d39/q3h8d3cn1bci3at47igkeyeoqowy7fcf.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -8177,7 +8116,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13868634</vendorCode>
 <name>МФУ Canon i-SENSYS MF237W BUND(2 картриджа) (1418C170) (оригинал)</name>
-<price>209900</price>
+<price>208900</price>
 <picture>https://www.comportal.kz/upload/iblock/552/ab3ytgxf526ro9jfur6qr2itbmlkfc6s.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -8394,7 +8333,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP11411676</vendorCode>
 <name>Картридж HP 963XL (3JA27AE#BGX) (оригинал)</name>
-<price>23900</price>
+<price>22900</price>
 <picture>https://www.comportal.kz/upload/iblock/7bf/38mt63v2xi138nr7xxhhfviqqazvfwh7.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -8930,7 +8869,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10791135</vendorCode>
 <name>МФУ HP M236dw (9YF95A#B19)</name>
-<price>132900</price>
+<price>131900</price>
 <picture>https://www.comportal.kz/upload/iblock/e34/s465d4i1umu962qnk9d0ybtzsdonbecs.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -8988,7 +8927,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10820899</vendorCode>
 <name>МФУ HP M236sdw (9YG09A#B19)</name>
-<price>153900</price>
+<price>152900</price>
 <picture>https://www.comportal.kz/upload/iblock/84a/4j35b51mebjadiwfdrkus7h5wm3uwu78.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -9097,7 +9036,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13162714</vendorCode>
 <name>Картридж HP LaserJet 136X (W1360X) (оригинал)</name>
-<price>49900</price>
+<price>48900</price>
 <picture>https://www.comportal.kz/upload/iblock/5ec/rgmrlc51lfz89lyf7w3hfnhj3o6ys1ur.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -9302,7 +9241,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13871828</vendorCode>
 <name>Монитор Dell U4021QW (210-AYJF)</name>
-<price>855900</price>
+<price>852900</price>
 <picture>https://www.comportal.kz/upload/iblock/2bb/o7r31vv8o0zogiaf3pwxfkhic6dwemiy.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -9996,7 +9935,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13771050</vendorCode>
 <name>ИБП APC Easy UPS On-Line SRV 2000VA 230V (SRV2KI)</name>
-<price>327900</price>
+<price>326900</price>
 <picture>https://www.comportal.kz/upload/iblock/401/k38xf353ug2lzuu92g0pki6pqn2lrtjh.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -10046,88 +9985,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Типовая продолжительность работы при 100% нагрузке, мин">4,2</param>
 <param name="Форм-фактор">Tower</param>
 <keywords>APC, ИБП APC Easy UPS On-Line SRV 2000VA 230V (SRV2KI), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13870779" available="true">
-<categoryId>601</categoryId>
-<vendorCode>CP13870779</vendorCode>
-<name>Ноутбук Acer Nitro 5 AN515-46 (NH.QGZER.003)</name>
-<price>708900</price>
-<picture>https://www.comportal.kz/upload/iblock/7a4/6d8ball1rdm832v0x8u2z375uce019t1.JPG</picture>
-<vendor>Acer</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук Acer Nitro 5 AN515-46 (NH.QGZER.003)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: Nitro 5 AN515-46. Процессор: AMD 6600H Ryzen 5 3,3. Оперативная память: 8 Gb / DDR5 / 4800. Накопитель: 512 / PCIe NVMe SSD / 1 шт. Диагональ: 15,6. Разрешение: 1920x1080. ОС: Microsoft Windows 11 Home 64. Видеокарта: nVidia RTX 3060 6 Gb. Wi‑Fi: 6E AX211 2x2 AC. Bluetooth: Bluetooth. Камера: Webcam. Гарантия: 12 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Оперативная память 8 Gb</li><li>Операционная система Windows 11</li><li>Поддержка Wi-Fi 6E AX211 2x2 AC</li><li>Поддержка Bluetooth</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Bluetooth:</strong> Bluetooth</li><li><strong>Wi-Fi:</strong> 6E AX211 2x2 AC</li><li><strong>Адаптер:</strong> 230W AC Adapter</li><li><strong>Аккумулятор:</strong> 4 Cell 57Wh</li><li><strong>Битность операционной системы:</strong> 64</li><li><strong>Версия операционной системы:</strong> Home</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> Acer</li><li><strong>Занятые слоты памяти:</strong> 1</li><li><strong>Камера:</strong> Webcam</li><li><strong>Коды:</strong> NH.QGZER.003</li><li><strong>Количество дисков:</strong> 1</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Bluetooth">Bluetooth</param>
-<param name="Wi-Fi">6E AX211 2x2 AC</param>
-<param name="Адаптер">230W AC Adapter</param>
-<param name="Аккумулятор">4 Cell 57Wh</param>
-<param name="Битность операционной системы">64</param>
-<param name="Версия операционной системы">Home</param>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">Acer</param>
-<param name="Занятые слоты памяти">1</param>
-<param name="Камера">Webcam</param>
-<param name="Коды">NH.QGZER.003</param>
-<param name="Количество дисков">1</param>
-<param name="Количество слотов памяти">2</param>
-<param name="Марка чипсета видеокарты">GeForce</param>
-<param name="Модель">Nitro 5 AN515-46</param>
-<param name="Модель процессора">Ryzen 5</param>
-<param name="Модель чипсета видеокарты">RTX 3060</param>
-<param name="Объем видеопамяти">6 Gb</param>
-<param name="Объем жесткого диска">512</param>
-<param name="Оперативная память">8 Gb</param>
-<param name="Операционная система">Windows 11</param>
-<param name="Производитель операционной системы">Microsoft</param>
-<param name="Производитель процессора">AMD</param>
-<param name="Производитель чипсета видеокарты">nVidia</param>
-<param name="Размер дисплея">15,6</param>
-<param name="Разрешение дисплея">1920x1080</param>
-<param name="Серия процессора">6600H</param>
-<param name="Тип">Ноутбук</param>
-<param name="Тип жесткого диска">PCIe NVMe SSD</param>
-<param name="Тип матрицы">FHD</param>
-<param name="Тип оперативной памяти">DDR5</param>
-<param name="Тип привода">No ODD</param>
-<param name="Цвет">Чёрный</param>
-<param name="Частота оперативной памяти">4800</param>
-<param name="Частота процессора">3,3</param>
-<keywords>Acer, Ноутбук Acer Nitro 5 AN515-46 (NH.QGZER.003), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13091733" available="true">
@@ -10184,7 +10041,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP12994973</vendorCode>
 <name>Картридж HP 335X (W1335X) (оригинал)</name>
-<price>33900</price>
+<price>32900</price>
 <picture>https://www.comportal.kz/upload/iblock/026/8f59nlk8yx3ufxmo4qtv9nhuuqm6inkk.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -10282,7 +10139,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870639</vendorCode>
 <name>ИБП APC SRTG20KXLI (SRTG20KXLI)</name>
-<price>5140900</price>
+<price>5124900</price>
 <picture>https://www.comportal.kz/upload/iblock/c92/q39v1nhorztofqdd6f8hjih2jl8casqg.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -10333,7 +10190,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13525154</vendorCode>
 <name>ИБП APC SRTG20KXLI (SRTG20KXLI)</name>
-<price>5142900</price>
+<price>5126900</price>
 <picture>https://www.comportal.kz/upload/iblock/91a/w74o7kdzx9wfwtium4gn1pb4a9tkzpde.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -10384,7 +10241,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13866815</vendorCode>
 <name>Монитор Dell P2723QE (210-BDFZ)</name>
-<price>272900</price>
+<price>271900</price>
 <picture>https://www.comportal.kz/upload/iblock/26f/fdr9rbip0mwo1idt20wxq3m0gi3zzyxd.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -10446,7 +10303,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870788</vendorCode>
 <name>Ноутбук Dell Vostro 5620 (210-BDBL-2)</name>
-<price>712900</price>
+<price>710900</price>
 <picture>https://www.comportal.kz/upload/iblock/84e/dgbtdy0crg1rlr5aucnqbgim50h2mpva.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -10528,7 +10385,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871075</vendorCode>
 <name>Ноутбук Dell XPS 15 9520 (210-BDVF-4)</name>
-<price>1594900</price>
+<price>1589900</price>
 <picture>https://www.comportal.kz/upload/iblock/4f2/4dgibap6ix6p6q75rsw3g6g2g8n74d4m.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -10610,7 +10467,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13866016</vendorCode>
 <name>Моноблок Dell Optiplex 5400 AIO (210-BCUL)</name>
-<price>505900</price>
+<price>504900</price>
 <picture>https://www.comportal.kz/upload/iblock/11e/xkp16r1jsg8tutrwbiajw71ziru5yrl3.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -10688,7 +10545,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13831496</vendorCode>
 <name>ИБП Eaton 9SX 1000i Rack2U (9SX1000IR)</name>
-<price>387900</price>
+<price>386900</price>
 <picture>https://www.comportal.kz/upload/iblock/aec/bc475fzb1vksrarxednmc2vexdq8ytui.JPG</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -10744,7 +10601,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13816711</vendorCode>
 <name>ИБП Eaton 9SX 1500i Rack2U (9SX1500IR)</name>
-<price>506900</price>
+<price>505900</price>
 <picture>https://www.comportal.kz/upload/iblock/706/t9ijbjvthfeafznctup0tri25vly8k19.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -10800,7 +10657,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13831497</vendorCode>
 <name>ИБП Eaton 9SX 2000i Rack2U (9SX2000IR)</name>
-<price>618900</price>
+<price>617900</price>
 <picture>https://www.comportal.kz/upload/iblock/43f/uqjpcjirmvxts7qae7gf0n2jmh0z64kl.JPG</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -10855,7 +10712,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>703</categoryId>
 <vendorCode>CP13831499</vendorCode>
 <name>Аккумулятор Eaton 9SX EBM Rack2U (9SXEBM36R)</name>
-<price>198900</price>
+<price>197900</price>
 <picture>https://www.comportal.kz/upload/iblock/e55/h68knc0u1f55pl8zp7lxydeujcdouaa5.JPG</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -10904,7 +10761,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>703</categoryId>
 <vendorCode>CP13831500</vendorCode>
 <name>Аккумулятор Eaton 9SX EBM Rack2U (9SXEBM48R)</name>
-<price>198900</price>
+<price>197900</price>
 <picture>https://www.comportal.kz/upload/iblock/e3f/3imrqdd1glvmgnkn9mfel27kaw51t5ru.JPG</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -10953,7 +10810,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>703</categoryId>
 <vendorCode>CP13760849</vendorCode>
 <name>Дополнительная батарея Eaton 9SX EBM (9SXEBM240)</name>
-<price>359900</price>
+<price>358900</price>
 <picture>https://www.comportal.kz/upload/iblock/520/3t1r16xv15ng35s3xa4joz2dwza9lhdf.JPG</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -11002,7 +10859,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13760855</vendorCode>
 <name>ИБП Eaton 5SC 2200i RT2U (5SC2200IRT)</name>
-<price>511900</price>
+<price>510900</price>
 <picture>https://www.comportal.kz/upload/iblock/3af/11k787vbxx7mt2ogdm9oywnqe1bhoary.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -11057,7 +10914,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13760856</vendorCode>
 <name>ИБП Eaton 5SC 2200i RT2U (5SC3000IRT)</name>
-<price>560900</price>
+<price>559900</price>
 <picture>https://www.comportal.kz/upload/iblock/72e/k6bw179ng4e13wb2l90xyx23atq22k00.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -11271,7 +11128,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13503022</vendorCode>
 <name>Тонер-картридж Canon imagePRESS Toner T07 (3643C001) (оригинал)</name>
-<price>161900</price>
+<price>160900</price>
 <picture>https://www.comportal.kz/upload/iblock/7d2/gxa6b1c5rb39qd1i2och5z4jn41hs8un.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -11321,7 +11178,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13503021</vendorCode>
 <name>Тонер-картридж Canon imagePRESS Toner T07 (3644C001) (оригинал)</name>
-<price>171900</price>
+<price>167900</price>
 <picture>https://www.comportal.kz/upload/iblock/51e/9hx5b3bjabpo1hoxl99rwveb550nwq0k.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -11421,7 +11278,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13867052</vendorCode>
 <name>Ноутбук Dell Vostro 5620 (210-BDBL-6)</name>
-<price>529900</price>
+<price>527900</price>
 <picture>https://www.comportal.kz/upload/iblock/4fb/7ri58c7uqii73300gwf9w2nosj6wtih1.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -11503,7 +11360,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871094</vendorCode>
 <name>Ноутбук Dell Vostro 7620 (210-BDVL-2)</name>
-<price>873900</price>
+<price>871900</price>
 <picture>https://www.comportal.kz/upload/iblock/4e8/k0ypilhpd5lr2v8safe4gq0nduab8spw.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -11585,7 +11442,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13760906</vendorCode>
 <name>МФУ Canon i-SENSYS MF754Cdw (5455C023)</name>
-<price>290900</price>
+<price>289900</price>
 <picture>https://www.comportal.kz/upload/iblock/318/34c0bk4011fn9l5osu28exz0b6un3fxe.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -11646,7 +11503,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13867053</vendorCode>
 <name>Компьютер Dell OptiPlex 5000 (210-BCRM-3)</name>
-<price>363900</price>
+<price>362900</price>
 <picture>https://www.comportal.kz/upload/iblock/f52/0fb83vjl7c4akvp19eqaen18kz6yfmv3.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -11724,7 +11581,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13867056</vendorCode>
 <name>Ноутбук Dell Vostro 3525 (210-BDRB-5)</name>
-<price>361900</price>
+<price>360900</price>
 <picture>https://www.comportal.kz/upload/iblock/1d8/3ebf0jkot9mxxy2mnq5u3bi86adkq0g1.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -11806,7 +11663,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870790</vendorCode>
 <name>Ноутбук Dell Vostro 5625 (210-BDFL-2)</name>
-<price>481900</price>
+<price>480900</price>
 <picture>https://www.comportal.kz/upload/iblock/747/gy6fd1o9ra97b60k14o0javusleaplek.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -11889,7 +11746,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13867146</vendorCode>
 <name>Ноутбук Dell Vostro 7620 (210-BDVL-5)</name>
-<price>780900</price>
+<price>778900</price>
 <picture>https://www.comportal.kz/upload/iblock/0db/ir0sa7e8nf71ifdgt3aocnqyercmjjb1.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -11971,7 +11828,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP13816838</vendorCode>
 <name>Картридж HP 3YM63AE (3YM63AE#UUQ) (оригинал)</name>
-<price>15900</price>
+<price>14900</price>
 <picture>https://www.comportal.kz/upload/iblock/dca/uiq1pro1elavak497ht8z94032drtc00.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -12022,7 +11879,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871076</vendorCode>
 <name>Ноутбук Acer Aspire 3 A315-58-51UE (NX.AL0ER.008)</name>
-<price>275900</price>
+<price>274900</price>
 <picture>https://www.comportal.kz/upload/iblock/dbb/lfthkvggpjo6mt371d74liml9e74tfg5.JPG</picture>
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
@@ -12102,7 +11959,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>401</categoryId>
 <vendorCode>CP13871689</vendorCode>
 <name>Проектор Acer H6830BD (MR.JVK11.001)</name>
-<price>570900</price>
+<price>569900</price>
 <picture>https://www.comportal.kz/upload/iblock/445/vzdsc1hmmpi079i8lzfrn362t7yz2saa.jpg</picture>
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
@@ -12161,7 +12018,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>401</categoryId>
 <vendorCode>CP13822475</vendorCode>
 <name>Проектор Acer L812 (MR.JUZ11.001)</name>
-<price>1392900</price>
+<price>1387900</price>
 <picture>https://www.comportal.kz/upload/iblock/407/4phng7ubd0n1y0018dypkqmpd2jgs2wx.JPG</picture>
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
@@ -12222,7 +12079,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13760962</vendorCode>
 <name>МФУ HP LaserJet Pro 4103dw (2Z627A#B19)</name>
-<price>194900</price>
+<price>193900</price>
 <picture>https://www.comportal.kz/upload/iblock/101/h996jygfzk1js9jpo3o08wr38ikfomxv.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -12342,7 +12199,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871095</vendorCode>
 <name>Ноутбук Dell Vostro 3420 (210-BDZW-3)</name>
-<price>389900</price>
+<price>388900</price>
 <picture>https://www.comportal.kz/upload/iblock/5de/0gdofk06ew9jj0pjg0y2jmh5r17o4uyw.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -12424,7 +12281,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871085</vendorCode>
 <name>Ноутбук Dell Vostro 3525 (210-BDRB-10)</name>
-<price>383900</price>
+<price>382900</price>
 <picture>https://www.comportal.kz/upload/iblock/a04/3vapxem3h743oilvr01tvvqrm46awc72.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -12557,7 +12414,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13871073</vendorCode>
 <name>Монитор Acer Nitro XV272UZbmiipruzx (UM.HX2EE.Z01)</name>
-<price>311900</price>
+<price>310900</price>
 <picture>https://www.comportal.kz/upload/iblock/75f/au46vwnsdprdwml03lkvspk4c1j23acy.jpg</picture>
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
@@ -12663,108 +12520,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>HP, Картридж HP 151X (W1510X) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13871540" available="true">
-<categoryId>101</categoryId>
-<vendorCode>CP13871540</vendorCode>
-<name>Хранилище HPE HPE MSA 2062 16Gb FC SFF (R0Q80B) (оригинал)</name>
-<price>1991900</price>
-<picture>https://www.comportal.kz/upload/iblock/73e/5rk91hu2phujc5p5xmwhw0a1g9yv1ghp.JPG</picture>
-<vendor>HPE</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Хранилище HPE HPE MSA 2062 16Gb FC SFF (R0Q80B) (оригинал)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HPE HPE MSA 2062 16Gb FC SFF код — R0Q80B.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> HPE</li><li><strong>Интерфейс массива:</strong> Fibre Channel</li><li><strong>Коды:</strong> R0Q80B</li><li><strong>Модель:</strong> HPE MSA 2062 16Gb FC SFF</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип корпуса:</strong> Rack</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">HPE</param>
-<param name="Интерфейс массива">Fibre Channel</param>
-<param name="Коды">R0Q80B</param>
-<param name="Модель">HPE MSA 2062 16Gb FC SFF</param>
-<param name="Оригинальность">Оригинал</param>
-<param name="Тип">Картридж</param>
-<param name="Тип корпуса">Rack</param>
-<keywords>HPE, Хранилище HPE HPE MSA 2062 16Gb FC SFF (R0Q80B) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13871542" available="true">
-<categoryId>101</categoryId>
-<vendorCode>CP13871542</vendorCode>
-<name>Хранилище HPE HPE MSA 1060 12Gb SAS SFF (R0Q87B) (оригинал)</name>
-<price>1201900</price>
-<picture>https://www.comportal.kz/upload/iblock/e7c/v7bfdqmt9woycxcvstlv0zajhllrr5rn.JPG</picture>
-<vendor>HPE</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Хранилище HPE HPE MSA 1060 12Gb SAS SFF (R0Q87B) (оригинал)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HPE HPE MSA 1060 12Gb SAS SFF код — R0Q87B.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> HPE</li><li><strong>Интерфейс массива:</strong> SAS</li><li><strong>Коды:</strong> R0Q87B</li><li><strong>Модель:</strong> HPE MSA 1060 12Gb SAS SFF</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Тип:</strong> Картридж</li><li><strong>Тип корпуса:</strong> Rack</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">HPE</param>
-<param name="Интерфейс массива">SAS</param>
-<param name="Коды">R0Q87B</param>
-<param name="Модель">HPE MSA 1060 12Gb SAS SFF</param>
-<param name="Оригинальность">Оригинал</param>
-<param name="Тип">Картридж</param>
-<param name="Тип корпуса">Rack</param>
-<keywords>HPE, Хранилище HPE HPE MSA 1060 12Gb SAS SFF (R0Q87B) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13771028" available="true">
 <categoryId>101</categoryId>
 <vendorCode>CP13771028</vendorCode>
@@ -12827,7 +12582,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP13696872</vendorCode>
 <name>Картридж Canon PFI-740 (4768C001) (оригинал)</name>
-<price>178900</price>
+<price>177900</price>
 <picture>https://www.comportal.kz/upload/iblock/7c6/rya55926t5swatx07po5zhhkssmao8bo.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -12878,7 +12633,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP13696871</vendorCode>
 <name>Картридж Canon PFI-740 (4769C001) (оригинал)</name>
-<price>178900</price>
+<price>177900</price>
 <picture>https://www.comportal.kz/upload/iblock/d5d/bdyrs9djgbizd05a1z884tf9hpdsi28k.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -12929,7 +12684,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP13695215</vendorCode>
 <name>Картридж Canon PFI-740 (4770C001) (оригинал)</name>
-<price>178900</price>
+<price>177900</price>
 <picture>https://www.comportal.kz/upload/iblock/099/oiu83k6pen0mibhexigzl3v10mb24mke.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -12980,7 +12735,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP13695213</vendorCode>
 <name>Картридж Canon PFI-740 (4771C001) (оригинал)</name>
-<price>178900</price>
+<price>177900</price>
 <picture>https://www.comportal.kz/upload/iblock/6e1/3qn1ilxykj0exppirhfyj2tr4moths0z.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -13031,7 +12786,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP13695214</vendorCode>
 <name>Картридж Canon PFI-740 (4772C001) (оригинал)</name>
-<price>178900</price>
+<price>177900</price>
 <picture>https://www.comportal.kz/upload/iblock/dbb/fphldgmt40wp85zq08h4rnquj6aeq751.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -13130,7 +12885,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13794069</vendorCode>
 <name>Монитор Dell U4323QE (210-BFIS)</name>
-<price>564900</price>
+<price>563900</price>
 <picture>https://www.comportal.kz/upload/iblock/930/3t659vqxy5givl9cs61s7s386j1bb2gw.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -13190,7 +12945,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13866825</vendorCode>
 <name>Монитор Dell Alienware AW3423DWF (210-BFRQ)</name>
-<price>603900</price>
+<price>601900</price>
 <picture>https://www.comportal.kz/upload/iblock/751/gad4tcmza3qg0u30pacmx4nqf71e8duu.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -13301,7 +13056,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13816310</vendorCode>
 <name>Картридж Canon 067 (5100C002) (оригинал)</name>
-<price>45900</price>
+<price>44900</price>
 <picture>https://www.comportal.kz/upload/iblock/ea3/suwnfb4nz8makfky3nam9ou2l61v9xe1.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -13464,7 +13219,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13866828</vendorCode>
 <name>Монитор Dell U4924DW (210-BGTX)</name>
-<price>797900</price>
+<price>794900</price>
 <picture>https://www.comportal.kz/upload/iblock/04b/vqmdurkbcloivotwbrm5918nn70947tw.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -13681,7 +13436,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13817003</vendorCode>
 <name>МФУ Canon imageRUNNER ADVANCE DX C3926i (5963C005)</name>
-<price>2010900</price>
+<price>2004900</price>
 <picture>https://www.comportal.kz/upload/iblock/8d2/vf2t3yh14s3h5n55coytdlo65qgkqfjw.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -14134,7 +13889,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13817610</vendorCode>
 <name>МФУ Canon imageRUNNER 2930i (5975C005AA)</name>
-<price>1863900</price>
+<price>1857900</price>
 <picture>https://www.comportal.kz/upload/iblock/04f/3kng87ulr5vnztwucqkuny68867ko47x.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -14196,7 +13951,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871088</vendorCode>
 <name>Ноутбук Acer Predator Helios 300 PH315-55-57AH (NH.QGNER.004)</name>
-<price>820900</price>
+<price>818900</price>
 <picture>https://www.comportal.kz/upload/iblock/341/d2r911vumhg0okdxwmbi0sdp1kdo8vtw.JPG</picture>
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
@@ -14278,7 +14033,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13819517</vendorCode>
 <name>ИБП Eaton 5PX 2200i RT3U G2 (5PX2200IRT3UG2)</name>
-<price>537900</price>
+<price>536900</price>
 <picture>https://www.comportal.kz/upload/iblock/bb7/wy1rnnt0obzubgwt12pd3vo9xr2wetda.JPG</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -14332,7 +14087,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13866022</vendorCode>
 <name>Ноутбук Dell Latitude 3540 (210-BGDW)</name>
-<price>407900</price>
+<price>406900</price>
 <picture>https://www.comportal.kz/upload/iblock/814/29td0qiawr8gwatv1ysgkg0517sfq7gj.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -14416,7 +14171,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13822436</vendorCode>
 <name>ИБП Eaton 5PX 3000i RT2U (5PX3000IRT2UG2)</name>
-<price>912900</price>
+<price>909900</price>
 <picture>https://www.comportal.kz/upload/iblock/427/w3yz8vn2xncv2vy1knr59ovuv1xep3kw.JPG</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -14471,7 +14226,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13871695</vendorCode>
 <name>Монитор Acer Nitro VG270Ebmiix (UM.HV0EE.E06)</name>
-<price>67900</price>
+<price>66900</price>
 <picture>https://www.comportal.kz/upload/iblock/e0f/5imduu0kjt04hf7p5ozoguwf09mgoqyg.JPG</picture>
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
@@ -14535,7 +14290,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13853745</vendorCode>
 <name>ИБП APC SRTG8KXLI (SRTG8KXLI)</name>
-<price>2211900</price>
+<price>2204900</price>
 <picture>https://www.comportal.kz/upload/iblock/0c9/j0qt0b8r3hf9rsrybdq5fy3wfyvcqlfk.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -14645,7 +14400,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13859878</vendorCode>
 <name>ИБП APC SRV1KRILRK with Rail kit Batt pack ONLINE (SRV1KRILRK)</name>
-<price>439900</price>
+<price>438900</price>
 <picture>https://www.comportal.kz/upload/iblock/82f/21ivhc5f6bov7utgdpyu6yx1u202dr7k.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -14700,7 +14455,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13838560</vendorCode>
 <name>ИБП APC SRV2KRILRK with Rail kit Batt pack ONLINE (SRV2KRILRK)</name>
-<price>493900</price>
+<price>491900</price>
 <picture>https://www.comportal.kz/upload/iblock/8c3/np2ci27qe42nr59gs63ltc31toiy4yzk.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -14755,7 +14510,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13838562</vendorCode>
 <name>ИБП APC SRV3KRILRK with Rail kit Batt pack ONLINE (SRV3KRILRK)</name>
-<price>625900</price>
+<price>623900</price>
 <picture>https://www.comportal.kz/upload/iblock/af3/q64p4x8zcrsve9epzgkzfnnqli1a8ydr.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -14810,7 +14565,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13842900</vendorCode>
 <name>ИБП APC SRV6KRILRK with External Battery Pack, with RailKit (SRV6KRILRK)</name>
-<price>960900</price>
+<price>957900</price>
 <picture>https://www.comportal.kz/upload/iblock/bc5/wxgue84qu81ksrxo8205wbcs3g1ms654.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -14916,7 +14671,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>703</categoryId>
 <vendorCode>CP13838564</vendorCode>
 <name>Дополнительная батарея APC SRV72BP-9A (SRV72BP-9A)</name>
-<price>228900</price>
+<price>222900</price>
 <picture>https://www.comportal.kz/upload/iblock/905/89nf1gip0cd6wd3kf8ps2eu02kx2m87x.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -15363,7 +15118,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13866028</vendorCode>
 <name>Компьютер Dell OptiPlex 7010 plus (210-BFWR-1)</name>
-<price>541900</price>
+<price>539900</price>
 <picture>https://www.comportal.kz/upload/iblock/63e/mlf7cvdwg7es99plb8jbse2hysb6rk0q.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -15442,7 +15197,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13832053</vendorCode>
 <name>Монитор Dell U3824DW (210-BHXB)</name>
-<price>719900</price>
+<price>717900</price>
 <picture>https://www.comportal.kz/upload/iblock/a07/b39h89fqsymnvzt3l7a2qmlo3knb09r5.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -15506,7 +15261,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13834574</vendorCode>
 <name>ИБП APC SMT2200IC SmartConnect Port+SmartSlot, AVR, LCD (SMT2200IC)</name>
-<price>467900</price>
+<price>465900</price>
 <picture>https://www.comportal.kz/upload/iblock/772/iwaluwev5x8myyg839zprl5uiplumww3.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -15562,7 +15317,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13834771</vendorCode>
 <name>Ноутбук Acer PH3D15-71-99NY Predator Helios 3D 15 SpatialLabs Edition (NH.QLWER.002)</name>
-<price>1792900</price>
+<price>1787900</price>
 <picture>https://www.comportal.kz/upload/iblock/2e0/2e08368624f0be0662e9b1ddc52400d4.JPG</picture>
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
@@ -15644,7 +15399,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13835248</vendorCode>
 <name>ИБП APC SRV2KRIRK SRV RM with RailKit (SRV2KRIRK)</name>
-<price>330900</price>
+<price>329900</price>
 <picture>https://www.comportal.kz/upload/iblock/187/rg6umxk8z23110os2yco9z9syaqttten.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -15696,7 +15451,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13835249</vendorCode>
 <name>ИБП APC SRV6KRIRK SRV RM with RailKit, External Battery Pack (SRV6KRIRK)</name>
-<price>1023900</price>
+<price>1020900</price>
 <picture>https://www.comportal.kz/upload/iblock/924/ka7g5nyv18z6hy9h0n4m1dqdvhkmnply.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -15748,7 +15503,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13835253</vendorCode>
 <name>ИБП APC SMT3000RMI2UC LCD RM 2U 230V with SmartConnect (SMT3000RMI2UC)</name>
-<price>692900</price>
+<price>690900</price>
 <picture>https://www.comportal.kz/upload/iblock/f6b/4xj6mqrohqd28163k4ycwgb0pow6x6r9.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -15802,7 +15557,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13835256</vendorCode>
 <name>ИБП APC BVX700LI-GR 230V, AVR, Schuko Sockets (BVX700LI-GR)</name>
-<price>44900</price>
+<price>43900</price>
 <picture>https://www.comportal.kz/upload/iblock/02b/xrbbszphzpdgxfq9b7nl8bx9w4i43o8v.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -16014,7 +15769,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13835260</vendorCode>
 <name>ИБП APC BVX2200LI-GR 230V, AVR, Schuko Sockets (BVX2200LI-GR)</name>
-<price>128900</price>
+<price>127900</price>
 <picture>https://www.comportal.kz/upload/iblock/001/rhgh0g9gqmt1qt2gsqrisqua3l9fg47k.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -16068,7 +15823,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13850377</vendorCode>
 <name>ИБП APC SMT1500RMI2UC 230V, 4x IEC C13 outlets, SmartConnect Port+SmartSlot, AVR, LCD (SMT1500RMI2UC)</name>
-<price>492900</price>
+<price>490900</price>
 <picture>https://www.comportal.kz/upload/iblock/659/cfjrwsbsk3y671s00acx6fzo8kynvnmh.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -16123,7 +15878,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13842525</vendorCode>
 <name>Ноутбук Acer SFX16-61G-R12Z Swift X 16 (NX.KFPER.001)</name>
-<price>861900</price>
+<price>859900</price>
 <picture>https://www.comportal.kz/upload/iblock/9d1/9d18670389b7f5d81bbece01d1c6b717.JPG</picture>
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
@@ -16264,7 +16019,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13866892</vendorCode>
 <name>Монитор Dell P2424HT Touch (210-BHSK)</name>
-<price>220900</price>
+<price>219900</price>
 <picture>https://www.comportal.kz/upload/iblock/b9a/tjbdhuyocca3yyb57suuddncajolo24u.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -16326,7 +16081,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13841414</vendorCode>
 <name>ИБП APC SMT2200RMI2UC 230V, 8x IEC C13+2x IEC C19 outlets, SmartConnect Port+SmartSlot, AVR, LCD (SMT220 и др.</name>
-<price>633900</price>
+<price>631900</price>
 <picture>https://www.comportal.kz/upload/iblock/281/y0vm5dxpe33k08krhu0r3fqu6dcs3xc6.JPG</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -16382,7 +16137,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13843628</vendorCode>
 <name>Принтер HP LaserJet Pro 4203dn (4RA89A#B19)</name>
-<price>214900</price>
+<price>213900</price>
 <picture>https://www.comportal.kz/upload/iblock/482/r270taue5mipt23uyvx9eox16ovd3owa.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -16501,7 +16256,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13845110</vendorCode>
 <name>МФУ HP LaserJet Pro 3103fdw (3G632A#B19)</name>
-<price>172900</price>
+<price>171900</price>
 <picture>https://www.comportal.kz/upload/iblock/fa7/i38utusvov2elqj4p8zjfrgu9aqbss29.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -16620,7 +16375,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>301</categoryId>
 <vendorCode>CP13846405</vendorCode>
 <name>МФУ HP Smart Tank 520 (1F3W2A#671)</name>
-<price>98900</price>
+<price>97900</price>
 <picture>https://www.comportal.kz/upload/iblock/7ea/ej91s9eeiutgbop15w8x9bdcetxwdqj6.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -16680,7 +16435,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13846631</vendorCode>
 <name>ИБП Eaton 9PX 5000i RT3U Netpack (9PX5KiRTN)</name>
-<price>1890900</price>
+<price>1884900</price>
 <picture>https://www.comportal.kz/upload/iblock/2cd/2av2eabhpjwgt7rf19wmb2m8d1epn45r.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -16732,7 +16487,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13846841</vendorCode>
 <name>МФУ Canon imageRUNNER ADVANCE DX C3926I (5963C005 / bundle)</name>
-<price>2652900</price>
+<price>2644900</price>
 <picture>https://www.comportal.kz/upload/iblock/95c/pb1q2hy2heuq8d0pb2bq5goy589wvdzh.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -16896,7 +16651,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13854292</vendorCode>
 <name>Монитор Dell UltraSharp U2724D (210-BKVB)</name>
-<price>208900</price>
+<price>207900</price>
 <picture>https://www.comportal.kz/upload/iblock/829/vfmmyf4ubcaydaaq5mty899ig81bw24v.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -16958,7 +16713,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13866836</vendorCode>
 <name>Монитор Dell Alienware Gaming AW2524HF (210-BJPH)</name>
-<price>348900</price>
+<price>347900</price>
 <picture>https://www.comportal.kz/upload/iblock/295/i22q5c4vf7pylhj5p1ve1p3gbwez4tvw.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -17020,7 +16775,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>303</categoryId>
 <vendorCode>CP13847754</vendorCode>
 <name>Плоттер Canon imagePROGRAF TM-240 (6242C003)</name>
-<price>370900</price>
+<price>369900</price>
 <picture>https://www.comportal.kz/upload/iblock/ad5/rvj92pdwm5hve1kqede3ypw7eolrq56p.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -17078,7 +16833,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>303</categoryId>
 <vendorCode>CP13847755</vendorCode>
 <name>Плоттер Canon imagePROGRAF TM-340 (6248C003)</name>
-<price>499900</price>
+<price>497900</price>
 <picture>https://www.comportal.kz/upload/iblock/d5a/2tiqydjmyj3afs9mwd9f2pidxofz7o4k.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -17136,7 +16891,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>303</categoryId>
 <vendorCode>CP13847756</vendorCode>
 <name>Плоттер Canon imagePROGRAF TM-350 (6246C003)</name>
-<price>785900</price>
+<price>782900</price>
 <picture>https://www.comportal.kz/upload/iblock/d37/hph6rsw84yqswmmwe4b848yarew0tiv8.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -17245,7 +17000,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP13847759</vendorCode>
 <name>Картридж Canon Ink PFI-030 (3490C001) (оригинал)</name>
-<price>35900</price>
+<price>34900</price>
 <picture>https://www.comportal.kz/upload/iblock/e4f/wvmp4ay0c30zo61829nw9k3qjvrlxyv6.JPG</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -17652,7 +17407,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13866838</vendorCode>
 <name>Монитор Dell U2424H (210-BKTZ)</name>
-<price>143900</price>
+<price>142900</price>
 <picture>https://www.comportal.kz/upload/iblock/d31/75fcoe7w8zy2i0g2n0i76lodj3vd9tse.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -17713,7 +17468,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13852782</vendorCode>
 <name>Монитор Dell U2424H (210-BKTZ)</name>
-<price>134900</price>
+<price>133900</price>
 <picture>https://www.comportal.kz/upload/iblock/211/md94t5ou33aplrxdqux6adcc0v3mib5z.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -18137,7 +17892,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13858811</vendorCode>
 <name>ИБП Eaton 9E (9E1000I)</name>
-<price>221900</price>
+<price>220900</price>
 <picture>https://www.comportal.kz/upload/iblock/97c/ntll3oxxllyvjtsm9czcunrwneaqgh9t.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -18195,7 +17950,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>401</categoryId>
 <vendorCode>CP13872829</vendorCode>
 <name>Проектор Acer X1328WHn (MR.JX211.001)</name>
-<price>259900</price>
+<price>258900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
@@ -18243,7 +17998,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13858832</vendorCode>
 <name>ИБП Eaton 9E (9E2000I)</name>
-<price>329900</price>
+<price>328900</price>
 <picture>https://www.comportal.kz/upload/iblock/a19/zzw3r0w172x9kkpa2a8t281qhogyi02m.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -18301,7 +18056,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13858833</vendorCode>
 <name>ИБП Eaton 9E (9E3000I)</name>
-<price>438900</price>
+<price>437900</price>
 <picture>https://www.comportal.kz/upload/iblock/245/jkjhrjipb0j752tcc16bhf70bclkck57.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -18359,7 +18114,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13866488</vendorCode>
 <name>ИБП Eaton 9E (9E2000IR)</name>
-<price>396900</price>
+<price>395900</price>
 <picture>https://www.comportal.kz/upload/iblock/316/44rab0cibyk2g7pdkqc8qbw3e0f9jrwa.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -18416,7 +18171,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13858835</vendorCode>
 <name>ИБП Eaton 9E (9E3000IR)</name>
-<price>753900</price>
+<price>751900</price>
 <picture>https://www.comportal.kz/upload/iblock/32d/u44ztsms7gbbbr4p47mqbv0cc1vxp1j4.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -18474,7 +18229,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13858841</vendorCode>
 <name>Картридж HP CF301AH (CF301AH) (оригинал)</name>
-<price>342900</price>
+<price>341900</price>
 <picture>https://www.comportal.kz/upload/iblock/250/o2k26fv0037o28kcmlva7rinp2diblum.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -18525,7 +18280,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13858842</vendorCode>
 <name>Картридж HP CF302AH (CF302AH) (оригинал)</name>
-<price>342900</price>
+<price>341900</price>
 <picture>https://www.comportal.kz/upload/iblock/205/e9caqhzlrs93ksgy4cs0nbizg0squ2uv.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -18639,7 +18394,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13866839</vendorCode>
 <name>Монитор Dell P2724DEB / 27 Video Conferencing Monitor (210-BFMZ)</name>
-<price>274900</price>
+<price>273900</price>
 <picture>https://www.comportal.kz/upload/iblock/88c/2ju4jqown4yhm0m19h7byloz1wjkm48l.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -18702,7 +18457,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870381</vendorCode>
 <name>Ноутбук Dell Vostro 3520 (210-BECX_N3002PVNB3520EMEA01)</name>
-<price>356900</price>
+<price>355900</price>
 <picture>https://www.comportal.kz/upload/iblock/e24/kvbm70s7pqjeble98dulex4ndsxdwcrj.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -18783,7 +18538,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870382</vendorCode>
 <name>Ноутбук Dell Vostro 3530 (210-BGLW-N1605PVNB3530EMEA01_UBU)</name>
-<price>405900</price>
+<price>403900</price>
 <picture>https://www.comportal.kz/upload/iblock/072/h4xq6h3cr8qo56xv4ehu98w6izk50at6.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -19075,7 +18830,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13866541</vendorCode>
 <name>Мобильная рабочая станция Dell Precision 3590 (210-BLMX_N002P3590EMEA_VP)</name>
-<price>1029900</price>
+<price>1025900</price>
 <picture>https://www.comportal.kz/upload/iblock/5f0/8bm9zpwbhe0gab02n0isobi0l77hvu08.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -19156,7 +18911,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13866544</vendorCode>
 <name>Компьютер Dell Vostro 3030 (210-BKVT-5)</name>
-<price>319900</price>
+<price>318900</price>
 <picture>https://www.comportal.kz/upload/iblock/fb4/4hhp3epukd0dgdfnu3dbavw3f2nl27rm.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -19231,7 +18986,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13870490</vendorCode>
 <name>Компьютер Dell Vostro 3030 (210-BKVT_N2016VDT3030MTEMEA01)</name>
-<price>497900</price>
+<price>495900</price>
 <picture>https://www.comportal.kz/upload/iblock/410/ewhnlrrly23nj035zqcl1ayb81xrfz15.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -19308,7 +19063,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13873232</vendorCode>
 <name>Монитор Dell AW2725DF (210-BLHH)</name>
-<price>437900</price>
+<price>435900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -19356,7 +19111,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13863652</vendorCode>
 <name>Монитор Dell AW3225QF (210-BLLV)</name>
-<price>597900</price>
+<price>595900</price>
 <picture>https://www.comportal.kz/upload/iblock/eac/nf4oxo26h2af9hjzpzkf3vz0bh7akv20.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -19605,7 +19360,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13863659</vendorCode>
 <name>Монитор Dell P2425E USB-C (210-BMJF)</name>
-<price>151900</price>
+<price>150900</price>
 <picture>https://www.comportal.kz/upload/iblock/a28/trjex2vewacqfl1udrjcmn13dg8a230m.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -19729,7 +19484,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13866849</vendorCode>
 <name>Монитор Dell P2725H (210-BMGC)</name>
-<price>116900</price>
+<price>113900</price>
 <picture>https://www.comportal.kz/upload/iblock/f20/z4k0s08dcv2c79texqah55pkkc3w9i5v.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -19853,7 +19608,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13863664</vendorCode>
 <name>Монитор Dell U3425WE USB-C (210-BMDW)</name>
-<price>493900</price>
+<price>492900</price>
 <picture>https://www.comportal.kz/upload/iblock/bb8/40byajajbnr8tavvijhtyrj7efefntsz.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -19916,7 +19671,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872947</vendorCode>
 <name>Ноутбук Dell Vostro 3530 (210-BGLW-N1601PVNB3530EMEA01_UBU)</name>
-<price>381900</price>
+<price>380900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -19964,7 +19719,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13864290</vendorCode>
 <name>Картридж HP CF303AH / 827H Contract Original Toner Cartridge (CF303AH) (оригинал)</name>
-<price>342900</price>
+<price>341900</price>
 <picture>https://www.comportal.kz/upload/iblock/ec7/tcx99u4a3dj1tq8yvmmynf98hu6bkxle.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -20074,7 +19829,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13864639</vendorCode>
 <name>Принтер HP Color LaserJet Pro 3203dn (8D7L2A#B19)</name>
-<price>166900</price>
+<price>165900</price>
 <picture>https://www.comportal.kz/upload/iblock/882/x48xkloq075t0547amzabcvx5ylaz5ah.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -20134,7 +19889,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13864728</vendorCode>
 <name>Монитор HP S7 Pro 738pu +Thunderbolt 4 (8K167AA#ABB)</name>
-<price>544900</price>
+<price>543900</price>
 <picture>https://www.comportal.kz/upload/iblock/9c1/y0703tt92qj79x5dkysbtlxmoftisfv2.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -20194,7 +19949,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13866557</vendorCode>
 <name>Ноутбук Dell Vostro 3530 (210-BGLW-N3404PVNB3530EMEA01_UBU)</name>
-<price>318900</price>
+<price>317900</price>
 <picture>https://www.comportal.kz/upload/iblock/2b1/icfb4gdw0u5p9yj03fxpfc7jrle2uisj.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -20273,7 +20028,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13866492</vendorCode>
 <name>Принтер Canon i-SENSYS LBP673Cdw CIS (5456C020)</name>
-<price>195900</price>
+<price>194900</price>
 <picture>https://www.comportal.kz/upload/iblock/f09/mc2vbulxtgpc4mdyp9geji0ba8w3fv5t.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -20333,7 +20088,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>303</categoryId>
 <vendorCode>CP13872230</vendorCode>
 <name>Плоттер HP DesignJet T830 / 24" (F9A28D#B19)</name>
-<price>1468900</price>
+<price>1464900</price>
 <picture>https://www.comportal.kz/upload/iblock/3ef/q4jkw38lwk84kckwbmi6l3f30kv6u8uj.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -20391,7 +20146,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13866859</vendorCode>
 <name>МФУ Canon imageRUNNER C3326i (5965C005 / bundle)</name>
-<price>1118900</price>
+<price>1115900</price>
 <picture>https://www.comportal.kz/upload/iblock/ae3/x8qbb34j7lsu9662hkclelatmpt8b95d.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -20452,7 +20207,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870391</vendorCode>
 <name>Ноутбук Dell Vostro 3530 (210-BGLW-N1605QVNB3530EMEA01)</name>
-<price>467900</price>
+<price>465900</price>
 <picture>https://www.comportal.kz/upload/iblock/55d/lewct2mpj35efjdqw57419hj6n2d9cqz.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -20734,7 +20489,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>105</categoryId>
 <vendorCode>CP13870308</vendorCode>
 <name>Барабан HP 877 Color Drum (W9078MC)</name>
-<price>105900</price>
+<price>104900</price>
 <picture>https://www.comportal.kz/upload/iblock/39e/0tkyykfcblyt370mbc96qnu95fa6z8p5.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -20778,85 +20533,11 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>HP, Барабан HP 877 Color Drum (W9078MC), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13870591" available="true">
-<categoryId>604</categoryId>
-<vendorCode>CP13870591</vendorCode>
-<name>Компьютер ASUS G22CH-1470KF0020 (90PF03T2-M00TC0 / 1)</name>
-<price>1071900</price>
-<picture>https://www.comportal.kz/upload/iblock/3c3/sfngjurx3k8gb5wysxozdanz8z2pz4a0.jpg</picture>
-<vendor>ASUS</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Компьютер ASUS G22CH-1470KF0020 (90PF03T2-M00TC0 / 1)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Настольный ПК. Процессор: Intel 14700KF Core i7 3,4. Оперативная память: 16 Gb / DDR5 / 4800. Накопитель: 1000 / M.2 PCIe SSD / 1 шт. ОС: Без операционной системы. Видеокарта: nVidia RTX 4070 12 Gb. Гарантия: 12 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Оперативная память 16 Gb</li><li>Операционная система Без операционной системы</li><li>Гарантия 12 мес</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Блок питания:</strong> АТХ 600W</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> ASUS</li><li><strong>Клавиатура:</strong> Without keyboard</li><li><strong>Коды:</strong> 90PF03T2-M00TC0 / 1</li><li><strong>Количество дисков:</strong> 1</li><li><strong>Манипулятор:</strong> Without mouse</li><li><strong>Марка чипсета видеокарты:</strong> GeForce</li><li><strong>Модель:</strong> G22CH-1470KF0020</li><li><strong>Модель процессора:</strong> Core i7</li><li><strong>Модель чипсета видеокарты:</strong> RTX 4070</li><li><strong>Объем видеопамяти:</strong> 12 Gb</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Блок питания">АТХ 600W</param>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">ASUS</param>
-<param name="Клавиатура">Without keyboard</param>
-<param name="Коды">90PF03T2-M00TC0 / 1</param>
-<param name="Количество дисков">1</param>
-<param name="Манипулятор">Without mouse</param>
-<param name="Марка чипсета видеокарты">GeForce</param>
-<param name="Модель">G22CH-1470KF0020</param>
-<param name="Модель процессора">Core i7</param>
-<param name="Модель чипсета видеокарты">RTX 4070</param>
-<param name="Объем видеопамяти">12 Gb</param>
-<param name="Объем жесткого диска">1000</param>
-<param name="Оперативная память">16 Gb</param>
-<param name="Операционная система">Без операционной системы</param>
-<param name="Порты">1x RJ45 Gigabit Ethernet/1x HDMI 2.0a/3 x Audio jacks/2x USB 2.0 Type-A/2x USB 3.2 Gen 1 Type-A/1x 3.5mm combo audio jack/1x USB 3.2 Gen 2 Type-C/2x USB 3.2 Gen 2 Type-A</param>
-<param name="Производитель процессора">Intel</param>
-<param name="Производитель чипсета видеокарты">nVidia</param>
-<param name="Серия процессора">14700KF</param>
-<param name="Сетевая карта (скорость передачи)">10/25GbE</param>
-<param name="Тип">Настольный ПК</param>
-<param name="Тип жесткого диска">M.2 PCIe SSD</param>
-<param name="Тип кейса">SFF</param>
-<param name="Тип оперативной памяти">DDR5</param>
-<param name="Тип привода">No ODD</param>
-<param name="Частота оперативной памяти">4800</param>
-<param name="Частота процессора">3,4</param>
-<keywords>ASUS, Компьютер ASUS G22CH-1470KF0020 (90PF03T2-M00TC0 / 1), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13869655" available="true">
 <categoryId>601</categoryId>
 <vendorCode>CP13869655</vendorCode>
 <name>Ноутбук Dell Latitude 3550 (210-BLRD_N006L355015EMEA_VP_UBU)</name>
-<price>409900</price>
+<price>408900</price>
 <picture>https://www.comportal.kz/upload/iblock/ed1/ehwfk2vrk0wpoc4b85s0brgcwggnvh73.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -20942,7 +20623,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870493</vendorCode>
 <name>Ноутбук Dell Latitude 5550 (210-BLMN_N007L555015EMEA_VP)</name>
-<price>673900</price>
+<price>671900</price>
 <picture>https://www.comportal.kz/upload/iblock/267/6ym020mx2uvqvnwihoxpmb3vyiz1j7fh.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -21030,7 +20711,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870494</vendorCode>
 <name>Ноутбук Dell Latitude 5550 (210-BLMN_N015L555015EMEA_VP)</name>
-<price>790900</price>
+<price>788900</price>
 <picture>https://www.comportal.kz/upload/iblock/df6/nezwt90gmujfv79qjsr7u9d33fi5i841.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -21118,7 +20799,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13869656</vendorCode>
 <name>Ноутбук Dell Latitude 3550 (210-BLRD_N004L355015EMEA_VP)</name>
-<price>415900</price>
+<price>414900</price>
 <picture>https://www.comportal.kz/upload/iblock/102/5hkzy8gwkcw0r9qh3trr8qxv9aytu8ys.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -21206,7 +20887,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870470</vendorCode>
 <name>Ноутбук HP 250R G9 (A37RJET#UUQ)</name>
-<price>388900</price>
+<price>387900</price>
 <picture>https://www.comportal.kz/upload/iblock/cc9/xsk1naqlat18qnn8nnmf3nsbvif47oh1.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -21336,7 +21017,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13870486</vendorCode>
 <name>Монитор Dell P2225H (210-BMHD)</name>
-<price>90900</price>
+<price>89900</price>
 <picture>https://www.comportal.kz/upload/iblock/edb/l6y6qafg1lsnwyr2xzrccf323mfkkci6.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -21400,7 +21081,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13870489</vendorCode>
 <name>Монитор Dell P2425HE (210-BMTC)</name>
-<price>130900</price>
+<price>129900</price>
 <picture>https://www.comportal.kz/upload/iblock/b45/kzs2ht2b9w1hr3v6pp50t8okubly47np.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -21463,7 +21144,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13869155</vendorCode>
 <name>Ноутбук Dell Latitude 5550 (210-BLYZ_12)</name>
-<price>730900</price>
+<price>728900</price>
 <picture>https://www.comportal.kz/upload/iblock/57c/l8x27otppti8mw8b2x4b7ekho8iw9pyj.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -21547,7 +21228,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13869161</vendorCode>
 <name>Ноутбук Dell Latitude 7650 (210-BLQN_2)</name>
-<price>751900</price>
+<price>749900</price>
 <picture>https://www.comportal.kz/upload/iblock/c35/3bi16nlmxgl5npi7yigb6xi4g39kqky2.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -21630,7 +21311,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13869162</vendorCode>
 <name>Ноутбук Dell Latitude 7650 (210-BLQN_3)</name>
-<price>924900</price>
+<price>921900</price>
 <picture>https://www.comportal.kz/upload/iblock/f94/qczyitwizpmj1yg55go2cmkrpsov7pat.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -21775,7 +21456,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13871703</vendorCode>
 <name>Монитор Acer Nitro XF270X1biiph (UM.HX0EE.101)</name>
-<price>82900</price>
+<price>81900</price>
 <picture>https://www.comportal.kz/upload/iblock/6d5/cvhuvjwpjo579yrj4ud62zq26sf97npv.jpg</picture>
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
@@ -22023,7 +21704,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870600</vendorCode>
 <name>ИБП Astergo AST.UPS.ORT1000IB1U (AST.UPS.ORT1000IB1U)</name>
-<price>243900</price>
+<price>242900</price>
 <picture>https://www.comportal.kz/upload/iblock/396/p67kg64qdse2ipag7bw29igr40ivozuj.jpg</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22126,7 +21807,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870602</vendorCode>
 <name>ИБП Astergo AST.UPS.LRT1100VS2U (AST.UPS.LRT1100VS2U)</name>
-<price>193900</price>
+<price>192900</price>
 <picture>https://www.comportal.kz/upload/iblock/056/hddvwbs37qha99uaz6cxxwc41yy8q8yu.jpg</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22178,7 +21859,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870603</vendorCode>
 <name>ИБП Astergo AST.UPS.LRT2000VS2U (AST.UPS.LRT2000VS2U)</name>
-<price>248900</price>
+<price>247900</price>
 <picture>https://www.comportal.kz/upload/iblock/628/d17p2jjq0g92ayik44j84p0z29vtqk07.jpg</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22230,7 +21911,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870604</vendorCode>
 <name>ИБП Astergo AST.UPS.LRT3000VS2U (AST.UPS.LRT3000VS2U)</name>
-<price>304900</price>
+<price>303900</price>
 <picture>https://www.comportal.kz/upload/iblock/58d/q55d4kq6jryaylngerbm5f4u4zeu7oo2.jpg</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22282,7 +21963,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870605</vendorCode>
 <name>ИБП Astergo AST.UPS.PGO2000LCD2U (AST.UPS.PGO2000LCD2U)</name>
-<price>282900</price>
+<price>281900</price>
 <picture>https://www.comportal.kz/upload/iblock/ad5/5dc0qelw1csmyui6v3rty87nsmqlafu9.jpg</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22334,7 +22015,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870606</vendorCode>
 <name>ИБП Astergo AST.UPS.PGO3000LCD2U (AST.UPS.PGO3000LCD2U)</name>
-<price>346900</price>
+<price>345900</price>
 <picture>https://www.comportal.kz/upload/iblock/987/avxzqkumndl20ih45x7cvyne4pdrwabd.jpg</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22386,7 +22067,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870607</vendorCode>
 <name>ИБП Astergo AST.UPS.PGO6KLCD2U (AST.UPS.PGO6KLCD2U)</name>
-<price>513900</price>
+<price>512900</price>
 <picture>https://www.comportal.kz/upload/iblock/986/jk1nlybg73ucwc0pz1wj1p0l3uejex1y.jpg</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22437,7 +22118,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870608</vendorCode>
 <name>ИБП Astergo AST.UPS.PGO10KLCD2U (AST.UPS.PGO10KLCD2U)</name>
-<price>624900</price>
+<price>622900</price>
 <picture>https://www.comportal.kz/upload/iblock/eb8/jhxt3w037avmsnzf0or12281ld2xloti.jpg</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22488,7 +22169,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870609</vendorCode>
 <name>Дополнительная батарея Astergo AST.UPS.PGOBP3U240V7 (AST.UPS.PGOBP3U240V7)</name>
-<price>319900</price>
+<price>318900</price>
 <picture>https://www.comportal.kz/upload/iblock/36a/l0q3odtctd6i59qxk6pg25j895kox17p.jpg</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22535,7 +22216,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870610</vendorCode>
 <name>Дополнительная батарея Astergo AST.UPS.PGOBP3U240V9 (AST.UPS.PGOBP3U240V9)</name>
-<price>387900</price>
+<price>386900</price>
 <picture>https://www.comportal.kz/upload/iblock/b42/ahusyyr84wcn72ivb62g9h6tfikz4lvg.jpg</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22633,7 +22314,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870614</vendorCode>
 <name>ИБП Astergo AST.UPS.PGOT2000 (AST.UPS.PGOT2000)</name>
-<price>255900</price>
+<price>254900</price>
 <picture>https://www.comportal.kz/upload/iblock/2ff/7vqkgn6g4zkliuqj1qr2mmnc14stfnur.png</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22684,7 +22365,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870615</vendorCode>
 <name>ИБП Astergo AST.UPS.PGOT3000 (AST.UPS.PGOT3000)</name>
-<price>311900</price>
+<price>310900</price>
 <picture>https://www.comportal.kz/upload/iblock/c2f/860ckzelmozm6eon99k7nwtu7becaw9b.png</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22735,7 +22416,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870616</vendorCode>
 <name>ИБП Astergo AST.UPS.PGOT6KS (AST.UPS.PGOT6KS)</name>
-<price>565900</price>
+<price>563900</price>
 <picture>https://www.comportal.kz/upload/iblock/ea3/3gijfxlcim8b0jxzlde9fel5n7f6je4g.png</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22786,7 +22467,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870617</vendorCode>
 <name>ИБП Astergo AST.UPS.PGOT10KS (AST.UPS.PGOT10KS)</name>
-<price>732900</price>
+<price>730900</price>
 <picture>https://www.comportal.kz/upload/iblock/0cf/pzf7vdmp022ex4wssxltbv8pzu16x85q.png</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22837,7 +22518,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870618</vendorCode>
 <name>ИБП Astergo AST.UPS.LA1500USB8I (AST.UPS.LA1500USB8I)</name>
-<price>173900</price>
+<price>172900</price>
 <picture>https://www.comportal.kz/upload/iblock/f93/2tnhmwyl5fth7eajt1borozne3kp27mk.jpg</picture>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22888,7 +22569,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870395</vendorCode>
 <name>Ноутбук Dell Latitude 5550 (210-BLMN_N013L555015EMEA_VP)</name>
-<price>873900</price>
+<price>870900</price>
 <picture>https://www.comportal.kz/upload/iblock/316/7yn5v0jrx5saybw8jyj4strcqb7e7h6n.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -22976,7 +22657,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870396</vendorCode>
 <name>Ноутбук Dell Latitude 5550 (210-BLMN_N065L555015EMEA_VP)</name>
-<price>773900</price>
+<price>771900</price>
 <picture>https://www.comportal.kz/upload/iblock/9ab/9ep0ua61zkx9756tt93wkjjmqy65inp3.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -23064,7 +22745,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870235</vendorCode>
 <name>Ноутбук Dell Latitude 5550 (210-BLMN_1_N015L555015EMEA_VP)</name>
-<price>838900</price>
+<price>835900</price>
 <picture>https://www.comportal.kz/upload/iblock/4f4/5sqv72joxcgpyxaszud74lhvo645mnvl.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -23151,7 +22832,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>603</categoryId>
 <vendorCode>CP13872771</vendorCode>
 <name>Моноблок AIWA PF2402-D 8-256 (PF2402-D 8-256)</name>
-<price>217900</price>
+<price>216900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
@@ -23247,7 +22928,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>603</categoryId>
 <vendorCode>CP13872773</vendorCode>
 <name>Моноблок AIWA PF2702-K 16-512 (PF2702-K 16-512)</name>
-<price>254900</price>
+<price>253900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
@@ -23295,7 +22976,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13870328</vendorCode>
 <name>Моноблок ASUS E3402WVA-WPC004X (90PT03T1-M01090)</name>
-<price>406900</price>
+<price>405900</price>
 <picture>https://www.comportal.kz/upload/iblock/7a9/5hcnh7dvzj2o6ub5bi02zey1r4a3ajzt.JPG</picture>
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
@@ -23375,7 +23056,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870517</vendorCode>
 <name>Ноутбук ASUS ROG Strix G18 / G815LR-S9085 (90NR0LT1-M00390)</name>
-<price>1441900</price>
+<price>1437900</price>
 <picture>https://www.comportal.kz/upload/iblock/151/9i7js8a3l2t7g56ew62nafv1mpjbg1h4.JPG</picture>
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
@@ -23457,7 +23138,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>303</categoryId>
 <vendorCode>CP13870436</vendorCode>
 <name>Плоттер Canon imagePROGRAF TM-255 (6238C003)</name>
-<price>552900</price>
+<price>550900</price>
 <picture>https://www.comportal.kz/upload/iblock/951/c6cd2z5ee9jlfopw1c8r5egusbrnbfdb.jpeg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -23511,7 +23192,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870951</vendorCode>
 <name>Ноутбук HP EliteBook X G1i 14 AI (B68ZKET#BJA)</name>
-<price>1346900</price>
+<price>1342900</price>
 <picture>https://www.comportal.kz/upload/iblock/afb/984akbfq9uxkz04b9gvp13fcqvyl21wk.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -23591,7 +23272,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>304</categoryId>
 <vendorCode>CP13869969</vendorCode>
 <name>Сканер Canon DOCUMENT SCANNER DR-S350NW (6897C009AA)</name>
-<price>460900</price>
+<price>459900</price>
 <picture>https://www.comportal.kz/upload/iblock/066/76z741tf2lx3l0a2v36c29h1tdmhqke6.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -23648,7 +23329,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870533</vendorCode>
 <name>Мобильная рабочая станция Dell Precision 3590 (210-BLMX_N001P3590EMEA_VP)</name>
-<price>969900</price>
+<price>966900</price>
 <picture>https://www.comportal.kz/upload/iblock/419/hxjghq6ta7p0ljw8ick8prlltjww3cb1.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -23730,7 +23411,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870496</vendorCode>
 <name>Мобильная рабочая станция Dell Precision 3590 (210-BLMX_N004P3590EMEA_VP)</name>
-<price>1041900</price>
+<price>1038900</price>
 <picture>https://www.comportal.kz/upload/iblock/aaf/j4bo0169o2k5pgyy0r1sveesed2m7rwa.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -23812,7 +23493,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870690</vendorCode>
 <name>Мобильная рабочая станция Dell Precision 3590 (210-BLMX_N006P3590EMEA_VP)</name>
-<price>805900</price>
+<price>802900</price>
 <picture>https://www.comportal.kz/upload/iblock/7d9/uwwx38ya76yhbtr5a88v7sitb8fpdl9f.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -23894,7 +23575,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870692</vendorCode>
 <name>Мобильная рабочая станция Dell Precision 3591 (210-BLND_N101P3591EMEA_VP)</name>
-<price>1050900</price>
+<price>1047900</price>
 <picture>https://www.comportal.kz/upload/iblock/ae0/9pde0mxur1ahom4149376jujk2qtiwio.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -23976,7 +23657,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870693</vendorCode>
 <name>Мобильная рабочая станция Dell Precision 3591 (210-BLND_NN102P3591EMEA_VP)</name>
-<price>1140900</price>
+<price>1136900</price>
 <picture>https://www.comportal.kz/upload/iblock/f28/g6dd51r4le87nvluec8y3c35cgrfh1rb.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -24117,7 +23798,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13873236</vendorCode>
 <name>Монитор Dell Pro 14 Plus Portable Monitor - P1425 (210-BQTB)</name>
-<price>176900</price>
+<price>175900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -24165,7 +23846,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13870573</vendorCode>
 <name>Монитор Dell 55 4K Conference Room Monitor - P5525QC (210-BNTN)</name>
-<price>591900</price>
+<price>589900</price>
 <picture>https://www.comportal.kz/upload/iblock/934/hw2cev8ai30u2ho90p5dpc6utmg22cbq.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -24227,7 +23908,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13870642</vendorCode>
 <name>Монитор Dell UltraSharp 27 4K Thunderbolt Hub Monitor - U2725QE (210-BQTL)</name>
-<price>387900</price>
+<price>386900</price>
 <picture>https://www.comportal.kz/upload/iblock/b10/4gh5db9qjk0wucwwzhkeb2o1fr082sy6.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -24288,7 +23969,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13873043</vendorCode>
 <name>Монитор Dell UltraSharp 32 4K Thunderbolt Hub Monitor - U3225QE (210-BQTK)</name>
-<price>559900</price>
+<price>557900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -24336,7 +24017,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13871378</vendorCode>
 <name>Монитор Dell UltraSharp 32 4K Thunderbolt Hub Monitor - U3225QE (210-BQTK)</name>
-<price>517900</price>
+<price>515900</price>
 <picture>https://www.comportal.kz/upload/iblock/c16/vrdazpzqudg44zqzl9o5dith2dr1xwzi.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -24397,7 +24078,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870648</vendorCode>
 <name>ИБП APC SRTL3000RM4UXLI (SRTL3000RM4UXLI)</name>
-<price>3394900</price>
+<price>3383900</price>
 <picture>https://www.comportal.kz/upload/iblock/203/72lschy7hgvneugfmppfpoqm5ukemw2t.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -24450,59 +24131,11 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>APC, ИБП APC SRTL3000RM4UXLI (SRTL3000RM4UXLI), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13870220" available="true">
-<categoryId>207</categoryId>
-<vendorCode>CP13870220</vendorCode>
-<name>Узел фиксации Canon FM1-Y640-030000 (FM1-Y640-030000)</name>
-<price>214900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Canon</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Узел фиксации Canon FM1-Y640-030000 (FM1-Y640-030000)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">расходный материал Canon Узел фиксации Canon FM1-Y640-030000 код — FM1-Y640-030000.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> Canon</li><li><strong>Дополнительная информация:</strong> FIXING ASSEMBLY, FX-209</li><li><strong>Коды:</strong> FM1-Y640-030000</li><li><strong>Модель:</strong> Узел фиксации Canon FM1-Y640-030000</li><li><strong>Тип:</strong> Расходный материал</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Для бренда">Canon</param>
-<param name="Дополнительная информация">FIXING ASSEMBLY, FX-209</param>
-<param name="Коды">FM1-Y640-030000</param>
-<param name="Модель">Узел фиксации Canon FM1-Y640-030000</param>
-<param name="Тип">Расходный материал</param>
-<keywords>Canon, Узел фиксации Canon FM1-Y640-030000 (FM1-Y640-030000), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13873237" available="true">
 <categoryId>602</categoryId>
 <vendorCode>CP13873237</vendorCode>
 <name>Монитор Dell Pro 24 Adjustable Stand Monitor - E2425HSM (210-BRDV)</name>
-<price>75900</price>
+<price>74900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -24672,7 +24305,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13872351</vendorCode>
 <name>Монитор Dell Alienware 27 4K Dual-Resolution Gaming Monitor - AW2725QF (210-BNHT)</name>
-<price>299900</price>
+<price>298900</price>
 <picture>https://www.comportal.kz/upload/iblock/1d0/kk68aajfymigk10cnleq6o10d74pj7a4.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -24733,7 +24366,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13870922</vendorCode>
 <name>ИБП Eaton 5P 1550i Rack 1U G2 (5P1550IRG2)</name>
-<price>700900</price>
+<price>698900</price>
 <picture>https://www.comportal.kz/upload/iblock/959/7kyogzgblb4rmz5lh4t4wb3wqo4s4i9c.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -24787,7 +24420,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872311</vendorCode>
 <name>Ноутбук ASUS ROG Strix SCAR 18 / G835LX-SA022W (90NR0LF1-M000V0)</name>
-<price>2453900</price>
+<price>2445900</price>
 <picture>https://www.comportal.kz/upload/iblock/0de/5bw00ks779z2lbzrwa0wrvft4s9q7h2t.JPG</picture>
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
@@ -24874,7 +24507,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872312</vendorCode>
 <name>Ноутбук ASUS ROG Strix SCAR 18 / G835LX-SA126W (90NR0LF1-M005S0)</name>
-<price>2652900</price>
+<price>2644900</price>
 <picture>https://www.comportal.kz/upload/iblock/5df/rzfrpp1571928uwlepqj7t7u4d2abf8d.JPG</picture>
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
@@ -25273,7 +24906,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13870733</vendorCode>
 <name>Монитор Dell Pro 27 Plus 4K USB-C Hub Monitor - P2725QE, 68.6cm (27.0") (210-BRDS)</name>
-<price>259900</price>
+<price>258900</price>
 <picture>https://www.comportal.kz/upload/iblock/207/l3nzdtv3uohiqeeeg56byh15sd1nuqvu.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -25333,7 +24966,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13870734</vendorCode>
 <name>Монитор Dell Pro 32 Plus QHD USB-C Hub Monitor - P3225DE, 80.1cm (31.5") (210-BRDP)</name>
-<price>248900</price>
+<price>247900</price>
 <picture>https://www.comportal.kz/upload/iblock/458/19wxky1amu0xzweqq0ioodp4swzzehpa.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -25393,7 +25026,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13871253</vendorCode>
 <name>Монитор Dell Pro 32 Plus 4K USB-C Hub Monitor - P3225QE, 80.0cm (31.5") (210-BQZY)</name>
-<price>328900</price>
+<price>327900</price>
 <picture>https://www.comportal.kz/upload/iblock/6da/mvkhugy0em4ngpogpynjjeajqtv8l887.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -25453,7 +25086,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13870735</vendorCode>
 <name>Монитор Dell Pro 32 Plus 4K USB-C Hub Monitor - P3225QE, 80.0cm (31.5") (210-BQZY)</name>
-<price>322900</price>
+<price>321900</price>
 <picture>https://www.comportal.kz/upload/iblock/437/yxq9dljujcw446o3tfg9mxoi99bjecpm.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -25513,7 +25146,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13870562</vendorCode>
 <name>Моноблок Dell OptiPlex All-in-One 7420 (210-BLDV_N004O7420AIO65WEMEA_VP_1)</name>
-<price>773900</price>
+<price>770900</price>
 <picture>https://www.comportal.kz/upload/iblock/092/681vgrk1citlegg63j1hwmhkp1cd510s.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -25589,7 +25222,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13870584</vendorCode>
 <name>Моноблок Dell OptiPlex All-in-One Plus 7420 (210-BKVX_N002O7420AIOPEMEA_VP_1)</name>
-<price>698900</price>
+<price>695900</price>
 <picture>https://www.comportal.kz/upload/iblock/fcf/xwsx9afmq4tukgaukmjrfdrxzsbakcqk.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -25666,7 +25299,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13871813</vendorCode>
 <name>Компьютер Dell Optiplex 7020 Plus (210-BLDM_N013O7020MTPEMEA_VP_1)</name>
-<price>581900</price>
+<price>580900</price>
 <picture>https://www.comportal.kz/upload/iblock/238/swapvg63l3l3uaau9dynjqhtv25cpmwb.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -25799,7 +25432,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>703</categoryId>
 <vendorCode>CP13870534</vendorCode>
 <name>Модуль батарей Eaton 9E EBM (9EEBM72)</name>
-<price>321900</price>
+<price>320900</price>
 <picture>https://www.comportal.kz/upload/iblock/4a0/fu1h88s1pvm0jowd018fw1xzd5cil6av.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -25848,7 +25481,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13870713</vendorCode>
 <name>Моноблок ASUS V440VAK-WPC0300 (90PT03X1-M00AC0)</name>
-<price>272900</price>
+<price>271900</price>
 <picture>https://www.comportal.kz/upload/iblock/3d0/es6ua4daac1skus1pa2if361n3lmd04j.JPG</picture>
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
@@ -25927,7 +25560,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>304</categoryId>
 <vendorCode>CP13870846</vendorCode>
 <name>Сканер HP ScanJet Pro 4200 s1 +АПД (8Q4W2A#B19)</name>
-<price>247900</price>
+<price>246900</price>
 <picture>https://www.comportal.kz/upload/iblock/d56/a3ytlyu131102itef0w4q6687krsvt55.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -25980,7 +25613,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13870940</vendorCode>
 <name>МФУ HP Color LaserJet Enterprise Flow MFP 6800zf (6QN36A#B19)</name>
-<price>2041900</price>
+<price>2035900</price>
 <picture>https://www.comportal.kz/upload/iblock/08e/rpwrsp91vx2q6f08kv18lrp0c97g66hg.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -26103,7 +25736,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13871381</vendorCode>
 <name>Монитор Dell 34 Plus USB-C Monitor-S3425DW (210-BQWR)</name>
-<price>222900</price>
+<price>221900</price>
 <picture>https://www.comportal.kz/upload/iblock/fab/re3qih5xdk0tjz35nv753o93k0mpwmta.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -26211,7 +25844,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>603</categoryId>
 <vendorCode>CP13873013</vendorCode>
 <name>Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG)</name>
-<price>689900</price>
+<price>687900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -26259,7 +25892,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871802</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (210-BPBF_BTO010_PC16250_EMEA)</name>
-<price>481900</price>
+<price>479900</price>
 <picture>https://www.comportal.kz/upload/iblock/365/97jmd372i3puvdmn4z3ouegjat69eg2k.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -26341,7 +25974,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871806</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (210-BQHB_BTO107_PC16250_EMEA)</name>
-<price>572900</price>
+<price>570900</price>
 <picture>https://www.comportal.kz/upload/iblock/592/e4jidceq583v9cq6qq0ji15fat5xauzi.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -26423,7 +26056,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870786</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (210-BQHB_BTO108_PC16250_EMEA)</name>
-<price>795900</price>
+<price>793900</price>
 <picture>https://www.comportal.kz/upload/iblock/137/x0u8lio047162ljq30q9ikv4dzb82cu7.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -26506,7 +26139,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871815</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (210-BQHB_BTO109_PC16250_EMEA)</name>
-<price>595900</price>
+<price>593900</price>
 <picture>https://www.comportal.kz/upload/iblock/e2e/ya7uxgkkyc36nklspkogi553pnei0hbp.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -26588,7 +26221,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871875</vendorCode>
 <name>Ноутбук Dell Pro 16 Plus (PB16250) XCTO Base (210-BPCJ)</name>
-<price>970900</price>
+<price>967900</price>
 <picture>https://www.comportal.kz/upload/iblock/af4/dbnehh60y0pkeq12aqw7g0wayxq99zx7.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -26669,7 +26302,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871816</vendorCode>
 <name>Ноутбук Dell Pro 16 Plus (PB16250) XCTO Base (210-BPCK)</name>
-<price>796900</price>
+<price>794900</price>
 <picture>https://www.comportal.kz/upload/iblock/b4d/junmr2ii8p9a2fyjie28rzntl20j0401.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -26750,7 +26383,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872581</vendorCode>
 <name>Ноутбук ASUS ROG Strix G16 / G615JHR-S5039 (90NR0LL1-M001B0)</name>
-<price>825900</price>
+<price>822900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
@@ -26798,7 +26431,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13872066</vendorCode>
 <name>Монитор Dell Alienware 34 240Hz QD-OLED Gaming Monitor- AW3425DW (210-BRTW)</name>
-<price>430900</price>
+<price>428900</price>
 <picture>https://www.comportal.kz/upload/iblock/e49/wzp26ok0wvctdax1mu26ie2tfl2l89lq.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -26860,7 +26493,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13873048</vendorCode>
 <name>Монитор Dell 32 Plus 4K QD-OLED Monitor - S3225QC (210-BRVT)</name>
-<price>555900</price>
+<price>553900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -26908,7 +26541,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13871817</vendorCode>
 <name>Рабочая станция Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO107_FCT2250_EMEA)</name>
-<price>1199900</price>
+<price>1195900</price>
 <picture>https://www.comportal.kz/upload/iblock/70c/r8zqzaw13v8up15ppnefhn9uheni0q8e.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -26985,7 +26618,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13871818</vendorCode>
 <name>Рабочая станция Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO108_FCT2250_EMEA)</name>
-<price>1284900</price>
+<price>1280900</price>
 <picture>https://www.comportal.kz/upload/iblock/8fd/ywecs5pxeihzs9z1750er8kq8bu8zcs6.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -27124,7 +26757,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13871342</vendorCode>
 <name>МФУ Canon i-SENSYS MF287dw (6354C009)</name>
-<price>206900</price>
+<price>205900</price>
 <picture>https://www.comportal.kz/upload/iblock/362/r2wwjvtkc5g3ccpiyyskx5qynersd5dx.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -27183,7 +26816,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13870960</vendorCode>
 <name>Ноутбук ASUS Vivobook S14 / S3407CA-LY014W (90NB16J1-M00640)</name>
-<price>446900</price>
+<price>444900</price>
 <picture>https://www.comportal.kz/upload/iblock/656/ej4juql1vvuwmqsjpoqm63gs93ia678m.JPG</picture>
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
@@ -27267,7 +26900,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13871112</vendorCode>
 <name>ИБП Eaton 9PX 6000i RT3U Netpack G2 (9PX6KIRTNG2)</name>
-<price>1760900</price>
+<price>1755900</price>
 <picture>https://www.comportal.kz/upload/iblock/3ec/oqpbqvklgj3nn2qsdg7ycx198vv8p6pt.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -27530,7 +27163,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>102</categoryId>
 <vendorCode>CP13871261</vendorCode>
 <name>Картридж HP 938e EvoMore Cyan Original Ink Cartridge (4S6X9PE) (оригинал)</name>
-<price>28900</price>
+<price>27900</price>
 <picture>https://www.comportal.kz/upload/iblock/b58/q7dz6gqcqo9qxm29vy20yeuljuv8umga.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -27629,7 +27262,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>401</categoryId>
 <vendorCode>CP13872831</vendorCode>
 <name>Проектор Acer X139 (MR.JX611.00Z)</name>
-<price>241900</price>
+<price>240900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Acer</vendor>
 <currencyId>KZT</currencyId>
@@ -27725,7 +27358,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13871969</vendorCode>
 <name>Принтер Canon I-SENSYS LBP246DW II (7187C006)</name>
-<price>152900</price>
+<price>151900</price>
 <picture>https://www.comportal.kz/upload/iblock/1e0/9myzcu73kcx06olfxlr4h2hw3y5hshd1.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -27903,7 +27536,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13872105</vendorCode>
 <name>МФУ HP LaserJet MFP 8601dn (9S186A#B19)</name>
-<price>3602900</price>
+<price>3590900</price>
 <picture>https://www.comportal.kz/upload/iblock/bd0/mlnpxd59j3awe9lzr08ypi0hb48jbkg1.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -27964,7 +27597,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13871939</vendorCode>
 <name>ИБП Eaton 9E6KIR (9E6KIR)</name>
-<price>1337900</price>
+<price>1333900</price>
 <picture>https://www.comportal.kz/upload/iblock/023/4sx2mpzqrjax38h86cj8qjfyu1qjjtko.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -28021,7 +27654,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>703</categoryId>
 <vendorCode>CP13871940</vendorCode>
 <name>Аккумулятор Eaton 9E11KIPMR (9EEBM180R)</name>
-<price>712900</price>
+<price>709900</price>
 <picture>https://www.comportal.kz/upload/iblock/2aa/2v0jzd0uafu7jdz9n21x0l8f18lr2295.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -28070,7 +27703,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13871943</vendorCode>
 <name>ИБП Eaton 9SX11KIRT4UG2 (9SX11KIRT4UG2)</name>
-<price>2868900</price>
+<price>2859900</price>
 <picture>https://www.comportal.kz/upload/iblock/b5a/6q33hhk2v2occy7t2xardbz5z698f43n.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -28128,7 +27761,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13871944</vendorCode>
 <name>ИБП Eaton 9SX6KIRT3UG2 (9SX6KIRT3UG2)</name>
-<price>1789900</price>
+<price>1783900</price>
 <picture>https://www.comportal.kz/upload/iblock/34d/cuvsi31sv9lsisuok4761rabk5112fvz.jpg</picture>
 <vendor>Eaton</vendor>
 <currencyId>KZT</currencyId>
@@ -28237,7 +27870,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13871837</vendorCode>
 <name>Картридж Canon LBP CARTRIDGE 072H (5648C002) (оригинал)</name>
-<price>32900</price>
+<price>31900</price>
 <picture>https://www.comportal.kz/upload/iblock/25f/dzzwn6mldvbaevtbb0s66h7vzebwj50i.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -28288,7 +27921,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13872107</vendorCode>
 <name>Компьютер HP Pro Tower 400 G9 (9M8R6AT#BJA)</name>
-<price>705900</price>
+<price>703900</price>
 <picture>https://www.comportal.kz/upload/iblock/16f/0uf0n4kcmyx4nut2pkoi0aeuglap47vm.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -28363,7 +27996,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872108</vendorCode>
 <name>Ноутбук HP ProBook 4 G1q (B39XGAT#BJA)</name>
-<price>442900</price>
+<price>441900</price>
 <picture>https://www.comportal.kz/upload/iblock/742/ijagj398u6pcfvliarfiidzgqlkh55kn.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -28442,7 +28075,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872109</vendorCode>
 <name>Ноутбук HP EliteBook 6 G1q (C5LZ6AT#BJA)</name>
-<price>484900</price>
+<price>482900</price>
 <picture>https://www.comportal.kz/upload/iblock/823/bniww9mojwp7aafjmsfkgkpj0nqkbis8.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -28521,7 +28154,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872110</vendorCode>
 <name>Ноутбук HP ProBook 4 G1i (AD2M1ET#BJA)</name>
-<price>666900</price>
+<price>664900</price>
 <picture>https://www.comportal.kz/upload/iblock/29b/vqlffw10z5zca6bbz646z4mdz2xtxuhm.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -28602,7 +28235,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872372</vendorCode>
 <name>Ноутбук HP ProBook 4 G1i (C43J5ET#BJA)</name>
-<price>639900</price>
+<price>637900</price>
 <picture>https://www.comportal.kz/upload/iblock/601/4tl2sh3c235w6t8475dqm7k9pgd1825h.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -28684,7 +28317,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872989</vendorCode>
 <name>Ноутбук Dell Pro 14 PC14250 (BTO109_PC14250_EMEA_210-BQHF)</name>
-<price>686900</price>
+<price>684900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -28732,7 +28365,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873244</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus PB14250 (BTO105_PB14250_EMEA_210-BPDL)</name>
-<price>702900</price>
+<price>700900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -28780,7 +28413,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871907</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus PB14250 (BTO105_PB14250_EMEA_210-BPDL)</name>
-<price>702900</price>
+<price>700900</price>
 <picture>https://www.comportal.kz/upload/iblock/e5d/0vy6dnqjmd6w393i86z9w2nizrval9si.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -28860,7 +28493,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872990</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus PB14250 (BTO111_PB14250_EMEA_210-BPDL)</name>
-<price>829900</price>
+<price>826900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -28908,7 +28541,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872991</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus PB14250 (210-BPDL_BTO110_PB14250_EMEA)</name>
-<price>777900</price>
+<price>775900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -28956,7 +28589,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872992</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO109_PC16250_EMEA_210-BQHB)</name>
-<price>689900</price>
+<price>687900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29004,7 +28637,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872993</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO107_PC16250_EMEA_210-BQHB)</name>
-<price>723900</price>
+<price>721900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29052,7 +28685,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873245</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO105_PC16250_EMEA_210-BQHB)</name>
-<price>588900</price>
+<price>586900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29100,7 +28733,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873353</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO106_PC16250_EMEA_210-BQHB)</name>
-<price>705900</price>
+<price>703900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29148,7 +28781,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871912</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO106_PC16250_EMEA_210-BQHB)</name>
-<price>705900</price>
+<price>703900</price>
 <picture>https://www.comportal.kz/upload/iblock/46c/5taenm4lrt18d3iy1t4h6w6mupeyljbq.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29228,7 +28861,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872994</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16255 (BTO602_PC16255_EMEA_210-BQPC)</name>
-<price>574900</price>
+<price>572900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29276,7 +28909,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13871914</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16255 (BTO604_PC16255_EMEA_210-BQPC)</name>
-<price>978900</price>
+<price>975900</price>
 <picture>https://www.comportal.kz/upload/iblock/fbf/accaavgmakfw6hbkxm99ib29wff1iogi.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29356,7 +28989,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872995</vendorCode>
 <name>Ноутбук Dell Pro 16 Plus PB16250 (BTO105_PB16250_EMEA_UBU_210-BPCM)</name>
-<price>743900</price>
+<price>740900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29404,7 +29037,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873354</vendorCode>
 <name>Мобильная рабочая станция Dell Pro Max 14 MC14250 (BTO120_MC14250_EMEA_210-BPVX)</name>
-<price>1023900</price>
+<price>1020900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29452,7 +29085,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873355</vendorCode>
 <name>Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO128_MC16250_EMEA_210-BPVR)</name>
-<price>1344900</price>
+<price>1340900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29500,7 +29133,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873356</vendorCode>
 <name>Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO129_MC16250_EMEA_210-BPVR)</name>
-<price>892900</price>
+<price>890900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29548,7 +29181,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872134</vendorCode>
 <name>Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO122_MC16250_EMEA_210-BPVR)</name>
-<price>1156900</price>
+<price>1152900</price>
 <picture>https://www.comportal.kz/upload/iblock/10d/m0nbxr928xdvone2pdvfy4uon14epukm.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29677,7 +29310,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13873241</vendorCode>
 <name>Монитор Dell SE2425HG (210-BSNR)</name>
-<price>73900</price>
+<price>72900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29725,7 +29358,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13872353</vendorCode>
 <name>Монитор Dell SE2425HG (210-BSNR)</name>
-<price>73900</price>
+<price>72900</price>
 <picture>https://www.comportal.kz/upload/iblock/ab5/7zqfxcwjgvq030tr3t5l4itvac3c5bj9.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29785,7 +29418,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13872354</vendorCode>
 <name>Монитор Dell AW2725Q (210-BQWV)</name>
-<price>471900</price>
+<price>470900</price>
 <picture>https://www.comportal.kz/upload/iblock/19d/bibv3zfvdvmoapshuryzgr7lv6nmkzv6.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29843,7 +29476,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13872763</vendorCode>
 <name>Монитор Dell AW2725DM (210-BQWQ)</name>
-<price>175900</price>
+<price>174900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -29891,7 +29524,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>303</categoryId>
 <vendorCode>CP13872296</vendorCode>
 <name>Плоттер Canon Плоттер Canon / imagePROGRAF TX-3200 incl. stand / A1 / 2400 x1200 dpi. (6854C003)</name>
-<price>2496900</price>
+<price>2488900</price>
 <picture>https://www.comportal.kz/upload/iblock/dbb/2d8ql9fb54f55m7wonx4dp5fhjtfbh0o.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -29945,7 +29578,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872100</vendorCode>
 <name>Ноутбук HP EliteBook 8 G1a (AD4J8ET#BJA)</name>
-<price>642900</price>
+<price>640900</price>
 <picture>https://www.comportal.kz/upload/iblock/03e/yhlp3pd6rh7v4fi4uwu50bm5wpyua8dn.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -30026,7 +29659,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13872440</vendorCode>
 <name>Моноблок HP EliteStudio 8 AiO G1i 27 (A0ZF4EA#BJA)</name>
-<price>694900</price>
+<price>692900</price>
 <picture>https://www.comportal.kz/upload/iblock/016/08sh3tjhbaamc5lhwum99pi2qyboamvr.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -30105,7 +29738,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872101</vendorCode>
 <name>Ноутбук HP EliteBook 8 G1a (AD4J9ET#BJA)</name>
-<price>705900</price>
+<price>702900</price>
 <picture>https://www.comportal.kz/upload/iblock/095/1yyacrz1ufja9ev18vt4or0ob77ngye4.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -30186,7 +29819,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872116</vendorCode>
 <name>Ноутбук HP EliteBook 8 G1i (AD4H8ET#BJA)</name>
-<price>732900</price>
+<price>730900</price>
 <picture>https://www.comportal.kz/upload/iblock/0cd/gg40l0lyh9agd69bc4kbqf59j25e3ygj.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -30266,7 +29899,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872375</vendorCode>
 <name>Ноутбук HP EliteBook Ultra G1i AI (B66V4AT#UUQ)</name>
-<price>815900</price>
+<price>808900</price>
 <picture>https://www.comportal.kz/upload/iblock/bc4/eqnuj9w6d3swf74fk4mrcyqh14o4eve8.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -30351,7 +29984,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13872265</vendorCode>
 <name>ИБП APC BVG1600I-GR 230V, AVR, 4 Schuko Sockets (BVG1600I-GR)</name>
-<price>82900</price>
+<price>81900</price>
 <picture>https://www.comportal.kz/upload/iblock/d35/6azxbqzqhhb0inbmlmb31u373z4d56tj.jpg</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -30459,7 +30092,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13872125</vendorCode>
 <name>Монитор HP Series 3 Pro / 324pe (B1GM5AA#ABB)</name>
-<price>75900</price>
+<price>74900</price>
 <picture>https://www.comportal.kz/upload/iblock/f7a/jqt0uzp94m2i9yjj47od1bs4qcfncheb.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -30569,7 +30202,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13872127</vendorCode>
 <name>Монитор HP Series 7 Pro / 734pm (8K157UT#ABB)</name>
-<price>484900</price>
+<price>482900</price>
 <picture>https://www.comportal.kz/upload/iblock/786/97925h3vyljzneum67jhx7cydz9oeid9.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -30631,7 +30264,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13873051</vendorCode>
 <name>Монитор Dell 24 Plus Monitor – S2425HSM (210-BSZD)</name>
-<price>89900</price>
+<price>88900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -30679,7 +30312,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13872355</vendorCode>
 <name>Монитор Dell 24 Plus Monitor – S2425HSM (210-BSZD)</name>
-<price>89900</price>
+<price>88900</price>
 <picture>https://www.comportal.kz/upload/iblock/92e/e07uca2o6c83j5nrequ9fwmnqa6wmilq.jpg</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -30787,7 +30420,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13872628</vendorCode>
 <name>Монитор Dell 27 Plus Monitor – S2725HSM (210-BSZF)</name>
-<price>102900</price>
+<price>101900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -30991,7 +30624,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872313</vendorCode>
 <name>Ноутбук ASUS ROG Flow Z13 / GZ302EA-RU045W (90NR0JY1-M002E0)</name>
-<price>1276900</price>
+<price>1272900</price>
 <picture>https://www.comportal.kz/upload/iblock/3ae/1mv1ulxj3gkz4y8xtd2g1xzibn53229d.JPG</picture>
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
@@ -31075,7 +30708,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872384</vendorCode>
 <name>Ноутбук ASUS ExpertBook / P1403CVA-S61785 (90NX0871-M022T0)</name>
-<price>304900</price>
+<price>303900</price>
 <picture>https://www.comportal.kz/upload/iblock/9bc/kyoz2nwc5cfyh6bwmrcss0tlnp4zdv4c.JPG</picture>
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
@@ -31155,7 +30788,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872591</vendorCode>
 <name>Ноутбук ASUS ExpertBook / P1503CVA-S72536X (90NX0881-M02Y90)</name>
-<price>512900</price>
+<price>511900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
@@ -31203,7 +30836,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872314</vendorCode>
 <name>Ноутбук ASUS ExpertBook / B1503CVA-S77885X (90NX0801-M08YY0)</name>
-<price>456900</price>
+<price>455900</price>
 <picture>https://www.comportal.kz/upload/iblock/c85/7zsz2trtngus5i79vw4l542h3g4zs8ox.JPG</picture>
 <vendor>ASUS</vendor>
 <currencyId>KZT</currencyId>
@@ -31288,7 +30921,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872617</vendorCode>
 <name>Ноутбук HP EliteBook 8 G1a (AZ3N2AV / 74051488)</name>
-<price>591900</price>
+<price>589900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -31336,7 +30969,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872623</vendorCode>
 <name>Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_101)</name>
-<price>1259900</price>
+<price>1255900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31384,7 +31017,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872996</vendorCode>
 <name>Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_102)</name>
-<price>1659900</price>
+<price>1653900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31432,7 +31065,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872997</vendorCode>
 <name>Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_104)</name>
-<price>1569900</price>
+<price>1564900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31480,7 +31113,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872998</vendorCode>
 <name>Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_003)</name>
-<price>1626900</price>
+<price>1621900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31528,7 +31161,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872999</vendorCode>
 <name>Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_011)</name>
-<price>1847900</price>
+<price>1841900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31576,7 +31209,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873000</vendorCode>
 <name>Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_006)</name>
-<price>1752900</price>
+<price>1746900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31624,7 +31257,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873001</vendorCode>
 <name>Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_008)</name>
-<price>2003900</price>
+<price>1997900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31672,7 +31305,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873002</vendorCode>
 <name>Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_010)</name>
-<price>2426900</price>
+<price>2418900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31720,7 +31353,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>603</categoryId>
 <vendorCode>CP13873016</vendorCode>
 <name>Моноблок Dell Pro 24 All-in-One QC24251 (210-BPPN_BTO103_QC24251_EMEA)</name>
-<price>633900</price>
+<price>631900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31768,7 +31401,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>603</categoryId>
 <vendorCode>CP13873017</vendorCode>
 <name>Моноблок Dell Pro 24 All-in-One QC24250 (210-BPNS_BTO155_QC24250_EMEA)</name>
-<price>834900</price>
+<price>831900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31816,7 +31449,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>603</categoryId>
 <vendorCode>CP13873018</vendorCode>
 <name>Моноблок Dell Pro 24 All-in-One QC24250 (210-BPNS_BTO154_QC24250_EMEA)</name>
-<price>784900</price>
+<price>782900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31864,7 +31497,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>603</categoryId>
 <vendorCode>CP13873019</vendorCode>
 <name>Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG_BTO103_QB24250_EMEA)</name>
-<price>791900</price>
+<price>789900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31912,7 +31545,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873021</vendorCode>
 <name>Компьютер Dell Pro Micro QCM1250 (210-BPQB_BTO003_QCM1250_EMEA)</name>
-<price>408900</price>
+<price>406900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -31960,7 +31593,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>603</categoryId>
 <vendorCode>CP13873024</vendorCode>
 <name>Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG_BTO101_QB24250_EMEA)</name>
-<price>699900</price>
+<price>696900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32008,7 +31641,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873025</vendorCode>
 <name>Компьютер Dell Pro Micro QCM1250 (210-BPPV_BTO107_QCM1250_EMEA)</name>
-<price>629900</price>
+<price>627900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32056,7 +31689,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873026</vendorCode>
 <name>Компьютер Dell Pro Tower QCT1250 (210-BPRW_BTO107_QCT1250_EMEA)</name>
-<price>535900</price>
+<price>533900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32104,7 +31737,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873027</vendorCode>
 <name>Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO103_FCT2250_EMEA)</name>
-<price>931900</price>
+<price>928900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32152,7 +31785,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873028</vendorCode>
 <name>Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO113_FCT2250_EMEA)</name>
-<price>1279900</price>
+<price>1275900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32200,7 +31833,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873029</vendorCode>
 <name>Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO109_FCT2250_EMEA)</name>
-<price>1040900</price>
+<price>1037900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32248,7 +31881,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873030</vendorCode>
 <name>Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO112_FCT2250_EMEA)</name>
-<price>1203900</price>
+<price>1200900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32296,7 +31929,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873031</vendorCode>
 <name>Компьютер Dell Pro Tower QCT1250 (210-BPRW_BTO110_QCT1250_EMEA)</name>
-<price>636900</price>
+<price>634900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32344,7 +31977,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>603</categoryId>
 <vendorCode>CP13872965</vendorCode>
 <name>Моноблок Dell All-in-One EC27250 (210-BPFS_EC27250_RPLU-R_010)</name>
-<price>818900</price>
+<price>816900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32392,7 +32025,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873003</vendorCode>
 <name>Компьютер Dell Tower Plus EBT2250 (210-BPDZ_EBT2250_ARL_127)</name>
-<price>1483900</price>
+<price>1479900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32440,7 +32073,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873004</vendorCode>
 <name>Компьютер Dell Tower Plus EBT2250 (210-BPDZ_EBT2250_ARL_128)</name>
-<price>2099900</price>
+<price>2092900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32553,7 +32186,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>304</categoryId>
 <vendorCode>CP13872332</vendorCode>
 <name>Сканер Canon imageFORMULA DR-C240 + RIPDF 25 (0651C003 / bundle)</name>
-<price>318900</price>
+<price>317900</price>
 <picture>https://www.comportal.kz/upload/iblock/b70/ycjrpxz88kmlw4g0375pfkbh2ng0cjgw.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -32613,7 +32246,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP13873102</vendorCode>
 <name>Тонер Canon C-EXV 1005 (6726C002) (оригинал)</name>
-<price>97900</price>
+<price>96900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -32719,7 +32352,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872879</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus (210-BPDN_1)</name>
-<price>764900</price>
+<price>762900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32767,7 +32400,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>603</categoryId>
 <vendorCode>CP13872774</vendorCode>
 <name>Моноблок AIWA PF2402-D-8-512 (PF2402-D 8-512 white)</name>
-<price>232900</price>
+<price>231900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>AIWA</vendor>
 <currencyId>KZT</currencyId>
@@ -32815,7 +32448,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873246</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO120_PC16250_EMEA_210-BQHB)</name>
-<price>640900</price>
+<price>638900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32863,7 +32496,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13872917</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO120_PC16250_EMEA_210-BQHB)</name>
-<price>640900</price>
+<price>638900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32911,7 +32544,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873005</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO118_PC16250_EMEA_210-BQHB)</name>
-<price>792900</price>
+<price>790900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -32959,7 +32592,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873006</vendorCode>
 <name>Ноутбук Dell Pro 16 PC16250 (BTO121_PC16250_EMEA_210-BQHB)</name>
-<price>783900</price>
+<price>780900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -33007,7 +32640,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>301</categoryId>
 <vendorCode>CP13873341</vendorCode>
 <name>МФУ Canon MF664Cdw (6928C008)</name>
-<price>213900</price>
+<price>212900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -33247,7 +32880,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>301</categoryId>
 <vendorCode>CP13873346</vendorCode>
 <name>МФУ Canon MF667Cdw (6928C001)</name>
-<price>240900</price>
+<price>239900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
@@ -33295,7 +32928,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873166</vendorCode>
 <name>Мобильная рабочая станция Dell Pro Max 16 Plus MB16250 (210-BRXR / BTO102_MB16250_EMEA)</name>
-<price>2049900</price>
+<price>2043900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -33343,7 +32976,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873357</vendorCode>
 <name>Мобильная рабочая станция Dell Pro Max 18 Plus MB18250 (210-BRXL / BTO101_MB18250_EMEA)</name>
-<price>2147900</price>
+<price>2140900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -33391,7 +33024,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873167</vendorCode>
 <name>Ноутбук Dell Pro 13 Plus PB13250 (210-BPKT / BTO210_PB13250_EMEA)</name>
-<price>792900</price>
+<price>789900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -33439,7 +33072,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873168</vendorCode>
 <name>Ноутбук Dell Pro 14 PC14250 (210-BQHF / BTO108_PC14250_EMEA)</name>
-<price>1027900</price>
+<price>1024900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -33487,7 +33120,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873169</vendorCode>
 <name>Ноутбук Dell Pro 14 PC14250 (210-BQHF / BTO121_PC14250_EMEA)</name>
-<price>915900</price>
+<price>912900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -33535,7 +33168,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873170</vendorCode>
 <name>Ноутбук Dell Pro 14 PC14250 (210-BQHF / BTO120_PC14250_EMEA)</name>
-<price>749900</price>
+<price>747900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -33583,7 +33216,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873247</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK / BTO217_PB14250_EMEA)</name>
-<price>978900</price>
+<price>975900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -33631,7 +33264,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873058</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK / BTO217_PB14250_EMEA)</name>
-<price>978900</price>
+<price>975900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -33679,7 +33312,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873258</vendorCode>
 <name>Компьютер HP Pro Tower 400 G9 (9H762ET#BJA)</name>
-<price>552900</price>
+<price>550900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -33727,7 +33360,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873310</vendorCode>
 <name>Компьютер HP Pro SFF 400 G9 (9H7C6ET#BJA)</name>
-<price>680900</price>
+<price>678900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -33775,7 +33408,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873361</vendorCode>
 <name>Ноутбук HP ProBook 4 G1a 16 (B39XQAT#BJA)</name>
-<price>646900</price>
+<price>644900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -33823,7 +33456,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>604</categoryId>
 <vendorCode>CP13873362</vendorCode>
 <name>Компьютер HP ProDesk 2 Tower G1i (B6XD2ET#BJA)</name>
-<price>488900</price>
+<price>487900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -33871,7 +33504,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873203</vendorCode>
 <name>Ноутбук HP ProBook 4 G1i 16 AI (D0UW2ET#BJA)</name>
-<price>734900</price>
+<price>732900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -34015,7 +33648,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13873253</vendorCode>
 <name>Монитор Dell Pro Hub Conferencing Monitor - P2726DEB (210-BVHR)</name>
-<price>230900</price>
+<price>229900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -34063,7 +33696,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>602</categoryId>
 <vendorCode>CP13873280</vendorCode>
 <name>Монитор Dell Pro P34 Hub Conferencing Monitor - P3426WEB (210-BVHQ)</name>
-<price>367900</price>
+<price>366900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -34111,7 +33744,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873248</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus (PB14250) (210-BPDK_3 / BTO211_PB14250_EMEA)</name>
-<price>764900</price>
+<price>761900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -34159,7 +33792,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873061</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus (PB14250) (210-BPDK_3 / BTO211_PB14250_EMEA)</name>
-<price>764900</price>
+<price>761900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -34255,7 +33888,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>701</categoryId>
 <vendorCode>CP13873350</vendorCode>
 <name>ИБП APC SRV2KRIRK-E (SRV2KRIRK-E)</name>
-<price>361900</price>
+<price>359900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>APC</vendor>
 <currencyId>KZT</currencyId>
@@ -34399,7 +34032,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873373</vendorCode>
 <name>Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK / BTO205_PB14250_EMEA)</name>
-<price>870900</price>
+<price>868900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -34968,7 +34601,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10317541</vendorCode>
 <name>Принтер HP Color LaserJet CP5225 (CE710A#B19)</name>
-<price>698900</price>
+<price>696900</price>
 <picture>https://www.comportal.kz/upload/iblock/11c/ealqa8acjvetxfn6q4vdxl2hcfjfvsrf.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -35028,7 +34661,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10366118</vendorCode>
 <name>Картридж HP CE255A (CE255A) (оригинал)</name>
-<price>94900</price>
+<price>93900</price>
 <picture>https://www.comportal.kz/upload/iblock/e5f/sqd8wxfvr6get2n1oqq3flg7rjlezaej.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -35079,7 +34712,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10322486</vendorCode>
 <name>Принтер HP Color LaserJet CP5225N (CE711A#B19)</name>
-<price>753900</price>
+<price>751900</price>
 <picture>https://www.comportal.kz/upload/iblock/941/4r49qj4hmbqg44ribk97m5joonky0bgl.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -35190,7 +34823,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10328090</vendorCode>
 <name>Картридж HP CE740A (CE740A) (оригинал)</name>
-<price>106900</price>
+<price>105900</price>
 <picture>https://www.comportal.kz/upload/iblock/66b/kt0vkimf4n3zpwed3d00wwincyvafnoy.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -35241,7 +34874,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10363436</vendorCode>
 <name>Картридж HP CE741A (CE741A) (оригинал)</name>
-<price>194900</price>
+<price>193900</price>
 <picture>https://www.comportal.kz/upload/iblock/522/wxah8vgr34qgzcknwbbio0cwugr9aub6.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -35343,7 +34976,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>101</categoryId>
 <vendorCode>CP10362387</vendorCode>
 <name>Картридж HP CE743A (CE743A) (оригинал)</name>
-<price>189900</price>
+<price>188900</price>
 <picture>https://www.comportal.kz/upload/iblock/473/nlotlhim6euo195wkwshkulfhwbtprzv.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
