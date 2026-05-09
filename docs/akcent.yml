@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-08 23:51:54">
+<yml_catalog date="2026-05-09 23:13:13">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-05-08 23:51:54
-Ближайшая сборка (Алматы)                  | 2026-05-09 22:30:00
+Время сборки (Алматы)                      | 2026-05-09 23:13:13
+Ближайшая сборка (Алматы)                  | 2026-05-10 22:30:00
 Сколько товаров у поставщика до фильтра    | 1997
 Сколько товаров у поставщика после фильтра | 153
 Сколько товаров есть в наличии (true)      | 153
@@ -1751,7 +1751,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T614400</vendorCode>
 <name>Картридж Epson C13T614400, жёлтый, 220 мл (оригинал)</name>
 <price>97900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/ce9/elde0uyltfwb6ya6a32fpy08hpejfcjy.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4597,7 +4597,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACV11H977040</vendorCode>
 <name>Проектор универсальный Epson EB-W51</name>
 <price>373900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/e28/u3dfpp3gk98bu9rz5i6v9agrx6xcjkq7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
