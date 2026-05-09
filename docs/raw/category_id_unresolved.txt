@@ -1,12 +1,5 @@
 # Сводный отчёт по товарам без categoryId
 
-## START CopyLine
-Поставщик: CopyLine
-Товаров без categoryId: 0
-
-# Все товары получили categoryId
-## END CopyLine
-
 ## START VTT
 Поставщик: VTT
 Товаров без categoryId: 0
@@ -55,3 +48,10 @@ AlStyle | AS421121 | Считыватель карт Lexmark Elatec TWN4 (497K26
 
 ComPortal | CP13823539 | Батарейка APC APCRBC152 (APCRBC152) | categoryId не определён
 ## END ComPortal
+
+## START CopyLine
+Поставщик: CopyLine
+Товаров без categoryId: 0
+
+# Все товары получили categoryId
+## END CopyLine
