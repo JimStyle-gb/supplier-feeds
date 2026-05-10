@@ -1,18 +1,18 @@
 ПОДРОБНЫЙ ОТЧЁТ PRICE CHECKER
-Сформирован: 9 мая 2026 г. 09:01:51
-Время сборки Price: 9 мая 2026 г. 06:15:32
+Сформирован: 10 мая 2026 г. 09:30:14
+Время сборки Price: 10 мая 2026 г. 05:10:27
 Итоговый статус: ТРЕБУЕТ ВНИМАНИЯ
 Причина: Есть новые товары, которые не вошли в final из-за отсутствия categoryId.
 
 ======================================================================
 СВОДКА
 ======================================================================
-Всего товаров в Price: 7100
-В наличии: 6582
-Нет в наличии: 518
+Всего товаров в Price: 7103
+В наличии: 6584
+Нет в наличии: 519
 
-Товары без цены: 237
-С заглушкой фото: 585
+Товары без цены: 252
+С заглушкой фото: 547
 Без categoryId в Price: 0
 С невалидным categoryId в Price: 0
 Без категории Satu: 0
@@ -26,11 +26,11 @@
 ======================================================================
 СВОДКА ПО ПОСТАВЩИКАМ
 ======================================================================
-AkCent | всего=153 | в наличии=153 | нет в наличии=0 | без цены=0 | заглушка фото=3 | не вошло в final без categoryId=0 | без категории Satu=0
-AlStyle | всего=2001 | в наличии=1483 | нет в наличии=518 | без цены=4 | заглушка фото=5 | не вошло в final без categoryId=2 | без категории Satu=0
+AkCent | всего=153 | в наличии=153 | нет в наличии=0 | без цены=0 | заглушка фото=1 | не вошло в final без categoryId=0 | без категории Satu=0
+AlStyle | всего=2001 | в наличии=1482 | нет в наличии=519 | без цены=4 | заглушка фото=5 | не вошло в final без categoryId=2 | без категории Satu=0
 ComPortal | всего=621 | в наличии=621 | нет в наличии=0 | без цены=0 | заглушка фото=126 | не вошло в final без categoryId=1 | без категории Satu=0
-CopyLine | всего=1220 | в наличии=1220 | нет в наличии=0 | без цены=26 | заглушка фото=0 | не вошло в final без categoryId=0 | без категории Satu=0
-VTT | всего=3105 | в наличии=3105 | нет в наличии=0 | без цены=207 | заглушка фото=451 | не вошло в final без categoryId=0 | без категории Satu=0
+CopyLine | всего=1224 | в наличии=1224 | нет в наличии=0 | без цены=26 | заглушка фото=0 | не вошло в final без categoryId=0 | без категории Satu=0
+VTT | всего=3104 | в наличии=3104 | нет в наличии=0 | без цены=222 | заглушка фото=415 | не вошло в final без categoryId=0 | без категории Satu=0
 
 ======================================================================
 НЕ ВОШЛИ В FINAL ИЗ-ЗА ОТСУТСТВИЯ CATEGORYID
@@ -77,7 +77,6 @@ CopyLine | ready_to_ship_no_price | id=CL105971 | vendorCode=CL105971 | category
 CopyLine | ready_to_ship_no_price | id=CL105972 | vendorCode=CL105972 | categoryId=101 | in_stock=true | picture=https://copyline.kz/components/com_jshopping/files/img_products/full_006R04678-ep.jpg | name=Тонер-картридж 006R04678 Голубой (2K) Europrint (совместимый)
 CopyLine | ready_to_ship_no_price | id=CL105973 | vendorCode=CL105973 | categoryId=101 | in_stock=true | picture=https://copyline.kz/components/com_jshopping/files/img_products/full_006R04679-ep.jpg | name=Тонер-картридж 006R04679 Пурпурный (2K) Europrint (совместимый)
 CopyLine | ready_to_ship_no_price | id=CL105974 | vendorCode=CL105974 | categoryId=101 | in_stock=true | picture=https://copyline.kz/components/com_jshopping/files/img_products/full_006R04680-ep.jpg | name=Тонер-картридж 006R04680 Желтый (2K) Europrint (совместимый)
-VTT | ready_to_ship_no_price | id=VT006R01646 | vendorCode=VT006R01646 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/006R01646.jpg | name=Тонер-картридж Xerox Versant 80/180 (оригинал)
 VTT | ready_to_ship_no_price | id=VT006R01647 | vendorCode=VT006R01647 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/006R01647.jpg | name=Тонер-картридж Xerox Versant 80/180 (оригинал)
 VTT | ready_to_ship_no_price | id=VT006R01661 | vendorCode=VT006R01661 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/006R01661.jpg | name=Тонер-картридж Xerox Color C60 (оригинал)
 VTT | ready_to_ship_no_price | id=VT006R01694 | vendorCode=VT006R01694 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/006R01694.jpg | name=Тонер-картридж Xerox DC SC2020 (оригинал)
@@ -88,12 +87,12 @@ VTT | ready_to_ship_no_price | id=VT10111574 | vendorCode=VT10111574 | categoryI
 VTT | ready_to_ship_no_price | id=VT101R00582 | vendorCode=VT101R00582 | categoryId=105 | in_stock=true | picture=https://b2b.vtt.ru/images/101R00582.jpg | name=Барабан XEROX VL B600/B605/B610/B (оригинал)
 VTT | ready_to_ship_no_price | id=VT101R00664 | vendorCode=VT101R00664 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/101R00664.jpg | name=Принт-картридж XEROX B205/B210/B (оригинал)
 VTT | ready_to_ship_no_price | id=VT106R02760 | vendorCode=VT106R02760 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Принт-картридж Phaser 6020/6022/WC 6025 (оригинал)
-VTT | ready_to_ship_no_price | id=VT106R02762 | vendorCode=VT106R02762 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/106R02762.jpg | name=Принт-картридж Phaser 6020/6022/WC 6025 (оригинал)
 VTT | ready_to_ship_no_price | id=VT106R02774 | vendorCode=VT106R02774 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Рефил Phaser 3020/ WC 3025, 1,5K (O) (оригинал)
+VTT | ready_to_ship_no_price | id=VT106R03396 | vendorCode=VT106R03396 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/106R03396.jpg | name=Тонер-картридж Xerox VersaLink B7025/7030/7035, 106R (оригинал)
 VTT | ready_to_ship_no_price | id=VT106R03482 | vendorCode=VT106R03482 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/106R03482.jpg | name=Тонер-картридж Xerox Phaser 6510/ W (оригинал)
 VTT | ready_to_ship_no_price | id=VT106R03484 | vendorCode=VT106R03484 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/106R03484.jpg | name=Тонер-картридж Xerox Phaser 6510/WC 6515 (оригинал)
-VTT | ready_to_ship_no_price | id=VT106R03488 | vendorCode=VT106R03488 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/106R03488.jpg | name=Тонер-картридж Xerox Phaser 6510/ WC 6515 (оригинал)
 VTT | ready_to_ship_no_price | id=VT106R03583 | vendorCode=VT106R03583 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/106R03583.jpg | name=Тонер-картридж XEROX VL B400/B405 (оригинал)
+VTT | ready_to_ship_no_price | id=VT106R03585 | vendorCode=VT106R03585 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/106R03585.jpg | name=Тонер-картридж XEROX VL B400/B405 (оригинал)
 VTT | ready_to_ship_no_price | id=VT106R03746 | vendorCode=VT106R03746 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/106R03746.jpg | name=Тонер-картридж XEROX VersaLink C7020/7025/7030 (оригинал)
 VTT | ready_to_ship_no_price | id=VT106R03747 | vendorCode=VT106R03747 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/106R03747.jpg | name=Тонер-картридж XEROX VersaLink C7020/7025/7030 (оригинал)
 VTT | ready_to_ship_no_price | id=VT106R03748 | vendorCode=VT106R03748 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/106R03748.jpg | name=Тонер-картридж XEROX VersaLink C7020/7025/7030 (оригинал)
@@ -103,6 +102,7 @@ VTT | ready_to_ship_no_price | id=VT108R01419 | vendorCode=VT108R01419 | categor
 VTT | ready_to_ship_no_price | id=VT108R01420 | vendorCode=VT108R01420 | categoryId=105 | in_stock=true | picture=https://b2b.vtt.ru/images/108R01420.jpg | name=Фотобарабан Xerox Phaser 6510/ W (оригинал)
 VTT | ready_to_ship_no_price | id=VT113R00782 | vendorCode=VT113R00782 | categoryId=103 | in_stock=true | picture=https://b2b.vtt.ru/images/113R00782.jpg | name=113R00782 Драм-юнит Xerox VersaLink C7000/C7020/C7025/C7030 (оригинал)
 VTT | ready_to_ship_no_price | id=VT115R00128 | vendorCode=VT115R00128 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=115R00128 Контейнер для отработанного тонера Xerox VL C7020/7025/7030 (оригинал)
+VTT | ready_to_ship_no_price | id=VT15004 | vendorCode=VT15004 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/15004.jpg | name=Картридж 124A для HP CLJ 1600/2600N/2605, 2К малиновый Q6003A, 15004 (оригинал)
 VTT | ready_to_ship_no_price | id=VT15011010 | vendorCode=VT15011010 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/15011010.jpg | name=Картридж Canon PIXMA iP7240/MG6340/MG5440 PGI-450PGBK, BK, 15011010 (оригинал)
 VTT | ready_to_ship_no_price | id=VT15011011 | vendorCode=VT15011011 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/15011011.jpg | name=Картридж Canon PIXMA iP7240/MG6340/MG5440 PGI-450XLPGBK, BK, 15011011 (оригинал)
 VTT | ready_to_ship_no_price | id=VT15011018 | vendorCode=VT15011018 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/15011018.jpg | name=Картридж Canon PIXMA iP7240/MG6340/MG5440 CLI-451XLGY, GY, 15011018 (оригинал)
@@ -112,17 +112,20 @@ VTT | ready_to_ship_no_price | id=VT150122108 | vendorCode=VT150122108 | categor
 VTT | ready_to_ship_no_price | id=VT150122110 | vendorCode=VT150122110 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/150122110.jpg | name=Картридж Epson Stylus SX230/235W/SX420W/SX425W/BX305F C13T12924011/C13T12924012, C, 150122110 (оригинал)
 VTT | ready_to_ship_no_price | id=VT1501609463 | vendorCode=VT1501609463 | categoryId=103 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила Canon GI-490M PIXMA G1400/2400/3400, 70мл пурпурные 0665C001, 1501609463 (оригинал)
 VTT | ready_to_ship_no_price | id=VT1501609464 | vendorCode=VT1501609464 | categoryId=103 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила Canon GI-490Y PIXMA G1400/2400/3400, 70мл жёлтые 0666C001, 1501609464 (оригинал)
+VTT | ready_to_ship_no_price | id=VT1502091002 | vendorCode=VT1502091002 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/1502091002.jpg | name=Картридж 913A для HP PW 352dw/377dw/Pro477dw/452dw F6T77AE, C, 1502091002 (оригинал)
 VTT | ready_to_ship_no_price | id=VT1502091003 | vendorCode=VT1502091003 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/1502091003.jpg | name=Картридж 913A для HP PW 352dw/377dw/Pro477dw/452dw F6T78AE, M, 1502091003 (оригинал)
 VTT | ready_to_ship_no_price | id=VT1502091004 | vendorCode=VT1502091004 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/1502091004.jpg | name=Картридж 913A для HP PW 352dw/377dw/Pro477dw/452dw F6T79AE, Y, 1502091004 (оригинал)
 VTT | ready_to_ship_no_price | id=VT150209207 | vendorCode=VT150209207 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/150209207.jpg | name=Картридж 46 для HP DJ 2020/2520, 0,75К CZ638AE, Color, 150209207 (оригинал)
 VTT | ready_to_ship_no_price | id=VT150215931 | vendorCode=VT150215931 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/150215931.jpg | name=Картридж 121 для HP DJ F4283/D2563, 165стр. CC643HE, Color, 150215931 (оригинал)
 VTT | ready_to_ship_no_price | id=VT150215932 | vendorCode=VT150215932 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/150215932.jpg | name=Картридж 121 для HP DJ F4283/D2563, 200стр. CC640HE, BK, 150215932 (оригинал)
+VTT | ready_to_ship_no_price | id=VT160903702 | vendorCode=VT160903702 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Epson FX/LX 300/350 C13S015637BA/C13S015637, 160903702 (оригинал)
 VTT | ready_to_ship_no_price | id=VT1T02ND0NL0 | vendorCode=VT1T02ND0NL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02ND0NL0.jpg | name=Тонер-картридж TK-8515K Kyocera 5052ci/6052ci (оригинал)
-VTT | ready_to_ship_no_price | id=VT1T02P30NL0 | vendorCode=VT1T02P30NL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02P30NL0.jpg | name=Тонер-картридж TK-8115K Kyocera Ecosys M8124 (оригинал)
 VTT | ready_to_ship_no_price | id=VT1T02P3ANL0 | vendorCode=VT1T02P3ANL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02P3ANL0.jpg | name=Тонер-картридж TK-8115Y Kyocera Ecosys M8124/M813 (оригинал)
+VTT | ready_to_ship_no_price | id=VT1T02P3CNL0 | vendorCode=VT1T02P3CNL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02P3CNL0.jpg | name=Тонер-картридж TK-8115C Kyocera Ecosys M8124/M813 (оригинал)
 VTT | ready_to_ship_no_price | id=VT1T02R7ANL0 | vendorCode=VT1T02R7ANL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02R7ANL0.jpg | name=Тонер-картридж TK-5240Y Kyocera Mita P5026cdn/cdw, M5526cdn/cdw (оригинал)
 VTT | ready_to_ship_no_price | id=VT1T02R7CNL0 | vendorCode=VT1T02R7CNL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02R7CNL0.jpg | name=Тонер-картридж TK-5240C Kyocera Mita P5026cdn/cdw, M5526cdn/cdw (оригинал)
 VTT | ready_to_ship_no_price | id=VT1T02R90NL0 | vendorCode=VT1T02R90NL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02R90NL0.jpg | name=Тонер-картридж TK-5230K Kyocera P5021/M5521 (оригинал)
+VTT | ready_to_ship_no_price | id=VT1T02RV0NL0 | vendorCode=VT1T02RV0NL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02RV0NL0.jpg | name=Тонер-картридж TK-1150 Kyocera M2135dn/M2635dn/M2735dw, P2235dn/P2235dw (оригинал)
 VTT | ready_to_ship_no_price | id=VT1T02S50NL0 | vendorCode=VT1T02S50NL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02S50NL0.jpg | name=Тонер-картридж TK-1170 Kyocera M2040dn/M2540dn/M2640idw (оригинал)
 VTT | ready_to_ship_no_price | id=VT1T02T60NL0 | vendorCode=VT1T02T60NL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02T60NL0.jpg | name=Тонер-картридж TK-3190 Kyocera P3045DN/P3050DN/P3055DN/P3060DN (оригинал)
 VTT | ready_to_ship_no_price | id=VT1T02T80NL1 | vendorCode=VT1T02T80NL1 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02T80NL1.jpg | name=Тонер-картридж TK-3170 Kyocera P3050DN/P3055DN/P3060DN (оригинал)
@@ -131,35 +134,43 @@ VTT | ready_to_ship_no_price | id=VT1T02TVANL0 | vendorCode=VT1T02TVANL0 | categ
 VTT | ready_to_ship_no_price | id=VT1T02TVBNL0 | vendorCode=VT1T02TVBNL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02TVBNL0.jpg | name=Тонер-картридж TK-5270M Kyocera P6230cdn/M6230cidn/M6630 (оригинал)
 VTT | ready_to_ship_no_price | id=VT1T02TVCNL0 | vendorCode=VT1T02TVCNL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02TVCNL0.jpg | name=Тонер-картридж TK-5270C Kyocera P6230cdn/M6230cidn/M6630 (оригинал)
 VTT | ready_to_ship_no_price | id=VT1T02YP0NL0 | vendorCode=VT1T02YP0NL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02YP0NL0.jpg | name=Тонер-катридж Kyocera TK-8365K для TASKalfa 2554ci (оригинал)
+VTT | ready_to_ship_no_price | id=VT1T02YPANL0 | vendorCode=VT1T02YPANL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02YPANL0.jpg | name=Тонер-катридж Kyocera TK-8365Y для TASKalfa 2554ci (оригинал)
+VTT | ready_to_ship_no_price | id=VT1T02YPBNL0 | vendorCode=VT1T02YPBNL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02YPBNL0.jpg | name=Тонер-катридж Kyocera TK-8365M для TASKalfa 2554ci (оригинал)
+VTT | ready_to_ship_no_price | id=VT1T02YPCNL0 | vendorCode=VT1T02YPCNL0 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/1T02YPCNL0.jpg | name=Тонер-катридж Kyocera TK-8365C для TASKalfa 2554ci (оригинал)
 VTT | ready_to_ship_no_price | id=VT1VV21AE | vendorCode=VT1VV21AE | categoryId=103 | in_stock=true | picture=https://b2b.vtt.ru/images/1VV21AE.jpg | name=Чернила GT53XL для HP Smart Tank 6000стр/135мл чёрные (оригинал)
 VTT | ready_to_ship_no_price | id=VT2200C002 | vendorCode=VT2200C002 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/2200C002.jpg | name=Картридж 052H для Canon MF421dw/MF426dw/MF428x/MF429x (оригинал)
-VTT | ready_to_ship_no_price | id=VT2201215 | vendorCode=VT2201215 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/2201215.jpg | name=Картридж 711 для HP DJ T120/T520, 80мл чёрный CZ133A, 2201215 (оригинал)
-VTT | ready_to_ship_no_price | id=VT2201216 | vendorCode=VT2201216 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/2201216.jpg | name=Картридж 711 для HP DJ T120/T520, голубой, 3*29мл CZ134A (3штХупак), 2201216 (оригинал)
+VTT | ready_to_ship_no_price | id=VT22012190 | vendorCode=VT22012190 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/22012190.jpg | name=Картридж 711 для HP DJ T120/T520, 29мл голубой CZ130A, 22012190 (оригинал)
+VTT | ready_to_ship_no_price | id=VT22012191 | vendorCode=VT22012191 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/22012191.jpg | name=Картридж 711 для HP DJ T120/T520, 29мл пурпурный CZ131A, 22012191 (оригинал)
 VTT | ready_to_ship_no_price | id=VT2884C001 | vendorCode=VT2884C001 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/2884C001.jpg | name=Картридж PFI-120MBK Canon TM-200/205/300/305, 130 мл matte (оригинал)
 VTT | ready_to_ship_no_price | id=VT2885C001 | vendorCode=VT2885C001 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/2885C001.jpg | name=Картридж PFI-120BK Canon TM-200/205/300 (оригинал)
 VTT | ready_to_ship_no_price | id=VT2889C001 | vendorCode=VT2889C001 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/2889C001.jpg | name=Картридж PFI-320MBK Canon TM-200/205/300/305, 300 мл matte (оригинал)
 VTT | ready_to_ship_no_price | id=VT2891C001 | vendorCode=VT2891C001 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/2891C001.jpg | name=Картридж PFI-320C Canon TM-200/205/300 (оригинал)
 VTT | ready_to_ship_no_price | id=VT2893C001 | vendorCode=VT2893C001 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/2893C001.jpg | name=Картридж PFI-320Y Canon TM-200/205/300 (оригинал)
 VTT | ready_to_ship_no_price | id=VT2970B010 | vendorCode=VT2970B010 | categoryId=102 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Набор картриджей CANON PG-510/CL-511 (оригинал)
+VTT | ready_to_ship_no_price | id=VT2K093110 | vendorCode=VT2K093110 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302K093110/WT-895 Бункер отработанного тонера Kyocera FS-C8020/C8025/C8520/C8525 (оригинал)
 VTT | ready_to_ship_no_price | id=VT2K393130 | vendorCode=VT2K393130 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=2K393130/WT-475 Бункер отработанного тонера Kyocera FS-6025/6030/6525/6530 (оригинал)
 VTT | ready_to_ship_no_price | id=VT2KT93018 | vendorCode=VT2KT93018 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=2KT93018/DK-591 Драм-юнит Kyocera FS-C5150DN/P6021cdn (оригинал)
 VTT | ready_to_ship_no_price | id=VT2KV93110 | vendorCode=VT2KV93110 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302KV93110/WT-590 Бункер отработанного тонера Kyocera FS-C2026MFP/C2126MFP/C2526 (оригинал)
+VTT | ready_to_ship_no_price | id=VT2MY93012 | vendorCode=VT2MY93012 | categoryId=105 | in_stock=true | picture=https://b2b.vtt.ru/images/2MY93012.jpg | name=302MY93013/2MY93012/DK-896 Драм-юнит Kyocera FS-C8520MFP/C8525MFP (оригинал)
+VTT | ready_to_ship_no_price | id=VT2NG93010 | vendorCode=VT2NG93010 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NG93010/DV-4105 Блок проявки Kyocera TASKalfa 1800/2200/1801/2201 (оригинал)
 VTT | ready_to_ship_no_price | id=VT2NL93030 | vendorCode=VT2NL93030 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=2NL93030/DV-7105 Блок проявки Kyocera TASKalfa 3010/3510i (оригинал)
 VTT | ready_to_ship_no_price | id=VT2NP93052 | vendorCode=VT2NP93052 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NP93052/DV-8325K Блок проявки Kyocera TASKalfa 2551ci (Чёрный) (оригинал)
+VTT | ready_to_ship_no_price | id=VT2NX93010 | vendorCode=VT2NX93010 | categoryId=105 | in_stock=true | picture=https://b2b.vtt.ru/images/2NX93010.jpg | name=2NX93010/DK-3150 Драм-юнит Kyocera M3040idn/M3540idn (оригинал)
 VTT | ready_to_ship_no_price | id=VT3008C002 | vendorCode=VT3008C002 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/3008C002.jpg | name=Картридж 056H для Canon MF542x/MF543x/LBP325x (оригинал)
 VTT | ready_to_ship_no_price | id=VT3009C002 | vendorCode=VT3009C002 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/3009C002.jpg | name=Картридж 057 для Canon MF443dw/MF445dw/MF446x/MF449x/LBP223dw/LBP226dw/LBP228 (оригинал)
 VTT | ready_to_ship_no_price | id=VT302L793050 | vendorCode=VT302L793050 | categoryId=105 | in_stock=true | picture=https://b2b.vtt.ru/images/302L793050.jpg | name=302L793051/302L793050/DK-8350 Драм-юнит Kyocera TASKalfa 2552ci/3252ci (оригинал)
 VTT | ready_to_ship_no_price | id=VT302NP93044 | vendorCode=VT302NP93044 | categoryId=202 | in_stock=true | picture=https://b2b.vtt.ru/images/302NP93044.jpg | name=302NP93044/DV-8325C Блок проявки Kyocera TASKalfa 2551ci (Голубой) (оригинал)
 VTT | ready_to_ship_no_price | id=VT302NP93064 | vendorCode=VT302NP93064 | categoryId=202 | in_stock=true | picture=https://b2b.vtt.ru/images/302NP93064.jpg | name=302NP93064/DV-8325M Блок проявки Kyocera TASKalfa 2551ci (Пурпурный) (оригинал)
-VTT | ready_to_ship_no_price | id=VT302NR93021 | vendorCode=VT302NR93021 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NR93021/302NR93022 Блок проявки DV-5140K Kyocera P6130/M6030/M6530 (оригинал)
-VTT | ready_to_ship_no_price | id=VT302NR93031 | vendorCode=VT302NR93031 | categoryId=202 | in_stock=true | picture=https://b2b.vtt.ru/images/302NR93031.jpg | name=302NR93031/302NR93032 Блок проявки DV-5140Y Kyocera P6130/M6030/M6530 (оригинал)
-VTT | ready_to_ship_no_price | id=VT302NR93041 | vendorCode=VT302NR93041 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NR93041/302NR93042 Блок проявки DV-5140M Kyocera P6130/M6030/M6530 (оригинал)
-VTT | ready_to_ship_no_price | id=VT302P393021 | vendorCode=VT302P393021 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P393021/302P393020 Блок проявки DV-8115C Kyocera M8124cidn/M8130cidn (Голубой) (оригинал)
+VTT | ready_to_ship_no_price | id=VT302P393031 | vendorCode=VT302P393031 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P393031/302P393030 Блок проявки DV-8115K Kyocera M8124cidn/M8130cidn (Чёрный) (оригинал)
 VTT | ready_to_ship_no_price | id=VT302P393041 | vendorCode=VT302P393041 | categoryId=202 | in_stock=true | picture=https://b2b.vtt.ru/images/302P393041.jpg | name=302P393041/302P393040 Блок проявки DV-8115M Kyocera M8124cidn/M8130cidn (Пурпурный) (оригинал)
+VTT | ready_to_ship_no_price | id=VT302P393051 | vendorCode=VT302P393051 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P393051/302P393050 Блок проявки DV-8115Y Kyocera M8124cidn/M8130cidn (Желтый) (оригинал)
+VTT | ready_to_ship_no_price | id=VT302P393060 | vendorCode=VT302P393060 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P393060/DK-8115 Драм-юнит Kyocera M8124cidn/M8130cidn (оригинал)
 VTT | ready_to_ship_no_price | id=VT302R493052 | vendorCode=VT302R493052 | categoryId=105 | in_stock=true | picture=https://b2b.vtt.ru/images/302R493052.jpg | name=302R493052/DK-5195 Драм-юнит Kyocera TASKalfa 306ci/307ci/308ci/356ci (оригинал)
-VTT | ready_to_ship_no_price | id=VT302RV93010 | vendorCode=VT302RV93010 | categoryId=105 | in_stock=true | picture=https://b2b.vtt.ru/images/302RV93010.jpg | name=302RV93010/DK-1150 Драм-юнит Kyocera P2040dn/P2235dn/M2040dn/M2135dn/M2235dn/M2635dn/M2540dn (оригинал)
 VTT | ready_to_ship_no_price | id=VT302V693020 | vendorCode=VT302V693020 | categoryId=105 | in_stock=true | picture=https://b2b.vtt.ru/images/302V693020.jpg | name=302V693020/DK-7125 Драм-юнит Kyocera TASKalfa 3212i/4012i (оригинал)
 VTT | ready_to_ship_no_price | id=VT302VB93010 | vendorCode=VT302VB93010 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302VB93010/DV-1200 Блок проявки Kyocera P2335d/P2335dn/P2335dw/M2235dn/M2735dn/M2835dw (оригинал)
+VTT | ready_to_ship_no_price | id=VT30C0T93020 | vendorCode=VT30C0T93020 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=30C0T93020/DK-3210 (E) Драм-юнит Kyocera Ecosys PA5000x/PA5500x/PA6000x/MA5500ifx/MA6000ifx (оригинал)
+VTT | ready_to_ship_no_price | id=VT30C1093020 | vendorCode=VT30C1093020 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=30C1093020/DK-3220 (E) Драм-юнит Kyocera Ecosys MA4500ix/MA4500ifx 300000стр. (оригинал)
+VTT | ready_to_ship_no_price | id=VT3JA23AE | vendorCode=VT3JA23AE | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/3JA23AE.jpg | name=Картридж 963 для HP OfficeJet Pro 901x/902x/HP (оригинал)
 VTT | ready_to_ship_no_price | id=VT3JA24AE | vendorCode=VT3JA24AE | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/3JA24AE.jpg | name=Картридж 963 для HP OfficeJet Pro 901x/902x/HP (оригинал)
 VTT | ready_to_ship_no_price | id=VT3WT90A | vendorCode=VT3WT90A | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/3WT90A.jpg | name=3WT90A Бункер сбора отработанного тонера HP CLJ Enterprise M751 (оригинал)
 VTT | ready_to_ship_no_price | id=VT3YM60AE | vendorCode=VT3YM60AE | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/3YM60AE.jpg | name=Картридж струйный 305 для HP DJ 2320/2710/2720, 100стр. (оригинал)
@@ -175,7 +186,6 @@ VTT | ready_to_ship_no_price | id=VT41006031017 | vendorCode=VT41006031017 | cat
 VTT | ready_to_ship_no_price | id=VT4100649 | vendorCode=VT4100649 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302LV93020 Бункер отработанного тонера WT-3100 Kyocera FS2100/4100, 4100649 (оригинал)
 VTT | ready_to_ship_no_price | id=VT410067 | vendorCode=VT410067 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221, 410067 (оригинал)
 VTT | ready_to_ship_no_price | id=VT416890 | vendorCode=VT416890 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=416890/D2426400 Бокс сбора тонера Ricoh MP C2003/C2004/C2503/C2504/C303/C3004/C3503/C3504/C4503 (оригинал)
-VTT | ready_to_ship_no_price | id=VT4561238 | vendorCode=VT4561238 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/4561238.jpg | name=Картридж HP LJ M402/M426 CF226A, 3,1K, 4561238 (оригинал)
 VTT | ready_to_ship_no_price | id=VT5050604 | vendorCode=VT5050604 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=CFRM-0021RS71 Блок барабана (без барабана) Sharp AR-5516/5520, 5050604 (оригинал)
 VTT | ready_to_ship_no_price | id=VT5219B005 | vendorCode=VT5219B005 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/5219B005.jpg | name=Картридж струйный Canon PG-440/CL-441 для Canon MG2140/MG3140, 180стр чёрный+цвет (оригинал)
 VTT | ready_to_ship_no_price | id=VT6ZA11AE | vendorCode=VT6ZA11AE | categoryId=103 | in_stock=true | picture=https://b2b.vtt.ru/images/6ZA11AE.jpg | name=Печатающая головка для HP InkTank 100/300/400/415 SmartTank 300/400 (оригинал)
@@ -194,11 +204,11 @@ VTT | ready_to_ship_no_price | id=VT98900205 | vendorCode=VT98900205 | categoryI
 VTT | ready_to_ship_no_price | id=VT98900206 | vendorCode=VT98900206 | categoryId=106 | in_stock=true | picture=https://b2b.vtt.ru/images/98900206.jpg | name=Печатающая головка №72 HP DJ T610/T1100/T1200/T1300/T2300 matte Чёрный & Желтый C9384A, 98900206 (оригинал)
 VTT | ready_to_ship_no_price | id=VT9890070 | vendorCode=VT9890070 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/9890070.jpg | name=Картридж HP №72 DesignJet T1100/T610 Photo Чёрный (130ml) C9370A, 9890070 (оригинал)
 VTT | ready_to_ship_no_price | id=VT9890077 | vendorCode=VT9890077 | categoryId=106 | in_stock=true | picture=https://b2b.vtt.ru/images/9890077.jpg | name=Печатающая головка №72 HP DJ T610/T1100/T1200/T1300/T2300 photo Чёрный & grey C9380A, 9890077 (оригинал)
-VTT | ready_to_ship_no_price | id=VT989091120 | vendorCode=VT989091120 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=FM3-9276/WT-101 Бункер отработанного тонера Canon iR-2520/2525/2530/2535/2545, 989091120 (оригинал)
 VTT | ready_to_ship_no_price | id=VT989130613 | vendorCode=VT989130613 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/989130613.jpg | name=Картридж HP 307A для HP CLJ 5225, 7К чёрный CE740A, 989130613 (оригинал)
 VTT | ready_to_ship_no_price | id=VT9895631003 | vendorCode=VT9895631003 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/9895631003.jpg | name=Принт-картридж Xerox Phaser 3250 (5K) 106R01374, 9895631003 (оригинал)
 VTT | ready_to_ship_no_price | id=VT98956318 | vendorCode=VT98956318 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Копи-картридж Xerox WC 5222 (50000 копий) 101R00434, 98956318 (оригинал)
 VTT | ready_to_ship_no_price | id=VT989604038 | vendorCode=VT989604038 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302K393040/DV-475 Блок проявки Kyocera FS-6025MFP/6030/6525/6530, 989604038 (оригинал)
+VTT | ready_to_ship_no_price | id=VT98960467 | vendorCode=VT98960467 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NG93080/WT-4105 Бункер отработанного тонера Kyocera TASKalfa 1800/1801/2200/2200, 98960467 (оригинал)
 VTT | ready_to_ship_no_price | id=VT98960479 | vendorCode=VT98960479 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302G193035/DK-710/2G193032 Драм-юнит Kyocera FS-9130DN/9530DN, 98960479 (оригинал)
 VTT | ready_to_ship_no_price | id=VT9896060190 | vendorCode=VT9896060190 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=DK-450/302J593011/302J593010 Драм-юнит Kyocera FS-6970D, 9896060190 (оригинал)
 VTT | ready_to_ship_no_price | id=VT989606229 | vendorCode=VT989606229 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/989606229.jpg | name=Картридж TK-360 Kyocera FS-4020DN, 20К 1T02J20EUC, 989606229 (оригинал)
@@ -222,6 +232,8 @@ VTT | ready_to_ship_no_price | id=VT9896989330 | vendorCode=VT9896989330 | categ
 VTT | ready_to_ship_no_price | id=VT989698934 | vendorCode=VT989698934 | categoryId=202 | in_stock=true | picture=https://b2b.vtt.ru/images/989698934.jpg | name=DV-170/302LZ93010 Блок проявки Kyocera FS-1320D/FS-1370DN/ECOSYS P2135D(O), 989698934 (оригинал)
 VTT | ready_to_ship_no_price | id=VT989698983 | vendorCode=VT989698983 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/989698983.jpg | name=Картридж TK-350 Kyocera FS-3920DN, 15К 1T02LX0NL0, 989698983 (оригинал)
 VTT | ready_to_ship_no_price | id=VT9899991971 | vendorCode=VT9899991971 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/9899991971.jpg | name=Картридж XEROX WC 5325/5330/5335 006R01160 BK 30K, 9899991971 (оригинал)
+VTT | ready_to_ship_no_price | id=VT991132101 | vendorCode=VT991132101 | categoryId=103 | in_stock=true | picture=https://b2b.vtt.ru/images/991132101.jpg | name=Чернила Epson L800/L1800/L810/L850 C13T67314A/C13T673198, Чёрный, 70ml, 991132101 (оригинал)
+VTT | ready_to_ship_no_price | id=VT991132103 | vendorCode=VT991132103 | categoryId=103 | in_stock=true | picture=https://b2b.vtt.ru/images/991132103.jpg | name=Чернила Epson L800/L1800/L810/L850 C13T67334A/C13T673398, Пурпурный, 70ml, 991132103 (оригинал)
 VTT | ready_to_ship_no_price | id=VT9955686 | vendorCode=VT9955686 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Epson FX 890 C13S015329, 9955686 (оригинал)
 VTT | ready_to_ship_no_price | id=VT995616081 | vendorCode=VT995616081 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/995616081.jpg | name=Тонер C-EXV14 Canon iR2016/2016J/2020 BK, 1туба 460г 0384B006, 995616081 (оригинал)
 VTT | ready_to_ship_no_price | id=VT995631112 | vendorCode=VT995631112 | categoryId=102 | in_stock=true | picture=https://b2b.vtt.ru/images/995631112.jpg | name=Картридж Canon PIXMA MP240/260/480 PG-510, BK, 995631112 (оригинал)
@@ -234,14 +246,14 @@ VTT | ready_to_ship_no_price | id=VT9990100021 | vendorCode=VT9990100021 | categ
 VTT | ready_to_ship_no_price | id=VT9990100023 | vendorCode=VT9990100023 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/9990100023.jpg | name=Картридж HP CLJ Pro 300 Color M351/Pro400ColorM451 CE410X, BK, 4K, 305X, 9990100023 (оригинал)
 VTT | ready_to_ship_no_price | id=VT9990100028 | vendorCode=VT9990100028 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/9990100028.jpg | name=Картридж 85A для HP LJ Pro P1102/P1120W/M1212nf/M1132MFP, 1,6K черный CE285AF, 9990100028 (оригинал)
 VTT | ready_to_ship_no_price | id=VTB3P06A | vendorCode=VTB3P06A | categoryId=106 | in_stock=true | picture=https://b2b.vtt.ru/images/B3P06A.jpg | name=B3P06A Печатающая головка №727 HP DJ T920/T930/T1500/T1530/T2500/T2530/T3500 (оригинал)
-VTT | ready_to_ship_no_price | id=VTBPGT700 | vendorCode=VTBPGT700 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж BPGT700 для Sharp BP50Mxx/BP70Mxx (оригинал)
+VTT | ready_to_ship_no_price | id=VTBPGT20BA | vendorCode=VTBPGT20BA | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/BPGT20BA.jpg | name=Тонер-картридж BPGT20BA для Sharp C-CUBE (оригинал)
+VTT | ready_to_ship_no_price | id=VTBPGT70BA | vendorCode=VTBPGT70BA | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/BPGT70BA.jpg | name=Тонер-картридж BPGT70BA для Sharp BP50Cxx/BP55C/BP60Cxx/BP70Cxx (оригинал)
 VTT | ready_to_ship_no_price | id=VTC13T00R240 | vendorCode=VTC13T00R240 | categoryId=103 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Контейнер с чернилами Epson для L7160/7180 (оригинал)
 VTT | ready_to_ship_no_price | id=VTC13T03P14A | vendorCode=VTC13T03P14A | categoryId=103 | in_stock=true | picture=https://b2b.vtt.ru/images/C13T03P14A.jpg | name=Контейнер с чернилами Epson для M1100/1120/2140 (оригинал)
 VTT | ready_to_ship_no_price | id=VTC13T03V24A | vendorCode=VTC13T03V24A | categoryId=103 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила Epson EcoTank L4150/4160/L6160/L6170/L6190, 70мл голубые (оригинал)
 VTT | ready_to_ship_no_price | id=VTC13T03V34A | vendorCode=VTC13T03V34A | categoryId=103 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила Epson EcoTank L4150/4160/L6160/L6170/L6190, 70мл малиновые (оригинал)
 VTT | ready_to_ship_no_price | id=VTC13T03V44A | vendorCode=VTC13T03V44A | categoryId=103 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила Epson EcoTank L4150/4160/L6160/L6170/L6190, 70мл жёлтые (оригинал)
 VTT | ready_to_ship_no_price | id=VTC13T03V64A | vendorCode=VTC13T03V64A | categoryId=103 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила Epson EcoTank L4150/4160/L6160/L6170/L6190 4 цвета мультипак (оригинал)
-VTT | ready_to_ship_no_price | id=VTCC468-67910 | vendorCode=VTCC468-67910 | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/CC468-67910.jpg | name=CC468-67910/CE254A Бункер сбора отработанного тонера HP CLJ CP3525/CM3530/M551/M570 (оригинал)
 VTT | ready_to_ship_no_price | id=VTCET471205U | vendorCode=VTCET471205U | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Блок проявки (CET) Canon iR ADVANCE C3325i/C3330i/C3530i Голубой 240000стр FM1-B266/FM2-G091 (совместимый)
 VTT | ready_to_ship_no_price | id=VTCF289A | vendorCode=VTCF289A | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/CF289A.jpg | name=Тонер-картридж 89A для HP LJ M507/MFP (совместимый)
 VTT | ready_to_ship_no_price | id=VTCFRM-0021US74 | vendorCode=VTCFRM-0021US74 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=CFRM-0021US74 Узел барабана (без барабана) в сборе Sharp AR5618/5620/5623 (оригинал)
@@ -267,17 +279,20 @@ VTT | ready_to_ship_no_price | id=VTHB-PFI5100R | vendorCode=VTHB-PFI5100R | cat
 VTT | ready_to_ship_no_price | id=VTHB-PFI5100Y | vendorCode=VTHB-PFI5100Y | categoryId=102 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (PFI-5100Y) для Canon imagePROGRAF PRO-310, Y, HB-PFI5100 (совместимый)
 VTT | ready_to_ship_no_price | id=VTHB-PG46-BK | vendorCode=VTHB-PG46-BK | categoryId=102 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (HB-PG-46) для Canon PIXMA E404/E464/E484/E474/E414/E3140/E304, Bk, HB-PG46- (совместимый)
 VTT | ready_to_ship_no_price | id=VTM0H54AE | vendorCode=VTM0H54AE | categoryId=103 | in_stock=true | picture=https://b2b.vtt.ru/images/M0H54AE.jpg | name=Чернила GT52 для HP DJ GT, 8000стр/70мл голубые (оригинал)
+VTT | ready_to_ship_no_price | id=VTMX60GTCA | vendorCode=VTMX60GTCA | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/MX60GTCA.jpg | name=Тонер-картридж голубой Sharp Sphinx/Phoenix/Griffin, 24К MX60GTCA/MX61GTCA, MX60GTCA (оригинал)
+VTT | ready_to_ship_no_price | id=VTMX60GTMA | vendorCode=VTMX60GTMA | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/MX60GTMA.jpg | name=Тонер-картридж пурпурный Sharp Sphinx/Phoenix/Griffin, 24К MX60GTMA/MX61GTMA, MX60GTMA (оригинал)
+VTT | ready_to_ship_no_price | id=VTMX60GTYA | vendorCode=VTMX60GTYA | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/MX60GTYA.jpg | name=Тонер-картридж желтый Sharp Sphinx/Phoenix/Griffin, 24K MX60GTYA/MX61GTYA, MX60GTYA (оригинал)
 VTT | ready_to_ship_no_price | id=VTN-OPC-XRB600 | vendorCode=VTN-OPC-XRB600 | categoryId=103 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Барабан NetProduct для Xerox VersaLink B600/B605/B610/B615, 60К, N-OPC-XRB600 (совместимый)
 VTT | ready_to_ship_no_price | id=VTN-OPC-XRB600-PR | vendorCode=VTN-OPC-XRB600-PR | categoryId=103 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Барабан для Xerox VersaLink B600/B605/B610/B615, 60К (для производства), N-OPC-XRB600-PR (совместимый)
 VTT | ready_to_ship_no_price | id=VTP2V27A | vendorCode=VTP2V27A | categoryId=106 | in_stock=true | picture=https://b2b.vtt.ru/images/P2V27A.jpg | name=Печатающая головка 731 для HP DJ T1700 шести (оригинал)
 VTT | ready_to_ship_no_price | id=VTSHARP82 | vendorCode=VTSHARP82 | categoryId=108 | in_stock=true | picture=https://b2b.vtt.ru/images/SHARP82.jpg | name=Девелопер Sharp AR203E/5420/ARM201 AR208LD/AR208DV, SHARP82 (оригинал)
-VTT | ready_to_ship_no_price | id=VTW1104A | vendorCode=VTW1104A | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/W1104A.jpg | name=Барабан 104A для HP Neverstop Laser 1000a/w/1200a/w, 20К W1104A (внутри тонер на 5К) (совместимый)
 VTT | ready_to_ship_no_price | id=VTW1106A | vendorCode=VTW1106A | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/W1106A.jpg | name=Картридж 106А для HP Laser 107a/r/135a/HP Laser 107a/137fnw (оригинал)
-VTT | ready_to_ship_no_price | id=VTW1360A | vendorCode=VTW1360A | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/W1360A.jpg | name=Картридж 136A для HP LJ M211d/dw/M236d/dw, 1,15К W1360A (оригинал)
 VTT | ready_to_ship_no_price | id=VTW2032A | vendorCode=VTW2032A | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/W2032A.jpg | name=Тонер-картридж 415A для HP LJ M454/MFP M479 (оригинал)
 VTT | ready_to_ship_no_price | id=VTW2032X | vendorCode=VTW2032X | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/W2032X.jpg | name=Тонер-картридж 415X для HP LJ M454/MFP (оригинал)
 VTT | ready_to_ship_no_price | id=VTW2072A | vendorCode=VTW2072A | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/W2072A.jpg | name=Картридж 117 для HP Laser 150/MFP 178/179 (оригинал)
+VTT | ready_to_ship_no_price | id=VTW2210A | vendorCode=VTW2210A | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/W2210A.jpg | name=Картридж лазерный HP 207A для HP M255/MFP M282/M283 (оригинал)
 VTT | ready_to_ship_no_price | id=VTW2210X | vendorCode=VTW2210X | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/W2210X.jpg | name=Картридж лазерный HP 207X для HP M255/MFP M282/M283 (оригинал)
+VTT | ready_to_ship_no_price | id=VTW2211X | vendorCode=VTW2211X | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/W2211X.jpg | name=Картридж лазерный HP 207X для HP M255/MFP M282/M283 (оригинал)
 VTT | ready_to_ship_no_price | id=VTW2213A | vendorCode=VTW2213A | categoryId=101 | in_stock=true | picture=https://b2b.vtt.ru/images/W2213A.jpg | name=Картридж лазерный HP 207A для HP M255/MFP M282/M283 (оригинал)
 VTT | ready_to_ship_no_price | id=VTZ7Y68A | vendorCode=VTZ7Y68A | categoryId=202 | in_stock=true | picture=https://b2b.vtt.ru/images/Z7Y68A.jpg | name=Z7Y68A/JC96-12504A Блок проявки HP CLJ E87640/E87650/E87660 (оригинал)
 VTT | ready_to_ship_no_price | id=VTZ7Y69A | vendorCode=VTZ7Y69A | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Z7Y69A/JC96-12503A Блок проявки HP CLJ E87640/E87650/E87660 (оригинал)
@@ -288,9 +303,7 @@ VTT | ready_to_ship_no_price | id=VTZ7Y73A | vendorCode=VTZ7Y73A | categoryId=20
 ======================================================================
 ТОВАРЫ С ЗАГЛУШКОЙ ФОТО
 ======================================================================
-AkCent | placeholder_photo | id=ACC13T614400 | vendorCode=ACC13T614400 | categoryId=102 | price=97900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Epson C13T614400, жёлтый, 220 мл (оригинал)
 AkCent | placeholder_photo | id=ACC11CJ62404 | vendorCode=ACC11CJ62404 | categoryId=301 | price=307900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=МФУ Epson L6260 фабрика печати, Wi-Fi
-AkCent | placeholder_photo | id=ACV11H977040 | vendorCode=ACV11H977040 | categoryId=401 | price=373900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Проектор универсальный Epson EB-W51
 AlStyle | placeholder_photo | id=AS406006 | vendorCode=AS406006 | categoryId=602 | price=3932900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Источник бесперебойного питания CyberPower HSTP3T30KE
 AlStyle | placeholder_photo | id=AS420184 | vendorCode=AS420184 | categoryId=101 | price=59900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж стандартной емкости Lexmark 77L91C0 (голубой) (оригинал)
 AlStyle | placeholder_photo | id=AS420185 | vendorCode=AS420185 | categoryId=101 | price=36900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж стандартной емкости Lexmark 77L91K0 (чёрный) (оригинал)
@@ -422,7 +435,7 @@ ComPortal | placeholder_photo | id=CP13873350 | vendorCode=CP13873350 | category
 ComPortal | placeholder_photo | id=CP13873295 | vendorCode=CP13873295 | categoryId=101 | price=122900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж HP W9088MC (W9088MC) (оригинал)
 ComPortal | placeholder_photo | id=CP13873296 | vendorCode=CP13873296 | categoryId=101 | price=127900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж HP W9087MC (W9087MC) (оригинал)
 ComPortal | placeholder_photo | id=CP13873373 | vendorCode=CP13873373 | categoryId=601 | price=868900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK / BTO205_PB14250_EMEA)
-VTT | placeholder_photo | id=VT013R00676 | vendorCode=VT013R00676 | categoryId=105 | price=139900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=013R00676/013R00674 Модуль фоторецептора Xerox Versant 80/180/2100 (оригинал)
+VTT | placeholder_photo | id=VT013R00676 | vendorCode=VT013R00676 | categoryId=105 | price=141900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=013R00676/013R00674 Модуль фоторецептора Xerox Versant 80/180/2100 (оригинал)
 VTT | placeholder_photo | id=VT10111574 | vendorCode=VT10111574 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Барабан C-EXV50 Canon IR1435/1435i/1435iF, 35,5K 9437B002AA, 10111574 (оригинал)
 VTT | placeholder_photo | id=VT101131383 | vendorCode=VT101131383 | categoryId=101 | price=11900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж Hi-Black (HB-C-EXV50) для Canon iR1435/1435i/1435iF/1435P (совместимый)
 VTT | placeholder_photo | id=VT106R02760 | vendorCode=VT106R02760 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Принт-картридж Phaser 6020/6022/WC 6025 (оригинал)
@@ -433,7 +446,7 @@ VTT | placeholder_photo | id=VT1100042 | vendorCode=VT1100042 | categoryId=102 |
 VTT | placeholder_photo | id=VT1100043 | vendorCode=VT1100043 | categoryId=102 | price=7900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (HB-C9372A) №72 для HP DesignJet T610/1000/1100/1120/1200/1300/2300 (совместимый)
 VTT | placeholder_photo | id=VT1100044 | vendorCode=VT1100044 | categoryId=102 | price=7900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (HB-C9373A) №72 для HP DesignJet T610/1000/1100/1120/1200/1300/2300 (совместимый)
 VTT | placeholder_photo | id=VT1100045 | vendorCode=VT1100045 | categoryId=102 | price=7900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (HB-C9374A) №72 для HP DesignJet T610/1000/1100/1120/1200/1300/2300, G (совместимый)
-VTT | placeholder_photo | id=VT1100053 | vendorCode=VT1100053 | categoryId=102 | price=12900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (HB-C9390A) №70 для HP DesignJet z2100/3100/3200/5200 (совместимый)
+VTT | placeholder_photo | id=VT1100053 | vendorCode=VT1100053 | categoryId=102 | price=13900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (HB-C9390A) №70 для HP DesignJet z2100/3100/3200/5200 (совместимый)
 VTT | placeholder_photo | id=VT1100078 | vendorCode=VT1100078 | categoryId=102 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (PGI-2400XLM) для Canon MAXIFY iB4040/ МВ5040/ МВ5340 (совместимый)
 VTT | placeholder_photo | id=VT1100079 | vendorCode=VT1100079 | categoryId=102 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (PGI-2400XLY) для Canon MAXIFY iB4040/ МВ5040/ МВ5340 (совместимый)
 VTT | placeholder_photo | id=VT115R00128 | vendorCode=VT115R00128 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=115R00128 Контейнер для отработанного тонера Xerox VL C7020/7025/7030 (оригинал)
@@ -495,7 +508,7 @@ VTT | placeholder_photo | id=VT1507010956 | vendorCode=VT1507010956 | categoryId
 VTT | placeholder_photo | id=VT15070600701203 | vendorCode=VT15070600701203 | categoryId=103 | price=9900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (E0013) для Epson Stylus SX425/T26/M3170/TX419, Пигментные, Bk, 0,5 л. (совместимый)
 VTT | placeholder_photo | id=VT1507060070151 | vendorCode=VT1507060070151 | categoryId=103 | price=10900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (E0013) для Epson Stylus SX425/T26/TX419, Пигментные, Y, 0,5 л. (совместимый)
 VTT | placeholder_photo | id=VT1507060102U | vendorCode=VT1507060102U | categoryId=103 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (E0017) для Epson L800/L1800 (T6731/ T6741), Bk, 0,1 л. (совместимый)
-VTT | placeholder_photo | id=VT1507060103U | vendorCode=VT1507060103U | categoryId=103 | price=8900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (E0017) для Epson L800/L1800 (T6731/ T6741), Bk, 0,5 л. (совместимый)
+VTT | placeholder_photo | id=VT1507060103U | vendorCode=VT1507060103U | categoryId=103 | price=9900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (E0017) для Epson L800/L1800 (T6731/ T6741), Bk, 0,5 л. (совместимый)
 VTT | placeholder_photo | id=VT15070601110U | vendorCode=VT15070601110U | categoryId=103 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (E0017) для Epson L800/L1800 (T6732/ T6742), C, 0,1 л. (совместимый)
 VTT | placeholder_photo | id=VT15070601120U | vendorCode=VT15070601120U | categoryId=103 | price=8900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (E0017) для Epson L800/L1800 (T6732/ T6742), C, 0,5 л. (совместимый)
 VTT | placeholder_photo | id=VT15070601201U | vendorCode=VT15070601201U | categoryId=103 | price=8900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (E0017) для Epson L800/L1800 (T6733/ T6743), M, 0,5 л. (совместимый)
@@ -508,7 +521,7 @@ VTT | placeholder_photo | id=VT15070601501 | vendorCode=VT15070601501 | category
 VTT | placeholder_photo | id=VT15070601501U | vendorCode=VT15070601501U | categoryId=103 | price=8900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (E0017) для Epson L800/L1800 (T6736/ T6746), ML, 0,5 л. (совместимый)
 VTT | placeholder_photo | id=VT1507060150U | vendorCode=VT1507060150U | categoryId=103 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (E0017) для Epson L800/L1800 (T6736/ T6746), ML, 0,1 л. (совместимый)
 VTT | placeholder_photo | id=VT15070602510 | vendorCode=VT15070602510 | categoryId=103 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (C5025) для Canon PIXMA iP4820/MG5120 (PGI-225/425), Пигментные, Bk, 0,1 л. (совместимый)
-VTT | placeholder_photo | id=VT150706025100 | vendorCode=VT150706025100 | categoryId=103 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (C5026) для Canon PIXMA iP4820/MG5120 (CLI-226/426), BK, 0,1 л. (ориг.фасовка) (совместимый)
+VTT | placeholder_photo | id=VT150706025100 | vendorCode=VT150706025100 | categoryId=103 | price=5900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (C5026) для Canon PIXMA iP4820/MG5120 (CLI-226/426), BK, 0,1 л. (ориг.фасовка) (совместимый)
 VTT | placeholder_photo | id=VT150706025300 | vendorCode=VT150706025300 | categoryId=103 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (C5026) для Canon PIXMA iP4820/MG5120 (CLI-226/426), C, 0,1 л. (ориг.фасовка) (совместимый)
 VTT | placeholder_photo | id=VT1507060254780 | vendorCode=VT1507060254780 | categoryId=103 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (H5851) для HP Deskjet GT 5810/ 5820, Пигментные, Bk, 0,1 л. (совместимый)
 VTT | placeholder_photo | id=VT1507060254790 | vendorCode=VT1507060254790 | categoryId=103 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (H5852) для HP Deskjet GT 5810/ 5820, C, 0,1 л. (совместимый)
@@ -536,59 +549,61 @@ VTT | placeholder_photo | id=VT1507060449 | vendorCode=VT1507060449 | categoryId
 VTT | placeholder_photo | id=VT15070604491 | vendorCode=VT15070604491 | categoryId=103 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (C5041) для Canon CL-441/441CXL, C, 0,1 л. (совместимый)
 VTT | placeholder_photo | id=VT15070604493 | vendorCode=VT15070604493 | categoryId=103 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (C5041) для Canon CL-441/441CXL, M, 0,1 л. (совместимый)
 VTT | placeholder_photo | id=VT15070604495 | vendorCode=VT15070604495 | categoryId=103 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила InkTec (C5041) для Canon CL-441/441CXL, Y, 0,1 л. (совместимый)
-VTT | placeholder_photo | id=VT160903702 | vendorCode=VT160903702 | categoryId=101 | price=6900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Epson FX/LX 300/350 C13S015637BA/C13S015637 (оригинал)
+VTT | placeholder_photo | id=VT160903702 | vendorCode=VT160903702 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Epson FX/LX 300/350 C13S015637BA/C13S015637, 160903702 (оригинал)
 VTT | placeholder_photo | id=VT161008 | vendorCode=VT161008 | categoryId=101 | price=3900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black для Oki Microline 182/320/192/193/321/390/3310/3311/3320, Bk, б/шва,1,6м (совместимый)
 VTT | placeholder_photo | id=VT1610101 | vendorCode=VT1610101 | categoryId=101 | price=3900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black для Epson LX-350 (совместимый)
 VTT | placeholder_photo | id=VT1902K90UN0 | vendorCode=VT1902K90UN0 | categoryId=101 | price=20900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=1902K90UN0/WT-861 Бункер отработанного тонера Kyocera TASKalfa 6500i/8000i/6550ci (оригинал)
-VTT | placeholder_photo | id=VT1T02RV0NL0_OEM | vendorCode=VT1T02RV0NL0_OEM | categoryId=101 | price=37900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж TK-1150 (Тех.упаковка) Kyocera M2135dn/M2635dn/M2735dw/P2235dn/P2235dw (оригинал)
+VTT | placeholder_photo | id=VT1T02RV0NL0_OEM | vendorCode=VT1T02RV0NL0_OEM | categoryId=101 | price=38900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж TK-1150 (Тех.упаковка) Kyocera M2135dn/M2635dn/M2735dw/P2235dn/P2235dw (оригинал)
 VTT | placeholder_photo | id=VT1T02S50NL0_OEM | vendorCode=VT1T02S50NL0_OEM | categoryId=101 | price=46900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж TK-1170 (Тех.упаковка) Kyocera M2040dn/M2540dn/M2640idw (оригинал)
-VTT | placeholder_photo | id=VT1T0C150NL0-OEM | vendorCode=VT1T0C150NL0-OEM | categoryId=101 | price=32900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж TK-1260 (Тех.упаковка) Kyocera PA4000x/PA4000wx (оригинал)
+VTT | placeholder_photo | id=VT1T0C150NL0-OEM | vendorCode=VT1T0C150NL0-OEM | categoryId=101 | price=33900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж TK-1260 (Тех.упаковка) Kyocera PA4000x/PA4000wx (оригинал)
 VTT | placeholder_photo | id=VT220095976P | vendorCode=VT220095976P | categoryId=101 | price=18900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж Hi-Black (HB-106R01571) для Xerox Phaser 7800, M, 17,2K П/У (совместимый)
 VTT | placeholder_photo | id=VT22012151 | vendorCode=VT22012151 | categoryId=102 | price=5900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (HB-CZ133A) для HP DJ T120/T520, №711XL, 73 мл. (совместимый)
 VTT | placeholder_photo | id=VT220121911 | vendorCode=VT220121911 | categoryId=102 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (HB-CZ130A) для HP DJ T120/T520, №711, 26 мл. (совместимый)
 VTT | placeholder_photo | id=VT220121912 | vendorCode=VT220121912 | categoryId=102 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (HB-CZ131A) для HP DJ T120/T520, №711, 26 мл. (совместимый)
 VTT | placeholder_photo | id=VT220121913 | vendorCode=VT220121913 | categoryId=102 | price=4900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (HB-CZ132A) для HP DJ T120/T520, №711, 26 мл. (совместимый)
 VTT | placeholder_photo | id=VT2970B010 | vendorCode=VT2970B010 | categoryId=102 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Набор картриджей CANON PG-510/CL-511 (оригинал)
-VTT | placeholder_photo | id=VT2K093110 | vendorCode=VT2K093110 | categoryId=101 | price=9900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302K093110/WT-895 Бункер отработанного тонера Kyocera FS-C8020/C8025/C8520/C8525 (оригинал)
+VTT | placeholder_photo | id=VT2K093110 | vendorCode=VT2K093110 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302K093110/WT-895 Бункер отработанного тонера Kyocera FS-C8020/C8025/C8520/C8525 (оригинал)
 VTT | placeholder_photo | id=VT2K393130 | vendorCode=VT2K393130 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=2K393130/WT-475 Бункер отработанного тонера Kyocera FS-6025/6030/6525/6530 (оригинал)
 VTT | placeholder_photo | id=VT2KT93018 | vendorCode=VT2KT93018 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=2KT93018/DK-591 Драм-юнит Kyocera FS-C5150DN/P6021cdn (оригинал)
 VTT | placeholder_photo | id=VT2KV93110 | vendorCode=VT2KV93110 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302KV93110/WT-590 Бункер отработанного тонера Kyocera FS-C2026MFP/C2126MFP/C2526 (оригинал)
-VTT | placeholder_photo | id=VT2LC93014 | vendorCode=VT2LC93014 | categoryId=105 | price=259900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=2LC93014/DK-8505 Драм-юнит Kyocera TASKalfa 3050ci/3550ci/4550ci/5550ci (оригинал)
-VTT | placeholder_photo | id=VT2LH93034 | vendorCode=VT2LH93034 | categoryId=202 | price=176900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=2LH93034/DV-6305 Блок проявки Kyocera TASKalfa-3500i/4500i/5500i (оригинал)
-VTT | placeholder_photo | id=VT2MY93042 | vendorCode=VT2MY93042 | categoryId=202 | price=126900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302MY93042/DV-896C Блок проявки Kyocera FS-C8020MFP/C8025MFP (Голубой) (оригинал)
-VTT | placeholder_photo | id=VT2NG93010 | vendorCode=VT2NG93010 | categoryId=202 | price=74900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NG93010/DV-4105 Блок проявки Kyocera TASKalfa 1800/2200/1801/2201 (оригинал)
-VTT | placeholder_photo | id=VT2NL93020 | vendorCode=VT2NL93020 | categoryId=105 | price=205900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=2NL93020/DK-7105 Драм-юнит Kyocera TASKalfa 3010/3510i (оригинал)
+VTT | placeholder_photo | id=VT2LC93014 | vendorCode=VT2LC93014 | categoryId=105 | price=262900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=2LC93014/DK-8505 Драм-юнит Kyocera TASKalfa 3050ci/3550ci/4550ci/5550ci (оригинал)
+VTT | placeholder_photo | id=VT2LH93034 | vendorCode=VT2LH93034 | categoryId=202 | price=178900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=2LH93034/DV-6305 Блок проявки Kyocera TASKalfa-3500i/4500i/5500i (оригинал)
+VTT | placeholder_photo | id=VT2MY93042 | vendorCode=VT2MY93042 | categoryId=202 | price=127900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302MY93042/DV-896C Блок проявки Kyocera FS-C8020MFP/C8025MFP (Голубой) (оригинал)
+VTT | placeholder_photo | id=VT2NG93010 | vendorCode=VT2NG93010 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NG93010/DV-4105 Блок проявки Kyocera TASKalfa 1800/2200/1801/2201 (оригинал)
+VTT | placeholder_photo | id=VT2NL93020 | vendorCode=VT2NL93020 | categoryId=105 | price=207900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=2NL93020/DK-7105 Драм-юнит Kyocera TASKalfa 3010/3510i (оригинал)
 VTT | placeholder_photo | id=VT2NL93030 | vendorCode=VT2NL93030 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=2NL93030/DV-7105 Блок проявки Kyocera TASKalfa 3010/3510i (оригинал)
-VTT | placeholder_photo | id=VT2NP93030 | vendorCode=VT2NP93030 | categoryId=105 | price=89900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=2NP93030/DK-8325 Драм-юнит Kyocera TaskAlfa 2551ci/2550ci (оригинал)
+VTT | placeholder_photo | id=VT2NP93030 | vendorCode=VT2NP93030 | categoryId=105 | price=90900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=2NP93030/DK-8325 Драм-юнит Kyocera TaskAlfa 2551ci/2550ci (оригинал)
 VTT | placeholder_photo | id=VT2NP93052 | vendorCode=VT2NP93052 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NP93052/DV-8325K Блок проявки Kyocera TASKalfa 2551ci (Чёрный) (оригинал)
-VTT | placeholder_photo | id=VT301020571 | vendorCode=VT301020571 | categoryId=101 | price=23900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж Hi-Black (HB-IM 600H) для Ricoh Aficio P 801/I (совместимый)
+VTT | placeholder_photo | id=VT301020571 | vendorCode=VT301020571 | categoryId=101 | price=24900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж Hi-Black (HB-IM 600H) для Ricoh Aficio P 801/I (совместимый)
 VTT | placeholder_photo | id=VT301020573 | vendorCode=VT301020573 | categoryId=101 | price=21900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж Hi-Black (HB-MPC3000E BK) для Ricoh Aficio MPC2000/C2500/C3000 (совместимый)
-VTT | placeholder_photo | id=VT301020574 | vendorCode=VT301020574 | categoryId=101 | price=23900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж Hi-Black (HB-MPC3000E C) для Ricoh Aficio MPC2000/C2500/C3000 (совместимый)
-VTT | placeholder_photo | id=VT301020575 | vendorCode=VT301020575 | categoryId=101 | price=23900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж Hi-Black (HB-MPC3000E M) для Ricoh Aficio MPC2000/C2500/C3000 (совместимый)
-VTT | placeholder_photo | id=VT301020576 | vendorCode=VT301020576 | categoryId=101 | price=23900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж Hi-Black (HB-MPC3000E Y) для Ricoh Aficio MPC2000/C2500/C3000 (совместимый)
-VTT | placeholder_photo | id=VT301090513 | vendorCode=VT301090513 | categoryId=105 | price=6900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Драм-юнит Hi-Black (HB-101R00555) для Xerox Phaser 3330/WC 3335/3335DNI/3345/3345DNI (совместимый)
-VTT | placeholder_photo | id=VT302NR93021 | vendorCode=VT302NR93021 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NR93021/302NR93022 Блок проявки DV-5140K Kyocera P6130/M6030/M6530 (оригинал)
-VTT | placeholder_photo | id=VT302NR93041 | vendorCode=VT302NR93041 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NR93041/302NR93042 Блок проявки DV-5140M Kyocera P6130/M6030/M6530 (оригинал)
-VTT | placeholder_photo | id=VT302NR93051 | vendorCode=VT302NR93051 | categoryId=202 | price=63900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NR93051/302NR93052 Блок проявки DV-5140C Kyocera P6130/M6030/M6530 (оригинал)
+VTT | placeholder_photo | id=VT301020574 | vendorCode=VT301020574 | categoryId=101 | price=24900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж Hi-Black (HB-MPC3000E C) для Ricoh Aficio MPC2000/C2500/C3000 (совместимый)
+VTT | placeholder_photo | id=VT301020575 | vendorCode=VT301020575 | categoryId=101 | price=24900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж Hi-Black (HB-MPC3000E M) для Ricoh Aficio MPC2000/C2500/C3000 (совместимый)
+VTT | placeholder_photo | id=VT301020576 | vendorCode=VT301020576 | categoryId=101 | price=24900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж Hi-Black (HB-MPC3000E Y) для Ricoh Aficio MPC2000/C2500/C3000 (совместимый)
+VTT | placeholder_photo | id=VT302NR93021 | vendorCode=VT302NR93021 | categoryId=202 | price=64900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NR93021/302NR93022 Блок проявки DV-5140K Kyocera P6130/M6030/M6530 (оригинал)
+VTT | placeholder_photo | id=VT302NR93041 | vendorCode=VT302NR93041 | categoryId=202 | price=63900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NR93041/302NR93042 Блок проявки DV-5140M Kyocera P6130/M6030/M6530 (оригинал)
+VTT | placeholder_photo | id=VT302NR93051 | vendorCode=VT302NR93051 | categoryId=202 | price=64900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NR93051/302NR93052 Блок проявки DV-5140C Kyocera P6130/M6030/M6530 (оригинал)
 VTT | placeholder_photo | id=VT302NR93150 | vendorCode=VT302NR93150 | categoryId=101 | price=9900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302NR93150/WT-5140 Бункер отработанного тонера Kyocera P6130/P7040/M6030/P6035 (оригинал)
-VTT | placeholder_photo | id=VT302P193020 | vendorCode=VT302P193020 | categoryId=202 | price=54900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P193020/DV-6115 Блок проявки (тех. упак.) Kyocera Ecosys M4125idn/M4132idn (совместимый)
-VTT | placeholder_photo | id=VT302P393021 | vendorCode=VT302P393021 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P393021/302P393020 Блок проявки DV-8115C Kyocera M8124cidn/M8130cidn (Голубой) (оригинал)
-VTT | placeholder_photo | id=VT302P393031 | vendorCode=VT302P393031 | categoryId=202 | price=163900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P393031/302P393030 Блок проявки DV-8115K Kyocera M8124cidn/M8130cidn (Чёрный) (оригинал)
-VTT | placeholder_photo | id=VT302P393051 | vendorCode=VT302P393051 | categoryId=202 | price=145900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P393051/302P393050 Блок проявки DV-8115Y Kyocera M8124cidn/M8130cidn (Желтый) (оригинал)
-VTT | placeholder_photo | id=VT302P393060 | vendorCode=VT302P393060 | categoryId=105 | price=126900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P393060/DK-8115 Драм-юнит Kyocera M8124cidn/M8130cidn (оригинал)
-VTT | placeholder_photo | id=VT302T693030 | vendorCode=VT302T693030 | categoryId=105 | price=117900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302T693031/302T693030/DK-3190 Драм-юнит Kyocera P3050dn/P3055dn/P3060dn/P3150dn/P3155dn (оригинал)
-VTT | placeholder_photo | id=VT302V693010 | vendorCode=VT302V693010 | categoryId=202 | price=155900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302V693010/DV-7125 Блок проявки Kyocera TASKalfa-3212/4012 (оригинал)
+VTT | placeholder_photo | id=VT302P193020 | vendorCode=VT302P193020 | categoryId=202 | price=55900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P193020/DV-6115 Блок проявки (тех. упак.) Kyocera Ecosys M4125idn/M4132idn (совместимый)
+VTT | placeholder_photo | id=VT302P393021 | vendorCode=VT302P393021 | categoryId=202 | price=141900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P393021/302P393020 Блок проявки DV-8115C Kyocera M8124cidn/M8130cidn (Голубой) (оригинал)
+VTT | placeholder_photo | id=VT302P393031 | vendorCode=VT302P393031 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P393031/302P393030 Блок проявки DV-8115K Kyocera M8124cidn/M8130cidn (Чёрный) (оригинал)
+VTT | placeholder_photo | id=VT302P393051 | vendorCode=VT302P393051 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P393051/302P393050 Блок проявки DV-8115Y Kyocera M8124cidn/M8130cidn (Желтый) (оригинал)
+VTT | placeholder_photo | id=VT302P393060 | vendorCode=VT302P393060 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302P393060/DK-8115 Драм-юнит Kyocera M8124cidn/M8130cidn (оригинал)
+VTT | placeholder_photo | id=VT302T693030 | vendorCode=VT302T693030 | categoryId=105 | price=118900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302T693031/302T693030/DK-3190 Драм-юнит Kyocera P3050dn/P3055dn/P3060dn/P3150dn/P3155dn (оригинал)
+VTT | placeholder_photo | id=VT302V693010 | vendorCode=VT302V693010 | categoryId=202 | price=156900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302V693010/DV-7125 Блок проявки Kyocera TASKalfa-3212/4012 (оригинал)
 VTT | placeholder_photo | id=VT302VB93010 | vendorCode=VT302VB93010 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302VB93010/DV-1200 Блок проявки Kyocera P2335d/P2335dn/P2335dw/M2235dn/M2735dn/M2835dw (оригинал)
-VTT | placeholder_photo | id=VT30C0T93010 | vendorCode=VT30C0T93010 | categoryId=202 | price=94900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=30C0T93010/DV-3110 Блок проявки Kyocera PA4500x/PA5000x/PA5500x/PA6000x/MA4500ifx/MA5500ifx/MA6000if (со и др.
-VTT | placeholder_photo | id=VT30C0T93020 | vendorCode=VT30C0T93020 | categoryId=105 | price=155900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=30C0T93020/DK-3210 (E) Драм-юнит Kyocera Ecosys PA5000x/PA5500x/PA6000x/MA5500ifx/MA6000ifx (оригинал)
-VTT | placeholder_photo | id=VT30C1093020 | vendorCode=VT30C1093020 | categoryId=105 | price=142900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=30C1093020/DK-3220 (E) Драм-юнит Kyocera Ecosys MA4500ix/MA4500ifx 300000стр. (оригинал)
-VTT | placeholder_photo | id=VT3872B001 | vendorCode=VT3872B001 | categoryId=106 | price=302900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Печатающая головка PF-05 для Canon iPF6400/6400s/6450/8400/8400s/9400/9400s (оригинал)
+VTT | placeholder_photo | id=VT30C0T93010 | vendorCode=VT30C0T93010 | categoryId=202 | price=95900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=30C0T93010/DV-3110 Блок проявки Kyocera PA4500x/PA5000x/PA5500x/PA6000x/MA4500ifx/MA5500ifx/MA6000if (со и др.
+VTT | placeholder_photo | id=VT30C0T93020 | vendorCode=VT30C0T93020 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=30C0T93020/DK-3210 (E) Драм-юнит Kyocera Ecosys PA5000x/PA5500x/PA6000x/MA5500ifx/MA6000ifx (оригинал)
+VTT | placeholder_photo | id=VT30C1093020 | vendorCode=VT30C1093020 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=30C1093020/DK-3220 (E) Драм-юнит Kyocera Ecosys MA4500ix/MA4500ifx 300000стр. (оригинал)
+VTT | placeholder_photo | id=VT3872B001 | vendorCode=VT3872B001 | categoryId=106 | price=305900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Печатающая головка PF-05 для Canon iPF6400/6400s/6450/8400/8400s/9400/9400s (оригинал)
 VTT | placeholder_photo | id=VT4050118 | vendorCode=VT4050118 | categoryId=105 | price=60900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=DK-590/2KV9301014/302KV93017 Драм-юнит Kyocera FS2026/2126/C2026MFP+ (оригинал)
-VTT | placeholder_photo | id=VT41006035 | vendorCode=VT41006035 | categoryId=105 | price=98900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=DK-3100/302MS93020 Драм-юнит Kyocera FS-2100D/2100DN/ECOSYS M3040dn/M3540dn (оригинал)
+VTT | placeholder_photo | id=VT41006035 | vendorCode=VT41006035 | categoryId=105 | price=99900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=DK-3100/302MS93020 Драм-юнит Kyocera FS-2100D/2100DN/ECOSYS M3040dn/M3540dn (оригинал)
 VTT | placeholder_photo | id=VT4100649 | vendorCode=VT4100649 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302LV93020 Бункер отработанного тонера WT-3100 Kyocera FS2100/4100, 4100649 (оригинал)
 VTT | placeholder_photo | id=VT41006510 | vendorCode=VT41006510 | categoryId=101 | price=8900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=WT-860/1902LC0UN0 Бункер отработанного тонера Kyocera TASKalfa 3050ci/3550ci/4550ci (оригинал)
 VTT | placeholder_photo | id=VT410067 | vendorCode=VT410067 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221, 410067 (оригинал)
-... показаны первые 300 строк, всего записей: 585
+VTT | placeholder_photo | id=VT4100695 | vendorCode=VT4100695 | categoryId=101 | price=8900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302M293031/302M293030 Бункер отработанного тонера WT-1110 Kyocera FS1020/1025/1120 (оригинал)
+VTT | placeholder_photo | id=VT416890 | vendorCode=VT416890 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=416890/D2426400 Бокс сбора тонера Ricoh MP C2003/C2004/C2503/C2504/C303/C3004/C3503/C3504/C4503 (оригинал)
+VTT | placeholder_photo | id=VT4629756P | vendorCode=VT4629756P | categoryId=101 | price=20900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (HB-CE343A) для HP CLJ Enterprise MFP M775dn/775f/775z, №651A, M, 16K, ПУ (совместимый)
+... показаны первые 300 строк, всего записей: 547
 
 ======================================================================
 ДУБЛИ OFFER ID
@@ -604,15 +619,15 @@ VTT | placeholder_photo | id=VT410067 | vendorCode=VT410067 | categoryId=202 | i
 ПОСТАВЩИКИ С НАИБОЛЬШИМ КОЛИЧЕСТВОМ ПРОБЛЕМ
 ======================================================================
 Товары без цены:
-- VTT: 207
+- VTT: 222
 - CopyLine: 26
 - AlStyle: 4
 
 Заглушка фото:
-- VTT: 451
+- VTT: 415
 - ComPortal: 126
 - AlStyle: 5
-- AkCent: 3
+- AkCent: 1
 
 Не вошло в final без categoryId:
 - AlStyle: 2
