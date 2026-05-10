@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-10 00:40:41">
+<yml_catalog date="2026-05-11 00:40:21">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | AlStyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 2026-05-10 00:40:41
-Ближайшая сборка (Алматы)                  | 2026-05-10 23:30:00
+Время сборки (Алматы)                      | 2026-05-11 00:40:21
+Ближайшая сборка (Алматы)                  | 2026-05-11 23:30:00
 Сколько товаров у поставщика до фильтра    | 16973
 Сколько товаров у поставщика после фильтра | 2003
-Сколько товаров есть в наличии (true)      | 1481
-Сколько товаров нет в наличии (false)      | 522
+Сколько товаров есть в наличии (true)      | 1480
+Сколько товаров нет в наличии (false)      | 523
 -->
 
 <offer id="AS113695" available="true">
@@ -9743,7 +9743,7 @@ COMIX S3306 — надежный офисный шредер для уничто
 <param name="Объём">0.02587725</param>
 </offer>
 
-<offer id="AS266520" available="true">
+<offer id="AS266520" available="false">
 <categoryId></categoryId>
 <vendorCode>AS266520</vendorCode>
 <name>Источник бесперебойного питания CyberPower PR1000ELCD</name>
