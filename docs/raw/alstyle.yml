@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-11 00:40:21">
+<yml_catalog date="2026-05-12 01:16:19">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | AlStyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 2026-05-11 00:40:21
-Ближайшая сборка (Алматы)                  | 2026-05-11 23:30:00
-Сколько товаров у поставщика до фильтра    | 16973
+Время сборки (Алматы)                      | 2026-05-12 01:16:19
+Ближайшая сборка (Алматы)                  | 2026-05-12 23:30:00
+Сколько товаров у поставщика до фильтра    | 16971
 Сколько товаров у поставщика после фильтра | 2003
-Сколько товаров есть в наличии (true)      | 1480
-Сколько товаров нет в наличии (false)      | 523
+Сколько товаров есть в наличии (true)      | 1479
+Сколько товаров нет в наличии (false)      | 524
 -->
 
 <offer id="AS113695" available="true">
@@ -24208,7 +24208,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <param name="Совместимость">Canon ImagePROGRAF TC-20 / Canon ImagePROGRAF TC-20M / Canon ImagePROGRAF TM-240</param>
 </offer>
 
-<offer id="AS396189" available="true">
+<offer id="AS396189" available="false">
 <categoryId></categoryId>
 <vendorCode>AS396189</vendorCode>
 <name>Блок барабана Canon DRUM UNIT C-EXV 49 8528B003AA (оригинал)</name>
