@@ -14,12 +14,6 @@
 # Все товары получили categoryId
 ## END VTT
 
-## START AkCent
-Поставщик: AkCent
-Товаров без categoryId: 0
-
-# Все товары получили categoryId
-## END AkCent
 
 
 
@@ -37,3 +31,10 @@ AlStyle | AS421121 | Считыватель карт Lexmark Elatec TWN4 (497K26
 
 ComPortal | CP13823539 | Батарейка APC APCRBC152 (APCRBC152) | categoryId не определён
 ## END ComPortal
+
+## START AkCent
+Поставщик: AkCent
+Товаров без categoryId: 0
+
+# Все товары получили categoryId
+## END AkCent
