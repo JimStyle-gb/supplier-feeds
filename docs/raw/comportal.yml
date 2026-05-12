@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-12 02:00:32">
+<yml_catalog date="2026-05-13 01:59:25">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-05-12 02:00:32
-Ближайшая сборка (Алматы)                  | 2026-05-13 00:30:00
+Время сборки (Алматы)                      | 2026-05-13 01:59:25
+Ближайшая сборка (Алматы)                  | 2026-05-14 00:30:00
 Сколько товаров у поставщика до фильтра    | 1163
 Сколько товаров у поставщика после фильтра | 622
 Сколько товаров есть в наличии (true)      | 622
@@ -324,27 +324,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Номер">№711</param>
 <param name="Объём">29</param>
 <param name="Коды">CZ132A</param>
-<param name="Для бренда">HP</param>
-<param name="Оригинальность">Оригинал</param>
-</offer>
-
-<offer id="CP10304361" available="true">
-<categoryId></categoryId>
-<vendorCode>CP10304361</vendorCode>
-<name>Картридж HP CZ133A (CZ133A) (оригинал)</name>
-<price>34836</price>
-<picture>https://www.comportal.kz/upload/iblock/fa1/gifkt3d21jl87fo5du8obzy5xjosmg52.jpg</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Оригинальный картридж HP CZ133A коды — CZ133A / №711; цвет — Чёрный; объём — 80; технология печати — Струйная.]]></description>
-<param name="Тип">Картридж</param>
-<param name="Модель">CZ133A</param>
-<param name="Цвет">Чёрный</param>
-<param name="Технология печати">Струйная</param>
-<param name="Номер">№711</param>
-<param name="Объём">80</param>
-<param name="Коды">CZ133A</param>
 <param name="Для бренда">HP</param>
 <param name="Оригинальность">Оригинал</param>
 </offer>
@@ -2382,27 +2361,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="CP11231732" available="true">
-<categoryId></categoryId>
-<vendorCode>CP11231732</vendorCode>
-<name>Картридж Canon PFI-320 (2891C001) (оригинал)</name>
-<price>84116</price>
-<picture>https://www.comportal.kz/upload/iblock/b94/tfs8cfaeo1vmdti1xdolge8qa0uocl81.jpg</picture>
-<vendor>Canon</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Оригинальный картридж Canon PFI-320 коды — 2891C001 / №320; цвет — Голубой; объём — 300; технология печати — Струйная.]]></description>
-<param name="Тип">Картридж</param>
-<param name="Модель">PFI-320</param>
-<param name="Цвет">Голубой</param>
-<param name="Технология печати">Струйная</param>
-<param name="Номер">№320</param>
-<param name="Объём">300</param>
-<param name="Коды">2891C001</param>
-<param name="Для бренда">Canon</param>
-<param name="Оригинальность">Оригинал</param>
-</offer>
-
 <offer id="CP10742851" available="true">
 <categoryId></categoryId>
 <vendorCode>CP10742851</vendorCode>
@@ -3031,6 +2989,23 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Коды">W1470X</param>
 <param name="Для бренда">HP</param>
 <param name="Оригинальность">Оригинал</param>
+</offer>
+
+<offer id="CP13873261" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13873261</vendorCode>
+<name>МФУ Canon i-SENSYS MF237W (1418С030)</name>
+<price>212704</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+МФУ. Гарантия: 12 мес. Для бренда: Canon. Модель: i-SENSYS MF237W. Коды: 1418С030.]]></description>
+<param name="Тип">МФУ</param>
+<param name="Гарантия">12 мес</param>
+<param name="Для бренда">Canon</param>
+<param name="Модель">i-SENSYS MF237W</param>
+<param name="Коды">1418С030</param>
 </offer>
 
 <offer id="CP10814517" available="true">
@@ -3690,23 +3665,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Наличие картриджа (тонера) в комплекте">Стартовый</param>
 <param name="Коды">9YG09A#B19</param>
 <param name="Для бренда">HP</param>
-</offer>
-
-<offer id="CP13842679" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13842679</vendorCode>
-<name>Печатающая головка HP 729 DesignJet Printhead Replacement Kit (F9J81A) (оригинал)</name>
-<price>235241</price>
-<picture>https://www.comportal.kz/upload/iblock/b8e/b8e51a269d79b68f51de87e15ee80823.JPG</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Оригинальный картридж HP 729 DesignJet Printhead Replacement Kit код — F9J81A.]]></description>
-<param name="Тип">Картридж</param>
-<param name="Модель">729 DesignJet Printhead Replacement Kit</param>
-<param name="Коды">F9J81A</param>
-<param name="Для бренда">HP</param>
-<param name="Оригинальность">Оригинал</param>
 </offer>
 
 <offer id="CP13844328" available="true">
@@ -4676,6 +4634,51 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Коды">8066B001</param>
 <param name="Для бренда">Canon</param>
 <param name="Оригинальность">Оригинал</param>
+</offer>
+
+<offer id="CP13867051" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13867051</vendorCode>
+<name>Ноутбук Dell Latitude 7330 (210-BDRU-3)</name>
+<price>601920</price>
+<picture>https://www.comportal.kz/upload/iblock/4b1/3ymvis5i4sz2sr2ricqwebjnsakgd706.JPG</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Ноутбук. Модельная серия: Latitude 7330. Процессор: Intel 1235U Core i5 1,3. Оперативная память: 8 Gb / DDR4 / 3200. Накопитель: 512 / M.2 PCIe SSD / 1 шт. Диагональ: 13,3. Разрешение: 1920x1080. ОС: Ubuntu 20.04. Видеокарта: Intel Iris Xe 256 Mb. Wi‑Fi: AX211. Bluetooth: Bluetooth. Камера: Webcam. Гарантия: 36 мес.]]></description>
+<param name="Тип">Ноутбук</param>
+<param name="Модель">Latitude 7330</param>
+<param name="Объем жесткого диска">512</param>
+<param name="Тип жесткого диска">M.2 PCIe SSD</param>
+<param name="Производитель процессора">Intel</param>
+<param name="Модель процессора">Core i5</param>
+<param name="Серия процессора">1235U</param>
+<param name="Частота процессора">1,3</param>
+<param name="Оперативная память">8 Gb</param>
+<param name="Частота оперативной памяти">3200</param>
+<param name="Количество слотов памяти">2</param>
+<param name="Занятые слоты памяти">1</param>
+<param name="Объем видеопамяти">256 Mb</param>
+<param name="Тип оперативной памяти">DDR4</param>
+<param name="Тип привода">No ODD</param>
+<param name="Количество дисков">1</param>
+<param name="Размер дисплея">13,3</param>
+<param name="Тип матрицы">FHD</param>
+<param name="Производитель чипсета видеокарты">Intel</param>
+<param name="Марка чипсета видеокарты">Graphics</param>
+<param name="Модель чипсета видеокарты">Iris Xe</param>
+<param name="Операционная система">Ubuntu</param>
+<param name="Версия операционной системы">20.04</param>
+<param name="Цвет">Чёрный</param>
+<param name="Bluetooth">Bluetooth</param>
+<param name="Wi-Fi">AX211</param>
+<param name="Адаптер">65W AC Adapter</param>
+<param name="Аккумулятор">4-cell 58W HR</param>
+<param name="Гарантия">36 мес</param>
+<param name="Камера">Webcam</param>
+<param name="Разрешение дисплея">1920x1080</param>
+<param name="Коды">210-BDRU-3</param>
+<param name="Для бренда">Dell</param>
 </offer>
 
 <offer id="CP13867052" available="true">
@@ -13462,6 +13465,23 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Камера">13 Mpix</param>
 <param name="Разрешение дисплея">2560x1600</param>
 <param name="Коды">90NR0JY1-M002E0</param>
+<param name="Для бренда">ASUS</param>
+</offer>
+
+<offer id="CP13872662" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13872662</vendorCode>
+<name>Ноутбук ASUS TUF Gaming F16 / FX608JPR-QT092 (90NR0NG1-M00680)</name>
+<price>838248</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>ASUS</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Ноутбук. Гарантия: 12 мес. Для бренда: ASUS. Модель: TUF Gaming F16 / FX608JPR-QT092. Коды: 90NR0NG1-M00680.]]></description>
+<param name="Тип">Ноутбук</param>
+<param name="Гарантия">12 мес</param>
+<param name="Коды">90NR0NG1-M00680</param>
+<param name="Модель">TUF Gaming F16 / FX608JPR-QT092</param>
 <param name="Для бренда">ASUS</param>
 </offer>
 
