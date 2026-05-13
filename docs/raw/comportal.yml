@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-13 01:59:25">
+<yml_catalog date="2026-05-14 02:08:01">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-05-13 01:59:25
-Ближайшая сборка (Алматы)                  | 2026-05-14 00:30:00
-Сколько товаров у поставщика до фильтра    | 1163
-Сколько товаров у поставщика после фильтра | 622
-Сколько товаров есть в наличии (true)      | 622
+Время сборки (Алматы)                      | 2026-05-14 02:08:01
+Ближайшая сборка (Алматы)                  | 2026-05-15 00:30:00
+Сколько товаров у поставщика до фильтра    | 1191
+Сколько товаров у поставщика после фильтра | 630
+Сколько товаров есть в наличии (true)      | 630
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -766,6 +766,28 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Объём">2</param>
 <param name="Ресурс">100</param>
 <param name="Коды">F6V16AE</param>
+<param name="Для бренда">HP</param>
+<param name="Оригинальность">Оригинал</param>
+</offer>
+
+<offer id="CP10303149" available="true">
+<categoryId></categoryId>
+<vendorCode>CP10303149</vendorCode>
+<name>Картридж HP F6V17AE (F6V17AE) (оригинал)</name>
+<price>6987</price>
+<picture>https://www.comportal.kz/upload/iblock/f8b/pxfklszm3z1r728qa0u7gc4e4mngmpse.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Оригинальный картридж HP F6V17AE коды — F6V17AE / №123; цвет — Чёрный; ресурс — 120; технология печати — Струйная.]]></description>
+<param name="Тип">Картридж</param>
+<param name="Модель">F6V17AE</param>
+<param name="Цвет">Чёрный</param>
+<param name="Технология печати">Струйная</param>
+<param name="Номер">№123</param>
+<param name="Объём">2</param>
+<param name="Ресурс">120</param>
+<param name="Коды">F6V17AE</param>
 <param name="Для бренда">HP</param>
 <param name="Оригинальность">Оригинал</param>
 </offer>
@@ -2342,6 +2364,26 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
+<offer id="CP10784335" available="true">
+<categoryId></categoryId>
+<vendorCode>CP10784335</vendorCode>
+<name>Картридж HP W9190MC (W9190MC) (оригинал)</name>
+<price>24108</price>
+<picture>https://www.comportal.kz/upload/iblock/afa/qcz4hrcjxdi0xab6pgww06rpodh8lym8.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Оригинальный картридж HP W9190MC код — W9190MC; цвет — Чёрный; ресурс — 29 000; технология печати — Лазерная.]]></description>
+<param name="Тип">Картридж</param>
+<param name="Модель">W9190MC</param>
+<param name="Цвет">Чёрный</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Ресурс">29 000</param>
+<param name="Коды">W9190MC</param>
+<param name="Для бренда">HP</param>
+<param name="Оригинальность">Оригинал</param>
+</offer>
+
 <offer id="CP10373984" available="true">
 <categoryId></categoryId>
 <vendorCode>CP10373984</vendorCode>
@@ -2872,25 +2914,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Для бренда">APC</param>
 </offer>
 
-<offer id="CP10772654" available="true">
-<categoryId></categoryId>
-<vendorCode>CP10772654</vendorCode>
-<name>Тонер Canon C-EXV60 (4311C001) (оригинал)</name>
-<price>19168</price>
-<picture>https://www.comportal.kz/upload/iblock/4b2/ya3wgq50xujqrufna5k27hkhapr6ln9d.JPG</picture>
-<vendor>Canon</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Оригинальный тонер Canon C-EXV60 код — 4311C001; ресурс — 10 200.]]></description>
-<param name="Тип">Тонер</param>
-<param name="Модель">C-EXV60</param>
-<param name="Дополнительная информация">black</param>
-<param name="Ресурс">10 200</param>
-<param name="Коды">4311C001</param>
-<param name="Для бренда">Canon</param>
-<param name="Оригинальность">Оригинал</param>
-</offer>
-
 <offer id="CP11337744" available="true">
 <categoryId></categoryId>
 <vendorCode>CP11337744</vendorCode>
@@ -2991,23 +3014,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="CP13873261" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13873261</vendorCode>
-<name>МФУ Canon i-SENSYS MF237W (1418С030)</name>
-<price>212704</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Canon</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-МФУ. Гарантия: 12 мес. Для бренда: Canon. Модель: i-SENSYS MF237W. Коды: 1418С030.]]></description>
-<param name="Тип">МФУ</param>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">Canon</param>
-<param name="Модель">i-SENSYS MF237W</param>
-<param name="Коды">1418С030</param>
-</offer>
-
 <offer id="CP10814517" available="true">
 <categoryId></categoryId>
 <vendorCode>CP10814517</vendorCode>
@@ -3106,32 +3112,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">24 мес</param>
 <param name="Диапазон входного напряжения">140-300</param>
 <param name="Коды">BX950MI</param>
-<param name="Для бренда">APC</param>
-</offer>
-
-<offer id="CP11214818" available="true">
-<categoryId></categoryId>
-<vendorCode>CP11214818</vendorCode>
-<name>ИБП APC BX1200MI-GR (BX1200MI-GR)</name>
-<price>72556</price>
-<picture>https://www.comportal.kz/upload/iblock/7d8/89fjf9n1qc3if1gx0paxe1wk16vphl2f.jpg</picture>
-<vendor>APC</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-ИБП. Мощность: 1 200 VA / 650 W. Форм-фактор: Tower. Стабилизатор (AVR): есть. Время работы при 100% нагрузке, мин: 0,8. Выходные соединения: (4) Schuko CEE 7 (Батарейное резервное питание). Гарантия: 24 мес.]]></description>
-<param name="Тип">ИБП</param>
-<param name="Модель">BX1200MI-GR</param>
-<param name="Интерфейс">Schuko</param>
-<param name="Выходные соединения">(4) Schuko CEE 7 (Батарейное резервное питание)</param>
-<param name="Мощность (VA)">1 200</param>
-<param name="Мощность (W)">650</param>
-<param name="Типовая продолжительность работы при 100% нагрузке, мин">0,8</param>
-<param name="Форм-фактор">Tower</param>
-<param name="Стабилизатор (AVR)">есть</param>
-<param name="ПО">есть</param>
-<param name="Гарантия">24 мес</param>
-<param name="Диапазон входного напряжения">140-300</param>
-<param name="Коды">BX1200MI-GR</param>
 <param name="Для бренда">APC</param>
 </offer>
 
@@ -3465,6 +3445,27 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Объём">23</param>
 <param name="Ресурс">1 600</param>
 <param name="Коды">3JA29AE#BGX</param>
+<param name="Для бренда">HP</param>
+<param name="Оригинальность">Оригинал</param>
+</offer>
+
+<offer id="CP13760828" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13760828</vendorCode>
+<name>Картридж HP 963XL (3JA30AE#BGX) (оригинал)</name>
+<price>24362</price>
+<picture>https://www.comportal.kz/upload/iblock/1d1/uzidooqrdfuhjd4yhe35cwe3njbm8d3t.JPG</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Оригинальный картридж HP 963XL код — 3JA30AE#BGX; цвет — Чёрный; ресурс — 2 000; технология печати — Струйная.]]></description>
+<param name="Тип">Картридж</param>
+<param name="Модель">963XL</param>
+<param name="Цвет">Чёрный</param>
+<param name="Технология печати">Струйная</param>
+<param name="Объём">48</param>
+<param name="Ресурс">2 000</param>
+<param name="Коды">3JA30AE#BGX</param>
 <param name="Для бренда">HP</param>
 <param name="Оригинальность">Оригинал</param>
 </offer>
@@ -3969,6 +3970,28 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Принадлежность в НР">HPS</param>
 <param name="Коды">7MD74A#B19</param>
 <param name="Для бренда">HP</param>
+</offer>
+
+<offer id="CP12814218" available="true">
+<categoryId></categoryId>
+<vendorCode>CP12814218</vendorCode>
+<name>Картридж HP F6V25AE (F6V25AE#BHL) (оригинал)</name>
+<price>8182</price>
+<picture>https://www.comportal.kz/upload/iblock/89a/n881d59fvzytr98rc6flm7iibosnv2ca.JPG</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Оригинальный картридж HP F6V25AE коды — F6V25AE#BHL / №652; цвет — Чёрный; ресурс — 360; технология печати — Струйная.]]></description>
+<param name="Тип">Картридж</param>
+<param name="Модель">F6V25AE</param>
+<param name="Цвет">Чёрный</param>
+<param name="Технология печати">Струйная</param>
+<param name="Номер">№652</param>
+<param name="Объём">6</param>
+<param name="Ресурс">360</param>
+<param name="Коды">F6V25AE#BHL</param>
+<param name="Для бренда">HP</param>
+<param name="Оригинальность">Оригинал</param>
 </offer>
 
 <offer id="CP11384632" available="true">
@@ -5290,21 +5313,46 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Для бренда">Acer</param>
 </offer>
 
-<offer id="CP13714886" available="true">
+<offer id="CP13760984" available="true">
 <categoryId></categoryId>
-<vendorCode>CP13714886</vendorCode>
-<name>Картридж HP 151X (W1510X) (оригинал)</name>
-<price>112045</price>
-<picture>https://www.comportal.kz/upload/iblock/454/snq4r4jobl1mpi6cu8ch09l4pajmqip2.JPG</picture>
+<vendorCode>CP13760984</vendorCode>
+<name>Картридж HP HP 47 (6ZD21AE#BHK) (оригинал)</name>
+<price>2927</price>
+<picture>https://www.comportal.kz/upload/iblock/bcf/bcf4dc7f817c870fc31d5d115232a270.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Оригинальный картридж HP 151X код — W1510X; цвет — Чёрный; технология печати — Лазерная.]]></description>
+Оригинальный картридж HP 47 коды — 6ZD21AE#BHK / №47; цвет — Чёрный; ресурс — 1 300; технология печати — Струйная.]]></description>
 <param name="Тип">Картридж</param>
-<param name="Модель">151X</param>
+<param name="Модель">47</param>
 <param name="Цвет">Чёрный</param>
-<param name="Технология печати">Лазерная</param>
-<param name="Коды">W1510X</param>
+<param name="Технология печати">Струйная</param>
+<param name="Номер">№47</param>
+<param name="Объём">26</param>
+<param name="Ресурс">1 300</param>
+<param name="Коды">6ZD21AE#BHK</param>
+<param name="Для бренда">HP</param>
+<param name="Оригинальность">Оригинал</param>
+</offer>
+
+<offer id="CP13760985" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13760985</vendorCode>
+<name>Картридж HP HP 47 (6ZD61AE#BHK) (оригинал)</name>
+<price>2762</price>
+<picture>https://www.comportal.kz/upload/iblock/225/epb63m1pjf6o2phg2lnaaqzprl6lqxhp.JPG</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Оригинальный картридж HP 47 коды — 6ZD61AE#BHK / №47; цвет — Трехцветный; ресурс — 700; технология печати — Струйная.]]></description>
+<param name="Тип">Картридж</param>
+<param name="Модель">47</param>
+<param name="Цвет">Трехцветный</param>
+<param name="Технология печати">Струйная</param>
+<param name="Номер">№47</param>
+<param name="Объём">14</param>
+<param name="Ресурс">700</param>
+<param name="Коды">6ZD61AE#BHK</param>
 <param name="Для бренда">HP</param>
 <param name="Оригинальность">Оригинал</param>
 </offer>
@@ -5941,6 +5989,26 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Для бренда">Eaton</param>
 </offer>
 
+<offer id="CP13820086" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13820086</vendorCode>
+<name>Печатающая головка HP 6ZA17AE (6ZA17AE) (оригинал)</name>
+<price>7486</price>
+<picture>https://www.comportal.kz/upload/iblock/049/46ymk6d69jzywa99mg7uh5j2rdr1bc6b.JPG</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Оригинальный картридж HP Печатающая головка HP 6ZA17AE код — 6ZA17AE; цвет — Чёрный; ресурс — 30 000; технология печати — Струйная.]]></description>
+<param name="Тип">Картридж</param>
+<param name="Модель">Печатающая головка HP 6ZA17AE</param>
+<param name="Цвет">Чёрный</param>
+<param name="Технология печати">Струйная</param>
+<param name="Ресурс">30 000</param>
+<param name="Коды">6ZA17AE</param>
+<param name="Для бренда">HP</param>
+<param name="Оригинальность">Оригинал</param>
+</offer>
+
 <offer id="CP13866022" available="true">
 <categoryId></categoryId>
 <vendorCode>CP13866022</vendorCode>
@@ -6012,6 +6080,26 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Диапазон входного напряжения">230</param>
 <param name="Коды">5PX3000IRT2UG2</param>
 <param name="Для бренда">Eaton</param>
+</offer>
+
+<offer id="CP13823478" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13823478</vendorCode>
+<name>Печатающая головка HP 6ZA11AE (6ZA11AE) (оригинал)</name>
+<price>7490</price>
+<picture>https://www.comportal.kz/upload/iblock/7b7/iwspxfmle9nsyhn6fliv2ltl5qjupg79.JPG</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Оригинальный картридж HP Печатающая головка HP 6ZA11AE код — 6ZA11AE; цвет — Чёрный; ресурс — 30 000; технология печати — Струйная.]]></description>
+<param name="Тип">Картридж</param>
+<param name="Модель">Печатающая головка HP 6ZA11AE</param>
+<param name="Цвет">Чёрный</param>
+<param name="Технология печати">Струйная</param>
+<param name="Ресурс">30 000</param>
+<param name="Коды">6ZA11AE</param>
+<param name="Для бренда">HP</param>
+<param name="Оригинальность">Оригинал</param>
 </offer>
 
 <offer id="CP13871695" available="true">
@@ -7131,29 +7219,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Для бренда">Canon</param>
 </offer>
 
-<offer id="CP13847755" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13847755</vendorCode>
-<name>Плоттер Canon imagePROGRAF TM-340 (6248C003)</name>
-<price>454762</price>
-<picture>https://www.comportal.kz/upload/iblock/d5a/2tiqydjmyj3afs9mwd9f2pidxofz7o4k.JPG</picture>
-<vendor>Canon</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Широкоформатный принтер. Формат печати: A0. Разрешение: 2400x1200. Скорость печати ч/б: 41. Порты: USB LAN Wi-FI. Технология печати: Струйная. Гарантия: 12 мес.]]></description>
-<param name="Тип">Широкоформатный принтер</param>
-<param name="Модель">imagePROGRAF TM-340</param>
-<param name="Порты">USB LAN Wi-FI</param>
-<param name="Гарантия">12 мес</param>
-<param name="Технология печати">Струйная</param>
-<param name="Разрешение">2400x1200</param>
-<param name="Формат печати">A0</param>
-<param name="Скорость печати ч/б">41</param>
-<param name="Функции">принтер</param>
-<param name="Коды">6248C003</param>
-<param name="Для бренда">Canon</param>
-</offer>
-
 <offer id="CP13847756" available="true">
 <categoryId></categoryId>
 <vendorCode>CP13847756</vendorCode>
@@ -8136,6 +8201,34 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Для бренда">Dell</param>
 </offer>
 
+<offer id="CP13863651" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13863651</vendorCode>
+<name>Монитор Dell AW2725DF (210-BLHH)</name>
+<price>367696</price>
+<picture>https://www.comportal.kz/upload/iblock/a09/zgdbjh1g0e2lv1t7aocdfsi6fvde0ed6.JPG</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Монитор. Диагональ: 27. Максимальное разрешение: 2560x1440. Тип матрицы: OLED. Частота обновления: 360. Время отклика: 1. Порты: 2 x DP 1.4 /1 x HDMI 2.1/1 x USB 3.2 Gen 1 (5 Gbps) Type-B/2 x USB 3.2 Gen 1 (5 Gbps) Type-A/1 x USB 3.2 Gen 1 (5 Gbps) Type-C/1 x USB 3.2 Gen 1 (5 Gbps) Type-A. Гарантия: 36 мес.]]></description>
+<param name="Тип">Монитор</param>
+<param name="Модель">AW2725DF</param>
+<param name="Порты">2 x DP 1.4 /1 x HDMI 2.1/1 x USB 3.2 Gen 1 (5 Gbps) Type-B/2 x USB 3.2 Gen 1 (5 Gbps) Type-A/1 x USB 3.2 Gen 1 (5 Gbps) Type-C/1 x USB 3.2 Gen 1 (5 Gbps) Type-A</param>
+<param name="Тип матрицы">OLED</param>
+<param name="Цвет">Чёрный</param>
+<param name="Гарантия">36 мес</param>
+<param name="Контрастность">1500:1</param>
+<param name="Яркость">1 000</param>
+<param name="Время отклика">1</param>
+<param name="Максимальное разрешение">2560x1440</param>
+<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
+<param name="Размер Pix">111</param>
+<param name="Диагональ">27</param>
+<param name="Частота обновления">360</param>
+<param name="Коды">210-BLHH</param>
+<param name="Для бренда">Dell</param>
+</offer>
+
 <offer id="CP13863652" available="true">
 <categoryId></categoryId>
 <vendorCode>CP13863652</vendorCode>
@@ -8196,6 +8289,33 @@ URL поставщика                             | https://www.comportal.kz/
 <name>Монитор Dell Pro 24 Plus P2425H (210-BMFF)</name>
 <price>87508</price>
 <picture>https://www.comportal.kz/upload/iblock/7c1/on0ej1inzuczbdngnshv9854xzm137j5.JPG</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Монитор. Диагональ: 23.8. Максимальное разрешение: 1920x1080. Тип матрицы: IPS. Частота обновления: 100. Время отклика: 5. Порты: 1x HDMI 1.4/1x DP 1.2/1x VGA/1x USB 3.2 Gen1 Type-B/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C. Гарантия: 36 мес.]]></description>
+<param name="Тип">Монитор</param>
+<param name="Модель">P2425H</param>
+<param name="Порты">1x HDMI 1.4/1x DP 1.2/1x VGA/1x USB 3.2 Gen1 Type-B/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C</param>
+<param name="Тип матрицы">IPS</param>
+<param name="Гарантия">36 мес</param>
+<param name="Контрастность">1500:1</param>
+<param name="Яркость">250</param>
+<param name="Время отклика">5</param>
+<param name="Максимальное разрешение">1920x1080</param>
+<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
+<param name="Размер Pix">92</param>
+<param name="Диагональ">23.8</param>
+<param name="Частота обновления">100</param>
+<param name="Коды">210-BMFF</param>
+<param name="Для бренда">Dell</param>
+</offer>
+
+<offer id="CP13863654" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13863654</vendorCode>
+<name>Монитор Dell Pro 24 Plus P2425H (210-BMFF)</name>
+<price>87504</price>
+<picture>https://www.comportal.kz/upload/iblock/5a8/uhdqh25r1xmk26h8h48wqzdiyuxajhns.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -8350,6 +8470,33 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Диагональ">27</param>
 <param name="Частота обновления">100</param>
 <param name="Коды">210-BMGC</param>
+<param name="Для бренда">Dell</param>
+</offer>
+
+<offer id="CP13863663" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13863663</vendorCode>
+<name>Монитор Dell P2725HE USB-C (210-BMJC)</name>
+<price>123252</price>
+<picture>https://www.comportal.kz/upload/iblock/80f/3r5b70wt0bchat3e76o7izlj4qkd2a37.JPG</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Монитор. Модельная серия: P2725HE USB-C. Диагональ: 27. Максимальное разрешение: 1920x1080. Тип матрицы: IPS. Частота обновления: 100. Время отклика: 8. Порты: 1x HDMI 1.4/1x DP 1.4/1x DP-out/1x RJ45/1x USB 3.2 Gen1 Type-C/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C. Гарантия: 36 мес.]]></description>
+<param name="Тип">Монитор</param>
+<param name="Модель">P2725HE USB-C</param>
+<param name="Порты">1x HDMI 1.4/1x DP 1.4/1x DP-out/1x RJ45/1x USB 3.2 Gen1 Type-C/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C</param>
+<param name="Тип матрицы">IPS</param>
+<param name="Гарантия">36 мес</param>
+<param name="Контрастность">1500:1</param>
+<param name="Яркость">300</param>
+<param name="Время отклика">8</param>
+<param name="Максимальное разрешение">1920x1080</param>
+<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
+<param name="Размер Pix">81</param>
+<param name="Диагональ">27</param>
+<param name="Частота обновления">100</param>
+<param name="Коды">210-BMJC</param>
 <param name="Для бренда">Dell</param>
 </offer>
 
@@ -8714,40 +8861,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">Чернила Canon INK GI-40 Y</param>
 <param name="Для бренда">Canon</param>
 <param name="Оригинальность">Оригинал</param>
-</offer>
-
-<offer id="CP13870307" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13870307</vendorCode>
-<name>Барабан HP 877 Black Drum (W9077MC)</name>
-<price>139508</price>
-<picture>https://www.comportal.kz/upload/iblock/d53/8bxf0k9q11wc33on971waz1ddz3i7ji0.jpg</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-расходный материал HP 877 Black Drum код — W9077MC.]]></description>
-<param name="Тип">Расходный материал</param>
-<param name="Модель">877 Black Drum</param>
-<param name="Дополнительная информация">W9077MC</param>
-<param name="Коды">W9077MC</param>
-<param name="Для бренда">HP</param>
-</offer>
-
-<offer id="CP13870308" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13870308</vendorCode>
-<name>Барабан HP 877 Color Drum (W9078MC)</name>
-<price>91329</price>
-<picture>https://www.comportal.kz/upload/iblock/39e/0tkyykfcblyt370mbc96qnu95fa6z8p5.jpg</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-расходный материал HP 877 Color Drum код — W9078MC.]]></description>
-<param name="Тип">Расходный материал</param>
-<param name="Модель">877 Color Drum</param>
-<param name="Дополнительная информация">W9078MC</param>
-<param name="Коды">W9078MC</param>
-<param name="Для бренда">HP</param>
 </offer>
 
 <offer id="CP13869655" available="true">
@@ -11887,6 +12000,46 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Для бренда">APC</param>
 </offer>
 
+<offer id="CP13871259" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13871259</vendorCode>
+<name>Картридж HP 938e EvoMore Black Original Ink Cartridge (4S6Y2PE) (оригинал)</name>
+<price>34699</price>
+<picture>https://www.comportal.kz/upload/iblock/bd0/70uqcp1zbb7rfyvwnujp92sv9yj2yqe4.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Оригинальный картридж HP 938e EvoMore Black Original Ink Cartridge код — 4S6Y2PE; цвет — Чёрный; ресурс — 2 500; технология печати — Лазерная.]]></description>
+<param name="Тип">Картридж</param>
+<param name="Модель">938e EvoMore Black Original Ink Cartridge</param>
+<param name="Цвет">Чёрный</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Ресурс">2 500</param>
+<param name="Коды">4S6Y2PE</param>
+<param name="Для бренда">HP</param>
+<param name="Оригинальность">Оригинал</param>
+</offer>
+
+<offer id="CP13871260" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13871260</vendorCode>
+<name>Картридж HP 938e EvoMore Magenta Original Ink Cartridge (4S6Y0PE) (оригинал)</name>
+<price>23026</price>
+<picture>https://www.comportal.kz/upload/iblock/c9b/64gjm69zcvzksp39msiycv85ihrlstsl.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Оригинальный картридж HP 938e EvoMore Magenta Original Ink Cartridge код — 4S6Y0PE; цвет — Пурпурный; ресурс — 1 650; технология печати — Лазерная.]]></description>
+<param name="Тип">Картридж</param>
+<param name="Модель">938e EvoMore Magenta Original Ink Cartridge</param>
+<param name="Цвет">Пурпурный</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Ресурс">1 650</param>
+<param name="Коды">4S6Y0PE</param>
+<param name="Для бренда">HP</param>
+<param name="Оригинальность">Оригинал</param>
+</offer>
+
 <offer id="CP13871261" available="true">
 <categoryId></categoryId>
 <vendorCode>CP13871261</vendorCode>
@@ -11903,6 +12056,26 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Технология печати">Лазерная</param>
 <param name="Ресурс">1 650</param>
 <param name="Коды">4S6X9PE</param>
+<param name="Для бренда">HP</param>
+<param name="Оригинальность">Оригинал</param>
+</offer>
+
+<offer id="CP13871262" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13871262</vendorCode>
+<name>Картридж HP 938e EvoMore Yellow Original Ink Cartridge (4S6Y1PE) (оригинал)</name>
+<price>23026</price>
+<picture>https://www.comportal.kz/upload/iblock/814/kcsc60o0ny45bsr5l25730cnyrsffgjy.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Оригинальный картридж HP 938e EvoMore Yellow Original Ink Cartridge код — 4S6Y1PE; цвет — Жёлтый; ресурс — 1 650; технология печати — Лазерная.]]></description>
+<param name="Тип">Картридж</param>
+<param name="Модель">938e EvoMore Yellow Original Ink Cartridge</param>
+<param name="Цвет">Жёлтый</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Ресурс">1 650</param>
+<param name="Коды">4S6Y1PE</param>
 <param name="Для бренда">HP</param>
 <param name="Оригинальность">Оригинал</param>
 </offer>
@@ -12193,6 +12366,52 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Коды">5648C002</param>
 <param name="Для бренда">Canon</param>
 <param name="Оригинальность">Оригинал</param>
+</offer>
+
+<offer id="CP13872087" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13872087</vendorCode>
+<name>Ноутбук HP ProBook 4 G1iR (C5BX2AT#BJA)</name>
+<price>573224</price>
+<picture>https://www.comportal.kz/upload/iblock/54e/8petlrqznoj4kh5eaqwcy8ysyt83a3q4.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Ноутбук. Модельная серия: ProBook 4 G1iR. Процессор: Intel 120U Core Ultra 5 1,4. Оперативная память: 16 Gb / DDR5 / 5600. Накопитель: 512 / PCIe NVMe SSD / 1 шт. Диагональ: 16. Разрешение: 1920x1200. ОС: Microsoft Windows 11 Pro 64. Видеокарта: Intel 256 Mb. Wi‑Fi: AX211. Bluetooth: Bluetooth 5.3. Камера: 5.0 mpix. Гарантия: 12 мес.]]></description>
+<param name="Тип">Ноутбук</param>
+<param name="Модель">ProBook 4 G1iR</param>
+<param name="Объем жесткого диска">512</param>
+<param name="Тип жесткого диска">PCIe NVMe SSD</param>
+<param name="Производитель процессора">Intel</param>
+<param name="Модель процессора">Core Ultra 5</param>
+<param name="Серия процессора">120U</param>
+<param name="Частота процессора">1,4</param>
+<param name="Оперативная память">16 Gb</param>
+<param name="Частота оперативной памяти">5600</param>
+<param name="Количество слотов памяти">2</param>
+<param name="Занятые слоты памяти">1</param>
+<param name="Объем видеопамяти">256 Mb</param>
+<param name="Тип оперативной памяти">DDR5</param>
+<param name="Тип привода">No ODD</param>
+<param name="Количество дисков">1</param>
+<param name="Размер дисплея">16</param>
+<param name="Тип матрицы">FHD</param>
+<param name="Производитель чипсета видеокарты">Intel</param>
+<param name="Марка чипсета видеокарты">Graphics</param>
+<param name="Производитель операционной системы">Microsoft</param>
+<param name="Операционная система">Windows 11</param>
+<param name="Версия операционной системы">Pro</param>
+<param name="Битность операционной системы">64</param>
+<param name="Цвет">Серый</param>
+<param name="Bluetooth">Bluetooth 5.3</param>
+<param name="Wi-Fi">AX211</param>
+<param name="Адаптер">45W USB Type-C Adapter</param>
+<param name="Аккумулятор">3 Cell 56WHr</param>
+<param name="Гарантия">12 мес</param>
+<param name="Камера">5.0 mpix</param>
+<param name="Разрешение дисплея">1920x1200</param>
+<param name="Коды">C5BX2AT#BJA</param>
+<param name="Для бренда">HP</param>
 </offer>
 
 <offer id="CP13872107" available="true">
@@ -13072,51 +13291,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Для бренда">HP</param>
 </offer>
 
-<offer id="CP13872116" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13872116</vendorCode>
-<name>Ноутбук HP EliteBook 8 G1i (AD4H8ET#BJA)</name>
-<price>673356</price>
-<picture>https://www.comportal.kz/upload/iblock/0cd/gg40l0lyh9agd69bc4kbqf59j25e3ygj.jpg</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Ноутбук. Модельная серия: EliteBook 8 G1i. Процессор: Intel 255H Core Ultra 7 2. Оперативная память: 32 Gb / DDR5 / 5600. Накопитель: 1000 / PCIe NVMe SSD / 1 шт. Диагональ: 16. Разрешение: 1920x1200. ОС: Microsoft Windows 11 Pro 64. Видеокарта: Intel Arc 140V 256 Mb. Wi‑Fi: AX211. Bluetooth: Bluetooth 5.3. Камера: 5.0 mpix. Гарантия: 36 мес.]]></description>
-<param name="Тип">Ноутбук</param>
-<param name="Модель">EliteBook 8 G1i</param>
-<param name="Объем жесткого диска">1000</param>
-<param name="Тип жесткого диска">PCIe NVMe SSD</param>
-<param name="Производитель процессора">Intel</param>
-<param name="Модель процессора">Core Ultra 7</param>
-<param name="Серия процессора">255H</param>
-<param name="Частота процессора">2</param>
-<param name="Оперативная память">32 Gb</param>
-<param name="Частота оперативной памяти">5600</param>
-<param name="Объем видеопамяти">256 Mb</param>
-<param name="Тип оперативной памяти">DDR5</param>
-<param name="Тип привода">No ODD</param>
-<param name="Количество дисков">1</param>
-<param name="Размер дисплея">16</param>
-<param name="Тип матрицы">IPS</param>
-<param name="Производитель чипсета видеокарты">Intel</param>
-<param name="Марка чипсета видеокарты">Graphics</param>
-<param name="Модель чипсета видеокарты">Arc 140V</param>
-<param name="Производитель операционной системы">Microsoft</param>
-<param name="Операционная система">Windows 11</param>
-<param name="Версия операционной системы">Pro</param>
-<param name="Битность операционной системы">64</param>
-<param name="Цвет">Серый</param>
-<param name="Bluetooth">Bluetooth 5.3</param>
-<param name="Wi-Fi">AX211</param>
-<param name="Адаптер">65W Type-C Adapter</param>
-<param name="Аккумулятор">3 Cell 62WHr</param>
-<param name="Гарантия">36 мес</param>
-<param name="Камера">5.0 mpix</param>
-<param name="Разрешение дисплея">1920x1200</param>
-<param name="Коды">AD4H8ET#BJA</param>
-<param name="Для бренда">HP</param>
-</offer>
-
 <offer id="CP13872375" available="true">
 <categoryId></categoryId>
 <vendorCode>CP13872375</vendorCode>
@@ -13482,51 +13656,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12 мес</param>
 <param name="Коды">90NR0NG1-M00680</param>
 <param name="Модель">TUF Gaming F16 / FX608JPR-QT092</param>
-<param name="Для бренда">ASUS</param>
-</offer>
-
-<offer id="CP13872384" available="true">
-<categoryId></categoryId>
-<vendorCode>CP13872384</vendorCode>
-<name>Ноутбук ASUS ExpertBook / P1403CVA-S61785 (90NX0871-M022T0)</name>
-<price>272217</price>
-<picture>https://www.comportal.kz/upload/iblock/9bc/kyoz2nwc5cfyh6bwmrcss0tlnp4zdv4c.JPG</picture>
-<vendor>ASUS</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-Ноутбук. Процессор: Intel 210H Core 5 2,2. Оперативная память: 16 Gb / DDR5 / 5200. Накопитель: 512 / PCIe NVMe SSD / 1 шт. Диагональ: 14. Разрешение: 1920x1080. ОС: Без операционной системы. Видеокарта: Intel 256 Mb. Wi‑Fi: 802.11ax. Bluetooth: Bluetooth 5.4. Камера: HD Camera. Гарантия: 12 мес.]]></description>
-<param name="Тип">Ноутбук</param>
-<param name="Модель">P1403CVA</param>
-<param name="Объем жесткого диска">512</param>
-<param name="Тип жесткого диска">PCIe NVMe SSD</param>
-<param name="Производитель процессора">Intel</param>
-<param name="Модель процессора">Core 5</param>
-<param name="Серия процессора">210H</param>
-<param name="Частота процессора">2,2</param>
-<param name="Количество портов USB">2</param>
-<param name="Оперативная память">16 Gb</param>
-<param name="Частота оперативной памяти">5200</param>
-<param name="Количество слотов памяти">2</param>
-<param name="Занятые слоты памяти">1</param>
-<param name="Объем видеопамяти">256 Mb</param>
-<param name="Тип оперативной памяти">DDR5</param>
-<param name="Порты">2x USB 3.2 Gen 1 Type-A / 2x USB 3.2 Gen 2 Type-C support display power delivery / 1x HDMI 1.4 / 1x 3.5mm Combo Audio Jack / 1x RJ45 Gigabit Ethernet</param>
-<param name="Тип привода">No ODD</param>
-<param name="Количество дисков">1</param>
-<param name="Размер дисплея">14</param>
-<param name="Тип матрицы">IPS</param>
-<param name="Производитель чипсета видеокарты">Intel</param>
-<param name="Марка чипсета видеокарты">Graphics</param>
-<param name="Операционная система">Без операционной системы</param>
-<param name="Цвет">Серый</param>
-<param name="Bluetooth">Bluetooth 5.4</param>
-<param name="Wi-Fi">802.11ax</param>
-<param name="Адаптер">65W AC Adapter</param>
-<param name="Аккумулятор">3 Cell 50WHr</param>
-<param name="Гарантия">12 мес</param>
-<param name="Камера">HD Camera</param>
-<param name="Разрешение дисплея">1920x1080</param>
-<param name="Коды">90NX0871-M022T0</param>
 <param name="Для бренда">ASUS</param>
 </offer>
 
@@ -14376,7 +14505,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId></categoryId>
 <vendorCode>CP13873168</vendorCode>
 <name>Ноутбук Dell Pro 14 PC14250 (210-BQHF / BTO108_PC14250_EMEA)</name>
-<price>951327</price>
+<price>958672</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -14522,6 +14651,23 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Гарантия">12 мес</param>
 <param name="Коды">B6XD2ET#BJA</param>
 <param name="Модель">ProDesk 2 Tower G1i</param>
+<param name="Для бренда">HP</param>
+</offer>
+
+<offer id="CP13873424" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13873424</vendorCode>
+<name>Ноутбук HP ProBook 4 G1iR 14 (CZ9B2AT#BJA)</name>
+<price>586412</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Ноутбук. Модельная серия: ProBook 4 G1iR 14. Гарантия: 36 мес. Для бренда: HP. Модель: ProBook 4 G1iR 14. Коды: CZ9B2AT#BJA.]]></description>
+<param name="Тип">Ноутбук</param>
+<param name="Гарантия">36 мес</param>
+<param name="Коды">CZ9B2AT#BJA</param>
+<param name="Модель">ProBook 4 G1iR 14</param>
 <param name="Для бренда">HP</param>
 </offer>
 
@@ -14710,6 +14856,23 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">Тонер-картридж HP W9087MC</param>
 <param name="Для бренда">HP</param>
 <param name="Оригинальность">Оригинал</param>
+</offer>
+
+<offer id="CP13873405" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13873405</vendorCode>
+<name>Монитор Dell Pro P 27 Monitor - P2726H (210-BVKP)</name>
+<price>95441</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Монитор. Диагональ: 27. Гарантия: 36 мес. Для бренда: Dell. Модель: P2726H. Коды: 210-BVKP.]]></description>
+<param name="Тип">Монитор</param>
+<param name="Гарантия">36 мес</param>
+<param name="Коды">210-BVKP</param>
+<param name="Модель">P2726H</param>
+<param name="Для бренда">Dell</param>
 </offer>
 
 <offer id="CP13873373" available="true">
