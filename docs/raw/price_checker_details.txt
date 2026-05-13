@@ -1,18 +1,18 @@
 ПОДРОБНЫЙ ОТЧЁТ PRICE CHECKER
-Сформирован: 12 мая 2026 г. 09:12:21
-Время сборки Price: 12 мая 2026 г. 06:16:02
+Сформирован: 13 мая 2026 г. 09:27:30
+Время сборки Price: 13 мая 2026 г. 06:23:37
 Итоговый статус: ТРЕБУЕТ ВНИМАНИЯ
 Причина: Есть новые товары, которые не вошли в final из-за отсутствия categoryId.
 
 ======================================================================
 СВОДКА
 ======================================================================
-Всего товаров в Price: 7103
-В наличии: 6582
-Нет в наличии: 521
+Всего товаров в Price: 7097
+В наличии: 6552
+Нет в наличии: 545
 
 Товары без цены: 252
-С заглушкой фото: 547
+С заглушкой фото: 549
 Без categoryId в Price: 0
 С невалидным categoryId в Price: 0
 Без категории Satu: 0
@@ -26,9 +26,9 @@
 ======================================================================
 СВОДКА ПО ПОСТАВЩИКАМ
 ======================================================================
-AkCent | всего=153 | в наличии=153 | нет в наличии=0 | без цены=0 | заглушка фото=1 | не вошло в final без categoryId=0 | без категории Satu=0
-AlStyle | всего=2001 | в наличии=1480 | нет в наличии=521 | без цены=4 | заглушка фото=5 | не вошло в final без categoryId=2 | без категории Satu=0
-ComPortal | всего=621 | в наличии=621 | нет в наличии=0 | без цены=0 | заглушка фото=126 | не вошло в final без categoryId=1 | без категории Satu=0
+AkCent | всего=146 | в наличии=146 | нет в наличии=0 | без цены=0 | заглушка фото=1 | не вошло в final без categoryId=0 | без категории Satu=0
+AlStyle | всего=2002 | в наличии=1457 | нет в наличии=545 | без цены=4 | заглушка фото=5 | не вошло в final без categoryId=2 | без категории Satu=0
+ComPortal | всего=621 | в наличии=621 | нет в наличии=0 | без цены=0 | заглушка фото=128 | не вошло в final без categoryId=1 | без категории Satu=0
 CopyLine | всего=1224 | в наличии=1224 | нет в наличии=0 | без цены=26 | заглушка фото=0 | не вошло в final без categoryId=0 | без категории Satu=0
 VTT | всего=3104 | в наличии=3104 | нет в наличии=0 | без цены=222 | заглушка фото=415 | не вошло в final без categoryId=0 | без категории Satu=0
 
@@ -303,7 +303,7 @@ VTT | ready_to_ship_no_price | id=VTZ7Y73A | vendorCode=VTZ7Y73A | categoryId=20
 ======================================================================
 ТОВАРЫ С ЗАГЛУШКОЙ ФОТО
 ======================================================================
-AkCent | placeholder_photo | id=ACC11CJ62404 | vendorCode=ACC11CJ62404 | categoryId=301 | price=307900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=МФУ Epson L6260 фабрика печати, Wi-Fi
+AkCent | placeholder_photo | id=ACC11CJ62404 | vendorCode=ACC11CJ62404 | categoryId=301 | price=310900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=МФУ Epson L6260 фабрика печати, Wi-Fi
 AlStyle | placeholder_photo | id=AS406006 | vendorCode=AS406006 | categoryId=602 | price=3932900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Источник бесперебойного питания CyberPower HSTP3T30KE
 AlStyle | placeholder_photo | id=AS420184 | vendorCode=AS420184 | categoryId=101 | price=59900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж стандартной емкости Lexmark 77L91C0 (голубой) (оригинал)
 AlStyle | placeholder_photo | id=AS420185 | vendorCode=AS420185 | categoryId=101 | price=36900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж стандартной емкости Lexmark 77L91K0 (чёрный) (оригинал)
@@ -315,6 +315,7 @@ ComPortal | placeholder_photo | id=CP10420608 | vendorCode=CP10420608 | category
 ComPortal | placeholder_photo | id=CP13873335 | vendorCode=CP13873335 | categoryId=701 | price=1232900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC SRT3000XLI (SRT3000XLI)
 ComPortal | placeholder_photo | id=CP13850386 | vendorCode=CP13850386 | categoryId=101 | price=67900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Печатающая головка HP P2V25A (P2V25A) (оригинал)
 ComPortal | placeholder_photo | id=CP13837247 | vendorCode=CP13837247 | categoryId=101 | price=91900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж HP P2V79A (P2V79A) (оригинал)
+ComPortal | placeholder_photo | id=CP13873261 | vendorCode=CP13873261 | categoryId=301 | price=241900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=МФУ Canon i-SENSYS MF237W (1418С030)
 ComPortal | placeholder_photo | id=CP10782666 | vendorCode=CP10782666 | categoryId=101 | price=42900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж HP 207A (W2210A) (оригинал)
 ComPortal | placeholder_photo | id=CP10782667 | vendorCode=CP10782667 | categoryId=101 | price=48900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж HP 207A (W2211A) (оригинал)
 ComPortal | placeholder_photo | id=CP10782668 | vendorCode=CP10782668 | categoryId=101 | price=48900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж HP 207A (W2212A) (оригинал)
@@ -372,6 +373,7 @@ ComPortal | placeholder_photo | id=CP13873053 | vendorCode=CP13873053 | category
 ComPortal | placeholder_photo | id=CP13872628 | vendorCode=CP13872628 | categoryId=602 | price=101900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Plus Monitor – S2725HSM (210-BSZF)
 ComPortal | placeholder_photo | id=CP13872686 | vendorCode=CP13872686 | categoryId=602 | price=134900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Plus QHD Monitor - S2725DSM (210-BSVN)
 ComPortal | placeholder_photo | id=CP13873054 | vendorCode=CP13873054 | categoryId=602 | price=177900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Plus QHD USB-C Monitor - S2725DC (210-BSRL)
+ComPortal | placeholder_photo | id=CP13872662 | vendorCode=CP13872662 | categoryId=601 | price=906900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук ASUS TUF Gaming F16 / FX608JPR-QT092 (90NR0NG1-M00680)
 ComPortal | placeholder_photo | id=CP13872591 | vendorCode=CP13872591 | categoryId=601 | price=511900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук ASUS ExpertBook / P1503CVA-S72536X (90NX0881-M02Y90)
 ComPortal | placeholder_photo | id=CP13872617 | vendorCode=CP13872617 | categoryId=601 | price=589900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук HP EliteBook 8 G1a (AZ3N2AV / 74051488)
 ComPortal | placeholder_photo | id=CP13872623 | vendorCode=CP13872623 | categoryId=601 | price=1255900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_101)
@@ -601,9 +603,7 @@ VTT | placeholder_photo | id=VT4100649 | vendorCode=VT4100649 | categoryId=101 |
 VTT | placeholder_photo | id=VT41006510 | vendorCode=VT41006510 | categoryId=101 | price=8900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=WT-860/1902LC0UN0 Бункер отработанного тонера Kyocera TASKalfa 3050ci/3550ci/4550ci (оригинал)
 VTT | placeholder_photo | id=VT410067 | vendorCode=VT410067 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221, 410067 (оригинал)
 VTT | placeholder_photo | id=VT4100695 | vendorCode=VT4100695 | categoryId=101 | price=8900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302M293031/302M293030 Бункер отработанного тонера WT-1110 Kyocera FS1020/1025/1120 (оригинал)
-VTT | placeholder_photo | id=VT416890 | vendorCode=VT416890 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=416890/D2426400 Бокс сбора тонера Ricoh MP C2003/C2004/C2503/C2504/C303/C3004/C3503/C3504/C4503 (оригинал)
-VTT | placeholder_photo | id=VT4629756P | vendorCode=VT4629756P | categoryId=101 | price=20900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Hi-Black (HB-CE343A) для HP CLJ Enterprise MFP M775dn/775f/775z, №651A, M, 16K, ПУ (совместимый)
-... показаны первые 300 строк, всего записей: 547
+... показаны первые 300 строк, всего записей: 549
 
 ======================================================================
 ДУБЛИ OFFER ID
@@ -625,7 +625,7 @@ VTT | placeholder_photo | id=VT4629756P | vendorCode=VT4629756P | categoryId=101
 
 Заглушка фото:
 - VTT: 415
-- ComPortal: 126
+- ComPortal: 128
 - AlStyle: 5
 - AkCent: 1
 
