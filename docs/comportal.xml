@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-12 02:00:32">
+<yml_catalog date="2026-05-13 01:59:25">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-05-12 02:00:32
-Ближайшая сборка (Алматы)                  | 2026-05-13 00:30:00
+Время сборки (Алматы)                      | 2026-05-13 01:59:25
+Ближайшая сборка (Алматы)                  | 2026-05-14 00:30:00
 Сколько товаров у поставщика до фильтра    | 1163
 Сколько товаров у поставщика после фильтра | 621
 Сколько товаров есть в наличии (true)      | 621
@@ -795,58 +795,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип">Картридж</param>
 <param name="Цвет">Жёлтый</param>
 <keywords>HP, Картридж HP CZ132A (CZ132A) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP10304361" available="true">
-<categoryId>102</categoryId>
-<vendorCode>CP10304361</vendorCode>
-<name>Картридж HP CZ133A (CZ133A) (оригинал)</name>
-<price>41900</price>
-<picture>https://www.comportal.kz/upload/iblock/fa1/gifkt3d21jl87fo5du8obzy5xjosmg52.jpg</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP CZ133A (CZ133A) (оригинал)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP CZ133A коды — CZ133A / №711; цвет — Чёрный; объём — 80; технология печати — Струйная.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> CZ133A</li><li><strong>Модель:</strong> CZ133A</li><li><strong>Номер:</strong> №711</li><li><strong>Объём:</strong> 80</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Для бренда">HP</param>
-<param name="Коды">CZ133A</param>
-<param name="Модель">CZ133A</param>
-<param name="Номер">№711</param>
-<param name="Объём">80</param>
-<param name="Оригинальность">Оригинал</param>
-<param name="Технология печати">Струйная</param>
-<param name="Тип">Картридж</param>
-<param name="Цвет">Чёрный</param>
-<keywords>HP, Картридж HP CZ133A (CZ133A) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13811894" available="true">
@@ -5787,58 +5735,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Canon, Тонер-картридж Canon C-EXV 59 (3760C002) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP11231732" available="true">
-<categoryId>102</categoryId>
-<vendorCode>CP11231732</vendorCode>
-<name>Картридж Canon PFI-320 (2891C001) (оригинал)</name>
-<price>97900</price>
-<picture>https://www.comportal.kz/upload/iblock/b94/tfs8cfaeo1vmdti1xdolge8qa0uocl81.jpg</picture>
-<vendor>Canon</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж Canon PFI-320 (2891C001) (оригинал)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж Canon PFI-320 коды — 2891C001 / №320; цвет — Голубой; объём — 300; технология печати — Струйная.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> Canon</li><li><strong>Коды:</strong> 2891C001</li><li><strong>Модель:</strong> PFI-320</li><li><strong>Номер:</strong> №320</li><li><strong>Объём:</strong> 300</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Голубой</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Для бренда">Canon</param>
-<param name="Коды">2891C001</param>
-<param name="Модель">PFI-320</param>
-<param name="Номер">№320</param>
-<param name="Объём">300</param>
-<param name="Оригинальность">Оригинал</param>
-<param name="Технология печати">Струйная</param>
-<param name="Тип">Картридж</param>
-<param name="Цвет">Голубой</param>
-<keywords>Canon, Картридж Canon PFI-320 (2891C001) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP10742851" available="true">
 <categoryId>102</categoryId>
 <vendorCode>CP10742851</vendorCode>
@@ -7378,6 +7274,54 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип">Картридж</param>
 <param name="Цвет">Чёрный</param>
 <keywords>HP, Картридж HP 147X (W1470X) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13873261" available="true">
+<categoryId>301</categoryId>
+<vendorCode>CP13873261</vendorCode>
+<name>МФУ Canon i-SENSYS MF237W (1418С030)</name>
+<price>241900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">МФУ Canon i-SENSYS MF237W (1418С030)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">МФУ. Гарантия: 12 мес. Для бренда: Canon. Модель: i-SENSYS MF237W. Коды: 1418С030.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> Canon</li><li><strong>Коды:</strong> 1418С030</li><li><strong>Модель:</strong> i-SENSYS MF237W</li><li><strong>Тип:</strong> МФУ</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Гарантия">12 мес</param>
+<param name="Для бренда">Canon</param>
+<param name="Коды">1418С030</param>
+<param name="Модель">i-SENSYS MF237W</param>
+<param name="Тип">МФУ</param>
+<keywords>Canon, МФУ Canon i-SENSYS MF237W (1418С030), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP10814517" available="true">
@@ -8980,54 +8924,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Функция">Принтер-Сканер(АПД-40с.)-Копир</param>
 <keywords>HP, МФУ HP M236sdw (9YG09A#B19), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13842679" available="true">
-<categoryId>101</categoryId>
-<vendorCode>CP13842679</vendorCode>
-<name>Печатающая головка HP 729 DesignJet Printhead Replacement Kit (F9J81A) (оригинал)</name>
-<price>264900</price>
-<picture>https://www.comportal.kz/upload/iblock/b8e/b8e51a269d79b68f51de87e15ee80823.JPG</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Печатающая головка HP 729 DesignJet Printhead Replacement Kit (F9J81A) (оригинал)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP 729 DesignJet Printhead Replacement Kit код — F9J81A.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> F9J81A</li><li><strong>Модель:</strong> 729 DesignJet Printhead Replacement Kit</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Тип:</strong> Картридж</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Для бренда">HP</param>
-<param name="Коды">F9J81A</param>
-<param name="Модель">729 DesignJet Printhead Replacement Kit</param>
-<param name="Оригинальность">Оригинал</param>
-<param name="Тип">Картридж</param>
-<keywords>HP, Печатающая головка HP 729 DesignJet Printhead Replacement Kit (F9J81A) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13844328" available="true">
@@ -11320,6 +11216,86 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Ресурс">56 000</param>
 <param name="Тип">Тонер</param>
 <keywords>Canon, Тонер-картридж Canon T01 (8066B001) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13867051" available="true">
+<categoryId>601</categoryId>
+<vendorCode>CP13867051</vendorCode>
+<name>Ноутбук Dell Latitude 7330 (210-BDRU-3)</name>
+<price>655900</price>
+<picture>https://www.comportal.kz/upload/iblock/4b1/3ymvis5i4sz2sr2ricqwebjnsakgd706.JPG</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук Dell Latitude 7330 (210-BDRU-3)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: Latitude 7330. Процессор: Intel 1235U Core i5 1,3. Оперативная память: 8 Gb / DDR4 / 3200. Накопитель: 512 / M.2 PCIe SSD / 1 шт. Диагональ: 13,3. Разрешение: 1920x1080. ОС: Ubuntu 20.04. Видеокарта: Intel Iris Xe 256 Mb. Wi‑Fi: AX211. Bluetooth: Bluetooth. Камера: Webcam. Гарантия: 36 мес.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
+
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Оперативная память 8 Gb</li><li>Операционная система Ubuntu</li><li>Поддержка Wi-Fi AX211</li><li>Поддержка Bluetooth</li></ul>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Bluetooth:</strong> Bluetooth</li><li><strong>Wi-Fi:</strong> AX211</li><li><strong>Адаптер:</strong> 65W AC Adapter</li><li><strong>Аккумулятор:</strong> 4-cell 58W HR</li><li><strong>Версия операционной системы:</strong> 20.04</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Бренд:</strong> Dell</li><li><strong>Занятые слоты памяти:</strong> 1</li><li><strong>Камера:</strong> Webcam</li><li><strong>Коды:</strong> 210-BDRU-3</li><li><strong>Количество дисков:</strong> 1</li><li><strong>Количество слотов памяти:</strong> 2</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Bluetooth">Bluetooth</param>
+<param name="Wi-Fi">AX211</param>
+<param name="Адаптер">65W AC Adapter</param>
+<param name="Аккумулятор">4-cell 58W HR</param>
+<param name="Версия операционной системы">20.04</param>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">Dell</param>
+<param name="Занятые слоты памяти">1</param>
+<param name="Камера">Webcam</param>
+<param name="Коды">210-BDRU-3</param>
+<param name="Количество дисков">1</param>
+<param name="Количество слотов памяти">2</param>
+<param name="Марка чипсета видеокарты">Graphics</param>
+<param name="Модель">Latitude 7330</param>
+<param name="Модель процессора">Core i5</param>
+<param name="Модель чипсета видеокарты">Iris Xe</param>
+<param name="Объем видеопамяти">256 Mb</param>
+<param name="Объем жесткого диска">512</param>
+<param name="Оперативная память">8 Gb</param>
+<param name="Операционная система">Ubuntu</param>
+<param name="Производитель процессора">Intel</param>
+<param name="Производитель чипсета видеокарты">Intel</param>
+<param name="Размер дисплея">13,3</param>
+<param name="Разрешение дисплея">1920x1080</param>
+<param name="Серия процессора">1235U</param>
+<param name="Тип">Ноутбук</param>
+<param name="Тип жесткого диска">M.2 PCIe SSD</param>
+<param name="Тип матрицы">FHD</param>
+<param name="Тип оперативной памяти">DDR4</param>
+<param name="Тип привода">No ODD</param>
+<param name="Цвет">Чёрный</param>
+<param name="Частота оперативной памяти">3200</param>
+<param name="Частота процессора">1,3</param>
+<keywords>Dell, Ноутбук Dell Latitude 7330 (210-BDRU-3), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13867052" available="true">
@@ -30668,6 +30644,54 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Частота процессора">3</param>
 <param name="Языковая версия операционной системы">Многоязычная</param>
 <keywords>ASUS, Ноутбук ASUS ROG Flow Z13 / GZ302EA-RU045W (90NR0JY1-M002E0), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13872662" available="true">
+<categoryId>601</categoryId>
+<vendorCode>CP13872662</vendorCode>
+<name>Ноутбук ASUS TUF Gaming F16 / FX608JPR-QT092 (90NR0NG1-M00680)</name>
+<price>906900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>ASUS</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук ASUS TUF Gaming F16 / FX608JPR-QT092 (90NR0NG1-M00680)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Гарантия: 12 мес. Для бренда: ASUS. Модель: TUF Gaming F16 / FX608JPR-QT092. Коды: 90NR0NG1-M00680.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> ASUS</li><li><strong>Коды:</strong> 90NR0NG1-M00680</li><li><strong>Модель:</strong> TUF Gaming F16 / FX608JPR-QT092</li><li><strong>Тип:</strong> Ноутбук</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Гарантия">12 мес</param>
+<param name="Для бренда">ASUS</param>
+<param name="Коды">90NR0NG1-M00680</param>
+<param name="Модель">TUF Gaming F16 / FX608JPR-QT092</param>
+<param name="Тип">Ноутбук</param>
+<keywords>ASUS, Ноутбук ASUS TUF Gaming F16 / FX608JPR-QT092 (90NR0NG1-M00680), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13872384" available="true">
