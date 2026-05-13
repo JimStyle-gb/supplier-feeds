@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-13 01:15:03">
+<yml_catalog date="2026-05-14 01:17:34">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | AlStyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 2026-05-13 01:15:03
-Ближайшая сборка (Алматы)                  | 2026-05-13 23:30:00
-Сколько товаров у поставщика до фильтра    | 16966
+Время сборки (Алматы)                      | 2026-05-14 01:17:34
+Ближайшая сборка (Алматы)                  | 2026-05-14 23:30:00
+Сколько товаров у поставщика до фильтра    | 16954
 Сколько товаров у поставщика после фильтра | 2004
-Сколько товаров есть в наличии (true)      | 1456
-Сколько товаров нет в наличии (false)      | 548
+Сколько товаров есть в наличии (true)      | 1468
+Сколько товаров нет в наличии (false)      | 536
 -->
 
 <offer id="AS113695" available="true">
@@ -893,7 +893,7 @@ URL поставщика                             | https://al-style.kz/uploa
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-CF412A для HP Color LaserJet Pro 300 M351, M375, Pro 400 M451, M475; аналог моделей CF412A; цвет — Жёлтый; ресурс — 2300; тип печати — Лазерная.]]></description>
-<param name="Вес">0.71</param>
+<param name="Вес">0.725</param>
 <param name="Гарантия">24 мес</param>
 <param name="Для принтеров">HP Color LaserJet Pro 300 M351, M375, Pro 400 M451, M475</param>
 <param name="Кол-во страниц при 5% заполнении А4">2300</param>
@@ -2260,7 +2260,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS150306" available="false">
+<offer id="AS150306" available="true">
 <categoryId></categoryId>
 <vendorCode>AS150306</vendorCode>
 <name>Фьюзерный модуль Xerox 607K22320 / 126K39311 (оригинал)</name>
@@ -2381,7 +2381,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS152228" available="false">
+<offer id="AS152228" available="true">
 <categoryId></categoryId>
 <vendorCode>AS152228</vendorCode>
 <name>Тонер-картридж стандартный Xerox 106R03508 (чёрный) (оригинал)</name>
@@ -2780,7 +2780,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS164845" available="true">
+<offer id="AS164845" available="false">
 <categoryId></categoryId>
 <vendorCode>AS164845</vendorCode>
 <name>Принт-картридж Xerox 113R00670 (оригинал)</name>
@@ -3145,7 +3145,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.0411845</param>
 </offer>
 
-<offer id="AS16830" available="true">
+<offer id="AS16830" available="false">
 <categoryId></categoryId>
 <vendorCode>AS16830</vendorCode>
 <name>Кабель сетевой SHIP D165A-C Cat.6 UTP 30В PE</name>
@@ -4302,7 +4302,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-CF413A для HP Color LaserJet Pro 300 M351, M375, Pro 400 M451, M475; аналог моделей CF413A; цвет — Пурпурный; ресурс — 2300; тип печати — Лазерная.]]></description>
-<param name="Вес">0.71</param>
+<param name="Вес">0.725</param>
 <param name="Гарантия">24 мес</param>
 <param name="Для принтеров">HP Color LaserJet Pro 300 M351, M375, Pro 400 M451, M475</param>
 <param name="Кол-во страниц при 5% заполнении А4">2300</param>
@@ -4471,7 +4471,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS182009" available="true">
+<offer id="AS182009" available="false">
 <categoryId></categoryId>
 <vendorCode>AS182009</vendorCode>
 <name>Проектор Mi Laser Projector 150</name>
@@ -4982,7 +4982,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.04040883</param>
 </offer>
 
-<offer id="AS18293" available="true">
+<offer id="AS18293" available="false">
 <categoryId></categoryId>
 <vendorCode>AS18293</vendorCode>
 <name>Источник бесперебойного питания SVC U-1000</name>
@@ -5098,7 +5098,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.085299375</param>
 </offer>
 
-<offer id="AS18301" available="true">
+<offer id="AS18301" available="false">
 <categoryId></categoryId>
 <vendorCode>AS18301</vendorCode>
 <name>Источник бесперебойного питания SVC PT-1K-LCD</name>
@@ -5589,7 +5589,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.0288405</param>
 </offer>
 
-<offer id="AS185719" available="true">
+<offer id="AS185719" available="false">
 <categoryId></categoryId>
 <vendorCode>AS185719</vendorCode>
 <name>Аккумуляторная батарея SVC AV4.5-12/S 12В 4.5 Ач</name>
@@ -5907,7 +5907,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.02376</param>
 </offer>
 
-<offer id="AS18931" available="true">
+<offer id="AS18931" available="false">
 <categoryId></categoryId>
 <vendorCode>AS18931</vendorCode>
 <name>Кабель сетевой SHIP D135-P Cat.5e UTP 30В PVC</name>
@@ -6007,7 +6007,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.05148</param>
 </offer>
 
-<offer id="AS18935" available="true">
+<offer id="AS18935" available="false">
 <categoryId></categoryId>
 <vendorCode>AS18935</vendorCode>
 <name>Кабель сетевой SHIP D146-P Cat.5e FTP 30В РЕ</name>
@@ -7002,7 +7002,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS22487" available="false">
+<offer id="AS22487" available="true">
 <categoryId></categoryId>
 <vendorCode>AS22487</vendorCode>
 <name>Источник бесперебойного питания SVC PTX-1KL-LCD</name>
@@ -7087,7 +7087,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.088407</param>
 </offer>
 
-<offer id="AS22491" available="true">
+<offer id="AS22491" available="false">
 <categoryId></categoryId>
 <vendorCode>AS22491</vendorCode>
 <name>Источник бесперебойного питания SVC PTX-10KL-LCD</name>
@@ -8191,7 +8191,7 @@ Comix B2950 - Персональный переплетчик для созда�
 <param name="Объём">0.12615</param>
 </offer>
 
-<offer id="AS25599" available="true">
+<offer id="AS25599" available="false">
 <categoryId></categoryId>
 <vendorCode>AS25599</vendorCode>
 <name>Источник бесперебойного питания SVC GT31-10KVA</name>
@@ -8631,7 +8631,7 @@ Comix B2950 - Персональный переплетчик для созда�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-CF541X для HP Color LaserJet Pro M254nw / M254dw / M281fdn / M281fdw; аналог моделей CF541X; цвет — Синий; ресурс — 2500 страниц.]]></description>
-<param name="Вес">0.705</param>
+<param name="Вес">0.65</param>
 <param name="Гарантия">24 мес</param>
 <param name="Объём">0.0040703</param>
 <param name="Модель">EPC-CF541X</param>
@@ -8653,7 +8653,7 @@ Comix B2950 - Персональный переплетчик для созда�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-CF542X для HP Color LaserJet Pro M254nw / M254dw / M281fdn / M281fdw; аналог моделей CF542X; цвет — Жёлтый; ресурс — 2500 страниц.]]></description>
-<param name="Вес">0.705</param>
+<param name="Вес">0.65</param>
 <param name="Гарантия">24 мес</param>
 <param name="Объём">0.0040703</param>
 <param name="Модель">EPC-CF542X</param>
@@ -8675,7 +8675,7 @@ Comix B2950 - Персональный переплетчик для созда�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-CF543X для HP Color LaserJet Pro M254nw / M254dw / M281fdn / M281fdw; аналог моделей CF543X; цвет — Пурпурный; ресурс — 2500 страниц.]]></description>
-<param name="Вес">0.705</param>
+<param name="Вес">0.65</param>
 <param name="Гарантия">24 мес</param>
 <param name="Объём">0.0040703</param>
 <param name="Модель">EPC-CF543X</param>
@@ -9025,7 +9025,7 @@ COMIX S3306 — надежный офисный шредер для уничто
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint 106R04348 для Xerox B210 / B205 / B215; аналог моделей 106R04348; ресурс — 3 000 страниц.]]></description>
-<param name="Вес">0.711</param>
+<param name="Вес">0.639</param>
 <param name="Гарантия">24 мес</param>
 <param name="Объём">0.005566222</param>
 <param name="Аналог модели">106R04348</param>
@@ -9666,7 +9666,7 @@ COMIX S3306 — надежный офисный шредер для уничто
 <categoryId></categoryId>
 <vendorCode>AS266316</vendorCode>
 <name>Картридж Europrint EPC-CF259A (совместимый)</name>
-<price>3893</price>
+<price>3760</price>
 <picture>https://img.al-style.kz/41848_1.jpg</picture>
 <picture>https://img.al-style.kz/41848_3.jpg</picture>
 <vendor>Europrint</vendor>
@@ -10008,7 +10008,7 @@ CyberPower OL6KERT3UPM. ИБП гарантирует защиту источн�
 <param name="Объём">0.1362768</param>
 </offer>
 
-<offer id="AS266567" available="false">
+<offer id="AS266567" available="true">
 <categoryId></categoryId>
 <vendorCode>AS266567</vendorCode>
 <name>Источник бесперебойного питания CyberPower OL10KERT3UPM</name>
@@ -10046,7 +10046,7 @@ CyberPower OL10KERT3UPM. ИБП гарантирует защиту источн
 <param name="Объём">0.1386264</param>
 </offer>
 
-<offer id="AS266568" available="false">
+<offer id="AS266568" available="true">
 <categoryId></categoryId>
 <vendorCode>AS266568</vendorCode>
 <name>Батарейный блок CyberPower BPE240V50ART3U</name>
@@ -10487,38 +10487,6 @@ CyberPower OLS3000ERT2U - эта серия высокопроизводител
 <param name="Применение">в бэк-офисах, серверных комнатах и центрах обработки данных.</param>
 </offer>
 
-<offer id="AS266599" available="false">
-<categoryId></categoryId>
-<vendorCode>AS266599</vendorCode>
-<name>Источник бесперебойного питания CyberPower OLS6000ERT6U</name>
-<price>1188950</price>
-<picture>https://img.al-style.kz/42101_1.jpg</picture>
-<picture>https://img.al-style.kz/42101_2.jpg</picture>
-<picture>https://img.al-style.kz/42101_3.jpg</picture>
-<vendor>CyberPower</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-CyberPower OL6KERT3UPM гарантирует защиту источников резервного питания для информационно-технического оборудования, серверов, рабочих станций, NAS / устройств хранения данных, телекоммуникационных устройств, сетевых устройств, систем безопасности / систем аварийного питания, а также систем видеонаблюдения. Данный ИБП использует топологию двойного преобразования для обеспечения высококачественной выходной мощности с дополнительным ECO-режимом, что позволяет экономить электроэнергию и сократить расходы на нее. Этот совместимый с генератором ИБП оснащен батарейными блоками с возможностью «горячей замены» для проведения технического обслуживания без отключения питания, а также Переключателем на аварийное питание (EPO), что позволяет пользователям незамедлительно отключать ИБП в аварийных ситуациях. Для продления срока службы батареи, ИБП использует функцию Интеллектуального управления батареей (SBM), чтобы повысить эффективность процесса зарядки батарей и снизить общую стоимость владения. Данная модель также оснащается съемным ЖК-дисплеем для перемещения панели в целях повышения удобства мониторинга ,а также RJ11 / RJ45 портом для обеспечения защиты линии передачи данных от выбросов и скачков напряжения. Программное обеспечение PowerPanel® по управлению электропитанием позволяет пользователю в реальном времени осуществлять мониторинг и дистанционное управление ИБП.]]></description>
-<param name="Вес">102.75</param>
-<param name="Гарантия">24 мес</param>
-<param name="Время полной зарядки">7 ч</param>
-<param name="Тип подключения">Клеммная колодка</param>
-<param name="Габариты (ШхГхВ)">438х130,5х680</param>
-<param name="Мощность (Вт)">6000ВА / 5400Вт</param>
-<param name="Диапазон работы AVR">110-276В</param>
-<param name="Тип ИБП">Онлайн</param>
-<param name="Время переключения режимов">0 мс</param>
-<param name="Интерфейс для связи с ПК">USB RS-232 (технология Smart)</param>
-<param name="Форма выходного сигнала">Чистый синусоидальный сигнал</param>
-<param name="Автоматическое включение">Есть</param>
-<param name="Выход">220В±1% (в режиме работы от аккумулятора)</param>
-<param name="Рабочий диапазон температур">от 0 до 40 °С</param>
-<param name="Защита от полного разряда батареи">Есть</param>
-<param name="Номинальный ток">27,3А</param>
-<param name="Рабочая влажность">0-90% (без конденсации)</param>
-<param name="Объём">0.3735775</param>
-</offer>
-
 <offer id="AS266600" available="true">
 <categoryId></categoryId>
 <vendorCode>AS266600</vendorCode>
@@ -10637,7 +10605,7 @@ CyberPower OLS2000E - эта серия высокопроизводительн
 <param name="Применение">в бэк-офисах, серверных комнатах и центрах обработки данных.</param>
 </offer>
 
-<offer id="AS266713" available="false">
+<offer id="AS266713" available="true">
 <categoryId></categoryId>
 <vendorCode>AS266713</vendorCode>
 <name>Тонер-картридж повышенной емкости Xerox 006R04403 (оригинал)</name>
@@ -10695,7 +10663,7 @@ CyberPower OLS2000E - эта серия высокопроизводительн
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS266716" available="false">
+<offer id="AS266716" available="true">
 <categoryId></categoryId>
 <vendorCode>AS266716</vendorCode>
 <name>Тонер-картридж повышенной емкости Xerox 006R04380 (оригинал)</name>
@@ -15190,7 +15158,7 @@ COMIX S623 — мощный коммерческий шредер, предна�
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS32450" available="true">
+<offer id="AS32450" available="false">
 <categoryId></categoryId>
 <vendorCode>AS32450</vendorCode>
 <name>Тонер-картридж повышенной емкости Xerox 106R01487 (оригинал)</name>
@@ -15749,7 +15717,7 @@ Comix F9061 ламинатор начального уровня для дома
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-W1360A для HP LaserJet M211 / M236; аналог моделей W1360A; ресурс — 1 150 страниц.]]></description>
-<param name="Вес">0.68</param>
+<param name="Вес">0.64</param>
 <param name="Гарантия">24 мес</param>
 <param name="Объём">0.0040703</param>
 <param name="Модель">EPC-W1360A</param>
@@ -15770,7 +15738,7 @@ Comix F9061 ламинатор начального уровня для дома
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-W1360X для HP LaserJet M211 / M236; аналог моделей W1360X; ресурс — 2600 страниц.]]></description>
-<param name="Вес">0.74</param>
+<param name="Вес">0.725</param>
 <param name="Гарантия">24 мес</param>
 <param name="Объём">0.0040703</param>
 <param name="Модель">EPC-W1360X</param>
@@ -16632,7 +16600,7 @@ COMIX S340 это высококачественный шредер, котор�
 <categoryId></categoryId>
 <vendorCode>AS361818</vendorCode>
 <name>Картридж Europrint EPC-W2210A (совместимый)</name>
-<price>4619</price>
+<price>4418</price>
 <picture>https://img.al-style.kz/47730_1.jpg</picture>
 <picture>https://img.al-style.kz/47730_2.jpg</picture>
 <vendor>Europrint</vendor>
@@ -16654,7 +16622,7 @@ COMIX S340 это высококачественный шредер, котор�
 <categoryId></categoryId>
 <vendorCode>AS361819</vendorCode>
 <name>Картридж Europrint EPC-W2211A (совместимый)</name>
-<price>4565</price>
+<price>4377</price>
 <picture>https://img.al-style.kz/47731_1.jpg</picture>
 <picture>https://img.al-style.kz/47731_2.jpg</picture>
 <vendor>Europrint</vendor>
@@ -16676,7 +16644,7 @@ COMIX S340 это высококачественный шредер, котор�
 <categoryId></categoryId>
 <vendorCode>AS361820</vendorCode>
 <name>Картридж Europrint EPC-W2212A (совместимый)</name>
-<price>4565</price>
+<price>4377</price>
 <picture>https://img.al-style.kz/47732_1.jpg</picture>
 <picture>https://img.al-style.kz/47732_2.jpg</picture>
 <vendor>Europrint</vendor>
@@ -16698,7 +16666,7 @@ COMIX S340 это высококачественный шредер, котор�
 <categoryId></categoryId>
 <vendorCode>AS361821</vendorCode>
 <name>Картридж Europrint EPC-W2213A (совместимый)</name>
-<price>4565</price>
+<price>4377</price>
 <picture>https://img.al-style.kz/47733_1.jpg</picture>
 <picture>https://img.al-style.kz/47733_2.jpg</picture>
 <vendor>Europrint</vendor>
@@ -17213,7 +17181,7 @@ CyberPower BPSE72V45ART2U - это внешний батарейный моду�
 <param name="Объём">0.0947793</param>
 </offer>
 
-<offer id="AS370696" available="true">
+<offer id="AS370696" available="false">
 <categoryId></categoryId>
 <vendorCode>AS370696</vendorCode>
 <name>Монитор 27'' X-game OFLED27</name>
@@ -17980,7 +17948,7 @@ K45 Smart (автофокус, 950 ANSI, Full HD) Смарт-проектор н
 <categoryId></categoryId>
 <vendorCode>AS385096</vendorCode>
 <name>Картридж Europrint EPC-W1500A (совместимый)</name>
-<price>3358</price>
+<price>3214</price>
 <picture>https://img.al-style.kz/51679_1.jpg</picture>
 <picture>https://img.al-style.kz/51679_2.jpg</picture>
 <vendor>Europrint</vendor>
@@ -19456,7 +19424,7 @@ CyberPower BPE192VL2U01 - это внешний батарейный модул�
 <categoryId></categoryId>
 <vendorCode>AS389183</vendorCode>
 <name>Картридж Europrint EPC-W1510A (совместимый)</name>
-<price>4426</price>
+<price>4132</price>
 <picture>https://img.al-style.kz/55648_1.jpg</picture>
 <picture>https://img.al-style.kz/55648_2.jpg</picture>
 <picture>https://img.al-style.kz/55648_3.jpg</picture>
@@ -19581,7 +19549,7 @@ CyberPower BPE192VL2U01 - это внешний батарейный модул�
 <param name="Объём">0.0083385</param>
 </offer>
 
-<offer id="AS390132" available="true">
+<offer id="AS390132" available="false">
 <categoryId></categoryId>
 <vendorCode>AS390132</vendorCode>
 <name>Интерактивная панель iiyama TE7514MIS-B1AG</name>
@@ -19645,7 +19613,7 @@ CyberPower BPE192VL2U01 - это внешний батарейный модул�
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS390437" available="false">
+<offer id="AS390437" available="true">
 <categoryId></categoryId>
 <vendorCode>AS390437</vendorCode>
 <name>Тонер-картридж повышенной емкости Xerox 006R04729 (чёрный) (оригинал)</name>
@@ -19665,7 +19633,7 @@ CyberPower BPE192VL2U01 - это внешний батарейный модул�
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS390438" available="false">
+<offer id="AS390438" available="true">
 <categoryId></categoryId>
 <vendorCode>AS390438</vendorCode>
 <name>Тонер-картридж экстра повышенной емкости Xerox 006R04730 (чёрный) (оригинал)</name>
@@ -19789,7 +19757,7 @@ CyberPower BPE192VL2U01 - это внешний батарейный модул�
 <param name="Модель">097S05244</param>
 </offer>
 
-<offer id="AS390445" available="false">
+<offer id="AS390445" available="true">
 <categoryId></categoryId>
 <vendorCode>AS390445</vendorCode>
 <name>Монохромное МФУ Xerox VersaLink B415DN</name>
@@ -21663,7 +21631,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <categoryId></categoryId>
 <vendorCode>AS393187</vendorCode>
 <name>Картридж Canon LBP CARTRIDGE 070H (оригинал)</name>
-<price>125532</price>
+<price>100111</price>
 <picture>https://img.al-style.kz/59646_1.jpg</picture>
 <picture>https://img.al-style.kz/59646_2.jpg</picture>
 <vendor>Canon</vendor>
@@ -22831,7 +22799,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS393492" available="true">
+<offer id="AS393492" available="false">
 <categoryId></categoryId>
 <vendorCode>AS393492</vendorCode>
 <name>Монохромное лазерное МФУ Canon imageRUNNER 2925i 5976C005AA</name>
@@ -24033,7 +24001,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS394263" available="false">
+<offer id="AS394263" available="true">
 <categoryId></categoryId>
 <vendorCode>AS394263</vendorCode>
 <name>Тонер-картридж Canon VP DP TONER 6117B004AA (оригинал)</name>
@@ -24134,7 +24102,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS394272" available="false">
+<offer id="AS394272" available="true">
 <categoryId></categoryId>
 <vendorCode>AS394272</vendorCode>
 <name>Чернила Canon GI-43 Grey (4707C001AA) (оригинал)</name>
@@ -26313,7 +26281,7 @@ Schneider Electric Easy UPS SRVS2KRIRK высококачественный он
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS396851" available="false">
+<offer id="AS396851" available="true">
 <categoryId></categoryId>
 <vendorCode>AS396851</vendorCode>
 <name>Чернила Canon Ink Tank PFI-107 Black (оригинал)</name>
@@ -26351,7 +26319,7 @@ Schneider Electric Easy UPS SRVS2KRIRK высококачественный он
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS396853" available="false">
+<offer id="AS396853" available="true">
 <categoryId></categoryId>
 <vendorCode>AS396853</vendorCode>
 <name>Чернила Canon Ink Tank PFI-107 Magenta (оригинал)</name>
@@ -26370,7 +26338,7 @@ Schneider Electric Easy UPS SRVS2KRIRK высококачественный он
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS396854" available="false">
+<offer id="AS396854" available="true">
 <categoryId></categoryId>
 <vendorCode>AS396854</vendorCode>
 <name>Чернила Canon Ink Tank PFI-107 Yellow (оригинал)</name>
@@ -27013,7 +26981,7 @@ EATON 5E GEN2 UPS 5E700UD Eaton 5E Gen2 обеспечивает эффекти�
 <param name="Ёмкость батареи">12В/7Ач</param>
 <param name="Тип ИБП">Линейно-интерактивный</param>
 <param name="Время переключения режимов">3 мс</param>
-<param name="Длина кабеля">1,5 м</param>
+<param name="Длина кабеля">1,2 м</param>
 <param name="Интерфейс для связи с ПК">USB</param>
 <param name="Автоматическое включение">Есть</param>
 <param name="Комплектация">Гарантийный талон, инструкция</param>
@@ -27051,7 +27019,7 @@ EATON 5E GEN2 UPS 5E900UD Eaton 5E Gen2 обеспечивает эффекти�
 <param name="Ёмкость батареи">12В/9Ач</param>
 <param name="Тип ИБП">Линейно-интерактивный</param>
 <param name="Время переключения режимов">3 мс</param>
-<param name="Длина кабеля">1,5 м</param>
+<param name="Длина кабеля">1,2 м</param>
 <param name="Интерфейс для связи с ПК">USB</param>
 <param name="Автоматическое включение">Есть</param>
 <param name="Комплектация">Гарантийный талон, инструкция</param>
@@ -27089,7 +27057,7 @@ EATON 5E GEN2 UPS 5E1200UD Eaton 5E Gen2 обеспечивает эффекти
 <param name="Ёмкость батареи">12В/7Ач х 2</param>
 <param name="Тип ИБП">Линейно-интерактивный</param>
 <param name="Время переключения режимов">3 мс</param>
-<param name="Длина кабеля">1,5 м</param>
+<param name="Длина кабеля">1,2 м</param>
 <param name="Интерфейс для связи с ПК">USB</param>
 <param name="Автоматическое включение">Есть</param>
 <param name="Комплектация">Гарантийный талон, инструкция</param>
@@ -27127,7 +27095,7 @@ EATON 5E GEN2 UPS 5E1600UD Eaton 5E Gen2 обеспечивает эффекти
 <param name="Ёмкость батареи">12В/7Ач х 2</param>
 <param name="Тип ИБП">Линейно-интерактивный</param>
 <param name="Время переключения режимов">3 мс</param>
-<param name="Длина кабеля">1,5 м</param>
+<param name="Длина кабеля">1,2 м</param>
 <param name="Интерфейс для связи с ПК">USB</param>
 <param name="Автоматическое включение">Есть</param>
 <param name="Комплектация">Гарантийный талон, инструкция</param>
@@ -27993,7 +27961,7 @@ EATON 9SX11KiRT Высокопроизводительный онлайн-ИБП
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS398129" available="false">
+<offer id="AS398129" available="true">
 <categoryId></categoryId>
 <vendorCode>AS398129</vendorCode>
 <name>Цветное МФУ Xerox C325DNI</name>
@@ -28290,7 +28258,7 @@ EATON 9SX11KiRT Высокопроизводительный онлайн-ИБП
 <param name="Объём">0.082656</param>
 </offer>
 
-<offer id="AS398693" available="false">
+<offer id="AS398693" available="true">
 <categoryId></categoryId>
 <vendorCode>AS398693</vendorCode>
 <name>Тонер-картридж Canon TONER T07 CYAN 3642C001AA (оригинал)</name>
@@ -28719,7 +28687,7 @@ EATON 9SX11KiRT Высокопроизводительный онлайн-ИБП
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-071 для Canon imageCLASS LBP122dw / MF272dw / MF275; аналог моделей Canon 071; ресурс — 1200 страниц.]]></description>
-<param name="Вес">0.675</param>
+<param name="Вес">0.68</param>
 <param name="Гарантия">24 мес</param>
 <param name="Объём">0.0040703</param>
 <param name="Модель">EPC-071</param>
@@ -29693,7 +29661,7 @@ EATON 9SX11KiRT Высокопроизводительный онлайн-ИБП
 <categoryId></categoryId>
 <vendorCode>AS400237</vendorCode>
 <name>Картридж Europrint EPC-W1510X (совместимый)</name>
-<price>6301</price>
+<price>6092</price>
 <picture>https://img.al-style.kz/64533_1.jpg</picture>
 <picture>https://img.al-style.kz/64533_2.jpg</picture>
 <vendor>Europrint</vendor>
@@ -29714,7 +29682,7 @@ EATON 9SX11KiRT Высокопроизводительный онлайн-ИБП
 <categoryId></categoryId>
 <vendorCode>AS400238</vendorCode>
 <name>Картридж Europrint EPC-W1450A (совместимый)</name>
-<price>3986</price>
+<price>3931</price>
 <picture>https://img.al-style.kz/64534_1.jpg</picture>
 <picture>https://img.al-style.kz/64534_2.jpg</picture>
 <vendor>Europrint</vendor>
@@ -29735,7 +29703,7 @@ EATON 9SX11KiRT Высокопроизводительный онлайн-ИБП
 <categoryId></categoryId>
 <vendorCode>AS400239</vendorCode>
 <name>Картридж Europrint EPC-W1450X (совместимый)</name>
-<price>5017</price>
+<price>4805</price>
 <picture>https://img.al-style.kz/64535_1.jpg</picture>
 <picture>https://img.al-style.kz/64535_2.jpg</picture>
 <vendor>Europrint</vendor>
@@ -30043,7 +30011,7 @@ EATON 9SX11KiRT Высокопроизводительный онлайн-ИБП
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS400345" available="false">
+<offer id="AS400345" available="true">
 <categoryId></categoryId>
 <vendorCode>AS400345</vendorCode>
 <name>Картридж Europrint EPC-069K (совместимый)</name>
@@ -31166,7 +31134,7 @@ XG 86TDFMAX148128- это современная интерактивная па
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS401539" available="false">
+<offer id="AS401539" available="true">
 <categoryId></categoryId>
 <vendorCode>AS401539</vendorCode>
 <name>Тонер-картридж повышенной емкости Xerox 006R04835 (черный) (оригинал)</name>
@@ -31186,7 +31154,7 @@ XG 86TDFMAX148128- это современная интерактивная па
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS401540" available="false">
+<offer id="AS401540" available="true">
 <categoryId></categoryId>
 <vendorCode>AS401540</vendorCode>
 <name>Тонер-картридж повышенной емкости Xerox 006R04832 (голубой) (оригинал)</name>
@@ -31206,7 +31174,7 @@ XG 86TDFMAX148128- это современная интерактивная па
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS401541" available="false">
+<offer id="AS401541" available="true">
 <categoryId></categoryId>
 <vendorCode>AS401541</vendorCode>
 <name>Тонер-картридж повышенной емкости Xerox 006R04833 (малиновый) (оригинал)</name>
@@ -31226,7 +31194,7 @@ XG 86TDFMAX148128- это современная интерактивная па
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS401542" available="false">
+<offer id="AS401542" available="true">
 <categoryId></categoryId>
 <vendorCode>AS401542</vendorCode>
 <name>Тонер-картридж повышенной емкости Xerox 006R04834 (желтый) (оригинал)</name>
@@ -32044,7 +32012,7 @@ Back-UPS BGM2200-GR и BGM2200B-GR, предназначенные для обе
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint Cartridge 070H для Canon i-SENSYS LBP243 / LBP246 / MF465 / MF463 / MF461 / X1440; аналог моделей Cartridge 070H; ресурс — 10 000 страниц.]]></description>
-<param name="Вес">1.2</param>
+<param name="Вес">1.25</param>
 <param name="Гарантия">24 мес</param>
 <param name="Объём">0.007136458</param>
 <param name="Аналог модели">Cartridge 070H</param>
@@ -32621,7 +32589,7 @@ Back-UPS BGM2200-GR и BGM2200B-GR, предназначенные для обе
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-006R04404 для Xerox B225 / B230 / B235; аналог моделей 006R04404; ресурс — 6000 страниц.]]></description>
-<param name="Вес">0.778</param>
+<param name="Вес">0.722</param>
 <param name="Гарантия">24 мес</param>
 <param name="Объём">0.005566222</param>
 <param name="Модель">EPC-006R04404</param>
@@ -33158,7 +33126,7 @@ Cyborg 15 ДИЗАЙН ОТ КОНЦЕПТ-ХУДОЖНИКА ПОЛА ЧЕПТ�
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint W1510X для HP LaserJet Pro 4003 / 4103; аналог моделей W1510X; ресурс — 9700 страниц.]]></description>
-<param name="Вес">1.35</param>
+<param name="Вес">1.2</param>
 <param name="Гарантия">24 мес</param>
 <param name="Объём">0.007136458</param>
 <param name="Аналог модели">W1510X</param>
@@ -33653,7 +33621,7 @@ Cyborg 15 ДИЗАЙН ОТ КОНЦЕПТ-ХУДОЖНИКА ПОЛА ЧЕПТ�
 <param name="Объём">0.052224</param>
 </offer>
 
-<offer id="AS405300" available="false">
+<offer id="AS405300" available="true">
 <categoryId></categoryId>
 <vendorCode>AS405300</vendorCode>
 <name>Монитор Samsung 27" ViewFinity S6 LS27D604UAIXCI</name>
@@ -34429,7 +34397,7 @@ EATON 9SX1500IR Онлайн-ИБП с двойным преобразовани
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-CF402X для HP Color LaserJet Pro M252 / MFP M274 / M277; аналог моделей CF402X; цвет — Жёлтый; ресурс — 2300 страниц.]]></description>
-<param name="Вес">0.72</param>
+<param name="Вес">0.65</param>
 <param name="Гарантия">24 мес</param>
 <param name="Объём">0.0040703</param>
 <param name="Модель">EPC-CF402X</param>
@@ -35810,7 +35778,7 @@ ZOWIE XL2566X+ Новый быстрый монитор для киберспо�
 <param name="Объём">0.15825</param>
 </offer>
 
-<offer id="AS408273" available="false">
+<offer id="AS408273" available="true">
 <categoryId></categoryId>
 <vendorCode>AS408273</vendorCode>
 <name>Струйный картридж Canon CLI-481 Cyan (оригинал)</name>
@@ -35853,7 +35821,7 @@ ZOWIE XL2566X+ Новый быстрый монитор для киберспо�
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS408275" available="false">
+<offer id="AS408275" available="true">
 <categoryId></categoryId>
 <vendorCode>AS408275</vendorCode>
 <name>Струйный картридж Canon CLI-481 Yellow (оригинал)</name>
@@ -36315,7 +36283,7 @@ ZOWIE XL2566X+ Новый быстрый монитор для киберспо�
 <param name="Объём">0.0230868</param>
 </offer>
 
-<offer id="AS409565" available="true">
+<offer id="AS409565" available="false">
 <categoryId></categoryId>
 <vendorCode>AS409565</vendorCode>
 <name>Монитор Samsung 27" LS27D304GAIXCI</name>
@@ -37123,7 +37091,7 @@ Wanbo Vali 1 — портативный смарт‑проектор Full HD К
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS410602" available="true">
+<offer id="AS410602" available="false">
 <categoryId></categoryId>
 <vendorCode>AS410602</vendorCode>
 <name>Тонер-картридж CET TN-221K (CET141601) (совместимый)</name>
@@ -37142,7 +37110,7 @@ Wanbo Vali 1 — портативный смарт‑проектор Full HD К
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS410603" available="true">
+<offer id="AS410603" available="false">
 <categoryId></categoryId>
 <vendorCode>AS410603</vendorCode>
 <name>Тонер-картридж CET TN-221C (CET141602) (совместимый)</name>
@@ -37161,7 +37129,7 @@ Wanbo Vali 1 — портативный смарт‑проектор Full HD К
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS410604" available="true">
+<offer id="AS410604" available="false">
 <categoryId></categoryId>
 <vendorCode>AS410604</vendorCode>
 <name>Тонер-картридж CET TN-221M (CET141603) (совместимый)</name>
@@ -37747,7 +37715,7 @@ Wanbo Vali 1 — портативный смарт‑проектор Full HD К
 <param name="Объём">0.0344064</param>
 </offer>
 
-<offer id="AS410957" available="false">
+<offer id="AS410957" available="true">
 <categoryId></categoryId>
 <vendorCode>AS410957</vendorCode>
 <name>Источник бесперебойного питания SVC PTS-2KLN-LCD</name>
@@ -39433,7 +39401,7 @@ CyberPower BPS240V9A - это внешний батарейный модуль (
 <categoryId></categoryId>
 <vendorCode>AS413288</vendorCode>
 <name>Картридж Europrint EPC-W2220A (совместимый)</name>
-<price>17262</price>
+<price>11339</price>
 <picture>https://img.al-style.kz/80104_1.jpg</picture>
 <picture>https://img.al-style.kz/80104_2.jpg</picture>
 <picture>https://img.al-style.kz/80104_3.jpg</picture>
@@ -39456,7 +39424,7 @@ CyberPower BPS240V9A - это внешний батарейный модуль (
 <categoryId></categoryId>
 <vendorCode>AS413299</vendorCode>
 <name>Картридж Europrint EPC-W2221A (совместимый)</name>
-<price>17163</price>
+<price>11249</price>
 <picture>https://img.al-style.kz/80115_1.jpg</picture>
 <picture>https://img.al-style.kz/80115_2.jpg</picture>
 <picture>https://img.al-style.kz/80115_3.jpg</picture>
@@ -39479,7 +39447,7 @@ CyberPower BPS240V9A - это внешний батарейный модуль (
 <categoryId></categoryId>
 <vendorCode>AS413301</vendorCode>
 <name>Картридж Europrint EPC-W2222A (совместимый)</name>
-<price>17163</price>
+<price>11249</price>
 <picture>https://img.al-style.kz/80117_1.jpg</picture>
 <picture>https://img.al-style.kz/80117_2.jpg</picture>
 <picture>https://img.al-style.kz/80117_3.jpg</picture>
@@ -39502,7 +39470,7 @@ CyberPower BPS240V9A - это внешний батарейный модуль (
 <categoryId></categoryId>
 <vendorCode>AS413302</vendorCode>
 <name>Картридж Europrint EPC-W2223A (совместимый)</name>
-<price>17163</price>
+<price>11249</price>
 <picture>https://img.al-style.kz/80118_1.jpg</picture>
 <picture>https://img.al-style.kz/80118_2.jpg</picture>
 <picture>https://img.al-style.kz/80118_3.jpg</picture>
@@ -40539,7 +40507,7 @@ SL22MC - это современный интеллектуальный лект
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-W2120A для HP LazerJet Enterprise M554, M555, MFP M578; аналог моделей W2120A; цвет — Чёрный; ресурс — 5500 страниц.]]></description>
-<param name="Вес">1.117</param>
+<param name="Вес">1.208</param>
 <param name="Гарантия">12 мес</param>
 <param name="Объём">0.007875</param>
 <param name="Модель">EPC-W2120A</param>
@@ -40562,7 +40530,7 @@ SL22MC - это современный интеллектуальный лект
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-W2121A для HP LazerJet Enterprise M554, M555, MFP M578; аналог моделей W2121A; цвет — Синий; ресурс — 4500 страниц.]]></description>
-<param name="Вес">1.117</param>
+<param name="Вес">1.158</param>
 <param name="Гарантия">12 мес</param>
 <param name="Объём">0.0079083</param>
 <param name="Модель">EPC-W2121A</param>
@@ -40585,7 +40553,7 @@ SL22MC - это современный интеллектуальный лект
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-W2122A для HP LazerJet Enterprise M554, M555, MFP M578; аналог моделей W2122A; цвет — Жёлтый; ресурс — 4500 страниц.]]></description>
-<param name="Вес">1.117</param>
+<param name="Вес">1.133</param>
 <param name="Гарантия">12 мес</param>
 <param name="Объём">0.00795375</param>
 <param name="Модель">EPC-W2122A</param>
@@ -40608,7 +40576,7 @@ SL22MC - это современный интеллектуальный лект
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Совместимый картридж Europrint EPC-W2123A для HP LazerJet Enterprise M554, M555, MFP M578; аналог моделей W2123A; цвет — Пурпурный; ресурс — 4500 страниц.]]></description>
-<param name="Вес">1.117</param>
+<param name="Вес">1.133</param>
 <param name="Гарантия">12 мес</param>
 <param name="Объём">0.00795375</param>
 <param name="Модель">EPC-W2123A</param>
@@ -43425,7 +43393,7 @@ Sysform LM-360N — ламинатор Sysform LM-360N — это професс
 <param name="Объём">0.003968896</param>
 </offer>
 
-<offer id="AS419320" available="true">
+<offer id="AS419320" available="false">
 <categoryId></categoryId>
 <vendorCode>AS419320</vendorCode>
 <name>Ноутбук MSI Vector 17 HX AI A2XWJG-249XKZ 17" QHD+ 240Hz Ultra 9 275HX 32GB 1TB RTX5090 DOS</name>
@@ -44112,7 +44080,7 @@ Sysform LM-360N — ламинатор Sysform LM-360N — это професс
 <param name="Объём">0.00100464</param>
 </offer>
 
-<offer id="AS419384" available="false">
+<offer id="AS419384" available="true">
 <categoryId></categoryId>
 <vendorCode>AS419384</vendorCode>
 <name>Цветное лазерное МФУ Canon I-S MF667CDW</name>
@@ -44702,6 +44670,18 @@ Sysform LM-360N — ламинатор Sysform LM-360N — это професс
 <param name="Объём">0.3299475</param>
 </offer>
 
+<offer id="AS420489" available="true">
+<categoryId></categoryId>
+<vendorCode>AS420489</vendorCode>
+<name>Монохромное лазерное МФУ Canon imageRUNNER 2425i II</name>
+<price>875410</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor></vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+]]></description>
+</offer>
+
 <offer id="AS420501" available="true">
 <categoryId></categoryId>
 <vendorCode>AS420501</vendorCode>
@@ -44942,7 +44922,7 @@ Wanbo Vali 1 Pro — современный портативный проект�
 <vendor>Xiaomi</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
-Особенности и преимущества: 27-дюймовый, 2K ЖК-дисплей. Благодаря разрешению до 2560 x 1440 и использованию быстрого IPS LCD вы можете быстро реагировать на неожиданные сценарии. С молниеносной скоростью вы одержите победу в кратчайшие сроки. Высокая частота обновления 180 Гц, GTG 1 мс. Сверхвысокая частота обновления 180 Гц обеспечивает плавное изображение даже во время высокоскоростных и динамичных соревновательных игр. Быстрый отклик GTG в 1 мс снижает задержку и ореолы монитора при высокоскоростном движении, позволяя вам быть на шаг впереди своих противников и приводя вас к победе! Технология FreeSync обеспечивает стабильность в критические моменты игры! Благодаря технологии FreeSync видеокарта компьютера и частота кадров монитора поддерживают синхронизацию в реальном времени, что позволяет уменьшить разрывы и задержки в динамических средах. Комфортный режим T V Low Blue Light. Благодаря сертификации T V режим Low Blue Light может фильтровать коротковолновый синий свет, обеспечивая комфорт для глаз даже после долгих часов игры. Добавленное DC Dimming также может эффективно уменьшить мерцание дисплея, обеспечивая двойную защиту для ваших глаз! DCI-P3 и sRGB для плавных переходов между насыщенными цветами. Широкий цветовой охват 95% DCI-P3 и 100% sRGB обеспечивает широкий цветовой дисплей для более насыщенных и реалистичных цветов. 8-битная глубина цвета обеспечивает более яркие и подробные цветовые градации, обеспечивая более плавные цветовые переходы и улучшая игровой опыт. Узкие рамки с трех сторон. Большое поле зрения обеспечивает захватывающий и естественный опыт использования. Управление джойстиком. Удобство эксплуатации, быстрое управление.]]></description>
+Особенности и преимущества: 27-дюймовый, 2K ЖК-дисплей. Благодаря разрешению до 2560 x 1440 и использованию быстрого IPS LCD вы можете быстро реагировать на неожиданные сценарии. С молниеносной скоростью вы одержите победу в кратчайшие сроки. Высокая частота обновления 200 Гц, GTG 1 мс. Сверхвысокая частота обновления 200 Гц обеспечивает плавное изображение даже во время высокоскоростных и динамичных соревновательных игр. Быстрый отклик GTG в 1 мс снижает задержку и ореолы монитора при высокоскоростном движении, позволяя вам быть на шаг впереди своих противников и приводя вас к победе! Технология FreeSync обеспечивает стабильность в критические моменты игры! Благодаря технологии FreeSync видеокарта компьютера и частота кадров монитора поддерживают синхронизацию в реальном времени, что позволяет уменьшить разрывы и задержки в динамических средах. Комфортный режим T V Low Blue Light. Благодаря сертификации T V режим Low Blue Light может фильтровать коротковолновый синий свет, обеспечивая комфорт для глаз даже после долгих часов игры. Добавленное DC Dimming также может эффективно уменьшить мерцание дисплея, обеспечивая двойную защиту для ваших глаз! DCI-P3 и sRGB для плавных переходов между насыщенными цветами. Широкий цветовой охват 95% DCI-P3 и 100% sRGB обеспечивает широкий цветовой дисплей для более насыщенных и реалистичных цветов. 8-битная глубина цвета обеспечивает более яркие и подробные цветовые градации, обеспечивая более плавные цветовые переходы и улучшая игровой опыт. Узкие рамки с трех сторон. Большое поле зрения обеспечивает захватывающий и естественный опыт использования. Управление джойстиком. Удобство эксплуатации, быстрое управление.]]></description>
 <param name="Вес">6.794</param>
 <param name="Гарантия">12 мес</param>
 <param name="Объём">0.047017905</param>
@@ -46165,7 +46145,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП 
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS61146" available="false">
+<offer id="AS61146" available="true">
 <categoryId></categoryId>
 <vendorCode>AS61146</vendorCode>
 <name>Тонер-картридж стандартной емкости Xerox 006R01755 (голубой) (оригинал)</name>
@@ -46479,7 +46459,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП 
 <param name="Объём">0.003212784</param>
 </offer>
 
-<offer id="AS63198" available="false">
+<offer id="AS63198" available="true">
 <categoryId></categoryId>
 <vendorCode>AS63198</vendorCode>
 <name>Стабилизатор SVC R-3000</name>
@@ -46577,7 +46557,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП 
 <param name="Объём">0.054208</param>
 </offer>
 
-<offer id="AS67885" available="false">
+<offer id="AS67885" available="true">
 <categoryId></categoryId>
 <vendorCode>AS67885</vendorCode>
 <name>Кабель сетевой SHIP D226-P Cat.5e FTP 30В РЕ</name>
