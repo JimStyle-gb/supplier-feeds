@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-14 01:17:34">
+<yml_catalog date="2026-05-15 01:13:57">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | AlStyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 2026-05-14 01:17:34
-Ближайшая сборка (Алматы)                  | 2026-05-14 23:30:00
-Сколько товаров у поставщика до фильтра    | 16954
+Время сборки (Алматы)                      | 2026-05-15 01:13:57
+Ближайшая сборка (Алматы)                  | 2026-05-15 23:30:00
+Сколько товаров у поставщика до фильтра    | 17049
 Сколько товаров у поставщика после фильтра | 2004
-Сколько товаров есть в наличии (true)      | 1468
-Сколько товаров нет в наличии (false)      | 536
+Сколько товаров есть в наличии (true)      | 1478
+Сколько товаров нет в наличии (false)      | 526
 -->
 
 <offer id="AS113695" available="true">
@@ -907,7 +907,7 @@ URL поставщика                             | https://al-style.kz/uploa
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS114962" available="false">
+<offer id="AS114962" available="true">
 <categoryId></categoryId>
 <vendorCode>AS114962</vendorCode>
 <name>Картридж Europrint EPC-EP27 (совместимый)</name>
@@ -1107,7 +1107,7 @@ URL поставщика                             | https://al-style.kz/uploa
 <categoryId></categoryId>
 <vendorCode>AS118249</vendorCode>
 <name>Стабилизатор SVC R-1500</name>
-<price>22990</price>
+<price>23990</price>
 <picture>https://img.al-style.kz/36812_1.jpg</picture>
 <picture>https://img.al-style.kz/36812_2.jpg</picture>
 <picture>https://img.al-style.kz/36812_3.jpg</picture>
@@ -1201,7 +1201,7 @@ URL поставщика                             | https://al-style.kz/uploa
 <param name="Ёмкость батареи">12В/7Ач</param>
 <param name="Тип ИБП">Линейно-интерактивный</param>
 <param name="Время переключения режимов">3 мс</param>
-<param name="Длина кабеля">0,8 м</param>
+<param name="Длина кабеля">1,2 м</param>
 <param name="Форма выходного сигнала">Ступенчатая синусоида</param>
 <param name="Автоматическое включение">Есть</param>
 <param name="Рабочий диапазон температур">от 0 до 40 °С</param>
@@ -2615,7 +2615,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS15386" available="false">
+<offer id="AS15386" available="true">
 <categoryId></categoryId>
 <vendorCode>AS15386</vendorCode>
 <name>Картридж Europrint EPC-CC530A (совместимый)</name>
@@ -3673,7 +3673,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.0116204</param>
 </offer>
 
-<offer id="AS17545" available="false">
+<offer id="AS17545" available="true">
 <categoryId></categoryId>
 <vendorCode>AS17545</vendorCode>
 <name>Картридж Europrint EPC-CE313A/CF353A (совместимый)</name>
@@ -3775,7 +3775,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS17602" available="false">
+<offer id="AS17602" available="true">
 <categoryId></categoryId>
 <vendorCode>AS17602</vendorCode>
 <name>Картридж Europrint EPC-CE410A (совместимый)</name>
@@ -4082,7 +4082,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS17893" available="false">
+<offer id="AS17893" available="true">
 <categoryId></categoryId>
 <vendorCode>AS17893</vendorCode>
 <name>Картридж Europrint EPC-CF353A (совместимый)</name>
@@ -4160,7 +4160,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS17905" available="false">
+<offer id="AS17905" available="true">
 <categoryId></categoryId>
 <vendorCode>AS17905</vendorCode>
 <name>Картридж Europrint EPC-CE505X (совместимый)</name>
@@ -4316,7 +4316,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS17966" available="true">
+<offer id="AS17966" available="false">
 <categoryId></categoryId>
 <vendorCode>AS17966</vendorCode>
 <name>Картридж Europrint EPC-725 (совместимый)</name>
@@ -5059,7 +5059,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.085299375</param>
 </offer>
 
-<offer id="AS18300" available="true">
+<offer id="AS18300" available="false">
 <categoryId></categoryId>
 <vendorCode>AS18300</vendorCode>
 <name>Источник бесперебойного питания SVC PTL-3K-LCD</name>
@@ -5757,7 +5757,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.00356983</param>
 </offer>
 
-<offer id="AS186148" available="true">
+<offer id="AS186148" available="false">
 <categoryId></categoryId>
 <vendorCode>AS186148</vendorCode>
 <name>Аккумуляторная батарея SVC GL12100/S 12В 100 Ач (407*173*233)</name>
@@ -5858,7 +5858,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.015111</param>
 </offer>
 
-<offer id="AS188517" available="false">
+<offer id="AS188517" available="true">
 <categoryId></categoryId>
 <vendorCode>AS188517</vendorCode>
 <name>Аккумуляторная батарея SVC VP12200/S 12В 200 Ач (522*238*222)</name>
@@ -5907,7 +5907,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.02376</param>
 </offer>
 
-<offer id="AS18931" available="false">
+<offer id="AS18931" available="true">
 <categoryId></categoryId>
 <vendorCode>AS18931</vendorCode>
 <name>Кабель сетевой SHIP D135-P Cat.5e UTP 30В PVC</name>
@@ -6257,7 +6257,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS192363" available="true">
+<offer id="AS192363" available="false">
 <categoryId></categoryId>
 <vendorCode>AS192363</vendorCode>
 <name>Принт-картридж Xerox 013R00690 (оригинал)</name>
@@ -6415,7 +6415,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS19268" available="false">
+<offer id="AS19268" available="true">
 <categoryId></categoryId>
 <vendorCode>AS19268</vendorCode>
 <name>Картридж Europrint EPC-CF302A (совместимый)</name>
@@ -6441,7 +6441,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS19291" available="false">
+<offer id="AS19291" available="true">
 <categoryId></categoryId>
 <vendorCode>AS19291</vendorCode>
 <name>Картридж Europrint EPC-CE251A (совместимый)</name>
@@ -6467,7 +6467,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS19293" available="false">
+<offer id="AS19293" available="true">
 <categoryId></categoryId>
 <vendorCode>AS19293</vendorCode>
 <name>Картридж Europrint EPC-CE253A (совместимый)</name>
@@ -7087,7 +7087,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.088407</param>
 </offer>
 
-<offer id="AS22491" available="false">
+<offer id="AS22491" available="true">
 <categoryId></categoryId>
 <vendorCode>AS22491</vendorCode>
 <name>Источник бесперебойного питания SVC PTX-10KL-LCD</name>
@@ -7155,7 +7155,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS22497" available="false">
+<offer id="AS22497" available="true">
 <categoryId></categoryId>
 <vendorCode>AS22497</vendorCode>
 <name>Картридж Europrint EPC-CF531A (совместимый)</name>
@@ -7207,7 +7207,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS22499" available="false">
+<offer id="AS22499" available="true">
 <categoryId></categoryId>
 <vendorCode>AS22499</vendorCode>
 <name>Картридж Europrint EPC-CF533A (совместимый)</name>
@@ -7259,7 +7259,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS23633" available="false">
+<offer id="AS23633" available="true">
 <categoryId></categoryId>
 <vendorCode>AS23633</vendorCode>
 <name>Картридж Europrint EPC-CF322A (совместимый)</name>
@@ -7736,7 +7736,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS248764" available="false">
+<offer id="AS248764" available="true">
 <categoryId></categoryId>
 <vendorCode>AS248764</vendorCode>
 <name>Тонер-картридж стандартной емкости Xerox 106R02762 (жёлтый) (оригинал)</name>
@@ -8064,7 +8064,7 @@ line-height: 1.6; max-width: 800px; background-color: #ffffff; } h1, h2, h3, p, 
 <param name="Объём">0.1539195</param>
 </offer>
 
-<offer id="AS254272" available="true">
+<offer id="AS254272" available="false">
 <categoryId></categoryId>
 <vendorCode>AS254272</vendorCode>
 <name>Тонер-картридж стандартной емкости Xerox 006R04379 (оригинал)</name>
@@ -8191,7 +8191,7 @@ Comix B2950 - Персональный переплетчик для созда�
 <param name="Объём">0.12615</param>
 </offer>
 
-<offer id="AS25599" available="false">
+<offer id="AS25599" available="true">
 <categoryId></categoryId>
 <vendorCode>AS25599</vendorCode>
 <name>Источник бесперебойного питания SVC GT31-10KVA</name>
@@ -8271,7 +8271,7 @@ Comix B2950 - Персональный переплетчик для созда�
 <param name="Объём">0.133056</param>
 </offer>
 
-<offer id="AS25601" available="true">
+<offer id="AS25601" available="false">
 <categoryId></categoryId>
 <vendorCode>AS25601</vendorCode>
 <name>Источник бесперебойного питания SVC GT31-20KVA</name>
@@ -8401,7 +8401,7 @@ Comix B2950 - Персональный переплетчик для созда�
 <categoryId></categoryId>
 <vendorCode>AS256352</vendorCode>
 <name>Стабилизатор SVC AVR-600-S</name>
-<price>11990</price>
+<price>12490</price>
 <picture>https://img.al-style.kz/37782_1.jpg</picture>
 <picture>https://img.al-style.kz/37782_2.jpg</picture>
 <picture>https://img.al-style.kz/37782_3.jpg</picture>
@@ -8429,7 +8429,7 @@ Comix B2950 - Персональный переплетчик для созда�
 <categoryId></categoryId>
 <vendorCode>AS256353</vendorCode>
 <name>Стабилизатор SVC AVR-1000-S</name>
-<price>12990</price>
+<price>13490</price>
 <picture>https://img.al-style.kz/37783_1.jpg</picture>
 <picture>https://img.al-style.kz/37783_2.jpg</picture>
 <picture>https://img.al-style.kz/37783_3.jpg</picture>
@@ -8552,7 +8552,7 @@ Comix B2950 - Персональный переплетчик для созда�
 <param name="Объём">0.00517824</param>
 </offer>
 
-<offer id="AS256560" available="true">
+<offer id="AS256560" available="false">
 <categoryId></categoryId>
 <vendorCode>AS256560</vendorCode>
 <name>Аккумуляторная батарея SVC GL1250/S 12В 50 Ач (230*138*215)</name>
@@ -8917,11 +8917,11 @@ COMIX S3306 — надежный офисный шредер для уничто
 <param name="Объём">0.02364105</param>
 </offer>
 
-<offer id="AS258915" available="true">
+<offer id="AS258915" available="false">
 <categoryId></categoryId>
 <vendorCode>AS258915</vendorCode>
 <name>Стабилизатор SVC AVR-1005-U</name>
-<price>10990</price>
+<price>13590</price>
 <picture>https://img.al-style.kz/36908_1.jpg</picture>
 <picture>https://img.al-style.kz/36908_2.jpg</picture>
 <picture>https://img.al-style.kz/36908_3.jpg</picture>
@@ -10663,7 +10663,7 @@ CyberPower OLS2000E - эта серия высокопроизводительн
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS266716" available="true">
+<offer id="AS266716" available="false">
 <categoryId></categoryId>
 <vendorCode>AS266716</vendorCode>
 <name>Тонер-картридж повышенной емкости Xerox 006R04380 (оригинал)</name>
@@ -12702,7 +12702,7 @@ COMIX S623 — мощный коммерческий шредер, предна�
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS28186" available="false">
+<offer id="AS28186" available="true">
 <categoryId></categoryId>
 <vendorCode>AS28186</vendorCode>
 <name>Картридж Europrint EPC-CF218X (совместимый)</name>
@@ -12750,7 +12750,7 @@ COMIX S623 — мощный коммерческий шредер, предна�
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS28221" available="false">
+<offer id="AS28221" available="true">
 <categoryId></categoryId>
 <vendorCode>AS28221</vendorCode>
 <name>Картридж Europrint EPC-CF503A/CF543A/Toner 054M (совместимый)</name>
@@ -13046,7 +13046,7 @@ COMIX S623 — мощный коммерческий шредер, предна�
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS30289" available="false">
+<offer id="AS30289" available="true">
 <categoryId></categoryId>
 <vendorCode>AS30289</vendorCode>
 <name>Картридж Europrint EPC-CF361A (совместимый)</name>
@@ -14599,7 +14599,7 @@ COMIX S623 — мощный коммерческий шредер, предна�
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS31865" available="false">
+<offer id="AS31865" available="true">
 <categoryId></categoryId>
 <vendorCode>AS31865</vendorCode>
 <name>Тонер-картридж повышенной емкости Xerox 106R03623 (оригинал)</name>
@@ -15198,7 +15198,7 @@ COMIX S623 — мощный коммерческий шредер, предна�
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS357835" available="true">
+<offer id="AS357835" available="false">
 <categoryId></categoryId>
 <vendorCode>AS357835</vendorCode>
 <name>Аккумуляторная батарея Ritar RT1290 12В 9 Ач</name>
@@ -16478,7 +16478,7 @@ COMIX S340 это высококачественный шредер, котор�
 <param name="Ёмкость">измельчения: 10 листов (A4), 1 компакт-диск, 1 пластиковая карта</param>
 </offer>
 
-<offer id="AS361731" available="false">
+<offer id="AS361731" available="true">
 <categoryId></categoryId>
 <vendorCode>AS361731</vendorCode>
 <name>Картридж Europrint EPC-CE255A (совместимый)</name>
@@ -17181,7 +17181,7 @@ CyberPower BPSE72V45ART2U - это внешний батарейный моду�
 <param name="Объём">0.0947793</param>
 </offer>
 
-<offer id="AS370696" available="false">
+<offer id="AS370696" available="true">
 <categoryId></categoryId>
 <vendorCode>AS370696</vendorCode>
 <name>Монитор 27'' X-game OFLED27</name>
@@ -17283,7 +17283,7 @@ Comix F9062 ламинатор начального уровня для дома
 <categoryId></categoryId>
 <vendorCode>AS372107</vendorCode>
 <name>Стабилизатор SVC W-10000</name>
-<price>99990</price>
+<price>94990</price>
 <picture>https://img.al-style.kz/44797_1.jpg</picture>
 <picture>https://img.al-style.kz/44797_2.jpg</picture>
 <picture>https://img.al-style.kz/44797_3.jpg</picture>
@@ -18021,7 +18021,7 @@ K45 Smart (автофокус, 950 ANSI, Full HD) Смарт-проектор н
 <param name="Объём">0.0178698</param>
 </offer>
 
-<offer id="AS385500" available="true">
+<offer id="AS385500" available="false">
 <categoryId></categoryId>
 <vendorCode>AS385500</vendorCode>
 <name>Источник бесперебойного питания Legrand Keor Multiplug 800 ВА</name>
@@ -19181,7 +19181,7 @@ CyberPower BPE192VL2U01 - это внешний батарейный модул�
 <param name="Объём">0.02501</param>
 </offer>
 
-<offer id="AS386946" available="true">
+<offer id="AS386946" available="false">
 <categoryId></categoryId>
 <vendorCode>AS386946</vendorCode>
 <name>Монитор Samsung 34" ViewFinity S5 LS34C500GAIXCI</name>
@@ -19549,7 +19549,7 @@ CyberPower BPE192VL2U01 - это внешний батарейный модул�
 <param name="Объём">0.0083385</param>
 </offer>
 
-<offer id="AS390132" available="false">
+<offer id="AS390132" available="true">
 <categoryId></categoryId>
 <vendorCode>AS390132</vendorCode>
 <name>Интерактивная панель iiyama TE7514MIS-B1AG</name>
@@ -19633,7 +19633,7 @@ CyberPower BPE192VL2U01 - это внешний батарейный модул�
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS390438" available="true">
+<offer id="AS390438" available="false">
 <categoryId></categoryId>
 <vendorCode>AS390438</vendorCode>
 <name>Тонер-картридж экстра повышенной емкости Xerox 006R04730 (чёрный) (оригинал)</name>
@@ -20401,7 +20401,7 @@ Xiaomi Wireless All-in-One Inkjet Printer — это умное многофун
 <categoryId></categoryId>
 <vendorCode>AS391992</vendorCode>
 <name>Стабилизатор SVC FL-600</name>
-<price>15990</price>
+<price>16990</price>
 <picture>https://img.al-style.kz/58488_1.jpg</picture>
 <vendor>SVC</vendor>
 <currencyId>KZT</currencyId>
@@ -20427,7 +20427,7 @@ Xiaomi Wireless All-in-One Inkjet Printer — это умное многофун
 <categoryId></categoryId>
 <vendorCode>AS391993</vendorCode>
 <name>Стабилизатор SVC FL-1000</name>
-<price>17990</price>
+<price>18990</price>
 <picture>https://img.al-style.kz/58489_1.jpg</picture>
 <vendor>SVC</vendor>
 <currencyId>KZT</currencyId>
@@ -20453,7 +20453,7 @@ Xiaomi Wireless All-in-One Inkjet Printer — это умное многофун
 <categoryId></categoryId>
 <vendorCode>AS391994</vendorCode>
 <name>Стабилизатор SVC FL-2000</name>
-<price>24990</price>
+<price>26990</price>
 <picture>https://img.al-style.kz/58490_1.jpg</picture>
 <vendor>SVC</vendor>
 <currencyId>KZT</currencyId>
@@ -20479,7 +20479,7 @@ Xiaomi Wireless All-in-One Inkjet Printer — это умное многофун
 <categoryId></categoryId>
 <vendorCode>AS391995</vendorCode>
 <name>Стабилизатор SVC FL-5000</name>
-<price>44990</price>
+<price>47990</price>
 <picture>https://img.al-style.kz/58491_1.jpg</picture>
 <vendor>SVC</vendor>
 <currencyId>KZT</currencyId>
@@ -20501,7 +20501,7 @@ Xiaomi Wireless All-in-One Inkjet Printer — это умное многофун
 <categoryId></categoryId>
 <vendorCode>AS391996</vendorCode>
 <name>Стабилизатор SVC WL-500</name>
-<price>17990</price>
+<price>16990</price>
 <picture>https://img.al-style.kz/58492_1.jpg</picture>
 <vendor>SVC</vendor>
 <currencyId>KZT</currencyId>
@@ -20527,7 +20527,7 @@ Xiaomi Wireless All-in-One Inkjet Printer — это умное многофун
 <categoryId></categoryId>
 <vendorCode>AS391997</vendorCode>
 <name>Стабилизатор SVC WL-1000</name>
-<price>20990</price>
+<price>18990</price>
 <picture>https://img.al-style.kz/58493_1.jpg</picture>
 <vendor>SVC</vendor>
 <currencyId>KZT</currencyId>
@@ -20553,7 +20553,7 @@ Xiaomi Wireless All-in-One Inkjet Printer — это умное многофун
 <categoryId></categoryId>
 <vendorCode>AS391998</vendorCode>
 <name>Стабилизатор SVC WL-2000</name>
-<price>27990</price>
+<price>26990</price>
 <picture>https://img.al-style.kz/58494_1.jpg</picture>
 <vendor>SVC</vendor>
 <currencyId>KZT</currencyId>
@@ -20579,7 +20579,7 @@ Xiaomi Wireless All-in-One Inkjet Printer — это умное многофун
 <categoryId></categoryId>
 <vendorCode>AS391999</vendorCode>
 <name>Стабилизатор SVC WL-5000</name>
-<price>48990</price>
+<price>47990</price>
 <picture>https://img.al-style.kz/58495_1.jpg</picture>
 <vendor>SVC</vendor>
 <currencyId>KZT</currencyId>
@@ -21120,7 +21120,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <param name="Объём">0.18773235</param>
 </offer>
 
-<offer id="AS39288" available="false">
+<offer id="AS39288" available="true">
 <categoryId></categoryId>
 <vendorCode>AS39288</vendorCode>
 <name>Картридж Europrint EPC-W2073A (совместимый)</name>
@@ -21349,7 +21349,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS392910" available="true">
+<offer id="AS392910" available="false">
 <categoryId></categoryId>
 <vendorCode>AS392910</vendorCode>
 <name>Цветное МФУ Canon MAXIFY GX2040</name>
@@ -21419,7 +21419,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS392937" available="false">
+<offer id="AS392937" available="true">
 <categoryId></categoryId>
 <vendorCode>AS392937</vendorCode>
 <name>Монохромное лазерное МФУ Canon MF275dw</name>
@@ -21822,7 +21822,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS393198" available="true">
+<offer id="AS393198" available="false">
 <categoryId></categoryId>
 <vendorCode>AS393198</vendorCode>
 <name>Чернильный картридж Canon PFI-121 Magenta (оригинал)</name>
@@ -23495,7 +23495,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS393718" available="false">
+<offer id="AS393718" available="true">
 <categoryId></categoryId>
 <vendorCode>AS393718</vendorCode>
 <name>Чернила Canon Ink Tank PFI-120 Matte Black (оригинал)</name>
@@ -23621,7 +23621,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики Компактное устройство Все в одном с поддержкой Wi-Fi и пополняемыми чернильницами увеличенного ресурса для экономичной домашней и офисной печати с мобильных устройств и облачных платформ. Преимущества: Низкие эксплуатационные расходы. Пополняемые емкости большого объема позволяют экономить на протяжении всего срока службы принтера. Печать 3100 страниц при использовании черных чернил (3900 в экорежиме) или 4400 страниц при использовании цветных чернил (4600 в экорежиме) Простота использования. Простое и удобное повседневное использование благодаря интуитивным кнопкам и установке печатающей головки одним действием Высокая производительность. Более быстрая печать документов благодаря скорости печати 11,0 изобр./мин (монохромная) и 6,0 изобр./мин (цветная) Простое самостоятельное обслуживание. Сократите время простоя до минимума благодаря возможностям самостоятельной замены картриджа технического обслуживания и жестким контейнерам с чернилами с механическим ключом Беспроводное подключение. Печатайте с различных устройств с поддержкой Wi-Fi и PIXMA Cloud Link, приложения Canon PRINT, Apple AirPrint и других решений Работайте с широким спектром носителей. Раскройте свой творческий потенциал с возможностью печати на магнитной и матовой фотобумаге в домашних условиях Дополнительно приобретаемые контейнеры для чернил большого объема. Повысьте производительность печатайте до 6000 страниц при использовании черных чернил (7600 в экорежиме) или 7700 страниц при использовании цветных чернил (8100 в экорежиме) с контейнерами увеличенного объема Что входит в комплект поставки Струйный принтер Формула выгодной печати PIXMA G3430 с пополняемыми емкостями для чернил 4 стандартных контейнера для чернил (1 черный и 1 голубой / пурпурный / желтый) Кабель питания Руководства пользователя и другие документы Установочный диск CD-ROM (CD только для ОС Windows)]]></description>
-<param name="Вес">8.326</param>
+<param name="Вес">9.051</param>
 <param name="Гарантия">12 мес</param>
 <param name="Состав">Металл, пластик</param>
 <param name="Объём">0.08</param>
@@ -24637,7 +24637,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS396489" available="false">
+<offer id="AS396489" available="true">
 <categoryId></categoryId>
 <vendorCode>AS396489</vendorCode>
 <name>Интерактивная доска (панель) Dahua 65" DHI-LPH65-MC480-U</name>
@@ -25039,7 +25039,7 @@ CyberPower PLT3000ELCDRT2U гарантирует защиту и резервн
 <param name="Объём">0.042</param>
 </offer>
 
-<offer id="AS396734" available="true">
+<offer id="AS396734" available="false">
 <categoryId></categoryId>
 <vendorCode>AS396734</vendorCode>
 <name>Источник бесперебойного питания APC Smart-UPS SRTG10KXLI</name>
@@ -26713,7 +26713,7 @@ Schneider Electric Easy UPS SRVS2KRIRK высококачественный он
 <param name="Объём">0.034548525</param>
 </offer>
 
-<offer id="AS397604" available="true">
+<offer id="AS397604" available="false">
 <categoryId></categoryId>
 <vendorCode>AS397604</vendorCode>
 <name>Проектор портативный Wanbo DaVinci 1 Pro</name>
@@ -28914,7 +28914,7 @@ EATON 9SX11KiRT Высокопроизводительный онлайн-ИБП
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS399719" available="false">
+<offer id="AS399719" available="true">
 <categoryId></categoryId>
 <vendorCode>AS399719</vendorCode>
 <name>Картридж Europrint EPC-W1335A (совместимый)</name>
@@ -29024,7 +29024,7 @@ EATON 9SX11KiRT Высокопроизводительный онлайн-ИБП
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS399757" available="false">
+<offer id="AS399757" available="true">
 <categoryId></categoryId>
 <vendorCode>AS399757</vendorCode>
 <name>Блок барабана Canon DRUM UNIT D07 3646C001AA (оригинал)</name>
@@ -30011,7 +30011,7 @@ EATON 9SX11KiRT Высокопроизводительный онлайн-ИБП
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS400345" available="true">
+<offer id="AS400345" available="false">
 <categoryId></categoryId>
 <vendorCode>AS400345</vendorCode>
 <name>Картридж Europrint EPC-069K (совместимый)</name>
@@ -30831,7 +30831,7 @@ XG 86TDFMAX148128- это современная интерактивная па
 <param name="Объём">0.576</param>
 </offer>
 
-<offer id="AS401141" available="false">
+<offer id="AS401141" available="true">
 <categoryId></categoryId>
 <vendorCode>AS401141</vendorCode>
 <name>Интерактивная доска (панель) Dahua 86" DHI-LPH86-MC480-U</name>
@@ -32021,7 +32021,7 @@ Back-UPS BGM2200-GR и BGM2200B-GR, предназначенные для обе
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS403529" available="true">
+<offer id="AS403529" available="false">
 <categoryId></categoryId>
 <vendorCode>AS403529</vendorCode>
 <name>Интерактивная доска (панель) Dahua 65" DHI-LPH65-SC410-S2</name>
@@ -33348,7 +33348,7 @@ Cyborg 15 ДИЗАЙН ОТ КОНЦЕПТ-ХУДОЖНИКА ПОЛА ЧЕПТ�
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS405251" available="false">
+<offer id="AS405251" available="true">
 <categoryId></categoryId>
 <vendorCode>AS405251</vendorCode>
 <name>Картридж Europrint EPC-W2300A (совместимый)</name>
@@ -33621,7 +33621,7 @@ Cyborg 15 ДИЗАЙН ОТ КОНЦЕПТ-ХУДОЖНИКА ПОЛА ЧЕПТ�
 <param name="Объём">0.052224</param>
 </offer>
 
-<offer id="AS405300" available="true">
+<offer id="AS405300" available="false">
 <categoryId></categoryId>
 <vendorCode>AS405300</vendorCode>
 <name>Монитор Samsung 27" ViewFinity S6 LS27D604UAIXCI</name>
@@ -34659,7 +34659,7 @@ ZOWIE XL2566X+ Новый быстрый монитор для киберспо�
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS406212" available="true">
+<offer id="AS406212" available="false">
 <categoryId></categoryId>
 <vendorCode>AS406212</vendorCode>
 <name>Тонер-картридж Xerox 006R04855 (черный) (оригинал)</name>
@@ -35468,7 +35468,7 @@ ZOWIE XL2566X+ Новый быстрый монитор для киберспо�
 <param name="Объём">0.99300432</param>
 </offer>
 
-<offer id="AS408123" available="false">
+<offer id="AS408123" available="true">
 <categoryId></categoryId>
 <vendorCode>AS408123</vendorCode>
 <name>Картридж Europrint EPC-W1470A (совместимый)</name>
@@ -36185,7 +36185,7 @@ ZOWIE XL2566X+ Новый быстрый монитор для киберспо�
 <param name="Объём">0.202935078</param>
 </offer>
 
-<offer id="AS409074" available="true">
+<offer id="AS409074" available="false">
 <categoryId></categoryId>
 <vendorCode>AS409074</vendorCode>
 <name>Монитор iiyama ProLite XUB2797QSN-B2 27"</name>
@@ -36354,7 +36354,7 @@ ZOWIE XL2566X+ Новый быстрый монитор для киберспо�
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS409711" available="false">
+<offer id="AS409711" available="true">
 <categoryId></categoryId>
 <vendorCode>AS409711</vendorCode>
 <name>Картридж Europrint EPC-CF257A (совместимый)</name>
@@ -37203,7 +37203,7 @@ Wanbo Vali 1 — портативный смарт‑проектор Full HD К
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS410610" available="true">
+<offer id="AS410610" available="false">
 <categoryId></categoryId>
 <vendorCode>AS410610</vendorCode>
 <name>Тонер-картридж CET TK-1150HC (CET131035) (совместимый)</name>
@@ -37715,7 +37715,7 @@ Wanbo Vali 1 — портативный смарт‑проектор Full HD К
 <param name="Объём">0.0344064</param>
 </offer>
 
-<offer id="AS410957" available="true">
+<offer id="AS410957" available="false">
 <categoryId></categoryId>
 <vendorCode>AS410957</vendorCode>
 <name>Источник бесперебойного питания SVC PTS-2KLN-LCD</name>
@@ -38614,7 +38614,7 @@ Wanbo Vali 1 — портативный смарт‑проектор Full HD К
 <categoryId></categoryId>
 <vendorCode>AS412105</vendorCode>
 <name>Стабилизатор SVC T-15000</name>
-<price>139990</price>
+<price>135990</price>
 <picture>https://img.al-style.kz/78900_1.jpg</picture>
 <picture>https://img.al-style.kz/78900_2.jpg</picture>
 <picture>https://img.al-style.kz/78900_3.jpg</picture>
@@ -38641,7 +38641,7 @@ Wanbo Vali 1 — портативный смарт‑проектор Full HD К
 <categoryId></categoryId>
 <vendorCode>AS412106</vendorCode>
 <name>Стабилизатор SVC T-20000</name>
-<price>175990</price>
+<price>159990</price>
 <picture>https://img.al-style.kz/78901_1.jpg</picture>
 <picture>https://img.al-style.kz/78901_2.jpg</picture>
 <picture>https://img.al-style.kz/78901_3.jpg</picture>
@@ -39236,7 +39236,7 @@ CyberPower BPS240V9A - это внешний батарейный модуль (
 <param name="Объём">0.0719103</param>
 </offer>
 
-<offer id="AS413098" available="false">
+<offer id="AS413098" available="true">
 <categoryId></categoryId>
 <vendorCode>AS413098</vendorCode>
 <name>Аккумуляторная батарея Ritar FT12-200 12В 200 Ач</name>
@@ -40311,11 +40311,11 @@ XG 98TDFMAX213162566- это современная интерактивная �
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS414315" available="true">
+<offer id="AS414315" available="false">
 <categoryId></categoryId>
 <vendorCode>AS414315</vendorCode>
 <name>Цветное МФУ Lexmark CX950se 20L8110</name>
-<price>1287863</price>
+<price>999964</price>
 <picture>https://img.al-style.kz/81211_1.jpg</picture>
 <picture>https://img.al-style.kz/81211_2.jpg</picture>
 <picture>https://img.al-style.kz/81211_3.jpg</picture>
@@ -40346,7 +40346,7 @@ XG 98TDFMAX213162566- это современная интерактивная �
 <categoryId></categoryId>
 <vendorCode>AS414316</vendorCode>
 <name>Дополнительный лоток Lexmark 20L8800</name>
-<price>179441</price>
+<price>179442</price>
 <picture>https://img.al-style.kz/81212_1.jpg</picture>
 <picture>https://img.al-style.kz/81212_2.jpg</picture>
 <vendor>Lexmark</vendor>
@@ -40365,7 +40365,7 @@ XG 98TDFMAX213162566- это современная интерактивная �
 <categoryId></categoryId>
 <vendorCode>AS414317</vendorCode>
 <name>Стенд Lexmark 20L8806</name>
-<price>57524</price>
+<price>57525</price>
 <picture>https://img.al-style.kz/81213_1.jpg</picture>
 <picture>https://img.al-style.kz/81213_2.jpg</picture>
 <vendor>Lexmark</vendor>
@@ -40518,7 +40518,7 @@ SL22MC - это современный интеллектуальный лект
 <param name="Оригинальность">Совместимый</param>
 </offer>
 
-<offer id="AS414915" available="false">
+<offer id="AS414915" available="true">
 <categoryId></categoryId>
 <vendorCode>AS414915</vendorCode>
 <name>Картридж Europrint EPC-W2121A (совместимый)</name>
@@ -41845,7 +41845,7 @@ Sysform Perfect Binder 50A — профессиональная автомати
 <categoryId></categoryId>
 <vendorCode>AS417602</vendorCode>
 <name>Принт-картридж Lexmark 77L0ZK0 (чёрный) (оригинал)</name>
-<price>73917</price>
+<price>85003</price>
 <picture>https://img.al-style.kz/84715_1.jpg</picture>
 <picture>https://img.al-style.kz/84715_2.jpg</picture>
 <vendor>Lexmark</vendor>
@@ -41866,7 +41866,7 @@ Sysform Perfect Binder 50A — профессиональная автомати
 <categoryId></categoryId>
 <vendorCode>AS417603</vendorCode>
 <name>Принт-картридж Lexmark 77L0ZV0 (цветной) (оригинал)</name>
-<price>170463</price>
+<price>196031</price>
 <picture>https://img.al-style.kz/84716_1.jpg</picture>
 <picture>https://img.al-style.kz/84716_2.jpg</picture>
 <vendor>Lexmark</vendor>
@@ -41886,7 +41886,7 @@ Sysform Perfect Binder 50A — профессиональная автомати
 <categoryId></categoryId>
 <vendorCode>AS417604</vendorCode>
 <name>Тонер-картридж Lexmark 79L9HC0 (голубой) (оригинал)</name>
-<price>152819</price>
+<price>175742</price>
 <picture>https://img.al-style.kz/84717_1.jpg</picture>
 <picture>https://img.al-style.kz/84717_2.jpg</picture>
 <vendor>Lexmark</vendor>
@@ -41907,7 +41907,7 @@ Sysform Perfect Binder 50A — профессиональная автомати
 <categoryId></categoryId>
 <vendorCode>AS417605</vendorCode>
 <name>Тонер-картридж Lexmark 79L9HK0 (чёрный) (оригинал)</name>
-<price>75003</price>
+<price>86254</price>
 <picture>https://img.al-style.kz/84718_1.jpg</picture>
 <picture>https://img.al-style.kz/84718_2.jpg</picture>
 <vendor>Lexmark</vendor>
@@ -41928,7 +41928,7 @@ Sysform Perfect Binder 50A — профессиональная автомати
 <categoryId></categoryId>
 <vendorCode>AS417606</vendorCode>
 <name>Тонер-картридж Lexmark 79L9HM0 (малиновый) (оригинал)</name>
-<price>152819</price>
+<price>175742</price>
 <picture>https://img.al-style.kz/84719_1.jpg</picture>
 <picture>https://img.al-style.kz/84719_2.jpg</picture>
 <vendor>Lexmark</vendor>
@@ -41949,7 +41949,7 @@ Sysform Perfect Binder 50A — профессиональная автомати
 <categoryId></categoryId>
 <vendorCode>AS417607</vendorCode>
 <name>Тонер-картридж Lexmark 79L9HY0 (жёлтый) (оригинал)</name>
-<price>152819</price>
+<price>175742</price>
 <picture>https://img.al-style.kz/84720_1.jpg</picture>
 <picture>https://img.al-style.kz/84720_2.jpg</picture>
 <vendor>Lexmark</vendor>
@@ -43393,7 +43393,7 @@ Sysform LM-360N — ламинатор Sysform LM-360N — это професс
 <param name="Объём">0.003968896</param>
 </offer>
 
-<offer id="AS419320" available="false">
+<offer id="AS419320" available="true">
 <categoryId></categoryId>
 <vendorCode>AS419320</vendorCode>
 <name>Ноутбук MSI Vector 17 HX AI A2XWJG-249XKZ 17" QHD+ 240Hz Ultra 9 275HX 32GB 1TB RTX5090 DOS</name>
@@ -44352,8 +44352,9 @@ Sysform LM-360N — ламинатор Sysform LM-360N — это професс
 <categoryId></categoryId>
 <vendorCode>AS420184</vendorCode>
 <name>Тонер-картридж стандартной емкости Lexmark 77L91C0 (голубой) (оригинал)</name>
-<price>50626</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<price>58221</price>
+<picture>https://img.al-style.kz/87438_1.jpg</picture>
+<picture>https://img.al-style.kz/87438_2.jpg</picture>
 <vendor>Lexmark</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -44372,8 +44373,9 @@ Sysform LM-360N — ламинатор Sysform LM-360N — это професс
 <categoryId></categoryId>
 <vendorCode>AS420185</vendorCode>
 <name>Тонер-картридж стандартной емкости Lexmark 77L91K0 (чёрный) (оригинал)</name>
-<price>30002</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<price>34501</price>
+<picture>https://img.al-style.kz/87439_1.jpg</picture>
+<picture>https://img.al-style.kz/87439_2.jpg</picture>
 <vendor>Lexmark</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -44392,8 +44394,9 @@ Sysform LM-360N — ламинатор Sysform LM-360N — это професс
 <categoryId></categoryId>
 <vendorCode>AS420186</vendorCode>
 <name>Тонер-картридж стандартной емкости Lexmark 77L91M0 (малиновый) (оригинал)</name>
-<price>50626</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<price>58221</price>
+<picture>https://img.al-style.kz/87440_1.jpg</picture>
+<picture>https://img.al-style.kz/87440_2.jpg</picture>
 <vendor>Lexmark</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -44412,8 +44415,9 @@ Sysform LM-360N — ламинатор Sysform LM-360N — это професс
 <categoryId></categoryId>
 <vendorCode>AS420187</vendorCode>
 <name>Тонер-картридж стандартной емкости Lexmark 77L91Y0 (жёлтый) (оригинал)</name>
-<price>50626</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<price>58221</price>
+<picture>https://img.al-style.kz/87441_1.jpg</picture>
+<picture>https://img.al-style.kz/87441_2.jpg</picture>
 <vendor>Lexmark</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -44676,10 +44680,13 @@ Sysform LM-360N — ламинатор Sysform LM-360N — это професс
 <name>Монохромное лазерное МФУ Canon imageRUNNER 2425i II</name>
 <price>875410</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor></vendor>
+<vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 ]]></description>
+<param name="Вес">54</param>
+<param name="Гарантия">12 мес</param>
+<param name="Объём">0.3425915</param>
 </offer>
 
 <offer id="AS420501" available="true">
@@ -45370,7 +45377,7 @@ Wanbo Vali 1 Pro — современный портативный проект�
 <vendorCode>AS421120</vendorCode>
 <name>Считыватель карт Lexmark Elatec TWN4 (497K26330)</name>
 <price>227523</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://img.al-style.kz/88355_1.jpg</picture>
 <vendor>Lexmark</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -45387,7 +45394,7 @@ Wanbo Vali 1 Pro — современный портативный проект�
 <vendorCode>AS421121</vendorCode>
 <name>Считыватель карт Lexmark Elatec TWN4 (497K26290)</name>
 <price>201766</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://img.al-style.kz/88356_1.jpg</picture>
 <vendor>Lexmark</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -46105,7 +46112,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП 
 <param name="Оригинальность">Оригинал</param>
 </offer>
 
-<offer id="AS61079" available="true">
+<offer id="AS61079" available="false">
 <categoryId></categoryId>
 <vendorCode>AS61079</vendorCode>
 <name>Тонер-картридж Xerox 006R01766 (оригинал)</name>
@@ -46233,7 +46240,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП 
 <categoryId></categoryId>
 <vendorCode>AS61177</vendorCode>
 <name>Стабилизатор SVC W-500</name>
-<price>18990</price>
+<price>16990</price>
 <picture>https://img.al-style.kz/34556_1.jpg</picture>
 <picture>https://img.al-style.kz/34556_2.jpg</picture>
 <picture>https://img.al-style.kz/34556_3.jpg</picture>
@@ -46290,7 +46297,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП 
 <categoryId></categoryId>
 <vendorCode>AS62150</vendorCode>
 <name>Стабилизатор SVC W-1000</name>
-<price>21990</price>
+<price>18990</price>
 <picture>https://img.al-style.kz/34558_1.jpg</picture>
 <picture>https://img.al-style.kz/34558_2.jpg</picture>
 <picture>https://img.al-style.kz/34558_3.jpg</picture>
@@ -46319,7 +46326,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП 
 <categoryId></categoryId>
 <vendorCode>AS62151</vendorCode>
 <name>Стабилизатор SVC W-1500</name>
-<price>25990</price>
+<price>23990</price>
 <picture>https://img.al-style.kz/34560_1.jpg</picture>
 <picture>https://img.al-style.kz/34560_2.jpg</picture>
 <picture>https://img.al-style.kz/34560_3.jpg</picture>
@@ -46348,7 +46355,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП 
 <categoryId></categoryId>
 <vendorCode>AS62152</vendorCode>
 <name>Стабилизатор SVC W-2000</name>
-<price>28990</price>
+<price>26990</price>
 <picture>https://img.al-style.kz/34561_1.jpg</picture>
 <picture>https://img.al-style.kz/34561_2.jpg</picture>
 <picture>https://img.al-style.kz/34561_3.jpg</picture>
@@ -46377,7 +46384,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП 
 <categoryId></categoryId>
 <vendorCode>AS62153</vendorCode>
 <name>Стабилизатор SVC W-3000</name>
-<price>42990</price>
+<price>39990</price>
 <picture>https://img.al-style.kz/34562_1.jpg</picture>
 <picture>https://img.al-style.kz/34562_2.jpg</picture>
 <picture>https://img.al-style.kz/34562_3.jpg</picture>
@@ -46405,7 +46412,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП 
 <categoryId></categoryId>
 <vendorCode>AS62154</vendorCode>
 <name>Стабилизатор SVC W-5000</name>
-<price>50990</price>
+<price>47990</price>
 <picture>https://img.al-style.kz/34563_1.jpg</picture>
 <picture>https://img.al-style.kz/34563_2.jpg</picture>
 <picture>https://img.al-style.kz/34563_3.jpg</picture>
@@ -46459,11 +46466,11 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП 
 <param name="Объём">0.003212784</param>
 </offer>
 
-<offer id="AS63198" available="true">
+<offer id="AS63198" available="false">
 <categoryId></categoryId>
 <vendorCode>AS63198</vendorCode>
 <name>Стабилизатор SVC R-3000</name>
-<price>38990</price>
+<price>39990</price>
 <picture>https://img.al-style.kz/4576_1.jpg</picture>
 <picture>https://img.al-style.kz/4576_2.jpg</picture>
 <picture>https://img.al-style.kz/4576_3.jpg</picture>
@@ -46490,7 +46497,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП 
 <categoryId></categoryId>
 <vendorCode>AS63202</vendorCode>
 <name>Стабилизатор SVC R-5000</name>
-<price>46990</price>
+<price>47990</price>
 <picture>https://img.al-style.kz/4577_1.jpg</picture>
 <picture>https://img.al-style.kz/4577_2.jpg</picture>
 <picture>https://img.al-style.kz/4577_3.jpg</picture>
