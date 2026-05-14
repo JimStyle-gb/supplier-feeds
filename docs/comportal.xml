@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-13 01:59:25">
+<yml_catalog date="2026-05-14 02:08:01">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-05-13 01:59:25
-Ближайшая сборка (Алматы)                  | 2026-05-14 00:30:00
-Сколько товаров у поставщика до фильтра    | 1163
-Сколько товаров у поставщика после фильтра | 621
-Сколько товаров есть в наличии (true)      | 621
+Время сборки (Алматы)                      | 2026-05-14 02:08:01
+Ближайшая сборка (Алматы)                  | 2026-05-15 00:30:00
+Сколько товаров у поставщика до фильтра    | 1191
+Сколько товаров у поставщика после фильтра | 629
+Сколько товаров есть в наличии (true)      | 629
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -1888,6 +1888,59 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип">Картридж</param>
 <param name="Цвет">Трехцветный</param>
 <keywords>HP, Картридж HP F6V16AE (F6V16AE) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP10303149" available="true">
+<categoryId>102</categoryId>
+<vendorCode>CP10303149</vendorCode>
+<name>Картридж HP F6V17AE (F6V17AE) (оригинал)</name>
+<price>10900</price>
+<picture>https://www.comportal.kz/upload/iblock/f8b/pxfklszm3z1r728qa0u7gc4e4mngmpse.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP F6V17AE (F6V17AE) (оригинал)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP F6V17AE коды — F6V17AE / №123; цвет — Чёрный; ресурс — 120; технология печати — Струйная.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> F6V17AE</li><li><strong>Модель:</strong> F6V17AE</li><li><strong>Номер:</strong> №123</li><li><strong>Объём:</strong> 2</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 120</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">HP</param>
+<param name="Коды">F6V17AE</param>
+<param name="Модель">F6V17AE</param>
+<param name="Номер">№123</param>
+<param name="Объём">2</param>
+<param name="Оригинальность">Оригинал</param>
+<param name="Ресурс">120</param>
+<param name="Технология печати">Струйная</param>
+<param name="Тип">Картридж</param>
+<param name="Цвет">Чёрный</param>
+<keywords>HP, Картридж HP F6V17AE (F6V17AE) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP10331515" available="true">
@@ -5685,6 +5738,57 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>HP, Картридж HP CF259A / 59A (CF259A) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="CP10784335" available="true">
+<categoryId>101</categoryId>
+<vendorCode>CP10784335</vendorCode>
+<name>Картридж HP W9190MC (W9190MC) (оригинал)</name>
+<price>29900</price>
+<picture>https://www.comportal.kz/upload/iblock/afa/qcz4hrcjxdi0xab6pgww06rpodh8lym8.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP W9190MC (W9190MC) (оригинал)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP W9190MC код — W9190MC; цвет — Чёрный; ресурс — 29 000; технология печати — Лазерная.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> W9190MC</li><li><strong>Модель:</strong> W9190MC</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 29 000</li><li><strong>Технология печати:</strong> Лазерная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">HP</param>
+<param name="Коды">W9190MC</param>
+<param name="Модель">W9190MC</param>
+<param name="Оригинальность">Оригинал</param>
+<param name="Ресурс">29 000</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Тип">Картридж</param>
+<param name="Цвет">Чёрный</param>
+<keywords>HP, Картридж HP W9190MC (W9190MC) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="CP10373984" available="true">
 <categoryId>101</categoryId>
 <vendorCode>CP10373984</vendorCode>
@@ -6971,56 +7075,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>APC, ИБП APC BV500I-GR (BV500I-GR), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP10772654" available="true">
-<categoryId>101</categoryId>
-<vendorCode>CP10772654</vendorCode>
-<name>Тонер Canon C-EXV60 (4311C001) (оригинал)</name>
-<price>23900</price>
-<picture>https://www.comportal.kz/upload/iblock/4b2/ya3wgq50xujqrufna5k27hkhapr6ln9d.JPG</picture>
-<vendor>Canon</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Тонер Canon C-EXV60 (4311C001) (оригинал)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный тонер Canon C-EXV60 код — 4311C001; ресурс — 10 200.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> Canon</li><li><strong>Дополнительная информация:</strong> black</li><li><strong>Коды:</strong> 4311C001</li><li><strong>Модель:</strong> C-EXV60</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 10 200</li><li><strong>Тип:</strong> Тонер</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Для бренда">Canon</param>
-<param name="Дополнительная информация">black</param>
-<param name="Коды">4311C001</param>
-<param name="Модель">C-EXV60</param>
-<param name="Оригинальность">Оригинал</param>
-<param name="Ресурс">10 200</param>
-<param name="Тип">Тонер</param>
-<keywords>Canon, Тонер Canon C-EXV60 (4311C001) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP11337744" available="true">
 <categoryId>101</categoryId>
 <vendorCode>CP11337744</vendorCode>
@@ -7276,54 +7330,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>HP, Картридж HP 147X (W1470X) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13873261" available="true">
-<categoryId>301</categoryId>
-<vendorCode>CP13873261</vendorCode>
-<name>МФУ Canon i-SENSYS MF237W (1418С030)</name>
-<price>241900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Canon</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">МФУ Canon i-SENSYS MF237W (1418С030)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">МФУ. Гарантия: 12 мес. Для бренда: Canon. Модель: i-SENSYS MF237W. Коды: 1418С030.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> Canon</li><li><strong>Коды:</strong> 1418С030</li><li><strong>Модель:</strong> i-SENSYS MF237W</li><li><strong>Тип:</strong> МФУ</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">Canon</param>
-<param name="Коды">1418С030</param>
-<param name="Модель">i-SENSYS MF237W</param>
-<param name="Тип">МФУ</param>
-<keywords>Canon, МФУ Canon i-SENSYS MF237W (1418С030), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP10814517" available="true">
 <categoryId>701</categoryId>
 <vendorCode>CP10814517</vendorCode>
@@ -7547,63 +7553,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип">ИБП</param>
 <param name="Форм-фактор">Tower</param>
 <keywords>APC, ИБП APC BX950MI (BX950MI), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP11214818" available="true">
-<categoryId>701</categoryId>
-<vendorCode>CP11214818</vendorCode>
-<name>ИБП APC BX1200MI-GR (BX1200MI-GR)</name>
-<price>82900</price>
-<picture>https://www.comportal.kz/upload/iblock/7d8/89fjf9n1qc3if1gx0paxe1wk16vphl2f.jpg</picture>
-<vendor>APC</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">ИБП APC BX1200MI-GR (BX1200MI-GR)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">ИБП. Мощность: 1 200 VA / 650 W. Форм-фактор: Tower. Стабилизатор (AVR): есть. Время работы при 100% нагрузке, мин: 0,8. Выходные соединения: (4) Schuko CEE 7 (Батарейное резервное питание). Гарантия: 24 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Выходные соединения:</strong> (4) Schuko CEE 7 (Батарейное резервное питание)</li><li><strong>Гарантия:</strong> 24 мес</li><li><strong>Диапазон входного напряжения:</strong> 140-300</li><li><strong>Бренд:</strong> APC</li><li><strong>Интерфейс:</strong> Schuko</li><li><strong>Коды:</strong> BX1200MI-GR</li><li><strong>Модель:</strong> BX1200MI-GR</li><li><strong>Мощность (VA):</strong> 1 200</li><li><strong>Мощность (W):</strong> 650</li><li><strong>ПО:</strong> есть</li><li><strong>Стабилизатор (AVR):</strong> есть</li><li><strong>Тип:</strong> ИБП</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Выходные соединения">(4) Schuko CEE 7 (Батарейное резервное питание)</param>
-<param name="Гарантия">24 мес</param>
-<param name="Диапазон входного напряжения">140-300</param>
-<param name="Для бренда">APC</param>
-<param name="Интерфейс">Schuko</param>
-<param name="Коды">BX1200MI-GR</param>
-<param name="Модель">BX1200MI-GR</param>
-<param name="Мощность (VA)">1 200</param>
-<param name="Мощность (W)">650</param>
-<param name="ПО">есть</param>
-<param name="Стабилизатор (AVR)">есть</param>
-<param name="Тип">ИБП</param>
-<param name="Типовая продолжительность работы при 100% нагрузке, мин">0,8</param>
-<param name="Форм-фактор">Tower</param>
-<keywords>APC, ИБП APC BX1200MI-GR (BX1200MI-GR), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13817040" available="true">
@@ -8427,6 +8376,58 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип">Картридж</param>
 <param name="Цвет">Жёлтый</param>
 <keywords>HP, Картридж HP 963XL (3JA29AE#BGX) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13760828" available="true">
+<categoryId>102</categoryId>
+<vendorCode>CP13760828</vendorCode>
+<name>Картридж HP 963XL (3JA30AE#BGX) (оригинал)</name>
+<price>29900</price>
+<picture>https://www.comportal.kz/upload/iblock/1d1/uzidooqrdfuhjd4yhe35cwe3njbm8d3t.JPG</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP 963XL (3JA30AE#BGX) (оригинал)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP 963XL код — 3JA30AE#BGX; цвет — Чёрный; ресурс — 2 000; технология печати — Струйная.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 3JA30AE#BGX</li><li><strong>Модель:</strong> 963XL</li><li><strong>Объём:</strong> 48</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 2 000</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">HP</param>
+<param name="Коды">3JA30AE#BGX</param>
+<param name="Модель">963XL</param>
+<param name="Объём">48</param>
+<param name="Оригинальность">Оригинал</param>
+<param name="Ресурс">2 000</param>
+<param name="Технология печати">Струйная</param>
+<param name="Тип">Картридж</param>
+<param name="Цвет">Чёрный</param>
+<keywords>HP, Картридж HP 963XL (3JA30AE#BGX) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP10782666" available="true">
@@ -9659,6 +9660,59 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Формат печати">A4</param>
 <param name="Функция">Принтер-Сканер(без АПД)-Копир</param>
 <keywords>HP, МФУ HP LaserJet MFP M141w (7MD74A#B19), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP12814218" available="true">
+<categoryId>102</categoryId>
+<vendorCode>CP12814218</vendorCode>
+<name>Картридж HP F6V25AE (F6V25AE#BHL) (оригинал)</name>
+<price>11900</price>
+<picture>https://www.comportal.kz/upload/iblock/89a/n881d59fvzytr98rc6flm7iibosnv2ca.JPG</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP F6V25AE (F6V25AE#BHL) (оригинал)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP F6V25AE коды — F6V25AE#BHL / №652; цвет — Чёрный; ресурс — 360; технология печати — Струйная.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> F6V25AE#BHL</li><li><strong>Модель:</strong> F6V25AE</li><li><strong>Номер:</strong> №652</li><li><strong>Объём:</strong> 6</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 360</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">HP</param>
+<param name="Коды">F6V25AE#BHL</param>
+<param name="Модель">F6V25AE</param>
+<param name="Номер">№652</param>
+<param name="Объём">6</param>
+<param name="Оригинальность">Оригинал</param>
+<param name="Ресурс">360</param>
+<param name="Технология печати">Струйная</param>
+<param name="Тип">Картридж</param>
+<param name="Цвет">Чёрный</param>
+<keywords>HP, Картридж HP F6V25AE (F6V25AE#BHL) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP11384632" available="true">
@@ -12494,22 +12548,22 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Acer, Монитор Acer Nitro XV272UZbmiipruzx (UM.HX2EE.Z01), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13714886" available="true">
-<categoryId>101</categoryId>
-<vendorCode>CP13714886</vendorCode>
-<name>Картридж HP 151X (W1510X) (оригинал)</name>
-<price>128900</price>
-<picture>https://www.comportal.kz/upload/iblock/454/snq4r4jobl1mpi6cu8ch09l4pajmqip2.JPG</picture>
+<offer id="CP13760984" available="true">
+<categoryId>102</categoryId>
+<vendorCode>CP13760984</vendorCode>
+<name>Картридж HP HP 47 (6ZD21AE#BHK) (оригинал)</name>
+<price>6900</price>
+<picture>https://www.comportal.kz/upload/iblock/bcf/bcf4dc7f817c870fc31d5d115232a270.JPG</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP 151X (W1510X) (оригинал)</h3>
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP HP 47 (6ZD21AE#BHK) (оригинал)</h3>
 
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP 151X код — W1510X; цвет — Чёрный; технология печати — Лазерная.</p>
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP 47 коды — 6ZD21AE#BHK / №47; цвет — Чёрный; ресурс — 1 300; технология печати — Струйная.</p>
 
 <h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> W1510X</li><li><strong>Модель:</strong> 151X</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Технология печати:</strong> Лазерная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 6ZD21AE#BHK</li><li><strong>Модель:</strong> 47</li><li><strong>Номер:</strong> №47</li><li><strong>Объём:</strong> 26</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 1 300</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
 
 <div style="text-align:center;margin:10px 0 8px 0;">
   <div class="ck-alert ck-alert_theme_green">
@@ -12535,13 +12589,69 @@ URL поставщика                             | https://www.comportal.kz/
 
 </div>]]></description>
 <param name="Для бренда">HP</param>
-<param name="Коды">W1510X</param>
-<param name="Модель">151X</param>
+<param name="Коды">6ZD21AE#BHK</param>
+<param name="Модель">47</param>
+<param name="Номер">№47</param>
+<param name="Объём">26</param>
 <param name="Оригинальность">Оригинал</param>
-<param name="Технология печати">Лазерная</param>
+<param name="Ресурс">1 300</param>
+<param name="Технология печати">Струйная</param>
 <param name="Тип">Картридж</param>
 <param name="Цвет">Чёрный</param>
-<keywords>HP, Картридж HP 151X (W1510X) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+<keywords>HP, Картридж HP HP 47 (6ZD21AE#BHK) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13760985" available="true">
+<categoryId>102</categoryId>
+<vendorCode>CP13760985</vendorCode>
+<name>Картридж HP HP 47 (6ZD61AE#BHK) (оригинал)</name>
+<price>5900</price>
+<picture>https://www.comportal.kz/upload/iblock/225/epb63m1pjf6o2phg2lnaaqzprl6lqxhp.JPG</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP HP 47 (6ZD61AE#BHK) (оригинал)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP 47 коды — 6ZD61AE#BHK / №47; цвет — Трехцветный; ресурс — 700; технология печати — Струйная.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 6ZD61AE#BHK</li><li><strong>Модель:</strong> 47</li><li><strong>Номер:</strong> №47</li><li><strong>Объём:</strong> 14</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 700</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Трехцветный</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">HP</param>
+<param name="Коды">6ZD61AE#BHK</param>
+<param name="Модель">47</param>
+<param name="Номер">№47</param>
+<param name="Объём">14</param>
+<param name="Оригинальность">Оригинал</param>
+<param name="Ресурс">700</param>
+<param name="Технология печати">Струйная</param>
+<param name="Тип">Картридж</param>
+<param name="Цвет">Трехцветный</param>
+<keywords>HP, Картридж HP HP 47 (6ZD61AE#BHK) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13771028" available="true">
@@ -14107,6 +14217,57 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Eaton, ИБП Eaton 5PX 2200i RT3U G2 (5PX2200IRT3UG2), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="CP13820086" available="true">
+<categoryId>102</categoryId>
+<vendorCode>CP13820086</vendorCode>
+<name>Печатающая головка HP 6ZA17AE (6ZA17AE) (оригинал)</name>
+<price>10900</price>
+<picture>https://www.comportal.kz/upload/iblock/049/46ymk6d69jzywa99mg7uh5j2rdr1bc6b.JPG</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Печатающая головка HP 6ZA17AE (6ZA17AE) (оригинал)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP Печатающая головка HP 6ZA17AE код — 6ZA17AE; цвет — Чёрный; ресурс — 30 000; технология печати — Струйная.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 6ZA17AE</li><li><strong>Модель:</strong> Печатающая головка HP 6ZA17AE</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 30 000</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">HP</param>
+<param name="Коды">6ZA17AE</param>
+<param name="Модель">Печатающая головка HP 6ZA17AE</param>
+<param name="Оригинальность">Оригинал</param>
+<param name="Ресурс">30 000</param>
+<param name="Технология печати">Струйная</param>
+<param name="Тип">Картридж</param>
+<param name="Цвет">Чёрный</param>
+<keywords>HP, Печатающая головка HP 6ZA17AE (6ZA17AE) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="CP13866022" available="true">
 <categoryId>601</categoryId>
 <vendorCode>CP13866022</vendorCode>
@@ -14244,6 +14405,57 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип">ИБП</param>
 <param name="Форм-фактор">Rackmount, Tower</param>
 <keywords>Eaton, ИБП Eaton 5PX 3000i RT2U (5PX3000IRT2UG2), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13823478" available="true">
+<categoryId>102</categoryId>
+<vendorCode>CP13823478</vendorCode>
+<name>Печатающая головка HP 6ZA11AE (6ZA11AE) (оригинал)</name>
+<price>10900</price>
+<picture>https://www.comportal.kz/upload/iblock/7b7/iwspxfmle9nsyhn6fliv2ltl5qjupg79.JPG</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Печатающая головка HP 6ZA11AE (6ZA11AE) (оригинал)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP Печатающая головка HP 6ZA11AE код — 6ZA11AE; цвет — Чёрный; ресурс — 30 000; технология печати — Струйная.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 6ZA11AE</li><li><strong>Модель:</strong> Печатающая головка HP 6ZA11AE</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 30 000</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">HP</param>
+<param name="Коды">6ZA11AE</param>
+<param name="Модель">Печатающая головка HP 6ZA11AE</param>
+<param name="Оригинальность">Оригинал</param>
+<param name="Ресурс">30 000</param>
+<param name="Технология печати">Струйная</param>
+<param name="Тип">Картридж</param>
+<param name="Цвет">Чёрный</param>
+<keywords>HP, Печатающая головка HP 6ZA11AE (6ZA11AE) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13871695" available="true">
@@ -16853,64 +17065,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Canon, Плоттер Canon imagePROGRAF TM-240 (6242C003), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13847755" available="true">
-<categoryId>303</categoryId>
-<vendorCode>CP13847755</vendorCode>
-<name>Плоттер Canon imagePROGRAF TM-340 (6248C003)</name>
-<price>497900</price>
-<picture>https://www.comportal.kz/upload/iblock/d5a/2tiqydjmyj3afs9mwd9f2pidxofz7o4k.JPG</picture>
-<vendor>Canon</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Плоттер Canon imagePROGRAF TM-340 (6248C003)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Широкоформатный принтер. Формат печати: A0. Разрешение: 2400x1200. Скорость печати ч/б: 41. Порты: USB LAN Wi-FI. Технология печати: Струйная. Гарантия: 12 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Разрешение 2400x1200</li><li>Гарантия 12 мес</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> Canon</li><li><strong>Коды:</strong> 6248C003</li><li><strong>Модель:</strong> imagePROGRAF TM-340</li><li><strong>Порты:</strong> USB LAN Wi-FI</li><li><strong>Разрешение:</strong> 2400x1200</li><li><strong>Скорость печати ч/б:</strong> 41</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип:</strong> Широкоформатный принтер</li><li><strong>Формат печати:</strong> A0</li><li><strong>Функции:</strong> принтер</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">Canon</param>
-<param name="Коды">6248C003</param>
-<param name="Модель">imagePROGRAF TM-340</param>
-<param name="Порты">USB LAN Wi-FI</param>
-<param name="Разрешение">2400x1200</param>
-<param name="Скорость печати ч/б">41</param>
-<param name="Технология печати">Струйная</param>
-<param name="Тип">Широкоформатный принтер</param>
-<param name="Формат печати">A0</param>
-<param name="Функции">принтер</param>
-<keywords>Canon, Плоттер Canon imagePROGRAF TM-340 (6248C003), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13847756" available="true">
 <categoryId>303</categoryId>
 <vendorCode>CP13847756</vendorCode>
@@ -19131,6 +19285,69 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>Dell, Монитор Dell AW2725DF (210-BLHH), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="CP13863651" available="true">
+<categoryId>602</categoryId>
+<vendorCode>CP13863651</vendorCode>
+<name>Монитор Dell AW2725DF (210-BLHH)</name>
+<price>407900</price>
+<picture>https://www.comportal.kz/upload/iblock/a09/zgdbjh1g0e2lv1t7aocdfsi6fvde0ed6.JPG</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор Dell AW2725DF (210-BLHH)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Диагональ: 27. Максимальное разрешение: 2560x1440. Тип матрицы: OLED. Частота обновления: 360. Время отклика: 1. Порты: 2 x DP 1.4 /1 x HDMI 2.1/1 x USB 3.2 Gen 1 (5 Gbps) Type-B/2 x USB 3.2 Gen 1 (5 Gbps) Type-A/1 x USB 3.2 Gen 1 (5 Gbps) Type-C/1 x USB 3.2 Gen 1 (5 Gbps) Type-A. Гарантия: 36 мес.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
+
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Диагональ экрана 27</li><li>Гарантия 36 мес</li></ul>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Время отклика:</strong> 1</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Диагональ:</strong> 27</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> 210-BLHH</li><li><strong>Контрастность:</strong> 1500:1</li><li><strong>Максимальное разрешение:</strong> 2560x1440</li><li><strong>Модель:</strong> AW2725DF</li><li><strong>Порты:</strong> 2 x DP 1.4 /1 x HDMI 2.1/1 x USB 3.2 Gen 1 (5 Gbps) Type-B/2 x USB 3.2 Gen 1 (5 Gbps) Type-A/1 x USB 3.2 Gen 1 (5 Gbps) Type-C/1 x USB 3.2 Gen 1 (5 Gbps) Type-A</li><li><strong>Размер Pix:</strong> 111</li><li><strong>Тип:</strong> Монитор</li><li><strong>Тип матрицы:</strong> OLED</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Время отклика">1</param>
+<param name="Гарантия">36 мес</param>
+<param name="Диагональ">27</param>
+<param name="Для бренда">Dell</param>
+<param name="Коды">210-BLHH</param>
+<param name="Контрастность">1500:1</param>
+<param name="Максимальное разрешение">2560x1440</param>
+<param name="Модель">AW2725DF</param>
+<param name="Порты">2 x DP 1.4 /1 x HDMI 2.1/1 x USB 3.2 Gen 1 (5 Gbps) Type-B/2 x USB 3.2 Gen 1 (5 Gbps) Type-A/1 x USB 3.2 Gen 1 (5 Gbps) Type-C/1 x USB 3.2 Gen 1 (5 Gbps) Type-A</param>
+<param name="Размер Pix">111</param>
+<param name="Тип">Монитор</param>
+<param name="Тип матрицы">OLED</param>
+<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
+<param name="Цвет">Чёрный</param>
+<param name="Частота обновления">360</param>
+<param name="Яркость">1 000</param>
+<keywords>Dell, Монитор Dell AW2725DF (210-BLHH), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="CP13863652" available="true">
 <categoryId>602</categoryId>
 <vendorCode>CP13863652</vendorCode>
@@ -19261,6 +19478,68 @@ URL поставщика                             | https://www.comportal.kz/
 <name>Монитор Dell Pro 24 Plus P2425H (210-BMFF)</name>
 <price>101900</price>
 <picture>https://www.comportal.kz/upload/iblock/7c1/on0ej1inzuczbdngnshv9854xzm137j5.JPG</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор Dell Pro 24 Plus P2425H (210-BMFF)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Диагональ: 23.8. Максимальное разрешение: 1920x1080. Тип матрицы: IPS. Частота обновления: 100. Время отклика: 5. Порты: 1x HDMI 1.4/1x DP 1.2/1x VGA/1x USB 3.2 Gen1 Type-B/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C. Гарантия: 36 мес.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
+
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Диагональ экрана 23.8</li><li>Гарантия 36 мес</li></ul>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Время отклика:</strong> 5</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Диагональ:</strong> 23.8</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> 210-BMFF</li><li><strong>Контрастность:</strong> 1500:1</li><li><strong>Максимальное разрешение:</strong> 1920x1080</li><li><strong>Модель:</strong> P2425H</li><li><strong>Порты:</strong> 1x HDMI 1.4/1x DP 1.2/1x VGA/1x USB 3.2 Gen1 Type-B/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C</li><li><strong>Размер Pix:</strong> 92</li><li><strong>Тип:</strong> Монитор</li><li><strong>Тип матрицы:</strong> IPS</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Время отклика">5</param>
+<param name="Гарантия">36 мес</param>
+<param name="Диагональ">23.8</param>
+<param name="Для бренда">Dell</param>
+<param name="Коды">210-BMFF</param>
+<param name="Контрастность">1500:1</param>
+<param name="Максимальное разрешение">1920x1080</param>
+<param name="Модель">P2425H</param>
+<param name="Порты">1x HDMI 1.4/1x DP 1.2/1x VGA/1x USB 3.2 Gen1 Type-B/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C</param>
+<param name="Размер Pix">92</param>
+<param name="Тип">Монитор</param>
+<param name="Тип матрицы">IPS</param>
+<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
+<param name="Частота обновления">100</param>
+<param name="Яркость">250</param>
+<keywords>Dell, Монитор Dell Pro 24 Plus P2425H (210-BMFF), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13863654" available="true">
+<categoryId>602</categoryId>
+<vendorCode>CP13863654</vendorCode>
+<name>Монитор Dell Pro 24 Plus P2425H (210-BMFF)</name>
+<price>101900</price>
+<picture>https://www.comportal.kz/upload/iblock/5a8/uhdqh25r1xmk26h8h48wqzdiyuxajhns.JPG</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -19626,6 +19905,68 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Частота обновления">100</param>
 <param name="Яркость">300</param>
 <keywords>Dell, Монитор Dell P2725H (210-BMGC), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13863663" available="true">
+<categoryId>602</categoryId>
+<vendorCode>CP13863663</vendorCode>
+<name>Монитор Dell P2725HE USB-C (210-BMJC)</name>
+<price>140900</price>
+<picture>https://www.comportal.kz/upload/iblock/80f/3r5b70wt0bchat3e76o7izlj4qkd2a37.JPG</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор Dell P2725HE USB-C (210-BMJC)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Модельная серия: P2725HE USB-C. Диагональ: 27. Максимальное разрешение: 1920x1080. Тип матрицы: IPS. Частота обновления: 100. Время отклика: 8. Порты: 1x HDMI 1.4/1x DP 1.4/1x DP-out/1x RJ45/1x USB 3.2 Gen1 Type-C/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C. Гарантия: 36 мес.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
+
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Диагональ экрана 27</li><li>Гарантия 36 мес</li></ul>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Время отклика:</strong> 8</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Диагональ:</strong> 27</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> 210-BMJC</li><li><strong>Контрастность:</strong> 1500:1</li><li><strong>Максимальное разрешение:</strong> 1920x1080</li><li><strong>Модель:</strong> P2725HE USB-C</li><li><strong>Порты:</strong> 1x HDMI 1.4/1x DP 1.4/1x DP-out/1x RJ45/1x USB 3.2 Gen1 Type-C/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C</li><li><strong>Размер Pix:</strong> 81</li><li><strong>Тип:</strong> Монитор</li><li><strong>Тип матрицы:</strong> IPS</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Время отклика">8</param>
+<param name="Гарантия">36 мес</param>
+<param name="Диагональ">27</param>
+<param name="Для бренда">Dell</param>
+<param name="Коды">210-BMJC</param>
+<param name="Контрастность">1500:1</param>
+<param name="Максимальное разрешение">1920x1080</param>
+<param name="Модель">P2725HE USB-C</param>
+<param name="Порты">1x HDMI 1.4/1x DP 1.4/1x DP-out/1x RJ45/1x USB 3.2 Gen1 Type-C/3x USB 3.2 Gen1 Type-A/1x USB 3.2 Gen1 Type-C</param>
+<param name="Размер Pix">81</param>
+<param name="Тип">Монитор</param>
+<param name="Тип матрицы">IPS</param>
+<param name="Углы обзора (вертикальный/горизонтальный)">178/178</param>
+<param name="Частота обновления">100</param>
+<param name="Яркость">300</param>
+<keywords>Dell, Монитор Dell P2725HE USB-C (210-BMJC), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13863664" available="true">
@@ -20459,102 +20800,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Оригинальность">Оригинал</param>
 <param name="Тип">Картридж</param>
 <keywords>Canon, Чернила Canon INK GI-40 Y (3402C001) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13870307" available="true">
-<categoryId>105</categoryId>
-<vendorCode>CP13870307</vendorCode>
-<name>Барабан HP 877 Black Drum (W9077MC)</name>
-<price>157900</price>
-<picture>https://www.comportal.kz/upload/iblock/d53/8bxf0k9q11wc33on971waz1ddz3i7ji0.jpg</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Барабан HP 877 Black Drum (W9077MC)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">расходный материал HP 877 Black Drum код — W9077MC.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Дополнительная информация:</strong> W9077MC</li><li><strong>Коды:</strong> W9077MC</li><li><strong>Модель:</strong> 877 Black Drum</li><li><strong>Тип:</strong> Расходный материал</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Для бренда">HP</param>
-<param name="Дополнительная информация">W9077MC</param>
-<param name="Коды">W9077MC</param>
-<param name="Модель">877 Black Drum</param>
-<param name="Тип">Расходный материал</param>
-<keywords>HP, Барабан HP 877 Black Drum (W9077MC), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13870308" available="true">
-<categoryId>105</categoryId>
-<vendorCode>CP13870308</vendorCode>
-<name>Барабан HP 877 Color Drum (W9078MC)</name>
-<price>104900</price>
-<picture>https://www.comportal.kz/upload/iblock/39e/0tkyykfcblyt370mbc96qnu95fa6z8p5.jpg</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Барабан HP 877 Color Drum (W9078MC)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">расходный материал HP 877 Color Drum код — W9078MC.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Дополнительная информация:</strong> W9078MC</li><li><strong>Коды:</strong> W9078MC</li><li><strong>Модель:</strong> 877 Color Drum</li><li><strong>Тип:</strong> Расходный материал</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Для бренда">HP</param>
-<param name="Дополнительная информация">W9078MC</param>
-<param name="Коды">W9078MC</param>
-<param name="Модель">877 Color Drum</param>
-<param name="Тип">Расходный материал</param>
-<keywords>HP, Барабан HP 877 Color Drum (W9078MC), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13869655" available="true">
@@ -27101,6 +27346,108 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>APC, ИБП APC BVX900LI 230V AVR IEC Sockets (BVX900LI), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
+<offer id="CP13871259" available="true">
+<categoryId>102</categoryId>
+<vendorCode>CP13871259</vendorCode>
+<name>Картридж HP 938e EvoMore Black Original Ink Cartridge (4S6Y2PE) (оригинал)</name>
+<price>41900</price>
+<picture>https://www.comportal.kz/upload/iblock/bd0/70uqcp1zbb7rfyvwnujp92sv9yj2yqe4.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP 938e EvoMore Black Original Ink Cartridge (4S6Y2PE) (оригинал)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP 938e EvoMore Black Original Ink Cartridge код — 4S6Y2PE; цвет — Чёрный; ресурс — 2 500; технология печати — Лазерная.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 4S6Y2PE</li><li><strong>Модель:</strong> 938e EvoMore Black Original Ink Cartridge</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 2 500</li><li><strong>Технология печати:</strong> Лазерная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Чёрный</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">HP</param>
+<param name="Коды">4S6Y2PE</param>
+<param name="Модель">938e EvoMore Black Original Ink Cartridge</param>
+<param name="Оригинальность">Оригинал</param>
+<param name="Ресурс">2 500</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Тип">Картридж</param>
+<param name="Цвет">Чёрный</param>
+<keywords>HP, Картридж HP 938e EvoMore Black Original Ink Cartridge (4S6Y2PE) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13871260" available="true">
+<categoryId>102</categoryId>
+<vendorCode>CP13871260</vendorCode>
+<name>Картридж HP 938e EvoMore Magenta Original Ink Cartridge (4S6Y0PE) (оригинал)</name>
+<price>27900</price>
+<picture>https://www.comportal.kz/upload/iblock/c9b/64gjm69zcvzksp39msiycv85ihrlstsl.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP 938e EvoMore Magenta Original Ink Cartridge (4S6Y0PE) (оригинал)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP 938e EvoMore Magenta Original Ink Cartridge код — 4S6Y0PE; цвет — Пурпурный; ресурс — 1 650; технология печати — Лазерная.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 4S6Y0PE</li><li><strong>Модель:</strong> 938e EvoMore Magenta Original Ink Cartridge</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 1 650</li><li><strong>Технология печати:</strong> Лазерная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Пурпурный</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">HP</param>
+<param name="Коды">4S6Y0PE</param>
+<param name="Модель">938e EvoMore Magenta Original Ink Cartridge</param>
+<param name="Оригинальность">Оригинал</param>
+<param name="Ресурс">1 650</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Тип">Картридж</param>
+<param name="Цвет">Пурпурный</param>
+<keywords>HP, Картридж HP 938e EvoMore Magenta Original Ink Cartridge (4S6Y0PE) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
 <offer id="CP13871261" available="true">
 <categoryId>102</categoryId>
 <vendorCode>CP13871261</vendorCode>
@@ -27150,6 +27497,57 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип">Картридж</param>
 <param name="Цвет">Голубой</param>
 <keywords>HP, Картридж HP 938e EvoMore Cyan Original Ink Cartridge (4S6X9PE) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13871262" available="true">
+<categoryId>102</categoryId>
+<vendorCode>CP13871262</vendorCode>
+<name>Картридж HP 938e EvoMore Yellow Original Ink Cartridge (4S6Y1PE) (оригинал)</name>
+<price>27900</price>
+<picture>https://www.comportal.kz/upload/iblock/814/kcsc60o0ny45bsr5l25730cnyrsffgjy.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Картридж HP 938e EvoMore Yellow Original Ink Cartridge (4S6Y1PE) (оригинал)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Оригинальный картридж HP 938e EvoMore Yellow Original Ink Cartridge код — 4S6Y1PE; цвет — Жёлтый; ресурс — 1 650; технология печати — Лазерная.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> 4S6Y1PE</li><li><strong>Модель:</strong> 938e EvoMore Yellow Original Ink Cartridge</li><li><strong>Оригинальность:</strong> Оригинал</li><li><strong>Ресурс:</strong> 1 650</li><li><strong>Технология печати:</strong> Лазерная</li><li><strong>Тип:</strong> Картридж</li><li><strong>Цвет:</strong> Жёлтый</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Для бренда">HP</param>
+<param name="Коды">4S6Y1PE</param>
+<param name="Модель">938e EvoMore Yellow Original Ink Cartridge</param>
+<param name="Оригинальность">Оригинал</param>
+<param name="Ресурс">1 650</param>
+<param name="Технология печати">Лазерная</param>
+<param name="Тип">Картридж</param>
+<param name="Цвет">Жёлтый</param>
+<keywords>HP, Картридж HP 938e EvoMore Yellow Original Ink Cartridge (4S6Y1PE) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13871452" available="true">
@@ -27857,6 +28255,87 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Тип">Картридж</param>
 <param name="Цвет">Чёрный</param>
 <keywords>Canon, Картридж Canon LBP CARTRIDGE 072H (5648C002) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13872087" available="true">
+<categoryId>601</categoryId>
+<vendorCode>CP13872087</vendorCode>
+<name>Ноутбук HP ProBook 4 G1iR (C5BX2AT#BJA)</name>
+<price>626900</price>
+<picture>https://www.comportal.kz/upload/iblock/54e/8petlrqznoj4kh5eaqwcy8ysyt83a3q4.jpg</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук HP ProBook 4 G1iR (C5BX2AT#BJA)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: ProBook 4 G1iR. Процессор: Intel 120U Core Ultra 5 1,4. Оперативная память: 16 Gb / DDR5 / 5600. Накопитель: 512 / PCIe NVMe SSD / 1 шт. Диагональ: 16. Разрешение: 1920x1200. ОС: Microsoft Windows 11 Pro 64. Видеокарта: Intel 256 Mb. Wi‑Fi: AX211. Bluetooth: Bluetooth 5.3. Камера: 5.0 mpix. Гарантия: 12 мес.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
+
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Оперативная память 16 Gb</li><li>Операционная система Windows 11</li><li>Поддержка Wi-Fi AX211</li><li>Поддержка Bluetooth 5.3</li></ul>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Bluetooth:</strong> Bluetooth 5.3</li><li><strong>Wi-Fi:</strong> AX211</li><li><strong>Адаптер:</strong> 45W USB Type-C Adapter</li><li><strong>Аккумулятор:</strong> 3 Cell 56WHr</li><li><strong>Битность операционной системы:</strong> 64</li><li><strong>Версия операционной системы:</strong> Pro</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> HP</li><li><strong>Занятые слоты памяти:</strong> 1</li><li><strong>Камера:</strong> 5.0 mpix</li><li><strong>Коды:</strong> C5BX2AT#BJA</li><li><strong>Количество дисков:</strong> 1</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Bluetooth">Bluetooth 5.3</param>
+<param name="Wi-Fi">AX211</param>
+<param name="Адаптер">45W USB Type-C Adapter</param>
+<param name="Аккумулятор">3 Cell 56WHr</param>
+<param name="Битность операционной системы">64</param>
+<param name="Версия операционной системы">Pro</param>
+<param name="Гарантия">12 мес</param>
+<param name="Для бренда">HP</param>
+<param name="Занятые слоты памяти">1</param>
+<param name="Камера">5.0 mpix</param>
+<param name="Коды">C5BX2AT#BJA</param>
+<param name="Количество дисков">1</param>
+<param name="Количество слотов памяти">2</param>
+<param name="Марка чипсета видеокарты">Graphics</param>
+<param name="Модель">ProBook 4 G1iR</param>
+<param name="Модель процессора">Core Ultra 5</param>
+<param name="Объем видеопамяти">256 Mb</param>
+<param name="Объем жесткого диска">512</param>
+<param name="Оперативная память">16 Gb</param>
+<param name="Операционная система">Windows 11</param>
+<param name="Производитель операционной системы">Microsoft</param>
+<param name="Производитель процессора">Intel</param>
+<param name="Производитель чипсета видеокарты">Intel</param>
+<param name="Размер дисплея">16</param>
+<param name="Разрешение дисплея">1920x1200</param>
+<param name="Серия процессора">120U</param>
+<param name="Тип">Ноутбук</param>
+<param name="Тип жесткого диска">PCIe NVMe SSD</param>
+<param name="Тип матрицы">FHD</param>
+<param name="Тип оперативной памяти">DDR5</param>
+<param name="Тип привода">No ODD</param>
+<param name="Цвет">Серый</param>
+<param name="Частота оперативной памяти">5600</param>
+<param name="Частота процессора">1,4</param>
+<keywords>HP, Ноутбук HP ProBook 4 G1iR (C5BX2AT#BJA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13872107" available="true">
@@ -29757,86 +30236,6 @@ URL поставщика                             | https://www.comportal.kz/
 <keywords>HP, Ноутбук HP EliteBook 8 G1a (AD4J9ET#BJA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
-<offer id="CP13872116" available="true">
-<categoryId>601</categoryId>
-<vendorCode>CP13872116</vendorCode>
-<name>Ноутбук HP EliteBook 8 G1i (AD4H8ET#BJA)</name>
-<price>730900</price>
-<picture>https://www.comportal.kz/upload/iblock/0cd/gg40l0lyh9agd69bc4kbqf59j25e3ygj.jpg</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук HP EliteBook 8 G1i (AD4H8ET#BJA)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: EliteBook 8 G1i. Процессор: Intel 255H Core Ultra 7 2. Оперативная память: 32 Gb / DDR5 / 5600. Накопитель: 1000 / PCIe NVMe SSD / 1 шт. Диагональ: 16. Разрешение: 1920x1200. ОС: Microsoft Windows 11 Pro 64. Видеокарта: Intel Arc 140V 256 Mb. Wi‑Fi: AX211. Bluetooth: Bluetooth 5.3. Камера: 5.0 mpix. Гарантия: 36 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Оперативная память 32 Gb</li><li>Операционная система Windows 11</li><li>Поддержка Wi-Fi AX211</li><li>Поддержка Bluetooth 5.3</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Bluetooth:</strong> Bluetooth 5.3</li><li><strong>Wi-Fi:</strong> AX211</li><li><strong>Адаптер:</strong> 65W Type-C Adapter</li><li><strong>Аккумулятор:</strong> 3 Cell 62WHr</li><li><strong>Битность операционной системы:</strong> 64</li><li><strong>Версия операционной системы:</strong> Pro</li><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Бренд:</strong> HP</li><li><strong>Камера:</strong> 5.0 mpix</li><li><strong>Коды:</strong> AD4H8ET#BJA</li><li><strong>Количество дисков:</strong> 1</li><li><strong>Марка чипсета видеокарты:</strong> Graphics</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Bluetooth">Bluetooth 5.3</param>
-<param name="Wi-Fi">AX211</param>
-<param name="Адаптер">65W Type-C Adapter</param>
-<param name="Аккумулятор">3 Cell 62WHr</param>
-<param name="Битность операционной системы">64</param>
-<param name="Версия операционной системы">Pro</param>
-<param name="Гарантия">36 мес</param>
-<param name="Для бренда">HP</param>
-<param name="Камера">5.0 mpix</param>
-<param name="Коды">AD4H8ET#BJA</param>
-<param name="Количество дисков">1</param>
-<param name="Марка чипсета видеокарты">Graphics</param>
-<param name="Модель">EliteBook 8 G1i</param>
-<param name="Модель процессора">Core Ultra 7</param>
-<param name="Модель чипсета видеокарты">Arc 140V</param>
-<param name="Объем видеопамяти">256 Mb</param>
-<param name="Объем жесткого диска">1000</param>
-<param name="Оперативная память">32 Gb</param>
-<param name="Операционная система">Windows 11</param>
-<param name="Производитель операционной системы">Microsoft</param>
-<param name="Производитель процессора">Intel</param>
-<param name="Производитель чипсета видеокарты">Intel</param>
-<param name="Размер дисплея">16</param>
-<param name="Разрешение дисплея">1920x1200</param>
-<param name="Серия процессора">255H</param>
-<param name="Тип">Ноутбук</param>
-<param name="Тип жесткого диска">PCIe NVMe SSD</param>
-<param name="Тип матрицы">IPS</param>
-<param name="Тип оперативной памяти">DDR5</param>
-<param name="Тип привода">No ODD</param>
-<param name="Цвет">Серый</param>
-<param name="Частота оперативной памяти">5600</param>
-<param name="Частота процессора">2</param>
-<keywords>HP, Ноутбук HP EliteBook 8 G1i (AD4H8ET#BJA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
 <offer id="CP13872375" available="true">
 <categoryId>601</categoryId>
 <vendorCode>CP13872375</vendorCode>
@@ -30692,86 +31091,6 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">TUF Gaming F16 / FX608JPR-QT092</param>
 <param name="Тип">Ноутбук</param>
 <keywords>ASUS, Ноутбук ASUS TUF Gaming F16 / FX608JPR-QT092 (90NR0NG1-M00680), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
-</offer>
-
-<offer id="CP13872384" available="true">
-<categoryId>601</categoryId>
-<vendorCode>CP13872384</vendorCode>
-<name>Ноутбук ASUS ExpertBook / P1403CVA-S61785 (90NX0871-M022T0)</name>
-<price>303900</price>
-<picture>https://www.comportal.kz/upload/iblock/9bc/kyoz2nwc5cfyh6bwmrcss0tlnp4zdv4c.JPG</picture>
-<vendor>ASUS</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
-<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук ASUS ExpertBook / P1403CVA-S61785 (90NX0871-M022T0)</h3>
-
-<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Процессор: Intel 210H Core 5 2,2. Оперативная память: 16 Gb / DDR5 / 5200. Накопитель: 512 / PCIe NVMe SSD / 1 шт. Диагональ: 14. Разрешение: 1920x1080. ОС: Без операционной системы. Видеокарта: Intel 256 Mb. Wi‑Fi: 802.11ax. Bluetooth: Bluetooth 5.4. Камера: HD Camera. Гарантия: 12 мес.</p>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Преимущества модели</h3>
-
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li>Оперативная память 16 Gb</li><li>Операционная система Без операционной системы</li><li>Поддержка Wi-Fi 802.11ax</li><li>Поддержка Bluetooth 5.4</li></ul>
-
-<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
-<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Bluetooth:</strong> Bluetooth 5.4</li><li><strong>Wi-Fi:</strong> 802.11ax</li><li><strong>Адаптер:</strong> 65W AC Adapter</li><li><strong>Аккумулятор:</strong> 3 Cell 50WHr</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Бренд:</strong> ASUS</li><li><strong>Занятые слоты памяти:</strong> 1</li><li><strong>Камера:</strong> HD Camera</li><li><strong>Коды:</strong> 90NX0871-M022T0</li><li><strong>Количество дисков:</strong> 1</li><li><strong>Количество портов USB:</strong> 2</li><li><strong>Количество слотов памяти:</strong> 2</li></ul>
-
-<div style="text-align:center;margin:10px 0 8px 0;">
-  <div class="ck-alert ck-alert_theme_green">
-    <div style="padding:4px 10px;font-family:inherit;">
-      <span class="ck-alert__title"></span>
-      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
-      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
-      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
-    </div>
-  </div>
-</div>
-
-<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
-  <div style="padding:4px 10px;font-family:inherit;">
-    <span class="ck-alert__title"></span>
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
-    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
-    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
-  </div>
-</div>
-
-</div>]]></description>
-<param name="Bluetooth">Bluetooth 5.4</param>
-<param name="Wi-Fi">802.11ax</param>
-<param name="Адаптер">65W AC Adapter</param>
-<param name="Аккумулятор">3 Cell 50WHr</param>
-<param name="Гарантия">12 мес</param>
-<param name="Для бренда">ASUS</param>
-<param name="Занятые слоты памяти">1</param>
-<param name="Камера">HD Camera</param>
-<param name="Коды">90NX0871-M022T0</param>
-<param name="Количество дисков">1</param>
-<param name="Количество портов USB">2</param>
-<param name="Количество слотов памяти">2</param>
-<param name="Марка чипсета видеокарты">Graphics</param>
-<param name="Модель">P1403CVA</param>
-<param name="Модель процессора">Core 5</param>
-<param name="Объем видеопамяти">256 Mb</param>
-<param name="Объем жесткого диска">512</param>
-<param name="Оперативная память">16 Gb</param>
-<param name="Операционная система">Без операционной системы</param>
-<param name="Порты">2x USB 3.2 Gen 1 Type-A / 2x USB 3.2 Gen 2 Type-C support display power delivery / 1x HDMI 1.4 / 1x 3.5mm Combo Audio Jack / 1x RJ45 Gigabit Ethernet</param>
-<param name="Производитель процессора">Intel</param>
-<param name="Производитель чипсета видеокарты">Intel</param>
-<param name="Размер дисплея">14</param>
-<param name="Разрешение дисплея">1920x1080</param>
-<param name="Серия процессора">210H</param>
-<param name="Тип">Ноутбук</param>
-<param name="Тип жесткого диска">PCIe NVMe SSD</param>
-<param name="Тип матрицы">IPS</param>
-<param name="Тип оперативной памяти">DDR5</param>
-<param name="Тип привода">No ODD</param>
-<param name="Цвет">Серый</param>
-<param name="Частота оперативной памяти">5200</param>
-<param name="Частота процессора">2,2</param>
-<keywords>ASUS, Ноутбук ASUS ExpertBook / P1403CVA-S61785 (90NX0871-M022T0), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13872591" available="true">
@@ -33062,7 +33381,7 @@ URL поставщика                             | https://www.comportal.kz/
 <categoryId>601</categoryId>
 <vendorCode>CP13873168</vendorCode>
 <name>Ноутбук Dell Pro 14 PC14250 (210-BQHF / BTO108_PC14250_EMEA)</name>
-<price>1024900</price>
+<price>1032900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Dell</vendor>
 <currencyId>KZT</currencyId>
@@ -33488,6 +33807,54 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Модель">ProDesk 2 Tower G1i</param>
 <param name="Тип">Настольный ПК</param>
 <keywords>HP, Компьютер HP ProDesk 2 Tower G1i (B6XD2ET#BJA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13873424" available="true">
+<categoryId>601</categoryId>
+<vendorCode>CP13873424</vendorCode>
+<name>Ноутбук HP ProBook 4 G1iR 14 (CZ9B2AT#BJA)</name>
+<price>639900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>HP</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Ноутбук HP ProBook 4 G1iR 14 (CZ9B2AT#BJA)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Ноутбук. Модельная серия: ProBook 4 G1iR 14. Гарантия: 36 мес. Для бренда: HP. Модель: ProBook 4 G1iR 14. Коды: CZ9B2AT#BJA.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Бренд:</strong> HP</li><li><strong>Коды:</strong> CZ9B2AT#BJA</li><li><strong>Модель:</strong> ProBook 4 G1iR 14</li><li><strong>Тип:</strong> Ноутбук</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">HP</param>
+<param name="Коды">CZ9B2AT#BJA</param>
+<param name="Модель">ProBook 4 G1iR 14</param>
+<param name="Тип">Ноутбук</param>
+<keywords>HP, Ноутбук HP ProBook 4 G1iR 14 (CZ9B2AT#BJA), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13873203" available="true">
@@ -34016,6 +34383,54 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Оригинальность">Оригинал</param>
 <param name="Тип">Картридж</param>
 <keywords>HP, Тонер-картридж HP W9087MC (W9087MC) (оригинал), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
+</offer>
+
+<offer id="CP13873405" available="true">
+<categoryId>602</categoryId>
+<vendorCode>CP13873405</vendorCode>
+<name>Монитор Dell Pro P 27 Monitor - P2726H (210-BVKP)</name>
+<price>109900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Dell</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<div style="font-family:Verdana, Tahoma, Arial, sans-serif;color:#2F2F2F;">
+<h3 style="margin:0 0 10px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Монитор Dell Pro P 27 Monitor - P2726H (210-BVKP)</h3>
+
+<p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;font-family:inherit;">Монитор. Диагональ: 27. Гарантия: 36 мес. Для бренда: Dell. Модель: P2726H. Коды: 210-BVKP.</p>
+
+<h3 style="margin:14px 0 8px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Характеристики</h3>
+<ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Гарантия:</strong> 36 мес</li><li><strong>Бренд:</strong> Dell</li><li><strong>Коды:</strong> 210-BVKP</li><li><strong>Модель:</strong> P2726H</li><li><strong>Тип:</strong> Монитор</li></ul>
+
+<div style="text-align:center;margin:10px 0 8px 0;">
+  <div class="ck-alert ck-alert_theme_green">
+    <div style="padding:4px 10px;font-family:inherit;">
+      <span class="ck-alert__title"></span>
+      <p style="margin:0 0 4px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>Просьба отправлять запросы на WhatsApp!</strong></p>
+      <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;font-family:inherit;"><strong>+7 707 327-05-01</strong></p>
+      <p style="margin:0;font-size:14px;line-height:1.5;font-family:inherit;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block;padding:6px 12px;border:1px solid #146737;border-radius:6px;color:#146737;text-decoration:none;background:#FFFFFF;font-family:inherit;"><strong>💬 НАПИСАТЬ В WHATSAPP</strong></a></p>
+    </div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert_theme_orange" style="margin:8px 0 0 0;">
+  <div style="padding:4px 10px;font-family:inherit;">
+    <span class="ck-alert__title"></span>
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Оплата</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>
+    <hr style="border:none;height:1px;background:#E7D6B7;margin:8px 0;" />
+    <h3 style="text-align:left;margin:0 0 6px 0;font-size:20px;line-height:1.3;font-family:inherit;color:#2F2F2F;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0 0 12px 0;padding-left:18px;font-size:14px;line-height:1.5;font-family:inherit;"><li><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</li><li><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</li><li><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</li><li><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</li></ul>
+  </div>
+</div>
+
+</div>]]></description>
+<param name="Гарантия">36 мес</param>
+<param name="Для бренда">Dell</param>
+<param name="Коды">210-BVKP</param>
+<param name="Модель">P2726H</param>
+<param name="Тип">Монитор</param>
+<keywords>Dell, Монитор Dell Pro P 27 Monitor - P2726H (210-BVKP), доставка по Казахстану, отправка в регионы, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Костанай, Атырау, Актау, Усть-Каменогорск, Семей, Тараз</keywords>
 </offer>
 
 <offer id="CP13873373" available="true">
