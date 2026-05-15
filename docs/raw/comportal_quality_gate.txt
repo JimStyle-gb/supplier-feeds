@@ -36,7 +36,6 @@ CRITICAL:
 COSMETIC TOTAL:
 CP13760984 | duplicate_brand_in_name | Требует ручной проверки | Картридж HP HP 47 (6ZD21AE#BHK) (оригинал)
 CP13760985 | duplicate_brand_in_name | Требует ручной проверки | Картридж HP HP 47 (6ZD61AE#BHK) (оригинал)
-CP10400041 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP10420608 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP10532957 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP10782666 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
@@ -54,7 +53,6 @@ CP13872564 | placeholder_picture | Требует ручной проверки 
 CP13872565 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872566 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872567 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
-CP13872568 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872581 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872591 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872599 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
@@ -63,6 +61,7 @@ CP13872623 | placeholder_picture | Требует ручной проверки 
 CP13872628 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872652 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872662 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
+CP13872682 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872686 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872763 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872771 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
@@ -166,13 +165,13 @@ CP13873362 | placeholder_picture | Требует ручной проверки 
 CP13873373 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13873405 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13873424 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
+CP13873439 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 
 NEW COSMETIC:
 CP13760984 | duplicate_brand_in_name | Требует ручной проверки | Картридж HP HP 47 (6ZD21AE#BHK) (оригинал)
 CP13760985 | duplicate_brand_in_name | Требует ручной проверки | Картридж HP HP 47 (6ZD61AE#BHK) (оригинал)
 
 KNOWN COSMETIC:
-CP10400041 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP10420608 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP10532957 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP10782666 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
@@ -190,7 +189,6 @@ CP13872564 | placeholder_picture | Требует ручной проверки 
 CP13872565 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872566 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872567 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
-CP13872568 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872581 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872591 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872599 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
@@ -199,6 +197,7 @@ CP13872623 | placeholder_picture | Требует ручной проверки 
 CP13872628 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872652 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872662 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
+CP13872682 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872686 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872763 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13872771 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
@@ -302,3 +301,4 @@ CP13873362 | placeholder_picture | Требует ручной проверки 
 CP13873373 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13873405 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
 CP13873424 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
+CP13873439 | placeholder_picture | Требует ручной проверки | https://placehold.co/800x800/png?text=No+Photo
