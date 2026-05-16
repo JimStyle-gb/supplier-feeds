@@ -1,18 +1,18 @@
 ПОДРОБНЫЙ ОТЧЁТ PRICE CHECKER
-Сформирован: 15 мая 2026 г. 09:33:13
-Время сборки Price: 15 мая 2026 г. 06:20:53
+Сформирован: 16 мая 2026 г. 09:07:44
+Время сборки Price: 16 мая 2026 г. 05:13:27
 Итоговый статус: ТРЕБУЕТ ВНИМАНИЯ
 Причина: Есть новые товары, которые не вошли в final из-за отсутствия categoryId.
 
 ======================================================================
 СВОДКА
 ======================================================================
-Всего товаров в Price: 7115
-В наличии: 6592
-Нет в наличии: 523
+Всего товаров в Price: 7096
+В наличии: 6569
+Нет в наличии: 527
 
 Товары без цены: 252
-С заглушкой фото: 552
+С заглушкой фото: 548
 Без categoryId в Price: 0
 С невалидным categoryId в Price: 0
 Без категории Satu: 0
@@ -26,9 +26,9 @@
 ======================================================================
 СВОДКА ПО ПОСТАВЩИКАМ
 ======================================================================
-AkCent | всего=148 | в наличии=148 | нет в наличии=0 | без цены=0 | заглушка фото=5 | не вошло в final без categoryId=0 | без категории Satu=0
-AlStyle | всего=2002 | в наличии=1479 | нет в наличии=523 | без цены=4 | заглушка фото=2 | не вошло в final без categoryId=2 | без категории Satu=0
-ComPortal | всего=637 | в наличии=637 | нет в наличии=0 | без цены=0 | заглушка фото=130 | не вошло в final без categoryId=1 | без категории Satu=0
+AkCent | всего=144 | в наличии=144 | нет в наличии=0 | без цены=0 | заглушка фото=1 | не вошло в final без categoryId=0 | без категории Satu=0
+AlStyle | всего=2001 | в наличии=1474 | нет в наличии=527 | без цены=4 | заглушка фото=2 | не вошло в final без categoryId=2 | без категории Satu=0
+ComPortal | всего=623 | в наличии=623 | нет в наличии=0 | без цены=0 | заглушка фото=130 | не вошло в final без categoryId=1 | без категории Satu=0
 CopyLine | всего=1224 | в наличии=1224 | нет в наличии=0 | без цены=26 | заглушка фото=0 | не вошло в final без categoryId=0 | без категории Satu=0
 VTT | всего=3104 | в наличии=3104 | нет в наличии=0 | без цены=222 | заглушка фото=415 | не вошло в final без categoryId=0 | без категории Satu=0
 
@@ -303,143 +303,139 @@ VTT | ready_to_ship_no_price | id=VTZ7Y73A | vendorCode=VTZ7Y73A | categoryId=20
 ======================================================================
 ТОВАРЫ С ЗАГЛУШКОЙ ФОТО
 ======================================================================
-AkCent | placeholder_photo | id=ACC13T694100 | vendorCode=ACC13T694100 | categoryId=102 | price=235900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Epson C13T694100, чёрный, 700 мл (оригинал)
-AkCent | placeholder_photo | id=ACC11CJ62404 | vendorCode=ACC11CJ62404 | categoryId=301 | price=316900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=МФУ Epson L6260 фабрика печати, Wi-Fi
-AkCent | placeholder_photo | id=ACV11HB51042 | vendorCode=ACV11HB51042 | categoryId=401 | price=304900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Проектор универсальный Epson EB-E24
-AkCent | placeholder_photo | id=ACV11H977040 | vendorCode=ACV11H977040 | categoryId=401 | price=383900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Проектор универсальный Epson EB-W51
-AkCent | placeholder_photo | id=AC4400501 | vendorCode=AC4400501 | categoryId=205 | price=53900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU
+AkCent | placeholder_photo | id=ACC11CJ62404 | vendorCode=ACC11CJ62404 | categoryId=301 | price=319900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=МФУ Epson L6260 фабрика печати, Wi-Fi
 AlStyle | placeholder_photo | id=AS406006 | vendorCode=AS406006 | categoryId=602 | price=3932900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Источник бесперебойного питания CyberPower HSTP3T30KE
 AlStyle | placeholder_photo | id=AS420489 | vendorCode=AS420489 | categoryId=301 | price=945900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монохромное лазерное МФУ Canon imageRUNNER 2425i II
-ComPortal | placeholder_photo | id=CP10532957 | vendorCode=CP10532957 | categoryId=701 | price=2657900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC SRT10KXLI (SRT10KXLI)
+ComPortal | placeholder_photo | id=CP10532957 | vendorCode=CP10532957 | categoryId=701 | price=2639900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC SRT10KXLI (SRT10KXLI)
 ComPortal | placeholder_photo | id=CP13873256 | vendorCode=CP13873256 | categoryId=101 | price=15900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Canon 737 (9435B002) (оригинал)
-ComPortal | placeholder_photo | id=CP10420608 | vendorCode=CP10420608 | categoryId=701 | price=2806900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC SRT8KRMXLI (SRT8KRMXLI)
-ComPortal | placeholder_photo | id=CP13873335 | vendorCode=CP13873335 | categoryId=701 | price=1266900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC SRT3000XLI (SRT3000XLI)
-ComPortal | placeholder_photo | id=CP10400041 | vendorCode=CP10400041 | categoryId=101 | price=35900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Canon 729 M (4368B002AA) (оригинал)
-ComPortal | placeholder_photo | id=CP13850386 | vendorCode=CP13850386 | categoryId=101 | price=69900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Печатающая головка HP P2V25A (P2V25A) (оригинал)
-ComPortal | placeholder_photo | id=CP13837247 | vendorCode=CP13837247 | categoryId=101 | price=93900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж HP P2V79A (P2V79A) (оригинал)
+ComPortal | placeholder_photo | id=CP10420608 | vendorCode=CP10420608 | categoryId=701 | price=2786900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC SRT8KRMXLI (SRT8KRMXLI)
+ComPortal | placeholder_photo | id=CP13873335 | vendorCode=CP13873335 | categoryId=701 | price=1257900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC SRT3000XLI (SRT3000XLI)
+ComPortal | placeholder_photo | id=CP13850386 | vendorCode=CP13850386 | categoryId=101 | price=68900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Печатающая головка HP P2V25A (P2V25A) (оригинал)
+ComPortal | placeholder_photo | id=CP13837247 | vendorCode=CP13837247 | categoryId=101 | price=92900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж HP P2V79A (P2V79A) (оригинал)
 ComPortal | placeholder_photo | id=CP10782666 | vendorCode=CP10782666 | categoryId=101 | price=43900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж HP 207A (W2210A) (оригинал)
 ComPortal | placeholder_photo | id=CP10782667 | vendorCode=CP10782667 | categoryId=101 | price=49900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж HP 207A (W2211A) (оригинал)
 ComPortal | placeholder_photo | id=CP10782668 | vendorCode=CP10782668 | categoryId=101 | price=49900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж HP 207A (W2212A) (оригинал)
 ComPortal | placeholder_photo | id=CP13870174 | vendorCode=CP13870174 | categoryId=207 | price=3900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Привод Canon FE3-3011-000000 (FE3-3011-000000)
 ComPortal | placeholder_photo | id=CP13872560 | vendorCode=CP13872560 | categoryId=101 | price=54900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 64 (5753C002) (оригинал)
-ComPortal | placeholder_photo | id=CP13872561 | vendorCode=CP13872561 | categoryId=101 | price=99900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 64 (5754C002) (оригинал)
+ComPortal | placeholder_photo | id=CP13872561 | vendorCode=CP13872561 | categoryId=101 | price=98900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 64 (5754C002) (оригинал)
 ComPortal | placeholder_photo | id=CP13872562 | vendorCode=CP13872562 | categoryId=101 | price=103900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 64 (5756C002) (оригинал)
 ComPortal | placeholder_photo | id=CP13872563 | vendorCode=CP13872563 | categoryId=101 | price=98900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 64 (5755C002) (оригинал)
-ComPortal | placeholder_photo | id=CP13872564 | vendorCode=CP13872564 | categoryId=101 | price=68900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 65 (5761C001) (оригинал)
-ComPortal | placeholder_photo | id=CP13872565 | vendorCode=CP13872565 | categoryId=101 | price=98900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 65 (5762C001) (оригинал)
-ComPortal | placeholder_photo | id=CP13872566 | vendorCode=CP13872566 | categoryId=101 | price=98900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 65 (5764C001) (оригинал)
-ComPortal | placeholder_photo | id=CP13872567 | vendorCode=CP13872567 | categoryId=101 | price=98900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 65 (5763C001) (оригинал)
-ComPortal | placeholder_photo | id=CP13872829 | vendorCode=CP13872829 | categoryId=401 | price=265900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Проектор Acer X1328WHn (MR.JX211.001)
-ComPortal | placeholder_photo | id=CP13873232 | vendorCode=CP13873232 | categoryId=602 | price=447900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell AW2725DF (210-BLHH)
-ComPortal | placeholder_photo | id=CP13872947 | vendorCode=CP13872947 | categoryId=601 | price=390900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Vostro 3530 (210-BGLW-N1601PVNB3530EMEA01_UBU)
-ComPortal | placeholder_photo | id=CP13872568 | vendorCode=CP13872568 | categoryId=301 | price=1146900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=МФУ Canon imageRUNNER C3326i (5965C005 / bundle)
+ComPortal | placeholder_photo | id=CP13872564 | vendorCode=CP13872564 | categoryId=101 | price=67900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 65 (5761C001) (оригинал)
+ComPortal | placeholder_photo | id=CP13872565 | vendorCode=CP13872565 | categoryId=101 | price=97900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 65 (5762C001) (оригинал)
+ComPortal | placeholder_photo | id=CP13872566 | vendorCode=CP13872566 | categoryId=101 | price=97900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 65 (5764C001) (оригинал)
+ComPortal | placeholder_photo | id=CP13872567 | vendorCode=CP13872567 | categoryId=101 | price=97900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 65 (5763C001) (оригинал)
+ComPortal | placeholder_photo | id=CP13872829 | vendorCode=CP13872829 | categoryId=401 | price=263900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Проектор Acer X1328WHn (MR.JX211.001)
+ComPortal | placeholder_photo | id=CP13873232 | vendorCode=CP13873232 | categoryId=602 | price=444900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell AW2725DF (210-BLHH)
+ComPortal | placeholder_photo | id=CP13872947 | vendorCode=CP13872947 | categoryId=601 | price=387900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Vostro 3530 (210-BGLW-N1601PVNB3530EMEA01_UBU)
 ComPortal | placeholder_photo | id=CP13872652 | vendorCode=CP13872652 | categoryId=102 | price=6900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила Canon INK GI-40 M (3401C001) (оригинал)
 ComPortal | placeholder_photo | id=CP13870401 | vendorCode=CP13870401 | categoryId=102 | price=6900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Чернила Canon INK GI-40 Y (3402C001) (оригинал)
-ComPortal | placeholder_photo | id=CP13872771 | vendorCode=CP13872771 | categoryId=603 | price=222900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок AIWA PF2402-D 8-256 (PF2402-D 8-256)
-ComPortal | placeholder_photo | id=CP13872772 | vendorCode=CP13872772 | categoryId=603 | price=241900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок AIWA PF2402-K 8-512 (PF2402-K 8-512)
-ComPortal | placeholder_photo | id=CP13872773 | vendorCode=CP13872773 | categoryId=603 | price=260900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок AIWA PF2702-K 16-512 (PF2702-K 16-512)
-ComPortal | placeholder_photo | id=CP13873236 | vendorCode=CP13873236 | categoryId=602 | price=180900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro 14 Plus Portable Monitor - P1425 (210-BQTB)
-ComPortal | placeholder_photo | id=CP13873043 | vendorCode=CP13873043 | categoryId=602 | price=572900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell UltraSharp 32 4K Thunderbolt Hub Monitor - U3225QE (210-BQTK)
+ComPortal | placeholder_photo | id=CP13872771 | vendorCode=CP13872771 | categoryId=603 | price=220900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок AIWA PF2402-D 8-256 (PF2402-D 8-256)
+ComPortal | placeholder_photo | id=CP13872772 | vendorCode=CP13872772 | categoryId=603 | price=239900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок AIWA PF2402-K 8-512 (PF2402-K 8-512)
+ComPortal | placeholder_photo | id=CP13872773 | vendorCode=CP13872773 | categoryId=603 | price=258900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок AIWA PF2702-K 16-512 (PF2702-K 16-512)
+ComPortal | placeholder_photo | id=CP13873236 | vendorCode=CP13873236 | categoryId=602 | price=179900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro 14 Plus Portable Monitor - P1425 (210-BQTB)
+ComPortal | placeholder_photo | id=CP13873043 | vendorCode=CP13873043 | categoryId=602 | price=568900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell UltraSharp 32 4K Thunderbolt Hub Monitor - U3225QE (210-BQTK)
 ComPortal | placeholder_photo | id=CP13873237 | vendorCode=CP13873237 | categoryId=602 | price=76900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro 24 Adjustable Stand Monitor - E2425HSM (210-BRDV)
-ComPortal | placeholder_photo | id=CP13873238 | vendorCode=CP13873238 | categoryId=602 | price=64900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro 22 Adjustable Stand Monitor - E2225HSM (210-BRDT)
-ComPortal | placeholder_photo | id=CP13873044 | vendorCode=CP13873044 | categoryId=602 | price=65900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro 24 Monitor - E2425HM, 60.47cm (23.8") (210-BRDN)
+ComPortal | placeholder_photo | id=CP13873238 | vendorCode=CP13873238 | categoryId=602 | price=63900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro 22 Adjustable Stand Monitor - E2225HSM (210-BRDT)
+ComPortal | placeholder_photo | id=CP13873044 | vendorCode=CP13873044 | categoryId=602 | price=64900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro 24 Monitor - E2425HM, 60.47cm (23.8") (210-BRDN)
 ComPortal | placeholder_photo | id=CP13873239 | vendorCode=CP13873239 | categoryId=602 | price=89900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro 27 Monitor E2725HM, 68.60 cm (27.0") (210-BRDQ)
-ComPortal | placeholder_photo | id=CP13873045 | vendorCode=CP13873045 | categoryId=602 | price=149900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro 24 Plus Monitor - P2425D, 60.5cm (23.8") (210-BQMX)
-ComPortal | placeholder_photo | id=CP13873047 | vendorCode=CP13873047 | categoryId=602 | price=73900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Monitor - SE2725HM (210-BQZW)
-ComPortal | placeholder_photo | id=CP13873013 | vendorCode=CP13873013 | categoryId=603 | price=706900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG)
-ComPortal | placeholder_photo | id=CP13872581 | vendorCode=CP13872581 | categoryId=601 | price=845900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук ASUS ROG Strix G16 / G615JHR-S5039 (90NR0LL1-M001B0)
-ComPortal | placeholder_photo | id=CP13873048 | vendorCode=CP13873048 | categoryId=602 | price=568900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 32 Plus 4K QD-OLED Monitor - S3225QC (210-BRVT)
-ComPortal | placeholder_photo | id=CP13873206 | vendorCode=CP13873206 | categoryId=701 | price=97900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC BVX1600LI 230V, AVR, IEC Sockets (BVX1600LI)
-ComPortal | placeholder_photo | id=CP13872831 | vendorCode=CP13872831 | categoryId=401 | price=247900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Проектор Acer X139 (MR.JX611.00Z)
+ComPortal | placeholder_photo | id=CP13873045 | vendorCode=CP13873045 | categoryId=602 | price=148900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro 24 Plus Monitor - P2425D, 60.5cm (23.8") (210-BQMX)
+ComPortal | placeholder_photo | id=CP13873047 | vendorCode=CP13873047 | categoryId=602 | price=72900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Monitor - SE2725HM (210-BQZW)
+ComPortal | placeholder_photo | id=CP13873013 | vendorCode=CP13873013 | categoryId=603 | price=701900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG)
+ComPortal | placeholder_photo | id=CP13872581 | vendorCode=CP13872581 | categoryId=601 | price=839900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук ASUS ROG Strix G16 / G615JHR-S5039 (90NR0LL1-M001B0)
+ComPortal | placeholder_photo | id=CP13873048 | vendorCode=CP13873048 | categoryId=602 | price=565900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 32 Plus 4K QD-OLED Monitor - S3225QC (210-BRVT)
+ComPortal | placeholder_photo | id=CP13873206 | vendorCode=CP13873206 | categoryId=701 | price=96900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC BVX1600LI 230V, AVR, IEC Sockets (BVX1600LI)
+ComPortal | placeholder_photo | id=CP13872831 | vendorCode=CP13872831 | categoryId=401 | price=245900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Проектор Acer X139 (MR.JX611.00Z)
 ComPortal | placeholder_photo | id=CP13872827 | vendorCode=CP13872827 | categoryId=401 | price=95900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Проектор Acer QF23s (MR.JXC11.005)
-ComPortal | placeholder_photo | id=CP13872989 | vendorCode=CP13872989 | categoryId=601 | price=703900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 PC14250 (BTO109_PC14250_EMEA_210-BQHF)
-ComPortal | placeholder_photo | id=CP13873244 | vendorCode=CP13873244 | categoryId=601 | price=719900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (BTO105_PB14250_EMEA_210-BPDL)
-ComPortal | placeholder_photo | id=CP13872990 | vendorCode=CP13872990 | categoryId=601 | price=849900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (BTO111_PB14250_EMEA_210-BPDL)
-ComPortal | placeholder_photo | id=CP13872991 | vendorCode=CP13872991 | categoryId=601 | price=796900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (210-BPDL_BTO110_PB14250_EMEA)
-ComPortal | placeholder_photo | id=CP13872992 | vendorCode=CP13872992 | categoryId=601 | price=706900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO109_PC16250_EMEA_210-BQHB)
-ComPortal | placeholder_photo | id=CP13872993 | vendorCode=CP13872993 | categoryId=601 | price=741900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO107_PC16250_EMEA_210-BQHB)
-ComPortal | placeholder_photo | id=CP13873245 | vendorCode=CP13873245 | categoryId=601 | price=602900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO105_PC16250_EMEA_210-BQHB)
-ComPortal | placeholder_photo | id=CP13873353 | vendorCode=CP13873353 | categoryId=601 | price=723900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO106_PC16250_EMEA_210-BQHB)
-ComPortal | placeholder_photo | id=CP13872994 | vendorCode=CP13872994 | categoryId=601 | price=588900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16255 (BTO602_PC16255_EMEA_210-BQPC)
-ComPortal | placeholder_photo | id=CP13872995 | vendorCode=CP13872995 | categoryId=601 | price=761900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 Plus PB16250 (BTO105_PB16250_EMEA_UBU_210-BPCM)
-ComPortal | placeholder_photo | id=CP13873354 | vendorCode=CP13873354 | categoryId=601 | price=1048900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Мобильная рабочая станция Dell Pro Max 14 MC14250 (BTO120_MC14250_EMEA_210-BPVX)
-ComPortal | placeholder_photo | id=CP13873355 | vendorCode=CP13873355 | categoryId=601 | price=1377900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO128_MC16250_EMEA_210-BPVR)
-ComPortal | placeholder_photo | id=CP13873356 | vendorCode=CP13873356 | categoryId=601 | price=914900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO129_MC16250_EMEA_210-BPVR)
-ComPortal | placeholder_photo | id=CP13873050 | vendorCode=CP13873050 | categoryId=602 | price=95900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell SE2725HG (210-BSNS)
+ComPortal | placeholder_photo | id=CP13872989 | vendorCode=CP13872989 | categoryId=601 | price=698900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 PC14250 (BTO109_PC14250_EMEA_210-BQHF)
+ComPortal | placeholder_photo | id=CP13873244 | vendorCode=CP13873244 | categoryId=601 | price=714900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (BTO105_PB14250_EMEA_210-BPDL)
+ComPortal | placeholder_photo | id=CP13872990 | vendorCode=CP13872990 | categoryId=601 | price=843900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (BTO111_PB14250_EMEA_210-BPDL)
+ComPortal | placeholder_photo | id=CP13872991 | vendorCode=CP13872991 | categoryId=601 | price=791900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (210-BPDL_BTO110_PB14250_EMEA)
+ComPortal | placeholder_photo | id=CP13872992 | vendorCode=CP13872992 | categoryId=601 | price=701900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO109_PC16250_EMEA_210-BQHB)
+ComPortal | placeholder_photo | id=CP13872993 | vendorCode=CP13872993 | categoryId=601 | price=736900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO107_PC16250_EMEA_210-BQHB)
+ComPortal | placeholder_photo | id=CP13873245 | vendorCode=CP13873245 | categoryId=601 | price=598900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO105_PC16250_EMEA_210-BQHB)
+ComPortal | placeholder_photo | id=CP13873353 | vendorCode=CP13873353 | categoryId=601 | price=718900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO106_PC16250_EMEA_210-BQHB)
+ComPortal | placeholder_photo | id=CP13872994 | vendorCode=CP13872994 | categoryId=601 | price=584900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16255 (BTO602_PC16255_EMEA_210-BQPC)
+ComPortal | placeholder_photo | id=CP13872995 | vendorCode=CP13872995 | categoryId=601 | price=756900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 Plus PB16250 (BTO105_PB16250_EMEA_UBU_210-BPCM)
+ComPortal | placeholder_photo | id=CP13873354 | vendorCode=CP13873354 | categoryId=601 | price=1041900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Мобильная рабочая станция Dell Pro Max 14 MC14250 (BTO120_MC14250_EMEA_210-BPVX)
+ComPortal | placeholder_photo | id=CP13873355 | vendorCode=CP13873355 | categoryId=601 | price=1368900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO128_MC16250_EMEA_210-BPVR)
+ComPortal | placeholder_photo | id=CP13873356 | vendorCode=CP13873356 | categoryId=601 | price=908900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Мобильная рабочая станция Dell Pro Max 16 / 16XE MC16250 (BTO129_MC16250_EMEA_210-BPVR)
+ComPortal | placeholder_photo | id=CP13873050 | vendorCode=CP13873050 | categoryId=602 | price=94900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell SE2725HG (210-BSNS)
 ComPortal | placeholder_photo | id=CP13873241 | vendorCode=CP13873241 | categoryId=602 | price=74900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell SE2425HG (210-BSNR)
-ComPortal | placeholder_photo | id=CP13872763 | vendorCode=CP13872763 | categoryId=602 | price=150900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell AW2725DM (210-BQWQ)
-ComPortal | placeholder_photo | id=CP13872599 | vendorCode=CP13872599 | categoryId=602 | price=134900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор HP Series 5 Pro / 524pu (9D9V7AA#ABB)
-ComPortal | placeholder_photo | id=CP13873051 | vendorCode=CP13873051 | categoryId=602 | price=91900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 24 Plus Monitor – S2425HSM (210-BSZD)
-ComPortal | placeholder_photo | id=CP13873053 | vendorCode=CP13873053 | categoryId=602 | price=109900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Plus Monitor – S2725HSM (210-BSZF)
-ComPortal | placeholder_photo | id=CP13872628 | vendorCode=CP13872628 | categoryId=602 | price=104900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Plus Monitor – S2725HSM (210-BSZF)
-ComPortal | placeholder_photo | id=CP13872686 | vendorCode=CP13872686 | categoryId=602 | price=137900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Plus QHD Monitor - S2725DSM (210-BSVN)
-ComPortal | placeholder_photo | id=CP13873054 | vendorCode=CP13873054 | categoryId=602 | price=181900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Plus QHD USB-C Monitor - S2725DC (210-BSRL)
-ComPortal | placeholder_photo | id=CP13872662 | vendorCode=CP13872662 | categoryId=601 | price=931900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук ASUS TUF Gaming F16 / FX608JPR-QT092 (90NR0NG1-M00680)
-ComPortal | placeholder_photo | id=CP13872591 | vendorCode=CP13872591 | categoryId=601 | price=525900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук ASUS ExpertBook / P1503CVA-S72536X (90NX0881-M02Y90)
-ComPortal | placeholder_photo | id=CP13872617 | vendorCode=CP13872617 | categoryId=601 | price=605900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук HP EliteBook 8 G1a (AZ3N2AV / 74051488)
-ComPortal | placeholder_photo | id=CP13872623 | vendorCode=CP13872623 | categoryId=601 | price=1290900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_101)
-ComPortal | placeholder_photo | id=CP13872996 | vendorCode=CP13872996 | categoryId=601 | price=1700900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_102)
-ComPortal | placeholder_photo | id=CP13872997 | vendorCode=CP13872997 | categoryId=601 | price=1613900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_104)
-ComPortal | placeholder_photo | id=CP13872998 | vendorCode=CP13872998 | categoryId=601 | price=1666900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_003)
-ComPortal | placeholder_photo | id=CP13872999 | vendorCode=CP13872999 | categoryId=601 | price=1893900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_011)
-ComPortal | placeholder_photo | id=CP13873000 | vendorCode=CP13873000 | categoryId=601 | price=1795900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_006)
-ComPortal | placeholder_photo | id=CP13873001 | vendorCode=CP13873001 | categoryId=601 | price=2053900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_008)
-ComPortal | placeholder_photo | id=CP13873002 | vendorCode=CP13873002 | categoryId=601 | price=2486900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_010)
-ComPortal | placeholder_photo | id=CP13873016 | vendorCode=CP13873016 | categoryId=603 | price=648900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell Pro 24 All-in-One QC24251 (210-BPPN_BTO103_QC24251_EMEA)
-ComPortal | placeholder_photo | id=CP13873017 | vendorCode=CP13873017 | categoryId=603 | price=854900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell Pro 24 All-in-One QC24250 (210-BPNS_BTO155_QC24250_EMEA)
-ComPortal | placeholder_photo | id=CP13873018 | vendorCode=CP13873018 | categoryId=603 | price=803900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell Pro 24 All-in-One QC24250 (210-BPNS_BTO154_QC24250_EMEA)
-ComPortal | placeholder_photo | id=CP13873019 | vendorCode=CP13873019 | categoryId=603 | price=816900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG_BTO103_QB24250_EMEA)
-ComPortal | placeholder_photo | id=CP13873021 | vendorCode=CP13873021 | categoryId=604 | price=417900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Micro QCM1250 (210-BPQB_BTO003_QCM1250_EMEA)
-ComPortal | placeholder_photo | id=CP13873024 | vendorCode=CP13873024 | categoryId=603 | price=716900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG_BTO101_QB24250_EMEA)
-ComPortal | placeholder_photo | id=CP13873025 | vendorCode=CP13873025 | categoryId=604 | price=644900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Micro QCM1250 (210-BPPV_BTO107_QCM1250_EMEA)
-ComPortal | placeholder_photo | id=CP13873026 | vendorCode=CP13873026 | categoryId=604 | price=553900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Tower QCT1250 (210-BPRW_BTO107_QCT1250_EMEA)
-ComPortal | placeholder_photo | id=CP13873027 | vendorCode=CP13873027 | categoryId=604 | price=953900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO103_FCT2250_EMEA)
-ComPortal | placeholder_photo | id=CP13873028 | vendorCode=CP13873028 | categoryId=604 | price=1311900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO113_FCT2250_EMEA)
-ComPortal | placeholder_photo | id=CP13873029 | vendorCode=CP13873029 | categoryId=604 | price=1065900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO109_FCT2250_EMEA)
-ComPortal | placeholder_photo | id=CP13873030 | vendorCode=CP13873030 | categoryId=604 | price=1233900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO112_FCT2250_EMEA)
-ComPortal | placeholder_photo | id=CP13873031 | vendorCode=CP13873031 | categoryId=604 | price=651900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Tower QCT1250 (210-BPRW_BTO110_QCT1250_EMEA)
-ComPortal | placeholder_photo | id=CP13872965 | vendorCode=CP13872965 | categoryId=603 | price=838900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell All-in-One EC27250 (210-BPFS_EC27250_RPLU-R_010)
-ComPortal | placeholder_photo | id=CP13873003 | vendorCode=CP13873003 | categoryId=604 | price=1520900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Tower Plus EBT2250 (210-BPDZ_EBT2250_ARL_127)
-ComPortal | placeholder_photo | id=CP13873004 | vendorCode=CP13873004 | categoryId=604 | price=2166900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Tower Plus EBT2250 (210-BPDZ_EBT2250_ARL_128)
-ComPortal | placeholder_photo | id=CP13873102 | vendorCode=CP13873102 | categoryId=101 | price=99900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 1005 (6726C002) (оригинал)
-ComPortal | placeholder_photo | id=CP13872879 | vendorCode=CP13872879 | categoryId=601 | price=783900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus (210-BPDN_1)
-ComPortal | placeholder_photo | id=CP13872774 | vendorCode=CP13872774 | categoryId=603 | price=237900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок AIWA PF2402-D-8-512 (PF2402-D 8-512 white)
-ComPortal | placeholder_photo | id=CP13873246 | vendorCode=CP13873246 | categoryId=601 | price=656900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO120_PC16250_EMEA_210-BQHB)
-ComPortal | placeholder_photo | id=CP13872917 | vendorCode=CP13872917 | categoryId=601 | price=656900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO120_PC16250_EMEA_210-BQHB)
-ComPortal | placeholder_photo | id=CP13873005 | vendorCode=CP13873005 | categoryId=601 | price=816900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO118_PC16250_EMEA_210-BQHB)
-ComPortal | placeholder_photo | id=CP13873006 | vendorCode=CP13873006 | categoryId=601 | price=802900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO121_PC16250_EMEA_210-BQHB)
-ComPortal | placeholder_photo | id=CP13873341 | vendorCode=CP13873341 | categoryId=301 | price=218900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=МФУ Canon MF664Cdw (6928C008)
+ComPortal | placeholder_photo | id=CP13872763 | vendorCode=CP13872763 | categoryId=602 | price=149900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell AW2725DM (210-BQWQ)
+ComPortal | placeholder_photo | id=CP13872599 | vendorCode=CP13872599 | categoryId=602 | price=133900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор HP Series 5 Pro / 524pu (9D9V7AA#ABB)
+ComPortal | placeholder_photo | id=CP13873051 | vendorCode=CP13873051 | categoryId=602 | price=90900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 24 Plus Monitor – S2425HSM (210-BSZD)
+ComPortal | placeholder_photo | id=CP13873053 | vendorCode=CP13873053 | categoryId=602 | price=108900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Plus Monitor – S2725HSM (210-BSZF)
+ComPortal | placeholder_photo | id=CP13872628 | vendorCode=CP13872628 | categoryId=602 | price=103900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Plus Monitor – S2725HSM (210-BSZF)
+ComPortal | placeholder_photo | id=CP13872686 | vendorCode=CP13872686 | categoryId=602 | price=136900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Plus QHD Monitor - S2725DSM (210-BSVN)
+ComPortal | placeholder_photo | id=CP13873054 | vendorCode=CP13873054 | categoryId=602 | price=180900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell 27 Plus QHD USB-C Monitor - S2725DC (210-BSRL)
+ComPortal | placeholder_photo | id=CP13872662 | vendorCode=CP13872662 | categoryId=601 | price=925900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук ASUS TUF Gaming F16 / FX608JPR-QT092 (90NR0NG1-M00680)
+ComPortal | placeholder_photo | id=CP13872591 | vendorCode=CP13872591 | categoryId=601 | price=521900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук ASUS ExpertBook / P1503CVA-S72536X (90NX0881-M02Y90)
+ComPortal | placeholder_photo | id=CP13872617 | vendorCode=CP13872617 | categoryId=601 | price=601900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук HP EliteBook 8 G1a (AZ3N2AV / 74051488)
+ComPortal | placeholder_photo | id=CP13872623 | vendorCode=CP13872623 | categoryId=601 | price=1281900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_101)
+ComPortal | placeholder_photo | id=CP13872996 | vendorCode=CP13872996 | categoryId=601 | price=1688900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_102)
+ComPortal | placeholder_photo | id=CP13872997 | vendorCode=CP13872997 | categoryId=601 | price=1596900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 14 Premium (DA14250) (210-BPBH_DA14250_ARLH_104)
+ComPortal | placeholder_photo | id=CP13872998 | vendorCode=CP13872998 | categoryId=601 | price=1655900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_003)
+ComPortal | placeholder_photo | id=CP13872999 | vendorCode=CP13872999 | categoryId=601 | price=1879900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_011)
+ComPortal | placeholder_photo | id=CP13873000 | vendorCode=CP13873000 | categoryId=601 | price=1783900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_006)
+ComPortal | placeholder_photo | id=CP13873001 | vendorCode=CP13873001 | categoryId=601 | price=2039900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_008)
+ComPortal | placeholder_photo | id=CP13873002 | vendorCode=CP13873002 | categoryId=601 | price=2469900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell 16 Premium (DA16250) (210-BRTS_DA16250_ARLH_010)
+ComPortal | placeholder_photo | id=CP13873016 | vendorCode=CP13873016 | categoryId=603 | price=644900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell Pro 24 All-in-One QC24251 (210-BPPN_BTO103_QC24251_EMEA)
+ComPortal | placeholder_photo | id=CP13873017 | vendorCode=CP13873017 | categoryId=603 | price=848900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell Pro 24 All-in-One QC24250 (210-BPNS_BTO155_QC24250_EMEA)
+ComPortal | placeholder_photo | id=CP13873018 | vendorCode=CP13873018 | categoryId=603 | price=798900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell Pro 24 All-in-One QC24250 (210-BPNS_BTO154_QC24250_EMEA)
+ComPortal | placeholder_photo | id=CP13873019 | vendorCode=CP13873019 | categoryId=603 | price=805900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG_BTO103_QB24250_EMEA)
+ComPortal | placeholder_photo | id=CP13873021 | vendorCode=CP13873021 | categoryId=604 | price=414900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Micro QCM1250 (210-BPQB_BTO003_QCM1250_EMEA)
+ComPortal | placeholder_photo | id=CP13873024 | vendorCode=CP13873024 | categoryId=603 | price=711900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell Pro 24 All-in-One Plus QB24250 (210-BPPG_BTO101_QB24250_EMEA)
+ComPortal | placeholder_photo | id=CP13873025 | vendorCode=CP13873025 | categoryId=604 | price=640900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Micro QCM1250 (210-BPPV_BTO107_QCM1250_EMEA)
+ComPortal | placeholder_photo | id=CP13873026 | vendorCode=CP13873026 | categoryId=604 | price=544900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Tower QCT1250 (210-BPRW_BTO107_QCT1250_EMEA)
+ComPortal | placeholder_photo | id=CP13873027 | vendorCode=CP13873027 | categoryId=604 | price=947900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO103_FCT2250_EMEA)
+ComPortal | placeholder_photo | id=CP13873028 | vendorCode=CP13873028 | categoryId=604 | price=1302900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO113_FCT2250_EMEA)
+ComPortal | placeholder_photo | id=CP13873029 | vendorCode=CP13873029 | categoryId=604 | price=1058900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO109_FCT2250_EMEA)
+ComPortal | placeholder_photo | id=CP13873030 | vendorCode=CP13873030 | categoryId=604 | price=1224900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Max Tower T2 FCT2250 (210-BPSN_BTO112_FCT2250_EMEA)
+ComPortal | placeholder_photo | id=CP13873439 | vendorCode=CP13873439 | categoryId=603 | price=858900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell All-in-One EC27250 (210-BPFS_EC27250_RPLU-R_007)
+ComPortal | placeholder_photo | id=CP13873031 | vendorCode=CP13873031 | categoryId=604 | price=647900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Pro Tower QCT1250 (210-BPRW_BTO110_QCT1250_EMEA)
+ComPortal | placeholder_photo | id=CP13872965 | vendorCode=CP13872965 | categoryId=603 | price=833900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок Dell All-in-One EC27250 (210-BPFS_EC27250_RPLU-R_010)
+ComPortal | placeholder_photo | id=CP13873003 | vendorCode=CP13873003 | categoryId=604 | price=1509900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Tower Plus EBT2250 (210-BPDZ_EBT2250_ARL_127)
+ComPortal | placeholder_photo | id=CP13873004 | vendorCode=CP13873004 | categoryId=604 | price=2151900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер Dell Tower Plus EBT2250 (210-BPDZ_EBT2250_ARL_128)
+ComPortal | placeholder_photo | id=CP13873102 | vendorCode=CP13873102 | categoryId=101 | price=98900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер Canon C-EXV 1005 (6726C002) (оригинал)
+ComPortal | placeholder_photo | id=CP13872879 | vendorCode=CP13872879 | categoryId=601 | price=777900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus (210-BPDN_1)
+ComPortal | placeholder_photo | id=CP13872682 | vendorCode=CP13872682 | categoryId=601 | price=297900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук ASUS Vivobook 15 / X1504VA-BQ4489W (90NB13Y1-M02790)
+ComPortal | placeholder_photo | id=CP13872774 | vendorCode=CP13872774 | categoryId=603 | price=236900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Моноблок AIWA PF2402-D-8-512 (PF2402-D 8-512 white)
+ComPortal | placeholder_photo | id=CP13873246 | vendorCode=CP13873246 | categoryId=601 | price=651900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO120_PC16250_EMEA_210-BQHB)
+ComPortal | placeholder_photo | id=CP13872917 | vendorCode=CP13872917 | categoryId=601 | price=651900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO120_PC16250_EMEA_210-BQHB)
+ComPortal | placeholder_photo | id=CP13873005 | vendorCode=CP13873005 | categoryId=601 | price=806900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO118_PC16250_EMEA_210-BQHB)
+ComPortal | placeholder_photo | id=CP13873006 | vendorCode=CP13873006 | categoryId=601 | price=796900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 16 PC16250 (BTO121_PC16250_EMEA_210-BQHB)
+ComPortal | placeholder_photo | id=CP13873341 | vendorCode=CP13873341 | categoryId=301 | price=217900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=МФУ Canon MF664Cdw (6928C008)
 ComPortal | placeholder_photo | id=CP13873342 | vendorCode=CP13873342 | categoryId=101 | price=45900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Canon CRG 075 M (6363C002) (оригинал)
 ComPortal | placeholder_photo | id=CP13873343 | vendorCode=CP13873343 | categoryId=101 | price=45900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Canon CRG 075 Y (6362C002) (оригинал)
-ComPortal | placeholder_photo | id=CP13873344 | vendorCode=CP13873344 | categoryId=101 | price=41900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Canon CRG 075 BK (6365C002) (оригинал)
+ComPortal | placeholder_photo | id=CP13873344 | vendorCode=CP13873344 | categoryId=101 | price=40900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Canon CRG 075 BK (6365C002) (оригинал)
 ComPortal | placeholder_photo | id=CP13873345 | vendorCode=CP13873345 | categoryId=101 | price=45900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Картридж Canon CRG 075 C (6364C002) (оригинал)
-ComPortal | placeholder_photo | id=CP13873346 | vendorCode=CP13873346 | categoryId=301 | price=245900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=МФУ Canon MF667Cdw (6928C001)
-ComPortal | placeholder_photo | id=CP13873166 | vendorCode=CP13873166 | categoryId=601 | price=2100900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Мобильная рабочая станция Dell Pro Max 16 Plus MB16250 (210-BRXR / BTO102_MB16250_EMEA)
-ComPortal | placeholder_photo | id=CP13873357 | vendorCode=CP13873357 | categoryId=601 | price=2200900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Мобильная рабочая станция Dell Pro Max 18 Plus MB18250 (210-BRXL / BTO101_MB18250_EMEA)
-ComPortal | placeholder_photo | id=CP13873167 | vendorCode=CP13873167 | categoryId=601 | price=816900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 13 Plus PB13250 (210-BPKT / BTO210_PB13250_EMEA)
-ComPortal | placeholder_photo | id=CP13873168 | vendorCode=CP13873168 | categoryId=601 | price=1060900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 PC14250 (210-BQHF / BTO108_PC14250_EMEA)
-ComPortal | placeholder_photo | id=CP13873169 | vendorCode=CP13873169 | categoryId=601 | price=937900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 PC14250 (210-BQHF / BTO121_PC14250_EMEA)
-ComPortal | placeholder_photo | id=CP13873170 | vendorCode=CP13873170 | categoryId=601 | price=767900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 PC14250 (210-BQHF / BTO120_PC14250_EMEA)
-ComPortal | placeholder_photo | id=CP13873247 | vendorCode=CP13873247 | categoryId=601 | price=1002900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK / BTO217_PB14250_EMEA)
-ComPortal | placeholder_photo | id=CP13873058 | vendorCode=CP13873058 | categoryId=601 | price=1002900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK / BTO217_PB14250_EMEA)
-ComPortal | placeholder_photo | id=CP13873258 | vendorCode=CP13873258 | categoryId=604 | price=565900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер HP Pro Tower 400 G9 (9H762ET#BJA)
-ComPortal | placeholder_photo | id=CP13873310 | vendorCode=CP13873310 | categoryId=604 | price=697900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер HP Pro SFF 400 G9 (9H7C6ET#BJA)
-ComPortal | placeholder_photo | id=CP13873361 | vendorCode=CP13873361 | categoryId=601 | price=661900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук HP ProBook 4 G1a 16 (B39XQAT#BJA)
-ComPortal | placeholder_photo | id=CP13873362 | vendorCode=CP13873362 | categoryId=604 | price=500900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер HP ProDesk 2 Tower G1i (B6XD2ET#BJA)
-ComPortal | placeholder_photo | id=CP13873424 | vendorCode=CP13873424 | categoryId=601 | price=657900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук HP ProBook 4 G1iR 14 (CZ9B2AT#BJA)
-ComPortal | placeholder_photo | id=CP13873203 | vendorCode=CP13873203 | categoryId=601 | price=752900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук HP ProBook 4 G1i 16 AI (D0UW2ET#BJA)
-ComPortal | placeholder_photo | id=CP13873277 | vendorCode=CP13873277 | categoryId=602 | price=82900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell SE2726HG (210-BTSP)
-ComPortal | placeholder_photo | id=CP13873279 | vendorCode=CP13873279 | categoryId=602 | price=185900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro Conferencing Monitor - P2426HEB (210-BVHS)
-ComPortal | placeholder_photo | id=CP13873253 | vendorCode=CP13873253 | categoryId=602 | price=235900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro Hub Conferencing Monitor - P2726DEB (210-BVHR)
-ComPortal | placeholder_photo | id=CP13873280 | vendorCode=CP13873280 | categoryId=602 | price=376900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro P34 Hub Conferencing Monitor - P3426WEB (210-BVHQ)
-ComPortal | placeholder_photo | id=CP13873248 | vendorCode=CP13873248 | categoryId=601 | price=782900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus (PB14250) (210-BPDK_3 / BTO211_PB14250_EMEA)
-ComPortal | placeholder_photo | id=CP13873061 | vendorCode=CP13873061 | categoryId=601 | price=782900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus (PB14250) (210-BPDK_3 / BTO211_PB14250_EMEA)
-ComPortal | placeholder_photo | id=CP13873349 | vendorCode=CP13873349 | categoryId=701 | price=103900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC BE1050G2-GR (BE1050G2-GR)
-ComPortal | placeholder_photo | id=CP13873350 | vendorCode=CP13873350 | categoryId=701 | price=369900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC SRV2KRIRK-E (SRV2KRIRK-E)
-ComPortal | placeholder_photo | id=CP13873295 | vendorCode=CP13873295 | categoryId=101 | price=125900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж HP W9088MC (W9088MC) (оригинал)
-ComPortal | placeholder_photo | id=CP13873296 | vendorCode=CP13873296 | categoryId=101 | price=130900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж HP W9087MC (W9087MC) (оригинал)
-ComPortal | placeholder_photo | id=CP13873405 | vendorCode=CP13873405 | categoryId=602 | price=112900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro P 27 Monitor - P2726H (210-BVKP)
-ComPortal | placeholder_photo | id=CP13873373 | vendorCode=CP13873373 | categoryId=601 | price=892900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK / BTO205_PB14250_EMEA)
+ComPortal | placeholder_photo | id=CP13873346 | vendorCode=CP13873346 | categoryId=301 | price=244900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=МФУ Canon MF667Cdw (6928C001)
+ComPortal | placeholder_photo | id=CP13873166 | vendorCode=CP13873166 | categoryId=601 | price=2085900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Мобильная рабочая станция Dell Pro Max 16 Plus MB16250 (210-BRXR / BTO102_MB16250_EMEA)
+ComPortal | placeholder_photo | id=CP13873357 | vendorCode=CP13873357 | categoryId=601 | price=2184900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Мобильная рабочая станция Dell Pro Max 18 Plus MB18250 (210-BRXL / BTO101_MB18250_EMEA)
+ComPortal | placeholder_photo | id=CP13873167 | vendorCode=CP13873167 | categoryId=601 | price=805900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 13 Plus PB13250 (210-BPKT / BTO210_PB13250_EMEA)
+ComPortal | placeholder_photo | id=CP13873168 | vendorCode=CP13873168 | categoryId=601 | price=1053900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 PC14250 (210-BQHF / BTO108_PC14250_EMEA)
+ComPortal | placeholder_photo | id=CP13873169 | vendorCode=CP13873169 | categoryId=601 | price=931900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 PC14250 (210-BQHF / BTO121_PC14250_EMEA)
+ComPortal | placeholder_photo | id=CP13873170 | vendorCode=CP13873170 | categoryId=601 | price=762900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 PC14250 (210-BQHF / BTO120_PC14250_EMEA)
+ComPortal | placeholder_photo | id=CP13873247 | vendorCode=CP13873247 | categoryId=601 | price=995900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK / BTO217_PB14250_EMEA)
+ComPortal | placeholder_photo | id=CP13873058 | vendorCode=CP13873058 | categoryId=601 | price=995900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK / BTO217_PB14250_EMEA)
+ComPortal | placeholder_photo | id=CP13873258 | vendorCode=CP13873258 | categoryId=604 | price=561900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер HP Pro Tower 400 G9 (9H762ET#BJA)
+ComPortal | placeholder_photo | id=CP13873310 | vendorCode=CP13873310 | categoryId=604 | price=692900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер HP Pro SFF 400 G9 (9H7C6ET#BJA)
+ComPortal | placeholder_photo | id=CP13873361 | vendorCode=CP13873361 | categoryId=601 | price=657900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук HP ProBook 4 G1a 16 (B39XQAT#BJA)
+ComPortal | placeholder_photo | id=CP13873362 | vendorCode=CP13873362 | categoryId=604 | price=496900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Компьютер HP ProDesk 2 Tower G1i (B6XD2ET#BJA)
+ComPortal | placeholder_photo | id=CP13873424 | vendorCode=CP13873424 | categoryId=601 | price=652900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук HP ProBook 4 G1iR 14 (CZ9B2AT#BJA)
+ComPortal | placeholder_photo | id=CP13873203 | vendorCode=CP13873203 | categoryId=601 | price=747900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук HP ProBook 4 G1i 16 AI (D0UW2ET#BJA)
+ComPortal | placeholder_photo | id=CP13873277 | vendorCode=CP13873277 | categoryId=602 | price=81900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell SE2726HG (210-BTSP)
+ComPortal | placeholder_photo | id=CP13873279 | vendorCode=CP13873279 | categoryId=602 | price=184900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro Conferencing Monitor - P2426HEB (210-BVHS)
+ComPortal | placeholder_photo | id=CP13873253 | vendorCode=CP13873253 | categoryId=602 | price=234900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro Hub Conferencing Monitor - P2726DEB (210-BVHR)
+ComPortal | placeholder_photo | id=CP13873280 | vendorCode=CP13873280 | categoryId=602 | price=373900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro P34 Hub Conferencing Monitor - P3426WEB (210-BVHQ)
+ComPortal | placeholder_photo | id=CP13873248 | vendorCode=CP13873248 | categoryId=601 | price=777900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus (PB14250) (210-BPDK_3 / BTO211_PB14250_EMEA)
+ComPortal | placeholder_photo | id=CP13873061 | vendorCode=CP13873061 | categoryId=601 | price=777900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus (PB14250) (210-BPDK_3 / BTO211_PB14250_EMEA)
+ComPortal | placeholder_photo | id=CP13873349 | vendorCode=CP13873349 | categoryId=701 | price=102900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC BE1050G2-GR (BE1050G2-GR)
+ComPortal | placeholder_photo | id=CP13873350 | vendorCode=CP13873350 | categoryId=701 | price=367900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=ИБП APC SRV2KRIRK-E (SRV2KRIRK-E)
+ComPortal | placeholder_photo | id=CP13873295 | vendorCode=CP13873295 | categoryId=101 | price=124900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж HP W9088MC (W9088MC) (оригинал)
+ComPortal | placeholder_photo | id=CP13873296 | vendorCode=CP13873296 | categoryId=101 | price=129900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж HP W9087MC (W9087MC) (оригинал)
+ComPortal | placeholder_photo | id=CP13873405 | vendorCode=CP13873405 | categoryId=602 | price=111900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Монитор Dell Pro P 27 Monitor - P2726H (210-BVKP)
+ComPortal | placeholder_photo | id=CP13873373 | vendorCode=CP13873373 | categoryId=601 | price=885900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Ноутбук Dell Pro 14 Plus PB14250 (210-BPDK / BTO205_PB14250_EMEA)
 VTT | placeholder_photo | id=VT013R00676 | vendorCode=VT013R00676 | categoryId=105 | price=141900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=013R00676/013R00674 Модуль фоторецептора Xerox Versant 80/180/2100 (оригинал)
 VTT | placeholder_photo | id=VT10111574 | vendorCode=VT10111574 | categoryId=105 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=Барабан C-EXV50 Canon IR1435/1435i/1435iF, 35,5K 9437B002AA, 10111574 (оригинал)
 VTT | placeholder_photo | id=VT101131383 | vendorCode=VT101131383 | categoryId=101 | price=11900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=Тонер-картридж Hi-Black (HB-C-EXV50) для Canon iR1435/1435i/1435iF/1435P (совместимый)
@@ -603,7 +599,11 @@ VTT | placeholder_photo | id=VT3872B001 | vendorCode=VT3872B001 | categoryId=106
 VTT | placeholder_photo | id=VT4050118 | vendorCode=VT4050118 | categoryId=105 | price=60900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=DK-590/2KV9301014/302KV93017 Драм-юнит Kyocera FS2026/2126/C2026MFP+ (оригинал)
 VTT | placeholder_photo | id=VT41006035 | vendorCode=VT41006035 | categoryId=105 | price=99900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=DK-3100/302MS93020 Драм-юнит Kyocera FS-2100D/2100DN/ECOSYS M3040dn/M3540dn (оригинал)
 VTT | placeholder_photo | id=VT4100649 | vendorCode=VT4100649 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=302LV93020 Бункер отработанного тонера WT-3100 Kyocera FS2100/4100, 4100649 (оригинал)
-... показаны первые 300 строк, всего записей: 552
+VTT | placeholder_photo | id=VT41006510 | vendorCode=VT41006510 | categoryId=101 | price=8900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=WT-860/1902LC0UN0 Бункер отработанного тонера Kyocera TASKalfa 3050ci/3550ci/4550ci (оригинал)
+VTT | placeholder_photo | id=VT410067 | vendorCode=VT410067 | categoryId=202 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=DV-460/302KK93020 Блок проявки Kyocera TASKalfa-180/181/220/221, 410067 (оригинал)
+VTT | placeholder_photo | id=VT4100695 | vendorCode=VT4100695 | categoryId=101 | price=8900 | picture=https://placehold.co/800x800/png?text=No+Photo | name=302M293031/302M293030 Бункер отработанного тонера WT-1110 Kyocera FS1020/1025/1120 (оригинал)
+VTT | placeholder_photo | id=VT416890 | vendorCode=VT416890 | categoryId=101 | in_stock=true | picture=https://placehold.co/800x800/png?text=No+Photo | name=416890/D2426400 Бокс сбора тонера Ricoh MP C2003/C2004/C2503/C2504/C303/C3004/C3503/C3504/C4503 (оригинал)
+... показаны первые 300 строк, всего записей: 548
 
 ======================================================================
 ДУБЛИ OFFER ID
@@ -626,8 +626,8 @@ VTT | placeholder_photo | id=VT4100649 | vendorCode=VT4100649 | categoryId=101 |
 Заглушка фото:
 - VTT: 415
 - ComPortal: 130
-- AkCent: 5
 - AlStyle: 2
+- AkCent: 1
 
 Не вошло в final без categoryId:
 - AlStyle: 2
