@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-05-16 01:40:28">
+<yml_catalog date="2026-05-17 01:11:33">
 <shop><offers>
 <!--FEED_META
 Поставщик                                  | ComPortal
 URL поставщика                             | https://www.comportal.kz/auth/documents/prices/yml-catalog.php
-Время сборки (Алматы)                      | 2026-05-16 01:40:28
-Ближайшая сборка (Алматы)                  | 2026-05-17 00:30:00
-Сколько товаров у поставщика до фильтра    | 1180
-Сколько товаров у поставщика после фильтра | 624
-Сколько товаров есть в наличии (true)      | 624
+Время сборки (Алматы)                      | 2026-05-17 01:11:33
+Ближайшая сборка (Алматы)                  | 2026-05-18 00:30:00
+Сколько товаров у поставщика до фильтра    | 1181
+Сколько товаров у поставщика после фильтра | 625
+Сколько товаров есть в наличии (true)      | 625
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -10059,6 +10059,28 @@ URL поставщика                             | https://www.comportal.kz/
 <param name="Разрешение дисплея">2880x1800</param>
 <param name="Коды">B68ZKET#BJA</param>
 <param name="Для бренда">HP</param>
+</offer>
+
+<offer id="CP13869969" available="true">
+<categoryId></categoryId>
+<vendorCode>CP13869969</vendorCode>
+<name>Сканер Canon DOCUMENT SCANNER DR-S350NW (6897C009AA)</name>
+<price>426492</price>
+<picture>https://www.comportal.kz/upload/iblock/066/76z741tf2lx3l0a2v36c29h1tdmhqke6.jpg</picture>
+<vendor>Canon</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+Сканер. Разрешение: 600. Гарантия: 12 мес. Для бренда: Canon. Модель: DOCUMENT SCANNER DR-S350NW. Коды: 6897C009AA.]]></description>
+<param name="Тип">Сканер</param>
+<param name="Модель">DOCUMENT SCANNER DR-S350NW</param>
+<param name="Дополнительная информация">USB: USB 3.2/Ethernet: 10Base-T / 100Base-TX / 1000Base-T Wi-Fi: 802.11a,b,g,n,ac USB-хост: USB 2.0 типа A (только для NFC-считывателя)</param>
+<param name="Гарантия">12 мес</param>
+<param name="Разрешение">600</param>
+<param name="Скорость сканирования">50</param>
+<param name="Тип сканера">полистовая подача</param>
+<param name="Формат файлов">A4</param>
+<param name="Коды">6897C009AA</param>
+<param name="Для бренда">Canon</param>
 </offer>
 
 <offer id="CP13870533" available="true">
