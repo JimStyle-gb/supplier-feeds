@@ -32,13 +32,6 @@
 
 
 
-## START AlStyle
-Поставщик: AlStyle
-Товаров без categoryId: 2
-
-AlStyle | AS421120 | Считыватель карт Lexmark Elatec TWN4 (497K26330) | categoryId не определён
-AlStyle | AS421121 | Считыватель карт Lexmark Elatec TWN4 (497K26290) | categoryId не определён
-## END AlStyle
 
 ## START ComPortal
 Поставщик: ComPortal
@@ -53,3 +46,11 @@ ComPortal | CP13823539 | Батарейка APC APCRBC152 (APCRBC152) | category
 
 # Все товары получили categoryId
 ## END AkCent
+
+## START AlStyle
+Поставщик: AlStyle
+Товаров без categoryId: 2
+
+AlStyle | AS421120 | Считыватель карт Lexmark Elatec TWN4 (497K26330) | categoryId не определён
+AlStyle | AS421121 | Считыватель карт Lexmark Elatec TWN4 (497K26290) | categoryId не определён
+## END AlStyle
